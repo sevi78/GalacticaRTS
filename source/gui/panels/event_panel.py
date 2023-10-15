@@ -301,10 +301,12 @@ class EventPanel(TextWrap, EditorBase, InterfaceData):
         # self.debug_events()
 
     def end_game(self, player):
+        """ this checks for conditions to end the game"""
         for key, value in player.get_stock().items():
             if value < 0:
-                if not "end" in self.obsolete_events:
-                    self.set_game_event(self.game_events["end"])
+                if not key == "energy":
+                    if not "end" in self.obsolete_events:
+                        self.set_game_event(self.game_events["end"])
 
     def listen(self, events):
         self.update()

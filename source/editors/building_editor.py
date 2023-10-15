@@ -62,7 +62,7 @@ def main(test: bool = False, **kwargs) -> None:
             input_underline='',
             align=pygame_menu.locals.ALIGN_CENTER,
             input_type=pygame_menu.locals.INPUT_INT,
-            fontcolor=self.frame_color)
+            fontcolor=colors.frame_color)
 
         prices_menu.add.text_input(
             "minimum population to build:",
@@ -72,7 +72,7 @@ def main(test: bool = False, **kwargs) -> None:
             input_underline='',
             align=pygame_menu.locals.ALIGN_LEFT,
             input_type=pygame_menu.locals.INPUT_INT,
-            fontcolor=self.frame_color)
+            fontcolor=colors.frame_color)
 
         prices_menu.add.text_input(
             "building production time:",
@@ -82,7 +82,7 @@ def main(test: bool = False, **kwargs) -> None:
             input_underline='',
             align=pygame_menu.locals.ALIGN_LEFT,
             input_type=pygame_menu.locals.INPUT_INT,
-            fontcolor=self.frame_color)
+            fontcolor=colors.frame_color)
 
         # get resource and value, create text input for value
         for resource, value in dict.items():
@@ -131,7 +131,7 @@ def main(test: bool = False, **kwargs) -> None:
             input_underline='',
             align=pygame_menu.locals.ALIGN_CENTER,
             input_type=pygame_menu.locals.INPUT_INT,
-            fontcolor=self.frame_color)
+            fontcolor=colors.frame_color)
 
         # get resource and value, create text input for value
         for resource, value in dict.items():
