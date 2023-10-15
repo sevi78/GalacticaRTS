@@ -1,0 +1,575 @@
+import math
+import random
+from dataclasses import dataclass
+
+import pygame
+
+from source.gui.widgets.widget_base_components.widget_base import WidgetBase
+from source.pan_zoom_sprites.pan_zoom_celestial_objects.pan_zoom_asteroid import PanZoomAsteroid
+from source.pan_zoom_sprites.pan_zoom_celestial_objects.pan_zoom_celestial_object_static import \
+    PanZoomCelestialObjectStatic
+from source.pan_zoom_sprites.pan_zoom_celestial_objects.pan_zoom_stars import PanZoomFlickeringStar, \
+    PanZoomPulsatingStar
+from source.pan_zoom_sprites.pan_zoom_collectable_item import PanZoomCollectableItem
+from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zoom_handler
+from source.universe.celestial_objects.asteroid import Asteroid
+from source.universe.celestial_objects.celestial_object import CelestialObject
+from source.universe.celestial_objects.celestial_object_static import CelestialObjectStatic
+from source.universe.celestial_objects.comet import Comet
+from source.universe.celestial_objects.stars import FlickeringStar, PulsatingStar
+
+from source.utils import global_params
+from source.multimedia_library.images import images, pictures_path, get_image
+from source.utils.positioning import limit_positions
+
+COMET_DIVIDE_FACTOR = 500
+ASTEROID_GIF_DIVIDE_FACTOR = 300
+ASTEROID_DIVIDE_FACTOR = 150
+NEBULAE_DIVIDE_FACTOR = 250
+GALAXY_DIVIDE_FACTOR = 300
+STAR_DIVIDE_FACTOR = 20
+FLICKERING_STAR_DIVIDE_FACTOR = 3
+PULSATING_STAR_DIVIDE_FACTOR = 4
+
+
+class UniverseFactory:# original for WidgedBase Widgets
+    def __init__(self, win, x, y, width, height, layer):
+        self.win = win
+        self.layer = layer
+        self.amount = int(math.sqrt(math.sqrt(width)) * global_params.settings["universe_density"])
+
+        # define borders
+        self.left_end = x  # -self.get_screen_width()
+        self.right_end = width
+        self.top_end = y  # -self.get_screen_height()
+        self.bottom_end = height
+        self.screen_size = (global_params.WIDTH_CURRENT, global_params.HEIGHT_CURRENT)
+
+        # images
+        self.star_images = {
+            0: get_image("star_30x30.png"),
+            1: get_image("star_50x50.png"),
+            2: get_image("star1_50x50.png"),
+            3: get_image("star2_100x100.png")
+            }
+
+        self.asteroid_images = {
+            0: get_image("asteroid_40x33.png"),
+            }
+
+        self.comet_images = {
+            0: get_image("comet_90x38.png")
+            }
+
+        self.nebulae_images = {
+            0: get_image("nebulae_300x300.png")
+            }
+
+        self.galaxy_images = {
+            0: get_image("galaxy_.png"),
+            1: get_image("galaxy3_small.png")
+            }
+
+        # drawing lists
+        self.star = []
+        self.pulsating_star = []
+        self.flickering_star = []
+        self.asteroid = []
+        self.nebulae = []
+        self.galaxy = []
+        self.comet = []
+        self.universe = []
+        self.quadrant = []
+
+        # create universe
+        self.celestial_objects = {}
+        # self.create_universe()
+
+    def get_random_image(self, images):
+        return random.choice(images)
+
+    def get_random_pos(self):
+        x = random.randint(self.left_end, self.right_end)
+        y = random.randint(self.top_end, self.bottom_end)
+        return x, y
+
+    def create_artefacts(self):
+
+        buffer = 100
+
+        images_scaled = {0: get_image("artefact1_60x31.png"),
+                         1: get_image("meteor_50x50.png"),
+                         2: get_image("meteor_60x83.png"),
+                         3: get_image("meteor1_50x50.png")
+                         }
+
+        image_names = ["artefact1_60x31.png",
+                       "meteor_50x50.png",
+                       "meteor_60x83.png",
+                       "meteor1_50x50.png"
+                       ]
+
+        for i in range(20):
+            selected_resources = global_params.app.select_resources()
+            artefact = PanZoomCollectableItem(global_params.win,
+                random.randint(self.left_end + buffer, self.right_end - buffer),
+                random.randint(self.top_end + buffer, self.bottom_end -buffer), 50, 50,
+                pan_zoom=pan_zoom_handler,
+                image_name=random.choice(image_names),
+                isSubWidget=False,
+                transparent=True,
+                tooltip="...maybe an alien artefact ? ...we don't now what it is ! it might be dangerous --- but maybe useful !?",
+                moveable=True,
+                energy=selected_resources["energy"],
+                minerals=selected_resources["minerals"],
+                food=selected_resources["food"],
+                technology=selected_resources["technology"],
+                water=selected_resources["water"],
+                parent=self,
+                group="collectable_items", gif="sphere.gif", align_image= "center")
+
+        for i in range(20):
+            selected_resources = self.select_resources()
+            artefact = PanZoomCollectableItem(global_params.win,
+                random.randint(self.left_end + buffer, self.right_end - buffer),
+                random.randint(self.top_end + buffer, self.bottom_end - buffer), 50, 50,
+                pan_zoom=pan_zoom_handler,
+                image_name="sphere.gif",
+                isSubWidget=False,
+                transparent=True,
+                tooltip="...maybe an alien artefact ? ...we don't now what it is ! it might be dangerous --- but maybe useful !?",
+                moveable=True,
+                energy=selected_resources["energy"],
+                minerals=selected_resources["minerals"],
+                food=selected_resources["food"],
+                technology=selected_resources["technology"],
+                water=selected_resources["water"],
+                parent=self,
+                group="collectable_items",
+                gif="sphere.gif", relative_gif_size=0.1, align_image= "center")
+
+    def create_stars(self):
+        # star images
+        for i in range(max(1, int(self.amount / STAR_DIVIDE_FACTOR))):
+            x, y = self.get_random_pos()
+
+            image = random.choice(self.star_images)
+            w = image.get_rect().width
+            h = image.get_rect().height
+
+            star = CelestialObjectStatic(self.win, x, y, w, h, image=image, layer=self.layer, parent=self, type="star")
+
+        # flickering stars
+        for i in range(max(1, int(self.amount / FLICKERING_STAR_DIVIDE_FACTOR))):
+            x, y = self.get_random_pos()
+            w = random.randint(1, 10)
+
+            flickering_star = FlickeringStar(self.win, x, y, w, w, layer=self.layer, parent=self, type="flickering_star")
+
+        # puslating stars
+        for i in range(max(1, int(self.amount / PULSATING_STAR_DIVIDE_FACTOR))):
+            x, y = self.get_random_pos()
+            w = 1
+
+            pulsating_star = PulsatingStar(self.win, x, y, w, w, layer=self.layer, parent=self, type="pulsating_star")
+
+    def create_galaxys(self):
+        for i in range(max(1, int(self.amount / GALAXY_DIVIDE_FACTOR))):
+            # loop body
+
+            image = random.choice(self.galaxy_images)
+            w = image.get_rect().width
+            h = image.get_rect().height
+            x, y = self.get_random_pos()
+
+            galaxy = CelestialObjectStatic(self.win, x, y, w, h, image=image, layer=self.layer, parent=self, type="galaxy")
+
+    def create_nebulaes(self):
+        for i in range(max(1, int(self.amount / NEBULAE_DIVIDE_FACTOR))):
+            image = random.choice(self.nebulae_images)
+            w = image.get_rect().width
+            h = image.get_rect().height
+            x, y = self.get_random_pos()
+
+            nebulae = CelestialObjectStatic(self.win, x, y, w, h, image=image, layer=self.layer, parent=self, type="nebulae")
+
+    def create_asteroids(self):
+        for i in range(max(1, int(self.amount / ASTEROID_DIVIDE_FACTOR))):
+            image = random.choice(self.asteroid_images)
+            w = image.get_rect().width
+            h = image.get_rect().height
+            x, y = self.get_random_pos()
+
+            asteroid = Asteroid(self.win, x, y, w, h, image=image, layer=self.layer, parent=self, type="asteroid")
+
+        for i in range(max(1, int(self.amount / ASTEROID_GIF_DIVIDE_FACTOR))):
+            image = random.choice(self.asteroid_images)
+            w = image.get_rect().width
+            h = image.get_rect().height
+            x, y = self.get_random_pos()
+
+            asteroid = Asteroid(self.win, x, y, w, h, image=image, layer=self.layer, parent=self, type="asteroid", gif="asteroid.gif")
+
+    def create_comets(self):
+        for i in range(max(1, int(self.amount / COMET_DIVIDE_FACTOR))):
+            image = random.choice(self.comet_images)
+            w = image.get_rect().width
+            h = image.get_rect().height
+            x, y = self.get_random_pos()
+
+            comet = Comet(self.win, x, y, w, h, image=image, layer=self.layer, parent=self, type="comet")
+
+    def create_quadrant(self):
+        scene_width, scene_height = global_params.scene_width, global_params.scene_height
+
+        quadrant_amount = 10
+        quadrant_size_x = int(scene_width / quadrant_amount)
+        quadrant_size_y = int(scene_height / quadrant_amount)
+
+        for x in range(quadrant_amount):
+            for y in range(quadrant_amount):
+                w, h = quadrant_size_x, quadrant_size_y
+                quadrant = CelestialObject(
+                    self.win, quadrant_size_x * x, quadrant_size_y * y, w, h,
+                    image=None, layer=0, parent=self, type="quadrant")
+
+    def create_universe(self, x, y, width, height):
+        self.left_end = x
+        self.top_end = y
+        self.right_end = self.left_end + width
+        self.bottom_end = self.top_end + height
+
+        self.create_stars()
+        self.create_galaxys()
+        self.create_nebulaes()
+        self.create_comets()
+        self.create_asteroids()
+        #self.create_artefacts()
+        # self.create_quadrant()
+
+        self.universe = self.star + self.pulsating_star + self.galaxy + self.nebulae + self.comet + self.asteroid  # + self.quadrant
+        # print("Scene Objects: ", len(self.universe))
+        self.celestial_objects = {
+            "star": self.star,
+            "pulsating_star": self.pulsating_star,
+            "galaxy": self.galaxy,
+            "nebulae": self.nebulae,
+            "comet": self.comet,
+            "asteroid": self.asteroid
+            }
+
+class UniverseFactory__:# new for PanZoomSprite based Celstial_Objects
+    def __init__(self, win, x, y, width, height, layer):
+        self.win = win
+        self.layer = layer
+        self.amount = int(math.sqrt(math.sqrt(width)) * global_params.settings["universe_density"])
+
+        # define borders
+        self.left_end = x  # -self.get_screen_width()
+        self.right_end = width
+        self.top_end = y  # -self.get_screen_height()
+        self.bottom_end = height
+        self.screen_size = (global_params.WIDTH_CURRENT, global_params.HEIGHT_CURRENT)
+
+        # images
+        self.star_images = {
+            0: get_image("star_30x30.png"),
+            1: get_image("star_50x50.png"),
+            2: get_image("star1_50x50.png"),
+            3: get_image("star2_100x100.png")
+            }
+
+        self.asteroid_images = {
+            0: get_image("asteroid_40x33.png"),
+            }
+
+        self.comet_images = {
+            0: get_image("comet_90x38.png")
+            }
+
+        self.nebulae_images = {
+            0: get_image("nebulae_300x300.png")
+            }
+
+        self.galaxy_images = {
+            0: get_image("galaxy_.png"),
+            1: get_image("galaxy3_small.png")
+            }
+
+
+
+        self.star_image_names = {
+            0: "star_30x30.png",
+            1: "star_50x50.png",
+            2: "star1_50x50.png",
+            3: "star2_100x100.png"
+            }
+
+        self.asteroid_image_names = {
+            0: "asteroid_40x33.png"
+            }
+
+        self.comet_image_names = {
+            0: "comet_90x38.png"
+            }
+
+        self.nebulae_image_names = {
+            0: "nebulae_300x300.png"
+            }
+
+        self.galaxy_image_names = {
+            0: "galaxy_.png",
+            1: "galaxy3_small.png"
+            }
+
+        # drawing lists
+        self.star = []
+        self.pulsating_star = []
+        self.flickering_star = []
+        self.asteroid = []
+        self.nebulae = []
+        self.galaxy = []
+        self.comet = []
+        self.universe = []
+        self.quadrant = []
+
+        # create universe
+        self.celestial_objects = {}
+        # self.create_universe()
+
+    def get_random_image(self, images):
+        return random.choice(images)
+
+    def get_random_pos(self):
+        x = random.randint(self.left_end, self.right_end)
+        y = random.randint(self.top_end, self.bottom_end)
+        return x, y
+
+    def create_artefacts(self):
+
+        buffer = 100
+
+        images_scaled = {0: get_image("artefact1_60x31.png"),
+                         1: get_image("meteor_50x50.png"),
+                         2: get_image("meteor_60x83.png"),
+                         3: get_image("meteor1_50x50.png")
+                         }
+
+        image_names = ["artefact1_60x31.png",
+                       "meteor_50x50.png",
+                       "meteor_60x83.png",
+                       "meteor1_50x50.png"
+                       ]
+
+        for i in range(20):
+            selected_resources = global_params.app.select_resources()
+            artefact = PanZoomCollectableItem(global_params.win,
+                random.randint(self.left_end + buffer, self.right_end - buffer),
+                random.randint(self.top_end + buffer, self.bottom_end -buffer), 50, 50,
+                pan_zoom=pan_zoom_handler,
+                image_name=random.choice(image_names),
+                isSubWidget=False,
+                transparent=True,
+                tooltip="...maybe an alien artefact ? ...we don't now what it is ! it might be dangerous --- but maybe useful !?",
+                moveable=True,
+                energy=selected_resources["energy"],
+                minerals=selected_resources["minerals"],
+                food=selected_resources["food"],
+                technology=selected_resources["technology"],
+                water=selected_resources["water"],
+                parent=self,
+                group="collectable_items", gif="sphere.gif", align_image= "center")
+
+        for i in range(20):
+            selected_resources = self.select_resources()
+            artefact = PanZoomCollectableItem(global_params.win,
+                random.randint(self.left_end + buffer, self.right_end - buffer),
+                random.randint(self.top_end + buffer, self.bottom_end - buffer), 50, 50,
+                pan_zoom=pan_zoom_handler,
+                image_name="sphere.gif",
+                isSubWidget=False,
+                transparent=True,
+                tooltip="...maybe an alien artefact ? ...we don't now what it is ! it might be dangerous --- but maybe useful !?",
+                moveable=True,
+                energy=selected_resources["energy"],
+                minerals=selected_resources["minerals"],
+                food=selected_resources["food"],
+                technology=selected_resources["technology"],
+                water=selected_resources["water"],
+                parent=self,
+                group="collectable_items",
+                gif="sphere.gif", relative_gif_size=0.1, align_image= "center")
+
+    def create_stars(self):
+        # star images
+        for i in range(max(1, int(self.amount / STAR_DIVIDE_FACTOR))):
+            x, y = self.get_random_pos()
+            w,h = 30,30
+
+            image_name = random.choice(self.star_image_names)
+            # w = image.get_rect().width
+            # h = image.get_rect().height
+
+            self.star.append(PanZoomCelestialObjectStatic(self.win, x, y, w, h, pan_zoom_handler,
+                image_name=image_name, layer=self.layer, parent=self, type="star", group = "celestial_objects", debug=False))
+
+        # flickering stars
+        for i in range(max(1, int(self.amount / FLICKERING_STAR_DIVIDE_FACTOR))):
+            x, y = self.get_random_pos()
+            w = random.randint(1, 10)
+
+            self.flickering_star.append(PanZoomFlickeringStar(self.win, x, y, w, w, pan_zoom_handler,
+                image_name=None, layer=self.layer, parent=self, type="flickering_star", group = "celestial_objects"))
+
+        # puslating stars
+        for i in range(max(1, int(self.amount / PULSATING_STAR_DIVIDE_FACTOR))):
+            x, y = self.get_random_pos()
+            w = 1
+
+            self.pulsating_star.append(PanZoomPulsatingStar(self.win, x, y, w, w,pan_zoom_handler,
+                image_name=None, layer=self.layer, parent=self, type="pulsating_star", group="celestial_objects"))
+
+    def create_galaxys(self):
+        for i in range(max(1, int(self.amount / GALAXY_DIVIDE_FACTOR))):
+            # loop body
+
+            image_name = random.choice(self.galaxy_image_names)
+            # w = image.get_rect().width
+            # h = image.get_rect().height
+            w, h = 30, 30
+            x, y = self.get_random_pos()
+
+            self.galaxy.append(PanZoomCelestialObjectStatic(self.win, x, y, w, h, pan_zoom_handler,image_name= image_name,
+                layer=self.layer, parent=self, type="galaxy", group="celestial_objects"))
+
+    def create_nebulaes(self):
+        for i in range(max(1, int(self.amount / NEBULAE_DIVIDE_FACTOR))):
+            image = random.choice(self.nebulae_images)
+            image_name = random.choice(self.nebulae_image_names)
+            w = image.get_rect().width
+            h = image.get_rect().height
+            x, y = self.get_random_pos()
+
+            self.nebulae.append(PanZoomCelestialObjectStatic(self.win, x, y, w, h, pan_zoom_handler,image_name=image_name,
+                layer=self.layer, parent=self,
+                type="nebulae", group="celestial_objects"))
+
+    def create_asteroids(self):
+        for i in range(max(1, int(self.amount / ASTEROID_DIVIDE_FACTOR))):
+            image_name = random.choice(self.asteroid_image_names)
+            image = random.choice(self.asteroid_images)
+            w = image.get_rect().width
+            h = image.get_rect().height
+            x, y = self.get_random_pos()
+
+            self.asteroid.append(PanZoomAsteroid(self.win, x, y, w, h, pan_zoom_handler,image_name=image_name, layer=self.layer,
+                parent=self,
+                type="asteroid", group="celestial_objects"))
+
+        for i in range(max(1, int(self.amount / ASTEROID_GIF_DIVIDE_FACTOR))):
+            image_name = random.choice(self.asteroid_image_names)
+            image = random.choice(self.asteroid_images)
+            w = image.get_rect().width
+            h = image.get_rect().height
+            x, y = self.get_random_pos()
+
+            self.asteroid.append(PanZoomAsteroid(self.win, x, y, w, h, pan_zoom_handler,image_name=image_name, layer=self.layer,
+                parent=self,
+                type="asteroid", gif="asteroid.gif", group="celestial_objects"))
+
+    def create_comets(self):
+        for i in range(max(1, int(self.amount / COMET_DIVIDE_FACTOR))):
+            image_name = random.choice(self.comet_image_names)
+            image = random.choice(self.comet_images)
+            w = image.get_rect().width
+            h = image.get_rect().height
+            x, y = self.get_random_pos()
+
+            self.comet.append(Comet(self.win, x, y, w, h, pan_zoom_handler,image_name=image_name, layer=self.layer,
+                parent=self, type="comet",
+                group="celestial_objects"))
+
+    def create_quadrant(self):
+        scene_width, scene_height = global_params.scene_width, global_params.scene_height
+
+        quadrant_amount = 10
+        quadrant_size_x = int(scene_width / quadrant_amount)
+        quadrant_size_y = int(scene_height / quadrant_amount)
+
+        for x in range(quadrant_amount):
+            for y in range(quadrant_amount):
+                w, h = quadrant_size_x, quadrant_size_y
+                quadrant = CelestialObject(
+                    self.win, quadrant_size_x * x, quadrant_size_y * y, w, h,
+                    image=None, layer=0, parent=self, type="quadrant")
+
+    def create_universe(self, x, y, width, height):
+        self.left_end = x
+        self.top_end = y
+        self.right_end = self.left_end + width
+        self.bottom_end = self.top_end + height
+
+        self.create_stars()
+        self.create_galaxys()
+        self.create_nebulaes()
+        self.create_comets()
+        self.create_asteroids()
+        #self.create_artefacts()
+        # self.create_quadrant()
+
+        self.universe = self.star + self.pulsating_star + self.galaxy + self.nebulae + self.comet + self.asteroid  # + self.quadrant
+        # print("Scene Objects: ", len(self.universe))
+        self.celestial_objects = {
+            "star": self.star,
+            "pulsating_star": self.pulsating_star,
+            "galaxy": self.galaxy,
+            "nebulae": self.nebulae,
+            "comet": self.comet,
+            "asteroid": self.asteroid
+            }
+        return self.celestial_objects
+universe_factory = UniverseFactory(global_params.win, 0, 0, global_params.scene_width, global_params.scene_height, layer=3)
+
+
+class Universe:
+    """"""
+
+    # __slots__ = WidgetBase.__slots__ + (
+    #     'amount', 'left_end', 'right_end', 'top_end', 'bottom_end', 'screen_size', 'star_images', 'asteroid_images',
+    #     'comet_images', 'nebulae_images', 'galaxy_images', 'star', 'pulsating_star', 'flickering_star', 'asteroid',
+    #     'nebulae', 'galaxy', 'comet', 'universe', 'quadrant', 'celestial_objects', 'average_draw_time', 'min_draw_time',
+    #     'max_draw_time'
+    #     )
+
+    def __init__(self, win, x, y, width, height, **kwargs):
+        self.parent = kwargs.get("parent")
+        self.layer = kwargs.get("layer", 0)
+        self.amount = int(math.sqrt(math.sqrt(width)) * global_params.settings["universe_density"])
+
+        # define borders
+        self.left_end = x  # -self.get_screen_width()
+        self.right_end = width
+        self.top_end = y  # -self.get_screen_height()
+        self.bottom_end = height
+
+        self.celestial_objects = universe_factory.create_universe(x, y, width, height)
+
+#
+# pygame.init()
+# width, height = 1920,1080
+# win = pygame.display.set_mode((width, height), pygame.RESIZABLE)
+# bg =  Background(width, height, win)
+# bg.create_stars(int(width/15))
+# run = True
+#
+# while run:
+#     for e in pygame.event.get():
+#         if e.type == pygame.QUIT:
+#             run = False
+#
+#     bg.draw()
+#     pygame.display.update()
+#
+#
+# pygame.quit()
+# sys.exit()

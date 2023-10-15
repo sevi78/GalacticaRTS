@@ -1,0 +1,244 @@
+import pygame
+
+from source.app.scene_builder import SceneBuilder
+from source.app.ui_helper import UIHelper
+from source.editors.debug_edit import DebugEdit
+from source.editors.font_edit import FontEdit
+from source.editors.enemy_handler_edit import EnemyHandlerEdit
+from source.editors.event_panel_edit import EventPanelEdit
+from source.editors.planet_edit import PlanetEdit
+from source.editors.ship_edit import ShipEdit
+from source.game_play.enemy_handler import enemy_handler
+from source.game_play.player import Player
+from source.gui.panels.advanced_settings_panel import AdvancedSettingsPanel
+from source.gui.panels.building_panel_components.game_time_widget import GameTime
+from source.gui.panels.building_panel_components.building_panel import BuildingPanel
+from source.gui.panels.event_panel import EventPanel
+from source.gui.panels.info_panel import InfoPanel
+from source.gui.panels.resource_panel import ResourcePanel
+from source.gui.panels.settings_panel import SettingsPanel
+from source.gui.tool_tip import ToolTip
+from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import PanZoomHandler
+from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups
+from source.utils import global_params
+from source.utils.debugger import debugger
+from source.utils.saveload import load_file
+
+
+class UIBuilder(SceneBuilder):
+    """this creates all UI Elements:
+    use SceneBuilder for Scene Elements like ships planets ect
+    it also starts the game loop
+    """
+
+    def __init__(self, width, height):
+        SceneBuilder.__init__(self, width, height)
+        self.win = global_params.win
+
+        # panzoom
+        self.pan_zoom_handler = PanZoomHandler(
+            global_params.win, global_params.WIDTH, global_params.HEIGHT, parent=self)
+
+        # event panel
+        self.create_event_panel()
+
+        width = 700
+        height = 600
+
+        # editors
+        self.planet_edit = PlanetEdit(pygame.display.get_surface(),
+            pygame.display.get_surface().get_rect().centerx - width / 2,
+            pygame.display.get_surface().get_rect().y,
+            width, height, parent=self, obj=sprite_groups.planets.sprites()[0])
+
+        self.font_edit = FontEdit(pygame.display.get_surface(),
+            pygame.display.get_surface().get_rect().centerx - width / 2,
+            pygame.display.get_surface().get_rect().y,
+            width, height, parent=self)
+
+        self.enemy_handler_edit = EnemyHandlerEdit(pygame.display.get_surface(),
+            pygame.display.get_surface().get_rect().centerx - width / 2,
+            pygame.display.get_surface().get_rect().y,
+            width, height, parent=self, obj=enemy_handler)
+
+        self.ship_edit = ShipEdit(pygame.display.get_surface(),
+            pygame.display.get_surface().get_rect().centerx - width / 2,
+            pygame.display.get_surface().get_rect().y,
+            width, height, parent=self, obj=self.ship, layer=9)
+
+        self.debug_edit = DebugEdit(pygame.display.get_surface(),
+            pygame.display.get_surface().get_rect().centerx - width / 2,
+            pygame.display.get_surface().get_rect().y,
+            width, height, parent=self, obj=debugger, layer=9)
+
+        self.game_play_edit = EventPanelEdit(pygame.display.get_surface(),
+            pygame.display.get_surface().get_rect().centerx - width / 2,
+            pygame.display.get_surface().get_rect().y,
+            width, height, parent=self, obj=self.event_panel, layer=9)
+
+
+
+        # self.building_editor = BuildingEditor()
+        self.clock = pygame.time.Clock()
+        #self.ui_helper = UIHelper(self)
+
+        self.box_selection = None
+
+        # set args
+        self.world_width = width
+        self.height = height
+        self.icons = []
+        self.selected_planet = None
+        self.explored_planets = []
+
+        # event text
+        # self.event_text_font = pygame.font.SysFont(global_params.font_name, 30)
+        prefix = "GPT-1357: "
+        self.event_text = "hi, i am George Peter Theodor the 1357th, or short: GPT-1357." \
+                          "i am an artificial intelligence to help mankind out of their mess...maybe the only intelligent beeing " \
+                          "on this ship. my advice: find a new world for the last dudes from earth!"
+        self.event_display_text = prefix + self.event_text
+
+        # player
+        self.create_player()
+
+        # building_panel
+        self.create_building_panel()
+
+        # settings panel
+        self.create_settings_panel()
+
+        # tooltip
+        self.create_tooltip()
+
+        # Info_panel
+        self.info_panel = InfoPanel(self.win, x=0, y=10, width=200, height=300, isSubWidget=False, parent=self, layer=9)
+
+        # resource_panel
+        self.create_resource_panel()
+
+        # build menu
+        self.build_menu = None
+        self.create_build_menu()
+        self.close_build_menu()
+
+
+
+    def create_player(self):
+        self.player = Player(name="zork",
+            color=pygame.Color('red'),
+            energy=1000,
+            food=1000,
+            minerals=1000,
+            water=1000,
+            technology=1000,
+            city=0,
+            clock=0
+            )
+
+    def create_event_panel(self):
+
+        w, h = 900, 600
+        x = pygame.display.get_surface().get_width() / 2 - w / 2
+        y = pygame.display.get_surface().get_height() / 2 - h / 2
+        self.event_panel = EventPanel(win=self.win, x=x, y=y, width=w, height=h, center=True, parent=self, layer=9,
+            interface_variables = load_file("event_panel.json"))
+
+    def create_tooltip(self):
+        # tooltip
+        self.tooltip_instance = ToolTip(surface=self.win,
+            x=100,
+            y=100,
+            width=100,
+            height=100,
+            color=pygame.colordict.THECOLORS["black"],
+            text_color=self.frame_color,  # pygame.colordict.THECOLORS["darkslategray1"],
+            isSubWidget=False, parent=self, layer=9)
+
+    def create_building_panel(self):
+        # building_panel
+        size_x = 250
+        size_y = 35
+        spacing = 10
+        self.building_panel = BuildingPanel(self.win,
+            x=self.world_width - size_x,
+            y=spacing,
+            width=size_x - spacing,
+            height=size_y,
+            isSubWidget=False,
+            size_x=size_x,
+            size_y=size_y,
+            spacing=spacing,
+            parent=self,
+            layer=9)
+
+        self.game_time = GameTime(self.win,
+            x=self.world_width - size_x,
+            y=spacing,
+            width=size_x - spacing,
+            height=size_y,
+            isSubWidget=False,
+            size_x=size_x,
+            size_y=size_y,
+            spacing=spacing,
+            parent=self,
+            layer=9)
+
+    def create_settings_panel(self):
+        icon_size = 25
+        size_x = 800  # doesnt matter, will be recalculated
+        size_y = 35
+        spacing = 5
+
+        self.settings_panel = SettingsPanel(self.win,
+            x=self.world_width - size_x,
+            y=spacing * 2,
+            width=size_x - spacing,
+            height=size_y,
+            isSubWidget=False,
+            size_x=size_x,
+            size_y=size_y,
+            spacing=spacing,
+            parent=self,
+            layer=9,
+            icon_size=icon_size,
+            anchor_right=self.building_panel.get_screen_x())
+
+        self.advanced_settings_panel = AdvancedSettingsPanel(self.win,
+            x=self.world_width - size_x * 2,
+            y=spacing * 2,
+            width=size_x - spacing,
+            height=size_y,
+            isSubWidget=False,
+            size_x=size_x,
+            size_y=size_y,
+            spacing=spacing,
+            parent=self,
+            layer=9,
+            icon_size=icon_size,
+            anchor_right=self.building_panel.get_screen_x())
+
+    def create_resource_panel(self):
+        icon_size = 25
+        size_x = 800  # doesnt matter, will be recalculated
+        size_y = 35
+        spacing = 5
+
+        start_x = 250
+        spacing = 150
+        pos_x = start_x
+        pos_y = 10
+
+        self.resource_panel = ResourcePanel(self.win,
+            x=pos_x,
+            y=pos_y,
+            width=size_x,
+            height=size_y,
+            isSubWidget=False,
+            size_x=size_x,
+            size_y=size_y,
+            spacing=spacing,
+            parent=self,
+            layer=9,
+            icon_size=icon_size,
+            anchor_right=self.advanced_settings_panel.get_screen_x())

@@ -1,0 +1,10 @@
+{
+  "width": 74,
+  "height": 30,
+  "speed": 1.2,
+  "orbit_speed": 0.1,
+  "gun_power": 35,
+  "attack_distance": 250,
+  "energy": 1000,
+  "random_target_intervall": 1500
+}
