@@ -186,7 +186,7 @@ class PlanetEdit(EditorBase):
         """"""
         all_possible_resources = config.all_possible_resources
         y = self.world_y + 145
-        x = self.world_width / 2
+        x = self.world_width / 2 + BUTTON_SIZE
 
         for i in all_possible_resources:
             checkbox = Checkbox(

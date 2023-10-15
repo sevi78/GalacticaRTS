@@ -15,15 +15,15 @@ from source.utils.colors import colors
 from source.utils.mouse import Mouse, MouseState
 from source.utils.saveload import load_file
 
-#pan_zoom_ufo_config = load_file("pan_zoom_ufo_config.json")
+# pan_zoom_ufo_config = load_file("pan_zoom_ufo_config.json")
 pan_zoom_ufo_config = load_file("enemy_handler_config.json")["enemy handler"]
 
 
 class PanZoomUfo(PanZoomGameObject, InteractionHandler):
     __slots__ = PanZoomGameObject.__slots__ + (
-    'random_target_intervall', 'frame_color', '_disabled', '_hidden', 'move_to_target', 'rotate_to_target',
-    'speed', 'orbit_speed', 'exploded', 'energy', 'energy_max', 'name', 'property', 'target', 'tooltip',
-    'attack_distance_raw', 'attack_distance', 'progress_bar', 'gun_power', "_on_hover", "on_hover_release")
+        'random_target_intervall', 'frame_color', '_disabled', '_hidden', 'move_to_target', 'rotate_to_target',
+        'speed', 'orbit_speed', 'exploded', 'energy', 'energy_max', 'name', 'property', 'target', 'tooltip',
+        'attack_distance_raw', 'attack_distance', 'progress_bar', 'gun_power', "_on_hover", "on_hover_release")
 
     def __init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs):
         PanZoomGameObject.__init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs)
@@ -81,7 +81,6 @@ class PanZoomUfo(PanZoomGameObject, InteractionHandler):
             for key, value in dict.items():
                 if key in self.__dict__ or key in self.__slots__:
                     setattr(self, key, value)
-
 
     def set_random_target(self, **kwargs):
         immediately = kwargs.get("immediately")

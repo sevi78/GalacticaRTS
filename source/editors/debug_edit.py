@@ -40,7 +40,7 @@ class DebugEdit(EditorBase):
         """"""
 
         y = self.world_y + TOP_SPACING + self.text_spacing
-        x = self.world_width / 2
+        x = self.world_width / 2 + BUTTON_SIZE * 2
 
         checkbox_ships = Checkbox(
             self.win, self.world_x - self.spacing_x + x + BUTTON_SIZE * 3, y, 30, 30, isSubWidget=False,
