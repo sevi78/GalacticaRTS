@@ -15,6 +15,7 @@ from source.utils.saveload import load_file
 ENEMY_SPAWN_INTERVAL = 1555
 
 pan_zoom_ufo_config = load_file("enemy_handler_config.json")
+#pan_zoom_ufo_config = load_file("pan_zoom_ufo_config.json")
 #pan_zoom_ufo_config["spawn_interval"] = ENEMY_SPAWN_INTERVAL
 
 class EnemyHandler(InterfaceData):

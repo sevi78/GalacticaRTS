@@ -15,7 +15,8 @@ from source.utils.colors import colors
 from source.utils.mouse import Mouse, MouseState
 from source.utils.saveload import load_file
 
-pan_zoom_ufo_config = load_file("pan_zoom_ufo_config.json")
+#pan_zoom_ufo_config = load_file("pan_zoom_ufo_config.json")
+pan_zoom_ufo_config = load_file("enemy_handler_config.json")["enemy handler"]
 
 
 class PanZoomUfo(PanZoomGameObject, InteractionHandler):
@@ -73,6 +74,13 @@ class PanZoomUfo(PanZoomGameObject, InteractionHandler):
         sprite_groups.ufos.add(self)
         print(sprite_groups.ufos)
 
+    def setup(self):
+        data = load_file("enemy_handler_config.json")
+        for name, dict in data.items():
+
+            for key, value in dict.items():
+                if key in self.__dict__ or key in self.__slots__:
+                    setattr(self, key, value)
 
 
     def set_random_target(self, **kwargs):
