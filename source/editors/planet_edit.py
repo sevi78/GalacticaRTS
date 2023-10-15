@@ -198,14 +198,7 @@ class PlanetEdit(EditorBase):
             self.checkboxes.append(checkbox)
             self.widgets.append(checkbox)
 
-        debug_checkbox = Checkbox(
-            self.win, self.world_x - self.spacing_x + x + BUTTON_SIZE * 3, y, 30, 30, isSubWidget=False,
-            color=self.frame_color,
-            key="debug_icon", tooltip="debug", onClick=lambda: print("debug: ",
-                global_params.debug), layer=9, parent=self)
 
-        self.checkboxes.append(debug_checkbox)
-        self.widgets.append(debug_checkbox)
 
     def set_checkbox_values(self):
         """this sets the values to the checkboxes when selected planet changes"""
@@ -224,7 +217,7 @@ class PlanetEdit(EditorBase):
         """gets the values from the checkboxes and calls update_planet_resources()"""
         self.checkbox_values = [i.key for i in self.checkboxes if i.checked]
         self.update_planet_resources()
-        global_params.debug = "debug_icon" in self.checkbox_values
+        #global_params.debug = "debug_icon" in self.checkbox_values
 
     def update_planet_resources(self):
         """updates the planets resources"""

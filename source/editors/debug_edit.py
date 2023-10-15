@@ -9,6 +9,7 @@ from source.level.level_factory import level
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zoom_handler
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups, PanZoomLayeredUpdates
 from source.universe.universe_background import universe_factory
+from source.utils import global_params
 
 
 class DebugEdit(EditorBase):
@@ -20,6 +21,7 @@ class DebugEdit(EditorBase):
         self.ships_debug = False
         self.planets_debug = False
         self.ufos_debug = False
+
 
         #  widgets
         self.widgets = []
@@ -80,6 +82,15 @@ class DebugEdit(EditorBase):
         self.checkboxes.append(checkbox_quadrant)
         self.widgets.append(checkbox_quadrant)
 
+        debug_checkbox = Checkbox(
+            self.win, self.world_x - self.spacing_x + x + BUTTON_SIZE * 3, y, 30, 30, isSubWidget=False,
+            color=self.frame_color,
+            key="debug_icon", tooltip="debug", onClick=lambda: print("debug: ",
+                global_params.debug), layer=9, parent=self)
+
+        self.checkboxes.append(debug_checkbox)
+        self.widgets.append(debug_checkbox)
+
         for i in self.checkboxes:
             i.checked = False
 
@@ -102,10 +113,15 @@ class DebugEdit(EditorBase):
 
     def get_checkbox_values(self):
         """gets the values from the checkboxes and calls update_planet_resources()"""
+        self.checkbox_values = [i.key for i in self.checkboxes if i.checked]
         for i in self.checkboxes:
             if hasattr(self, i.key + "_debug"):
                 setattr(self, i.key + "_debug", i.checked)
                 self.set_debug_to_objects(i.key)
+
+            if i.key == "debug_icon":
+                global_params.debug = i.checked
+
 
     def draw(self):
         if not self._hidden and not self._disabled:
