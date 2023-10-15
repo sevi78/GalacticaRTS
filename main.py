@@ -238,5 +238,5 @@ if __name__ == "__main__":
     #     pygame.display.get_surface().get_rect().centerx - width / 2,
     #     pygame.display.get_surface().get_rect().y,
     #     width, height, parent=app, obj=app.ship, layer=9)
-
+    #blabla
     app.loop()
