@@ -150,7 +150,6 @@ class EditorBase(WidgetBase):
             image=pygame.transform.scale(
                 get_image("save_icon.png"), (button_size, button_size)),
             tooltip=tooltip,
-            info_text=tooltip,
             frame_color=self.frame_color,
             moveable=False,
             include_text=True,

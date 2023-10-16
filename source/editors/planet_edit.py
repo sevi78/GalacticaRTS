@@ -17,109 +17,11 @@ from source.utils import global_params
 from source.multimedia_library.images import images, pictures_path, get_image
 
 
-class PlanetEdit(EditorBase):
-    """Main functionalities:
-    The PlanetEdit class is responsible for creating a GUI interface for editing planet properties. It allows the user
-    to select a planet from a list, change its name, image, atmosphere, orbit object ID, and resources.
-    It also provides a checkbox for each possible resource, allowing the user to select which resources are available
-    on the planet. The class communicates with the parent class to update the selected planet and navigate to it on the
-    screen.
-
-    Methods:
-    - create_inputboxes(): creates an input box for the planet name
-    - create_selectors(): creates selectors for the planet image, atmosphere, and orbit object ID
-    - create_checkboxes(): creates a checkbox for each possible resource
-    - set_checkbox_values(): sets the value of each checkbox based on the selected planet's possible resources
-    - get_checkbox_values(): gets the values of all checkboxes and updates the selected planet's resources accordingly
-    - get_selected_planet(): gets the selected planet from the parent class and updates the GUI accordingly
-    - selector_callback(): updates the selected planet's properties based on user input
-    - set_new_value_to_planet(): sets a new value for a selected planet's property and updates the GUI accordingly
-    - listen(): listens for user input and updates the GUI accordingly
-    - draw(): draws the GUI elements on the screen
-    - hide(): hides the GUI elements
-    - show(): shows the GUI elements
-
-    Fields:
-    - orbit_object_id_list: a list of possible orbit object IDs
-    - widgets: a list of all GUI elements
-    - spacing: the spacing between GUI elements
-    - plus_arrow_button: a button for increasing a value
-    - minus_arrow_button: a button for decreasing a value
-    - conn: a connection to the database
-    - dict: a dictionary of planet properties from the database
-    - parent: the parent class
-    - layer: the layer of the GUI elements
-    - font: the font used for text
-    - frame_color: the color of the GUI frames
-    - atmosphere_name_list: a list of possible atmosphere names
-    - atmosphere_current: the current atmosphere name
-    - image_name_small_list: a list of possible planet image names
-    - image_name_small_current: the current planet image name
-    - _selected_planet: the currently selected planet
-    - checkboxes: a list of all resource checkboxes
-    - checkbox_values: a list of selected resource checkboxes
-
-    """
-
-    def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
-        EditorBase.__init__(self, win, x, y, width, height, isSubWidget=False, **kwargs)
-
-        self.scale = 1.0
-        self.s_pressed = False
-
-        # lists
-        self.type_list = ["sun", "planet", "moon"]
-        self.level_list = [_ for _ in range(10)]
-        self.id_list = [_ for _ in range(len(sprite_groups.planets) + 1)]
-        self.building_slot_amount_list = [_ for _ in range(10)]
-        self.buildings_max_list = [_ for _ in range(25)]
-        self.orbit_object_id_list = [_ for _ in range(len(sprite_groups.planets) + 1)]
-        self.orbit_speed_list = [round(0.001 + _ * 0.001, 3) for _ in range(20)]
-        self.atmosphere_name_list = list(images[pictures_path]["atmospheres"].keys())
-        self.atmosphere_name_list.append("")
-        self.has_atmosphere_list = [_ for _ in range(0, 2)]
-        self.image_name_small_list = list(images[pictures_path]["planets"].keys())
-        self.orbit_angle_list = [_ for _ in range(0, 360)]
-        self.alien_population_list = [_ for _ in range(0, 10000000, 100000)]
-
-
-        #  widgets
-        self.selector_image_name_small = None
-        self.selector_orbit_object_id = None
-        self.selector_atmosphere = None
-        self.selector_planet = None
-        self.inputbox = None
-
-        # current values
-        self.atmosphere_current = None
-        self.image_name_small_current = None
-        self._selected_planet = None
-
-        # create widgets
-        self.create_checkboxes()
-        self.create_selectors()
-        self.create_inputboxes()
-        self.create_save_button(lambda: self.parent.save_planets(), "save planet")
-        self.create_close_button()
-        self.create_randomize_button()
-
-        # hide initially
-        self.hide()
-
-    @property
-    def selected_planet(self):
-        """"""
-        return self._selected_planet
-
-    @selected_planet.setter
-    def selected_planet(self, value):
-        self._selected_planet = value
-        self.set_selector_current_value()
-
+class PlanetEditBuilder:
     def create_randomize_button(self):
         button_size = 32
         randomize_button = ImageButton(win=self.win,
-            x=self.get_screen_x() + button_size /2 ,
+            x=self.get_screen_x() + button_size / 2,
             y=self.world_y + TOP_SPACING + button_size / 2,
             width=button_size,
             height=button_size,
@@ -221,6 +123,106 @@ class PlanetEdit(EditorBase):
             self.checkboxes.append(checkbox)
             self.widgets.append(checkbox)
 
+
+class PlanetEdit(EditorBase, PlanetEditBuilder):
+    """Main functionalities:
+    The PlanetEdit class is responsible for creating a GUI interface for editing planet properties. It allows the user
+    to select a planet from a list, change its name, image, atmosphere, orbit object ID, and resources.
+    It also provides a checkbox for each possible resource, allowing the user to select which resources are available
+    on the planet. The class communicates with the parent class to update the selected planet and navigate to it on the
+    screen.
+
+    Methods:
+    - create_inputboxes(): creates an input box for the planet name
+    - create_selectors(): creates selectors for the planet image, atmosphere, and orbit object ID
+    - create_checkboxes(): creates a checkbox for each possible resource
+    - set_checkbox_values(): sets the value of each checkbox based on the selected planet's possible resources
+    - get_checkbox_values(): gets the values of all checkboxes and updates the selected planet's resources accordingly
+    - get_selected_planet(): gets the selected planet from the parent class and updates the GUI accordingly
+    - selector_callback(): updates the selected planet's properties based on user input
+    - set_new_value_to_planet(): sets a new value for a selected planet's property and updates the GUI accordingly
+    - listen(): listens for user input and updates the GUI accordingly
+    - draw(): draws the GUI elements on the screen
+    - hide(): hides the GUI elements
+    - show(): shows the GUI elements
+
+    Fields:
+    - orbit_object_id_list: a list of possible orbit object IDs
+    - widgets: a list of all GUI elements
+    - spacing: the spacing between GUI elements
+    - plus_arrow_button: a button for increasing a value
+    - minus_arrow_button: a button for decreasing a value
+    - conn: a connection to the database
+    - dict: a dictionary of planet properties from the database
+    - parent: the parent class
+    - layer: the layer of the GUI elements
+    - font: the font used for text
+    - frame_color: the color of the GUI frames
+    - atmosphere_name_list: a list of possible atmosphere names
+    - atmosphere_current: the current atmosphere name
+    - image_name_small_list: a list of possible planet image names
+    - image_name_small_current: the current planet image name
+    - _selected_planet: the currently selected planet
+    - checkboxes: a list of all resource checkboxes
+    - checkbox_values: a list of selected resource checkboxes
+
+    """
+
+    def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
+        EditorBase.__init__(self, win, x, y, width, height, isSubWidget=False, **kwargs)
+
+        self.scale = 1.0
+        self.s_pressed = False
+
+        # lists
+        self.type_list = ["sun", "planet", "moon"]
+        self.level_list = [_ for _ in range(10)]
+        self.id_list = [_ for _ in range(len(sprite_groups.planets) + 1)]
+        self.building_slot_amount_list = [_ for _ in range(10)]
+        self.buildings_max_list = [_ for _ in range(25)]
+        self.orbit_object_id_list = [_ for _ in range(len(sprite_groups.planets) + 1)]
+        self.orbit_speed_list = [round(0.001 + _ * 0.001, 3) for _ in range(20)]
+        self.atmosphere_name_list = list(images[pictures_path]["atmospheres"].keys())
+        self.atmosphere_name_list.append("")
+        self.has_atmosphere_list = [_ for _ in range(0, 2)]
+        self.image_name_small_list = list(images[pictures_path]["planets"].keys())
+        self.orbit_angle_list = [_ for _ in range(0, 360)]
+        self.alien_population_list = [_ for _ in range(0, 10000000, 100000)]
+
+        #  widgets
+        self.selector_image_name_small = None
+        self.selector_orbit_object_id = None
+        self.selector_atmosphere = None
+        self.selector_planet = None
+        self.inputbox = None
+
+        # current values
+        self.atmosphere_current = None
+        self.image_name_small_current = None
+        self._selected_planet = None
+
+        # create widgets
+        self.create_checkboxes()
+        self.create_selectors()
+        self.create_inputboxes()
+        self.create_save_button(lambda: self.parent.save_planets(), "save planet")
+        self.create_close_button()
+        self.create_randomize_button()
+
+        # hide initially
+        self.hide()
+
+    @property
+    def selected_planet(self):
+        """"""
+        return self._selected_planet
+
+    @selected_planet.setter
+    def selected_planet(self, value):
+        self._selected_planet = value
+        self.set_selector_current_value()
+        navigate_to(self.parent.selected_planet, y_offset=-200)
+
     def set_selector_current_value(self):
         """updates the selectors values"""
         for i in self.selectors:
@@ -246,7 +248,6 @@ class PlanetEdit(EditorBase):
         """gets the values from the checkboxes and calls update_planet_resources()"""
         self.checkbox_values = [i.key for i in self.checkboxes if i.checked]
         self.update_planet_resources()
-        #global_params.debug = "debug_icon" in self.checkbox_values
 
     def update_planet_resources(self):
         """updates the planets resources"""
@@ -297,7 +298,6 @@ class PlanetEdit(EditorBase):
 
         if key == "planets":
             self.parent.set_selected_planet(value)
-            navigate_to(self.parent.selected_planet, y_offset=-200)
 
         if key == "has_atmosphere":
             if value == 0 and self.selector_atmosphere.current_value != "":
@@ -336,6 +336,18 @@ class PlanetEdit(EditorBase):
                 print(event.x, event.y)
                 print(event.flipped)
 
+    def randomize(self):
+        ignorables = ["planets", "id", "level", "orbit_object_id", "orbit_angle"]
+        for selector in self.selectors:
+            if not selector.key in ignorables:
+                selector.current_value = random.choice(selector.list)
+
+            self.selector_callback(selector.key, selector.current_value)
+
+        for checkbox in self.checkboxes:
+            checkbox.update(random.choice([0, 1]))
+            self.get_checkbox_values()
+
     def listen(self, events):
         """show or hide, navigate to planet on selection"""
         for event in events:
@@ -359,19 +371,3 @@ class PlanetEdit(EditorBase):
             self.draw_frame()
             self.get_selected_planet()
             self.inputbox.update()
-
-    def randomize(self):
-        ignorables = ["planets", "id", "level", "orbit_object_id", "orbit_angle"]
-        for selector in self.selectors:
-            if not selector.key in ignorables:
-                selector.current_value = random.choice(selector.list)
-
-            self.selector_callback(selector.key, selector.current_value)
-
-        for checkbox in self.checkboxes:
-            checkbox.update(random.choice([0,1]))
-            self.get_checkbox_values()
-
-
-
-
