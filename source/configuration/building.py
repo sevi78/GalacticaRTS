@@ -3,6 +3,10 @@ from pprint import pprint
 from source.configuration.config import *
 from source.database.saveload import write_file
 
+""" this is a temporary mess to get all spaghetized values, prices ect into a single buildings.json file.
+todo: need to replace all dependencies from prices ect into buildings.json to make it more eays to work with
+"""
+
 
 class Building:
     def __init__(self, name, parent):
@@ -54,10 +58,13 @@ class Buildings:
         for building_name, dict in planetary_defence_prices.items():
             building = Building(building_name, self)
 
+        for building_name, dict in ship_prices.items():
+            building = Building(building_name, self)
 
     def fill_buildings(self):
-
+        """ gather all information and write to a building instance"""
         for building_name, building in self.buildings.items():
+            # production
             if building_name in production:
                 building.production_energy = production[building_name]["energy"]
                 building.production_food = production[building_name]["food"]
@@ -92,10 +99,6 @@ class Buildings:
                 building.price_minerals = ship_prices[building_name]["minerals"]
                 building.price_water = ship_prices[building_name]["water"]
 
-
-
-
-
             # others
             if building_name in build_population_minimum:
                 building.build_population_minimum = build_population_minimum[building_name]
@@ -113,13 +116,15 @@ class Buildings:
         return self.buildings[key]
 
 
-buildings = Buildings()
-json_dict = {}
-for key, value in buildings.buildings.items():
+def main():
+    buildings = Buildings()
+    json_dict = {}
+    for key, value in buildings.buildings.items():
+        json_dict[key] = value.get_dict()
 
-    json_dict[key] = value.get_dict()
+    pprint(json_dict)
+    write_file("buildings.json", json_dict)
 
 
-pprint (json_dict)
-write_file("buildings.json", json_dict)
-
+if __name__ == "__main__":
+    main()
