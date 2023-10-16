@@ -3,7 +3,7 @@ from pygame_widgets.util import drawText
 
 from source.multimedia_library.images import images, pictures_path, get_image
 
-
+SMILEY_SIZE = 20
 class BuildingPanelDraw:
     def draw_planet_params(self, x):
         # draw population text
@@ -15,9 +15,9 @@ class BuildingPanelDraw:
         self.world_y += self.spacing * 3
 
         if self.parent.selected_planet.smiley_status:
-            smiley = get_image("smile.png")
+            smiley = pygame.transform.scale(get_image("smile.png"), (SMILEY_SIZE,SMILEY_SIZE))
         else:
-            smiley = get_image("sad.png")
+            smiley = pygame.transform.scale(get_image("sad.png"), (SMILEY_SIZE,SMILEY_SIZE))
 
         self.win.blit(smiley, (x, self.world_y))
 
@@ -31,6 +31,7 @@ class BuildingPanelDraw:
         self.planet_image.set_alpha(128)
         self.win.blit(self.planet_image, self.planet_surface_rect.midtop)
         self.world_y += self.spacing * 3
+
 
         # building slots:____________________________________________________________________________________________
         drawText(self.win, "building slots:  " + str(self.parent.selected_planet.building_slot_amount) + "/" + str(self.parent.selected_planet.building_slot_max_amount - 1), self.frame_color, (
@@ -55,10 +56,13 @@ class BuildingPanelDraw:
         self.minus_button_image["minus_icon"] = minus_image_rect
         self.win.blit(minus_image, (x, self.world_y))
         self.world_y += self.spacing * 3
+
+
         # buildings:_______________________________________________________________________________________________
         drawText(self.win, "buildings:  " + str(len(self.parent.selected_planet.buildings)) + "/" + str(int(self.parent.selected_planet.buildings_max)), self.frame_color, (
             x + self.spacing_x, self.world_y, self.get_screen_width(), 20), self.font, "left")
         self.world_y += self.spacing * 3
+
         # draw an image for every type of building built, plus a counter text
         self.singleton_buildings = []
         for sb in self.parent.selected_planet.buildings:
@@ -91,6 +95,7 @@ class BuildingPanelDraw:
 
             y += self.spacing * 2
         self.world_y += y + self.spacing
+
         # PRODUCTION________________________________________________________________________________________________
         # production label
         self.planet_building_text = drawText(self.win, "production: ", self.frame_color, (
@@ -98,17 +103,10 @@ class BuildingPanelDraw:
             self.world_y, self.get_screen_width(),
             self.planet_surface.get_height()), self.font, "center")
 
-        # is everything in plus, show thumpsup green,otherwise red, set smiley to sad if no food production
-        # vl = []
-        # thumpsup_size = 25
-        # for key, value in self.parent.selected_planet.production.items():
-        #     if value < 0:
-        #         vl.append(value)
-        # if len(vl) > 0:
         if self.parent.selected_planet.thumpsup_status:
-            thumpsup = pygame.transform.flip(get_image("thumps_upred.png"), True, True)
+            thumpsup = pygame.transform.scale(pygame.transform.flip(get_image("thumps_upred.png"), True, True), (SMILEY_SIZE, SMILEY_SIZE))
         else:
-            thumpsup = pygame.transform.flip(get_image("thumps_up.png"), True, False)
+            thumpsup = pygame.transform.scale(pygame.transform.flip(get_image("thumps_up.png"), True, False), (SMILEY_SIZE, SMILEY_SIZE))
 
         self.win.blit(thumpsup, (x, self.world_y))
 
@@ -127,6 +125,8 @@ class BuildingPanelDraw:
 
             self.world_y += self.spacing * 2
         self.world_y += self.spacing * 2
+
+
         # GLOBAL PRODUCTION_________________________________________________________________________________________
         # global production label
         self.planet_building_text = drawText(self.win, "global production: ", self.frame_color, (

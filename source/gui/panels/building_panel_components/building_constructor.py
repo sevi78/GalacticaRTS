@@ -184,72 +184,6 @@ class BuildingConstructorWidget(WidgetBase, EconomyParams):
 
         return return_list
 
-    def set_building_button_tooltip__(self, i):  # original
-        """
-        creates tooltops for the buttons
-        :param i:
-        """
-        return_list = []
-        price_list = []
-        production_list = []
-        population_buildings_values = {"town": 1000, "city": 10000, "metropole": 100000}
-
-        # prices
-        text = ""
-        resource = i.key
-
-        if resource == "mineral":
-            resource = "minerals"
-
-        for building in self.buildings[resource]:
-            if building.startswith("a"):
-                text = "to build an " + building + " you need: "
-            else:
-                text = "to build a " + building + " you need: "
-
-            for key, value in prices[building].items():
-                if value > 0:
-                    text += key + ": " + str(value) + ", "
-            text = text[:-2]
-
-            price_list.append(text)
-
-        # production
-        text = ""
-        for building in self.parent.buildings[resource]:
-            # population
-            if building in self.population_buildings:
-                text = ". a " + building + " increases the planets population limit by " + str(
-                    population_buildings_values[building]) + "  "
-
-            # production
-            elif building[0] == "a":
-                text = " . an " + building + " will produce: "
-            else:
-                text = " . a " + building + " will produce: "
-
-            for key, value in production[building].items():
-                if value > 0:
-                    text += key + ": " + str(value) + ", "
-                #
-                # elif value < 0:
-                #     text += "but it will also cost you " + key + ": " +  str(value) + " everytime it produces something!, "
-
-            if building == "university":
-                text += f"it will increase the maximum buildings on the planet by {technology_upgrades[building]['buildings_max']}, "
-
-            if building == "space harbor":
-                text += f"this will allow you to build space ships!, "
-
-            text = text[:-2]
-
-            production_list.append(text)
-
-        for i in range(len(price_list)):
-            return_list.append(price_list[i] + production_list[i])
-
-        return return_list
-
     def show_building_buttons(self, sender):  # not working yet
         """
         shows the buildong button only if planet is explored
@@ -257,61 +191,6 @@ class BuildingConstructorWidget(WidgetBase, EconomyParams):
         """
 
         print("resource:", sender)
-
-    def create_buttons__(self):
-        for resource in all_possible_resources:
-            id_ = all_possible_resources.index(resource)
-            # buttons
-            resource_button = ImageButton(win=self.win,
-                x=self.get_screen_x(),
-                y=self.surface_rect.y + self.spacing,
-                width=self.icon_size,
-                height=self.icon_size,
-                isSubWidget=False,
-                parent=self,
-                image=pygame.transform.scale(get_image(resource + "_25x25.png"), (25, 25)),
-                tooltip=resource,
-                frame_color=self.frame_color,
-                moveable=False,
-                include_text=True,
-                layer=self.layer,
-                onClick=lambda: print("no function"),
-                function="self.set_children_visible(False)",
-                )
-
-            self.resource_buttons[resource] = resource_button
-            self.buttons[resource] = resource_button
-
-            if resource == "minerals":
-                resource = "mineral"
-            y = self.icon_size
-            for building in getattr(self, resource + "_buildings"):
-                info_text = create_info_panel_building_text()[building]
-                building_button = ImageButton(win=self.win,
-                    x=self.get_screen_x(),
-                    y=self.surface_rect.y + self.spacing + self.icon_size + y,
-                    width=self.icon_size,
-                    height=self.icon_size,
-                    isSubWidget=False,
-                    parent=self,
-                    image=pygame.transform.scale(get_image(building + "_25x25.png"), (25, 25)),
-                    tooltip="",
-                    frame_color=self.frame_color,
-                    moveable=False,
-                    include_text=True, layer=self.layer,
-                    key=resource,
-                    info_text=info_text,
-                    name=building,
-                    text=building,
-                    textColours=(0, 0, 0),
-                    font_size=0)
-
-                resource_button.children.append(building_button)
-                self.building_buttons[building] = building_button
-                self.buttons[building] = building_button
-                building_button.tooltip = self.set_building_button_tooltip(building_button)[
-                    getattr(self, resource + "_buildings").index(building)]
-                y += self.icon_size
 
     def create_buttons(self):  # codiom ai
         def create_button(x, y, width, height, image, tooltip, key, info_text, name):
@@ -389,16 +268,6 @@ class BuildingConstructorWidget(WidgetBase, EconomyParams):
         self.surface_rect.y = self.parent.world_y + self.spacing + 5
         self.surface_rect.height = self.icon_size * 6
 
-        # for building in self.parent.parent.selected_planet.buildings:
-        #     if hasattr(building, "name") and building.name == "space harbor":
-        #         self.surface_rect.y += self.parent.sub_widget_height
-        #
-        #     if hasattr(building, "name") and building.name == "particle accelerator":
-        #         self.surface_rect.y += self.parent.sub_widget_height
-        #
-        #     if hasattr(building, "name") and building.name == self.name:
-        #         self.surface_rect.y = self.parent.world_y + self.parent.sub_widget_height + self.spacing + 5
-
         for building in self.parent.parent.selected_planet.buildings:
             if building == "space harbor":
                 self.surface_rect.y += self.parent.sub_widget_height
@@ -423,7 +292,7 @@ class BuildingConstructorWidget(WidgetBase, EconomyParams):
         y = 0
         for resource, resource_button in self.resource_buttons.items():
             resource_button.set_position((
-            self.surface_rect.x + x + self.spacing * 3, self.surface_rect.y + self.spacing + 20))
+                self.surface_rect.x + x + self.spacing * 3, self.surface_rect.y + self.spacing + 20))
 
             x += self.icon_size
 
