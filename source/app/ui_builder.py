@@ -24,6 +24,10 @@ from source.utils import global_params
 from source.utils.debugger import debugger
 from source.utils.saveload import load_file
 
+EDITOR_HEIGHT = 600
+
+EDITOR_WIDTH = 700
+
 
 class UIBuilder(SceneBuilder):
     """this creates all UI Elements:
@@ -42,45 +46,16 @@ class UIBuilder(SceneBuilder):
         # event panel
         self.create_event_panel()
 
-        width = 700
-        height = 600
-
         # editors
-        self.planet_edit = PlanetEdit(pygame.display.get_surface(),
-            pygame.display.get_surface().get_rect().centerx - width / 2,
-            pygame.display.get_surface().get_rect().y,
-            width, height, parent=self, obj=sprite_groups.planets.sprites()[0])
+        self.event_panel_edit = None
+        self.debug_edit = None
+        self.ship_edit = None
+        self.enemy_handler_edit = None
+        self.font_edit = None
+        self.planet_edit = None
+        self.create_editors()
 
-        self.font_edit = FontEdit(pygame.display.get_surface(),
-            pygame.display.get_surface().get_rect().centerx - width / 2,
-            pygame.display.get_surface().get_rect().y,
-            width, height, parent=self)
-
-        self.enemy_handler_edit = EnemyHandlerEdit(pygame.display.get_surface(),
-            pygame.display.get_surface().get_rect().centerx - width / 2,
-            pygame.display.get_surface().get_rect().y,
-            width, height, parent=self, obj=enemy_handler)
-
-        self.ship_edit = ShipEdit(pygame.display.get_surface(),
-            pygame.display.get_surface().get_rect().centerx - width / 2,
-            pygame.display.get_surface().get_rect().y,
-            width, height, parent=self, obj=self.ship, layer=9)
-
-        self.debug_edit = DebugEdit(pygame.display.get_surface(),
-            pygame.display.get_surface().get_rect().centerx - width / 2,
-            pygame.display.get_surface().get_rect().y,
-            width, height, parent=self, obj=debugger, layer=9)
-
-        self.event_panel_edit = EventPanelEdit(pygame.display.get_surface(),
-            pygame.display.get_surface().get_rect().centerx - width / 2,
-            pygame.display.get_surface().get_rect().y,
-            width, height, parent=self, obj=self.event_panel, layer=9)
-
-
-
-        # self.building_editor = BuildingEditor()
         self.clock = pygame.time.Clock()
-        #self.ui_helper = UIHelper(self)
 
         self.box_selection = None
 
@@ -122,6 +97,39 @@ class UIBuilder(SceneBuilder):
         self.create_build_menu()
         self.close_build_menu()
 
+    def create_editors(self):
+        width = EDITOR_WIDTH
+        height = EDITOR_HEIGHT
+        # editors
+        self.planet_edit = PlanetEdit(pygame.display.get_surface(),
+            pygame.display.get_surface().get_rect().centerx - width / 2,
+            pygame.display.get_surface().get_rect().y,
+            width, height, parent=self, obj=sprite_groups.planets.sprites()[0])
+
+        self.font_edit = FontEdit(pygame.display.get_surface(),
+            pygame.display.get_surface().get_rect().centerx - width / 2,
+            pygame.display.get_surface().get_rect().y,
+            width, height, parent=self)
+
+        self.enemy_handler_edit = EnemyHandlerEdit(pygame.display.get_surface(),
+            pygame.display.get_surface().get_rect().centerx - width / 2,
+            pygame.display.get_surface().get_rect().y,
+            width, height, parent=self, obj=enemy_handler)
+
+        self.ship_edit = ShipEdit(pygame.display.get_surface(),
+            pygame.display.get_surface().get_rect().centerx - width / 2,
+            pygame.display.get_surface().get_rect().y,
+            width, height, parent=self, obj=self.ship, layer=9)
+
+        self.debug_edit = DebugEdit(pygame.display.get_surface(),
+            pygame.display.get_surface().get_rect().centerx - width / 2,
+            pygame.display.get_surface().get_rect().y,
+            width, height, parent=self, obj=debugger, layer=9)
+
+        self.event_panel_edit = EventPanelEdit(pygame.display.get_surface(),
+            pygame.display.get_surface().get_rect().centerx - width / 2,
+            pygame.display.get_surface().get_rect().y,
+            width, height, parent=self, obj=self.event_panel, layer=9)
 
 
     def create_player(self):

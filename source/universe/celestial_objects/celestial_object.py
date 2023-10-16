@@ -11,7 +11,6 @@ from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zo
 from source.utils import global_params
 
 
-
 class CelestialObject(WidgetBase):
     # __slots__ = WidgetBase.__slots__
     # __slots__ += (
@@ -70,9 +69,7 @@ class CelestialObject(WidgetBase):
         self.zoomable = True
 
         # append to list
-        #getattr(self.parent, self.type).append(self)
-
-
+        # getattr(self.parent, self.type).append(self)
 
     def move(self, direction):
         if direction:
@@ -120,9 +117,9 @@ class CelestialObject(WidgetBase):
             pygame.draw.rect(self.win, self.frame_color, self.rect, 1)
         else:
             pygame.draw.rect(self.win, self.frame_color, (
-            self.get_screen_x(), self.get_screen_y(), self.get_screen_width(), self.get_screen_height()), 1)
+                self.get_screen_x(), self.get_screen_y(), self.get_screen_width(), self.get_screen_height()), 1)
 
         font = pygame.font.SysFont(global_params.font_name, 18)
         text = self.type
         drawText(global_params.app.win, text, self.frame_color, (
-        self.get_screen_x(), self.get_screen_y(), 400, 30), font, "left")
+            self.get_screen_x(), self.get_screen_y(), 400, 30), font, "left")

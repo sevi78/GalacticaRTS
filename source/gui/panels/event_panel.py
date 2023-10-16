@@ -147,7 +147,6 @@ class EventPanel(TextWrap, EditorBase, InterfaceData):
         # set start event event
         self.set_game_event(self.game_events["start"])
 
-
         # interface
         self.interface_variable_names = []
 
@@ -168,9 +167,6 @@ class EventPanel(TextWrap, EditorBase, InterfaceData):
                 for key, value in dict.items():
                     if key in self.__dict__:
                         setattr(self, key, value)
-
-
-
 
     def accept(self):
         if not self._hidden:
@@ -249,9 +245,6 @@ class EventPanel(TextWrap, EditorBase, InterfaceData):
                      if len(self.obsolete_events) == 2:
                             self.parent.load_planets()""")
 
-
-
-
     def create_random_event(self):
         if self.event_time > self.random_event_time:
             self.random_event_time += random.randint(self.min_intervall, self.intervall) * global_params.game_speed
@@ -280,7 +273,7 @@ class EventPanel(TextWrap, EditorBase, InterfaceData):
         """
         if not global_params.enable_game_events:
             return
-        #print (self.event_time, self.min_intervall, self.intervall, self.random_event_time)
+        # print (self.event_time, self.min_intervall, self.intervall, self.random_event_time)
         self.event_time += 1 * global_params.game_speed
         self.create_random_event()
 
@@ -334,7 +327,7 @@ class EventPanel(TextWrap, EditorBase, InterfaceData):
 
             # body
             self.wrap_text(self.body, (self.get_position()[0] + self.get_screen_width() / 6,
-                                       self.title_surface_rect.y + 60), self.size,  self.font, colors.ui_dark)
+                                       self.title_surface_rect.y + 60), self.size, self.font, colors.ui_dark)
 
             # end_text
             self.end_text_surface = self.font.render(self.end_text, self.font, colors.ui_dark)
@@ -345,8 +338,8 @@ class EventPanel(TextWrap, EditorBase, InterfaceData):
 
             # buttons
             self.yes_button.set_position((
-            self.world_x + self.get_screen_width() / 2 - self.yes_button.get_screen_width(),
-            self.end_text_surface_rect.y + self.yes_button.get_screen_height() / 2))
+                self.world_x + self.get_screen_width() / 2 - self.yes_button.get_screen_width(),
+                self.end_text_surface_rect.y + self.yes_button.get_screen_height() / 2))
 
             self.no_button.set_position((self.world_x + self.get_screen_width() / 2, self.yes_button.get_screen_y()))
 

@@ -38,4 +38,3 @@ class CelestialObjectStatic(CelestialObject):
 
             if global_params.debug:
                 self.debug_object()
-
