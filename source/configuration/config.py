@@ -1,4 +1,4 @@
-from source.utils.saveload import load_file
+from source.database.saveload import load_file
 
 prices = {
     "solar panel": {

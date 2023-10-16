@@ -7,7 +7,7 @@ from source.configuration import config
 from source.gui.widgets.building_widget import BuildingWidget
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups
 from source.utils import global_params
-from source.utils.saveload import write_file
+from source.database.saveload import write_file
 from source.multimedia_library.sounds import sounds
 
 

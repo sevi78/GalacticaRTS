@@ -5,7 +5,7 @@ from source.editors.editor_base.editor_config import ARROW_SIZE, FONT_SIZE, TOP_
 from source.gui.widgets.selector import Selector
 from source.gui.widgets.widget_handler import WidgetHandler
 from source.utils import global_params
-from source.utils.saveload import write_file, load_file
+from source.database.saveload import write_file, load_file
 
 
 class FontEdit(EditorBase):

@@ -11,7 +11,7 @@ __all__ = ['main']
 import pygame_menu
 
 from source.utils import global_params
-from source.utils.saveload import load_file, write_file
+from source.database.saveload import load_file, write_file
 
 # Constants and global variables
 FPS = 60
