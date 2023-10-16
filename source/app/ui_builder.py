@@ -71,7 +71,7 @@ class UIBuilder(SceneBuilder):
             pygame.display.get_surface().get_rect().y,
             width, height, parent=self, obj=debugger, layer=9)
 
-        self.game_play_edit = EventPanelEdit(pygame.display.get_surface(),
+        self.event_panel_edit = EventPanelEdit(pygame.display.get_surface(),
             pygame.display.get_surface().get_rect().centerx - width / 2,
             pygame.display.get_surface().get_rect().y,
             width, height, parent=self, obj=self.event_panel, layer=9)

@@ -3,6 +3,7 @@ from pygame_widgets.util import drawText
 
 from source.app.app_helper import check_if_enough_resources_to_build
 from source.configuration.config import planetary_defence_prices
+from source.configuration.info_text import create_info_panel_building_text, create_info_panel_planetary_defence_text
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.gui.widgets.building_widget import BuildingWidget
 from source.gui.widgets.buttons.image_button import ImageButton
@@ -48,10 +49,13 @@ class PlanetaryDefenceWidget(WidgetBase):
             parent=self,
             image=pygame.transform.scale(get_image("cannon.png"), (self.button_size, self.button_size)),
             tooltip="build cannon",
+            info_text= create_info_panel_planetary_defence_text("cannon"),
             frame_color=self.frame_color,
             moveable=False,
             include_text=True, layer=self.layer,
             onClick=lambda: self.build("cannon"))
+
+
 
         # buttons
         self.missile_launcher_icon = ImageButton(win=self.win,
@@ -63,6 +67,7 @@ class PlanetaryDefenceWidget(WidgetBase):
             parent=self,
             image=pygame.transform.scale(get_image("missile.png"), (self.button_size, self.button_size)),
             tooltip="build missile launcher",
+            info_text=create_info_panel_planetary_defence_text("missile"),
             frame_color=self.frame_color,
             moveable=False,
             include_text=True, layer=self.layer,
@@ -73,6 +78,8 @@ class PlanetaryDefenceWidget(WidgetBase):
         self.buttons.append(self.cannon_icon)
         self.buttons.append(self.missile_launcher_icon)
         self.hide_buttons()
+
+        print (create_info_panel_building_text())
 
     def set_visible(self):
         if not self.parent.parent.selected_planet:

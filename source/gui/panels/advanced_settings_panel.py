@@ -55,7 +55,7 @@ class AdvancedSettingsPanel(WidgetBase):
             frame_color=self.frame_color,
             moveable=False,
             include_text=True, layer=self.layer,
-            onClick=lambda: global_params.app.game_play_edit.set_visible())
+            onClick=lambda: global_params.app.event_panel_edit.set_visible())
         self.widgets.append(self.event_panel_edit_icon)
         self.max_width += self.icon_size + self.spacing
 

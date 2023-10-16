@@ -11,29 +11,9 @@ class CelestialObjectStatic(CelestialObject):
         CelestialObject.__init__(self, win, x, y, width, height, isSubWidget=False, **kwargs)
         self.rotation = random.randint(0, 360)
         self.rotated_image, self.rotated_rect = rot_center(self.image, self.rotation, self.screen_x, self.screen_y)
-        self.image = self.rotated_image
+        self.image_raw = self.rotated_image
+        self.image = self.image_raw
         self.rect = self.rotated_rect
-
-
-    def draw_(self):
-        self.set_screen_position()
-        x, y = self.center
-        if not inside_screen(self.center):
-            return
-
-        if not self._hidden:
-            if self.gif:
-                self.gif_handler.rect = self.rect
-                self.gif_handler.draw()
-
-            else:
-
-                self.rect.center = self.center
-
-                self.win.blit(self.image, self.rect)
-
-            if global_params.debug:
-                self.debug_object()
 
     def draw(self):
         self.set_screen_position()

@@ -92,7 +92,7 @@ class CelestialObject(WidgetBase):
         if self.world_y < 0:
             self.world_y = global_params.scene_height * global_params.quadrant_amount
 
-    def draw_grid(self):
+    def draw_grid__(self):
         x, y = pan_zoom_handler.world_2_screen(self.world_x, self.world_y)
         pygame.draw.rect(self.win, self.frame_color, (
             x, y, self.get_screen_width() / self.get_zoom(), self.get_screen_height() / self.get_zoom()), 1)
@@ -126,22 +126,3 @@ class CelestialObject(WidgetBase):
         text = self.type
         drawText(global_params.app.win, text, self.frame_color, (
         self.get_screen_x(), self.get_screen_y(), 400, 30), font, "left")
-
-
-# class Quadrant(CelestialObject):
-#     def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
-#         CelestialObject.__init__(self, win, x, y, width, height, isSubWidget=False, **kwargs)
-#
-#     def draw(self):
-#         self.set_screen_position()
-#         x, y = self.center
-#         if not inside_screen(self.center):
-#             return
-#
-#         if not self._hidden:
-#             # x, y = pan_zoom_handler.world_2_screen(self.world_x, self.world_y)
-#             # pygame.draw.rect(self.win, self.frame_color, (
-#             #     x, y, self.get_screen_width() / self.get_zoom(), self.get_screen_height() / self.get_zoom()), 1)
-#
-#             if global_params.debug:
-#                 pygame.draw.rect(self.win, self.frame_color, self.rect, 1)

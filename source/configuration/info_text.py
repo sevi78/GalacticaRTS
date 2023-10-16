@@ -1,4 +1,4 @@
-from source.configuration.config import production, prices, ship_prices
+from source.configuration.config import production, prices, ship_prices, planetary_defence_prices
 from source.database.database_access import get_dict_from_database
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups
 
@@ -73,6 +73,18 @@ def create_info_panel_ship_text(ship):
 
     for ship_name, dict in ship_prices.items():
         if ship_name == ship:
+            for resource, value in dict.items():
+                text += resource + ": " + str(value) + "\n"
+
+    return text
+
+def create_info_panel_planetary_defence_text(item):
+    text = ""
+    text = item + ":" + "\n"
+    text += "\n" + "prices:" + "\n\n"
+
+    for item_name, dict in planetary_defence_prices.items():
+        if item_name == item:
             for resource, value in dict.items():
                 text += resource + ": " + str(value) + "\n"
 
