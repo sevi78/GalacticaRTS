@@ -16,6 +16,10 @@ from source.physics.orbit import set_orbit_object_id
 from source.utils import global_params
 from source.multimedia_library.images import images, pictures_path, get_image
 
+PLANET_MAX_SIZE = 200.0
+
+PLANET_MIN_SIZE = 10.0
+
 
 class PlanetEditBuilder:
     def create_randomize_button(self):
@@ -313,7 +317,10 @@ class PlanetEdit(EditorBase, PlanetEditBuilder):
         else:
             setattr(self.selected_planet, key, value)
 
-    def scale_planet(self, events):
+    def scale_planet__(self, events):
+        if self._hidden:
+            return
+
         for event in events:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_s:
@@ -323,18 +330,47 @@ class PlanetEdit(EditorBase, PlanetEditBuilder):
                     self.s_pressed = False
 
             if event.type == pygame.MOUSEWHEEL and self.s_pressed:
-                self.scale == event.y
+                min_size = 10.0
+                max_size = 200.0
+                self.scale = event.y
+                planet = self.parent.selected_planet
 
-                self.selector_planet.width += self.scale
-                self.selector_planet.height += self.scale
+                # Check if resulting value is less than min_size
+                if planet.world_width + self.scale < min_size:
+                    planet.world_width = min_size
 
-                self.selector_planet.setWidth(self.selector_planet.get_screen_width() + self.scale)
-                self.selector_planet.setHeight(self.get_screen_height() + self.scale)
+                # Check if resulting value is greater than max_size
+                elif planet.world_width + self.scale > max_size:
+                    planet.world_width = max_size
+                else:
+                    planet.world_width += self.scale
 
-                print("wheel", pygame.MOUSEWHEEL)
-                print(event)
-                print(event.x, event.y)
-                print(event.flipped)
+                # Check if resulting value is less than min_size
+                if planet.world_height + self.scale < min_size:
+                    planet.world_height = min_size
+
+                # Check if resulting value is greater than max_size
+                elif planet.world_height + self.scale > max_size:
+                    planet.world_height = max_size
+                else:
+                    planet.world_height += self.scale
+
+    def scale_planet(self, events):
+        if self._hidden:
+            return
+        planet = self.parent.selected_planet
+
+        for event in events:
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_s:
+                self.s_pressed = True
+            elif event.type == pygame.KEYUP and event.key == pygame.K_s:
+                self.s_pressed = False
+            elif event.type == pygame.MOUSEWHEEL and self.s_pressed:
+                self.scale = event.y
+
+                # Check if resulting value is less than min_size or greater than max_size
+                planet.world_width = max(PLANET_MIN_SIZE, min(PLANET_MAX_SIZE, planet.world_width + self.scale))
+                planet.world_height = max(PLANET_MIN_SIZE, min(PLANET_MAX_SIZE, planet.world_height + self.scale))
 
     def randomize(self):
         ignorables = ["planets", "id", "level", "orbit_object_id", "orbit_angle"]
