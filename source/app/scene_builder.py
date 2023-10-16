@@ -20,9 +20,6 @@ from source.multimedia_library.images import get_image
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups
 
 
-
-
-
 class GameObjectStorage:
     def __init__(self):
         self.game_objects = []
@@ -113,6 +110,7 @@ class SceneBuilder(EconomyParams, GameObjectStorage, BuildMenu):
             isSubWidget=False,
             image=get_image("bg.png").convert(),
             layer=0, property="background")
+
     def create_universe_background(self):
 
         if global_params.draw_universe:
@@ -124,21 +122,20 @@ class SceneBuilder(EconomyParams, GameObjectStorage, BuildMenu):
         name = name.split("_")[0]
         class_ = name[0].upper() + name[1:]
 
-
         if class_ == "Spaceship":
             ship = Spaceship(global_params.win, x, y, size_x, size_y, pan_zoom_handler, "spaceship_30x30.png",
                 debug=False, group="ships", parent=self, rotate_to_target=True, move_to_target=True,
-                align_image="center", layer= 1)
+                align_image="center", layer=1)
 
         if class_ == "Spacehunter":
             ship = Spacehunter(global_params.win, x, y, size_x, size_y, pan_zoom_handler, "spacehunter_30x30.png",
                 debug=False, group="ships", parent=self, rotate_to_target=True, move_to_target=True,
-                align_image="center", layer= 1)
+                align_image="center", layer=1)
 
         if class_ == "Cargoloader":
-            ship = Cargoloader(global_params.win, x, y, size_x + 20 , size_y + 20, pan_zoom_handler, "cargoloader_30x30.png",
+            ship = Cargoloader(global_params.win, x, y, size_x + 20, size_y + 20, pan_zoom_handler, "cargoloader_30x30.png",
                 debug=False, group="ships", parent=self, rotate_to_target=True, move_to_target=True,
-                align_image="center", layer= 1)
+                align_image="center", layer=1)
         return ship
 
     def create_planets_from_db(self, database_file):
@@ -151,13 +148,6 @@ class SceneBuilder(EconomyParams, GameObjectStorage, BuildMenu):
 
         for id in ids:
             self.create_planet(cur, id)
-
-
-
-
-
-
-
 
     def create_planet(self, cur, id):
         image_name = cur.execute(f"select image_name_small from planets where id = {id}").fetchone()[0]
@@ -175,7 +165,6 @@ class SceneBuilder(EconomyParams, GameObjectStorage, BuildMenu):
 
         elif has_atmosphere:
             gif = "atmosphere.gif"
-
 
         pan_zoom_planet_button = PanZoomPlanet(
             win=global_params.win,
@@ -219,10 +208,9 @@ class SceneBuilder(EconomyParams, GameObjectStorage, BuildMenu):
             debug=False,
             align_image="center"
             )
-        #pan_zoom_planet_button.load_from_db()
+        # pan_zoom_planet_button.load_from_db()
         sprite_groups.planets.add(pan_zoom_planet_button)
-        #pan_zoom_planet_button.load_from_db()
-
+        # pan_zoom_planet_button.load_from_db()
 
     def select_resources(self):
         resources = ["water", "food", "energy", "technology", "minerals"]
@@ -274,7 +262,7 @@ class SceneBuilder(EconomyParams, GameObjectStorage, BuildMenu):
                 technology=selected_resources["technology"],
                 water=selected_resources["water"],
                 parent=self,
-                group="collectable_items", gif="sphere.gif", align_image= "center")
+                group="collectable_items", gif="sphere.gif", align_image="center")
 
         for i in range(20):
             selected_resources = self.select_resources()
@@ -293,4 +281,4 @@ class SceneBuilder(EconomyParams, GameObjectStorage, BuildMenu):
                 water=selected_resources["water"],
                 parent=self,
                 group="collectable_items",
-                gif="sphere.gif", relative_gif_size=0.1, align_image= "center")
+                gif="sphere.gif", relative_gif_size=0.1, align_image="center")

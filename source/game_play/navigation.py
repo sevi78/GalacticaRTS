@@ -41,6 +41,10 @@ def navigate_to(obj, **kwargs):
     """
     sets the world offset to the objects position
     """
+
+    x_offset = kwargs.get("x_offset", 0)
+    y_offset = kwargs.get("y_offset", 0)
+
     # get ship to navigate to if not object is set
     ship = kwargs.get("ship", None)
 
@@ -59,6 +63,6 @@ def navigate_to(obj, **kwargs):
         panzoom.world_offset_x, panzoom.world_offset_y = panzoom.screen_2_world(obj.rect.centerx - panzoom.screen_width / 2, obj.rect.centery - panzoom.screen_height / 2)
         return
 
-    panzoom.world_offset_x, panzoom.world_offset_y = panzoom.screen_2_world(obj.get_screen_x() - panzoom.screen_width / 2, obj.get_screen_y() - panzoom.screen_height / 2)
+    panzoom.world_offset_x, panzoom.world_offset_y = panzoom.screen_2_world(obj.get_screen_x() + x_offset - panzoom.screen_width / 2, obj.get_screen_y() + y_offset - panzoom.screen_height / 2)
 
 

@@ -1,11 +1,16 @@
+import random
+
 import pygame
 
 from source.configuration import config
 from source.editors.editor_base.editor_base import EditorBase
 from source.editors.editor_base.editor_config import ARROW_SIZE, FONT_SIZE, BUTTON_SIZE, TOP_SPACING
+from source.game_play.navigation import navigate_to
+from source.gui.widgets.buttons.image_button import ImageButton
 from source.gui.widgets.checkbox import Checkbox
 from source.gui.widgets.inputbox import InputBox
 from source.gui.widgets.selector import Selector
+
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups
 from source.physics.orbit import set_orbit_object_id
 from source.utils import global_params
@@ -77,6 +82,7 @@ class PlanetEdit(EditorBase):
         self.orbit_angle_list = [_ for _ in range(0, 360)]
         self.alien_population_list = [_ for _ in range(0, 10000000, 100000)]
 
+
         #  widgets
         self.selector_image_name_small = None
         self.selector_orbit_object_id = None
@@ -95,6 +101,7 @@ class PlanetEdit(EditorBase):
         self.create_inputboxes()
         self.create_save_button(lambda: self.parent.save_planets(), "save planet")
         self.create_close_button()
+        self.create_randomize_button()
 
         # hide initially
         self.hide()
@@ -109,6 +116,30 @@ class PlanetEdit(EditorBase):
         self._selected_planet = value
         self.set_selector_current_value()
 
+    def create_randomize_button(self):
+        button_size = 32
+        randomize_button = ImageButton(win=self.win,
+            x=self.get_screen_x() + button_size /2 ,
+            y=self.world_y + TOP_SPACING + button_size / 2,
+            width=button_size,
+            height=button_size,
+            isSubWidget=False,
+            parent=self,
+            image=pygame.transform.scale(
+                get_image("randomize_icon.png"), (button_size, button_size)),
+            tooltip="randomize planet",
+            frame_color=self.frame_color,
+            moveable=False,
+            include_text=False,
+            layer=self.layer,
+            onClick=lambda: self.randomize(),
+            )
+
+        randomize_button.hide()
+
+        self.buttons.append(randomize_button)
+        self.widgets.append(randomize_button)
+
     def create_inputboxes(self):
         """"""
         self.inputbox = InputBox(self.win, self.world_x - self.spacing_x / 2 + self.world_width / 2, self.world_y + TOP_SPACING, self.spacing_x * 2, 32,
@@ -118,7 +149,7 @@ class PlanetEdit(EditorBase):
     def create_selectors(self):
         """"""
         x = self.world_x + self.world_width / 2 - ARROW_SIZE / 2
-        y = 200
+        y = 140
 
         self.selector_planet = Selector(self.win, x, self.world_y + y, ARROW_SIZE, self.frame_color, 9, self.spacing_x,
             {"list_name": "planets_list", "list": sprite_groups.planets.sprites()}, self, FONT_SIZE)
@@ -174,18 +205,10 @@ class PlanetEdit(EditorBase):
         y += self.spacing_y
         self.max_height = y
 
-    def set_selector_current_value(self):
-        """updates the selectors values"""
-        for i in self.selectors:
-            if i.key == "planets":
-                i.set_current_value(self.parent.selected_planet)
-            else:
-                i.set_current_value(getattr(self.selected_planet, i.key))
-
     def create_checkboxes(self):
         """"""
         all_possible_resources = config.all_possible_resources
-        y = self.world_y + 145
+        y = self.world_y + 100
         x = self.world_width / 2 + BUTTON_SIZE
 
         for i in all_possible_resources:
@@ -198,7 +221,13 @@ class PlanetEdit(EditorBase):
             self.checkboxes.append(checkbox)
             self.widgets.append(checkbox)
 
-
+    def set_selector_current_value(self):
+        """updates the selectors values"""
+        for i in self.selectors:
+            if i.key == "planets":
+                i.set_current_value(self.parent.selected_planet)
+            else:
+                i.set_current_value(getattr(self.selected_planet, i.key))
 
     def set_checkbox_values(self):
         """this sets the values to the checkboxes when selected planet changes"""
@@ -268,7 +297,7 @@ class PlanetEdit(EditorBase):
 
         if key == "planets":
             self.parent.set_selected_planet(value)
-            # self.parent.pan_zoom_handler.navigate_to(self.parent.selected_planet)
+            navigate_to(self.parent.selected_planet, y_offset=-200)
 
         if key == "has_atmosphere":
             if value == 0 and self.selector_atmosphere.current_value != "":
@@ -330,3 +359,19 @@ class PlanetEdit(EditorBase):
             self.draw_frame()
             self.get_selected_planet()
             self.inputbox.update()
+
+    def randomize(self):
+        ignorables = ["planets", "id", "level", "orbit_object_id", "orbit_angle"]
+        for selector in self.selectors:
+            if not selector.key in ignorables:
+                selector.current_value = random.choice(selector.list)
+
+            self.selector_callback(selector.key, selector.current_value)
+
+        for checkbox in self.checkboxes:
+            checkbox.update(random.choice([0,1]))
+            self.get_checkbox_values()
+
+
+
+
