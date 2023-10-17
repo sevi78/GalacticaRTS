@@ -29,7 +29,7 @@ class PygameColors:
 
 
 pygame_colors = PygameColors()
-print(pygame_colors.__dict__)
+#print(pygame_colors.__dict__)
 colors = Colors()
 
 

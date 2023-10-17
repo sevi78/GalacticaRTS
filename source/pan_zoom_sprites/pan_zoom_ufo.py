@@ -71,7 +71,7 @@ class PanZoomUfo(PanZoomGameObject, InteractionHandler):
 
         # register
         sprite_groups.ufos.add(self)
-        print(sprite_groups.ufos)
+        #print(sprite_groups.ufos)
 
     def setup(self):
         data = load_file("enemy_handler_config.json")
