@@ -212,8 +212,6 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
 
     def reach_target(self, distance):
         if self.target.property == "ufo":
-            # pygame.draw.circle(global_params.win, pygame.color.THECOLORS["purple"], self.rect.center, distance, 1)
-            # pygame.draw.circle(global_params.win,pygame.color.THECOLORS["red"], self.rect.center, self.attack_distance, 1)
             if distance <= self.attack_distance:
                 self.moving = False
                 self.reach_enemy()
@@ -221,20 +219,14 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
 
             print("reached_ufo")
         elif self.target.property == "planet":
-            # pygame.draw.circle(global_params.win, pygame.color.THECOLORS["purple"], self.rect.center, distance, 1)
-            # pygame.draw.circle(global_params.win,
-            #     pygame.color.THECOLORS["red"], self.rect.center, self.desired_orbit_radius, 1)
-
             # Check the distance
             if distance < self.desired_orbit_radius:
                 self.reach_planet()
-                # self.orbit_object = self.target
-                # self.follow_target(self.target)
                 self.target_reached = True
                 self.moving = False
                 self.orbit_object = self.target
-                # print("planet reached")
                 return
+
         elif self.target.property == "item":
             if distance < self.item_collect_distance:
                 self.moving = False
@@ -244,41 +236,13 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
                 self.target = None
                 self.target_reached = True
                 return
-            # follow_target(self)
-            # if self.orbit_object:
-            #     x, y = orbit_around(self, self.orbit_object, orbit_radius=self.orbit_radius)
-            #     self.world_x, self.world_y = self.pan_zoom.screen_2_world(x, y)
-            #     prevent_object_overlap(self.parent.ships, self.min_dist_to_other_ships)
 
         elif self.target.property == "target_object":
-            # pygame.draw.circle(global_params.win, pygame.color.THECOLORS["purple"], self.rect.center, distance, 1)
-            # pygame.draw.circle(global_params.win,pygame.color.THECOLORS["lavender"],
-            # self.rect.center, self.target_object_reset_distance, 1)
 
             if distance < self.target_object_reset_distance:
                 self.moving = False
                 self.target = None
                 self.target_reached = True
-
-    def set_screen_position__(self):
-        panzoom = pan_zoom_handler
-        self.set_attack_distance()
-        x, y = panzoom.world_2_screen(self.world_x, self.world_y)
-
-        follow_target(self)
-
-        if self.orbit_object:
-            x, y = orbit_around(self, self.orbit_object, orbit_radius=self.orbit_radius)
-            self.world_x, self.world_y = panzoom.screen_2_world(x, y)
-            prevent_object_overlap(global_params.app.ships, self.min_dist_to_other_ships)
-
-        prevent_object_overlap(global_params.app.ships, self.min_dist_to_other_ships)
-        self.set_position((x - self.get_screen_width() / 2, y - self.get_screen_height() / 2))
-        prevent_object_overlap(global_params.app.ships, self.min_dist_to_other_ships)
-
-        # set new size
-        self.set_objects_screen_size()
-        prevent_object_overlap(global_params.app.ships, self.min_dist_to_other_ships)
 
     def attack(self, defender):
         if not inside_screen(self.get_screen_position()):
@@ -399,26 +363,6 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         self.parent.event_text = "unloading ship: " + text[:-2]
         sounds.play_sound(sounds.unload_ship)
 
-    def draw__(self):
-        if inside_screen(self.rect.center, border=SHIP_INSIDE_SCREEN_BORDER):
-
-            self.progress_bar.show()
-
-            self.reposition_buttons()
-            if self.selected:
-                self.show_buttons()
-            else:
-                self.hide_buttons()
-
-            PanZoomShipDraw.draw(self)
-
-            if self.energy <= 0 and not self.exploded:
-                self.explode()
-
-        else:
-            self.hide_buttons()
-            self.progress_bar.hide()
-
     def update(self):
         if global_params.game_paused:
             return
@@ -486,27 +430,12 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
 
         if self.enemy:
             orbit(self, self.enemy, self.orbit_speed, self.orbit_direction)
-
-            # self.rotate_image_to_target(target=self.enemy, rotate_correction_angle=SHIP_ROTATE_CORRECTION_ANGLE)
             self.follow_target(self.enemy)
             self.attack(self.enemy)
 
         if self.orbit_object:
             orbit(self, self.orbit_object, self.orbit_speed, self.orbit_direction)
-            # if self.explode_if_target_reached:
-            #     self.explode()
-            # if hasattr(self, "damage"):
-            #     self.damage()
-
-            # self.rotate_image_to_target(target=None)
 
         if self.energy_reloader:
             # reload ship
             self.reload_ship()
-
-        # if self.orbit_object:
-        #     # orbit(self, self.orbit_object, self.speed, 1)
-        #
-        #     x, y = orbit_around(self, self.orbit_object, orbit_radius=self.orbit_radius)
-        #     self.world_x, self.world_y = self.pan_zoom.screen_2_world(x, y)
-        #     prevent_object_overlap(global_params.app.ships, self.min_dist_to_other_ships)

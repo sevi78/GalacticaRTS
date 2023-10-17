@@ -7,8 +7,6 @@ from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_mouse_handler import PanZoomMouseHandler
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_gif import PanZoomSprite
 from source.utils import global_params
-from source.utils.positioning import get_distance
-from source.multimedia_library.sounds import sounds
 
 
 class PanZoomCollectableItem(PanZoomSprite, PanZoomMouseHandler):
@@ -61,7 +59,6 @@ class PanZoomCollectableItem(PanZoomSprite, PanZoomMouseHandler):
 
     def update(self):
         self.update_pan_zoom_sprite()
-        # self.set_world_position((self.world_x, self.world_y))
         self.listen()
 
         global_params.app.tooltip_instance.reset_tooltip(self)

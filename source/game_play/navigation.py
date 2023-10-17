@@ -19,10 +19,7 @@ def navigate_to(obj, **kwargs):
     ship = kwargs.get("ship", None)
 
     if not obj and ship:
-        # obj = [i for i in self.parent.ships if i.name == ship][0]
-
         obj = sprite_groups.ships.sprites()[0]
-        # obj.select(True)
 
         # select ship by reorder the list
         first_item = sprite_groups.ships.sprites()[0]

@@ -8,7 +8,6 @@ class WidgetBaseParams:
     def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
         self.name = kwargs.get("name", "no_name")
         self.win = win
-        # self.alive = True
 
         self.zoomable = False
         self.property = kwargs.get("property", None)

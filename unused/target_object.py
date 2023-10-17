@@ -59,8 +59,6 @@ class TargetObject(WidgetBase):
                     self.set_world_position()
 
     def set_world_position(self):
-        # if self.parent.target:
-        #     return
         self.world_x, self.world_y = pan_zoom_handler.screen_2_world(
             pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1])
 

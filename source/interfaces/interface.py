@@ -38,7 +38,6 @@ class InterfaceVariable:
 
 
 class InterfaceData:
-
     def __init__(self, interface_variable_names):
         self.interface_variable_names = interface_variable_names
         self.interface_variables = {}

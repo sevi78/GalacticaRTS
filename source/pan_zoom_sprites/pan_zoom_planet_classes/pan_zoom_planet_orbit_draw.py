@@ -100,11 +100,6 @@ def draw_orbit(self):
     """
     Draws the orbit
     """
-    # if not self.orbit_object:
-    #     return
-    #
-    # if not self.orbit_radius:
-    #     return
     if not self.orbit_object or not self.orbit_radius:
         return
 
@@ -114,7 +109,6 @@ def draw_orbit(self):
     min_color_value = 130
     size_factor = 12
     min_dist_to_draw = self.orbit_object.rect.width / 5
-    # orbit_radius = get_distance(self.rect.center, self.orbit_object.rect.center)
 
     if global_params.show_orbit:
         pos = get_orbit_pos(self)
@@ -140,14 +134,11 @@ def draw_orbit(self):
                 if dist > max_dist:
                     dist = max_dist
 
-                # size = self.orbit_object.rect.width / 2 * (size_factor / dist)
                 size = self.orbit_object.rect.width / 2 * (size_factor / dist)
                 if size > self.orbit_object.rect.width / 2:
                     size = self.orbit_object.rect.width / 2
 
                 color = dim_color(colors.ui_darker, dist, min_color_value)
-                # center = (i[0] + self.get_screen_width() / 2 / self.get_zoom(),
-                #           i[1] + self.get_screen_height() / 2 / self.get_zoom())
                 center = (i[0], i[1])
                 pygame.draw.circle(global_params.win, color, center, size, width)
 

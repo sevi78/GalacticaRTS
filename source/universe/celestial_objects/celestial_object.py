@@ -89,11 +89,6 @@ class CelestialObject(WidgetBase):
         if self.world_y < 0:
             self.world_y = global_params.scene_height * global_params.quadrant_amount
 
-    def draw_grid__(self):
-        x, y = pan_zoom_handler.world_2_screen(self.world_x, self.world_y)
-        pygame.draw.rect(self.win, self.frame_color, (
-            x, y, self.get_screen_width() / self.get_zoom(), self.get_screen_height() / self.get_zoom()), 1)
-
     def draw(self):
         self.set_screen_position()
         x, y = self.center

@@ -7,12 +7,11 @@ from pygame import QUIT, KEYDOWN, K_ESCAPE
 from source.multimedia_library.images import get_image, load_gif, get_gif_frames
 from source.multimedia_library.sounds import sounds
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_debug import GameObjectDebug
-from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups, PanZoomLayeredUpdates
+from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_visibility_handler import PanZoomVisibilityHandler
-from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import PanZoomHandler
 from source.utils import global_params
 from source.utils.colors import colors
-from source.utils.positioning import smooth_position
+
 
 # pygame.init()
 WIDTH = 800
@@ -119,8 +118,6 @@ class PanZoomSprite(pygame.sprite.Sprite, PanZoomVisibilityHandler, GameObjectDe
 
         # register
         if self.group:
-            # if not hasattr(sprite_groups, self.group):
-            #     setattr(sprite_groups, self.group, PanZoomLayeredUpdates())
             getattr(sprite_groups, self.group).add(self)
 
     def get_zoom(self):
@@ -135,11 +132,6 @@ class PanZoomSprite(pygame.sprite.Sprite, PanZoomVisibilityHandler, GameObjectDe
         self.world_x, self.world_y = position
         self.screen_position = self.pan_zoom.world_2_screen(self.world_x, self.world_y)
 
-        # if self.zoomable:
-        #     self.set_screen_size(self.world_width * self.pan_zoom.zoom * self.relative_gif_size,
-        #                          self.world_height * self.pan_zoom.zoom * self.relative_gif_size)
-        # else:
-        #     self.set_screen_size(self.world_width, self.world_height)
         if self.zoomable:
             self.screen_width = self.world_width * self.pan_zoom.zoom * self.relative_gif_size
             self.screen_height = self.world_height * self.pan_zoom.zoom * self.relative_gif_size

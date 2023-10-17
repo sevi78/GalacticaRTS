@@ -66,7 +66,6 @@ class UIBuilder(SceneBuilder):
         self.explored_planets = []
 
         # event text
-        # self.event_text_font = pygame.font.SysFont(global_params.font_name, 30)
         prefix = "GPT-1357: "
         self.event_text = "hi, i am George Peter Theodor the 1357th, or short: GPT-1357." \
                           "i am an artificial intelligence to help mankind out of their mess...maybe the only intelligent beeing " \
@@ -99,6 +98,7 @@ class UIBuilder(SceneBuilder):
     def create_editors(self):
         width = EDITOR_WIDTH
         height = EDITOR_HEIGHT
+
         # editors
         self.planet_edit = PlanetEdit(pygame.display.get_surface(),
             pygame.display.get_surface().get_rect().centerx - width / 2,

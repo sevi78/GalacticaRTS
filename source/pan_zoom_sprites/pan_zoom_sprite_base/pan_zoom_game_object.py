@@ -57,11 +57,6 @@ class PanZoomGameObject(PanZoomSprite):
             if self.target.property == "ufo":
                 self.target_position = self.target.rect.center
 
-                # self.target_position = Vector2((self.target.world_x, self.target.world_y))
-
-        # elif hasattr(self.target, "world_x"):
-        #     self.target_position = Vector2((self.target.world_x, self.target.world_y))
-        #
         if hasattr(self.target, "align_image"):
             if self.target.align_image == "center":
                 self.target_position = Vector2((self.target.world_x, self.target.world_y))
@@ -120,9 +115,6 @@ class PanZoomGameObject(PanZoomSprite):
 
         # Calculate the distance between the current position and the target position
         distance = direction.length() * self.get_zoom()
-
-        # pygame.draw.circle(global_params.win, pygame.color.THECOLORS["purple"], self.rect.center, distance, 1)
-        # pygame.draw.circle(global_params.win, pygame.color.THECOLORS["orange"], self.rect.center, self.attack_distance, 1)
 
         # Check if the distance is zero (bullet is already at the target position)
         if distance < self.attack_distance:

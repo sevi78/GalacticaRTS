@@ -31,7 +31,6 @@ class GifHandler(pygame.sprite.Sprite):
         self.image_raw = self.frames[self.index]
         self.image = self.frames[self.index]
         self.rect = self.image.get_rect()
-        # self.rect.center = (self.parent.x, self.parent.world_y)
 
         if self.relative_gif_size:
             self.max_size = max(self.parent.rect.width, self.parent.rect.height) * self.relative_gif_size
@@ -64,8 +63,6 @@ class GifHandler(pygame.sprite.Sprite):
         return frames
 
     def update(self):
-        # if not self in global_params.app.gif_handlers:
-        #     global_params.app.gif_handlers.add(self)
         self.counter += 1
         if self.counter % 5 == 0:
             self.index += 1
@@ -87,8 +84,6 @@ class GifHandler(pygame.sprite.Sprite):
         if self.rotate:
             self.set_target_position(self.parent.target_position)
             self.rotate_image_to_target()
-
-        # pygame.draw.rect(self.parent.win, pygame.color.THECOLORS["blue"], self.rect, 1)
 
     def set_size(self):
         # Calculate the maximum size based on the relative GIF size
@@ -115,9 +110,6 @@ class GifHandler(pygame.sprite.Sprite):
         self.image = new_image
         self.rect = new_rect
 
-        # pygame.draw.rect(self.parent.win, pygame.color.THECOLORS["blue"], self.rect, 1)
-        # pygame.draw.line(self.parent.win, pygame.color.THECOLORS["red"], self.rect.center, self.parent.target.rect.center, 1)
-
     def set_gif_position(self):
         if self.relative_gif_size:
             self.rect.x = self.parent.rect.x - (self.max_size - self.parent.rect.width) / 2
@@ -125,8 +117,6 @@ class GifHandler(pygame.sprite.Sprite):
         else:
             self.rect.x = self.parent.rect.x
             self.rect.y = self.parent.rect.y
-
-        # pygame.draw.rect(self.parent.win, pygame.color.THECOLORS["yellow"], self.rect, 1)
 
     def draw(self):
         try:

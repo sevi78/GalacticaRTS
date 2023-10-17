@@ -57,7 +57,6 @@ class Slider(WidgetBase):
         self.borderColour = kwargs.get('borderColour', (0, 0, 0))
 
         self.value = self.round(kwargs.get('initial', (self.max + self.min) / 2))
-        # elf.value = max(min(self.value, self.max), self.min)
 
         self.curved = kwargs.get('curved', True)
 
@@ -74,45 +73,6 @@ class Slider(WidgetBase):
         else:
             self.handleRadius = kwargs.get('handleRadius', int(self.screen_height / 1.3))
 
-    # def listen(self, events):
-    #     if not self._hidden and not self._disabled:
-    #         mouseState = Mouse.getMouseState()
-    #         x, y = Mouse.getMousePos()
-    #
-    #         if self.contains(x, y):
-    #             if mouseState == MouseState.CLICK:
-    #                 self.selected = True
-    #                 global_params.enable_pan = not self.selected
-    #
-    #         if mouseState == MouseState.RELEASE:
-    #             self.selected = False
-    #             global_params.enable_pan = not self.selected
-    #
-    #         if self.selected:
-    #             if self.vertical:
-    #                 self.value = self.max - self.round((y - self.screen_y) / self.screen_height * self.max)
-    #                 self.value = max(min(self.value, self.max), self.min)
-    #             else:
-    #                 self.value = self.round((x - self.screen_x) / self.screen_width * self.max + self.min)
-    #                 self.value = max(min(self.value, self.max), self.min)
-    #
-    #             if hasattr(self.parent, "set_obj_values"):
-    #                 self.parent.set_obj_values()
-    #
-    #
-    #
-    # def contains(self, x, y):
-    #     if self.vertical:
-    #         handleX = self.screen_x + self.screen_width // 2
-    #         handleY = int(self.screen_y + (self.max - self.value) / (self.max - self.min) * self.screen_height)
-    #     else:
-    #         handleX = int(self.screen_x + (self.value - self.min) / (self.max - self.min) * self.screen_width)
-    #         handleY = self.screen_y + self.screen_height // 2
-    #
-    #     if math.sqrt((handleX - x) ** 2 + (handleY - y) ** 2) <= self.handleRadius:
-    #         return True
-    #
-    #     return False
     def listen(self, events):
         if not self._hidden and not self._disabled:
             mouseState = Mouse.getMouseState()

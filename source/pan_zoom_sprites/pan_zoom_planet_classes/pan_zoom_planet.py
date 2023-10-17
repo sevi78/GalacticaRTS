@@ -32,20 +32,20 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetButton
 
     """
     __slots__ = PanZoomSprite.__slots__ + (
-    'orbit_radius', 'font_size', 'font', '_on_hover', 'on_hover_release', 'size_x',
-    'size_y', 'resources', 'buildings', 'buildings_max', 'population', 'population_limit', 'population_grow',
-    'alien_population', 'building_slot_amount', 'building_slot_upgrades', 'building_slot_upgrade_prices',
-    'building_slot_upgrade_energy_consumption', 'building_slot_max_amount', 'building_cue', 'specials',
-    'possible_resources', 'production', 'production_water', 'production_energy', 'production_food',
-    'production_minerals', 'production_city', 'production_technology', 'population_buildings',
-    'population_buildings_values', 'building_buttons_energy', 'building_buttons_water', 'building_buttons_food',
-    'building_buttons_minerals', 'building_buttons', 'building_buttons_list', 'building_buttons_visible',
-    'overview_buttons', 'check_image', 'smiley_status', 'thumpsup_status', 'frame_color', 'gif_handler',
-    'has_atmosphere', 'atmosphere', 'atmosphere_raw', 'type', 'parent', 'screen_size', 'target',
-    'moving', 'tooltip', 'id', 'level', 'fog_of_war_radius', 'explored', 'just_explored', 'moveable', 'orbit_speed',
-    'orbit_object', 'orbit_distance', 'string', 'start_time', 'wait', 'selected', 'onClick',
-    'info_text', 'info_text_raw', 'planet_button_array', 'thumpsup_button_size', 'thumpsup_button',
-    'smiley_button_size', 'smiley_button', 'planet_defence')
+        'orbit_radius', 'font_size', 'font', '_on_hover', 'on_hover_release', 'size_x',
+        'size_y', 'resources', 'buildings', 'buildings_max', 'population', 'population_limit', 'population_grow',
+        'alien_population', 'building_slot_amount', 'building_slot_upgrades', 'building_slot_upgrade_prices',
+        'building_slot_upgrade_energy_consumption', 'building_slot_max_amount', 'building_cue', 'specials',
+        'possible_resources', 'production', 'production_water', 'production_energy', 'production_food',
+        'production_minerals', 'production_city', 'production_technology', 'population_buildings',
+        'population_buildings_values', 'building_buttons_energy', 'building_buttons_water', 'building_buttons_food',
+        'building_buttons_minerals', 'building_buttons', 'building_buttons_list', 'building_buttons_visible',
+        'overview_buttons', 'check_image', 'smiley_status', 'thumpsup_status', 'frame_color', 'gif_handler',
+        'has_atmosphere', 'atmosphere', 'atmosphere_raw', 'type', 'parent', 'screen_size', 'target',
+        'moving', 'tooltip', 'id', 'level', 'fog_of_war_radius', 'explored', 'just_explored', 'moveable', 'orbit_speed',
+        'orbit_object', 'orbit_distance', 'string', 'start_time', 'wait', 'selected', 'onClick',
+        'info_text', 'info_text_raw', 'planet_button_array', 'thumpsup_button_size', 'thumpsup_button',
+        'smiley_button_size', 'smiley_button', 'planet_defence')
 
     def __init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs):
         # inherit the base class
@@ -125,11 +125,6 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetButton
     def select(self, value):
         self.selected = value
 
-    # def execute(self, kwargs):
-    #     """ this executes the code when clicked on the button """
-    #     if self.parent.build_menu_visible: return
-    #     self.parent.set_selected_planet(self)
-
     def move(self, events, child):
         if not global_params.edit_mode:
             return
@@ -187,70 +182,6 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetButton
                 #     self.orbit_distance = self.set_orbit_distance(self.orbit_object)
                 #
                 # print(self.orbit_angle, self.orbit_distance, self.offset)
-
-    def update__(self):
-        """
-        updates the planet...a lot of stuff, have look on the code, its self explaining
-        """
-        self.set_planet_name()
-        self.planet_defence.defend()
-
-        if self.type == "sun":
-            if not self.just_explored:
-                self.get_explored()
-                return
-
-            if not self.explored:
-                self.parent.fog_of_war.draw_fog_of_war(self)
-                # self.get_explored()#self.explored = True
-
-            # hide if some ui is blocking it
-            if self.parent.event_panel._hidden:
-                if not self.parent.build_menu_visible:
-                    self.show()
-
-        # limit positions
-        limit_positions(self, self.screen_size)
-
-        # disable buttons if not selected
-        if self.parent.selected_planet:
-            if self.parent.selected_planet.name != self.name:
-                self.hide_building_buttons()
-
-            elif self.debug:
-                pass
-                # self.draw_dict()
-
-        # disable on build menu open
-        self.update_game_variables()
-        if self.parent.build_menu_visible:
-            self.disable()
-            return
-
-        # tooltip and info text
-        if self.explored:
-            self.enable()
-            # self.parent.fog_of_war.draw_fog_of_war(self)
-
-            if not self.name == "Sun":
-                self.tooltip = "build something useful!"
-                self.text.set_alpha(255)
-
-            # only the first time after exploring
-            if not self.just_explored:
-                # self.setImage(self.image_raw)
-                self.set_info_text()
-                self.get_explored()
-
-                # set this variable to only set info text on first time
-                self.just_explored = True
-
-        self.set_population_limit()
-
-        # make shure the planet is centered on screen to build anything
-        # if self.building_buttons_visible != [] and self.parent.selected_planet == self and not global_params.edit_mode:
-        #
-        #     self.parent.pan_zoom_handler.navigate_to(self, pos=pygame.mouse.get_pos() )
 
     def reset_planet(self):
         return

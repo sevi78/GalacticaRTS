@@ -15,7 +15,6 @@ class EnemyHandlerEdit(Interface):
             setattr(ufo, key, value)
 
     def interface_callback(self):
-        # print ("yippie!", self.get_slider_data())
         for key, value in self.get_slider_data().items():
             if key != "spawn_interval":
                 self.update_enemies(key, value)

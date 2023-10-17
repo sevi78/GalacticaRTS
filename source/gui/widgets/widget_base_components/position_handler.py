@@ -65,8 +65,6 @@ class PositionHandler:
         # set new size
         self.set_objects_screen_size()
 
-        # debug_positions(self.get_screen_x(), self.get_screen_y(), self.frame_color, self.name, 30)
-
     def set_objects_screen_size(self):
         if not self.property == "ship":
             if not inside_screen(self.get_position(), border=0):
@@ -116,10 +114,5 @@ class PositionHandler:
         self.screen_height = height
 
     def set_center(self):
-        # self.center = (self.get_screen_x() + self.get_screen_width() / 2 / self.get_zoom(), self.get_screen_y() + self.get_screen_height() / 2 / self.get_zoom())
-
         self.center = (
             self.get_screen_x() + self.get_screen_width() / 2, self.get_screen_y() + self.get_screen_height() / 2)
-        # if hasattr(self, "rect"):
-        #     if self.rect:
-        #         self.rect.center = self.center

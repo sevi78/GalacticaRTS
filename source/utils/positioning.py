@@ -33,7 +33,7 @@ def rot_center(image, angle, x, y):
     return rotated_image, new_rect
 
 
-def get_world_distance(pos_a, pos_b):
+def get_world_distance__(pos_a, pos_b):
     """
     returns the world distance betweeen two positions
     :param pos_a:
@@ -65,7 +65,7 @@ def get_distance(pos_a, pos_b):
     return distance
 
 
-def get_distance_to(self, obj):
+def get_distance_to__(self, obj):
     if not obj:
         return 0
 
@@ -101,23 +101,7 @@ def limit_positions(obj, screen_size):
         hide_obj_outside_view()
 
 
-def hide_obj_outside_view_(obj, win_height, win_width, x, y, zero):
-    if x <= zero or x >= win_width:
-        obj.hide()
-    elif y <= zero or y >= win_height:
-        obj.hide()
-    else:
-        obj.show()
-
-
-def hide_obj_outside_view__(obj, win_height, win_width, x, y, border):
-    if x <= border or x >= win_width - border or y <= border or y >= win_height - border:
-        obj.hide()
-    else:
-        obj.show()
-
-
-def debug_positions(x, y, color, text, size, **kwargs):
+def debug_positions__(x, y, color, text, size, **kwargs):
     if not global_params.debug:
         return
     # color = kwargs.get("color", "red")
@@ -186,89 +170,6 @@ def follow_target(self):
 
         self.world_x -= dx / int(global_params.fps) / float(self.get_zoom()) * float(speed) * float(global_params.time_factor)
         self.world_y -= dy / int(global_params.fps) / float(self.get_zoom()) * float(speed) * float(global_params.time_factor)
-
-
-def follow_object__(self, obj):
-    tx, ty = obj.rect.centerx, obj.rect.centery
-
-    dx = (self.rect.centerx - tx)
-    dy = (self.rect.centery - ty)
-
-    if hasattr(self, "set_speed"):
-        speed = self.set_speed()
-    else:
-        speed = self.speed
-
-    self.world_x += dx / int(global_params.fps) / float(self.get_zoom()) * float(speed) * float(global_params.time_factor)
-    self.world_y += dy / int(global_params.fps) / float(self.get_zoom()) * float(speed) * float(global_params.time_factor)
-
-
-def follow_object__(self, obj):
-    tx, ty = obj.rect.centerx, obj.rect.centery
-
-    dx = (self.rect.centerx - tx)
-    dy = (self.rect.centery - ty)
-
-    # Check the sign of dx and dy to make sure that the object is moving towards obj
-    dx = abs(dx) * (-1 if dx < 0 else 1)
-    dy = abs(dy) * (-1 if dy < 0 else 1)
-
-    # Get the speed of the object
-    speed = self.speed if not hasattr(self, "set_speed") else self.set_speed()
-
-    # Set the new world coordinates based on the object's position and speed
-    # self.world_x += dx / pygame.time.get_ticks() / self.get_zoom() * speed * global_params.time_factor
-    # self.world_y += dy / pygame.time.get_ticks() / self.get_zoom() * speed * global_params.time_factor
-
-    self.world_x += dx / pygame.time.get_ticks() * speed * global_params.time_factor
-    self.world_y += dy / pygame.time.get_ticks() * speed * global_params.time_factor
-
-
-def follow_object__(self, obj):
-    tx, ty = obj.world_x, obj.world_y
-
-    dx = tx - self.world_x
-    dy = ty - self.world_y
-
-    distance = math.sqrt(dx * dx + dy * dy)
-
-    if distance > 0:
-        dx /= distance
-        dy /= distance
-
-        self.world_x += dx * self.speed
-        self.world_y += dy * self.speed
-    print("follow object")
-
-
-def follow_object__almost(self, obj):
-    tx, ty = obj.world_x, obj.world_y
-
-    dx = tx - self.world_x
-    dy = ty - self.world_y
-
-    distance = math.sqrt(dx * dx + dy * dy)
-
-    if distance > 0:
-        dx /= distance
-        dy /= distance
-
-        # Get the speed of the obj
-        obj_speed = obj.speed if hasattr(obj, "speed") else self.speed
-
-        # Set the new world coordinates based on the object's position and speed
-        self.world_x += dx * obj_speed
-        self.world_y += dy * obj_speed
-
-
-def orbit__(obj, orbit_obj, orbit_speed, direction):
-    pos_diff = pygame.math.Vector2(orbit_obj.world_x, orbit_obj.world_y) - pygame.math.Vector2(obj.world_x, obj.world_y)
-    obj.orbit_radius = pos_diff.length()
-    if not obj.orbit_angle:
-        obj.orbit_angle = pos_diff.angle_to(pygame.math.Vector2(0, 1))
-    obj.orbit_angle += orbit_speed
-    pos = pygame.math.Vector2(obj.orbit_radius, 0).rotate(obj.angle * direction)  # Rotate by the negative angle
-    obj.world_x, obj.world_y = (orbit_obj.world_x + pos.x, orbit_obj.world_y + pos.y)
 
 
 def orbit(obj, orbit_obj, orbit_speed, direction):

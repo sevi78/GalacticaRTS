@@ -2,7 +2,6 @@ import pygame
 
 from source.configuration.info_text import create_info_panel_planet_text
 from source.database.database_access import create_connection, get_database_file_path
-from source.game_play.enemy_handler import enemy_handler
 from source.multimedia_library.images import images, pictures_path, get_image
 from source.multimedia_library.sounds import sounds
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups
@@ -73,7 +72,6 @@ class PanZoomPlanetParams:
         self.name = distance_string
 
     def set_planet_name(self):
-
         planets_with_same_orbit_object_id = [i for i in sprite_groups.planets if
                                              i.orbit_object_id == self.orbit_object_id]
         sorted_planets = sorted(planets_with_same_orbit_object_id, key=lambda planet: planet.orbit_distance)
@@ -165,6 +163,3 @@ class PanZoomPlanetParams:
 
         # set event text
         self.parent.event_text = f"Gratulation! you have reached a the Planet {self.name} !"
-
-        # if self.alien_population > 0:
-        #     enemy_handler.spawn_ufo(self)

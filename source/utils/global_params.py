@@ -153,173 +153,173 @@ draw_universe = True
 # missiles = pygame.sprite.LayeredUpdates()
 
 
-class GlobalParams__:
-    def __init__(self, settings):
-        self.font_name = settings["font_name"]
-        self.world_width = int(settings["WIDTH"][0][0])
-        self.height = int(settings["HEIGHT"][0][0])
-        self.width_minimized = 1400
-        self.height_minimized = 800
-        self.width_current = self.world_width
-        self.height_current = self.height
-        self.win = pygame.display.set_mode((self.world_width, self.height), pygame.RESIZABLE, pygame.DOUBLEBUF)
-        self.file_path = os.path.dirname(os.path.realpath(__file__))
-        self.abs_root = os.path.split(self.file_path)[0]
-        self.root = self.abs_root.split(os.sep)[-1]
-        self.dirpath = os.path.dirname(os.path.realpath(__file__))
-        self.pictures_path = os.path.split(self.dirpath)[0].split("source")[0] + "pictures" + os.sep
-        self.sounds = Sounds()
-        self.moveable = settings["moveable"]
-        self.tooltip_text = ""
-        self.game_paused = False
-        self.time_factor = int(settings["time_factor"])
-        self.game_speed = int(settings["game_speed"])
-        self.fps = int(settings["fps"])
-        self.scene_width = int(settings["scene_width"])
-        self.scene_height = int(settings["scene_height"])
-        self.draw_background_image = settings["draw_background_image"]
-        self.building_editor_draw = False
-        self.enable_zoom = settings["enable_zoom"]
-        self.enable_pan = settings["enable_pan"]
-        self.debug = settings["debug"]
-        self.enable_orbit = settings["enable_orbit"]
-        self.enable_game_events = settings["enable_game_events"]
-        self.show_orbit = True
-        self.show_grid = False
-        self.text_input_active = False
-        self.copy_object = None
-        self.hover_object = None
-        self.edit_mode = False
-        self.planet_button_display_on_panel = False
-        self.ui_rounded_corner_radius_small = 8
-        self.ui_rounded_corner_radius_big = 20
-        self.ui_rounded_corner_small_thickness = 1
-        self.ui_rounded_corner_big_thickness = 5
-        self.draw_universe = True
-
-
-class GlobalParams__:
-    settings = {
-        "font_name": "bahnschrift",
-        "WIDTH": [[800]],
-        "HEIGHT": [[600]],
-        "moveable": True,
-        "time_factor": 1,
-        "game_speed": 10,
-        "fps": 60,
-        "scene_width": 60,
-        "scene_height": 60,
-        "draw_background_image": True,
-        "enable_zoom": False,
-        "enable_pan": True,
-        "debug": False,
-        "enable_orbit": False,
-        "enable_game_events": True
-        }
-
-    font_name = settings["font_name"]
-
-    WIDTH = int(settings["WIDTH"][0][0])
-    HEIGHT = int(settings["HEIGHT"][0][0])
-
-    WIDTH_MINIMIZED = 1400
-    HEIGHT_MINIMIZED = 800
-
-    WIDTH_CURRENT = WIDTH
-    HEIGHT_CURRENT = HEIGHT
-
-    win = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE, pygame.DOUBLEBUF)
-
-    file_path = os.path.dirname(os.path.realpath(__file__))
-    abs_root = os.path.split(file_path)[0]
-
-    root = abs_root.split(os.sep)[-1]
-    dirpath = os.path.dirname(os.path.realpath(__file__))
-
-    pictures_path = os.path.split(dirpath)[0].split("source")[0] + "pictures" + os.sep
-
-    from source.multimedia_library.sounds import Sounds
-    sounds = Sounds()
-
-    moveable = settings["moveable"]
-    app = None
-
-    tooltip_text = ""
-    game_paused = False
-    time_factor = int(settings["time_factor"])
-    game_speed = int(settings["game_speed"])
-    fps = int(settings["fps"])
-    scene_width = int(settings["scene_width"])
-    scene_height = int(settings["scene_height"])
-    draw_background_image = settings["draw_background_image"]
-    building_editor_draw = False
-    enable_zoom = settings["enable_zoom"]
-    enable_pan = settings["enable_pan"]
-    debug = settings["debug"]
-    enable_orbit = settings["enable_orbit"]
-    enable_game_events = settings["enable_game_events"]
-    show_orbit = True
-    show_grid = False
-    text_input_active = False
-    copy_object = None
-    hover_object = None
-    edit_mode = False
-    planet_button_display_on_panel = False
-    ui_rounded_corner_radius_small = 8
-    ui_rounded_corner_radius_big = 20
-    ui_rounded_corner_small_thickness = 1
-    ui_rounded_corner_big_thickness = 5
-    draw_universe = True
-
-
-class GlobalParams:
-    sprite_groups = SpriteGroups()
-    font_name = "bahnschrift"
-    WIDTH = 800
-    HEIGHT = 600
-    WIDTH_MINIMIZED = 1400
-    HEIGHT_MINIMIZED = 800
-    WIDTH_CURRENT = WIDTH
-    HEIGHT_CURRENT = HEIGHT
-    win = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE, pygame.DOUBLEBUF)
-    file_path = os.path.dirname(os.path.realpath(__file__))
-    abs_root = os.path.split(file_path)[0]
-    root = abs_root.split(os.sep)[-1]
-    dirpath = os.path.dirname(os.path.realpath(__file__))
-    pictures_path = os.path.split(dirpath)[0].split("source")[0] + "pictures" + os.sep
-    from source.multimedia_library.sounds import Sounds
-    sounds = Sounds()
-    moveable = True
-    app = None
-    tooltip_text = ""
-    game_paused = False
-    time_factor = 1
-    game_speed = 10
-    fps = 60
-    scene_width = 60
-    scene_height = 60
-    draw_background_image = True
-    building_editor_draw = False
-    enable_zoom = False
-    enable_pan = True
-    debug = False
-    enable_orbit = False
-    enable_game_events = True
-    show_orbit = True
-    show_grid = False
-    text_input_active = False
-    copy_object = None
-    hover_object = None
-    edit_mode = False
-    planet_button_display_on_panel = False
-    ui_rounded_corner_radius_small = 8
-    ui_rounded_corner_radius_big = 20
-    ui_rounded_corner_small_thickness = 1
-    ui_rounded_corner_big_thickness = 5
-    draw_universe = True
-
-
-global_params = GlobalParams()
+# class GlobalParams__:
+#     def __init__(self, settings):
+#         self.font_name = settings["font_name"]
+#         self.world_width = int(settings["WIDTH"][0][0])
+#         self.height = int(settings["HEIGHT"][0][0])
+#         self.width_minimized = 1400
+#         self.height_minimized = 800
+#         self.width_current = self.world_width
+#         self.height_current = self.height
+#         self.win = pygame.display.set_mode((self.world_width, self.height), pygame.RESIZABLE, pygame.DOUBLEBUF)
+#         self.file_path = os.path.dirname(os.path.realpath(__file__))
+#         self.abs_root = os.path.split(self.file_path)[0]
+#         self.root = self.abs_root.split(os.sep)[-1]
+#         self.dirpath = os.path.dirname(os.path.realpath(__file__))
+#         self.pictures_path = os.path.split(self.dirpath)[0].split("source")[0] + "pictures" + os.sep
+#         self.sounds = Sounds()
+#         self.moveable = settings["moveable"]
+#         self.tooltip_text = ""
+#         self.game_paused = False
+#         self.time_factor = int(settings["time_factor"])
+#         self.game_speed = int(settings["game_speed"])
+#         self.fps = int(settings["fps"])
+#         self.scene_width = int(settings["scene_width"])
+#         self.scene_height = int(settings["scene_height"])
+#         self.draw_background_image = settings["draw_background_image"]
+#         self.building_editor_draw = False
+#         self.enable_zoom = settings["enable_zoom"]
+#         self.enable_pan = settings["enable_pan"]
+#         self.debug = settings["debug"]
+#         self.enable_orbit = settings["enable_orbit"]
+#         self.enable_game_events = settings["enable_game_events"]
+#         self.show_orbit = True
+#         self.show_grid = False
+#         self.text_input_active = False
+#         self.copy_object = None
+#         self.hover_object = None
+#         self.edit_mode = False
+#         self.planet_button_display_on_panel = False
+#         self.ui_rounded_corner_radius_small = 8
+#         self.ui_rounded_corner_radius_big = 20
+#         self.ui_rounded_corner_small_thickness = 1
+#         self.ui_rounded_corner_big_thickness = 5
+#         self.draw_universe = True
+#
+#
+# class GlobalParams__:
+#     settings = {
+#         "font_name": "bahnschrift",
+#         "WIDTH": [[800]],
+#         "HEIGHT": [[600]],
+#         "moveable": True,
+#         "time_factor": 1,
+#         "game_speed": 10,
+#         "fps": 60,
+#         "scene_width": 60,
+#         "scene_height": 60,
+#         "draw_background_image": True,
+#         "enable_zoom": False,
+#         "enable_pan": True,
+#         "debug": False,
+#         "enable_orbit": False,
+#         "enable_game_events": True
+#         }
+#
+#     font_name = settings["font_name"]
+#
+#     WIDTH = int(settings["WIDTH"][0][0])
+#     HEIGHT = int(settings["HEIGHT"][0][0])
+#
+#     WIDTH_MINIMIZED = 1400
+#     HEIGHT_MINIMIZED = 800
+#
+#     WIDTH_CURRENT = WIDTH
+#     HEIGHT_CURRENT = HEIGHT
+#
+#     win = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE, pygame.DOUBLEBUF)
+#
+#     file_path = os.path.dirname(os.path.realpath(__file__))
+#     abs_root = os.path.split(file_path)[0]
+#
+#     root = abs_root.split(os.sep)[-1]
+#     dirpath = os.path.dirname(os.path.realpath(__file__))
+#
+#     pictures_path = os.path.split(dirpath)[0].split("source")[0] + "pictures" + os.sep
+#
+#     from source.multimedia_library.sounds import Sounds
+#     sounds = Sounds()
+#
+#     moveable = settings["moveable"]
+#     app = None
+#
+#     tooltip_text = ""
+#     game_paused = False
+#     time_factor = int(settings["time_factor"])
+#     game_speed = int(settings["game_speed"])
+#     fps = int(settings["fps"])
+#     scene_width = int(settings["scene_width"])
+#     scene_height = int(settings["scene_height"])
+#     draw_background_image = settings["draw_background_image"]
+#     building_editor_draw = False
+#     enable_zoom = settings["enable_zoom"]
+#     enable_pan = settings["enable_pan"]
+#     debug = settings["debug"]
+#     enable_orbit = settings["enable_orbit"]
+#     enable_game_events = settings["enable_game_events"]
+#     show_orbit = True
+#     show_grid = False
+#     text_input_active = False
+#     copy_object = None
+#     hover_object = None
+#     edit_mode = False
+#     planet_button_display_on_panel = False
+#     ui_rounded_corner_radius_small = 8
+#     ui_rounded_corner_radius_big = 20
+#     ui_rounded_corner_small_thickness = 1
+#     ui_rounded_corner_big_thickness = 5
+#     draw_universe = True
+#
+#
+# class GlobalParams:
+#     sprite_groups = SpriteGroups()
+#     font_name = "bahnschrift"
+#     WIDTH = 800
+#     HEIGHT = 600
+#     WIDTH_MINIMIZED = 1400
+#     HEIGHT_MINIMIZED = 800
+#     WIDTH_CURRENT = WIDTH
+#     HEIGHT_CURRENT = HEIGHT
+#     win = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE, pygame.DOUBLEBUF)
+#     file_path = os.path.dirname(os.path.realpath(__file__))
+#     abs_root = os.path.split(file_path)[0]
+#     root = abs_root.split(os.sep)[-1]
+#     dirpath = os.path.dirname(os.path.realpath(__file__))
+#     pictures_path = os.path.split(dirpath)[0].split("source")[0] + "pictures" + os.sep
+#     from source.multimedia_library.sounds import Sounds
+#     sounds = Sounds()
+#     moveable = True
+#     app = None
+#     tooltip_text = ""
+#     game_paused = False
+#     time_factor = 1
+#     game_speed = 10
+#     fps = 60
+#     scene_width = 60
+#     scene_height = 60
+#     draw_background_image = True
+#     building_editor_draw = False
+#     enable_zoom = False
+#     enable_pan = True
+#     debug = False
+#     enable_orbit = False
+#     enable_game_events = True
+#     show_orbit = True
+#     show_grid = False
+#     text_input_active = False
+#     copy_object = None
+#     hover_object = None
+#     edit_mode = False
+#     planet_button_display_on_panel = False
+#     ui_rounded_corner_radius_small = 8
+#     ui_rounded_corner_radius_big = 20
+#     ui_rounded_corner_small_thickness = 1
+#     ui_rounded_corner_big_thickness = 5
+#     draw_universe = True
+#
+#
+# global_params = GlobalParams()
 
 # from global_params import GlobalParams
 #

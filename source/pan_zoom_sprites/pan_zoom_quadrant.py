@@ -6,7 +6,6 @@ from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zo
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_gif import PanZoomSprite
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups
 from source.universe.universe_background import Universe
-from source.utils.global_params import global_params
 from source.utils.mouse import Mouse
 
 WIDTH, HEIGHT = 800, 800
@@ -21,7 +20,6 @@ class Quadrant(PanZoomSprite):
         # we need to overload this, otherwise it will get the image size of PanZoomSprite, wich is no_image size
         self.world_width = width
         self.world_height = height
-        # self.update_pan_zoom_sprite()
         self.universe = Universe(self.win, x, y, width, height)
 
     def hide_universe(self):

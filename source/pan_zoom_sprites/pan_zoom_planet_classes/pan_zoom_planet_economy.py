@@ -128,13 +128,6 @@ class PanZoomPlanetEconomy:
         self.production_city = self.production["city"]
 
         self.calculate_population()
-
-        # is everything in plus, show thumpsup green,otherwise red, set smiley to sad if no food production
-        # vl = []
-        # for key, value in self.production.items():
-        #     if value < 0:
-        #         vl.append(value)
-        # if len(vl) > 0:
         self.set_thumpsup_status()
         self.set_smiley_status()
 
@@ -147,7 +140,6 @@ class PanZoomPlanetEconomy:
                 get_image(
                     "thumps_up.png"), self.thumpsup_button_size), True, False))
 
-        # if self.production["food"] > 0:
         if self.smiley_status:
             self.smiley_button.setImage(get_image("smile.png"))
         else:

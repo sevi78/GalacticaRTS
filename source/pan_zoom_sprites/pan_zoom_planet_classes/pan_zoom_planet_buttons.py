@@ -194,12 +194,6 @@ class PanZoomPlanetButtons(PanZoomPlanetEconomy):
         x = self.screen_x
         y = self.screen_y - self.get_screen_height() / 2
 
-        # # open build menu
-        # self.button_build_menu_open = Button(self.win, x-slot_image_size,y,slot_image_size, slot_image_size,isSubWidget=False,
-        #                                     image= images.get_image("build.png"],
-        #                                     onClick=lambda: self.parent.open_build_menu()  )
-        # self.button_build_menu_open.hide()
-
         # resource icons
         images_scaled = [pygame.transform.scale(
             get_image(i + "_25x25.png"), (slot_image_size, slot_image_size))

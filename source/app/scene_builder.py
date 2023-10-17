@@ -73,17 +73,9 @@ class SceneBuilder(EconomyParams, GameObjectStorage, BuildMenu):
 
         self._ship = None
         self.ship = self.create_ship("spaceship_30x30.png", center_x, center_y + 300)
-
-        # width = 800
-        # height = 600
-        # self.ship_edit = ShipEdit(pygame.display.get_surface(),
-        #     pygame.display.get_surface().get_rect().centerx - width / 2,
-        #     pygame.display.get_surface().get_rect().y,
-        #     width, height, parent=self, obj=self.ship, layer=9)
-
         self.create_ship("cargoloader_30x30.png", center_x - spacing, center_y + 400)
         self.create_ship("spacehunter_30x30.png", center_x + spacing, center_y + 500)
-        # self.create_ship("ufo_74x30.png", center_x + spacing, center_y + 400)
+
 
     @property
     def ship(self):
@@ -112,7 +104,6 @@ class SceneBuilder(EconomyParams, GameObjectStorage, BuildMenu):
             layer=0, property="background")
 
     def create_universe_background(self):
-
         if global_params.draw_universe:
             self.universe = Universe(global_params.win, 0, 0, global_params.scene_width, global_params.scene_height, isSubWidget=False, layer=3)
 

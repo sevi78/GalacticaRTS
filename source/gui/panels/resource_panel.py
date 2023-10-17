@@ -178,9 +178,6 @@ class ResourcePanel(WidgetBase):
         self.surface_rect.x = (width - global_params.app.building_panel.surface_rect.width -
                                global_params.app.settings_panel.surface_rect.width
                                - global_params.app.advanced_settings_panel.surface_rect.width - self.max_width)
-        # self.planet_edit_icon.screen_x = self.surface_rect.x + self.spacing
-        # self.ship_edit_icon.screen_x = (self.surface_rect.x + self.spacing) + (self.icon_size + self.spacing)
-        # self.font_edit_icon.screen_x = (self.surface_rect.x + self.spacing) + (self.icon_size + self.spacing) * 2
 
         self.reposition_widgets()
         self.toggle_switch.reposition()

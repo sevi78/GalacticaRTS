@@ -268,8 +268,6 @@ class PlanetEdit(EditorBase, PlanetEditBuilder):
         self.selected_planet = self.parent.selected_planet
 
         if selected_planet != self.parent.selected_planet:
-            # if not self.selected_planet:
-            #     return
             self.set_selector_current_value()
             self.set_checkbox_values()
 

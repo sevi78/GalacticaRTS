@@ -158,10 +158,6 @@ class PanZoomShipParams():
             else:
                 text += "\ntarget: " + str(None) + "\n"
 
-            # if self.orbit_object_id:
-            #     text += f"orbit_id:{self.orbit_object_id}\n"
-            # else:
-            #     text += f"orbit_id:{None}\n"
             if self.orbit_object:
                 text += f"orbit_object:{self.orbit_object.name}\n"
             else:
@@ -181,7 +177,6 @@ class PanZoomShipParams():
 
             text += f"target_reached:{self.target_reached}\n"
 
-            # text += str(dir(self))
 
         self.parent.info_panel.set_text(text)
         self.parent.info_panel.set_planet_image(self.image_raw)

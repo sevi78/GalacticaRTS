@@ -219,15 +219,6 @@ def main(test: bool = False, **kwargs) -> None:
     main_menu_theme.widget_font = pygame_menu.font.FONT_COMIC_NEUE
     main_menu_theme.widget_font_size = 30
 
-    # main_menu = pygame_menu.Menu(
-    #     height=WINDOW_SIZE[1],
-    #     onclose=pygame_menu.events.BACK,  # User press ESC button
-    #     theme=main_menu_theme,
-    #     title='Main menu',
-    #     width=WINDOW_SIZE[0]
-    #     )
-
-    # main_menu.add.button('Settings', settings_menu)
 
     if settings_run:
         # Main menu

@@ -172,16 +172,6 @@ class SpaceHarbor(WidgetBase):
              self.get_screen_width(),
              20), self.font, "center")
 
-        # buttons
-        # self.spacehunter_button.setX(self.surface_rect.x + self.spacing * 3)
-        # self.spacehunter_button.setY(self.surface_rect.y + self.spacing + 20)
-        #
-        # self.spaceship_button.setX(self.surface_rect.x + self.get_screen_width() / 2 - self.spaceship_button.get_screen_width() / 2)
-        # self.spaceship_button.setY(self.surface_rect.y + self.spacing + 20)
-        #
-        # self.cargoloader_button.setX(self.surface_rect.x + self.get_screen_width() - self.cargoloader_button.get_screen_width() - self.spacing * 3)
-        # self.cargoloader_button.setY(self.surface_rect.y + self.spacing + 20)
-
         self.spacehunter_button.set_position((
             self.surface_rect.x + self.spacing * 3, self.surface_rect.y + self.spacing + 20))
 

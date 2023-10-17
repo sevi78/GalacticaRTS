@@ -6,8 +6,7 @@ from source.gui.lod import inside_screen
 from source.gui.widgets.progress_bar import ProgressBar
 from source.utils import global_params
 from source.utils.colors import colors
-from source.multimedia_library.images import images, pictures_path, get_image
-from source.utils.positioning import debug_positions
+from source.multimedia_library.images import get_image
 from source.multimedia_library.sounds import sounds
 
 STATE_IMAGE_SIZE = 27
@@ -181,11 +180,6 @@ class PanZoomShipDraw:
         self.draw_scope()
 
         if inside_screen(self.get_screen_position()):
-            # stopp display if explosion has started: ig gif_handler.index > 0, the explosion starts
-            # if self.explosion.gif_handler.index > 0:
-            #     return
-
-            # self.draw_image()
             self.draw_state()
             self.draw_rank_image()
 

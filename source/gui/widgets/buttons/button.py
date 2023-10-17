@@ -214,13 +214,6 @@ class Button(WidgetBase, Moveable):
                 self.alignImageRect()
                 self.win.blit(self.image, self.rect)
 
-            # if self.atmosphere:
-            #     rect = self.atmosphere.get_rect()
-            #     rect.center = self.rect.center
-            #     rect.width, rect.height = self.rect.width * 1.1, self.rect.height * 1.1
-            #
-            #     self.win.blit(self.atmosphere, self.rect)
-
             self.text = self.font.render(self.string, True, self.textColour)
             self.textRect = self.text.get_rect()
             self.alignTextRect()

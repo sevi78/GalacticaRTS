@@ -56,17 +56,6 @@ def load_folders(folder, dict):
                 dict[folder][sub][image] = img
 
 
-def get_image__(image_name):
-    no_icon = images[pictures_path]["icons"]["no_icon.pmg"]
-    for category, sub_dict in images.items():
-        for sub_category, items in sub_dict.items():
-            if image_name in items:
-                return items[image_name]
-
-    print(f"image_name not found,no such image in any directory: {image_name}")
-    return None
-
-
 def get_image(image_name):
     no_icon = images[pictures_path]["icons"]["no_icon.png"]
     for category, sub_dict in images.items():

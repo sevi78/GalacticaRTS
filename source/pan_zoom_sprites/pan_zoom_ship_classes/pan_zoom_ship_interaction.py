@@ -73,7 +73,3 @@ class PanZoomShipInteraction:
                 return obj
 
         return None
-
-        # if self.orbit_object:
-        #     self.world_x, self.world_y= panzoom.screen_2_world(self.get_screen_x(), self.get_screen_y())
-        #     self.orbit_object = None

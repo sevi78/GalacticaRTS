@@ -17,6 +17,3 @@ class PanZoomMissile(PanZoomGameObject):
         self.target.energy -= MISSILE_POWER
         if self.target.energy <= 0:
             self.explode()
-    # def update(self):
-    #     self.update_pan_zoom_game_object()
-    #     #print (self.rect.center, self.target.rect.center)

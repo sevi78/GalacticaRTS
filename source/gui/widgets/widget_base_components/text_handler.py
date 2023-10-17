@@ -24,6 +24,4 @@ class TextHandler:
         elif self.textVAlign == 'over_the_top':
             self.textRect.bottom = self.screen_y - self.margin // 2
         elif self.textVAlign == 'below_the_bottom':
-            # self.textRect.bottom = self.screen_y + self.margin // 2
-            # self.textRect.bottom = self.screen_y + self.get_screen_height() + (self.margin // 2)
             self.textRect.bottom = self.center[1] + self.screen_height / 2

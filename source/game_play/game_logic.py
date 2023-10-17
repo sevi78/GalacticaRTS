@@ -145,7 +145,6 @@ Fields:
 
         else:
             global_params.game_speed = self.game_speed
-            # global_params.enable_orbit = True
             self.event_text = "Game Continued!"
 
     def quit_game(self, events):
@@ -221,7 +220,6 @@ Fields:
             if self.ctrl_pressed and self.s_pressed:
                 print("self.save_planets()")
                 self.save_planets()
-                # self.save_objects("config.json", "ship_config", self.ships)
 
             if self.ctrl_pressed and self.l_pressed:
                 self.load_planets()
@@ -230,7 +228,6 @@ Fields:
         # save_load each file
         for planet in sprite_groups.planets:
             planet.save_to_db()
-            # save_planets_data(self.planets, "database")
 
     def save_objects(self, filename, list_):
         if not list_:
@@ -245,21 +242,17 @@ Fields:
         # save_load each file
         for planet in sprite_groups.planets:
             planet.load_from_db()
-            # save_planets_data(sprite_groups.planets, "database")
 
     def restart_game(self):
         self.selected_planet = None
         self.game_objects = []
         self.explored_planets = []
 
-        # print ("before_init: ", len(sprite_groups.planets))
         for planet in sprite_groups.planets:
             sprite_groups.planets.remove(planet)
             planet.reset_planet()
 
         for planet in sprite_groups.planets:
-            # planet.set_orbit_object()
-
             planet.explored = False
             planet.just_explored = False
 
@@ -278,5 +271,3 @@ Fields:
             spacing=spacing,
             parent=self,
             layer=9)
-
-        # print("after_init: ", len(sprite_groups.planets))
