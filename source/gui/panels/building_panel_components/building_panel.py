@@ -11,7 +11,7 @@ from source.gui.panels.building_panel_components.building_constructor import Bui
 from source.gui.panels.building_panel_components.building_panel_constructor import BuildingPanelConstructor
 from source.gui.panels.building_panel_components.building_panel_draw import BuildingPanelDraw
 from source.gui.panels.building_panel_components.building_slot import BuildingSlot
-from source.gui.panels.building_panel_components.planetary_defence_widget_codium import PlanetaryDefenceWidget
+from source.gui.panels.building_panel_components.planetary_defence_widget import PlanetaryDefenceWidget
 from source.gui.panels.building_panel_components.space_harbor import SpaceHarbor
 from source.gui.panels.toggle_switch import ToggleSwitch
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase

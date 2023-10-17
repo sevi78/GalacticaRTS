@@ -139,6 +139,7 @@ ui_rounded_corner_big_thickness = 5
 global draw_universe
 draw_universe = True
 
+
 # global sprites
 # sprites = pygame.sprite.LayeredUpdates()
 #
@@ -150,9 +151,6 @@ draw_universe = True
 #
 # global missiles
 # missiles = pygame.sprite.LayeredUpdates()
-
-
-
 
 
 class GlobalParams__:

@@ -239,7 +239,3 @@ class TextWrap:
 #
 #         # get the last height value
 #         self.word_height_sum = y
-
-
-
-

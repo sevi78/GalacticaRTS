@@ -10,12 +10,13 @@ from source.pan_zoom_sprites.pan_zoom_ufo import PanZoomUfo
 from source.utils import global_params
 from source.database.saveload import load_file
 
-
 ENEMY_SPAWN_INTERVAL = 1555
 
 pan_zoom_ufo_config = load_file("enemy_handler_config.json")
-#pan_zoom_ufo_config = load_file("pan_zoom_ufo_config.json")
-#pan_zoom_ufo_config["spawn_interval"] = ENEMY_SPAWN_INTERVAL
+
+
+# pan_zoom_ufo_config = load_file("pan_zoom_ufo_config.json")
+# pan_zoom_ufo_config["spawn_interval"] = ENEMY_SPAWN_INTERVAL
 
 class EnemyHandler(InterfaceData):
     """
@@ -59,7 +60,6 @@ class EnemyHandler(InterfaceData):
     interface_variables: A dictionary of interface variables used for the user interface.
     """
 
-
     def __init__(self, interface_variables):
         self.name = "enemy handler"
         self.time_since_last_spawn = 0
@@ -73,7 +73,6 @@ class EnemyHandler(InterfaceData):
                 setattr(self, key + "_max", value)
                 if not key.endswith("_max"):
                     self.interface_variable_names.append(key)
-
 
         InterfaceData.__init__(self, self.interface_variable_names)
         self.setup()
@@ -113,7 +112,9 @@ class EnemyHandler(InterfaceData):
 
     def spawn_ufo(self, planet):
         x, y = pan_zoom_handler.screen_2_world(planet.screen_x, planet.screen_y)
-        ufo = PanZoomUfo(self.win, x, y, pan_zoom_ufo_config["enemy handler"]["width"], pan_zoom_ufo_config["enemy handler"]["height"], pan_zoom=pan_zoom_handler,
+        ufo = PanZoomUfo(self.win, x, y,
+            pan_zoom_ufo_config["enemy handler"]["width"],
+            pan_zoom_ufo_config["enemy handler"]["height"], pan_zoom=pan_zoom_handler,
             image_name="ufo_74x30.png", align_image="center", group="ufos")
 
         return ufo

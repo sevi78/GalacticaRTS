@@ -9,6 +9,7 @@ from source.utils import global_params
 from source.utils.colors import colors, dim_color
 from source.utils.positioning import get_distance
 
+
 def draw_orbit_simple(self):
     """
     draws the orbit
@@ -34,7 +35,6 @@ def draw_orbit_simple(self):
         if len(points) > 1:
             for i in points:
                 pygame.draw.rect(global_params.win, colors.ui_dark, (i[0], i[1], width, width))
-
 
 
 def draw_orbit_(self):
@@ -108,14 +108,13 @@ def draw_orbit(self):
     if not self.orbit_object or not self.orbit_radius:
         return
 
-
     max_points = 25
     min_dist = 1
     max_dist = 1500
     min_color_value = 130
     size_factor = 12
     min_dist_to_draw = self.orbit_object.rect.width / 5
-    #orbit_radius = get_distance(self.rect.center, self.orbit_object.rect.center)
+    # orbit_radius = get_distance(self.rect.center, self.orbit_object.rect.center)
 
     if global_params.show_orbit:
         pos = get_orbit_pos(self)

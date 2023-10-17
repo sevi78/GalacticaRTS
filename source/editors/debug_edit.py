@@ -22,7 +22,6 @@ class DebugEdit(EditorBase):
         self.planets_debug = False
         self.ufos_debug = False
 
-
         #  widgets
         self.widgets = []
 
@@ -94,21 +93,13 @@ class DebugEdit(EditorBase):
         for i in self.checkboxes:
             i.checked = False
 
-    # def debug_grid(self):
-    #     if not self.grid_debug:
-    #         return
-    #     x,y = 2000,2000
-    #     width, height = 200,200
-    #     rect = pygame.Rect(x,y,width, height)
-    #     pygame.draw.rect(self.win, self.frame_color,rect, 1  )
-
     def set_debug_to_objects(self, key):
         if key in sprite_groups.__dict__:
             for obj in getattr(sprite_groups, key).sprites():
                 obj.debug = getattr(self, key + "_debug")
 
         if key == "quadrants":
-            for k,v in level.quadrants.items():
+            for k, v in level.quadrants.items():
                 v.debug = getattr(self, key + "_debug")
 
     def get_checkbox_values(self):
@@ -122,7 +113,6 @@ class DebugEdit(EditorBase):
             if i.key == "debug_icon":
                 global_params.debug = i.checked
 
-
     def draw(self):
         if not self._hidden and not self._disabled:
             self.draw_frame()
@@ -131,9 +121,7 @@ class DebugEdit(EditorBase):
 
             celestals = len(WidgetHandler.get_all_widgets())
 
-            y += self.text_spacing*2
-
-
+            y += self.text_spacing * 2
 
             self.draw_text(self.world_x + self.text_spacing, y, 200, 20,
                 f"pan_zoom.zoom: {pan_zoom_handler.zoom}")
@@ -161,11 +149,6 @@ class DebugEdit(EditorBase):
             y += self.text_spacing
             for key, value in sprite_groups.__dict__.items():
                 if type(value) == PanZoomLayeredUpdates:
-
                     self.draw_text(self.world_x + self.text_spacing, y, 200, 20,
                         f"{key}: {len(value)} / visibles: {len([i for i in value if i._hidden == False])}")
                     y += self.text_spacing
-
-
-
-

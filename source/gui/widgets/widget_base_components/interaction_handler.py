@@ -56,4 +56,4 @@ class InteractionHandler:
 
     def draw_hover_rect(self):
         pygame.draw.rect(self.win, colors.ui_dark, (
-        self.get_screen_x(), self.get_screen_y(), self.get_screen_width() + 3, self.get_screen_height() + 3), 2, 3)
+            self.get_screen_x(), self.get_screen_y(), self.get_screen_width() + 3, self.get_screen_height() + 3), 2, 3)

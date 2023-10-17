@@ -42,7 +42,7 @@ class Universe(WidgetBase):
     - star, pulsating_star, asteroid, nebulae, galaxy, comet, universe, quadrant: lists of celestial objects"""
     __slots__ = WidgetBase.__slots__ + (
         'amount', 'left_end', 'right_end', 'top_end', 'bottom_end', 'screen_size', 'star_images', 'asteroid_images',
-        'comet_images', 'nebulae_images', 'galaxy_images', 'star', 'pulsating_star','flickering_star', 'asteroid',
+        'comet_images', 'nebulae_images', 'galaxy_images', 'star', 'pulsating_star', 'flickering_star', 'asteroid',
         'nebulae', 'galaxy', 'comet', 'universe', 'quadrant', 'celestial_objects', 'average_draw_time', 'min_draw_time',
         'max_draw_time'
         )

@@ -202,7 +202,7 @@ class ResourcePanel(WidgetBase):
 
         # fps, this just for debug purposes
         self.clock.tick(int(global_params.fps))
-        fps = f"fps: {str(self.clock.get_fps())}"#, {sprite_groups.__str__()} hover:{global_params.hover_object}"
-        #fps = f"fps: {str(self.clock.get_fps())}, {sprite_groups.__str__()} hover:{global_params.hover_object}"
+        fps = f"fps: {str(self.clock.get_fps())}"  # , {sprite_groups.__str__()} hover:{global_params.hover_object}"
+        # fps = f"fps: {str(self.clock.get_fps())}, {sprite_groups.__str__()} hover:{global_params.hover_object}"
         text = self.clock_font.render(fps, 0, self.frame_color)
         self.win.blit(text, (0, 0, 30, 30))

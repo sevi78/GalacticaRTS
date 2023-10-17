@@ -57,7 +57,7 @@ class PanZoomHandler:
     - pan_start_pos: starting position of the mouse during a pan event"""
 
     def __init__(self, screen, screen_width, screen_height, **kwargs):
-        #self.parent = kwargs.get("parent")
+        # self.parent = kwargs.get("parent")
         self.key_pressed = False
         self.ctrl_pressed = False
         self.zoomable = False

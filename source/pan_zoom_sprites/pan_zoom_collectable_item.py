@@ -15,7 +15,7 @@ class PanZoomCollectableItem(PanZoomSprite, PanZoomMouseHandler):
     """"""
 
     __slots__ = PanZoomSprite.__slots__ + ('property', 'info_text', 'tooltip', 'energy', 'food', 'minerals', 'water',
-                                         'population', 'technology', 'resources', 'collect_text')
+                                           'population', 'technology', 'resources', 'collect_text')
 
     # PanZoomMouseHandler
     __slots__ += ("_on_hover", "on_hover_release")
@@ -40,8 +40,6 @@ class PanZoomCollectableItem(PanZoomSprite, PanZoomMouseHandler):
 
         sprite_groups.collectable_items.add(self)
 
-
-
     def end_object(self):
         sprite_groups.collectable_items.remove(self)
         self.kill()
@@ -63,7 +61,7 @@ class PanZoomCollectableItem(PanZoomSprite, PanZoomMouseHandler):
 
     def update(self):
         self.update_pan_zoom_sprite()
-        #self.set_world_position((self.world_x, self.world_y))
+        # self.set_world_position((self.world_x, self.world_y))
         self.listen()
 
         global_params.app.tooltip_instance.reset_tooltip(self)

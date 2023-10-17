@@ -16,5 +16,4 @@ class PanZoomComet(PanZoomCelestialObject):
         if not inside_screen(self.rect.center):
             return
 
-
         self.draw()

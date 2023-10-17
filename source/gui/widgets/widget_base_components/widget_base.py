@@ -109,4 +109,4 @@ class WidgetBase(WidgetBaseMethods, ImageHandler, TextHandler, PositionHandler, 
 
         WidgetHandler.addWidget(self)
 
-        #print (self,self.__dict__, self.__slots__)
+        # print (self,self.__dict__, self.__slots__)

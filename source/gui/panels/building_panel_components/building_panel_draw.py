@@ -4,6 +4,8 @@ from pygame_widgets.util import drawText
 from source.multimedia_library.images import images, pictures_path, get_image
 
 SMILEY_SIZE = 20
+
+
 class BuildingPanelDraw:
     def draw_planet_params(self, x):
         # draw population text
@@ -15,9 +17,9 @@ class BuildingPanelDraw:
         self.world_y += self.spacing * 3
 
         if self.parent.selected_planet.smiley_status:
-            smiley = pygame.transform.scale(get_image("smile.png"), (SMILEY_SIZE,SMILEY_SIZE))
+            smiley = pygame.transform.scale(get_image("smile.png"), (SMILEY_SIZE, SMILEY_SIZE))
         else:
-            smiley = pygame.transform.scale(get_image("sad.png"), (SMILEY_SIZE,SMILEY_SIZE))
+            smiley = pygame.transform.scale(get_image("sad.png"), (SMILEY_SIZE, SMILEY_SIZE))
 
         self.win.blit(smiley, (x, self.world_y))
 
@@ -31,7 +33,6 @@ class BuildingPanelDraw:
         self.planet_image.set_alpha(128)
         self.win.blit(self.planet_image, self.planet_surface_rect.midtop)
         self.world_y += self.spacing * 3
-
 
         # building slots:____________________________________________________________________________________________
         drawText(self.win, "building slots:  " + str(self.parent.selected_planet.building_slot_amount) + "/" + str(self.parent.selected_planet.building_slot_max_amount - 1), self.frame_color, (
@@ -56,7 +57,6 @@ class BuildingPanelDraw:
         self.minus_button_image["minus_icon"] = minus_image_rect
         self.win.blit(minus_image, (x, self.world_y))
         self.world_y += self.spacing * 3
-
 
         # buildings:_______________________________________________________________________________________________
         drawText(self.win, "buildings:  " + str(len(self.parent.selected_planet.buildings)) + "/" + str(int(self.parent.selected_planet.buildings_max)), self.frame_color, (
@@ -104,9 +104,11 @@ class BuildingPanelDraw:
             self.planet_surface.get_height()), self.font, "center")
 
         if self.parent.selected_planet.thumpsup_status:
-            thumpsup = pygame.transform.scale(pygame.transform.flip(get_image("thumps_upred.png"), True, True), (SMILEY_SIZE, SMILEY_SIZE))
+            thumpsup = pygame.transform.scale(pygame.transform.flip(get_image("thumps_upred.png"), True, True), (
+            SMILEY_SIZE, SMILEY_SIZE))
         else:
-            thumpsup = pygame.transform.scale(pygame.transform.flip(get_image("thumps_up.png"), True, False), (SMILEY_SIZE, SMILEY_SIZE))
+            thumpsup = pygame.transform.scale(pygame.transform.flip(get_image("thumps_up.png"), True, False), (
+            SMILEY_SIZE, SMILEY_SIZE))
 
         self.win.blit(thumpsup, (x, self.world_y))
 
@@ -125,7 +127,6 @@ class BuildingPanelDraw:
 
             self.world_y += self.spacing * 2
         self.world_y += self.spacing * 2
-
 
         # GLOBAL PRODUCTION_________________________________________________________________________________________
         # global production label

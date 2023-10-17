@@ -45,7 +45,6 @@ class Spaceship(PanZoomShip, InterfaceData):
 
         InterfaceData.__init__(self, self.interface_variable_names)
 
-
         # get data from ship_settings
         self.setup()
 
@@ -92,7 +91,6 @@ class Cargoloader(PanZoomShip, InterfaceData):
 
         # interface
         InterfaceData.__init__(self, self.interface_variable_names)
-
 
         # get data from ship_settings
         self.setup()

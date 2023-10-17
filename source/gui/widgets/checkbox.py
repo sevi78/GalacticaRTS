@@ -29,7 +29,7 @@ class Checkbox(ImageButton):
             get_image("uncheck.png"), (BUTTON_SIZE, BUTTON_SIZE))
 
         if self.image_name:
-            self.image = pygame.transform.scale(get_image(self.image_name),(BUTTON_SIZE, BUTTON_SIZE))
+            self.image = pygame.transform.scale(get_image(self.image_name), (BUTTON_SIZE, BUTTON_SIZE))
 
         if not self.image:
             try:

@@ -39,8 +39,6 @@ class PanZoomGameObject(PanZoomSprite):
         # speed
         self.speed = GAME_OBJECT_SPEED
 
-
-
     def set_attack_distance(self):
         self.attack_distance = self.attack_distance_raw * self.pan_zoom.zoom
 

@@ -1,3 +1,4 @@
+import logging
 import pygame
 from pygame_widgets.util import drawText
 
@@ -13,18 +14,31 @@ from source.utils.global_params import ui_rounded_corner_small_thickness
 from source.multimedia_library.images import get_image
 from source.multimedia_library.sounds import sounds
 
+FONT_SIZE = 12
+
+# Constants
+ICON_SIZE = 25
+BUTTON_SIZE = 25
+
 
 class PlanetaryDefenceWidget(WidgetBase):
     def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
         super().__init__(win, x, y, width, height, isSubWidget, **kwargs)
-
         self.name = "Planetary Defence"
-        self.icon_size = kwargs.get("icon_size", 25)
+        self.icon_size = kwargs.get("icon_size", ICON_SIZE)
         self.parent = kwargs.get("parent", None)
         self.frame_color = colors.frame_color
+        self.width = width
+        self.height = height
 
-        # construct surface
-        self.surface = pygame.surface.Surface((width, height))
+        self._initialize_surface()
+        self._initialize_text(kwargs)
+        self._initialize_buttons()
+
+        self.hide_buttons()
+
+    def _initialize_surface(self):
+        self.surface = pygame.surface.Surface((self.width, self.height))
         self.surface.set_alpha(19)
         self.surface_rect = self.surface.get_rect()
         self.surface_rect.x = self.parent.surface_rect.x + self.parent.spacing
@@ -32,14 +46,13 @@ class PlanetaryDefenceWidget(WidgetBase):
         self.spacing = self.parent.spacing
         self.surface_frame = pygame.draw.rect(self.win, self.frame_color, self.surface_rect, ui_rounded_corner_small_thickness, global_params.ui_rounded_corner_radius_small)
 
-        # text
-        self.font_size = kwargs.get("font_size", 12)
+    def _initialize_text(self, kwargs):
+        self.font_size = kwargs.get("font_size", FONT_SIZE)
         self.font = pygame.font.SysFont(global_params.font_name, self.font_size)
         self.info_text = kwargs.get("infotext")
 
-        # buttons
+    def _initialize_buttons(self):
         self.buttons = []
-        self.button_size = 25
         self.cannon_icon = ImageButton(win=self.win,
             x=self.get_screen_x(),
             y=self.surface_rect.y + self.spacing,
@@ -47,22 +60,22 @@ class PlanetaryDefenceWidget(WidgetBase):
             height=self.icon_size,
             isSubWidget=False,
             parent=self,
-            image=pygame.transform.scale(get_image("cannon.png"), (self.button_size, self.button_size)),
+            image=pygame.transform.scale(get_image("cannon.png"), (BUTTON_SIZE, BUTTON_SIZE)),
             tooltip="build cannon",
-            info_text= create_info_panel_planetary_defence_text("cannon"),
+            info_text=create_info_panel_planetary_defence_text("cannon"),
             frame_color=self.frame_color,
             moveable=False,
             include_text=True, layer=self.layer,
             onClick=lambda: self.build("cannon"))
 
         self.missile_launcher_icon = ImageButton(win=self.win,
-            x=self.get_screen_x() + self.button_size + 10,
+            x=self.get_screen_x() + BUTTON_SIZE + 10,
             y=self.surface_rect.y + self.spacing,
             width=self.icon_size,
             height=self.icon_size,
             isSubWidget=False,
             parent=self,
-            image=pygame.transform.scale(get_image("missile.png"), (self.button_size, self.button_size)),
+            image=pygame.transform.scale(get_image("missile.png"), (BUTTON_SIZE, BUTTON_SIZE)),
             tooltip="build missile launcher",
             info_text=create_info_panel_planetary_defence_text("missile"),
             frame_color=self.frame_color,
@@ -70,13 +83,9 @@ class PlanetaryDefenceWidget(WidgetBase):
             include_text=True, layer=self.layer,
             onClick=lambda: self.build("missile"))
 
-        # initial hide the buttons
         self.parent.widgets.append(self)
         self.buttons.append(self.cannon_icon)
         self.buttons.append(self.missile_launcher_icon)
-        self.hide_buttons()
-
-        #print (create_info_panel_building_text())
 
     def set_visible(self):
         if not self.parent.parent.selected_planet:
@@ -101,9 +110,6 @@ class PlanetaryDefenceWidget(WidgetBase):
         for button in self.buttons:
             button.show()
 
-    def listen_(self, events):
-        pass
-
     def draw(self):
         if not self.set_visible():
             return
@@ -114,7 +120,11 @@ class PlanetaryDefenceWidget(WidgetBase):
         else:
             self.show_buttons()
 
-        # frame
+        self._draw_frame()
+        self._draw_label()
+        self._draw_buttons()
+
+    def _draw_frame(self):
         self.surface_rect.x = self.parent.surface_rect.x
         self.surface_rect.y = self.parent.world_y + self.spacing + 5
 
@@ -124,19 +134,18 @@ class PlanetaryDefenceWidget(WidgetBase):
         self.surface_frame = pygame.draw.rect(self.win, self.frame_color, self.surface_rect, ui_rounded_corner_small_thickness, global_params.ui_rounded_corner_radius_small)
         self.win.blit(self.surface, self.surface_frame)
 
-        # label
+    def _draw_label(self):
         drawText(self.win, self.name, self.frame_color,
             (self.surface_rect.x + self.parent.spacing_x - 36, self.surface_rect.y + self.spacing,
              self.get_screen_width(),
              20), self.font, "center")
 
-        # buttons
+    def _draw_buttons(self):
         self.cannon_icon.set_position((self.surface_rect.x + self.spacing * 3, self.surface_rect.y + self.spacing + 20))
         self.missile_launcher_icon.set_position((
-        self.surface_rect.x + self.button_size + 10 + self.spacing * 3, self.surface_rect.y + self.spacing + 20))
+            self.surface_rect.x + BUTTON_SIZE + 10 + self.spacing * 3, self.surface_rect.y + self.spacing + 20))
 
     def build(self, obj):
-
         price = planetary_defence_prices[obj]
         player = self.parent.parent.player
         app = self.parent.parent
@@ -152,7 +161,6 @@ class PlanetaryDefenceWidget(WidgetBase):
             widget_height = 35
             spacing = 5
 
-            # get the position and size
             win = pygame.display.get_surface()
             height = win.get_height()
             y = height - spacing - widget_height - widget_height * len(app.building_widget_list)
@@ -174,5 +182,14 @@ class PlanetaryDefenceWidget(WidgetBase):
                 tooltip=obj, layer=4
                 )
 
-            # add building widget to building cue to make shure it can be build only if building_cue is < building_slots_amount
             planet.building_cue += 1
+
+
+# Logging
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+handler = logging.StreamHandler()
+handler.setLevel(logging.DEBUG)
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+handler.setFormatter(formatter)
+logger.addHandler(handler)

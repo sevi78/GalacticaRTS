@@ -7,7 +7,6 @@ from source.utils import global_params
 from source.utils.colors import colors
 
 
-
 class InterfaceVariable:
     def __init__(self, name, value, value_min, value_max):
         self.name = name
@@ -82,7 +81,7 @@ class InterfaceData:
                 max = getattr(obj, i)
 
             self.interface_variables[i] = InterfaceVariable(i, value, min, max)
-        print ("self.interface_variables", self.interface_variables)
+        print("self.interface_variables", self.interface_variables)
 
     def get_interface_variables(self):
         self.set_variables(self)

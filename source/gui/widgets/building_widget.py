@@ -174,7 +174,7 @@ class BuildingWidget(WidgetBase):
         # progress_bar
         self.progress_bar.setWidth(self.parent.building_panel.get_screen_width() - self.button.get_screen_width() - 15)
         self.progress_bar.set_position((
-        self.dynamic_x + self.button.get_screen_width() + 5, y + self.button.get_screen_height() / 2))
+            self.dynamic_x + self.button.get_screen_width() + 5, y + self.button.get_screen_height() / 2))
 
         # draw widgets text
         self.text = self.name + ": " + str(int(self.progress_bar.percent * 100)) + "%/ " + str(self.parent.ui_helper.hms(self.progress_time))

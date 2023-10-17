@@ -17,8 +17,6 @@ class Cheat:
             return
         self.selected_planet.buildings.append("cannon")
 
-
-
     def cheat_population(self):
         for i in sprite_groups.planets:
             i.population = 100000
@@ -54,7 +52,6 @@ class Cheat:
             return
         ufo = enemy_handler.enemy_handler.spawn_ufo(self.selected_planet)
         attack.launch_missile(self.selected_planet, ufo)
-
 
     def cheat(self, events):
         # ignore all inputs while any text input is active

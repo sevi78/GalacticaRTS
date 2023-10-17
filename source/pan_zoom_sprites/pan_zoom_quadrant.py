@@ -16,14 +16,13 @@ class Quadrant(PanZoomSprite):
     """this holds the universe of the space in the rect of (x,y,width,height)"""
 
     def __init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs):
-        PanZoomSprite.__init__(self,win, x, y, width, height, pan_zoom, image_name, **kwargs)
+        PanZoomSprite.__init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs)
 
         # we need to overload this, otherwise it will get the image size of PanZoomSprite, wich is no_image size
         self.world_width = width
         self.world_height = height
-        #self.update_pan_zoom_sprite()
+        # self.update_pan_zoom_sprite()
         self.universe = Universe(self.win, x, y, width, height)
-
 
     def hide_universe(self):
         for key, value in self.universe.celestial_objects.items():
@@ -37,18 +36,19 @@ class Quadrant(PanZoomSprite):
 
     def update(self):
         self.update_pan_zoom_sprite()
-        #self.set_world_position((self.world_x, self.world_y))
+        # self.set_world_position((self.world_x, self.world_y))
         if inside_screen(self.rect.center):
-            #self.show_universe()
-            #self.show()
+            # self.show_universe()
+            # self.show()
 
             pass
-            #print ("Quadrant.update")
+            # print ("Quadrant.update")
 
         else:
             pass
-            #self.hide_universe()
-            #self.hide()
+            # self.hide_universe()
+            # self.hide()
+
 
 def main(win):
     running = True

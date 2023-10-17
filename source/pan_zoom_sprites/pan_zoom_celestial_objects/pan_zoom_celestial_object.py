@@ -12,7 +12,6 @@ from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_gif import Pan
 from source.utils import global_params
 
 
-
 class PanZoomCelestialObject(PanZoomSprite):
     # __slots__ = WidgetBase.__slots__
     # __slots__ += (
@@ -22,8 +21,8 @@ class PanZoomCelestialObject(PanZoomSprite):
     #     'zoomable')
     possible_directions = [-1, 1]
 
-    def __init__(self, win, x, y, width, height, pan_zoom, image_name,  **kwargs):
-        #WidgetBase.__init__(self, win, x, y, width, height, isSubWidget, **kwargs)
+    def __init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs):
+        # WidgetBase.__init__(self, win, x, y, width, height, isSubWidget, **kwargs)
         PanZoomSprite.__init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs)
         self.speed = random.uniform(0.1, 1.5)
         self.direction = (random.uniform(-self.speed, self.speed), random.uniform(-self.speed, self.speed))
@@ -66,22 +65,21 @@ class PanZoomCelestialObject(PanZoomSprite):
             self.world_y = global_params.scene_height * global_params.quadrant_amount
 
         self.set_world_position((self.world_x, self.world_y))
+
     def update(self):
         self.update_pan_zoom_sprite()
         if not inside_screen(self.rect.center):
             return
 
-        #if inside_screen(self.rect.center):
+        # if inside_screen(self.rect.center):
         self.draw()
 
     def draw(self):
         if self._hidden:
             return
         if not self.image_name == "no_image.png":
-
             self.win.blit(self.image, self.rect)
-        #print ("PanZoomCelestialObject.update")
-
+        # print ("PanZoomCelestialObject.update")
 
     # def draw_(self):
     #     self.set_screen_position()
@@ -99,8 +97,6 @@ class PanZoomCelestialObject(PanZoomSprite):
     #             self.rect.x = self.get_screen_x() + self.image.get_size()[0] / 2 * self.get_zoom()
     #             self.rect.y = self.get_screen_y() + self.image.get_size()[1] / 2 * self.get_zoom()
 
-
-
     # def debug_object__(self):
     #     if self.rect:
     #         pygame.draw.rect(self.win, self.frame_color, self.rect, 1)
@@ -112,7 +108,6 @@ class PanZoomCelestialObject(PanZoomSprite):
     #     text = self.type
     #     drawText(global_params.app.win, text, self.frame_color, (
     #     self.get_screen_x(), self.get_screen_y(), 400, 30), font, "left")
-
 
 # class Quadrant(CelestialObject):
 #     def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):

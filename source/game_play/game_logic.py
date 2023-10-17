@@ -189,7 +189,7 @@ Fields:
                         global_params.WIDTH_CURRENT = size[0]
                         global_params.HEIGHT_CURRENT = size[1]
 
-                    #self.universe.set_screen_size((global_params.WIDTH_CURRENT, global_params.WIDTH_CURRENT))
+                    # self.universe.set_screen_size((global_params.WIDTH_CURRENT, global_params.WIDTH_CURRENT))
                     # for i in sprite_groups.planets:
                     #     i.set_screen_size((global_params.WIDTH_CURRENT, global_params.WIDTH_CURRENT))
 
@@ -221,7 +221,7 @@ Fields:
             if self.ctrl_pressed and self.s_pressed:
                 print("self.save_planets()")
                 self.save_planets()
-                #self.save_objects("config.json", "ship_config", self.ships)
+                # self.save_objects("config.json", "ship_config", self.ships)
 
             if self.ctrl_pressed and self.l_pressed:
                 self.load_planets()

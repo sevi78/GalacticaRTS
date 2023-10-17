@@ -50,9 +50,9 @@ class WidgetHandler:
 
     @staticmethod
     def main__(events: [Event]) -> None:
-        #WidgetHandler.set_visible(events)
+        # WidgetHandler.set_visible(events)
         # 0:[...]
-        #print (WidgetHandler.layers.items())
+        # print (WidgetHandler.layers.items())
         for key, widgetlist in WidgetHandler.layers.items():
 
             # get widget
@@ -86,7 +86,6 @@ class WidgetHandler:
                 if widget.isSubWidget:
                     if hasattr(widget, "listen"):
                         widget.listen(events)
-
 
     @staticmethod
     def get_all_widgets():

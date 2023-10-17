@@ -39,6 +39,6 @@ class PanZoomAsteroid(PanZoomCelestialObject):
         if not inside_screen(self.rect.center):
             return
 
-        #if inside_screen(self.rect.center):
+        # if inside_screen(self.rect.center):
         self.draw()
-        #print ("PanZoomAsteroid.update")
+        # print ("PanZoomAsteroid.update")

@@ -1,5 +1,6 @@
 class Debugger:
-    __slots__ = ("ships", "planets", "ufos", "collectable_items")#, "planet", "celestials", "items")
+    __slots__ = ("ships", "planets", "ufos", "collectable_items")  # , "planet", "celestials", "items")
+
     def __init__(self):
         self.ships = False
         self.planets = False
@@ -10,6 +11,4 @@ class Debugger:
         # self.items = False
 
 
-
 debugger = Debugger()
-

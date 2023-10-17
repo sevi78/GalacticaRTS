@@ -19,7 +19,8 @@ class PanZoomShipButtons:
     def reposition_buttons(self):
         self.spacing = 15
         self.speed_up_button.set_position((
-        self.get_screen_x() + self.get_screen_width() + self.spacing, self.get_screen_y() + self.get_screen_height()))
+            self.get_screen_x() + self.get_screen_width() + self.spacing,
+            self.get_screen_y() + self.get_screen_height()))
         self.radius_button.set_position((self.get_screen_x() + self.get_screen_width() + self.spacing,
                                          self.get_screen_y() + self.get_screen_height() - self.spacing * 3))
 

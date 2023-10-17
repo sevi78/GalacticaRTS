@@ -1,8 +1,6 @@
 import pygame
 
 
-
-
 class ImageHandler:
 
     def __init__(self, **kwargs):
@@ -12,14 +10,14 @@ class ImageHandler:
         self._image_name_small = kwargs.get("image_name_small")
         self.image_name_big = kwargs.get("image_name_big")
 
-#
-# class ImageHandler:
-#     def __init__(self, **kwargs):
-#         self.image = kwargs.get("image", None)
-#         self.image_raw = kwargs.get("image", None)
-#         self.rect = None
-#         self._image_name_small = kwargs.get("image_name_small")
-#         self.image_name_big = kwargs.get("image_name_big")
+    #
+    # class ImageHandler:
+    #     def __init__(self, **kwargs):
+    #         self.image = kwargs.get("image", None)
+    #         self.image_raw = kwargs.get("image", None)
+    #         self.rect = None
+    #         self._image_name_small = kwargs.get("image_name_small")
+    #         self.image_name_big = kwargs.get("image_name_big")
 
     def alignImageRect(self):
         self.rect.center = (self.screen_x + self.screen_width // 2, self.screen_y + self.screen_height // 2)

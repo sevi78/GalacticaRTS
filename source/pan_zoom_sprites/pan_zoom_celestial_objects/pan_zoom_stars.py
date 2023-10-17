@@ -11,8 +11,8 @@ from source.utils.positioning import rot_center
 
 
 class PanZoomFlickeringStar(PanZoomCelestialObject):
-    def __init__(self, win, x, y, width, height, pan_zoom, image_name,  **kwargs):
-        PanZoomCelestialObject.__init__(self, win, x, y, width, height,  pan_zoom, image_name,  **kwargs)
+    def __init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs):
+        PanZoomCelestialObject.__init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs)
 
     def draw(self):
         if self._hidden:
@@ -27,6 +27,7 @@ class PanZoomFlickeringStar(PanZoomCelestialObject):
         # Draw the flickering star using the current color
         pygame.draw.lines(self.win, color, True, [(self.rect.centerx + 1, self.rect.centery),
                                                   (self.rect.centerx + 1, self.rect.centery)])
+
     def update(self):
         self.update_pan_zoom_sprite()
         if not inside_screen(self.rect.center):
@@ -44,7 +45,7 @@ class PanZoomPulsatingStar(PanZoomCelestialObject):
         t = pygame.time.get_ticks() % (self.pulse_time * 1000) / (self.pulse_time * 1000)
         s = 2 * math.pi * (t + self.start_pulse)
         c = int(127 * max(0.5, 1 + math.cos(2 * math.pi * t)))
-        gfxdraw.filled_circle(self.win, self.rect.centerx, self.rect.centery,int(self.pulsating_star_size * self.get_zoom()), (
+        gfxdraw.filled_circle(self.win, self.rect.centerx, self.rect.centery, int(self.pulsating_star_size * self.get_zoom()), (
             c, c, c))
 
     def update(self):

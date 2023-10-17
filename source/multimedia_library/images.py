@@ -63,8 +63,9 @@ def get_image__(image_name):
             if image_name in items:
                 return items[image_name]
 
-    print (f"image_name not found,no such image in any directory: {image_name}")
+    print(f"image_name not found,no such image in any directory: {image_name}")
     return None
+
 
 def get_image(image_name):
     no_icon = images[pictures_path]["icons"]["no_icon.png"]
@@ -73,7 +74,6 @@ def get_image(image_name):
             if image_name in items:
                 return items[image_name]
     return no_icon
-
 
 
 def load_gif_frames(gif_name):

@@ -31,7 +31,8 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetButton
     """ Main functionalities:
 
     """
-    __slots__ = PanZoomSprite.__slots__ + ( 'orbit_radius', 'font_size', 'font', '_on_hover', 'on_hover_release', 'size_x',
+    __slots__ = PanZoomSprite.__slots__ + (
+    'orbit_radius', 'font_size', 'font', '_on_hover', 'on_hover_release', 'size_x',
     'size_y', 'resources', 'buildings', 'buildings_max', 'population', 'population_limit', 'population_grow',
     'alien_population', 'building_slot_amount', 'building_slot_upgrades', 'building_slot_upgrade_prices',
     'building_slot_upgrade_energy_consumption', 'building_slot_max_amount', 'building_cue', 'specials',
@@ -39,7 +40,8 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetButton
     'production_minerals', 'production_city', 'production_technology', 'population_buildings',
     'population_buildings_values', 'building_buttons_energy', 'building_buttons_water', 'building_buttons_food',
     'building_buttons_minerals', 'building_buttons', 'building_buttons_list', 'building_buttons_visible',
-    'overview_buttons', 'check_image', 'smiley_status', 'thumpsup_status', 'frame_color', 'gif_handler', 'has_atmosphere', 'atmosphere', 'atmosphere_raw', 'type', 'parent', 'screen_size', 'target',
+    'overview_buttons', 'check_image', 'smiley_status', 'thumpsup_status', 'frame_color', 'gif_handler',
+    'has_atmosphere', 'atmosphere', 'atmosphere_raw', 'type', 'parent', 'screen_size', 'target',
     'moving', 'tooltip', 'id', 'level', 'fog_of_war_radius', 'explored', 'just_explored', 'moveable', 'orbit_speed',
     'orbit_object', 'orbit_distance', 'string', 'start_time', 'wait', 'selected', 'onClick',
     'info_text', 'info_text_raw', 'planet_button_array', 'thumpsup_button_size', 'thumpsup_button',
@@ -108,9 +110,7 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetButton
         PanZoomPlanetSaveLoad.__init__(self)
         self.load_from_db()
 
-        #self.update_pan_zoom_sprite()
-
-
+        # self.update_pan_zoom_sprite()
 
     def __repr__(self):
         return self.name
@@ -270,8 +270,8 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetButton
             y=cur.execute(f"select world_y from planets where id = {self.id}").fetchone()[0],
             width=int(cur.execute(f"select world_width from planets where id = {self.id}").fetchone()[0]),
             height=int(cur.execute(f"select world_height from planets where id = {self.id}").fetchone()[0]),
-            pan_zoom = pan_zoom_handler,
-            image_name = image_name,
+            pan_zoom=pan_zoom_handler,
+            image_name=image_name,
             isSubWidget=False,
             image=get_image(
                 cur.execute(f"select image_name_small from planets where id = {self.id}").fetchone()[0]),

@@ -261,11 +261,11 @@ if __name__ == '__main__':
         # conn.commit()
         # create_ship_table("config.db")
         # print_ship_config_table("config.db", "ship_config")
-        #insert(conn, "ALTER TABLE planets RENAME COLUMN x TO world_x;")
-        #insert(conn, "ALTER TABLE planets RENAME COLUMN y TO world_y;")
+        # insert(conn, "ALTER TABLE planets RENAME COLUMN x TO world_x;")
+        # insert(conn, "ALTER TABLE planets RENAME COLUMN y TO world_y;")
 
-        #insert(conn, "ALTER TABLE planets RENAME COLUMN width TO world_width;")
-        #insert(conn, "ALTER TABLE planets RENAME COLUMN height TO world_height;")
+        # insert(conn, "ALTER TABLE planets RENAME COLUMN width TO world_width;")
+        # insert(conn, "ALTER TABLE planets RENAME COLUMN height TO world_height;")
 
     except Error as e:
         print("Error:", e)

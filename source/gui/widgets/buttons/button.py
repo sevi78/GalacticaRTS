@@ -36,7 +36,7 @@ class Button(WidgetBase, Moveable):
 
         # self.selected = False
         self.center = (
-        self.get_screen_x() + self.get_screen_width() / 2, self.get_screen_y() + self.get_screen_height() / 2)
+            self.get_screen_x() + self.get_screen_width() / 2, self.get_screen_y() + self.get_screen_height() / 2)
         self.name = kwargs.get("name")
         self.info_text = kwargs.get("info_text")
         self.target = None

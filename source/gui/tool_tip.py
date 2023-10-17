@@ -72,30 +72,6 @@ class ToolTip(WidgetBase):
         if value != self._text:
             self._text = value
 
-    def move__(self, events):
-        if self.visible:
-            for event in events:
-                if event.type == MOUSEMOTION:
-                    if self.text_img:
-                        # limit position x
-                        max_x = pygame.display.get_surface().get_width()
-                        x = event.pos[0] + self.text_img.get_width() / 2
-                        min_x = 0
-                        x1 = event.pos[0] - self.text_img.get_width() / 2
-
-                        if x > max_x:
-                            self.world_x = max_x - self.text_img.get_width() - 10
-                        elif x1 < min_x:
-                            self.world_x = min_x
-
-                        # else center
-                        else:
-                            self.world_x = event.pos[0] - self.text_img.get_width() / 2
-                            self.world_y = event.pos[1] + self.text_img.get_height()
-        else:
-            self.world_x = -1000
-            self.world_y = -1000
-
     def move(self, event):
         if self.visible and self.text_img:
 

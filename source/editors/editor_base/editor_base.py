@@ -76,7 +76,7 @@ class EditorBase(WidgetBase):
         self.screen_height = height
         self.max_height = 0
         self.arrow_size = ARROW_SIZE
-        self.spacing_x = width/2 * .8
+        self.spacing_x = width / 2 * .8
         self.spacing_y = SPACING_Y
         self.parent = kwargs.get("parent", None)
         self.layer = kwargs.get("layer", 9)
@@ -189,4 +189,3 @@ class EditorBase(WidgetBase):
         self.set_global_variable("edit_mode", True)
         global_params.tooltip_text = ""
         self.hide()
-

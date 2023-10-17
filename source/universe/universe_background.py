@@ -32,7 +32,7 @@ FLICKERING_STAR_DIVIDE_FACTOR = 3
 PULSATING_STAR_DIVIDE_FACTOR = 4
 
 
-class UniverseFactory:# original for WidgedBase Widgets
+class UniverseFactory:  # original for WidgedBase Widgets
     def __init__(self, win, x, y, width, height, layer):
         self.win = win
         self.layer = layer
@@ -113,7 +113,7 @@ class UniverseFactory:# original for WidgedBase Widgets
             selected_resources = global_params.app.select_resources()
             artefact = PanZoomCollectableItem(global_params.win,
                 random.randint(self.left_end + buffer, self.right_end - buffer),
-                random.randint(self.top_end + buffer, self.bottom_end -buffer), 50, 50,
+                random.randint(self.top_end + buffer, self.bottom_end - buffer), 50, 50,
                 pan_zoom=pan_zoom_handler,
                 image_name=random.choice(image_names),
                 isSubWidget=False,
@@ -126,7 +126,7 @@ class UniverseFactory:# original for WidgedBase Widgets
                 technology=selected_resources["technology"],
                 water=selected_resources["water"],
                 parent=self,
-                group="collectable_items", gif="sphere.gif", align_image= "center")
+                group="collectable_items", gif="sphere.gif", align_image="center")
 
         for i in range(20):
             selected_resources = self.select_resources()
@@ -146,7 +146,7 @@ class UniverseFactory:# original for WidgedBase Widgets
                 water=selected_resources["water"],
                 parent=self,
                 group="collectable_items",
-                gif="sphere.gif", relative_gif_size=0.1, align_image= "center")
+                gif="sphere.gif", relative_gif_size=0.1, align_image="center")
 
     def create_stars(self):
         # star images
@@ -244,7 +244,7 @@ class UniverseFactory:# original for WidgedBase Widgets
         self.create_nebulaes()
         self.create_comets()
         self.create_asteroids()
-        #self.create_artefacts()
+        # self.create_artefacts()
         # self.create_quadrant()
 
         self.universe = self.star + self.pulsating_star + self.galaxy + self.nebulae + self.comet + self.asteroid  # + self.quadrant
@@ -258,7 +258,8 @@ class UniverseFactory:# original for WidgedBase Widgets
             "asteroid": self.asteroid
             }
 
-class UniverseFactory__:# new for PanZoomSprite based Celstial_Objects
+
+class UniverseFactory__:  # new for PanZoomSprite based Celstial_Objects
     def __init__(self, win, x, y, width, height, layer):
         self.win = win
         self.layer = layer
@@ -295,8 +296,6 @@ class UniverseFactory__:# new for PanZoomSprite based Celstial_Objects
             0: get_image("galaxy_.png"),
             1: get_image("galaxy3_small.png")
             }
-
-
 
         self.star_image_names = {
             0: "star_30x30.png",
@@ -365,7 +364,7 @@ class UniverseFactory__:# new for PanZoomSprite based Celstial_Objects
             selected_resources = global_params.app.select_resources()
             artefact = PanZoomCollectableItem(global_params.win,
                 random.randint(self.left_end + buffer, self.right_end - buffer),
-                random.randint(self.top_end + buffer, self.bottom_end -buffer), 50, 50,
+                random.randint(self.top_end + buffer, self.bottom_end - buffer), 50, 50,
                 pan_zoom=pan_zoom_handler,
                 image_name=random.choice(image_names),
                 isSubWidget=False,
@@ -378,7 +377,7 @@ class UniverseFactory__:# new for PanZoomSprite based Celstial_Objects
                 technology=selected_resources["technology"],
                 water=selected_resources["water"],
                 parent=self,
-                group="collectable_items", gif="sphere.gif", align_image= "center")
+                group="collectable_items", gif="sphere.gif", align_image="center")
 
         for i in range(20):
             selected_resources = self.select_resources()
@@ -398,20 +397,20 @@ class UniverseFactory__:# new for PanZoomSprite based Celstial_Objects
                 water=selected_resources["water"],
                 parent=self,
                 group="collectable_items",
-                gif="sphere.gif", relative_gif_size=0.1, align_image= "center")
+                gif="sphere.gif", relative_gif_size=0.1, align_image="center")
 
     def create_stars(self):
         # star images
         for i in range(max(1, int(self.amount / STAR_DIVIDE_FACTOR))):
             x, y = self.get_random_pos()
-            w,h = 30,30
+            w, h = 30, 30
 
             image_name = random.choice(self.star_image_names)
             # w = image.get_rect().width
             # h = image.get_rect().height
 
             self.star.append(PanZoomCelestialObjectStatic(self.win, x, y, w, h, pan_zoom_handler,
-                image_name=image_name, layer=self.layer, parent=self, type="star", group = "celestial_objects", debug=False))
+                image_name=image_name, layer=self.layer, parent=self, type="star", group="celestial_objects", debug=False))
 
         # flickering stars
         for i in range(max(1, int(self.amount / FLICKERING_STAR_DIVIDE_FACTOR))):
@@ -419,14 +418,14 @@ class UniverseFactory__:# new for PanZoomSprite based Celstial_Objects
             w = random.randint(1, 10)
 
             self.flickering_star.append(PanZoomFlickeringStar(self.win, x, y, w, w, pan_zoom_handler,
-                image_name=None, layer=self.layer, parent=self, type="flickering_star", group = "celestial_objects"))
+                image_name=None, layer=self.layer, parent=self, type="flickering_star", group="celestial_objects"))
 
         # puslating stars
         for i in range(max(1, int(self.amount / PULSATING_STAR_DIVIDE_FACTOR))):
             x, y = self.get_random_pos()
             w = 1
 
-            self.pulsating_star.append(PanZoomPulsatingStar(self.win, x, y, w, w,pan_zoom_handler,
+            self.pulsating_star.append(PanZoomPulsatingStar(self.win, x, y, w, w, pan_zoom_handler,
                 image_name=None, layer=self.layer, parent=self, type="pulsating_star", group="celestial_objects"))
 
     def create_galaxys(self):
@@ -439,7 +438,7 @@ class UniverseFactory__:# new for PanZoomSprite based Celstial_Objects
             w, h = 30, 30
             x, y = self.get_random_pos()
 
-            self.galaxy.append(PanZoomCelestialObjectStatic(self.win, x, y, w, h, pan_zoom_handler,image_name= image_name,
+            self.galaxy.append(PanZoomCelestialObjectStatic(self.win, x, y, w, h, pan_zoom_handler, image_name=image_name,
                 layer=self.layer, parent=self, type="galaxy", group="celestial_objects"))
 
     def create_nebulaes(self):
@@ -450,7 +449,7 @@ class UniverseFactory__:# new for PanZoomSprite based Celstial_Objects
             h = image.get_rect().height
             x, y = self.get_random_pos()
 
-            self.nebulae.append(PanZoomCelestialObjectStatic(self.win, x, y, w, h, pan_zoom_handler,image_name=image_name,
+            self.nebulae.append(PanZoomCelestialObjectStatic(self.win, x, y, w, h, pan_zoom_handler, image_name=image_name,
                 layer=self.layer, parent=self,
                 type="nebulae", group="celestial_objects"))
 
@@ -462,7 +461,7 @@ class UniverseFactory__:# new for PanZoomSprite based Celstial_Objects
             h = image.get_rect().height
             x, y = self.get_random_pos()
 
-            self.asteroid.append(PanZoomAsteroid(self.win, x, y, w, h, pan_zoom_handler,image_name=image_name, layer=self.layer,
+            self.asteroid.append(PanZoomAsteroid(self.win, x, y, w, h, pan_zoom_handler, image_name=image_name, layer=self.layer,
                 parent=self,
                 type="asteroid", group="celestial_objects"))
 
@@ -473,7 +472,7 @@ class UniverseFactory__:# new for PanZoomSprite based Celstial_Objects
             h = image.get_rect().height
             x, y = self.get_random_pos()
 
-            self.asteroid.append(PanZoomAsteroid(self.win, x, y, w, h, pan_zoom_handler,image_name=image_name, layer=self.layer,
+            self.asteroid.append(PanZoomAsteroid(self.win, x, y, w, h, pan_zoom_handler, image_name=image_name, layer=self.layer,
                 parent=self,
                 type="asteroid", gif="asteroid.gif", group="celestial_objects"))
 
@@ -485,7 +484,7 @@ class UniverseFactory__:# new for PanZoomSprite based Celstial_Objects
             h = image.get_rect().height
             x, y = self.get_random_pos()
 
-            self.comet.append(Comet(self.win, x, y, w, h, pan_zoom_handler,image_name=image_name, layer=self.layer,
+            self.comet.append(Comet(self.win, x, y, w, h, pan_zoom_handler, image_name=image_name, layer=self.layer,
                 parent=self, type="comet",
                 group="celestial_objects"))
 
@@ -514,7 +513,7 @@ class UniverseFactory__:# new for PanZoomSprite based Celstial_Objects
         self.create_nebulaes()
         self.create_comets()
         self.create_asteroids()
-        #self.create_artefacts()
+        # self.create_artefacts()
         # self.create_quadrant()
 
         self.universe = self.star + self.pulsating_star + self.galaxy + self.nebulae + self.comet + self.asteroid  # + self.quadrant
@@ -528,6 +527,8 @@ class UniverseFactory__:# new for PanZoomSprite based Celstial_Objects
             "asteroid": self.asteroid
             }
         return self.celestial_objects
+
+
 universe_factory = UniverseFactory(global_params.win, 0, 0, global_params.scene_width, global_params.scene_height, layer=3)
 
 

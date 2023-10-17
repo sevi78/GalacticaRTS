@@ -156,23 +156,23 @@ class Slider(WidgetBase):
     def draw(self):
         if not self._hidden and not self._disabled:
             pygame.draw.rect(self.win, self.colour, (
-            self.screen_x, self.screen_y, self.screen_width, self.screen_height))
+                self.screen_x, self.screen_y, self.screen_width, self.screen_height))
 
             if self.vertical:
                 if self.curved:
                     pygame.draw.circle(self.win, self.colour, (
-                    self.screen_x + self.screen_width // 2, self.screen_y), self.radius)
+                        self.screen_x + self.screen_width // 2, self.screen_y), self.radius)
                     pygame.draw.circle(self.win, self.colour, (
-                    self.screen_x + self.screen_width // 2, self.screen_y + self.screen_height),
+                        self.screen_x + self.screen_width // 2, self.screen_y + self.screen_height),
                         self.radius)
                 circle = (int(self.screen_x + self.screen_width // 2),
                           int(self.screen_y + (self.max - self.value) / (self.max - self.min) * self.screen_height))
             else:
                 if self.curved:
                     pygame.draw.circle(self.win, self.colour, (
-                    self.screen_x, self.screen_y + self.screen_height // 2), self.radius)
+                        self.screen_x, self.screen_y + self.screen_height // 2), self.radius)
                     pygame.draw.circle(self.win, self.colour, (
-                    self.screen_x + self.screen_width, self.screen_y + self.screen_height // 2),
+                        self.screen_x + self.screen_width, self.screen_y + self.screen_height // 2),
                         self.radius)
                 circle = (int(self.screen_x + (self.value - self.min) / (self.max - self.min) * self.screen_width),
                           int(self.screen_y + self.screen_height // 2))

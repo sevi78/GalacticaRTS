@@ -53,8 +53,6 @@ class PanZoomSprite(pygame.sprite.Sprite, PanZoomVisibilityHandler, GameObjectDe
     # PanZoomVisibilityHandler
     __slots__ += ('children', '_hidden', '_disabled', 'widgets')
 
-
-
     def __init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs):
         GameObjectDebug.__init__(self)
         pygame.sprite.Sprite.__init__(self)
@@ -125,7 +123,6 @@ class PanZoomSprite(pygame.sprite.Sprite, PanZoomVisibilityHandler, GameObjectDe
             #     setattr(sprite_groups, self.group, PanZoomLayeredUpdates())
             getattr(sprite_groups, self.group).add(self)
 
-
     def get_zoom(self):
         return self.pan_zoom.zoom
 
@@ -152,7 +149,6 @@ class PanZoomSprite(pygame.sprite.Sprite, PanZoomVisibilityHandler, GameObjectDe
 
         self.update_rect()
 
-
     # @world_position.setter
     # def world_position(self, position):
     #     if not self.previous_world_x:
@@ -176,8 +172,6 @@ class PanZoomSprite(pygame.sprite.Sprite, PanZoomVisibilityHandler, GameObjectDe
     #         self.set_screen_size(self.world_width,
     #             self.world_height)
     #     self.update_rect()
-
-
 
     # @world_position.setter
     # def world_position(self, position):
@@ -308,7 +302,6 @@ class PanZoomSprite(pygame.sprite.Sprite, PanZoomVisibilityHandler, GameObjectDe
 
     def update(self):
         self.update_pan_zoom_sprite()
-
 
 # def main():
 #     pan_zoom_handler = PanZoomHandler(screen, WIDTH, HEIGHT)

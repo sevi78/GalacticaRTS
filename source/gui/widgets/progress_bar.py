@@ -80,7 +80,7 @@ class ProgressBar(WidgetBase):
                         self.radius)
                 else:
                     pygame.draw.circle(self.win, self.completedColour, (
-                    self.screen_x, self.screen_y + self.screen_height // 2),
+                        self.screen_x, self.screen_y + self.screen_height // 2),
                         self.radius)
                     pygame.draw.circle(self.win, self.incompletedColour,
                         (self.screen_x + self.screen_width, self.screen_y + self.screen_height // 2),

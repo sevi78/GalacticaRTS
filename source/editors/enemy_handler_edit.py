@@ -1,26 +1,21 @@
-from source.editors.editor_base.editor_config import ARROW_SIZE, FONT_SIZE, TOP_SPACING
-
 from source.interfaces.interface import Interface
-from source.gui.widgets.selector import Selector
+
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups
 
 
 class EnemyHandlerEdit(Interface):
     def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
         Interface.__init__(self, win, x, y, width, height, isSubWidget=False, **kwargs)
-        self.create_save_button(lambda: self.parent.save_objects("enemy_handler_config.json", [self.obj]), "save enemy handler")
+        self.create_save_button(lambda: self.parent.save_objects("enemy_handler_config.json", [
+            self.obj]), "save enemy handler")
         self.create_close_button()
 
     def update_enemies(self, key, value):
         for ufo in sprite_groups.ufos.sprites():
             setattr(ufo, key, value)
+
     def interface_callback(self):
-        #print ("yippie!", self.get_slider_data())
+        # print ("yippie!", self.get_slider_data())
         for key, value in self.get_slider_data().items():
             if key != "spawn_interval":
                 self.update_enemies(key, value)
-
-
-
-
-

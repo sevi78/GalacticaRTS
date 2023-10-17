@@ -5,6 +5,8 @@ from source.pan_zoom_sprites.pan_zoom_quadrant import Quadrant
 from source.utils import global_params
 
 QUADRANT_AMOUNT = global_params.quadrant_amount
+
+
 class LevelFactory:
     def __init__(self, win, quadrant_amount):
         self.quadrant_amount = quadrant_amount
@@ -30,10 +32,9 @@ class LevelFactory:
                 key = f"{x}_{y}"
                 quadrant = level_factory.create_quadrant(left, top, width, height)
 
-                print ("key", key)
+                print("key", key)
 
                 quadrants[key] = quadrant
-
 
         return quadrants
 
@@ -44,7 +45,7 @@ level_factory = LevelFactory(pygame.display.get_surface(), QUADRANT_AMOUNT)
 class Level:
     def __init__(self):
         self.quadrants = {}
-        #self.quadrants = level_factory.create_quadrants()
+        # self.quadrants = level_factory.create_quadrants()
 
 
 level = Level()

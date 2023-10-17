@@ -23,7 +23,6 @@ SHIP_ORBIT_SPEED = 0.5
 SHIP_ORBIT_SPEED_MAX = 0.6
 
 
-
 class PanZoomShipParams():
     """
 
@@ -218,7 +217,8 @@ class PanZoomShipParams():
             # if reloader is a planet
             if hasattr(self.energy_reloader, "production"):
                 if self.energy_reloader.production["energy"] > 0:
-                    if self.parent.player.energy - self.energy_reload_rate * self.energy_reloader.production["energy"] > 0:
+                    if self.parent.player.energy - self.energy_reload_rate * self.energy_reloader.production[
+                        "energy"] > 0:
                         if self.energy < self.energy_max:
                             self.energy += self.energy_reload_rate * self.energy_reloader.production[
                                 "energy"] * global_params.game_speed

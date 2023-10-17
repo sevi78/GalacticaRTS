@@ -24,7 +24,7 @@ class PositionHandler:
 
         self.pos = Vector2(self.get_screen_x(), self.get_screen_y())
         self.center = (
-        self.get_screen_x() + self.get_screen_width() / 2, self.get_screen_y() + self.get_screen_height() / 2)
+            self.get_screen_x() + self.get_screen_width() / 2, self.get_screen_y() + self.get_screen_height() / 2)
         self.size_x = width
         self.size_y = height
 
@@ -119,7 +119,7 @@ class PositionHandler:
         # self.center = (self.get_screen_x() + self.get_screen_width() / 2 / self.get_zoom(), self.get_screen_y() + self.get_screen_height() / 2 / self.get_zoom())
 
         self.center = (
-        self.get_screen_x() + self.get_screen_width() / 2, self.get_screen_y() + self.get_screen_height() / 2)
+            self.get_screen_x() + self.get_screen_width() / 2, self.get_screen_y() + self.get_screen_height() / 2)
         # if hasattr(self, "rect"):
         #     if self.rect:
         #         self.rect.center = self.center

@@ -14,9 +14,9 @@ class PanZoomPlanetButton():
         # # Text
         # self.textColour = kwargs.get('textColour', (0, 0, 0))
         # self.font_name = global_params.font_name
-        #self.font_size = kwargs.get('font_size', 20)
+        # self.font_size = kwargs.get('font_size', 20)
         # self.string = kwargs.get('text', '')
-        #self.font = kwargs.get('font', pygame.font.SysFont(global_params.font_name, self.font_size))
+        # self.font = kwargs.get('font', pygame.font.SysFont(global_params.font_name, self.font_size))
         # self.text = self.font.render(self.string, True, self.textColour)
         # self.textHAlign = kwargs.get('textHAlign', 'centre')
         # self.textVAlign = kwargs.get('textVAlign', 'centre')

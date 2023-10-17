@@ -78,6 +78,7 @@ def create_info_panel_ship_text(ship):
 
     return text
 
+
 def create_info_panel_planetary_defence_text(item):
     text = ""
     text = item + ":" + "\n"

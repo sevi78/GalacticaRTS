@@ -204,7 +204,7 @@ class SettingsPanel(WidgetBase):
     def reposition_widgets(self):
         for icon in self.widgets:
             icon.screen_x = (self.surface_rect.x + self.spacing) + (
-                        self.icon_size + self.spacing) * self.widgets.index(icon)
+                    self.icon_size + self.spacing) * self.widgets.index(icon)
 
     def draw(self):
         """

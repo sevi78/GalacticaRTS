@@ -7,6 +7,7 @@ from source.database.database_access import create_connection, get_database_file
 class PanZoomPlanetSaveLoad:
     def __init__(self):
         pass
+
     def save_to_db(self):
         # self.orbit_object_id = 5
         conn = create_connection(get_database_file_path())
@@ -95,8 +96,4 @@ class PanZoomPlanetSaveLoad:
                 value = eval(value)
             setattr(self, key, value)
 
-
-
-                # print("load_from_db:", key, value)
-
-
+            # print("load_from_db:", key, value)

@@ -185,7 +185,7 @@ class PanZoomShipDraw:
             # if self.explosion.gif_handler.index > 0:
             #     return
 
-            #self.draw_image()
+            # self.draw_image()
             self.draw_state()
             self.draw_rank_image()
 

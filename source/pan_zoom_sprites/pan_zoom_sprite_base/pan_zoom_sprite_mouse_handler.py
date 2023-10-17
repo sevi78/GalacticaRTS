@@ -43,8 +43,9 @@ class PanZoomMouseHandler:
 
     def draw_hover_rect(self):
         pygame.draw.rect(self.win, colors.ui_dark, (
-        self.get_screen_x(), self.get_screen_y(), self.get_screen_width() + 3, self.get_screen_height() + 3), 2, 3)
+            self.get_screen_x(), self.get_screen_y(), self.get_screen_width() + 3, self.get_screen_height() + 3), 2, 3)
 
     def draw_hover_circle(self):
         panzoom = pan_zoom_handler
-        pygame.draw.circle(self.win, self.frame_color, self.rect.center, (self.rect.height / 2) + 4, int(6 * panzoom.zoom))
+        pygame.draw.circle(self.win, self.frame_color, self.rect.center, (
+                                                                                     self.rect.height / 2) + 4, int(6 * panzoom.zoom))

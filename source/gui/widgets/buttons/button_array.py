@@ -104,9 +104,9 @@ class ButtonArray(WidgetBase):
             return
 
         width = (self.screen_width - self.separationThickness * (
-                    across - 1) - self.leftBorder - self.rightBorder) // across
+                across - 1) - self.leftBorder - self.rightBorder) // across
         height = (self.screen_height - self.separationThickness * (
-                    down - 1) - self.topBorder - self.bottomBorder) // down
+                down - 1) - self.topBorder - self.bottomBorder) // down
 
         count = 0
         for i in range(across):
