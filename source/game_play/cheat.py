@@ -1,5 +1,6 @@
 import pygame
 
+from source.game_play.building_factory import building_factory
 from source.pan_zoom_sprites import attack
 from source.game_play import enemy_handler
 from source.utils import global_params
@@ -72,3 +73,5 @@ class Cheat:
                     self.explore_all()
                     # self.cheat_population()
                     # self.explore_all()
+
+                    # print (building_factory.get_a_list_of_building_names_with_build_population_minimum_bigger_than(1000))

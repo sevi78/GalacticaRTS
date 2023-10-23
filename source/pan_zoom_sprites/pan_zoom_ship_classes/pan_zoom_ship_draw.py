@@ -80,12 +80,12 @@ class PanZoomShipDraw:
         self.parent.event_text = "reloading spaceship: --- needs a lot of energy!"
 
     def draw_rank_image(self):
-        if not global_params.app.build_menu_visible:
-            image = self.rank_images[self.rank]
-            self.rank_image_pos = (self.rect.centerx + self.get_screen_width() / 2 / self.get_zoom(),
-                                   self.rect.centery - self.get_screen_height() / 2 / self.get_zoom())
+        # if not global_params.app.build_menu_visible:
+        image = self.rank_images[self.rank]
+        self.rank_image_pos = (self.rect.centerx + self.get_screen_width() / 2 / self.get_zoom(),
+                               self.rect.centery - self.get_screen_height() / 2 / self.get_zoom())
 
-            self.win.blit(image, self.rank_image_pos)
+        self.win.blit(image, self.rank_image_pos)
 
     def draw_image(self):
         if inside_screen(self.get_screen_position()):

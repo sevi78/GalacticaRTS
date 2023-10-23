@@ -32,9 +32,15 @@ class GameObjectStorage:
         self.editors = []
         self.missiles = pygame.sprite.Group()
         self.gif_handlers = pygame.sprite.Group()
+        self.building_button_widgets = []
+        self.explored_planets = []
+
+    def add_explored_planet(self, planet):
+        self.explored_planets.append(planet)
+        self.update_building_button_widgets()
 
 
-class SceneBuilder(EconomyParams, GameObjectStorage, BuildMenu):
+class SceneBuilder(EconomyParams, GameObjectStorage):
     def __init__(self, width, height):
         """
         creates all scene elemts like ships and planets, background , fog of war
@@ -44,7 +50,7 @@ class SceneBuilder(EconomyParams, GameObjectStorage, BuildMenu):
 
         EconomyParams.__init__(self)
         GameObjectStorage.__init__(self)
-        BuildMenu.__init__(self, config)
+        # BuildMenu.__init__(self, config)
 
         # UI Helper
         self.frame_color = colors.frame_color
@@ -75,7 +81,6 @@ class SceneBuilder(EconomyParams, GameObjectStorage, BuildMenu):
         self.ship = self.create_ship("spaceship_30x30.png", center_x, center_y + 300)
         self.create_ship("cargoloader_30x30.png", center_x - spacing, center_y + 400)
         self.create_ship("spacehunter_30x30.png", center_x + spacing, center_y + 500)
-
 
     @property
     def ship(self):

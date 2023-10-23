@@ -17,11 +17,11 @@ class BuildingPanelDraw:
         self.world_y += self.spacing * 3
 
         if self.parent.selected_planet.smiley_status:
-            smiley = pygame.transform.scale(get_image("smile.png"), (SMILEY_SIZE, SMILEY_SIZE))
+            self.smiley = self.smiley_image_smile
         else:
-            smiley = pygame.transform.scale(get_image("sad.png"), (SMILEY_SIZE, SMILEY_SIZE))
+            self.smiley = self.smiley_image_sad
 
-        self.win.blit(smiley, (x, self.world_y))
+        self.win.blit(self.smiley, (x, self.world_y))
 
         # draw background planet icon
         name = self.parent.selected_planet.name
@@ -74,7 +74,7 @@ class BuildingPanelDraw:
             # because of the dynamic creation of this panel, we cannot use a button, this would lead to memory leaks
             # and performance problems - so we just blit an image and get its rect as button surface
 
-            image = pygame.transform.scale(images[pictures_path]["buildings"][b + "_25x25.png"],
+            image = pygame.transform.scale(get_image(b + "_25x25.png"),
                 self.resource_image_size)
 
             # get rect for storage
@@ -104,13 +104,11 @@ class BuildingPanelDraw:
             self.planet_surface.get_height()), self.font, "center")
 
         if self.parent.selected_planet.thumpsup_status:
-            thumpsup = pygame.transform.scale(pygame.transform.flip(get_image("thumps_upred.png"), True, True), (
-            SMILEY_SIZE, SMILEY_SIZE))
+            self.thumps_up = self.thumps_up_image_red
         else:
-            thumpsup = pygame.transform.scale(pygame.transform.flip(get_image("thumps_up.png"), True, False), (
-            SMILEY_SIZE, SMILEY_SIZE))
+            self.thumps_up = self.thumps_up_image_green
 
-        self.win.blit(thumpsup, (x, self.world_y))
+        self.win.blit(self.thumps_up, (x, self.world_y))
 
         # production images and texts
         x = self.planet_surface_rect.x + self.spacing

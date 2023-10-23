@@ -219,7 +219,6 @@ def main(test: bool = False, **kwargs) -> None:
     main_menu_theme.widget_font = pygame_menu.font.FONT_COMIC_NEUE
     main_menu_theme.widget_font_size = 30
 
-
     if settings_run:
         # Main menu
         settings_menu.mainloop(surface, None, disable_loop=test, fps_limit=FPS, clear_surface=False)

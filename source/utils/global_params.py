@@ -122,7 +122,7 @@ global edit_mode
 edit_mode = False
 
 global planet_button_display_on_panel
-planet_button_display_on_panel = True
+planet_button_display_on_panel = False
 
 global ui_rounded_corner_radius_small
 ui_rounded_corner_radius_small = 8
@@ -138,7 +138,6 @@ ui_rounded_corner_big_thickness = 5
 
 global draw_universe
 draw_universe = True
-
 
 # global sprites
 # sprites = pygame.sprite.LayeredUpdates()

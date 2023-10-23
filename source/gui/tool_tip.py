@@ -2,6 +2,7 @@ import pygame
 from pygame.locals import MOUSEMOTION
 from pygame_widgets import Mouse
 
+from source.database.saveload import load_file
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.utils import global_params
 from source.utils.colors import colors
@@ -142,3 +143,41 @@ class ToolTip(WidgetBase):
 
         pygame.draw.rect(self.win, self.frame_color, (
             self.world_x, self.world_y, self.world_width, self.height), 1, global_params.ui_rounded_corner_radius_small)
+
+
+class ToolTipGenerator:
+    def __init__(self):
+        self.json_dict = load_file("buildings.json")
+
+    def get_building(self, building):
+        dict_ = {}
+        for category, building_names in self.json_dict.items():
+            if building in building_names.keys():
+                for item, value in building_names[building].items():
+                    dict_[item] = value
+        return dict_
+
+    def create_building_tooltip(self, building):
+        price_text = f"to build a {building}, you will need "
+        production_text = ""
+        for key, value in self.get_building(building).items():
+            if key.startswith("price_"):
+                resource_key = key.split('price_')[1]
+                if value > 0:
+                    price_text += f"{resource_key}: {value}, "
+
+            if key.startswith("production_"):
+                production_key = key.split('production_')[1]
+                if production_key == "minerals":
+                    production_key = "mineral"
+
+                if value > 0:
+                    if production_text == "":
+                        production_text = f"it will produce: "
+                    production_text += f" {production_key}:  {value}, "
+        text = price_text[:-2] + ". " + production_text[:-2]
+
+        return text
+
+
+tooltip_generator = ToolTipGenerator()

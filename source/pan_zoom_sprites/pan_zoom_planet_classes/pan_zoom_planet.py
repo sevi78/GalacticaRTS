@@ -4,6 +4,7 @@ import pygame
 from pygame import MOUSEBUTTONDOWN, MOUSEBUTTONUP, MOUSEMOTION
 from pygame_widgets.mouse import Mouse, MouseState
 from source.database.database_access import create_connection, get_database_file_path
+from source.gui.building_button_widget import BuildingButtonWidget
 
 from source.gui.lod import inside_screen
 from source.pan_zoom_sprites.pan_zoom_planet_classes.pan_zoom_planet_orbit_draw import draw_orbits
@@ -13,7 +14,8 @@ from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_visibility_handler im
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_debug import GameObjectDebug
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_mouse_handler import PanZoomMouseHandler
-from source.pan_zoom_sprites.pan_zoom_planet_classes.pan_zoom_planet_buttons import PanZoomPlanetButtons
+from source.pan_zoom_sprites.pan_zoom_planet_classes.pan_zoom_planet_overview_buttons import \
+    PanZoomPlanetOverviewButtons
 from source.pan_zoom_sprites.pan_zoom_planet_classes.pan_zoom_planet_defence import PanZoomPlanetDefence
 from source.pan_zoom_sprites.pan_zoom_planet_classes.pan_zoom_planet_draw import PanZoomPlanetDraw
 from source.pan_zoom_sprites.pan_zoom_planet_classes.pan_zoom_planet_params import PanZoomPlanetParams
@@ -26,7 +28,7 @@ from source.multimedia_library.images import images, get_image
 from source.utils.positioning import limit_positions, orbit
 
 
-class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetButtons, PanZoomPlanetDraw, PanZoomPlanetSaveLoad,
+class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOverviewButtons, PanZoomPlanetDraw, PanZoomPlanetSaveLoad,
     PanZoomPlanetParams, PanZoomPlanetPositionHandler, PanZoomMouseHandler):
     """ Main functionalities:
 
@@ -54,7 +56,7 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetButton
         PanZoomSprite.__init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs)
         PanZoomMouseHandler.__init__(self)
         PanZoomPlanetPositionHandler.__init__(self, x, y, width, height, **kwargs)
-        PanZoomPlanetButtons.__init__(self, **kwargs)
+        PanZoomPlanetOverviewButtons.__init__(self, **kwargs)
         PanZoomPlanetDraw.__init__(self, **kwargs)
         PanZoomPlanetSaveLoad.__init__(self)
 
@@ -97,15 +99,17 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetButton
         self.info_text_raw = kwargs.get("info_text")
 
         # buttons
-        self.planet_button_array = None
-        self.create_planet_button_array()
+        # self.planet_button_array = None
+        # self.create_planet_button_array()
+        self.create_overview_buttons()
+        self.building_button_widget = BuildingButtonWidget(win, 200, 100, 300, 200, self.parent, False, layer=4, parent=self, fixed_parent=True)
 
         # planet defence
         self.planet_defence = PanZoomPlanetDefence(self)
 
         # register the button
         sprite_groups.planets.add(self)
-        self.hide_planet_button_array()
+        # self.hide_planet_button_array()
 
         PanZoomPlanetSaveLoad.__init__(self)
         self.load_from_db()
@@ -287,7 +291,8 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetButton
                         global_params.tooltip_text = self.tooltip
             else:
                 if mouseState == MouseState.RIGHT_CLICK:
-                    self.reset_building_buttons_visible_state()
+                    pass
+                    # self.reset_building_buttons_visible_state()
 
                 self.clicked = False
 
@@ -301,11 +306,12 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetButton
 
         # may we will not need these
         if global_params.planet_button_display_on_panel:
-            self.hide_planet_button_array()
+            # self.hide_planet_button_array()
             self.hide_overview_button()
         elif self.explored:
-            self.show_planet_button_array()
+            # self.show_planet_button_array()
             self.show_overview_button()
+            self.set_overview_buttons_position()
 
         if not self.orbit_object:
             self.orbit_angle = None

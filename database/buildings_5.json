@@ -18,8 +18,7 @@
       "build_population_minimum": 0,
       "building_production_time_scale": 5,
       "building_production_time": 5,
-      "population_buildings_value": 0,
-      "technology_upgrade": {}
+      "population_buildings_value": 0
     },
     "water treatment": {
       "name": "water treatment",
@@ -39,8 +38,7 @@
       "build_population_minimum": 1000,
       "building_production_time_scale": 5,
       "building_production_time": 15,
-      "population_buildings_value": 0,
-      "technology_upgrade": {}
+      "population_buildings_value": 0
     },
     "terra former": {
       "name": "terra former",
@@ -60,8 +58,7 @@
       "build_population_minimum": 10000,
       "building_production_time_scale": 5,
       "building_production_time": 75,
-      "population_buildings_value": 0,
-      "technology_upgrade": {}
+      "population_buildings_value": 0
     }
   },
   "energy": {
@@ -83,8 +80,7 @@
       "build_population_minimum": 0,
       "building_production_time_scale": 5,
       "building_production_time": 15,
-      "population_buildings_value": 0,
-      "technology_upgrade": {}
+      "population_buildings_value": 0
     },
     "wind mill": {
       "name": "wind mill",
@@ -104,8 +100,7 @@
       "build_population_minimum": 1000,
       "building_production_time_scale": 5,
       "building_production_time": 25,
-      "population_buildings_value": 0,
-      "technology_upgrade": {}
+      "population_buildings_value": 0
     },
     "power plant": {
       "name": "power plant",
@@ -125,8 +120,7 @@
       "build_population_minimum": 10000,
       "building_production_time_scale": 5,
       "building_production_time": 35,
-      "population_buildings_value": 0,
-      "technology_upgrade": {}
+      "population_buildings_value": 0
     }
   },
   "food": {
@@ -148,8 +142,7 @@
       "build_population_minimum": 0,
       "building_production_time_scale": 5,
       "building_production_time": 15,
-      "population_buildings_value": 0,
-      "technology_upgrade": {}
+      "population_buildings_value": 0
     },
     "ranch": {
       "name": "ranch",
@@ -169,8 +162,7 @@
       "build_population_minimum": 1000,
       "building_production_time_scale": 5,
       "building_production_time": 35,
-      "population_buildings_value": 0,
-      "technology_upgrade": {}
+      "population_buildings_value": 0
     },
     "agriculture complex": {
       "name": "agriculture complex",
@@ -190,8 +182,7 @@
       "build_population_minimum": 10000,
       "building_production_time_scale": 5,
       "building_production_time": 60,
-      "population_buildings_value": 0,
-      "technology_upgrade": {}
+      "population_buildings_value": 0
     }
   },
   "minerals": {
@@ -213,8 +204,7 @@
       "build_population_minimum": 0,
       "building_production_time_scale": 5,
       "building_production_time": 25,
-      "population_buildings_value": 0,
-      "technology_upgrade": {}
+      "population_buildings_value": 0
     },
     "open pit": {
       "name": "open pit",
@@ -234,8 +224,7 @@
       "build_population_minimum": 1000,
       "building_production_time_scale": 5,
       "building_production_time": 75,
-      "population_buildings_value": 0,
-      "technology_upgrade": {}
+      "population_buildings_value": 0
     },
     "mineral complex": {
       "name": "mineral complex",
@@ -255,8 +244,7 @@
       "build_population_minimum": 10000,
       "building_production_time_scale": 5,
       "building_production_time": 115,
-      "population_buildings_value": 0,
-      "technology_upgrade": {}
+      "population_buildings_value": 0
     }
   },
   "technology": {
@@ -278,10 +266,7 @@
       "build_population_minimum": 0,
       "building_production_time_scale": 5,
       "building_production_time": 10,
-      "population_buildings_value": 0,
-      "technology_upgrade": {
-        "buildings_max": 3
-      }
+      "population_buildings_value": 0
     },
     "space harbor": {
       "name": "space harbor",
@@ -301,8 +286,7 @@
       "build_population_minimum": 1000,
       "building_production_time_scale": 5,
       "building_production_time": 30,
-      "population_buildings_value": 0,
-      "technology_upgrade": {}
+      "population_buildings_value": 0
     },
     "particle accelerator": {
       "name": "particle accelerator",
@@ -322,8 +306,7 @@
       "build_population_minimum": 5000,
       "building_production_time_scale": 5,
       "building_production_time": 65,
-      "population_buildings_value": 0,
-      "technology_upgrade": {}
+      "population_buildings_value": 0
     },
     "worm hole": {
       "name": "worm hole",
@@ -343,8 +326,7 @@
       "build_population_minimum": 5000,
       "building_production_time_scale": 5,
       "building_production_time": 65,
-      "population_buildings_value": 0,
-      "technology_upgrade": {}
+      "population_buildings_value": 0
     }
   },
   "city": {
@@ -366,8 +348,7 @@
       "build_population_minimum": 0,
       "building_production_time_scale": 5,
       "building_production_time": 5,
-      "population_buildings_value": 1000,
-      "technology_upgrade": {}
+      "population_buildings_value": 1000
     },
     "city": {
       "name": "city",
@@ -387,8 +368,7 @@
       "build_population_minimum": 0,
       "building_production_time_scale": 5,
       "building_production_time": 15,
-      "population_buildings_value": 10000,
-      "technology_upgrade": {}
+      "population_buildings_value": 10000
     },
     "metropole": {
       "name": "metropole",
@@ -408,8 +388,7 @@
       "build_population_minimum": 0,
       "building_production_time_scale": 5,
       "building_production_time": 25,
-      "population_buildings_value": 100000,
-      "technology_upgrade": {}
+      "population_buildings_value": 100000
     }
   },
   "planetary_defence": {
@@ -431,8 +410,7 @@
       "build_population_minimum": 0,
       "building_production_time_scale": 0,
       "building_production_time": 0,
-      "population_buildings_value": 0,
-      "technology_upgrade": {}
+      "population_buildings_value": 0
     },
     "missile": {
       "name": "missile",
@@ -452,8 +430,7 @@
       "build_population_minimum": 0,
       "building_production_time_scale": 0,
       "building_production_time": 0,
-      "population_buildings_value": 0,
-      "technology_upgrade": {}
+      "population_buildings_value": 0
     }
   },
   "ship": {
@@ -475,8 +452,7 @@
       "build_population_minimum": 0,
       "building_production_time_scale": 0,
       "building_production_time": 0,
-      "population_buildings_value": 0,
-      "technology_upgrade": {}
+      "population_buildings_value": 0
     },
     "cargoloader": {
       "name": "cargoloader",
@@ -496,8 +472,7 @@
       "build_population_minimum": 0,
       "building_production_time_scale": 0,
       "building_production_time": 0,
-      "population_buildings_value": 0,
-      "technology_upgrade": {}
+      "population_buildings_value": 0
     },
     "spacehunter": {
       "name": "spacehunter",
@@ -517,8 +492,7 @@
       "build_population_minimum": 0,
       "building_production_time_scale": 0,
       "building_production_time": 0,
-      "population_buildings_value": 0,
-      "technology_upgrade": {}
+      "population_buildings_value": 0
     }
   }
 }

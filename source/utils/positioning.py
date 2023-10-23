@@ -29,27 +29,7 @@ def rot_center(image, angle, x, y):
     """
     rotated_image = pygame.transform.rotate(image, angle)
     new_rect = rotated_image.get_rect(center=image.get_rect(center=(x, y)).center)
-
     return rotated_image, new_rect
-
-
-def get_world_distance__(pos_a, pos_b):
-    """
-    returns the world distance betweeen two positions
-    :param pos_a:
-    :param pos_b:
-    :return: distance
-    """
-    if global_params.app:
-        x, y = pan_zoom_handler.screen_2_world(pos_a[0], pos_a[1])
-        x1, y1 = pan_zoom_handler.screen_2_world(pos_b[0], pos_b[1])
-    else:
-        x, y = pos_a[1], pos_a[0]
-        x1, y1 = pos_b[0], pos_b[1]
-
-    distance = math.dist((x, y), (x1, y1))
-
-    return distance
 
 
 def get_distance(pos_a, pos_b):
@@ -65,27 +45,12 @@ def get_distance(pos_a, pos_b):
     return distance
 
 
-def get_distance_to__(self, obj):
-    if not obj:
-        return 0
-
-    x = self.get_screen_x()
-    y = self.get_screen_y()
-    x1 = obj.get_screen_x()
-    y1 = obj.get_screen_y()
-    distance = math.dist((x, y), (x1, y1))
-
-    return distance
-
-
 def limit_positions(obj, screen_size):
     """
     this hides the obj if it is outside the screen
     """
-    # win = pygame.display.get_surface()
+
     border = 0
-    # win_width = win.get_width()
-    # win_height = win.get_height()
     x, y = obj.get_position()
 
     def hide_obj_outside_view():
@@ -99,20 +64,6 @@ def limit_positions(obj, screen_size):
             hide_obj_outside_view()
     else:
         hide_obj_outside_view()
-
-
-def debug_positions__(x, y, color, text, size, **kwargs):
-    if not global_params.debug:
-        return
-    # color = kwargs.get("color", "red")
-    # x,y = kwargs.get("x"), kwargs.get("y")
-    # size = kwargs.get("size")
-    text = text + str(int(x)) + ", " + str(int(y))
-    text_spacing = 15
-
-    pygame.draw.circle(global_params.app.win, color, (x, y), size, 1)
-    font = pygame.font.SysFont(global_params.font_name, 18)
-    drawText(global_params.app.win, text, color, (x, y, 400, 30), font, "left")
 
 
 def distance_between_points(x1, y1, x2, y2):

@@ -2,8 +2,7 @@ import random
 import sys
 
 import pygame
-
-import source.configuration.config
+from source.game_play.building_factory import building_factory
 from source.utils import global_params
 
 resources = ["water", "food", "energy", "technology", "minerals"]
@@ -180,8 +179,8 @@ goal2 = GameEvent(
     name="goal2",
     title="Congratulation!",
     body="your population has reached 1000 people.\nYou are now able to build second level buildings like:\n\n" +
-         str([key for key in source.configuration.config.build_population_minimum if
-              source.configuration.config.build_population_minimum[key] == 1000]).split("[")[1].split("]")[0],
+         str(building_factory.get_a_list_of_building_names_with_build_population_minimum_bigger_than(1000)).split("[")[
+             1].split("]")[0],
     end_text="go for it!",
     functions=None
     )
@@ -190,8 +189,8 @@ goal3 = GameEvent(
     name="goal3",
     title="Congratulation!",
     body="your population has reached 10000 people.\nYou are now able to build third level buildings like:\n\n" +
-         str([key for key in source.configuration.config.build_population_minimum if
-              source.configuration.config.build_population_minimum[key] == 10000]).split("[")[1].split("]")[0],
+         str(building_factory.get_a_list_of_building_names_with_build_population_minimum_bigger_than(10000)).split("[")[
+             1].split("]")[0],
     end_text="go for it!",
     functions=None
     )

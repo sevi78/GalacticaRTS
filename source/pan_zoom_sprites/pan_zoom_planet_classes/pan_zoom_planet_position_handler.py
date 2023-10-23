@@ -48,4 +48,4 @@ class PanZoomPlanetPositionHandler:
 
     def set_center(self):
         self.center = (
-        self.get_screen_x() + self.get_screen_width() / 2, self.get_screen_y() + self.get_screen_height() / 2)
+            self.get_screen_x() + self.get_screen_width() / 2, self.get_screen_y() + self.get_screen_height() / 2)

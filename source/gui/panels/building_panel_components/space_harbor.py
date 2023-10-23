@@ -1,16 +1,13 @@
 import pygame
 from pygame_widgets.util import drawText
-
-from source.app.app_helper import check_if_enough_resources_to_build
-from source.configuration.info_text import create_info_panel_ship_text, ship_prices
+from source.game_play.building_factory import building_factory
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
-from source.gui.widgets.building_widget import BuildingWidget
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.utils import global_params
 from source.utils.colors import colors
 from source.utils.global_params import ui_rounded_corner_small_thickness
-from source.multimedia_library.images import images, pictures_path
-from source.multimedia_library.sounds import sounds
+from source.multimedia_library.images import get_image
+from source.gui.panels.info_panel_components.info_panel_text_generator import info_panel_text_generator
 
 
 class SpaceHarbor(WidgetBase):
@@ -75,14 +72,14 @@ class SpaceHarbor(WidgetBase):
             isSubWidget=False,
             parent=self,
             image=pygame.transform.scale(
-                images[pictures_path]["ships"]["spacehunter_30x30.png"], (25, 25)),
+                get_image("spacehunter_30x30.png"), (25, 25)),
             tooltip="build spacehunter",
-            info_text=create_info_panel_ship_text("spacehunter"),
+            info_text=info_panel_text_generator.create_info_panel_ship_text("spacehunter"),
             frame_color=self.frame_color,
             moveable=False,
             include_text=True,
             layer=self.layer,
-            onClick=lambda: self.build_ship("spacehunter"),
+            onClick=lambda: building_factory.build("spacehunter"),
             )
 
         self.cargoloader_button = ImageButton(win=self.win,
@@ -93,14 +90,14 @@ class SpaceHarbor(WidgetBase):
             isSubWidget=False,
             parent=self,
             image=pygame.transform.scale(
-                images[pictures_path]["ships"]["cargoloader_30x30.png"], (25, 25)),
+                get_image("cargoloader_30x30.png"), (25, 25)),
             tooltip="build cargoloader",
-            info_text=create_info_panel_ship_text("cargoloader"),
+            info_text=info_panel_text_generator.create_info_panel_ship_text("cargoloader"),
             frame_color=self.frame_color,
             moveable=False,
             include_text=True,
             layer=self.layer,
-            onClick=lambda: self.build_ship("cargoloader"),
+            onClick=lambda: building_factory.build("cargoloader"),
             )
 
         self.spaceship_button = ImageButton(win=self.win,
@@ -111,14 +108,14 @@ class SpaceHarbor(WidgetBase):
             isSubWidget=False,
             parent=self,
             image=pygame.transform.scale(
-                images[pictures_path]["ships"]["spaceship_30x30.png"], (25, 25)),
+                get_image("spaceship_30x30.png"), (25, 25)),
             tooltip="build spaceship",
-            info_text=create_info_panel_ship_text("spaceship"),
+            info_text=info_panel_text_generator.create_info_panel_ship_text("spaceship"),
             frame_color=self.frame_color,
             moveable=False,
             include_text=True,
             layer=self.layer,
-            onClick=lambda: self.build_ship("spaceship"),
+            onClick=lambda: building_factory.build("spaceship"),
             )
 
         # initial hide the buttons
@@ -182,44 +179,3 @@ class SpaceHarbor(WidgetBase):
         self.cargoloader_button.set_position((
             self.surface_rect.x + self.get_screen_width() - self.cargoloader_button.get_screen_width() - self.spacing * 3,
             self.surface_rect.y + self.spacing + 20))
-
-    def build_ship(self, ship):
-        price = ship_prices[ship]
-        player = self.parent.parent.player
-        app = self.parent.parent
-        planet = app.selected_planet
-
-        if check_if_enough_resources_to_build(ship):
-            # pay
-            for key, value in price.items():
-                setattr(player, key, getattr(player, key) - value)
-
-            # building widget
-            widget_width = self.parent.get_screen_width()
-            widget_height = 35
-            spacing = 5
-
-            # get the position and size
-            win = pygame.display.get_surface()
-            height = win.get_height()
-            y = height - spacing - widget_height - widget_height * len(app.building_widget_list)
-
-            sounds.play_sound(sounds.bleep2, channel=7)
-
-            building_widget = BuildingWidget(win=app.win,
-                x=app.building_panel.screen_x,
-                y=y,
-                width=widget_width,
-                height=widget_height,
-                name=ship,
-                fontsize=18,
-                progress_time=5,
-                parent=app,
-                key="",
-                value=0,
-                planet=app.selected_planet,
-                tooltip=ship, layer=4
-                )
-
-            # add building widget to building cue to make shure it can be build only if building_cue is < building_slots_amount
-            planet.building_cue += 1

@@ -33,6 +33,7 @@ class Button(WidgetBase, Moveable):
         self.kwargs = kwargs
         self.parent = kwargs.get("parent")
         self.layer = kwargs.get("layer", 3)
+        self.addition_value = kwargs.get("addition_value", None)
 
         # self.selected = False
         self.center = (
@@ -137,7 +138,6 @@ class Button(WidgetBase, Moveable):
                     self.onClick(*self.onClickParams)
                     self.colour = self.pressedColour
                     self.borderColour = self.pressedBorderColour
-
                     self.drawCircle(self.pressedColour, 128)
 
                     # set planet on click of the building slot buttons
@@ -146,6 +146,14 @@ class Button(WidgetBase, Moveable):
                             if self.parent.property == "planet":
                                 global_params.app.set_selected_planet(self.parent)
                                 # self.parent.set_info_text()
+
+                        # set building_edit.input_box value
+                        if hasattr(self.parent, "property"):
+                            if self.parent.property == "input_box":
+                                if hasattr(self, "addition_value"):
+                                    value = int(self.parent.text) - int(self.addition_value)
+                                    self.parent.set_text(str(value))
+
                     if self.string:
                         global_params.app.build(self.string)
 
@@ -177,7 +185,6 @@ class Button(WidgetBase, Moveable):
                 self.clicked = False
                 self.colour = self.inactiveColour
                 self.borderColour = self.inactiveBorderColour
-
                 self.drawCircle(self.inactiveColour, 0)
 
     def execute(self, code):

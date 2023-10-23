@@ -1,6 +1,3 @@
-from source.configuration.config import prices, production
-
-
 class EconomyParams:
     def __init__(self):
         # buildings,resources
@@ -45,5 +42,5 @@ class EconomyParams:
         self.production_technology = self.production["technology"]
 
         # prices/production
-        self.prices = prices
-        self.production = production
+        # self.prices = prices
+        # self.production = production

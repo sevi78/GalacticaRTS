@@ -10,7 +10,6 @@ class ImageHandler:
         self._image_name_small = kwargs.get("image_name_small")
         self.image_name_big = kwargs.get("image_name_big")
 
-
     def alignImageRect(self):
         self.rect.center = (self.screen_x + self.screen_width // 2, self.screen_y + self.screen_height // 2)
         # self.rect.center = (self.screen_x - self.screen_width / 2, self.screen_y - self.screen_height / 2)

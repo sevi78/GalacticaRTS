@@ -1,5 +1,5 @@
-from source.configuration.config import production, ship_prices, prices, planetary_defence_prices
-from source.utils import global_params
+from source.database.saveload import load_file
+from source.game_play.building_factory import building_factory
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups
 
 
@@ -76,11 +76,8 @@ class AppHelper:
 
             # set production values
             for i in planet.buildings:
-                if not i in production:
-                    pass
-                else:
-                    for key, value in production[i].items():
-                        self.production[key] += value
+                for key, value in building_factory.get_production_from_buildings_json(i).items():
+                    self.production[key] += value
 
         # subtract the building_slot_upgrades ( they cost 1 energy)
         for planet in sprite_groups.planets:
@@ -94,15 +91,16 @@ class AppHelper:
         self.production_energy = self.production["energy"]
         self.production_food = self.production["food"]
         self.production_minerals = self.production["minerals"]
+        self.production_technology = self.production["technology"]
 
     def set_selected_planet(self, planet):
-        if self.selected_planet != planet:
-            if self.selected_planet:
-                self.selected_planet.reset_building_buttons_visible_state()
+        # if self.selected_planet != planet:
+        #     if self.selected_planet:
+        #         self.selected_planet.reset_building_buttons_visible_state()
 
         if planet:
             self.selected_planet = planet
-            self.selected_planet.set_building_buttons_visible_state_all_true()
+            # self.selected_planet.set_building_buttons_visible_state_all_true()
             self.selected_planet.set_info_text()
             self.info_panel.set_text(planet.info_text)
 
@@ -119,75 +117,34 @@ class AppHelper:
         self.fog_of_war.draw_fog_of_war(obj)
 
 
-def check_if_enough_resources_to_build(thing_to_build):
-    """
-    ckecks if enough resources are available for build something:
-    Objective:
-    - The objective of the function is to check if the player has enough resources to build a certain item or spaceship.
-
-    Inputs:
-    - The function takes in a string parameter called 'thing_to_build', which represents the name of the item or
-      spaceship to be built.
-
-    Flow:
-    - The function first checks if the 'thing_to_build' parameter is a key in either the 'prices' or 'ship_prices'
-      dictionaries.
-
-    - It then retrieves the corresponding price dictionary based on the 'thing_to_build' parameter.
-
-    - The function then iterates through the key-value pairs in the price dictionary and checks if the player has enough
-      of each resource to build the item or spaceship.
-
-    - If the player does not have enough of a certain resource, the function sets the 'check' variable to False and
-      appends a message to the 'text' variable indicating which resources are missing.
-
-    - If the 'check' variable is False, the function sets the 'event_text' attribute of the 'global_params.app' object to the
-      'text' variable.
-
-    - The function returns the 'check' variable, which is True if the player has enough resources and False otherwise.
-
-    Outputs:
-    - The function returns a boolean value indicating whether the player has enough resources to build the item or
-      spaceship.
-
-    - If the player does not have enough resources, the function sets the 'event_text' attribute of the 'global_params.app'
-      object to a message indicating which resources are missing.
-
-    Additional aspects:
-    - The function uses the 'getattr' function to dynamically retrieve the value of a player attribute based on the key
-      in the price dictionary.
-
-    - The function uses the '[:-2]' slice notation to remove the trailing comma and space from the 'text' variable
-      before appending the exclamation mark.
-    """
-    check = True
-    text = f"not enough resources to build a {thing_to_build}! you are missing: "
-
-    # get the corresponding price dict
-    if thing_to_build in prices.keys():
-        price_dict = prices
-
-    elif thing_to_build in ship_prices.keys():
-        price_dict = ship_prices
-
-    elif thing_to_build in planetary_defence_prices.keys():
-        price_dict = planetary_defence_prices
-
-    else:
-        print(f"wrong input for check_if_enough_resources_to_build:, no key for {thing_to_build}  in any price dict")
-        return False
-
-    # check for prices
-    for key, value in price_dict[thing_to_build].items():
-        if not getattr(global_params.app.player, key) - value >= 0:
-            text += f"{getattr(global_params.app.player, key) - value} {key}, "
-            check = False
-
-    if not check:
-        text = text[:-2] + "!"
-        global_params.app.event_text = text
-
-    return check
+def create_price_dict(thing_to_build: str):
+    dict = load_file("building.json")
+    print("dict:", dict)
+    # price_dict = {}
+    # for category, buildings in
+    #     category_dict = {}
+    #     for building in buildings:
+    #         building_dict = {
+    #             "name": building,
+    #             "category": category,
+    #             "production_energy": 0,
+    #             "production_food": 0,
+    #             "production_minerals": 0,
+    #             "production_water": 0,
+    #             "production_technology": 0,
+    #             "production_city": 0,
+    #             "price_energy": 0,
+    #             "price_food": 0,
+    #             "price_minerals": 0,
+    #             "price_water": 0,
+    #             "price_technology": 0,
+    #             "price_city": 0,
+    #             "build_population_minimum": 0,
+    #             "building_production_time_scale": 0,
+    #             "building_production_time": 0
+    #             }
+    #         category_dict[building] = building_dict
+    #     price_dict[category] = category_dict
 
 
 def select_next_item_in_list(my_list: list, current_item: any, value: int):

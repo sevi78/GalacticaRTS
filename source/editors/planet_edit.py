@@ -2,9 +2,9 @@ import random
 
 import pygame
 
-from source.configuration import config
 from source.editors.editor_base.editor_base import EditorBase
 from source.editors.editor_base.editor_config import ARROW_SIZE, FONT_SIZE, BUTTON_SIZE, TOP_SPACING
+from source.game_play.building_factory import building_factory
 from source.game_play.navigation import navigate_to
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.gui.widgets.checkbox import Checkbox
@@ -49,7 +49,7 @@ class PlanetEditBuilder:
     def create_inputboxes(self):
         """"""
         self.inputbox = InputBox(self.win, self.world_x - self.spacing_x / 2 + self.world_width / 2, self.world_y + TOP_SPACING, self.spacing_x * 2, 32,
-            text="", parent=self)
+            text="", parent=self, key="name")
         self.widgets.append(self.inputbox)
 
     def create_selectors(self):
@@ -113,7 +113,7 @@ class PlanetEditBuilder:
 
     def create_checkboxes(self):
         """"""
-        all_possible_resources = config.all_possible_resources
+        all_possible_resources = building_factory.get_resource_categories()
         y = self.world_y + 100
         x = self.world_width / 2 + BUTTON_SIZE
 
@@ -277,6 +277,13 @@ class PlanetEdit(EditorBase, PlanetEditBuilder):
         text = self.selected_planet.name  # + ", id: " + str(self.selected_planet.id)
         self.inputbox.set_text(text)
 
+    def get_input_box_values(self, obj, key, value):
+        # self.parent.get_input_box_values("name", self.text)
+        # self.parent.get_input_box_values("string", self.text)
+        if key == "name":
+            self.set_new_value_to_planet("name", value)
+            self.set_new_value_to_planet("string", value)
+
     def set_new_value_to_planet(self, key, value):
         """sets the new values to the planet, called from outside
         """
@@ -384,10 +391,9 @@ class PlanetEdit(EditorBase, PlanetEditBuilder):
 
     def listen(self, events):
         """show or hide, navigate to planet on selection"""
+        self.inputbox.handle_events(events)
+        self.scale_planet(events)
         for event in events:
-            self.inputbox.handle_event(event)
-            self.scale_planet(events)
-
             # ignore all inputs while any text input is active
             if global_params.text_input_active:
                 return

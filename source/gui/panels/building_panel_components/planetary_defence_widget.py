@@ -2,21 +2,17 @@ import logging
 import pygame
 from pygame_widgets.util import drawText
 
-from source.app.app_helper import check_if_enough_resources_to_build
-from source.configuration.config import planetary_defence_prices
-from source.configuration.info_text import create_info_panel_building_text, create_info_panel_planetary_defence_text
+from source.game_play.building_factory import building_factory
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
-from source.gui.widgets.building_widget import BuildingWidget
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.utils import global_params
 from source.utils.colors import colors
 from source.utils.global_params import ui_rounded_corner_small_thickness
 from source.multimedia_library.images import get_image
-from source.multimedia_library.sounds import sounds
-
-FONT_SIZE = 12
+from source.gui.panels.info_panel_components.info_panel_text_generator import info_panel_text_generator
 
 # Constants
+FONT_SIZE = 12
 ICON_SIZE = 25
 BUTTON_SIZE = 25
 
@@ -62,11 +58,11 @@ class PlanetaryDefenceWidget(WidgetBase):
             parent=self,
             image=pygame.transform.scale(get_image("cannon.png"), (BUTTON_SIZE, BUTTON_SIZE)),
             tooltip="build cannon",
-            info_text=create_info_panel_planetary_defence_text("cannon"),
+            info_text=info_panel_text_generator.create_info_panel_planetary_defence_text("cannon"),
             frame_color=self.frame_color,
             moveable=False,
             include_text=True, layer=self.layer,
-            onClick=lambda: self.build("cannon"))
+            onClick=lambda: building_factory.build("cannon"))
 
         self.missile_launcher_icon = ImageButton(win=self.win,
             x=self.get_screen_x() + BUTTON_SIZE + 10,
@@ -77,11 +73,11 @@ class PlanetaryDefenceWidget(WidgetBase):
             parent=self,
             image=pygame.transform.scale(get_image("missile.png"), (BUTTON_SIZE, BUTTON_SIZE)),
             tooltip="build missile launcher",
-            info_text=create_info_panel_planetary_defence_text("missile"),
+            info_text=info_panel_text_generator.create_info_panel_planetary_defence_text("missile"),
             frame_color=self.frame_color,
             moveable=False,
             include_text=True, layer=self.layer,
-            onClick=lambda: self.build("missile"))
+            onClick=lambda: building_factory.build("missile"))
 
         self.parent.widgets.append(self)
         self.buttons.append(self.cannon_icon)
@@ -144,45 +140,6 @@ class PlanetaryDefenceWidget(WidgetBase):
         self.cannon_icon.set_position((self.surface_rect.x + self.spacing * 3, self.surface_rect.y + self.spacing + 20))
         self.missile_launcher_icon.set_position((
             self.surface_rect.x + BUTTON_SIZE + 10 + self.spacing * 3, self.surface_rect.y + self.spacing + 20))
-
-    def build(self, obj):
-        price = planetary_defence_prices[obj]
-        player = self.parent.parent.player
-        app = self.parent.parent
-        planet = app.selected_planet
-
-        if check_if_enough_resources_to_build(obj):
-            # pay
-            for key, value in price.items():
-                setattr(player, key, getattr(player, key) - value)
-
-            # building widget
-            widget_width = self.parent.get_screen_width()
-            widget_height = 35
-            spacing = 5
-
-            win = pygame.display.get_surface()
-            height = win.get_height()
-            y = height - spacing - widget_height - widget_height * len(app.building_widget_list)
-
-            sounds.play_sound(sounds.bleep2, channel=7)
-
-            building_widget = BuildingWidget(win=app.win,
-                x=app.building_panel.screen_x,
-                y=y,
-                width=widget_width,
-                height=widget_height,
-                name=obj,
-                fontsize=18,
-                progress_time=5,
-                parent=app,
-                key="",
-                value=0,
-                planet=app.selected_planet,
-                tooltip=obj, layer=4
-                )
-
-            planet.building_cue += 1
 
 
 # Logging

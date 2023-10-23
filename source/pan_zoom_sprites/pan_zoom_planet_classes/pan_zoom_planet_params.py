@@ -1,11 +1,11 @@
 import pygame
 
-from source.configuration.info_text import create_info_panel_planet_text
 from source.database.database_access import create_connection, get_database_file_path
 from source.multimedia_library.images import images, pictures_path, get_image
 from source.multimedia_library.sounds import sounds
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups
 from source.utils import global_params
+from source.gui.panels.info_panel_components.info_panel_text_generator import info_panel_text_generator
 
 
 class PanZoomPlanetParams:
@@ -15,6 +15,7 @@ class PanZoomPlanetParams:
         self.orbit_radius = 0
         self.font_size = kwargs.get('font_size', 20)
         self.font = kwargs.get('font', pygame.font.SysFont(global_params.font_name, self.font_size))
+        self.check_image = get_image("check.png")
 
     @property
     def image_name_small(self):
@@ -89,11 +90,11 @@ class PanZoomPlanetParams:
         """
         sets the text used for the info_panel
         """
-        if self.parent.build_menu_visible: return
-        self.parent.info_panel.visible = True
+        # if self.parent.build_menu_visible: return
+        # self.parent.info_panel.visible = True
 
         if self.explored:
-            gen_text = create_info_panel_planet_text(self)
+            gen_text = info_panel_text_generator.create_info_panel_planet_text(self)
             self.info_text = gen_text
         else:
             text = "unknown planet" + ":\n\n"
@@ -150,16 +151,17 @@ class PanZoomPlanetParams:
 
         sounds.play_sound(sounds.happy, channel=4)
 
-        self.planet_button_array.enable()
-        for i in self.planet_button_array.getButtons():
-            i.show()
+        # self.planet_button_array.enable()
+        # for i in self.planet_button_array.getButtons():
+        #     i.show()
 
         self.parent.set_selected_planet(self)
         if not self in self.parent.explored_planets:
-            self.parent.explored_planets.append(self)
+            self.parent.add_explored_planet(self)
         self.explored = True
         self.show_overview_button()
         self.string = self.name
 
         # set event text
         self.parent.event_text = f"Gratulation! you have reached a the Planet {self.name} !"
+        self.parent.update_building_button_widgets()

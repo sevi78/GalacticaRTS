@@ -174,7 +174,8 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         distance = direction.length() * self.get_zoom()
 
         # Normalize the direction vector
-        direction.normalize()
+        if not direction == 0:
+            direction.normalize()
 
         # Calculate the displacement vector for each time step
         displacement = direction * self.speed * global_params.time_factor

@@ -45,7 +45,10 @@ class PositionHandler:
     def get_screen_height(self):
         return self.screen_height
 
-    def set_screen_position(self):
+    def set_screen_position(self, **kwargs):
+        offset_x = kwargs.get("offset_x", 0)
+        offset_y = kwargs.get("offset_y", 0)
+
         panzoom = pan_zoom_handler
 
         # get new coordinates
@@ -57,7 +60,7 @@ class PositionHandler:
         # if it is button
         if hasattr(self, "ui_parent"):
             if self.ui_parent:
-                x, y = self.ui_parent.get_screen_x(), self.ui_parent.get_screen_y()
+                x, y = self.ui_parent.get_screen_x() + offset_x, self.ui_parent.get_screen_y() + offset_y
 
         # set new position
         self.set_position((x - self.get_screen_width() / 2, y - self.get_screen_height() / 2))
@@ -73,7 +76,10 @@ class PositionHandler:
         panzoom = pan_zoom_handler
 
         # get new_size size
-        new_size = (self.size_x * panzoom.zoom, self.size_y * panzoom.zoom)
+        if self.zoomable:
+            new_size = (self.size_x * panzoom.zoom, self.size_y * panzoom.zoom)
+        else:
+            new_size = (self.size_x, self.size_y)
 
         # set new image size
         if hasattr(self, "image_raw") and hasattr(self, "image"):

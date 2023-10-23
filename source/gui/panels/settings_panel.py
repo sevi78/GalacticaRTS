@@ -1,7 +1,6 @@
 import pygame
 
-from source.configuration import config
-from source.editors import planet_editor, building_editor, settings
+from source.editors import settings
 from source.game_play.navigation import navigate_to
 from source.gui.panels.toggle_switch import ToggleSwitch
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
@@ -10,6 +9,7 @@ from source.utils import global_params
 from source.utils.colors import colors
 from source.utils.global_params import ui_rounded_corner_small_thickness
 from source.multimedia_library.images import get_image
+from source.gui.panels.info_panel_components.info_panel_text_generator import info_panel_text_generator
 
 
 class SettingsPanel(WidgetBase):
@@ -96,42 +96,42 @@ class SettingsPanel(WidgetBase):
         self.widgets.append(self.info_icon)
         self.max_width += self.icon_size + self.spacing
 
-        self.planet_editor_icon = ImageButton(win=self.win,
-            x=self.info_icon.get_screen_x() - 50,
-            y=self.surface_rect.y + self.spacing,
-            width=self.icon_size,
-            height=self.icon_size,
-            isSubWidget=False,
-            parent=self,
-            image=pygame.transform.scale(
-                get_image("Zeta Bentauri_60x60.png"), (25, 25)),
-            tooltip="open planet editor",
-            frame_color=self.frame_color,
-            moveable=False,
-            include_text=True, layer=self.layer,
-            onClick=lambda: planet_editor.main(surface=self.win))
-        self.widgets.append(self.planet_editor_icon)
-        self.max_width += self.icon_size + self.spacing
+        # self.planet_editor_icon = ImageButton(win=self.win,
+        #     x=self.info_icon.get_screen_x() - 50,
+        #     y=self.surface_rect.y + self.spacing,
+        #     width=self.icon_size,
+        #     height=self.icon_size,
+        #     isSubWidget=False,
+        #     parent=self,
+        #     image=pygame.transform.scale(
+        #         get_image("Zeta Bentauri_60x60.png"), (25, 25)),
+        #     tooltip="open planet editor",
+        #     frame_color=self.frame_color,
+        #     moveable=False,
+        #     include_text=True, layer=self.layer,
+        #     onClick=lambda: planet_editor.main(surface=self.win))
+        # self.widgets.append(self.planet_editor_icon)
+        # self.max_width += self.icon_size + self.spacing
 
-        self.building_editor_icon = ImageButton(win=self.win,
-            x=self.planet_editor_icon.get_screen_x() - 50,
-            y=self.surface_rect.y + self.spacing,
-            width=self.icon_size,
-            height=self.icon_size,
-            isSubWidget=False,
-            parent=self,
-            image=pygame.transform.scale(
-                get_image("building_icon.png"), (25, 25)),
-            tooltip="open building editor",
-            frame_color=self.frame_color,
-            moveable=False,
-            include_text=True, layer=self.layer,
-            onClick=lambda: building_editor.main(surface=self.win))
-        self.widgets.append(self.building_editor_icon)
-        self.max_width += self.icon_size + self.spacing
+        # self.building_editor_icon = ImageButton(win=self.win,
+        #     x=self.planet_editor_icon.get_screen_x() - 50,
+        #     y=self.surface_rect.y + self.spacing,
+        #     width=self.icon_size,
+        #     height=self.icon_size,
+        #     isSubWidget=False,
+        #     parent=self,
+        #     image=pygame.transform.scale(
+        #         get_image("building_icon.png"), (25, 25)),
+        #     tooltip="open building editor",
+        #     frame_color=self.frame_color,
+        #     moveable=False,
+        #     include_text=True, layer=self.layer,
+        #     onClick=lambda: building_editor.main(surface=self.win))
+        # self.widgets.append(self.building_editor_icon)
+        # self.max_width += self.icon_size + self.spacing
 
         self.orbit_icon = ImageButton(win=self.win,
-            x=self.building_editor_icon.get_screen_x() - 50,
+            x=self.info_icon.get_screen_x() - 50,
             y=self.surface_rect.y + self.spacing,
             width=self.icon_size,
             height=self.icon_size,
@@ -149,7 +149,7 @@ class SettingsPanel(WidgetBase):
 
         # self.set_global_variable("show_orbit", True,var="enable_orbit" ))
         self.grid_icon = ImageButton(win=self.win,
-            x=self.building_editor_icon.get_screen_x() - 50,
+            x=self.info_icon.get_screen_x() - 50,
             y=self.surface_rect.y + self.spacing,
             width=self.icon_size,
             height=self.icon_size,
@@ -166,7 +166,7 @@ class SettingsPanel(WidgetBase):
         self.max_width += self.icon_size + self.spacing
 
         self.buttons_icon = ImageButton(win=self.win,
-            x=self.building_editor_icon.get_screen_x() - 50,
+            x=self.info_icon.get_screen_x() - 50,
             y=self.surface_rect.y + self.spacing,
             width=self.icon_size,
             height=self.icon_size,
@@ -183,7 +183,7 @@ class SettingsPanel(WidgetBase):
         self.max_width += self.icon_size + self.spacing + self.spacing
 
     def set_info_text(self):
-        global_params.app.info_panel.set_text(config.info_text)
+        global_params.app.info_panel.set_text(info_panel_text_generator.info_text)
 
     def draw_frame(self):
         # # frame

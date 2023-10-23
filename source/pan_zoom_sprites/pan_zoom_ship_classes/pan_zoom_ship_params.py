@@ -177,7 +177,6 @@ class PanZoomShipParams():
 
             text += f"target_reached:{self.target_reached}\n"
 
-
         self.parent.info_panel.set_text(text)
         self.parent.info_panel.set_planet_image(self.image_raw)
 

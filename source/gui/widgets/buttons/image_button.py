@@ -5,6 +5,7 @@ from pygame_widgets.mouse import MouseState
 from source.gui.lod import inside_screen
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.utils import global_params
+from source.game_play.building_factory import building_factory
 
 
 class ImageButton(WidgetBase):
@@ -25,6 +26,7 @@ class ImageButton(WidgetBase):
 
     def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
         super().__init__(win, x, y, width, height, isSubWidget, **kwargs)
+        self.function = kwargs.get("function", None)
         self.layer = kwargs.get("layer", 3)
         self.parent = kwargs.get("parent")
         self.center = (
@@ -76,7 +78,8 @@ class ImageButton(WidgetBase):
         :param events: Use pygame.event.get()
         :type events: list of pygame.event.Event
         """
-        global_params.app.tooltip_instance.reset_tooltip(self)
+        if global_params.app:
+            global_params.app.tooltip_instance.reset_tooltip(self)
         if not self._hidden and not self._disabled:
             mouseState = Mouse.getMouseState()
             x, y = Mouse.getMousePos()
@@ -92,10 +95,15 @@ class ImageButton(WidgetBase):
 
                     # this is used for build .... dirty hack, but leave it !
                     if self.string:
-                        global_params.app.build(self.string)
+                        building_factory.build(self.string)
 
+                    # another dirty hack
+                    # if self.key in building_factory.get_resource_categories():
+                    if hasattr(self.parent, "on_resource_click"):
+                        self.parent.on_resource_click(self)
+                        # print ("image_button.mouseState == MouseState.CLICK:", self.key)
                     # if self.function:
-                    #     self.execute(self.function)
+                    #     self.execute(eval(self.function))
 
                 elif mouseState == MouseState.DRAG and self.clicked:
                     pass

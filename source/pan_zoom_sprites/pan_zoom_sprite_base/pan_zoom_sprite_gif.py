@@ -12,7 +12,6 @@ from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_visibility_handler im
 from source.utils import global_params
 from source.utils.colors import colors
 
-
 # pygame.init()
 WIDTH = 800
 HEIGHT = 600

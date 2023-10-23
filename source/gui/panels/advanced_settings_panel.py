@@ -1,6 +1,5 @@
 import pygame
 
-from source.configuration import config
 from source.gui.panels.toggle_switch import ToggleSwitch
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.gui.widgets.buttons.image_button import ImageButton
@@ -43,6 +42,22 @@ class AdvancedSettingsPanel(WidgetBase):
 
     def create_icons(self):
         # event panel edit icon
+        self.building_edit_icon = ImageButton(win=self.win,
+            x=self.get_screen_x(),
+            y=self.surface_rect.y + self.spacing,
+            width=self.icon_size,
+            height=self.icon_size,
+            isSubWidget=False,
+            parent=self,
+            image=pygame.transform.scale(get_image("building_icon.png"), (25, 25)),
+            tooltip="open building edit",
+            frame_color=self.frame_color,
+            moveable=False,
+            include_text=True, layer=self.layer,
+            onClick=lambda: global_params.app.building_edit.set_visible())
+        self.widgets.append(self.building_edit_icon)
+        self.max_width += self.icon_size + self.spacing
+
         self.event_panel_edit_icon = ImageButton(win=self.win,
             x=self.get_screen_x(),
             y=self.surface_rect.y + self.spacing,

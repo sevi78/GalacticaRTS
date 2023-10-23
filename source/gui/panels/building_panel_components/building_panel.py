@@ -4,10 +4,10 @@ import pygame
 from pygame_widgets.util import drawText
 
 from source.app.app_helper import select_next_item_in_list
-from source.configuration import config
+
 from source.configuration.economy_params import EconomyParams
 from source.game_play.navigation import navigate_to
-from source.gui.panels.building_panel_components.building_constructor import BuildingConstructorWidget
+from source.gui.building_button_widget import BuildingButtonWidget
 from source.gui.panels.building_panel_components.building_panel_constructor import BuildingPanelConstructor
 from source.gui.panels.building_panel_components.building_panel_draw import BuildingPanelDraw
 from source.gui.panels.building_panel_components.building_slot import BuildingSlot
@@ -15,6 +15,7 @@ from source.gui.panels.building_panel_components.planetary_defence_widget import
 from source.gui.panels.building_panel_components.space_harbor import SpaceHarbor
 from source.gui.panels.toggle_switch import ToggleSwitch
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
+from source.multimedia_library.images import get_image
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups
 from source.utils import global_params
 from source.utils.colors import colors
@@ -79,6 +80,19 @@ class BuildingPanel(WidgetBase, BuildingPanelConstructor, BuildingSlot, EconomyP
         # construct icon_______________________________________________________________________________________________
         self.create_icons()
 
+        # smiley and thumbsup
+        self.smiley_size = 18
+        self.smiley_image_sad = pygame.transform.scale(get_image("sad.png"), (self.smiley_size, self.smiley_size))
+        self.smiley_image_smile = pygame.transform.scale(get_image("smile.png"), (self.smiley_size, self.smiley_size))
+        self.smiley = self.smiley_image_smile
+
+        self.thumps_up_size = 20
+        self.thumps_up_image_red = pygame.transform.scale(pygame.transform.flip(get_image("thumps_upred.png"),
+            True, True), (self.thumps_up_size, self.thumps_up_size))
+        self.thumps_up_image_green = pygame.transform.scale(pygame.transform.flip(get_image("thumps_up.png"),
+            True, False), (self.thumps_up_size, self.thumps_up_size))
+        self.thumps_up = self.thumps_up_image_green
+
         self.sub_widget_height = 70
         font_size = 16
         # space harbor
@@ -90,9 +104,11 @@ class BuildingPanel(WidgetBase, BuildingPanelConstructor, BuildingSlot, EconomyP
             isSubWidget=False, parent=self, layer=9, spacing=5, icon_size=25, font_size=font_size)
 
         # building constructor
-        self.building_constructor = BuildingConstructorWidget(self.win, self.world_x, self.world_y, self.get_screen_width(), self.sub_widget_height,
-            isSubWidget=False, parent=self, layer=9, font_size=font_size)
+        # self.building_button_widget = BuildingConstructorWidget(self.win, self.world_x, self.world_y, self.get_screen_width(), self.sub_widget_height,
+        #     isSubWidget=False, parent=self, layer=9, font_size=font_size)
 
+        self.building_button_widget = BuildingButtonWidget(win, 200, 100, 300, 200, self.parent,
+            False, layer=4, parent=self, fixed_parent=True)
         # toggle switch to pop in or out
         self.toggle_switch = ToggleSwitch(self, 15, zero_y=self.planet_surface_rect.y)
 
@@ -233,6 +249,8 @@ class BuildingPanel(WidgetBase, BuildingPanelConstructor, BuildingSlot, EconomyP
 
         if self.parent.selected_planet:
             if not self.parent.selected_planet.explored:
+                # if not self.building_button_widget._hidden:
+                #     self.building_button_widget.hide()
                 return
 
             self.draw_planet_params(x)
@@ -244,7 +262,7 @@ class BuildingPanel(WidgetBase, BuildingPanelConstructor, BuildingSlot, EconomyP
         if "particle accelerator" in self.parent.selected_planet.buildings:
             self.max_height += self.sub_widget_height
 
-        self.max_height += self.building_constructor.max_height
+        self.max_height += self.building_button_widget.max_height
 
         # adjust frame size_y
         self.planet_surface_rect.__setattr__("height", self.world_y - self.spacing * 3)

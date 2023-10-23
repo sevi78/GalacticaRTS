@@ -1,14 +1,16 @@
 import pygame
 
-import source.configuration.config
 from source.app.app_helper import get_sum_up_to_n
-from source.configuration.config import production
+
+from source.game_play.building_factory import building_factory
 from source.utils import global_params
 from source.multimedia_library.images import get_image
 
 
 class PanZoomPlanetEconomy:
     def __init__(self, kwargs):
+        # self.technology_upgrades = {"university": {"buildings_max": 3}}
+        self.population_grow_factor = 0.1
         self.resources = {"energy": 0, "food": 0, "minerals": 0, "water": 0}
 
         self.buildings = []
@@ -64,21 +66,13 @@ class PanZoomPlanetEconomy:
                                      self.building_buttons_minerals + self.building_buttons_water
 
     def update_planet_resources(self, checkbox_values):
-        # delete all buttons (resource, building)
-        self.delete_building_buttons()
-        self.delete_resource_buttons()
-
         # get new values
         resources = ["water", "energy", "food", "minerals", "technology", "city"]
         self.possible_resources = [i for i in checkbox_values if i in resources]
-
-        # rebuild the buttons
-        self.create_planet_button_array()
-
-        for resource_button in self.planet_button_array.getButtons():
-            resource_button.show()
+        self.building_button_widget.show()
 
     def set_thumpsup_status(self):
+
         # is everything in plus, show thumpsup green,otherwise red, set smiley to sad if no food production
         vl = []
         for key, value in self.production.items():
@@ -90,6 +84,7 @@ class PanZoomPlanetEconomy:
             self.thumpsup_status = False
 
     def set_smiley_status(self):
+
         if self.production["food"] > 0:
             self.smiley_status = True
         else:
@@ -109,14 +104,9 @@ class PanZoomPlanetEconomy:
             }
 
         for i in self.buildings:
-            if not i in production:
-                pass
-            else:
-                for key, value in production[i].items():
-                    if key == "buildings_max":
-                        self.production[key] = self.buildings_max + self.production["buildings_max"]
-                    else:
-                        self.production[key] += value
+            # print("get_production_from_buildings_json(i)", building_factory.get_production_from_buildings_json(i))
+            for key, value in building_factory.get_production_from_buildings_json(i).items():
+                self.production[key] += value
 
         self.production[
             "energy"] -= get_sum_up_to_n(self.building_slot_upgrade_energy_consumption, self.building_slot_upgrades + 1)
@@ -130,25 +120,26 @@ class PanZoomPlanetEconomy:
         self.calculate_population()
         self.set_thumpsup_status()
         self.set_smiley_status()
+        self.set_overview_images()
 
+    def set_overview_images(self):
         if self.thumpsup_status:
-            self.thumpsup_button.setImage(pygame.transform.flip(pygame.transform.scale(
+            self.thumpsup_button.image_raw = pygame.transform.flip(pygame.transform.scale(
                 get_image(
-                    "thumps_upred.png"), self.thumpsup_button_size), True, True))
+                    "thumps_upred.png"), self.thumpsup_button_size), True, True)
         else:
-            self.thumpsup_button.setImage(pygame.transform.flip(pygame.transform.scale(
+            self.thumpsup_button.image_raw = pygame.transform.flip(pygame.transform.scale(
                 get_image(
-                    "thumps_up.png"), self.thumpsup_button_size), True, False))
-
+                    "thumps_up.png"), self.thumpsup_button_size), True, False)
         if self.smiley_status:
-            self.smiley_button.setImage(get_image("smile.png"))
+            self.smiley_button.image_raw = get_image("smile.png")
         else:
-            self.smiley_button.setImage(get_image("sad.png"))
+            self.smiley_button.image_raw = get_image("sad.png")
 
     def calculate_population(self):
         """ calculates population"""
         if self.production["food"] > 0:
-            self.population_grow = source.configuration.config.population_grow_factor * self.production[
+            self.population_grow = self.population_grow_factor * self.production[
                 "food"] * global_params.time_factor
 
     def set_population_limit(self):
@@ -160,9 +151,9 @@ class PanZoomPlanetEconomy:
                                      i in self.population_buildings])
 
     def set_technology_upgrades(self, building):
-        print("set_technology_upgrades", building)
-        if building == "university":
-            self.buildings_max += source.configuration.config.technology_upgrades["university"]["buildings_max"]
+        upgrade = building_factory.get_technology_upgrade(building)
+        for key, value in upgrade.items():
+            setattr(self, key, getattr(self, key) + value)
 
     def add_population(self):
         if self.population_limit > self.population and self.production_food > 0:

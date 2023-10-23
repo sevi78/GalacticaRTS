@@ -2,14 +2,13 @@ import time
 
 import pygame
 
-from source.configuration.config import building_production_time
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.gui.widgets.buttons.button import Button
 from source.gui.widgets.progress_bar import ProgressBar
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zoom_handler
 from source.physics.orbit import set_orbit_object_id
 from source.utils import global_params
-from source.multimedia_library.images import images, pictures_path
+from source.multimedia_library.images import get_image
 from source.multimedia_library.sounds import sounds
 
 
@@ -31,7 +30,6 @@ class BuildingWidget(WidgetBase):
     - x, y: The coordinates of the top left corner of the widget.
     - width, height: The width and height of the widget.
     - name: The name of the building.
-    - parent: The parent object of the widget.
     - planet: The planet object on which the building is being built.
     - key: The key for the building's production value.
     - value: The value of the building's production.
@@ -49,12 +47,11 @@ class BuildingWidget(WidgetBase):
     - progress_time: The time it takes to build the building.
     - progress_bar: The progress bar object."""
 
-    def __init__(self, win, x, y, width, height, name, parent, planet, key, value, **kwargs):
+    def __init__(self, win, x, y, width, height, name, planet, key, value, **kwargs):
         super().__init__(win, x, y, width, height, **kwargs)
         self.layer = kwargs.get("layer")
         self.text = name + ":"
         self.name = name
-        self.parent = parent
         self.planet = planet
         self.key = key
         self.value = value
@@ -64,8 +61,8 @@ class BuildingWidget(WidgetBase):
         # get the position and size
         self.win = pygame.display.get_surface()
         height = win.get_height()
-        self.dynamic_x = self.parent.ui_helper.anchor_right
-        self.cue_id = len(self.parent.building_widget_list)
+        self.dynamic_x = global_params.app.ui_helper.anchor_right
+        self.cue_id = len(global_params.app.building_widget_list)
         self.spacing = 5
         self.dynamic_y = height - self.spacing - self.get_screen_height() - self.get_screen_height() * self.cue_id
 
@@ -73,7 +70,8 @@ class BuildingWidget(WidgetBase):
         self.font = pygame.font.SysFont(kwargs.get("fontname", global_params.font_name), kwargs.get("fontsize", 15))
 
         self.spacing = kwargs.get("spacing", 15)
-        self.image = images[pictures_path]["buildings"][self.name + "_25x25.png"]
+        self.image = pygame.transform.scale(get_image(self.name + "_25x25.png"), (25, 25))
+        self.progress_time = kwargs.get("building_production_time")
 
         # button
         self.button = Button(self.win,
@@ -85,7 +83,7 @@ class BuildingWidget(WidgetBase):
             onClick=lambda: self.function("do nothing"),
             transparent=True,
             image_hover_surface_alpha=255,
-            parent=parent,
+            parent=global_params.app,
             tooltip=self.tooltip, layer=self.layer)
 
         # text
@@ -95,7 +93,7 @@ class BuildingWidget(WidgetBase):
         self.progress_bar_width = kwargs.get("progress_bar_width", 100)
         self.progress_bar_height = kwargs.get("progress_bar_height", 10)
         self.startTime = time.time()
-        self.progress_time = building_production_time[self.name]  # kwargs.get("progress_time", 100)
+        # building_production_time[self.name]  # kwargs.get("progress_time", 100)
 
         self.progress_bar = ProgressBar(win=self.win,
             x=self.dynamic_x + self.button.get_screen_width(),
@@ -108,7 +106,7 @@ class BuildingWidget(WidgetBase):
             )
 
         # register
-        self.parent.building_widget_list.append(self)
+        global_params.app.building_widget_list.append(self)
 
     def set_building_to_planet(self):
         """
@@ -118,7 +116,7 @@ class BuildingWidget(WidgetBase):
         :return:
         """
         ships = ["spaceship", "cargoloader", "spacehunter"]
-        technology_upgrades = ["university"]
+        # technology_upgrades = ["university"]
         planet_defence_upgrades = ["cannon", "missile"]
 
         sounds.play_sound("success", channel=7)
@@ -129,7 +127,7 @@ class BuildingWidget(WidgetBase):
         # if it is a ship, no calculation has to be done, return
         if self.name in ships:
             x, y = pan_zoom_handler.screen_2_world(self.planet.screen_x, self.planet.screen_y)
-            ship = self.parent.create_ship(self.name + "_30x30.png", x, y)
+            ship = global_params.app.create_ship(self.name + "_30x30.png", x, y)
             set_orbit_object_id(ship, self.planet.id)
             return
 
@@ -140,16 +138,15 @@ class BuildingWidget(WidgetBase):
         # append to planets building list
         self.planet.buildings.append(self.name)
 
-        if self.name in technology_upgrades:
-            self.planet.set_technology_upgrades(self.name)
+        self.planet.set_technology_upgrades(self.name)
 
         # set new value to planets production
         setattr(self.planet, self.name, getattr(self.planet, "production_" + self.key) - self.value)
-        setattr(self.parent.player, self.name, getattr(self.parent.player, self.key) - self.value)
+        setattr(global_params.app.player, self.name, getattr(global_params.app.player, self.key) - self.value)
 
         self.planet.set_population_limit()
         self.planet.calculate_production()
-        self.parent.calculate_global_production()
+        global_params.app.calculate_global_production()
         global_params.app.tooltip_instance.reset_tooltip(self)
 
     def draw(self):
@@ -159,7 +156,7 @@ class BuildingWidget(WidgetBase):
 
         # reposition
         widget_height = self.get_screen_height()
-        self.dynamic_x = self.parent.ui_helper.anchor_right
+        self.dynamic_x = global_params.app.ui_helper.anchor_right
         spacing = 5
 
         # get the position and size
@@ -169,22 +166,22 @@ class BuildingWidget(WidgetBase):
 
         # button
         self.button.image_hover_surface.set_alpha(0)
-        self.button.set_position((self.parent.ui_helper.anchor_right, y))
+        self.button.set_position((global_params.app.ui_helper.anchor_right, y))
 
         # progress_bar
-        self.progress_bar.setWidth(self.parent.building_panel.get_screen_width() - self.button.get_screen_width() - 15)
+        self.progress_bar.setWidth(global_params.app.building_panel.get_screen_width() - self.button.get_screen_width() - 15)
         self.progress_bar.set_position((
             self.dynamic_x + self.button.get_screen_width() + 5, y + self.button.get_screen_height() / 2))
 
         # draw widgets text
-        self.text = self.name + ": " + str(int(self.progress_bar.percent * 100)) + "%/ " + str(self.parent.ui_helper.hms(self.progress_time))
+        self.text = self.name + ": " + str(int(self.progress_bar.percent * 100)) + "%/ " + str(global_params.app.ui_helper.hms(self.progress_time))
         self.text_render = self.font.render(self.text, True, self.frame_color, self.font_size)
         self.win.blit(self.text_render, (self.dynamic_x + self.button.get_screen_width(), self.button.screen_y + 2))
 
         # move down if place is free
-        for i in range(len(self.parent.building_widget_list)):
-            if self.parent.building_widget_list[i] == self:
-                self.cue_id = self.parent.building_widget_list.index(self.parent.building_widget_list[i])
+        for i in range(len(global_params.app.building_widget_list)):
+            if global_params.app.building_widget_list[i] == self:
+                self.cue_id = global_params.app.building_widget_list.index(global_params.app.building_widget_list[i])
 
         # if progress is finished, set building to planet
         if self.progress_bar.percent == 1:
@@ -194,7 +191,7 @@ class BuildingWidget(WidgetBase):
             self.delete()
 
     def delete(self):
-        self.parent.building_widget_list.remove(self)
+        global_params.app.building_widget_list.remove(self)
         self.__del__()
         self.progress_bar.__del__()
         self.button.__del__()
@@ -202,7 +199,7 @@ class BuildingWidget(WidgetBase):
     def listen(self, events):
         for event in events:
             if self.button.rect.collidepoint(pygame.mouse.get_pos()):
-                self.immediately_build_cost = int((1 - self.progress_bar.percent) * building_production_time[self.name])
+                self.immediately_build_cost = int((1 - self.progress_bar.percent) * self.progress_time)
                 self.set_tooltip()
 
     def function(self, arg):
@@ -215,4 +212,4 @@ class BuildingWidget(WidgetBase):
         self.button.tooltip = f"are you sure to build this {self.name} immediately? this will cost you {self.immediately_build_cost} technology units?"
 
     def build_immediately(self):
-        self.parent.player.technology -= self.immediately_build_cost
+        global_params.app.player.technology -= self.immediately_build_cost

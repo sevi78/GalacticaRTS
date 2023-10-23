@@ -1,11 +1,10 @@
 import pygame
 
-from source.configuration import config
 from source.gui.panels.toggle_switch import ToggleSwitch
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.utils import global_params
-from source.utils.colors import colors
 from source.utils.global_params import ui_rounded_corner_small_thickness
+from source.gui.panels.info_panel_components.info_panel_text_generator import info_panel_text_generator
 from source.utils.text_wrap import TextWrap
 
 PLANET_IMAGE_SIZE = 100
@@ -64,7 +63,7 @@ class InfoPanel(WidgetBase, TextWrap):
         self.win = win
         self.font_size = 18
         self.font = pygame.font.SysFont(global_params.font_name, self.font_size)
-        self.text = config.info_text
+        self.text = info_panel_text_generator.info_text
         self.color = (0, 0, 0)
         self.bg_color = pygame.colordict.THECOLORS["black"]
         self.pos = [x, y]
@@ -141,7 +140,7 @@ class InfoPanel(WidgetBase, TextWrap):
         if self._hidden:
             return
 
-        if self.parent.build_menu_visible: return
+        # if self.parent.build_menu_visible: return
         # gets the wrapped text
         self.update_text()
 

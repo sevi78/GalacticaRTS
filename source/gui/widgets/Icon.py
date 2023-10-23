@@ -43,8 +43,8 @@ class Icon(WidgetBase):
         self.moving = False
 
         # clicking
-        self.clickable = False
-        self.function = None
+        self.clickable = kwargs.get("clickable", False)
+        self.function = kwargs.get("function", None)
 
         # tooltip
         self.tooltip = kwargs.get("tooltip")

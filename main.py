@@ -1,7 +1,7 @@
 import time
 
 import pygame
-#from pygame.locals import QUIT, KEYDOWN, KEYUP
+# from pygame.locals import QUIT, KEYDOWN, KEYUP
 
 from source.app.app_helper import AppHelper
 from source.app.ui_builder import UIBuilder
@@ -10,10 +10,11 @@ from source.editors.ship_edit import ShipEdit
 from source.game_play.cheat import Cheat
 from source.game_play.enemy_handler import enemy_handler
 from source.game_play.game_logic import GameLogic
+from source.gui.building_button_widget import BuildingButtonWidget
 from source.gui.widgets import widget_handler
 from source.interaction import copy_agent
 from source.interaction.box_selection import BoxSelection
-#from source.level.level_factory import LevelFactory, Level
+# from source.level.level_factory import LevelFactory, Level
 from source.universe.universe_background import Universe
 from source.utils import global_params
 from source.utils.colors import colors
@@ -50,18 +51,22 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat, TextWrap):
 
     __slots__ = ('event_text_font_size', 'pan_enabled', 'start_time', 'wait', 'game_speed', 'run')
 
-    __slots__ +=  (
-    'population_limit', 'ctrl_pressed', 's_pressed', 'l_pressed', 'singleton_buildings_images', 'singleton_buildings',
-    'resources', 'water_buildings', 'energy_buildings', 'food_buildings', 'mineral_buildings', 'technology_buildings',
-    'city_buildings', 'population_buildings', 'buildings', 'buildings_list', 'production', 'production_water',
-    'production_energy', 'production_food', 'production_minerals', 'production_city', 'production_technology', 'prices',
-    'game_objects', 'planets', 'collectables', 'ufos', 'building_widget_list', 'planet_buttons', 'ships', 'editors',
-    'missiles', 'gif_handlers', 'build_menu_visible', 'build_menu_widgets', 'build_menu_widgets_buildings', 'config',
-    'frame_color', 'ui_helper', 'level', 'universe', '_ship', 'pan_zoom_handler', 'planet_edit', 'font_edit',
-    'enemy_handler_edit', 'ship_edit', 'clock', 'win', 'box_selection', 'world_width', 'height', 'icons',
-    'selected_planet', 'explored_planets', 'event_text', 'event_display_text', 'player', 'building_panel', 'game_time',
-    'settings_panel', 'advanced_settings_panel', 'tooltip_instance', 'info_panel', 'resource_panel', 'build_menu',
-    'event_panel', 'border', 'word_height_sum', 'text_surfaces')
+    __slots__ += (
+        'population_limit', 'ctrl_pressed', 's_pressed', 'l_pressed', 'singleton_buildings_images',
+        'singleton_buildings',
+        'resources', 'water_buildings', 'energy_buildings', 'food_buildings', 'mineral_buildings',
+        'technology_buildings',
+        'city_buildings', 'population_buildings', 'buildings', 'buildings_list', 'production', 'production_water',
+        'production_energy', 'production_food', 'production_minerals', 'production_city', 'production_technology',
+        'prices',
+        'game_objects', 'planets', 'collectables', 'ufos', 'building_widget_list', 'planet_buttons', 'ships', 'editors',
+        'missiles', 'gif_handlers', 'build_menu_visible', 'build_menu_widgets', 'build_menu_widgets_buildings',
+        'config',
+        'frame_color', 'ui_helper', 'level', 'universe', '_ship', 'pan_zoom_handler', 'planet_edit', 'font_edit',
+        'enemy_handler_edit', 'ship_edit', 'clock', 'win', 'box_selection', 'world_width', 'height', 'icons',
+        'explored_planets', 'event_text', 'event_display_text', 'player', 'building_panel', 'game_time',
+        'settings_panel', 'advanced_settings_panel', 'tooltip_instance', 'info_panel', 'resource_panel', 'build_menu',
+        'event_panel', 'border', 'word_height_sum', 'text_surfaces')  # 'selected_planet',
 
     def __init__(self, width, height):
         AppHelper.__init__(self)
@@ -88,6 +93,21 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat, TextWrap):
                 temp.append(key)
 
         print(f"pan_zoom_planet.__dict__: {self.__dict__} \n __slots__; {self.__slots__}\n tmp:{temp}")
+
+    @property
+    def selected_planet(self):
+        return self._selected_planet
+
+    @selected_planet.setter
+    def selected_planet(self, value):
+        self._selected_planet = value
+        if value:
+            self.update_building_button_widgets()
+
+    def update_building_button_widgets(self):
+        for building_button_widget in self.building_button_widgets:
+            building_button_widget.show()
+            # building_button_widget.hide_unused_resources()
 
     def update_economy(self):
         if global_params.game_paused:
@@ -195,11 +215,11 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat, TextWrap):
                             self.pan_enabled = True
 
                     pan_zoom_handler.listen(events, self.pan_enabled)
-                    #self.pan_zoom_handler.listen(events, self.pan_enabled)
+                    # self.pan_zoom_handler.listen(events, self.pan_enabled)
 
-                if pan_zoom_handler.panning:
-                    if self.selected_planet:
-                        self.selected_planet.reset_building_buttons_visible_state()
+                # if pan_zoom_handler.panning:
+                #     if self.selected_planet:
+                #         self.selected_planet.reset_building_buttons_visible_state()
 
             # update sprites
             # dont mess up the order! for some reason it must be drawn first then update
@@ -230,7 +250,7 @@ if __name__ == "__main__":
     app = App(global_params.WIDTH, global_params.HEIGHT)
     app.box_selection = BoxSelection(app.win, sprite_groups.ships.sprites() + sprite_groups.planets.sprites())
     win = app.win
-    #pygame.event.set_allowed([QUIT, KEYDOWN, KEYUP])
+    # pygame.event.set_allowed([QUIT, KEYDOWN, KEYUP])
 
     width = 800
     height = 600
@@ -238,5 +258,6 @@ if __name__ == "__main__":
     #     pygame.display.get_surface().get_rect().centerx - width / 2,
     #     pygame.display.get_surface().get_rect().y,
     #     width, height, parent=app, obj=app.ship, layer=9)
-    #blabla
+    # blabla
+    # building_button_widget = BuildingButtonWidget(win, 200, 100, 300, 200, app, False, layer= 4, parent= sprite_groups.planets.sprites()[0])
     app.loop()

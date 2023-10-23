@@ -2,13 +2,9 @@ import os
 import sys
 
 import pygame
-
-from source.configuration import config
-from source.gui.widgets.building_widget import BuildingWidget
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups
 from source.utils import global_params
 from source.database.saveload import write_file
-from source.multimedia_library.sounds import sounds
 
 
 class GameLogic:
@@ -30,104 +26,6 @@ Fields:
 
     def __init__(self):
         pass
-
-    def build(self, building):
-        """
-        this builds the buildings on the planet: first check for prices ect, then build a building_widget
-        that overgives the values to the planet if ready
-        :param building: string
-        """
-        planet = self.selected_planet
-        # only build if selected planet is set
-        if not planet: return
-
-        # check for minimum population
-        if building in self.buildings_list:
-            if config.build_population_minimum[building] > planet.population:
-                self.event_text = "you must reach a population of minimum " + str(
-                    config.build_population_minimum[building]) + " people to build a " + building + "!"
-
-                sounds.play_sound("bleep", channel=7)
-                return
-
-        # build building widget, first py the bill
-        # pay the bill
-        if planet.building_cue >= planet.building_slot_amount:
-            self.event_text = "you have reached the maximum(" + str(planet.building_slot_amount) + ") of buildings that can be build at the same time on " + planet.name + "!"
-            sounds.play_sound("bleep", channel=7)
-            return
-
-        if len(planet.buildings) + planet.building_cue >= planet.buildings_max:
-            self.event_text = "you have reached the maximum(" + str(planet.buildings_max) + ") of buildings that can be build on " + planet.name + "!"
-            sounds.play_sound("bleep", channel=7)
-            return
-
-        self.build_payment(building)
-
-        # predefine variables used to build building widget to make shure it is only created once
-        widget_key = None
-        widget_value = None
-        widget_name = None
-
-        # check for prices
-        if building in self.buildings_list:
-            for key, value in self.prices[building].items():
-                if (getattr(self.player, key) - value) > 0:
-
-                    widget_key = key
-                    widget_value = value
-                    widget_name = building
-                else:
-                    return
-
-        # create building_widget ( progressbar)
-        if widget_key:
-            widget_width = self.building_panel.get_screen_width()
-            widget_height = 35
-            spacing = 5
-
-            # get the position and size
-            win = pygame.display.get_surface()
-            height = win.get_height()
-            y = height - spacing - widget_height - widget_height * len(self.building_widget_list)
-
-            sounds.play_sound(sounds.bleep2, channel=7)
-
-            # print("build:", planet.building_slot_amount, planet.building_cue)
-
-            building_widget = BuildingWidget(win=self.win,
-                x=self.building_panel.screen_x,
-                y=y,
-                width=widget_width,
-                height=widget_height,
-                name=widget_name,
-                fontsize=18,
-                progress_time=5,
-                parent=self,
-                key=widget_key,
-                value=widget_value,
-                planet=planet,
-                tooltip="building widdget", layer=4
-                )
-
-            # add building widget to building cue to make shure it can be build only if building_cue is < building_slots_amount
-            planet.building_cue += 1
-
-    def build_payment(self, building):
-        """
-        pays the bills if something is build ;)
-        :param building: str
-        """
-        # only build if has selected planet
-        if not self.selected_planet: return
-
-        # if "building" is a building and not called from another button(hack)
-        if building in self.buildings_list:
-            # check for prices
-            for key, value in self.prices[building].items():
-                # if price is bigger than zero
-                if (getattr(self.player, key) - value) > 0:
-                    setattr(self.player, key, getattr(self.player, key) - value)
 
     def pause_game(self):
         if global_params.game_paused:

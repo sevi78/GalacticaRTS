@@ -1,6 +1,7 @@
 import pygame
 
 from source.app.scene_builder import SceneBuilder
+from source.editors.building_edit import BuildingEdit
 from source.editors.debug_edit import DebugEdit
 from source.editors.font_edit import FontEdit
 from source.editors.enemy_handler_edit import EnemyHandlerEdit
@@ -13,7 +14,7 @@ from source.gui.panels.advanced_settings_panel import AdvancedSettingsPanel
 from source.gui.panels.building_panel_components.game_time_widget import GameTime
 from source.gui.panels.building_panel_components.building_panel import BuildingPanel
 from source.gui.panels.event_panel import EventPanel
-from source.gui.panels.info_panel import InfoPanel
+from source.gui.panels.info_panel_components.info_panel import InfoPanel
 from source.gui.panels.resource_panel import ResourcePanel
 from source.gui.panels.settings_panel import SettingsPanel
 from source.gui.tool_tip import ToolTip
@@ -63,7 +64,6 @@ class UIBuilder(SceneBuilder):
         self.height = height
         self.icons = []
         self.selected_planet = None
-        self.explored_planets = []
 
         # event text
         prefix = "GPT-1357: "
@@ -91,9 +91,9 @@ class UIBuilder(SceneBuilder):
         self.create_resource_panel()
 
         # build menu
-        self.build_menu = None
-        self.create_build_menu()
-        self.close_build_menu()
+        # self.build_menu = None
+        # self.create_build_menu()
+        # self.close_build_menu()
 
     def create_editors(self):
         width = EDITOR_WIDTH
@@ -104,6 +104,11 @@ class UIBuilder(SceneBuilder):
             pygame.display.get_surface().get_rect().centerx - width / 2,
             pygame.display.get_surface().get_rect().y,
             width, height, parent=self, obj=sprite_groups.planets.sprites()[0])
+
+        self.building_edit = BuildingEdit(pygame.display.get_surface(),
+            pygame.display.get_surface().get_rect().centerx - width / 2,
+            pygame.display.get_surface().get_rect().y,
+            width, height, parent=self)
 
         self.font_edit = FontEdit(pygame.display.get_surface(),
             pygame.display.get_surface().get_rect().centerx - width / 2,
