@@ -30,6 +30,8 @@ class InputBox(WidgetBase):
         self._disabled = kwargs.get("disabled", False)
         self.text_input_type = kwargs.get("text_input_type", str)
         self.property = "input_box"
+        self.draw_frame = kwargs.get("draw_frame", True)
+
         self.hide()
 
     @property
@@ -106,6 +108,9 @@ class InputBox(WidgetBase):
             # Blit the text.
             self.win.blit(self.txt_surface, (self.rect.x + 5, self.rect.y + self.text_offset_y))
             # Blit the rect.
+            if not self.draw_frame:
+                return
+
             pg.draw.rect(self.win, self.color, self.rect, 2)
 
 #

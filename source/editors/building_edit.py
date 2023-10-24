@@ -86,7 +86,7 @@ class BuildingEdit(EditorBase):
 
         for key, value in self.building_dict.items():
             input_box_key = InputBox(self.win, x, y, input_box_key_width, text_height,
-                text=key, parent=self, key=key, disabled=True, text_input_type=str)
+                text=key, parent=self, key=key, disabled=True, text_input_type=str, draw_frame= False)
             self.input_boxes_key.append(input_box_key)
 
             disabled = False

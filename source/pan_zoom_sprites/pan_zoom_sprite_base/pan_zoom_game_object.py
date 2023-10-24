@@ -152,9 +152,12 @@ class PanZoomGameObject(PanZoomSprite):
         self.kill()
 
     def update_pan_zoom_game_object(self):
+        # if global_params.game_paused:
+        #     return
+        self.update_pan_zoom_sprite()
         if global_params.game_paused:
             return
-        self.update_pan_zoom_sprite()
+
         self.set_attack_distance()
 
         if self.target:

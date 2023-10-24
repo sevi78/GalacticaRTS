@@ -272,6 +272,48 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
             defender.end_object()
             self.enemy = None
 
+    def load_cargo(self):
+        self.collect_text = ""
+        waste_text = ""
+
+        for key, value in self.target.resources.items():
+            if value > 0:
+                max_key = key + "_max"
+                current_value = getattr(self, key)
+                max_value = getattr(self, max_key)
+
+                # Load as much resources as possible
+                load_amount = min(value, max_value - current_value)
+                setattr(self, key, current_value + load_amount)
+
+                # Update collect_text
+                self.collect_text += str(load_amount) + " of " + key + " "
+
+                # Update waste_text
+                if load_amount < value:
+                    waste_text += str(value - load_amount) + " of " + key + ", "
+
+        if waste_text:
+            self.collect_text += ". because the ship's loading capacity was exceeded, the following resources were wasted: " + waste_text[
+                                                                                                                               :-2] + " !"
+
+        self.set_resources()
+        self.set_info_text()
+        sounds.play_sound(sounds.collect_success)
+        global_params.app.event_text = "You are a Lucky Guy! you just found some resources: " + self.collect_text
+
+    def unload_cargo(self):
+        text = ""
+        for key, value in self.resources.items():
+            if value > 0:
+                text += key + ": " + str(value) + ", "
+                setattr(self.parent.player, key, getattr(self.parent.player, key) + value)
+                self.resources[key] = 0
+                setattr(self, key, 0)
+
+        self.parent.event_text = "unloading ship: " + text[:-2]
+        sounds.play_sound(sounds.unload_ship)
+
     def listen(self):
         global_params.app.tooltip_instance.reset_tooltip(self)
 
@@ -322,57 +364,17 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
                         if self.get_hit_object():
                             self.set_energy_reloader(self.get_hit_object())
 
-    def load_cargo(self):
-        self.collect_text = ""
-        waste_text = ""
-
-        for key, value in self.target.resources.items():
-            if value > 0:
-                max_key = key + "_max"
-                current_value = getattr(self, key)
-                max_value = getattr(self, max_key)
-
-                # Load as much resources as possible
-                load_amount = min(value, max_value - current_value)
-                setattr(self, key, current_value + load_amount)
-
-                # Update collect_text
-                self.collect_text += str(load_amount) + " of " + key + " "
-
-                # Update waste_text
-                if load_amount < value:
-                    waste_text += str(value - load_amount) + " of " + key + ", "
-
-        if waste_text:
-            self.collect_text += ". because the ship's loading capacity was exceeded, the following resources were wasted: " + waste_text[
-                                                                                                                               :-2] + " !"
-
-        self.set_resources()
-        self.set_info_text()
-        sounds.play_sound(sounds.collect_success)
-        global_params.app.event_text = "You are a Lucky Guy! you just found some resources: " + self.collect_text
-
-    def unload_cargo(self):
-        text = ""
-        for key, value in self.resources.items():
-            if value > 0:
-                text += key + ": " + str(value) + ", "
-                setattr(self.parent.player, key, getattr(self.parent.player, key) + value)
-                self.resources[key] = 0
-                setattr(self, key, 0)
-
-        self.parent.event_text = "unloading ship: " + text[:-2]
-        sounds.play_sound(sounds.unload_ship)
-
     def update(self):
+        self.update_pan_zoom_game_object()
+        self.progress_bar.set_progressbar_position()
         if global_params.game_paused:
             return
 
-        self.update_pan_zoom_game_object()
+
         self.set_tooltip()
         self.listen()
         self.reposition_buttons()
-        self.progress_bar.set_progressbar_position()
+
         self.draw_scope()
         self.set_distances()
 
