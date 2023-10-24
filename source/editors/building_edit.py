@@ -17,6 +17,8 @@ class BuildingEdit(EditorBase):
         EditorBase.__init__(self, win, x, y, width, height, isSubWidget=False, **kwargs)
 
         #  widgets
+        self.input_boxes_value = []
+        self.input_boxes_key = []
         self.plus_arrow = None
         self.minus_arrow = None
         self.widgets = []
@@ -61,11 +63,17 @@ class BuildingEdit(EditorBase):
     def building(self, value):
         self._building = value
         self.building_dict = building_factory.get_building_dict_from_buildings_json(self.building)
+        self.update_inputboxes_values()
+
+    def update_inputboxes_values(self):
         for key, value in self.building_dict.items():
             for i in self.input_boxes:
                 if i.key == key:
                     if i._disabled:
-                        i.set_text(key)
+                        if not i in self.input_boxes_value:
+                            i.set_text(key)
+                        else:
+                            i.set_text(str(value))
                     else:
                         i.set_text(str(value))
 
@@ -79,12 +87,15 @@ class BuildingEdit(EditorBase):
         for key, value in self.building_dict.items():
             input_box_key = InputBox(self.win, x, y, input_box_key_width, text_height,
                 text=key, parent=self, key=key, disabled=True, text_input_type=str)
+            self.input_boxes_key.append(input_box_key)
 
             disabled = False
             if type(value) == str:
                 disabled = True
             input_box_value = InputBox(self.win, x + input_box_key_width / 2 + self.buttonsize * 2, y, input_box_value_width, text_height,
                 text=str(value), parent=self, key=key, text_input_type=type(value), disabled=disabled)
+
+            self.input_boxes_value.append(input_box_value)
 
             if type(value) == int:
                 minus_arrow = Button(win=pygame.display.get_surface(),
