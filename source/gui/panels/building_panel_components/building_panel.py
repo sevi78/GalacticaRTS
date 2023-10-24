@@ -13,6 +13,7 @@ from source.gui.panels.building_panel_components.building_panel_draw import Buil
 from source.gui.panels.building_panel_components.building_slot import BuildingSlot
 from source.gui.panels.building_panel_components.planetary_defence_widget import PlanetaryDefenceWidget
 from source.gui.panels.building_panel_components.space_harbor import SpaceHarbor
+from source.gui.panels.info_panel_components.info_panel_text_generator import info_panel_text_generator
 from source.gui.panels.toggle_switch import ToggleSwitch
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.multimedia_library.images import get_image
@@ -113,7 +114,7 @@ class BuildingPanel(WidgetBase, BuildingPanelConstructor, BuildingSlot, EconomyP
         self.toggle_switch = ToggleSwitch(self, 15, zero_y=self.planet_surface_rect.y)
 
     def set_info_text(self):
-        global_params.app.info_panel.set_text(config.info_text)
+        global_params.app.info_panel.set_text(info_panel_text_generator.info_text)
 
     def set_planet_selection(self, value):
         try:

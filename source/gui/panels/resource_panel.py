@@ -1,12 +1,13 @@
 import pygame
 
+from source.gui.panels.info_panel_components.info_panel_text_generator import info_panel_text_generator
 from source.gui.panels.toggle_switch import ToggleSwitch
 from source.gui.widgets.Icon import Icon
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.utils import global_params
 from source.utils.colors import colors
 from source.utils.global_params import ui_rounded_corner_small_thickness
-from source.multimedia_library.images import images, pictures_path, get_image
+from source.multimedia_library.images import get_image
 
 
 class ResourcePanel(WidgetBase):
@@ -61,7 +62,7 @@ class ResourcePanel(WidgetBase):
             height=25,
             isSubWidget=False,
             parent=self.parent,
-            image=images[pictures_path]["resources"]["water_25x25.png"],
+            image=get_image("water_25x25.png"),
             key="water",
             tooltip="water is good to drink and for washing aswell",
             frame_color=self.frame_color,
@@ -79,7 +80,7 @@ class ResourcePanel(WidgetBase):
             height=25,
             isSubWidget=False,
             parent=self.parent,
-            image=images[pictures_path]["resources"]["energy_25x25.png"],
+            image=get_image("energy_25x25.png"),
             key="energy",
             tooltip="energy is needed for almost everything",
             frame_color=self.frame_color,
@@ -96,7 +97,7 @@ class ResourcePanel(WidgetBase):
             height=25,
             isSubWidget=False,
             parent=self.parent,
-            image=images[pictures_path]["resources"]["food_25x25.png"],
+            image=get_image("food_25x25.png"),
             key="food",
             tooltip="this is food, you want to eat!!! Don't you?!??",
             frame_color=self.frame_color,
@@ -113,7 +114,7 @@ class ResourcePanel(WidgetBase):
             height=25,
             isSubWidget=False,
             parent=self.parent,
-            image=images[pictures_path]["resources"]["minerals_25x25.png"],
+            image=get_image("minerals_25x25.png"),
             key="minerals",
             tooltip="some of the minerals look really nice in the sun!",
             frame_color=self.frame_color,
@@ -130,7 +131,7 @@ class ResourcePanel(WidgetBase):
             height=25,
             isSubWidget=False,
             parent=self.parent,
-            image=images[pictures_path]["resources"]["technology_25x25.png"],
+            image=get_image("technology_25x25.png"),
             key="technology",
             tooltip="technology is bad! but we need some things to build and evolve technology",
             frame_color=self.frame_color,
@@ -147,7 +148,7 @@ class ResourcePanel(WidgetBase):
             height=25,
             isSubWidget=False,
             parent=self.parent,
-            image=images[pictures_path]["resources"]["city_25x25.png"],
+            image=get_image("city_25x25.png"),
             key="city",
             tooltip="population; produce food and water to make it grow!",
             frame_color=self.frame_color,
@@ -158,7 +159,7 @@ class ResourcePanel(WidgetBase):
         pos_x += self.spacing
 
     def set_info_text(self):
-        global_params.app.info_panel.set_text(config.info_text)
+        global_params.app.info_panel.set_text(info_panel_text_generator.info_text)
 
     def draw_frame(self):
         # # frame

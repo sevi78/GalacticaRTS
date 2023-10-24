@@ -1,5 +1,6 @@
 import pygame
 
+from source.gui.panels.info_panel_components.info_panel_text_generator import info_panel_text_generator
 from source.gui.panels.toggle_switch import ToggleSwitch
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.gui.widgets.buttons.image_button import ImageButton
@@ -161,7 +162,7 @@ class AdvancedSettingsPanel(WidgetBase):
         self.max_width += self.icon_size + self.spacing + self.spacing
 
     def set_info_text(self):
-        global_params.app.info_panel.set_text(config.info_text)
+        global_params.app.info_panel.set_text(info_panel_text_generator.info_text)
 
     def draw_frame(self):
         # # frame

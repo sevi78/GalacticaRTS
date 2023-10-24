@@ -299,6 +299,7 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
     def update(self):
         self.set_screen_position()
         self.update_pan_zoom_sprite()
+        draw_orbits(self)
 
         global_params.app.tooltip_instance.reset_tooltip(self)
         self.planet_defence.defend()
@@ -319,7 +320,7 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
 
         if not global_params.game_paused:
             orbit(self, self.orbit_object, self.orbit_speed, 1)
-            draw_orbits(self)
+
 
         if not inside_screen(self.rect.center):
             return
