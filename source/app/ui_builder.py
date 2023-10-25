@@ -163,7 +163,7 @@ class UIBuilder(SceneBuilder):
             height=100,
             color=pygame.colordict.THECOLORS["black"],
             text_color=self.frame_color,  # pygame.colordict.THECOLORS["darkslategray1"],
-            isSubWidget=False, parent=self, layer=9)
+            isSubWidget=False, parent=self, layer=10)
 
     def create_building_panel(self):
         # building_panel
@@ -251,4 +251,4 @@ class UIBuilder(SceneBuilder):
             parent=self,
             layer=9,
             icon_size=icon_size,
-            anchor_right=self.advanced_settings_panel.get_screen_x())
+            anchor_right=self.advanced_settings_panel.get_screen_x(), app = self)

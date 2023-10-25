@@ -13,6 +13,7 @@ from source.multimedia_library.images import get_image
 class ResourcePanel(WidgetBase):
     def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
         super().__init__(win, x, y, width, height, isSubWidget, **kwargs)
+        self.app = kwargs.get("app")
         self.name = "resource panel"
         self.anchor_right = kwargs.get("anchor_right")
         self.bg_color = pygame.colordict.THECOLORS["black"]
@@ -159,7 +160,7 @@ class ResourcePanel(WidgetBase):
         pos_x += self.spacing
 
     def set_info_text(self):
-        global_params.app.info_panel.set_text(info_panel_text_generator.info_text)
+        self.app.info_panel.set_text(info_panel_text_generator.info_text)
 
     def draw_frame(self):
         # # frame
@@ -167,15 +168,12 @@ class ResourcePanel(WidgetBase):
         self.win.blit(self.surface, self.surface_frame)
 
     def reposition(self):
-        win = pygame.display.get_surface()
-        width = win.get_width()
         self.max_height = self.get_screen_y() + self.surface_rect.height
 
         # reposition
+        self.max_width = self.app.advanced_settings_panel.surface_rect.left - self.app.info_panel.surface_rect.right
         self.surface_rect.width = self.max_width
-        self.surface_rect.x = (width - global_params.app.building_panel.surface_rect.width -
-                               global_params.app.settings_panel.surface_rect.width
-                               - global_params.app.advanced_settings_panel.surface_rect.width - self.max_width)
+        self.surface_rect.left = self.app.info_panel.surface_rect.right
 
         self.reposition_widgets()
         self.toggle_switch.reposition()

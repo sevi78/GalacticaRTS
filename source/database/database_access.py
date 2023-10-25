@@ -2,7 +2,7 @@ import os
 import sqlite3
 from sqlite3 import Error
 
-from tabulate import tabulate
+#from tabulate import tabulate
 
 
 def get_database_file_path(**kwargs):
@@ -168,7 +168,7 @@ def print_ship_config_table(filename, tablename):
     column_names = [description[0] for description in cur.description]
 
     # Print the table using tabulate
-    print(tabulate(data, headers=column_names, tablefmt='grid'))
+    #print(tabulate(data, headers=column_names, tablefmt='grid'))
 
     conn.close()
 

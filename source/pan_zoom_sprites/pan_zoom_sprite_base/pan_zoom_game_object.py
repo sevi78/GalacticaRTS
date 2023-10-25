@@ -22,7 +22,7 @@ class PanZoomGameObject(PanZoomSprite):
         PanZoomSprite.__init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs)
 
         self.moving = False
-        self.rotation_smoothing = 15
+        self.rotation_smoothing = 10
         self.explode_if_target_reached = kwargs.get("explode_if_target_reached", False)
         self.explosion_relative_gif_size = kwargs.get("explosion_relative_gif_size", 1.0)
         self.exploded = False

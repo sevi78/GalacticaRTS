@@ -234,8 +234,13 @@ class PanZoomSprite(pygame.sprite.Sprite, PanZoomVisibilityHandler, GameObjectDe
     def update_rect(self):
         if not self.image_raw:
             return
-        self.image = pygame.transform.scale(self.image_raw, (
-            self.screen_width, self.screen_height))
+        # if hasattr(self, "prev_angle"):
+        #     if self.prev_angle and not self.moving:
+        #         image = pygame.transform.scale(self.image_raw, (self.screen_width, self.screen_height))
+        #
+        #         self.image = pygame.transform.rotate(image, self.prev_angle)
+        # else:
+        self.image = pygame.transform.scale(self.image_raw, (self.screen_width, self.screen_height))
         self.rect = self.image.get_rect()
 
         self.align_image_rect()

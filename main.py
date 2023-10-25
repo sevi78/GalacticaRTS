@@ -1,34 +1,32 @@
-import time
+# # install all dependencies first: :)
+# import subprocess
+#
+# subprocess.call(['pip', 'install', '--upgrade', '-r', 'requirements.txt'])
 
+import time
 import pygame
-# from pygame.locals import QUIT, KEYDOWN, KEYUP
 
 from source.app.app_helper import AppHelper
 from source.app.ui_builder import UIBuilder
-from source.editors.ship_edit import ShipEdit
-
 from source.game_play.cheat import Cheat
 from source.game_play.enemy_handler import enemy_handler
 from source.game_play.game_logic import GameLogic
-from source.gui.building_button_widget import BuildingButtonWidget
 from source.gui.widgets import widget_handler
 from source.interaction import copy_agent
 from source.interaction.box_selection import BoxSelection
-# from source.level.level_factory import LevelFactory, Level
-from source.universe.universe_background import Universe
 from source.utils import global_params
 from source.utils.colors import colors
 from source.utils.global_params import text_input_active, enable_pan, copy_object
-
 from source.multimedia_library.images import get_image
 from source.utils.mouse import Mouse
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zoom_handler
 from source.utils.text_wrap import TextWrap
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups
 
-pygame.init()
+
 
 ECONOMY_UPDATE_INTERVAL = 2.0
+
 
 
 class App(AppHelper, UIBuilder, GameLogic, Cheat, TextWrap):
@@ -245,8 +243,8 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat, TextWrap):
             # pygame update
             pygame.display.update()
 
-
-if __name__ == "__main__":
+def main():
+    pygame.init()
     app = App(global_params.WIDTH, global_params.HEIGHT)
     app.box_selection = BoxSelection(app.win, sprite_groups.ships.sprites() + sprite_groups.planets.sprites())
     win = app.win
@@ -261,3 +259,7 @@ if __name__ == "__main__":
     # blabla
     # building_button_widget = BuildingButtonWidget(win, 200, 100, 300, 200, app, False, layer= 4, parent= sprite_groups.planets.sprites()[0])
     app.loop()
+
+
+if __name__ == "__main__":
+    main()
