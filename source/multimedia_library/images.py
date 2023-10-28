@@ -1,21 +1,15 @@
 import os
-
 import pygame
 from PIL import Image
 
-from source.utils import global_params
-
-pygame.init()
-
-WIDTH = global_params.WIDTH
-HEIGHT = global_params.HEIGHT
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
 images = {}
 dirpath = os.path.dirname(os.path.realpath(__file__))
 pictures_path = os.path.split(dirpath)[0].split("source")[0] + "assets" + os.sep + "pictures" + os.sep
 gifs_path = os.path.split(dirpath)[0].split("source")[0] + "assets" + os.sep + "gifs" + os.sep
 
 gifs = {}
+gif_frames = {}
+MAX_GIF_SIZE = 150
 
 
 def load_folders(folder, dict):
@@ -55,6 +49,9 @@ def load_folders(folder, dict):
                 img.convert_alpha()
                 dict[folder][sub][image] = img
 
+            if file_extension == ".gif":
+                load_gif(image)
+
 
 def get_image(image_name):
     no_icon = images[pictures_path]["icons"]["no_icon.png"]
@@ -65,30 +62,43 @@ def get_image(image_name):
     return no_icon
 
 
-def load_gif_frames(gif_name):
-    """ Load explosion GIF and extract frames"""
-    frames = []
-    path = os.path.join(gifs_path, gif_name)
-    gif = Image.open(path)
-    for frame in range(gif.n_frames):
-        gif.seek(frame)
-        frame_surface = pygame.image.fromstring(gif.tobytes(), gif.size, gif.mode)
-        frames.append(frame_surface)
-    return frames
-
-
 def load_gif(gif_name):
-    path = os.path.join(gifs_path, gif_name)
+    path = os.path.join(pictures_path + "gifs", gif_name)
     gif = Image.open(path)
-    return gif
+    gifs[gif_name] = gif
+    gif_frames[gif_name] = get_gif_frames(gif_name)
 
 
-def get_gif_frames(gif):
+def get_gif(gif_name):
+    return gifs[gif_name]
+
+
+def get_gif_frames(gif_name):
     """ Load explosion GIF and extract frames"""
     frames = []
+
+    gif = get_gif(gif_name)
+    ratio = 1.0
+    rescale = False
+
+    # Check if the size of the GIF is bigger than MAX_GIF_SIZE
+
+    if max(gif.size) > MAX_GIF_SIZE:
+        # Calculate the ratio to rescale the images
+        ratio = MAX_GIF_SIZE / max(gif.size)
+        rescale = True
+
     for frame in range(gif.n_frames):
         gif.seek(frame)
-        frame_surface = pygame.image.fromstring(gif.tobytes(), gif.size, gif.mode).convert_alpha()
+        frame_surface_raw = pygame.image.fromstring(gif.tobytes(), gif.size, gif.mode).convert_alpha()
+
+        # Rescale the images if necessary
+        if rescale:
+            new_size = (int(gif.size[0] * ratio), int(gif.size[1] * ratio))
+            frame_surface = pygame.transform.scale(frame_surface_raw, new_size)
+        else:
+            frame_surface = frame_surface_raw
+
         frames.append(frame_surface)
     return frames
 

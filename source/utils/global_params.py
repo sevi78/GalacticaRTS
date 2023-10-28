@@ -122,7 +122,7 @@ global edit_mode
 edit_mode = False
 
 global planet_button_display_on_panel
-planet_button_display_on_panel = False
+planet_button_display_on_panel = True
 
 global ui_rounded_corner_radius_small
 ui_rounded_corner_radius_small = 8

@@ -21,6 +21,7 @@ class DebugEdit(EditorBase):
         self.ships_debug = False
         self.planets_debug = False
         self.ufos_debug = False
+        self.missiles_debug = False
 
         #  widgets
         self.widgets = []
@@ -40,6 +41,14 @@ class DebugEdit(EditorBase):
 
         y = self.world_y + TOP_SPACING + self.text_spacing
         x = self.world_width / 2 + BUTTON_SIZE * 2
+
+        checkbox_missiles = Checkbox(
+            self.win, self.world_x - self.spacing_x + x + BUTTON_SIZE * 3, y, 30, 30, isSubWidget=False,
+            color=self.frame_color,
+            key="missiles", image_name="missile42x17.gif", tooltip="debug missiles", onClick=lambda: print("OKOKOK"), layer=9, parent=self)
+        x += BUTTON_SIZE * 1.5
+        self.checkboxes.append(checkbox_missiles)
+        self.widgets.append(checkbox_missiles)
 
         checkbox_ships = Checkbox(
             self.win, self.world_x - self.spacing_x + x + BUTTON_SIZE * 3, y, 30, 30, isSubWidget=False,

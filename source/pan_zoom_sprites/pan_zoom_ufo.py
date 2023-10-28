@@ -36,7 +36,6 @@ class PanZoomUfo(PanZoomGameObject, InteractionHandler):
         self.speed = pan_zoom_ufo_config["speed"]
         self.orbit_speed = pan_zoom_ufo_config["orbit_speed"]
         self.exploded = False
-
         self.energy = pan_zoom_ufo_config["energy"]
         self.energy_max = self.energy
         self.name = "ufo"

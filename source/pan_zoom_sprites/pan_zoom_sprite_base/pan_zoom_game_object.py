@@ -21,10 +21,12 @@ class PanZoomGameObject(PanZoomSprite):
     def __init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs):
         PanZoomSprite.__init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs)
 
+        self.initial_rotation = kwargs.get("initial_rotation", 0)
         self.moving = False
-        self.rotation_smoothing = 10
+        self.rotation_smoothing = kwargs.get("rotation_smoothing", 10)
         self.explode_if_target_reached = kwargs.get("explode_if_target_reached", False)
         self.explosion_relative_gif_size = kwargs.get("explosion_relative_gif_size", 1.0)
+        self.explosion_name = kwargs.get("explosion_name", "explosion.gif")
         self.exploded = False
         self.attack_distance_raw = 5.0
         self.attack_distance = self.attack_distance_raw
@@ -96,7 +98,7 @@ class PanZoomGameObject(PanZoomSprite):
             if self.prev_angle:
                 angle = self.prev_angle + 1
             else:
-                angle = 0
+                angle = self.initial_rotation
 
         # Smoothing algorithm
         if self.prev_angle:
@@ -142,7 +144,7 @@ class PanZoomGameObject(PanZoomSprite):
         sound = kwargs.get("sound", None)
         x, y = self.world_x, self.world_y
         if not self.exploded:
-            explosion = PanZoomSprite(screen, x, y, 40, 40, self.pan_zoom, "explosion.gif",
+            explosion = PanZoomSprite(screen, x, y, 40, 40, self.pan_zoom, self.explosion_name,
                 loop_gif=False, kill_after_gif_loop=True, align_image="center",
                 relative_gif_size=self.explosion_relative_gif_size, layer=10, sound=sound)
             explosions.add(explosion)

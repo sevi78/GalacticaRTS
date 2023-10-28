@@ -5,7 +5,7 @@ import pygame
 from PIL import Image
 from pygame import Vector2
 
-from source.multimedia_library.images import gifs_path
+from source.multimedia_library.images import gifs_path, get_gif_frames
 from source.multimedia_library.sounds import sounds
 from source.utils.positioning import rot_center
 
@@ -25,7 +25,7 @@ class GifHandler(pygame.sprite.Sprite):
         self.sound = kwargs.get("sound", None)
         self.relative_gif_size = kwargs.get("relative_gif_size", None)
 
-        self.frames = self.load_gif_frames(self.gif)
+        self.frames = get_gif_frames(self.gif)
         self.index = 0
         self.counter = 0
         self.image_raw = self.frames[self.index]

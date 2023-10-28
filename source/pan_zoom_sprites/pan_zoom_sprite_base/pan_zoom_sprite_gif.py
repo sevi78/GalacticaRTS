@@ -1,10 +1,10 @@
 import copy
-import random
+
 
 import pygame
-from pygame import QUIT, KEYDOWN, K_ESCAPE
 
-from source.multimedia_library.images import get_image, load_gif, get_gif_frames
+
+from source.multimedia_library.images import get_image, get_gif_frames, get_gif
 from source.multimedia_library.sounds import sounds
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_debug import GameObjectDebug
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups
@@ -82,8 +82,8 @@ class PanZoomSprite(pygame.sprite.Sprite, PanZoomVisibilityHandler, GameObjectDe
             self.image = copy.copy(self.image_raw)
 
         elif self.image_name.endswith(".gif"):
-            self.gif = load_gif(self.image_name)
-            self.gif_frames = get_gif_frames(self.gif)
+            self.gif = get_gif(self.image_name)
+            self.gif_frames = get_gif_frames(self.image_name)
             self.image_raw = self.gif_frames[1]
             self.image = copy.copy(self.image_raw)
 
