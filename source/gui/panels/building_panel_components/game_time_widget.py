@@ -156,11 +156,8 @@ class GameTime(WidgetBase):
         self.update_time()
         self.reposition()
 
-        # # frame
-
+        # frame
         self.draw_frame()
-        # self.surface_frame = pygame.draw.rect(self.win, self.frame_color, self.surface_rect, int(ui_rounded_corner_small_thickness), int(global_params.ui_rounded_corner_radius_small))
-        # self.win.blit(self.surface, self.surface_frame)
 
         # clock
         self.draw_clock()

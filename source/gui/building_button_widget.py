@@ -78,6 +78,7 @@ class BuildingButtonWidget(WidgetBase):
         self.max_height = 0
         self.max_height = 0
         self.resource_buttons = []
+        self.active_resource_buttons = []
         self.building_buttons = {}
         self.buttons = {}
 
@@ -269,23 +270,26 @@ class BuildingButtonWidget(WidgetBase):
                 building_button.screen_y = ICON_SIZE + resource_button.screen_y + resource_button.children.index(building_button) * ICON_SIZE
                 building_button.set_image_position()
 
-    def draw_frame_(self):
-        self.rect.width = self.max_width
-        self.rect.height = self.max_height
-        self.win.blit(self.surface, self.rect)
-        pygame.draw.rect(self.win, self.frame_color, self.rect, int(ui_rounded_corner_small_thickness), self.corner_radius)
-
     def draw_frame(self):
         self.rect.width = self.max_width
         self.rect.height = self.max_height
         self.surface = pygame.Surface((self.rect.width, self.rect.height), pygame.SRCALPHA)
         self.surface.fill((0,0,0, global_params.ui_panel_alpha))
         pygame.draw.rect(self.surface, self.frame_color, self.surface.get_rect(), int(ui_rounded_corner_small_thickness), self.corner_radius)
-        self.win.blit(self.surface, self.rect)
+
+        print (len(self.active_resource_buttons))
+        if len(self.active_resource_buttons) > 0:
+            self.win.blit(self.surface, self.rect)
+            self.set_frame_height()
+        else:
+            self.max_height = 0
+
 
     def draw(self):
         if not inside_screen(self.rect.center):
             self.hide()
+
+        self.active_resource_buttons = [_ for _ in self.resource_buttons if not _._hidden]
 
         # check for parent, then set different positions and sizes based on parent
         if not self.parent.name == "building panel":
@@ -298,8 +302,7 @@ class BuildingButtonWidget(WidgetBase):
             elif self._hidden:
                 self.show()
 
-            active_resource_buttons = [_ for _ in self.resource_buttons if not _._hidden]
-            self.max_width = len(active_resource_buttons) * ICON_SIZE + self.spacing * 2
+            self.max_width = len(self.active_resource_buttons) * ICON_SIZE + self.spacing * 2
             self.rect.centerx = self.parent.rect.centerx
             self.rect.y = self.parent.rect.centery + self.parent.rect.height
 
