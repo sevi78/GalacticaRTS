@@ -57,9 +57,9 @@ class InfoPanel(WidgetBase, TextWrap):
         self.layer = kwargs.get("layer", 4)
         self.parent = kwargs.get("parent")
         self.world_width = width
-        self.height = height
-        self.max_height = self.height
-        self.size = (self.world_width, self.height)
+        self.world_height = height
+        self.max_height = self.world_height
+        self.size = (self.world_width, self.world_height)
         self.win = win
         self.font_size = 18
         self.font = pygame.font.SysFont(global_params.font_name, self.font_size)
@@ -71,16 +71,16 @@ class InfoPanel(WidgetBase, TextWrap):
         self.world_y = self.pos[1]
         self.set_colors(self.frame_color, (12, 10, 1))
         self.surface_rect = pygame.draw.rect(self.win, self.frame_color, pygame.Rect(self.world_x, self.world_y, self.world_width,
-            self.height + 10), 1, global_params.ui_rounded_corner_radius_small)
+            self.world_height + 10), 1, int(global_params.ui_rounded_corner_radius_small))
         self.planet_image = None
         self.planet_rect = None
-        self.rect_filled = pygame.Surface((self.world_width, self.height))
+        self.rect_filled = pygame.Surface((self.world_width, self.world_height))
 
         # visible
         self.visible = True
 
         # toggle switch to pop in or out
-        self.toggle_switch = ToggleSwitch(self, 15)
+        self.toggle_switch = ToggleSwitch(self, 15, zero_y=self.world_y)
         self.init = 0
 
         self.update_text()
@@ -132,41 +132,41 @@ class InfoPanel(WidgetBase, TextWrap):
             self.planet_image.set_alpha(alpha)
 
     def set_size_from_text(self):
-        self.height = self.word_height_sum
-        self.size = self.world_width, self.height
-        self.max_height = self.surface_rect.height + self.toggle_switch.toggle_size
+        self.world_height = self.word_height_sum
+        self.size = self.world_width, self.world_height
+
+    def set_max_height(self):
+        if not self.parent._hidden:
+            self.world_y = self.parent.surface_rect.bottom
+            self.max_height = self.surface_rect.height + self.surface_rect.top
+            self.toggle_switch.zero_y = self.parent.surface_rect.bottom
+        else:
+            self.world_y = 10
+            self.toggle_switch.zero_y = 0
+            self.max_height = self.surface_rect.height + self.surface_rect.top
 
     def draw(self):
-        if self._hidden:
-            return
+        if not self._hidden:
+            self.text_surfaces = {}
 
-        # if self.parent.build_menu_visible: return
-        # gets the wrapped text
-        self.update_text()
+            # draw the panel
+            self.rect_filled = pygame.Surface(self.size)
+            self.rect_filled.fill((0, 0, 0))
+            self.rect_filled.set_alpha(global_params.ui_panel_alpha)
+            self.win.blit(self.rect_filled, self.surface_rect)
 
-        # draw the panel
-        self.rect_filled = pygame.Surface((self.world_width, self.height + 10))
-        self.rect_filled.fill(self.bg_color)
-        self.rect_filled.set_alpha(128)
+            # draw the frame
+            self.surface_rect = pygame.draw.rect(self.win, self.frame_color, pygame.Rect(self.world_x, self.world_y, self.world_width,
+                self.world_height), int(ui_rounded_corner_small_thickness), int(global_params.ui_rounded_corner_radius_small))
 
-        # draw the frame
-        self.surface_rect = pygame.draw.rect(self.win, self.frame_color, pygame.Rect(self.world_x, self.world_y, self.world_width,
-            self.height + 10), ui_rounded_corner_small_thickness, global_params.ui_rounded_corner_radius_small)
+            # draw the planet icon
+            if hasattr(self, 'planet_image') and self.planet_image:
+                self.win.blit(self.planet_image, self.planet_rect)
 
-        # draw the planet icon
-        if hasattr(self, 'planet_image') and self.planet_image:
-            self.win.blit(self.planet_image, self.planet_rect)
+            self.update_text()
 
-        # self.toggle_switch.reposition()
-
-        # reset text_surfaces for correct displaying
-        self.text_surfaces = {}
-
-        if not self.init:
-            self.reposition()
-            self.init = 1
-
-        self.max_height = self.surface_rect.height + self.toggle_switch.toggle_size
+        self.reposition()
+        self.set_max_height()
 
     def reposition(self):
         self.toggle_switch.reposition()

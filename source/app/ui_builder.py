@@ -27,6 +27,7 @@ from source.database.saveload import load_file
 EDITOR_HEIGHT = 600
 
 EDITOR_WIDTH = 700
+TOP_SPACING = 5
 
 
 class UIBuilder(SceneBuilder):
@@ -84,11 +85,13 @@ class UIBuilder(SceneBuilder):
         # tooltip
         self.create_tooltip()
 
-        # Info_panel
-        self.info_panel = InfoPanel(self.win, x=0, y=10, width=200, height=300, isSubWidget=False, parent=self, layer=9)
-
         # resource_panel
         self.create_resource_panel()
+
+        # Info_panel
+        self.info_panel = InfoPanel(self.win, x=0, y=self.settings_panel.surface_rect.bottom, width=240, height=300, isSubWidget=False, parent=self.resource_panel, layer=9)
+
+
 
         # build menu
         # self.build_menu = None
@@ -191,14 +194,13 @@ class UIBuilder(SceneBuilder):
             size_x=size_x,
             size_y=size_y,
             spacing=spacing,
-            parent=self,
             layer=9)
 
     def create_settings_panel(self):
         icon_size = 25
         size_x = 800  # doesnt matter, will be recalculated
         size_y = 35
-        spacing = 5
+        spacing = TOP_SPACING
 
         self.settings_panel = SettingsPanel(self.win,
             x=self.world_width - size_x,

@@ -46,7 +46,7 @@ class Moveable:
         if self.ui_parent:
             if global_params.planet_button_display_on_panel:
                 if self.parent == global_params.app.selected_planet:
-                    x = global_params.app.building_panel.planet_surface_rect.x
+                    x = global_params.app.building_panel.surface_rect.x
                     y = global_params.app.building_panel.max_height + self.get_screen_height() * 6
                     spacing_x = global_params.app.building_panel.spacing_x
                     self.set_position((x - self.ui_parent_offset_x + spacing_x / 2, y - self.ui_parent_offset_y))

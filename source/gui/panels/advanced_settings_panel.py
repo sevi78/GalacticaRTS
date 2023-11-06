@@ -30,7 +30,7 @@ class AdvancedSettingsPanel(WidgetBase):
         self.size_x = kwargs.get("size_x")
         self.size_y = kwargs.get("size_y")
         self.spacing = kwargs.get("spacing")
-        self.surface_frame = pygame.draw.rect(self.win, self.frame_color, self.surface_rect, ui_rounded_corner_small_thickness, global_params.ui_rounded_corner_radius_small)
+        self.surface_frame = pygame.draw.rect(self.win, self.frame_color, self.surface_rect, int(ui_rounded_corner_small_thickness), int(global_params.ui_rounded_corner_radius_small))
         self.font_size = 18
         self.font = pygame.font.SysFont(global_params.font_name, self.font_size)
         self.max_height = self.get_screen_y() + self.surface_rect.height
@@ -164,10 +164,19 @@ class AdvancedSettingsPanel(WidgetBase):
     def set_info_text(self):
         global_params.app.info_panel.set_text(info_panel_text_generator.info_text)
 
-    def draw_frame(self):
+    def draw_frame__(self):
         # # frame
-        self.surface_frame = pygame.draw.rect(self.win, self.frame_color, self.surface_rect, ui_rounded_corner_small_thickness, global_params.ui_rounded_corner_radius_small)
+        self.surface_frame = pygame.draw.rect(self.win, self.frame_color, self.surface_rect, int(ui_rounded_corner_small_thickness), int(int(global_params.ui_rounded_corner_radius_small)))
         self.win.blit(self.surface, self.surface_frame)
+
+    def draw_frame(self):
+        # frame
+        self.surface = pygame.surface.Surface((self.surface_rect.width, self.surface_rect.height))
+        self.surface.fill(self.bg_color)
+        self.surface.set_alpha(global_params.ui_panel_alpha)
+
+        self.win.blit(self.surface, self.surface_frame)
+        self.surface_frame = pygame.draw.rect(self.win, self.frame_color, self.surface_rect, int(ui_rounded_corner_small_thickness), int(global_params.ui_rounded_corner_radius_small))
 
     def reposition(self):
         win = pygame.display.get_surface()
@@ -177,7 +186,6 @@ class AdvancedSettingsPanel(WidgetBase):
         # reposition
         self.surface_rect.width = self.max_width
         self.surface_rect.x = width - global_params.app.building_panel.surface_rect.width - global_params.app.settings_panel.surface_rect.width - self.max_width
-
         self.reposition_widgets()
         self.toggle_switch.reposition()
 
@@ -185,9 +193,6 @@ class AdvancedSettingsPanel(WidgetBase):
         for icon in self.widgets:
             icon.screen_x = (self.surface_rect.x + self.spacing) + (
                     self.icon_size + self.spacing) * self.widgets.index(icon)
-
-    def listen_(self, events):
-        pass
 
     def draw(self):
         """draws the ui elements"""

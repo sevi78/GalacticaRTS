@@ -67,6 +67,9 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat, TextWrap):
         'event_panel', 'border', 'word_height_sum', 'text_surfaces')  # 'selected_planet',
 
     def __init__(self, width, height):
+        # make self global, maybe we need that
+        global_params.app = self
+
         AppHelper.__init__(self)
         UIBuilder.__init__(self, width, height)
         TextWrap.__init__(self)
@@ -82,8 +85,7 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat, TextWrap):
         self.game_speed = 0
         self.run = 1
 
-        # make self global, maybe we need that
-        global_params.app = self
+
 
         temp = []
         for key, value in self.__dict__.items():

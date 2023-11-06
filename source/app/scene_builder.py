@@ -263,7 +263,7 @@ class SceneBuilder(EconomyParams, GameObjectStorage):
         for i in range(20):
             selected_resources = self.select_resources()
             artefact = PanZoomCollectableItem(global_params.win,
-                random.randint(buffer, w - buffer), random.randint(buffer, h - buffer), 50, 50,
+                random.randint(buffer, w - buffer), random.randint(buffer, h - buffer), 100, 100,
                 pan_zoom=pan_zoom_handler,
                 image_name="sphere.gif",
                 isSubWidget=False,

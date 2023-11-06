@@ -32,7 +32,7 @@ class GameTime(WidgetBase):
         self.size_x = kwargs.get("size_x")
         self.size_y = kwargs.get("size_y")
         self.spacing = kwargs.get("spacing")
-        self.surface_frame = pygame.draw.rect(self.win, self.frame_color, self.surface_rect, ui_rounded_corner_small_thickness, global_params.ui_rounded_corner_radius_small)
+        self.surface_frame = pygame.draw.rect(self.win, self.frame_color, self.surface_rect, int(ui_rounded_corner_small_thickness), int(global_params.ui_rounded_corner_radius_small))
 
         self.font_size = 18
         self.font = pygame.font.SysFont(global_params.font_name, self.font_size)
@@ -53,9 +53,8 @@ class GameTime(WidgetBase):
             frame_color=self.frame_color,
             transparent=True,
             onClick=lambda: self.clock_slider.setValue(1),
-            parent=self.parent, layer=self.layer
+            layer=self.layer
             )
-        self.parent.icons.append(self.clock_icon)
 
         self.arrow_size = 15
         self.minus_arrow_button = Button(win=self.win,
@@ -70,7 +69,7 @@ class GameTime(WidgetBase):
             frame_color=self.frame_color,
             transparent=True,
             onClick=lambda: self.set_clockslider_value(-1),
-            parent=self.parent, layer=self.layer
+            layer=self.layer
             )
 
         self.plus_arrow_button = Button(win=self.win,
@@ -85,7 +84,7 @@ class GameTime(WidgetBase):
             frame_color=self.frame_color,
             transparent=True,
             onClick=lambda: self.set_clockslider_value(+1),
-            parent=self.parent, layer=self.layer
+            layer=self.layer
             )
 
     def create_slider(self):
@@ -103,7 +102,7 @@ class GameTime(WidgetBase):
 
         # construct texts
         self.time_warp_text = self.font.render(str(self.clock_slider.getValue()) + "x", True, self.frame_color)
-        self.world_year_text = self.parent.ui_helper.hms(self.world_year)
+        self.world_year_text = global_params.app.ui_helper.hms(self.world_year)
 
     def set_clockslider_value(self, value):
         if value < 0:
@@ -140,6 +139,16 @@ class GameTime(WidgetBase):
                                        self.clock_icon.get_screen_height() - self.year_text.get_height() + 6))
         self.time_factor = self.clock_slider.getValue()
 
+
+    def draw_frame(self):
+        # frame
+        self.surface = pygame.surface.Surface((self.surface_rect.width, self.surface_rect.height))
+        self.surface.fill(self.bg_color)
+        self.surface.set_alpha(global_params.ui_panel_alpha)
+
+        self.win.blit(self.surface, self.surface_frame)
+        self.surface_frame = pygame.draw.rect(self.win, self.frame_color, self.surface_rect, int(ui_rounded_corner_small_thickness), int(global_params.ui_rounded_corner_radius_small))
+
     def draw(self):
         """
         draws the ui elements
@@ -148,8 +157,10 @@ class GameTime(WidgetBase):
         self.reposition()
 
         # # frame
-        self.surface_frame = pygame.draw.rect(self.win, self.frame_color, self.surface_rect, ui_rounded_corner_small_thickness, global_params.ui_rounded_corner_radius_small)
-        self.win.blit(self.surface, self.surface_frame)
+
+        self.draw_frame()
+        # self.surface_frame = pygame.draw.rect(self.win, self.frame_color, self.surface_rect, int(ui_rounded_corner_small_thickness), int(global_params.ui_rounded_corner_radius_small))
+        # self.win.blit(self.surface, self.surface_frame)
 
         # clock
         self.draw_clock()

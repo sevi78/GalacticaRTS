@@ -23,7 +23,7 @@ from source.utils.colors import colors
 from source.utils.global_params import ui_rounded_corner_small_thickness
 from source.multimedia_library.sounds import sounds
 
-
+TOP_SPACING = 5
 class BuildingPanel(WidgetBase, BuildingPanelConstructor, BuildingSlot, EconomyParams, BuildingPanelDraw):
     """
 
@@ -35,7 +35,6 @@ class BuildingPanel(WidgetBase, BuildingPanelConstructor, BuildingSlot, EconomyP
         BuildingSlot.__init__(self)
 
         self.name = "building panel"
-        self.init = 0
         self.zero_y = self.world_y
         self.planet_building_text = None
         self.planet_text = None
@@ -50,32 +49,22 @@ class BuildingPanel(WidgetBase, BuildingPanelConstructor, BuildingSlot, EconomyP
         self.world_y = 0
 
         # # construct surface
-        self.surface = pygame.surface.Surface((width, height))
-        self.surface.fill(self.bg_color)
-        self.surface.set_alpha(19)
-        self.surface_rect = self.surface.get_rect()
-        self.surface_rect.x = x
-        self.surface_rect.y = y
         self.size_x = kwargs.get("size_x")
         self.size_y = kwargs.get("size_y")
         self.spacing = kwargs.get("spacing")
-        self.surface_frame = pygame.draw.rect(self.win, self.frame_color, self.surface_rect, ui_rounded_corner_small_thickness, global_params.ui_rounded_corner_radius_small)
 
-        # construct planet_surface
-        self.planet_surface_size_y = 600
-        self.planet_surface = pygame.surface.Surface((width, self.planet_surface_size_y))
-        self.planet_surface.fill(self.bg_color)
-        self.planet_surface.set_alpha(0)
-        self.planet_surface_rect = self.planet_surface.get_rect()
-        self.planet_surface_rect.x = x
-        self.planet_surface_rect.y = y + height
-        self.planet_surface_frame = pygame.draw.rect(self.win, self.frame_color, self.planet_surface_rect, ui_rounded_corner_small_thickness, global_params.ui_rounded_corner_radius_small)
-        self.max_height = self.get_screen_y() + self.planet_surface_rect.height
+        # construct surface
+        self.surface_size_y = 600
+        self.surface = pygame.surface.Surface((width, self.surface_size_y))
+        self.surface.fill((0, 0, 0))
+        self.surface.set_alpha(global_params.ui_panel_alpha)
+        self.surface_rect = self.surface.get_rect()
+        self.surface_rect.x = x
+        self.surface_rect.y = y + height
+        self.max_height = self.get_screen_y() + self.surface_rect.height
 
         # planet image
         self.planet_image = None
-
-        # # construct slider_____
         self.spacing_x = 35
 
         # construct icon_______________________________________________________________________________________________
@@ -96,6 +85,7 @@ class BuildingPanel(WidgetBase, BuildingPanelConstructor, BuildingSlot, EconomyP
 
         self.sub_widget_height = 70
         font_size = 16
+
         # space harbor
         self.space_harbor = SpaceHarbor(self.win, self.world_x, self.world_y, self.get_screen_width(), self.sub_widget_height,
             isSubWidget=False, parent=self, layer=9, font_size=font_size)
@@ -104,14 +94,13 @@ class BuildingPanel(WidgetBase, BuildingPanelConstructor, BuildingSlot, EconomyP
         self.planetary_defence = PlanetaryDefenceWidget(self.win, self.world_x, self.world_y, self.get_screen_width(), self.sub_widget_height,
             isSubWidget=False, parent=self, layer=9, spacing=5, icon_size=25, font_size=font_size)
 
-        # building constructor
-        # self.building_button_widget = BuildingConstructorWidget(self.win, self.world_x, self.world_y, self.get_screen_width(), self.sub_widget_height,
-        #     isSubWidget=False, parent=self, layer=9, font_size=font_size)
-
+        # building_button_widget
         self.building_button_widget = BuildingButtonWidget(win, 200, 100, 300, 200, self.parent,
-            False, layer=4, parent=self, fixed_parent=True)
+            False, layer=9, parent=self, fixed_parent=True)
+
         # toggle switch to pop in or out
-        self.toggle_switch = ToggleSwitch(self, 15, zero_y=self.planet_surface_rect.y)
+        self.toggle_switch = ToggleSwitch(self, 15, zero_y=self.surface_rect.y)
+        self.reposition()
 
     def set_info_text(self):
         global_params.app.info_panel.set_text(info_panel_text_generator.info_text)
@@ -181,7 +170,8 @@ class BuildingPanel(WidgetBase, BuildingPanelConstructor, BuildingSlot, EconomyP
 
         # reposition
         self.surface_rect.x = width - self.surface.get_width()
-        self.planet_surface_rect.x = self.surface_rect.x
+
+
         self.planet_minus_arrow_button.screen_x = self.surface_rect.x + self.spacing
         self.planet_plus_arrow_button.screen_x = self.surface_rect.x + self.get_screen_width() - self.spacing * 2 - self.arrow_size
         self.toggle_switch.reposition()
@@ -218,40 +208,51 @@ class BuildingPanel(WidgetBase, BuildingPanelConstructor, BuildingSlot, EconomyP
                     self.set_planet_selection(-1)
 
     def draw(self):
-        """
-        draws the ui elements
-        """
-        # TIME__________________________________________________________________________________________________________
-        # self.update_time()
+
         self.show_planet_selection_buttons()
 
         if self._hidden:
             return
 
-        # PLANET Image _________________________________________________________________________________________________
-        # draw planet_surface and frame
-        self.planet_surface_frame = pygame.draw.rect(self.win, self.frame_color, self.planet_surface_rect, ui_rounded_corner_small_thickness, global_params.ui_rounded_corner_radius_small)
-        self.win.blit(self.planet_surface, self.planet_surface_frame)
+        if not self.parent.get_planet_name() == "???":
+            self.win.blit(self.surface, self.surface_rect)
+
+        # self.surface = pygame.Surface((self.surface_rect.width, self.surface_rect.height))
+        # self.surface.fill((0, 0, 0))
+        # self.surface.set_alpha(global_params.ui_panel_alpha)
+
+        self.surface = pygame.Surface((self.surface_rect.width, self.surface_rect.height), pygame.SRCALPHA)
+        #self.surface = pygame.Surface((self.surface_rect.width, self.surface_rect.height))
+        self.surface.set_alpha(global_params.ui_panel_alpha)
+
+        self.surface.fill((0, 0, 0, global_params.ui_panel_alpha))
+        #self.surface.set_alpha(global_params.ui_panel_alpha)
+        self.win.blit(self.surface, self.surface_rect)
+        pygame.draw.rect(self.win, self.frame_color, self.surface_rect, int(ui_rounded_corner_small_thickness), int(global_params.ui_rounded_corner_radius_small))
+
+
+
+        # self.win.blit(self.surface, self.surface_rect)
+        # pygame.draw.rect(self.win, self.frame_color, self.surface_rect, int(ui_rounded_corner_small_thickness), int(global_params.ui_rounded_corner_radius_small))
+
 
         # UI____________________________________________________________________________________________________________
-        x = self.planet_surface_rect.x
-        self.world_y = self.planet_surface_rect.y + self.spacing
+        x = self.surface_rect.x
+        self.world_y = self.surface_rect.y + self.spacing
 
         # planet text
         self.planet_text = drawText(self.win, self.parent.get_planet_name(), self.frame_color,
-            (x, self.world_y, self.get_screen_width(), self.planet_surface.get_height()), self.font, "center")
+            (x, self.world_y, self.get_screen_width(), self.surface.get_height()), self.font, "center")
 
         if self.parent.get_planet_name() == "???":
-            self.planet_surface_rect.height = self.planet_minus_arrow_button.get_screen_height() + self.spacing
+            self.surface_rect.height = self.planet_minus_arrow_button.get_screen_height() + self.spacing
             self.toggle_switch.toggle_panel_icon.screen_y = self.world_y + self.toggle_switch.toggle_panel_icon.get_screen_height() + self.spacing
 
-        x = self.planet_surface_rect.x + self.spacing
+        x = self.surface_rect.x + self.spacing
         self.world_y += self.spacing * 2
 
         if self.parent.selected_planet:
             if not self.parent.selected_planet.explored:
-                # if not self.building_button_widget._hidden:
-                #     self.building_button_widget.hide()
                 return
 
             self.draw_planet_params(x)
@@ -266,10 +267,6 @@ class BuildingPanel(WidgetBase, BuildingPanelConstructor, BuildingSlot, EconomyP
         self.max_height += self.building_button_widget.max_height
 
         # adjust frame size_y
-        self.planet_surface_rect.__setattr__("height", self.world_y - self.spacing * 3)
-
-        if not self.init:
-            self.reposition()
-            self.init = 1
+        self.surface_rect.height = self.world_y - self.spacing * 3
 
         self.reposition()

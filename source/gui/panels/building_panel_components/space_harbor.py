@@ -51,12 +51,12 @@ class SpaceHarbor(WidgetBase):
 
         # construct surface
         self.surface = pygame.surface.Surface((width, height))
-        self.surface.set_alpha(19)
+        self.surface.set_alpha(global_params.ui_panel_alpha)
         self.surface_rect = self.surface.get_rect()
         self.surface_rect.x = self.parent.surface_rect.x + self.parent.spacing
         self.surface_rect.y = self.parent.world_y
         self.spacing = self.parent.spacing
-        self.surface_frame = pygame.draw.rect(self.win, self.frame_color, self.surface_rect, ui_rounded_corner_small_thickness, global_params.ui_rounded_corner_radius_small)
+        #self.surface_frame = pygame.draw.rect(self.win, self.frame_color, self.surface_rect, int(ui_rounded_corner_small_thickness), int(global_params.ui_rounded_corner_radius_small))
 
         # text
         self.font_size = kwargs.get("font_size", 12)
@@ -160,8 +160,9 @@ class SpaceHarbor(WidgetBase):
         # frame
         self.surface_rect.x = self.parent.surface_rect.x
         self.surface_rect.y = self.parent.world_y + self.spacing + 5
-        self.surface_frame = pygame.draw.rect(self.win, self.frame_color, self.surface_rect, ui_rounded_corner_small_thickness, global_params.ui_rounded_corner_radius_small)
-        self.win.blit(self.surface, self.surface_frame)
+        self.win.blit(self.surface, self.surface_rect)
+        pygame.draw.rect(self.win, self.frame_color, self.surface_rect, int(ui_rounded_corner_small_thickness), int(global_params.ui_rounded_corner_radius_small))
+
 
         # label
         drawText(self.win, "Space Harbor", self.frame_color,

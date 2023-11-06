@@ -35,12 +35,12 @@ class PlanetaryDefenceWidget(WidgetBase):
 
     def _initialize_surface(self):
         self.surface = pygame.surface.Surface((self.width, self.height))
-        self.surface.set_alpha(19)
+        self.surface.set_alpha(global_params.ui_panel_alpha)
         self.surface_rect = self.surface.get_rect()
         self.surface_rect.x = self.parent.surface_rect.x + self.parent.spacing
         self.surface_rect.y = self.parent.world_y
         self.spacing = self.parent.spacing
-        self.surface_frame = pygame.draw.rect(self.win, self.frame_color, self.surface_rect, ui_rounded_corner_small_thickness, global_params.ui_rounded_corner_radius_small)
+        #self.surface_frame = pygame.draw.rect(self.win, self.frame_color, self.surface_rect, int(ui_rounded_corner_small_thickness), int(global_params.ui_rounded_corner_radius_small))
 
     def _initialize_text(self, kwargs):
         self.font_size = kwargs.get("font_size", FONT_SIZE)
@@ -127,8 +127,14 @@ class PlanetaryDefenceWidget(WidgetBase):
         if "space harbor" in self.parent.parent.selected_planet.buildings:
             self.surface_rect.y = self.parent.world_y + self.parent.sub_widget_height + self.spacing + 5
 
-        self.surface_frame = pygame.draw.rect(self.win, self.frame_color, self.surface_rect, ui_rounded_corner_small_thickness, global_params.ui_rounded_corner_radius_small)
-        self.win.blit(self.surface, self.surface_frame)
+
+        self.win.blit(self.surface, self.surface_rect)
+
+        #self.surface_frame = pygame.draw.rect(self.surface, self.frame_color, self.surface_rect, int(ui_rounded_corner_small_thickness), int(global_params.ui_rounded_corner_radius_small))
+
+        pygame.draw.rect(self.win, self.frame_color, self.surface_rect, int(ui_rounded_corner_small_thickness), int(global_params.ui_rounded_corner_radius_small))
+        #pygame.draw.rect(self.win, colors.ui_white, self.surface_rect, 1)
+
 
     def _draw_label(self):
         drawText(self.win, self.name, self.frame_color,

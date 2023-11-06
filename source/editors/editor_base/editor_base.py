@@ -84,7 +84,7 @@ class EditorBase(WidgetBase):
         self.text_spacing = 20
         self.frame_color = colors.ui_dark
         self.frame = pygame.surface.Surface((self.world_width, self.world_height))
-        self.frame.set_alpha(210)
+        self.frame.set_alpha(global_params.ui_panel_alpha)
 
         # register
         self.buttons = []
@@ -118,7 +118,8 @@ class EditorBase(WidgetBase):
     def draw_frame(self):
         height = self.max_height
         self.frame = pygame.transform.scale(self.frame, (self.get_screen_width(), height))
-        rect = pygame.draw.rect(self.frame, self.frame_color, self.frame.get_rect(), ui_rounded_corner_big_thickness, global_params.ui_rounded_corner_radius_big)
+        self.frame.fill((0,0,0))
+        rect = pygame.draw.rect(self.frame, self.frame_color, self.frame.get_rect(), int(ui_rounded_corner_big_thickness), int(global_params.ui_rounded_corner_radius_big))
         rect.x = self.world_x
         rect.y = self.world_y + 60
 

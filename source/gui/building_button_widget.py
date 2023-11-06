@@ -89,12 +89,12 @@ class BuildingButtonWidget(WidgetBase):
 
         # construct surface
         self.surface = pygame.surface.Surface((width, height))
-        self.surface.set_alpha(19)
+        self.surface.set_alpha(global_params.ui_panel_alpha)
         self.rect = self.surface.get_rect()
         self.rect.x = x
         self.rect.y = y
         self.spacing = kwargs.get("spacing", 10)
-        self.surface_frame = pygame.draw.rect(self.win, self.frame_color, self.rect, ui_rounded_corner_small_thickness, ui_rounded_corner_radius_small)
+        #self.surface_frame = pygame.draw.rect(self.win, self.frame_color, self.rect, int(ui_rounded_corner_small_thickness), ui_rounded_corner_radius_small)
         self.corner_radius = ui_rounded_corner_radius_small
 
         # subwidget height of building panel
@@ -269,10 +269,19 @@ class BuildingButtonWidget(WidgetBase):
                 building_button.screen_y = ICON_SIZE + resource_button.screen_y + resource_button.children.index(building_button) * ICON_SIZE
                 building_button.set_image_position()
 
+    def draw_frame_(self):
+        self.rect.width = self.max_width
+        self.rect.height = self.max_height
+        self.win.blit(self.surface, self.rect)
+        pygame.draw.rect(self.win, self.frame_color, self.rect, int(ui_rounded_corner_small_thickness), self.corner_radius)
+
     def draw_frame(self):
         self.rect.width = self.max_width
         self.rect.height = self.max_height
-        pygame.draw.rect(self.win, self.frame_color, self.rect, ui_rounded_corner_small_thickness, self.corner_radius)
+        self.surface = pygame.Surface((self.rect.width, self.rect.height), pygame.SRCALPHA)
+        self.surface.fill((0,0,0, global_params.ui_panel_alpha))
+        pygame.draw.rect(self.surface, self.frame_color, self.surface.get_rect(), int(ui_rounded_corner_small_thickness), self.corner_radius)
+        self.win.blit(self.surface, self.rect)
 
     def draw(self):
         if not inside_screen(self.rect.center):

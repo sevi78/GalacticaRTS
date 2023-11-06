@@ -89,7 +89,7 @@ class UIHelper:
         self.set_anchor_right(self.parent.building_panel.get_screen_width())
         self.set_anchor_bottom(30)
 
-    def hms(self, seconds):  # no use
+    def hms(self, seconds):
         """
         time converter
         :param seconds:

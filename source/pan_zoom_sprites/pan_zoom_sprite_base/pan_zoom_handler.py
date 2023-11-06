@@ -1,9 +1,9 @@
 import pygame as pg
 import pygame.transform
 
-from source.utils.global_params import win, WIDTH, HEIGHT, scene_width, scene_height, app, text_input_active, \
-    enable_pan, copy_object
-
+from source.database.saveload import load_file
+from source.utils.global_params import win, WIDTH, HEIGHT
+settings = load_file("settings.json")
 
 # Zoom with mousewheel, pan with left mouse button
 
@@ -79,8 +79,8 @@ class PanZoomHandler:
 
         self.tab = 1
         self.zoom = 1
-        self.zoom_max = 1.5
-        self.zoom_min = 0.05
+        self.zoom_max = settings["zoom_max"]
+        self.zoom_min = settings["zoom_min"]
 
         self.update_screen = True
         self.panning = False

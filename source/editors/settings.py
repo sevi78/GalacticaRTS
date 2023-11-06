@@ -123,6 +123,50 @@ def main(test: bool = False, **kwargs) -> None:
         value_format=lambda x: str(int(x)),
         align=pygame_menu.locals.ALIGN_RIGHT)
 
+    settings_menu.add.range_slider('ui_rounded_corner_radius_small',
+        settings["ui_rounded_corner_radius_small"], (1, 100), 1,
+        rangeslider_id='ui_rounded_corner_radius_small',
+        value_format=lambda x: str(int(x)),
+        align=pygame_menu.locals.ALIGN_RIGHT)
+
+    settings_menu.add.range_slider('ui_rounded_corner_radius_big',
+        settings["ui_rounded_corner_radius_big"], (1, 50), 1,
+        rangeslider_id='ui_rounded_corner_radius_big',
+        value_format=lambda x: str(int(x)),
+        align=pygame_menu.locals.ALIGN_RIGHT)
+
+    settings_menu.add.range_slider('ui_rounded_corner_small_thickness',
+        settings["ui_rounded_corner_small_thickness"], (1, 10), 1,
+        rangeslider_id='ui_rounded_corner_small_thickness',
+        value_format=lambda x: str(int(x)),
+        align=pygame_menu.locals.ALIGN_RIGHT)
+
+    settings_menu.add.range_slider('ui_rounded_corner_big_thickness',
+        settings["ui_rounded_corner_big_thickness"], (1, 20), 1,
+        rangeslider_id='ui_rounded_corner_big_thickness',
+        value_format=lambda x: str(int(x)),
+        align=pygame_menu.locals.ALIGN_RIGHT)
+
+    settings_menu.add.range_slider('ui_panel_alpha',
+        settings["ui_panel_alpha"], (0, 255), 1,
+        rangeslider_id='ui_panel_alpha',
+        value_format=lambda x: str(int(x)),
+        align=pygame_menu.locals.ALIGN_RIGHT)
+
+    settings_menu.add.range_slider('zoom_min',
+        settings["zoom_min"], (0.05, 1.0), 0.05,
+        rangeslider_id='zoom_min',
+        value_format=lambda x: str(float(x)),
+        align=pygame_menu.locals.ALIGN_RIGHT)
+
+    settings_menu.add.range_slider('zoom_max',
+        settings["zoom_max"], (1.0, 2.0), 0.05,
+        rangeslider_id='zoom_max',
+        value_format=lambda x: str(float(x)),
+        align=pygame_menu.locals.ALIGN_RIGHT)
+
+
+
     # layers =[('0',[0] ),
     #            ('1'[1],),
     #            ('2',[2]),

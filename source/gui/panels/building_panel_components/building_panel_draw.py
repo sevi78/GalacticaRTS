@@ -31,7 +31,7 @@ class BuildingPanelDraw:
         else:
             self.planet_image = pygame.transform.scale(self.parent.selected_planet.image_raw.copy(), (150, 150))
         self.planet_image.set_alpha(128)
-        self.win.blit(self.planet_image, self.planet_surface_rect.midtop)
+        self.win.blit(self.planet_image, self.surface_rect.midtop)
         self.world_y += self.spacing * 3
 
         # building slots:____________________________________________________________________________________________
@@ -99,9 +99,9 @@ class BuildingPanelDraw:
         # PRODUCTION________________________________________________________________________________________________
         # production label
         self.planet_building_text = drawText(self.win, "production: ", self.frame_color, (
-            self.planet_surface_rect.x,
+            self.surface_rect.x,
             self.world_y, self.get_screen_width(),
-            self.planet_surface.get_height()), self.font, "center")
+            self.surface.get_height()), self.font, "center")
 
         if self.parent.selected_planet.thumpsup_status:
             self.thumps_up = self.thumps_up_image_red
@@ -111,8 +111,8 @@ class BuildingPanelDraw:
         self.win.blit(self.thumps_up, (x, self.world_y))
 
         # production images and texts
-        x = self.planet_surface_rect.x + self.spacing
-        # self.world_y= self.planet_surface_rect.y + self.spacing * 15
+        x = self.surface_rect.x + self.spacing
+        # self.world_y= self.surface_rect.y + self.spacing * 15
         self.world_y += self.spacing * 3
         resources = self.parent.resources
         for r in resources:
@@ -129,9 +129,9 @@ class BuildingPanelDraw:
         # GLOBAL PRODUCTION_________________________________________________________________________________________
         # global production label
         self.planet_building_text = drawText(self.win, "global production: ", self.frame_color, (
-            self.planet_surface_rect.x,
+            self.surface_rect.x,
             self.world_y, self.get_screen_width(),
-            self.planet_surface.get_height()), self.font, "center")
+            self.surface.get_height()), self.font, "center")
         self.world_y += self.spacing * 3
         for r in resources:
             image = pygame.transform.scale(

@@ -3,7 +3,6 @@ import os
 
 import pygame
 
-from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import SpriteGroups
 from source.database.saveload import load_file
 
 # load settings
@@ -125,16 +124,19 @@ global planet_button_display_on_panel
 planet_button_display_on_panel = True
 
 global ui_rounded_corner_radius_small
-ui_rounded_corner_radius_small = 8
+ui_rounded_corner_radius_small = int(settings["ui_rounded_corner_radius_small"])
 
 global ui_rounded_corner_radius_big
-ui_rounded_corner_radius_big = 20
+ui_rounded_corner_radius_big = settings["ui_rounded_corner_radius_big"]
 
 global ui_rounded_corner_small_thickness
-ui_rounded_corner_small_thickness = 1
+ui_rounded_corner_small_thickness = settings["ui_rounded_corner_small_thickness"]
 
 global ui_rounded_corner_big_thickness
-ui_rounded_corner_big_thickness = 5
+ui_rounded_corner_big_thickness = settings["ui_rounded_corner_big_thickness"]
+
+global ui_panel_alpha
+ui_panel_alpha = settings["ui_panel_alpha"]# 160
 
 global draw_universe
 draw_universe = True
