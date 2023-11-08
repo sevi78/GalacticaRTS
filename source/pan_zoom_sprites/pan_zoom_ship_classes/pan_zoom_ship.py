@@ -162,6 +162,7 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
             self.set_energy_reloader(target)
         else:
             self.target = self.target_object
+            self.enemy = None
 
             # set target object position
             self.target.world_x, self.target.world_y = self.pan_zoom.get_mouse_world_position()
@@ -172,16 +173,17 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
     def move_towards_target(self):
         direction = self.target_position - Vector2(self.world_x, self.world_y)
         distance = direction.length() * self.get_zoom()
+        speed = self.set_speed()
 
         # Normalize the direction vector
         if not direction == 0:
             direction.normalize()
 
         # Calculate the displacement vector for each time step
-        displacement = direction * self.speed * global_params.time_factor
+        displacement = direction * speed * global_params.time_factor
 
         # Calculate the number of time steps needed to reach the target position
-        time_steps = int(distance / self.speed) / self.get_zoom()
+        time_steps = int(distance / speed) / self.get_zoom()
 
         # Move the obj towards the target position with a constant speed
         if time_steps:
@@ -196,13 +198,16 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
 
         direction = target_position - current_position
         distance = direction.length() * self.get_zoom()
+        speed_ = self.set_speed()
 
         if distance > self.attack_distance:
             direction.normalize()
 
             # Get the speed of the obj
 
-            speed = (self.speed + obj.speed)
+            speed = (speed_ + obj.speed)
+            if speed > self.set_speed():
+                speed = self.set_speed()
 
             # Calculate the displacement vector for each time step
             displacement = direction * speed * global_params.time_factor / global_params.fps
@@ -218,7 +223,7 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
                 self.reach_enemy()
                 return
 
-            print("reached_ufo")
+            #print("reached_ufo")
         elif self.target.property == "planet":
             # Check the distance
             if distance < self.desired_orbit_radius:

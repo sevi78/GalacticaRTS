@@ -52,7 +52,20 @@ def launch_missile(attacker, defender):
     y += random.randint(-ry,ry)
 
     if defender.energy - MISSILE_POWER >= 0:
-        missile = PanZoomMissile(screen, x, y, 42, 17, pan_zoom_handler, "missile_42x17.gif",
-            group="missiles", loop_gif=True, move_to_target=True, align_image="topleft", explosion_relative_gif_size=0.3,
-            layer=9, debug=False, initial_rotation= random.randint(-360,360), rotation_smoothing= 1, target=defender)
+        missile = PanZoomMissile(
+            screen,
+            x,
+            y,
+            42,
+            17,
+            pan_zoom_handler,
+            "missile_42x17.gif",
+            group="missiles",
+            loop_gif=True,
+            move_to_target=True,
+            align_image="topleft",
+            explosion_relative_gif_size=0.3,
+            layer=9,
+            debug=False,
+            target=defender)
         #missile.set_target(defender)

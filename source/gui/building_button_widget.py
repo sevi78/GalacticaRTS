@@ -277,7 +277,7 @@ class BuildingButtonWidget(WidgetBase):
         self.surface.fill((0,0,0, global_params.ui_panel_alpha))
         pygame.draw.rect(self.surface, self.frame_color, self.surface.get_rect(), int(ui_rounded_corner_small_thickness), self.corner_radius)
 
-        print (len(self.active_resource_buttons))
+        #print (len(self.active_resource_buttons))
         if len(self.active_resource_buttons) > 0:
             self.win.blit(self.surface, self.rect)
             self.set_frame_height()

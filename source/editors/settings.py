@@ -117,6 +117,10 @@ def main(test: bool = False, **kwargs) -> None:
         input_type=pygame_menu.locals.INPUT_INT,
         align=pygame_menu.locals.ALIGN_RIGHT)
 
+    settings_menu.add.toggle_switch('universe', settings["draw_universe"],
+        toggleswitch_id='draw_universe', align=pygame_menu.locals.ALIGN_RIGHT,
+        )
+
     settings_menu.add.range_slider('Universe Density:(lower value = less stars)',
         settings["universe_density"], (1, 100), 10,
         rangeslider_id='universe_density',

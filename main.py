@@ -85,14 +85,12 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat, TextWrap):
         self.game_speed = 0
         self.run = 1
 
-
-
         temp = []
         for key, value in self.__dict__.items():
             if not key in self.__slots__:
                 temp.append(key)
 
-        print(f"pan_zoom_planet.__dict__: {self.__dict__} \n __slots__; {self.__slots__}\n tmp:{temp}")
+        #print(f"pan_zoom_planet.__dict__: {self.__dict__} \n __slots__; {self.__slots__}\n tmp:{temp}")
 
     @property
     def selected_planet(self):
@@ -194,7 +192,7 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat, TextWrap):
         """
         # game loop
         while self.run == 1:
-            self.win.fill((0, 0, 0))
+            self.win.fill((1, 2, 3, 190))
             self.clock.tick(int(global_params.fps))
             # settings
             events = pygame.event.get()

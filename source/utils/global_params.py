@@ -93,6 +93,8 @@ enable_zoom = settings["enable_zoom"]  # False
 global enable_pan
 enable_pan = settings["enable_pan"]
 
+
+
 global debug
 debug = settings["debug"]
 
@@ -139,7 +141,9 @@ global ui_panel_alpha
 ui_panel_alpha = settings["ui_panel_alpha"]# 160
 
 global draw_universe
-draw_universe = True
+draw_universe = settings["draw_universe"]
+
+
 
 # global sprites
 # sprites = pygame.sprite.LayeredUpdates()
