@@ -18,7 +18,7 @@ from source.utils import global_params
 from source.utils.colors import colors
 from source.utils.global_params import text_input_active, enable_pan, copy_object
 from source.multimedia_library.images import get_image
-from source.utils.mouse import Mouse
+from source.interaction.mouse import Mouse
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zoom_handler
 from source.utils.text_wrap import TextWrap
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups

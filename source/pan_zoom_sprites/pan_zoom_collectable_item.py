@@ -1,7 +1,6 @@
 import pygame.draw
 from pygame_widgets import Mouse
 from pygame_widgets.mouse import MouseState
-
 from source.gui.lod import inside_screen
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_mouse_handler import PanZoomMouseHandler
@@ -35,6 +34,7 @@ class PanZoomCollectableItem(PanZoomSprite, PanZoomMouseHandler):
         self.resources = {"water": self.water, "energy": self.energy, "food": self.food, "minerals": self.minerals, "technology": self.technology}
         self.collect_text = ""
         self.name = "collectable item"
+        self.collected = False
 
         sprite_groups.collectable_items.add(self)
 
@@ -48,9 +48,7 @@ class PanZoomCollectableItem(PanZoomSprite, PanZoomMouseHandler):
 
         if not self._hidden and not self._disabled:
             mouseState = Mouse.getMouseState()
-
             if self.rect.collidepoint(pygame.mouse.get_pos()):  # self.contains(x, y):
-
                 if mouseState == MouseState.HOVER or mouseState == MouseState.DRAG:
                     # set tooltip
                     if self.tooltip:

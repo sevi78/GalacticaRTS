@@ -1,13 +1,14 @@
 # initialize pygame and window
 import os
-
 import pygame
-
 from source.database.saveload import load_file
+from source.multimedia_library.sounds import Sounds
+
 
 # load settings
 settings = load_file("settings.json")
 
+# setup globals
 global font_name
 font_name = settings["font_name"]  # "bahnschrift"#'comicsansms'#'corbel'#"consolas"#"candara"
 
@@ -45,8 +46,6 @@ global pictures_path
 pictures_path = os.path.split(dirpath)[0].split("source")[0] + "pictures" + os.sep
 
 # Sounds
-from source.multimedia_library.sounds import Sounds
-
 global sounds
 sounds = Sounds()
 
@@ -92,7 +91,6 @@ enable_zoom = settings["enable_zoom"]  # False
 
 global enable_pan
 enable_pan = settings["enable_pan"]
-
 
 
 global debug

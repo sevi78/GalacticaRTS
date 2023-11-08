@@ -103,7 +103,7 @@ def prevent_object_overlap(objects, min_dist):
                     obj2.world_y -= dy * adjustment
 
 
-def follow_target(self):
+def follow_target__(self):# unused
     if self.target:  # and not self.orbit_object:
         if hasattr(self.target, "screen_x"):
             tx, ty = self.target.screen_x, self.target.screen_y

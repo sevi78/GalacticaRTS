@@ -18,10 +18,9 @@ from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zo
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_mouse_handler import PanZoomMouseHandler
 from source.pan_zoom_sprites.pan_zoom_target_object import PanZoomTargetObject
-from source.physics.orbit import orbit_around
 from source.utils import global_params
-from source.utils.mouse import Mouse, MouseState
-from source.utils.positioning import follow_target, prevent_object_overlap, orbit, get_distance
+from source.interaction.mouse import Mouse, MouseState
+from source.utils.positioning import prevent_object_overlap, orbit, get_distance
 from source.database.saveload import load_file
 
 
@@ -278,6 +277,8 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
             self.enemy = None
 
     def load_cargo(self):
+        if self.target.collected:
+            return
         self.collect_text = ""
         waste_text = ""
 
@@ -306,6 +307,7 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         self.set_info_text()
         sounds.play_sound(sounds.collect_success)
         global_params.app.event_text = "You are a Lucky Guy! you just found some resources: " + self.collect_text
+        self.target.collected = True
 
     def unload_cargo(self):
         text = ""
@@ -315,6 +317,9 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
                 setattr(self.parent.player, key, getattr(self.parent.player, key) + value)
                 self.resources[key] = 0
                 setattr(self, key, 0)
+
+        if not text:
+            return
 
         self.parent.event_text = "unloading ship: " + text[:-2]
         sounds.play_sound(sounds.unload_ship)
