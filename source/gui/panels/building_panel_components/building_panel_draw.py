@@ -2,15 +2,19 @@ import pygame
 from pygame_widgets.util import drawText
 
 from source.multimedia_library.images import images, pictures_path, get_image
+from source.utils.text_formatter import format_number
 
 SMILEY_SIZE = 20
 
 
 class BuildingPanelDraw:
+
+
     def draw_planet_params(self, x):
         # draw population text
         # population
-        drawText(self.win, "population: " + str(int(self.parent.selected_planet.population)) + "/" + str(int(self.parent.selected_planet.population_limit)), self.frame_color, (
+
+        drawText(self.win, "population: " + str(int(self.parent.selected_planet.population)) + "/" + format_number(self.parent.selected_planet.population_limit, 1), self.frame_color, (
             x + self.spacing_x, self.world_y, self.get_screen_width(), 20), self.font, "left")
         image = get_image("city_25x25.png")
         self.win.blit(image, (x, self.world_y))

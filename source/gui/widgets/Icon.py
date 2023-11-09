@@ -3,6 +3,7 @@ from pygame.locals import MOUSEBUTTONDOWN, MOUSEBUTTONUP, MOUSEMOTION
 from pygame_widgets.mouse import Mouse, MouseState
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.utils import global_params
+from source.utils.text_formatter import format_number
 
 
 class Icon(WidgetBase):
@@ -88,7 +89,7 @@ class Icon(WidgetBase):
 
         if self.key != "":
             if self.key == "city":
-                self.text = str(int(getattr(self.parent.player, "population"))) + "/" + str(int(self.parent.player.population_limit))
+                self.text = str(int(getattr(self.parent.player, "population"))) + "/" + format_number(self.parent.player.population_limit, 1)
             else:
                 self.text = str(int(self.value)) + "/" + str(int(getattr(self.parent, "production_" + self.key)))
 
