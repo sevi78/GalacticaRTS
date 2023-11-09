@@ -152,6 +152,7 @@ class PanZoomPlanetEconomy:
 
     def set_technology_upgrades(self, building):
         upgrade = building_factory.get_technology_upgrade(building)
+
         for key, value in upgrade.items():
             setattr(self, key, getattr(self, key) + value)
 

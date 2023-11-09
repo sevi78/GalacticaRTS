@@ -66,12 +66,12 @@ class UIBuilder(SceneBuilder):
         self.icons = []
         self.selected_planet = None
 
-        # event text
-        prefix = "GPT-1357: "
-        self.event_text = "hi, i am George Peter Theodor the 1357th, or short: GPT-1357." \
-                          "i am an artificial intelligence to help mankind out of their mess...maybe the only intelligent beeing " \
-                          "on this ship. my advice: find a new world for the last dudes from earth!"
-        self.event_display_text = prefix + self.event_text
+        # # event text
+        # prefix = "GPT-1357: "
+        # self.event_text = "hi, i am George Peter Theodor the 1357th, or short: GPT-1357." \
+        #                   "i am an artificial intelligence to help mankind out of their mess...maybe the only intelligent beeing " \
+        #                   "on this ship. my advice: find a new world for the last dudes from earth!"
+        # self.event_display_text = prefix + self.event_text
 
         # player
         self.create_player()

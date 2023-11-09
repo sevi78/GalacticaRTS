@@ -171,40 +171,40 @@ class PanZoomShipMoving:
         """
         # low energy warning
         if self.energy < self.energy_warning_level:
-            self.parent.event_text = "LOW ENERGY WARNING!!! your ship is running out of energy! find a planet to land soon!!"
+            event_text.text = "LOW ENERGY WARNING!!! your ship is running out of energy! find a planet to land soon!!"
 
         if self.energy <= 0:
-            self.parent.event_text = "DAMMIT!!! your ship has run out of energy! you all gonna die !!!"
+            event_text.text = "DAMMIT!!! your ship has run out of energy! you all gonna die !!!"
             self.move_stop += 1
 
         # if ship energy is empty
         if self.energy <= 0 and self.move_stop > 1000:
-            self.parent.event_text = "NO ENERGY DUDE! you cant move with this ship! "
+            event_text.text = "NO ENERGY DUDE! you cant move with this ship! "
             self.move_stop += 1
 
         if self.energy <= 0 and self.move_stop > 2000:
-            self.parent.event_text = "..mhhh--- there might be a solution -- let me think about it a few seconds.."
+            event_text.text = "..mhhh--- there might be a solution -- let me think about it a few seconds.."
             self.move_stop += 1
 
         if self.energy <= 0 and self.move_stop > 3000:
-            self.parent.event_text = "the board engineer and i, have worked hard on a solution to this problem:"
+            event_text.text = "the board engineer and i, have worked hard on a solution to this problem:"
             self.move_stop += 1
 
         if self.energy <= 0 and self.move_stop > 4000:
-            self.parent.event_text = "how about this: we sacrifice john the cook, i mean do we really need him?" \
+            event_text.text = "how about this: we sacrifice john the cook, i mean do we really need him?" \
                                      " put him into the plasma reactor of our spaceship and get some energy out of him !"
             self.move_stop += 1
 
         if self.energy <= 0 and self.move_stop > 5000:
-            self.parent.event_text = "type 'yes' or 'no' if you want to burn the last cook from earth for surviving"
+            event_text.text = "type 'yes' or 'no' if you want to burn the last cook from earth for surviving"
             self.move_stop += 1
 
         if self.energy <= 0 and self.move_stop > 6000:
-            self.parent.event_text = "haha!! that was just a joke! funny istn it ??"
+            event_text.text = "haha!! that was just a joke! funny istn it ??"
             self.move_stop += 1
 
         if self.energy <= 0 and self.move_stop > 7000:
-            self.parent.event_text = "i mean, we will definitely cook the cook in the plasma engine, but I will decide for you :)"
+            event_text.text = "i mean, we will definitely cook the cook in the plasma engine, but I will decide for you :)"
             self.crew -= 1
             self.energy = 500
             self.move_stop = 0

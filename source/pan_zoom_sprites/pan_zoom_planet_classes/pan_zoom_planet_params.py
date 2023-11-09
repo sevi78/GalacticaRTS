@@ -1,6 +1,7 @@
 import pygame
 
 from source.database.database_access import create_connection, get_database_file_path
+from source.gui.event_text import event_text
 from source.multimedia_library.images import images, pictures_path, get_image
 from source.multimedia_library.sounds import sounds
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups
@@ -163,5 +164,5 @@ class PanZoomPlanetParams:
         self.string = self.name
 
         # set event text
-        self.parent.event_text = f"Gratulation! you have reached a the Planet {self.name} !"
+        event_text.text = f"Gratulation! you have reached a the Planet {self.name} !"
         self.parent.update_building_button_widgets()

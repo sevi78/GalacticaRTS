@@ -3,6 +3,7 @@ import random
 import pygame
 from pygame import Vector2
 
+from source.gui.event_text import event_text
 from source.gui.lod import inside_screen
 from source.multimedia_library.sounds import sounds
 from source.pan_zoom_sprites.pan_zoom_ship_classes.pan_zoom_ship_buttons import PanZoomShipButtons
@@ -306,7 +307,7 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         self.set_resources()
         self.set_info_text()
         sounds.play_sound(sounds.collect_success)
-        global_params.app.event_text = "You are a Lucky Guy! you just found some resources: " + self.collect_text
+        event_text.text = "You are a Lucky Guy! you just found some resources: " + self.collect_text
         self.target.collected = True
 
     def unload_cargo(self):
@@ -321,7 +322,7 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         if not text:
             return
 
-        self.parent.event_text = "unloading ship: " + text[:-2]
+        event_text.text = "unloading ship: " + text[:-2]
         sounds.play_sound(sounds.unload_ship)
 
     def listen(self):

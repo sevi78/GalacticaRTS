@@ -220,7 +220,7 @@ class PanZoomShipParams():
                                 "energy"] * global_params.game_speed
                             self.flickering()
                         else:
-                            self.parent.event_text = "PanZoomShip reloaded sucessfully!!!"
+                            event_text.text = "PanZoomShip reloaded sucessfully!!!"
                             sounds.stop_sound(self.sound_channel)
 
                 if self.energy_reloader.type == "sun":
@@ -237,7 +237,7 @@ class PanZoomShipParams():
                             self.energy_reloader.energy -= self.energy_reload_rate * global_params.game_speed
                             self.flickering()
                         else:
-                            self.parent.event_text = "PanZoomShip reloaded sucessfully!!!"
+                            event_text.text = "PanZoomShip reloaded sucessfully!!!"
                             sounds.stop_sound(self.sound_channel)
         else:
             sounds.stop_sound(self.sound_channel)

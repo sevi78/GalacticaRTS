@@ -2,6 +2,7 @@ import random
 
 import pygame
 
+from source.gui.event_text import event_text
 from source.gui.lod import inside_screen
 from source.gui.widgets.progress_bar import ProgressBar
 from source.utils import global_params
@@ -77,7 +78,7 @@ class PanZoomShipDraw:
 
         # pygame.mixer.Channel(2).play (sounds.electricity2)
         # sounds.play_sound(sounds.electricity2, channel=self.sound_channel)
-        self.parent.event_text = "reloading spaceship: --- needs a lot of energy!"
+        event_text.text = "reloading spaceship: --- needs a lot of energy!"
 
     def draw_rank_image(self):
         # if not global_params.app.build_menu_visible:

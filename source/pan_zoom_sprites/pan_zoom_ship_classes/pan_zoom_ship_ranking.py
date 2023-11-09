@@ -1,5 +1,6 @@
 import pygame
 
+from source.gui.event_text import event_text
 from source.multimedia_library.images import get_image
 from source.multimedia_library.sounds import sounds
 
@@ -77,8 +78,8 @@ class PanZoomShipRanking:
         prev_key = next((key for key, value in self.ranks.items() if value == prev_rank), None)
         curr_key = next((key for key, value in self.ranks.items() if value == self.rank), None)
         if curr_key > prev_key:
-            self.parent.event_text = "Congratulations !!! Rank increased from {} to {} !!!".format(prev_rank, self.rank)
+            event_text.text = "Congratulations !!! Rank increased from {} to {} !!!".format(prev_rank, self.rank)
             sounds.play_sound(sounds.rank_up)
         elif curr_key < prev_key:
-            self.parent.event_text = "Shame on you !!! Rank decreased from {} to {} !!!".format(prev_rank, self.rank)
+            event_text.text = "Shame on you !!! Rank decreased from {} to {} !!!".format(prev_rank, self.rank)
             sounds.play_sound(sounds.rank_down)

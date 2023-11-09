@@ -1,6 +1,7 @@
 import random
 import pygame
 
+from source.gui.event_text import event_text
 from source.gui.lod import inside_screen
 from source.gui.widgets.progress_bar import ProgressBar
 from source.gui.widgets.widget_base_components.interaction_handler import InteractionHandler
@@ -113,7 +114,7 @@ class PanZoomUfo(PanZoomGameObject, InteractionHandler):
 
         if self.target.population > 0:
             self.target.population -= self.gun_power / 100
-            global_params.app.event_text = f"ufo attack !!!!, people are getting killed ! {int(self.target.population)}"
+            event_text.text = f"ufo attack !!!!, people are getting killed ! {int(self.target.population)}"
 
     def listen(self):
         if not self._hidden and not self._disabled:

@@ -1,6 +1,7 @@
 import pygame
 
 from source.database.saveload import load_file, write_file
+from source.gui.event_text import event_text
 from source.gui.widgets.building_widget import BuildingWidget
 from source.multimedia_library.sounds import sounds
 from source.utils import global_params
@@ -111,7 +112,7 @@ class BuildingFactory(BuildingFactoryJsonDictReader):
         # check for minimum population
         build_population_minimum = self.get_build_population_minimum_from_buildings_json(building)
         if build_population_minimum > planet.population:
-            global_params.app.event_text = "you must reach a population of minimum " + str(build_population_minimum) + " people to build a " + building + "!"
+            event_text.text = "you must reach a population of minimum " + str(build_population_minimum) + " people to build a " + building + "!"
 
             sounds.play_sound("bleep", channel=7)
             return
@@ -119,12 +120,12 @@ class BuildingFactory(BuildingFactoryJsonDictReader):
         # build building widget, first pay the bill
         # pay the bill
         if planet.building_cue >= planet.building_slot_amount:
-            global_params.app.event_text = "you have reached the maximum(" + str(planet.building_slot_amount) + ") of buildings that can be build at the same time on " + planet.name + "!"
+            event_text.text = "you have reached the maximum(" + str(planet.building_slot_amount) + ") of buildings that can be build at the same time on " + planet.name + "!"
             sounds.play_sound("bleep", channel=7)
             return
 
         if len(planet.buildings) + planet.building_cue >= planet.buildings_max:
-            global_params.app.event_text = "you have reached the maximum(" + str(planet.buildings_max) + ") of buildings that can be build on " + planet.name + "!"
+            event_text.text = "you have reached the maximum(" + str(planet.buildings_max) + ") of buildings that can be build on " + planet.name + "!"
             sounds.play_sound("bleep", channel=7)
             return
 
@@ -189,7 +190,7 @@ class BuildingFactory(BuildingFactoryJsonDictReader):
 
         if not check:
             text = text[:-2] + "!"
-            global_params.app.event_text = text
+            event_text.text = text
 
         return check
 

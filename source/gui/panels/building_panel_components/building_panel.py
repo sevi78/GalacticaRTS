@@ -8,6 +8,7 @@ from source.app.app_helper import select_next_item_in_list
 from source.configuration.economy_params import EconomyParams
 from source.game_play.navigation import navigate_to
 from source.gui.building_button_widget import BuildingButtonWidget
+from source.gui.event_text import event_text
 from source.gui.panels.building_panel_components.building_panel_constructor import BuildingPanelConstructor
 from source.gui.panels.building_panel_components.building_panel_draw import BuildingPanelDraw
 from source.gui.panels.building_panel_components.building_slot import BuildingSlot
@@ -161,7 +162,7 @@ class BuildingPanel(WidgetBase, BuildingPanelConstructor, BuildingSlot, EconomyP
         self.parent.selected_planet.calculate_population()
         self.parent.selected_planet.set_population_limit()
 
-        self.parent.event_text = f"you destroyed one {b}! You will not get anything back from it! ... what a waste ..."
+        event_text.text = f"you destroyed one {b}! You will not get anything back from it! ... what a waste ..."
         sounds.play_sound(sounds.destroy_building)
 
     def reposition(self):

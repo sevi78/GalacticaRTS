@@ -1,3 +1,5 @@
+import ast
+
 import pygame
 from source.editors.editor_base.editor_base import EditorBase
 from source.editors.editor_base.editor_config import TOP_SPACING
@@ -150,7 +152,14 @@ class BuildingEdit(EditorBase):
             i.handle_events(events)
 
     def get_input_box_values(self, obj, key, value):
-        """ callback from input_boxes """
+        try:
+            # Try to evaluate the value as a Python expression
+            value = ast.literal_eval(value)
+        except (ValueError, SyntaxError):
+            # If the value is not a valid Python expression, keep it as a string
+            print(f"get_input_box_values:{ValueError},{SyntaxError}  unable to eval string: {value}")
+
+        # Set the value into the dictionary
         self.building_dict[key] = value
 
     def select_next_input_box(self, event):

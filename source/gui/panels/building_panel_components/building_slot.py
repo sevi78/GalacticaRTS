@@ -150,7 +150,7 @@ class BuildingSlot:
 
         # max upgrades reached, exit function
         else:
-            self.parent.event_text = f"maximum {planet.building_slot_upgrades} building slots reached!"
+            event_text.text = f"maximum {planet.building_slot_upgrades} building slots reached!"
             return
 
         # if do_upgrade, set values
@@ -159,14 +159,14 @@ class BuildingSlot:
 
         # if enough technology
         if self.parent.player.technology - price > 0:
-            self.parent.event_text = f"Upgraded from {planet.building_slot_amount} building slots to {planet.building_slot_amount + 1}!"
+            event_text.text = f"Upgraded from {planet.building_slot_amount} building slots to {planet.building_slot_amount + 1}!"
             # if not max reached
             if planet.building_slot_upgrades < len(planet.building_slot_upgrade_prices.items()):
                 planet.building_slot_amount += 1
                 planet.building_slot_upgrades += 1
                 self.parent.player.technology -= price
         else:
-            self.parent.event_text = f"not enough technology to upgrade building slot ! you have {self.parent.player.technology}, but you will need {price}"
+            event_text.text = f"not enough technology to upgrade building slot ! you have {self.parent.player.technology}, but you will need {price}"
 
         # finally calculate new productions
         planet.calculate_production()
@@ -191,14 +191,14 @@ class BuildingSlot:
 
         # min upgrades reached, exit function
         else:
-            self.parent.event_text = f"minimum {0} building slots reached!"
+            event_text.text = f"minimum {0} building slots reached!"
             return
 
         # if do_upgrade, set values
         if not do_downgrade:
             return
 
-        self.parent.event_text = f"Downgraded from {planet.building_slot_amount} building slots to {planet.building_slot_amount - 1}!"
+        event_text.text = f"Downgraded from {planet.building_slot_amount} building slots to {planet.building_slot_amount - 1}!"
 
         # if not min reached
         if planet.building_slot_amount > 0:
