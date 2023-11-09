@@ -11,16 +11,15 @@ from source.app.ui_builder import UIBuilder
 from source.game_play.cheat import Cheat
 from source.game_play.enemy_handler import enemy_handler
 from source.game_play.game_logic import GameLogic
+from source.gui.event_text import event_text
 from source.gui.widgets import widget_handler
 from source.interaction import copy_agent
 from source.interaction.box_selection import BoxSelection
 from source.utils import global_params
-from source.utils.colors import colors
 from source.utils.global_params import text_input_active, enable_pan, copy_object
 from source.multimedia_library.images import get_image
 from source.interaction.mouse import Mouse
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zoom_handler
-from source.utils.text_wrap import TextWrap
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups
 
 
@@ -29,7 +28,7 @@ ECONOMY_UPDATE_INTERVAL = 2.0
 
 
 
-class App(AppHelper, UIBuilder, GameLogic, Cheat, TextWrap):
+class App(AppHelper, UIBuilder, GameLogic, Cheat):
     """Main functionalities:
     The App class is the main class of the application. It inherits from AppHelper, UIBuilder, and GameLogic classes,
     and is responsible for managing the game loop, updating game elements, and handling user input.
@@ -72,9 +71,11 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat, TextWrap):
 
         AppHelper.__init__(self)
         UIBuilder.__init__(self, width, height)
-        TextWrap.__init__(self)
+        #TextWrap.__init__(self)
 
-        self.event_text_font_size = 25
+
+        # self.event_text_font_size = 20
+        # self.event_text_font = pygame.font.SysFont(global_params.font_name, self.event_text_font_size)
         self.pan_enabled = False
 
         # set app-icon
@@ -159,20 +160,20 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat, TextWrap):
         self.ui_helper.update()
         self.player.update()
 
-        # event text
-        event_text_height = 25
-        self.event_text_font = pygame.font.SysFont(global_params.font_name, self.event_text_font_size)
-        prefix = "GPT-1357: "
-        self.event_display_text = prefix + self.event_text
-
-        if not global_params.edit_mode:
-            # drawText(self.win, self.event_display_text, self.frame_color,
-            #     (self.ui_helper.left, self.ui_helper.anchor_bottom - event_text_height , self.ui_helper.world_width,
-            #      event_text_height), self.event_text_font, "center")
-
-            self.wrap_text(self.event_display_text, (
-                self.ui_helper.left, self.ui_helper.anchor_bottom - event_text_height),
-                (self.ui_helper.world_width, event_text_height), self.event_text_font, colors.frame_color)
+        # # event text
+        # event_text_height = 25
+        #
+        # prefix = "GPT-1357: "
+        # self.event_display_text = prefix + self.event_text
+        #
+        # if not global_params.edit_mode:
+        #     # drawText(self.win, self.event_display_text, self.frame_color,
+        #     #     (self.ui_helper.left, self.ui_helper.anchor_bottom - event_text_height , self.ui_helper.world_width,
+        #     #      event_text_height), self.event_text_font, "center")
+        #
+        #     self.wrap_text(self.event_display_text, (
+        #         self.ui_helper.left, self.ui_helper.anchor_bottom - event_text_height),
+        #         (self.ui_helper.world_width, event_text_height), self.event_text_font, colors.frame_color)
 
         # cheat
         self.cheat(events)
@@ -239,6 +240,9 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat, TextWrap):
             self.set_screen_size((global_params.WIDTH_MINIMIZED, global_params.HEIGHT_MINIMIZED), events)
 
             enemy_handler.update()
+
+            # update event_text
+            event_text.update()
 
             # pygame update
             pygame.display.update()
