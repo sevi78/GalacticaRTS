@@ -5,6 +5,8 @@ import locale
 SUFFIXES = ['', 'k', 'M', 'B', 'T']
 
 def format_number(n, digits=0):
+    if n < 0:
+        return str(n)
     magnitude = 0
     while n >= 1000 and magnitude < len(SUFFIXES) - 1:
         magnitude += 1

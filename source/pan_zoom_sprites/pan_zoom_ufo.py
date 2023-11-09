@@ -112,7 +112,7 @@ class PanZoomUfo(PanZoomGameObject, InteractionHandler):
                 self.target.explode()
                 self.set_random_target(immediately=True)
 
-        if self.target.population > 0:
+        if self.target.population - self.gun_power / 100 > 0:
             self.target.population -= self.gun_power / 100
             event_text.text = f"ufo attack !!!!, people are getting killed ! {int(self.target.population)}"
 
