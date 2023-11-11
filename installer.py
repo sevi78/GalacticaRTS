@@ -49,8 +49,14 @@ class Installer:
         self.root.mainloop()
 
     def check_for_dependencies(self) -> bool:
-        with open('requirements.txt') as f:
-            dependencies = f.read().splitlines()
+        try:
+            with open('requirements.txt') as f:
+                dependencies = f.read().splitlines()
+        except FileNotFoundError:
+            from source.utils.requirements_gen import generate_requirements_file
+            generate_requirements_file()
+            with open('requirements.txt') as f:
+                dependencies = f.read().splitlines()
 
         for dependency in dependencies:
             try:

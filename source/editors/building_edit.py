@@ -157,7 +157,8 @@ class BuildingEdit(EditorBase):
             value = ast.literal_eval(value)
         except (ValueError, SyntaxError):
             # If the value is not a valid Python expression, keep it as a string
-            print(f"get_input_box_values:{ValueError},{SyntaxError}  unable to eval string: {value}")
+            pass
+            #print(f"get_input_box_values:{ValueError},{SyntaxError}  unable to eval string: {value}")
 
         # Set the value into the dictionary
         self.building_dict[key] = value
