@@ -4,7 +4,7 @@ import pygame
 
 from source.editors.editor_base.editor_base import EditorBase
 from source.editors.editor_base.editor_config import ARROW_SIZE, FONT_SIZE, BUTTON_SIZE, TOP_SPACING
-from source.game_play.building_factory import building_factory
+from source.factories.building_factory import building_factory
 from source.game_play.navigation import navigate_to
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.gui.widgets.checkbox import Checkbox
@@ -399,7 +399,8 @@ class PlanetEdit(EditorBase, PlanetEditBuilder):
                 return
 
         if not self.parent.selected_planet:
-            self.parent.set_selected_planet(sprite_groups.planets.sprites()[0])
+            if len(sprite_groups.planets.sprites()) > 0:
+                self.parent.set_selected_planet(sprite_groups.planets.sprites()[0])
 
         if not self._hidden or self._disabled:
             self.orbit_object_id_list = [_ for _ in range(len(sprite_groups.planets.sprites()))]

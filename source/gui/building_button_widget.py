@@ -1,10 +1,11 @@
 import pygame.display
 from source.gui.tool_tip import tooltip_generator
 from source.gui.panels.info_panel_components.info_panel_text_generator import info_panel_text_generator
-from source.game_play.building_factory import building_factory
+from source.factories.building_factory import building_factory
 from source.gui.lod import inside_screen
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
+from source.gui.widgets.widget_handler import WidgetHandler
 
 from source.multimedia_library.images import get_image
 from source.utils import global_params
@@ -111,6 +112,16 @@ class BuildingButtonWidget(WidgetBase):
         self.hide()
         self.hide_building_buttons()
 
+    def __delete__(self, instance):
+        for widget in self.widgets:
+            WidgetHandler.remove_widget(widget)
+            del widget
+
+        self.building_buttons = {}
+        self.buttons = {}
+        self.widgets = []
+        WidgetHandler.remove_widget(self)
+        del self
     @property
     def parent(self):
         return self._parent
@@ -180,6 +191,7 @@ class BuildingButtonWidget(WidgetBase):
     def show(self):
         """shows self and its widgets
         """
+
         if hasattr(self.parent, "explored"):
             if not self.parent.explored:
                 return

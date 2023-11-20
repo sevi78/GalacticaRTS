@@ -2,9 +2,15 @@ import os
 import sys
 
 import pygame
+
+from source.database.database_access import get_database_file_path
+from source.factories.planet_factory import planet_factory
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups
 from source.utils import global_params
 from source.database.saveload import write_file
+
+
+
 
 
 class GameLogic:
@@ -117,15 +123,10 @@ Fields:
 
             if self.ctrl_pressed and self.s_pressed:
                 print("self.save_planets()")
-                self.save_planets()
+                planet_factory.save_planets()
 
             if self.ctrl_pressed and self.l_pressed:
-                self.load_planets()
-
-    def save_planets(self):
-        # save_load each file
-        for planet in sprite_groups.planets:
-            planet.save_to_db()
+                planet_factory.load_planets()
 
     def save_objects(self, filename, list_):
         if not list_:
@@ -136,14 +137,11 @@ Fields:
 
         write_file(filename, data)
 
-    def load_planets(self):
-        # save_load each file
-        for planet in sprite_groups.planets:
-            planet.load_from_db()
 
-    def restart_game(self):
+
+    def restart_game__(self):
         self.selected_planet = None
-        self.game_objects = []
+        #self.game_objects = []
         self.explored_planets = []
 
         for planet in sprite_groups.planets:
@@ -169,3 +167,33 @@ Fields:
             spacing=spacing,
             parent=self,
             layer=9)
+
+    def restart_game(self):
+        planet_factory.delete_planets()
+        self.explored_planets = []
+        self.player = None
+        self.create_player()
+
+        planet_factory.create_planets_from_db(get_database_file_path())
+        self.selected_planet = sprite_groups.planets.sprites()[0]
+        #planet_factory.load_planets()
+
+
+        # size_x = 250
+        # size_y = 35
+        # spacing = 10
+        #
+        # self.building_panel.__init__(self.win,
+        #     x=self.world_width - size_x,
+        #     y=spacing,
+        #     width=size_x - spacing,
+        #     height=size_y,
+        #     isSubWidget=False,
+        #     size_x=size_x,
+        #     size_y=size_y,
+        #     spacing=spacing,
+        #     parent=self,
+        #     layer=9)
+
+
+

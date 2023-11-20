@@ -8,7 +8,7 @@ from source.gui.widgets.buttons.button import Button
 from source.gui.widgets.inputbox import InputBox
 from source.multimedia_library.images import get_image
 from source.database.saveload import write_file, load_file
-from source.game_play.building_factory import building_factory
+from source.factories.building_factory import building_factory
 
 ICON_SIZE = 25
 TEXT_HEIGHT = 30

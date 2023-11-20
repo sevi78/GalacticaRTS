@@ -2,12 +2,16 @@ import pygame
 
 from source.editors.editor_base.editor_base import EditorBase
 from source.editors.editor_base.editor_config import ARROW_SIZE, FONT_SIZE, TOP_SPACING, BUTTON_SIZE
+from source.gui.widgets.Icon import Icon
+from source.gui.widgets.buttons.button import Button
+from source.gui.widgets.buttons.image_button import ImageButton
 from source.gui.widgets.checkbox import Checkbox
-
 from source.gui.widgets.widget_handler import WidgetHandler
 from source.level.level_factory import level
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zoom_handler
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups, PanZoomLayeredUpdates
+from source.universe.celestial_objects.celestial_object import CelestialObject
+from source.universe.celestial_objects.celestial_object_static import CelestialObjectStatic
 from source.universe.universe_background import universe_factory
 from source.utils import global_params
 
@@ -31,7 +35,7 @@ class DebugEdit(EditorBase):
         # create widgets
         self.create_checkboxes()
         self.create_close_button()
-        self.create_save_button(lambda: print("no function"), "save , not working yet")
+        self.create_save_button(lambda: print("no function"), "save , not working yet", name="save_icon")
 
         # hide initially
         self.hide()
@@ -127,8 +131,7 @@ class DebugEdit(EditorBase):
             self.draw_frame()
             y = self.world_y + TOP_SPACING + self.text_spacing
             self.draw_text(self.world_x + self.text_spacing, y, 200, 30, "Debug:")
-
-            celestals = len(WidgetHandler.get_all_widgets())
+            all_widgets = WidgetHandler.get_all_widgets()
 
             y += self.text_spacing * 2
 
@@ -144,7 +147,9 @@ class DebugEdit(EditorBase):
                 f"pan_zoom.world_offset_y: {pan_zoom_handler.world_offset_y}")
             y += self.text_spacing * 2
 
-            self.draw_text(self.world_x + self.text_spacing, y, 200, 20, f"celestials: {celestals}")
+            celestials = [i for i in all_widgets if issubclass(i.__class__, (CelestialObject, CelestialObjectStatic))]
+
+            self.draw_text(self.world_x + self.text_spacing, y, 200, 20, f"celestials: {len(celestials)}")
             y += self.text_spacing
 
             self.draw_text(self.world_x + self.text_spacing, y, 200, 20,
@@ -156,8 +161,38 @@ class DebugEdit(EditorBase):
                     f"{key}: {len(value)} / visibles: {len([i for i in value if i._hidden == False])}")
                 y += self.text_spacing
             y += self.text_spacing
+
             for key, value in sprite_groups.__dict__.items():
                 if type(value) == PanZoomLayeredUpdates:
                     self.draw_text(self.world_x + self.text_spacing, y, 200, 20,
                         f"{key}: {len(value)} / visibles: {len([i for i in value if i._hidden == False])}")
                     y += self.text_spacing
+
+            self.draw_text(self.world_x + self.text_spacing, y, 200, 20,
+                f"WidgetHandler.widgets: {len(WidgetHandler.get_all_widgets())}")
+            y += self.text_spacing
+
+            building_button_widgets = [i for i in WidgetHandler.get_all_widgets() if i.name == "building button widget"]
+            self.draw_text(self.world_x + self.text_spacing, y, 200, 20,
+                f"WidgetHandler.building_button_widgets: {len(building_button_widgets)}")
+            y += self.text_spacing
+
+            image_button_widgets = [i for i in WidgetHandler.get_all_widgets() if isinstance(i, ImageButton)]
+            self.draw_text(self.world_x + self.text_spacing, y, 200, 20,
+                f"WidgetHandler.image_button_widgets: {len(image_button_widgets)}")
+            y += self.text_spacing
+
+            icons = [i for i in WidgetHandler.get_all_widgets() if isinstance(i, Icon)]
+            self.draw_text(self.world_x + self.text_spacing, y, 200, 20,
+                f"WidgetHandler.icons: {len(icons)}")
+            y += self.text_spacing
+
+            buttons = [i for i in WidgetHandler.get_all_widgets() if isinstance(i, Button)]
+            self.draw_text(self.world_x + self.text_spacing, y, 200, 20,
+                f"WidgetHandler.buttons: {len(buttons)}")
+            y += self.text_spacing
+
+            self.max_height = y + self.text_spacing
+
+            save_icon = [i for i in self.widgets if i.name == "save_icon"][0]
+            save_icon.screen_y = self.max_height

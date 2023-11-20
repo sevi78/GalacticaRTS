@@ -5,7 +5,7 @@ from pygame_widgets.mouse import MouseState
 from source.gui.lod import inside_screen
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.utils import global_params
-from source.game_play.building_factory import building_factory
+from source.factories.building_factory import building_factory
 
 
 class ImageButton(WidgetBase):

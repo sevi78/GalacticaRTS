@@ -8,6 +8,7 @@ import pygame
 
 from source.app.app_helper import AppHelper
 from source.app.ui_builder import UIBuilder
+from source.factories.planet_factory import planet_factory
 from source.game_play.cheat import Cheat
 from source.game_play.enemy_handler import enemy_handler
 from source.game_play.game_logic import GameLogic
@@ -91,6 +92,7 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
             if not key in self.__slots__:
                 temp.append(key)
 
+        self._selected_planet = None
         #print(f"pan_zoom_planet.__dict__: {self.__dict__} \n __slots__; {self.__slots__}\n tmp:{temp}")
 
     @property
@@ -151,6 +153,12 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
 
                 if event.key == pygame.K_r:
                     self.restart_game()
+
+                if event.key == pygame.K_d:
+                    planet_factory.delete_planets()
+
+
+
 
         # set fps
         pygame.display.set_caption(global_params.root + "   " + str(f"FPS: {self.clock.get_fps()}"))

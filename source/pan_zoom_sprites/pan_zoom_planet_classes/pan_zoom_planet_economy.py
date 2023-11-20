@@ -2,7 +2,7 @@ import pygame
 
 from source.app.app_helper import get_sum_up_to_n
 
-from source.game_play.building_factory import building_factory
+from source.factories.building_factory import building_factory
 from source.utils import global_params
 from source.multimedia_library.images import get_image
 

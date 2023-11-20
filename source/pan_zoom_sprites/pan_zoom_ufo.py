@@ -44,6 +44,7 @@ class PanZoomUfo(PanZoomGameObject, InteractionHandler):
         self.property = "ufo"
         self.attack_distance_raw = pan_zoom_ufo_config["attack_distance"]
         self.attack_distance = self.attack_distance_raw
+        self.emp_attacked = False
 
         # energy progress bar
         self.progress_bar = ProgressBar(
@@ -85,6 +86,9 @@ class PanZoomUfo(PanZoomGameObject, InteractionHandler):
             self.target_reached = False
 
     def flickering(self):
+        if self.emp_attacked:
+            return
+
         if not inside_screen(self.get_screen_position()):
             return
         r = random.randint(-3, 4)
@@ -105,6 +109,7 @@ class PanZoomUfo(PanZoomGameObject, InteractionHandler):
     def damage(self):
         if not self.target:
             return
+
 
         if self.target.property == "ship":
             self.target.energy -= self.gun_power
@@ -154,4 +159,7 @@ class PanZoomUfo(PanZoomGameObject, InteractionHandler):
             if self.progress_bar:
                 self.progress_bar.set_progressbar_position()
 
+        if self.emp_attacked:
+            pass
+            
         # self.debug_object()

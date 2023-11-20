@@ -2,7 +2,7 @@ import random
 import sys
 
 import pygame
-from source.game_play.building_factory import building_factory
+from source.factories.building_factory import building_factory
 from source.utils import global_params
 
 resources = ["water", "food", "energy", "technology", "minerals"]

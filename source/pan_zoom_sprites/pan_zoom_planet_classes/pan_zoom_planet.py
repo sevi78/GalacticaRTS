@@ -7,6 +7,7 @@ from source.database.database_access import create_connection, get_database_file
 from source.gui.building_button_widget import BuildingButtonWidget
 
 from source.gui.lod import inside_screen
+from source.gui.widgets.widget_handler import WidgetHandler
 from source.pan_zoom_sprites.pan_zoom_planet_classes.pan_zoom_planet_orbit_draw import draw_orbits
 from source.pan_zoom_sprites.pan_zoom_planet_classes.pan_zoom_planet_position_handler import \
     PanZoomPlanetPositionHandler
@@ -25,6 +26,7 @@ from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zo
 from source.utils import global_params
 from source.utils.colors import colors
 from source.multimedia_library.images import images, get_image
+from source.utils.garbage_handler import garbage_handler
 from source.utils.positioning import limit_positions, orbit
 
 
@@ -102,7 +104,7 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
         # self.planet_button_array = None
         # self.create_planet_button_array()
         self.create_overview_buttons()
-        self.building_button_widget = BuildingButtonWidget(win, 200, 100, 300, 200, self.parent, False, layer=4, parent=self, fixed_parent=True)
+        #self.building_button_widget = BuildingButtonWidget(win, 200, 100, 300, 200, self.parent, False, layer=4, parent=self, fixed_parent=True)
 
         # planet defence
         self.planet_defence = PanZoomPlanetDefence(self)
@@ -119,13 +121,38 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
     def __repr__(self):
         return self.name
 
-    def __delete__(self, instance):
-        print("planet.__delete__")
-        self.delete_building_buttons()
-        self.delete_resource_buttons()
+    def __delete__(self):
+        #garbage_handler.delete_all_references(self, self.building_button_widget)
+        garbage_handler.delete_all_references(self, self.planet_defence)
+        #self.building_button_widget.__delete__(self.building_button_widget)
+        #self.building_button_widget = None
+        self.overview_buttons = []
 
+        WidgetHandler.remove_widget(self.smiley_button)
+        WidgetHandler.remove_widget(self.thumpsup_button)
+        self.smiley_button = None
+        self.thumpsup_button = None
+        self.overview_buttons = []
+        self.gif = None
+        self.gif_frames = None
+        self.children = None
+        self.gif_handler = None
+
+
+        #del self.building_button_widget
+        del self.planet_defence
+
+
+
+        # self.building_button_widget.__delete__(self.building_button_widget)
+        #
+        # self.planet_defence.__delete__(self.planet_defence)
+        # garbage_handler.delete_all_references(self, self.planet_defence)
+
+        self.kill()
+        #garbage_handler.delete_all_references_from(self)
+        print("garbage_handler.get_all_references", garbage_handler.get_all_references(self))
         del self
-
     def select(self, value):
         self.selected = value
 
@@ -300,8 +327,11 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
         self.set_screen_position()
         self.update_pan_zoom_sprite()
         draw_orbits(self)
+        try:
+            global_params.app.tooltip_instance.reset_tooltip(self)
+        except:
+            pass
 
-        global_params.app.tooltip_instance.reset_tooltip(self)
         self.planet_defence.defend()
         self.set_planet_name()
 
@@ -332,5 +362,5 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
         if self.gif_handler:
             self.gif_handler.draw()
 
-        self.draw_selection_circle()
+        self.draw_check_image()
         self.draw_text()

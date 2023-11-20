@@ -2,7 +2,7 @@ import logging
 import pygame
 from pygame_widgets.util import drawText
 
-from source.game_play.building_factory import building_factory
+from source.factories.building_factory import building_factory
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.utils import global_params
@@ -79,9 +79,41 @@ class PlanetaryDefenceWidget(WidgetBase):
             include_text=True, layer=self.layer,
             onClick=lambda: building_factory.build("missile"))
 
+        self.energy_blast_icon = ImageButton(win=self.win,
+            x=self.get_screen_x() + BUTTON_SIZE*2 + 10,
+            y=self.surface_rect.y + self.spacing,
+            width=self.icon_size,
+            height=self.icon_size,
+            isSubWidget=False,
+            parent=self,
+            image=pygame.transform.scale(get_image("energy blast.png"), (BUTTON_SIZE, BUTTON_SIZE)),
+            tooltip="build energy blaster",
+            info_text=info_panel_text_generator.create_info_panel_planetary_defence_text("energy blast"),
+            frame_color=self.frame_color,
+            moveable=False,
+            include_text=True, layer=self.layer,
+            onClick=lambda: building_factory.build("energy blast"))
+
+        self.electro_magnetic_impulse_icon = ImageButton(win=self.win,
+            x=self.get_screen_x() + BUTTON_SIZE*3 + 10,
+            y=self.surface_rect.y + self.spacing,
+            width=self.icon_size,
+            height=self.icon_size,
+            isSubWidget=False,
+            parent=self,
+            image=pygame.transform.scale(get_image("electro magnetic impulse.png"), (BUTTON_SIZE, BUTTON_SIZE)),
+            tooltip="build electro magnetic impulse(E.M.P.)",
+            info_text=info_panel_text_generator.create_info_panel_planetary_defence_text("electro magnetic impulse"),
+            frame_color=self.frame_color,
+            moveable=False,
+            include_text=True, layer=self.layer,
+            onClick=lambda: building_factory.build("electro magnetic impulse"))
+
         self.parent.widgets.append(self)
         self.buttons.append(self.cannon_icon)
         self.buttons.append(self.missile_launcher_icon)
+        self.buttons.append(self.energy_blast_icon)
+        self.buttons.append(self.electro_magnetic_impulse_icon)
 
     def set_visible(self):
         if not self.parent.parent.selected_planet:
@@ -143,9 +175,11 @@ class PlanetaryDefenceWidget(WidgetBase):
              20), self.font, "center")
 
     def _draw_buttons(self):
-        self.cannon_icon.set_position((self.surface_rect.x + self.spacing * 3, self.surface_rect.y + self.spacing + 20))
-        self.missile_launcher_icon.set_position((
-            self.surface_rect.x + BUTTON_SIZE + 10 + self.spacing * 3, self.surface_rect.y + self.spacing + 20))
+        for i in self.buttons:
+            i.set_position((self.surface_rect.x + BUTTON_SIZE * self.buttons.index(i) + self.spacing * 3, self.surface_rect.y + self.spacing + 20))
+        # self.cannon_icon.set_position((self.surface_rect.x + self.spacing * 3, self.surface_rect.y + self.spacing + 20))
+        # self.missile_launcher_icon.set_position((
+        #     self.surface_rect.x + BUTTON_SIZE + 10 + self.spacing * 3, self.surface_rect.y + self.spacing + 20))
 
 
 # Logging

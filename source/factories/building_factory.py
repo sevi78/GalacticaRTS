@@ -87,6 +87,9 @@ class BuildingFactoryJsonDictReader:
                     if item == "technology_upgrade":
                         return value
 
+    def get_defence_unit_names(self) -> list:
+        return self.json_dict["planetary_defence"].keys()
+
     # def insert_technology_upgrade(self):
     #     for category in self.json_dict.values():
     #         for building in category.values():
@@ -171,7 +174,7 @@ class BuildingFactory(BuildingFactoryJsonDictReader):
             key=widget_key,
             value=widget_value,
             planet=planet,
-            tooltip="building widdget", layer=4, building_production_time=self.get_progress_time_from_buildings_json(widget_key)
+            tooltip="building widdget", layer=4, building_production_time=self.get_progress_time_from_buildings_json(widget_name)
             )
 
         # add building widget to building cue to make shure it can be build only if building_cue is < building_slots_amount

@@ -4,6 +4,7 @@ import pygame
 from pygame_widgets.mouse import Mouse, MouseState
 
 from source.editors.editor_base.editor_base import EditorBase
+from source.factories.planet_factory import planet_factory
 from source.game_play.game_events import GameEvent, Deal, resources
 from source.gui.widgets.buttons.button import Button
 from source.interfaces.interface import InterfaceData
@@ -240,7 +241,7 @@ class EventPanel(TextWrap, EditorBase, InterfaceData):
 
         # dirty hack to make shure the planets get loaded correctly
         if len(self.obsolete_events) == 2:
-            self.parent.load_planets()
+            planet_factory.load_planets()
             print("""event_panel.close_event: dirty hack to make shure the planets get loaded correctly:
                      if len(self.obsolete_events) == 2:
                             self.parent.load_planets()""")

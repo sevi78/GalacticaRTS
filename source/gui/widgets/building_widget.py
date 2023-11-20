@@ -65,10 +65,8 @@ class BuildingWidget(WidgetBase):
         self.cue_id = len(global_params.app.building_widget_list)
         self.spacing = 5
         self.dynamic_y = height - self.spacing - self.get_screen_height() - self.get_screen_height() * self.cue_id
-
         self.font_size = kwargs.get("fontsize", 15)
         self.font = pygame.font.SysFont(kwargs.get("fontname", global_params.font_name), kwargs.get("fontsize", 15))
-
         self.spacing = kwargs.get("spacing", 15)
         self.image = pygame.transform.scale(get_image(self.name + "_25x25.png"), (25, 25))
         self.progress_time = kwargs.get("building_production_time")
@@ -137,7 +135,6 @@ class BuildingWidget(WidgetBase):
 
         # append to planets building list
         self.planet.buildings.append(self.name)
-
         self.planet.set_technology_upgrades(self.name)
 
         # set new value to planets production

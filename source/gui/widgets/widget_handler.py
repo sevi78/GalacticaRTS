@@ -49,31 +49,6 @@ class WidgetHandler:
     """
 
     @staticmethod
-    def main__(events: [Event]) -> None:
-        # WidgetHandler.set_visible(events)
-        # 0:[...]
-        # print (WidgetHandler.layers.items())
-        for key, widgetlist in WidgetHandler.layers.items():
-
-            # get widget
-            for widget in widgetlist:
-                layer = widget.layer
-                # if not widget.alive():
-                #     WidgetHandler.remove_widget(widget)
-
-                # if no layer defined, use layer 10
-                if str(layer) == "None":
-                    layer = 10
-
-                # if layer is on
-                if WidgetHandler.layer_switch[str(layer)] == 1:
-                    widget.draw()
-
-                    if widget.isSubWidget:
-                        if hasattr(widget, "listen"):
-                            widget.listen(events)
-
-    @staticmethod
     def main(events: [Event]) -> None:
         # WidgetHandler.set_visible(events)
         # 0:[...]
@@ -107,6 +82,7 @@ class WidgetHandler:
             for widget in widgetlist:
                 if widget == obj:
                     widgetlist.remove(widget)
+
 
     def set_visible(events):
         numbers = [49, 50, 51, 52, 53, 54, 55, 56, 57, 48]

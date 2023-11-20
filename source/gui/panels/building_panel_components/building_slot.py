@@ -1,5 +1,6 @@
 import pygame
 
+from source.gui.event_text import event_text
 from source.utils import global_params
 
 

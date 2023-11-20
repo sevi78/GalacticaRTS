@@ -1,6 +1,5 @@
 import pygame
 
-from source.game_play.building_factory import building_factory
 from source.pan_zoom_sprites import attack
 from source.game_play import enemy_handler
 from source.utils import global_params

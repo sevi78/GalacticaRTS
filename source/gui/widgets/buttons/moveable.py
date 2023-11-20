@@ -43,13 +43,19 @@ class Moveable:
         why the hell: spacing_x = global_params.app.building_panel.spacing_x, why refer to building pane ???
         """
         # set planet_button_array to panel
-        if self.ui_parent:
-            if global_params.planet_button_display_on_panel:
-                if self.parent == global_params.app.selected_planet:
-                    x = global_params.app.building_panel.surface_rect.x
-                    y = global_params.app.building_panel.max_height + self.get_screen_height() * 6
-                    spacing_x = global_params.app.building_panel.spacing_x
-                    self.set_position((x - self.ui_parent_offset_x + spacing_x / 2, y - self.ui_parent_offset_y))
+        if hasattr(self, "ui_parent"):
+            if self.ui_parent:
+                if global_params.planet_button_display_on_panel:
+                    if self.parent == global_params.app.selected_planet:
+                        x = global_params.app.building_panel.surface_rect.x
+                        y = global_params.app.building_panel.max_height + self.get_screen_height() * 6
+                        spacing_x = global_params.app.building_panel.spacing_x
+                        self.set_position((x - self.ui_parent_offset_x + spacing_x / 2, y - self.ui_parent_offset_y))
+
+        else:
+            pass
+            #print ("Button.movable.update_position: no ui_parent!!", self, self.parent, self.name)
+
             #     else:
             #         self.set_pos_centered_on_top()
             #

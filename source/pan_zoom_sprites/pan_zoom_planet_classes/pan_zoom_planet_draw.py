@@ -36,6 +36,12 @@ class PanZoomPlanetDraw:
             (self.rect.height / 2) + 4, int(6 * panzoom.zoom))
 
     def draw_check_image(self):
+        if not self.parent.selected_planet == self and not self.selected:
+            return
+
+        if not inside_screen(self.get_position()):
+            return
+
         rect = self.check_image.get_rect()
         rect.x, rect.y = self.get_screen_x(), self.get_screen_y()
         self.win.blit(self.check_image, rect)
@@ -81,7 +87,7 @@ class PanZoomPlanetDraw:
         # Blit the pulse surface onto the window
         self.win.blit(pulse_surface, (self.center[0] - current_radius, self.center[1] - current_radius))
 
-        self.draw_check_image()
+
 
     def draw_image(self):
         self.win.blit(self.image, self.rect)

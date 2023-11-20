@@ -1,6 +1,6 @@
 import pygame
 from pygame_widgets.util import drawText
-from source.game_play.building_factory import building_factory
+from source.factories.building_factory import building_factory
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.utils import global_params

@@ -139,7 +139,8 @@ class EditorBase(WidgetBase):
         global_params.edit_mode = not self._hidden
         self.hide_other_editors()
 
-    def create_save_button(self, function, tooltip):
+    def create_save_button(self, function, tooltip, **kwargs):
+        name = kwargs.get("name", "no_name")
         button_size = 32
         save_icon = ImageButton(win=self.win,
             x=self.get_screen_x() + self.get_screen_width() / 2 - button_size,
@@ -156,6 +157,7 @@ class EditorBase(WidgetBase):
             include_text=True,
             layer=self.layer,
             onClick=function,
+            name = name
             )
         save_icon.hide()
 

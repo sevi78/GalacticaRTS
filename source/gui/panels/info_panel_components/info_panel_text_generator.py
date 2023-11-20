@@ -1,6 +1,6 @@
 from source.database.database_access import get_dict_from_database
 from source.database.saveload import load_file
-from source.game_play.building_factory import building_factory
+from source.factories.building_factory import building_factory
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups
 
 
