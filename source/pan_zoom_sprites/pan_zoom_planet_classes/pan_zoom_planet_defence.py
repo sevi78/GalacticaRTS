@@ -69,7 +69,7 @@ class PanZoomPlanetDefence:
                         color=pygame.color.THECOLORS["red"],
                         start_pos=self.parent.rect.center,
                         end_pos=hit_obj.rect.center,
-                        num_segments=14)
+                        num_segments=24)
 
     def defend(self):
         defence_units = self.get_defence_units()
