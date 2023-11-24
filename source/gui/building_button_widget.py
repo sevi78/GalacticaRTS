@@ -13,7 +13,7 @@ from source.utils.colors import colors
 from source.utils.global_params import ui_rounded_corner_small_thickness, ui_rounded_corner_radius_small
 
 ICON_SIZE = 25
-
+IMAGE_RAW_SIZE = 125
 
 class BuildingButtonWidget(WidgetBase):
     """
@@ -133,10 +133,28 @@ class BuildingButtonWidget(WidgetBase):
 
     def create_button(self, x, y, width, height, image, tooltip, key, info_text, name, **kwargs):
         on_click = kwargs.get("on_click", lambda: print("no_function"))
-        button = ImageButton(win=self.win, x=x, y=y, width=width, height=height, isSubWidget=False, parent=self,
-            image=pygame.transform.scale(get_image(image), (ICON_SIZE, ICON_SIZE)), tooltip=tooltip,
-            frame_color=self.frame_color, moveable=False, include_text=True, layer=self.layer, key=key,
-            info_text=info_text, name=name, text=name, textColours=(0, 0, 0), font_size=0, onClick=on_click)
+        button = ImageButton(
+            win=self.win,
+            x=x,
+            y=y,
+            width=width,
+            height=height,
+            isSubWidget=False,
+            parent=self,
+            image=pygame.transform.scale(get_image(image),(ICON_SIZE, ICON_SIZE)),
+            image_raw= get_image(image),
+            tooltip=tooltip,
+            frame_color=self.frame_color,
+            moveable=False,
+            include_text=True,
+            layer=self.layer,
+            key=key,
+            info_text=info_text,
+            name=name,
+            text=name,
+            textColours=(0, 0, 0),
+            font_size=0,
+            onClick=on_click)
 
         return button
 
@@ -161,8 +179,15 @@ class BuildingButtonWidget(WidgetBase):
             for building in building_factory.json_dict[resource]:
                 info_text = info_panel_text_generator.create_info_panel_building_text(building)
                 building_button = self.create_button(
-                    x, y + self.icon_size, self.icon_size, self.icon_size, building + '_25x25.png',
-                    tooltip_generator.create_building_tooltip(building), resource, info_text, building
+                    x,
+                    y + self.icon_size,
+                    self.icon_size,
+                    self.icon_size,
+                    building + '_25x25.png',
+                    tooltip_generator.create_building_tooltip(building),
+                    resource,
+                    info_text,
+                    building
                     )
 
                 resource_button.children.append(building_button)

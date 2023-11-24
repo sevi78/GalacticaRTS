@@ -127,10 +127,15 @@ class BuildingFactory(BuildingFactoryJsonDictReader):
             sounds.play_sound("bleep", channel=7)
             return
 
-        if len(planet.buildings) + planet.building_cue >= planet.buildings_max:
-            event_text.text = "you have reached the maximum(" + str(planet.buildings_max) + ") of buildings that can be build on " + planet.name + "!"
-            sounds.play_sound("bleep", channel=7)
-            return
+
+        defence_units = self.get_defence_unit_names()
+        civil_buildings = [i for i in planet.buildings if not i in defence_units]
+
+        if len(civil_buildings) + planet.building_cue >= planet.buildings_max:
+            if not building in defence_units:
+                event_text.text = "you have reached the maximum(" + str(planet.buildings_max) + ") of buildings that can be build on " + planet.name + "!"
+                sounds.play_sound("bleep", channel=7)
+                return
 
         check = self.build_payment(building)
 

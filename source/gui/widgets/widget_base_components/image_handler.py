@@ -5,7 +5,7 @@ class ImageHandler:
 
     def __init__(self, **kwargs):
         self.image = kwargs.get("image", None)
-        self.image_raw = kwargs.get("image", None)
+        self.image_raw = kwargs.get("image_raw", self.image)
         self.rect = None
         self._image_name_small = kwargs.get("image_name_small")
         self.image_name_big = kwargs.get("image_name_big")

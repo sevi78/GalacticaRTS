@@ -3,6 +3,7 @@ import random
 import pygame
 from pygame import Vector2
 
+from source.draw import scope
 from source.gui.event_text import event_text
 from source.gui.lod import inside_screen
 from source.multimedia_library.sounds import sounds
@@ -386,7 +387,7 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         self.listen()
         self.reposition_buttons()
 
-        self.draw_scope()
+        scope.draw_scope(self)
         self.set_distances()
 
         self.set_info_text()

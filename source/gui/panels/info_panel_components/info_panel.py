@@ -7,7 +7,7 @@ from source.utils.global_params import ui_rounded_corner_small_thickness
 from source.gui.panels.info_panel_components.info_panel_text_generator import info_panel_text_generator
 from source.utils.text_wrap import TextWrap
 
-PLANET_IMAGE_SIZE = 100
+PLANET_IMAGE_SIZE = 125
 TOGGLESIZE = 20
 
 
@@ -73,6 +73,7 @@ class InfoPanel(WidgetBase, TextWrap):
         self.surface_rect = pygame.draw.rect(self.win, self.frame_color, pygame.Rect(self.world_x, self.world_y, self.world_width,
             self.world_height + 10), 1, int(global_params.ui_rounded_corner_radius_small))
         self.planet_image = None
+        self.planet_image_size = (PLANET_IMAGE_SIZE, PLANET_IMAGE_SIZE)
         self.planet_rect = None
         self.rect_filled = pygame.Surface((self.world_width, self.world_height))
 
@@ -90,7 +91,7 @@ class InfoPanel(WidgetBase, TextWrap):
         self.wrap_text(self.text, self.pos, self.size, self.font, self.color)
         self.set_size_from_text()
         if self.planet_image:
-            self.set_planet_image(self.planet_image)
+            self.set_planet_image(self.planet_image,  size=self.planet_image_size, align="topright")
         self.reposition()
 
     def set_text(self, text):
@@ -115,8 +116,7 @@ class InfoPanel(WidgetBase, TextWrap):
         if size:
             self.planet_image = pygame.transform.scale(planet_image, size)
         else:
-            self.planet_image = pygame.transform.scale(planet_image, (
-                PLANET_IMAGE_SIZE, PLANET_IMAGE_SIZE))
+            self.planet_image = pygame.transform.scale(planet_image, self.planet_image_size)
 
         self.planet_rect = self.planet_image.get_rect()
 

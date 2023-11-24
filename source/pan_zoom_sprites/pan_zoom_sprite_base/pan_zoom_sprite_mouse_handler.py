@@ -1,6 +1,7 @@
 import pygame
 
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zoom_handler
+from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups
 from source.utils import global_params
 from source.utils.colors import colors
 
@@ -49,3 +50,22 @@ class PanZoomMouseHandler:
         panzoom = pan_zoom_handler
         pygame.draw.circle(self.win, self.frame_color, self.rect.center, (
                                                                                  self.rect.height / 2) + 4, int(6 * panzoom.zoom))
+
+    def get_hit_object(self):
+        for obj in sprite_groups.planets:
+            if obj.rect.collidepoint(pygame.mouse.get_pos()):
+                return obj
+
+        for obj in sprite_groups.ships:
+            if obj.rect.collidepoint(pygame.mouse.get_pos()):
+                return obj
+
+        for obj in sprite_groups.ufos:
+            if obj.rect.collidepoint(pygame.mouse.get_pos()):
+                return obj
+
+        for obj in sprite_groups.collectable_items:
+            if obj.rect.collidepoint(pygame.mouse.get_pos()):
+                return obj
+
+        return None

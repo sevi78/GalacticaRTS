@@ -1,14 +1,20 @@
 import time
 
+import pygame
+
+from source.draw import scope
 from source.draw.pulsating_circle import draw_electromagnetic_impulse
+from source.draw.zigzag_line import draw_zigzag_line
 from source.factories.building_factory import building_factory
 from source.pan_zoom_sprites.attack import attack, launch_missile
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups
+from source.utils import global_params
 from source.utils.positioning import get_distance
 
 MISSILE_LAUNCH_INTERVAL = 2
 EMP_PULSE_INTERVAL = 7
 EMP_PULSE_TIME = 1
+ENERGY_BLAST_POWER = 10
 
 
 class PanZoomPlanetDefence:
@@ -25,9 +31,10 @@ class PanZoomPlanetDefence:
         self.emp_active = False
 
     def __delete__(self, instance):
-        print ("PanZoomPlanetDefence.__delete__: ")
+        print("PanZoomPlanetDefence.__delete__: ")
         self.parent = None
         del self
+
     def get_defence_units(self):
         return [i for i in self.parent.buildings if i in self.defence_units_names]
 
@@ -41,7 +48,7 @@ class PanZoomPlanetDefence:
                 self.parent.rect.center,
                 15,
                 self.attack_distance,
-                1, pulse_time*1000, circles=5)
+                1, pulse_time * 1000, circles=5)
 
             ufo.emp_attacked = True
 
@@ -49,12 +56,24 @@ class PanZoomPlanetDefence:
             self.emp_pulse_time = time.time()
             self.emp_active = False
 
-
+    def activate_energy_blast(self):
+        scope.draw_scope(self.parent)
+        if pygame.mouse.get_pressed()[2]:
+            hit_obj = self.parent.get_hit_object()
+            if hit_obj:
+                if hit_obj in sprite_groups.ufos.sprites():
+                    hit_obj.energy -= ENERGY_BLAST_POWER
+                    global_params.app.player.energy -= ENERGY_BLAST_POWER
+                    draw_zigzag_line(
+                        surface=self.parent.win,
+                        color=pygame.color.THECOLORS["red"],
+                        start_pos=self.parent.rect.center,
+                        end_pos=hit_obj.rect.center,
+                        num_segments=14)
 
     def defend(self):
         defence_units = self.get_defence_units()
         self.attack_distance = self.attack_distance_raw * self.parent.get_zoom()
-
         if len(defence_units) == 0:
             return
 
@@ -72,7 +91,8 @@ class PanZoomPlanetDefence:
                         self.last_missile_launch = time.time()
 
                 if "energy blast" in defence_units:
-                    pass
+                    if self.parent == global_params.app.selected_planet:
+                        self.activate_energy_blast()
 
                 if "electro magnetic impulse" in defence_units:
                     pass

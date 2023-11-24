@@ -55,21 +55,4 @@ class PanZoomShipInteraction:
             sounds.play_sound("click", channel=7)
             global_params.app.ship = self
 
-    def get_hit_object(self):
-        for obj in sprite_groups.planets:
-            if obj.rect.collidepoint(pygame.mouse.get_pos()):
-                return obj
 
-        for obj in sprite_groups.ships:
-            if obj.rect.collidepoint(pygame.mouse.get_pos()):
-                return obj
-
-        for obj in sprite_groups.ufos:
-            if obj.rect.collidepoint(pygame.mouse.get_pos()):
-                return obj
-
-        for obj in sprite_groups.collectable_items:
-            if obj.rect.collidepoint(pygame.mouse.get_pos()):
-                return obj
-
-        return None

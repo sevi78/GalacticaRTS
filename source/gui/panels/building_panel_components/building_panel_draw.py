@@ -1,6 +1,7 @@
 import pygame
 from pygame_widgets.util import drawText
 
+from source.factories.building_factory import building_factory
 from source.multimedia_library.images import images, pictures_path, get_image
 from source.utils.text_formatter import format_number
 
@@ -63,7 +64,10 @@ class BuildingPanelDraw:
         self.world_y += self.spacing * 3
 
         # buildings:_______________________________________________________________________________________________
-        drawText(self.win, "buildings:  " + str(len(self.parent.selected_planet.buildings)) + "/" + str(int(self.parent.selected_planet.buildings_max)), self.frame_color, (
+        defence_units = building_factory.get_defence_unit_names()
+        civil_buildings = [i for i in self.parent.selected_planet.buildings if not i in defence_units]
+
+        drawText(self.win, "buildings:  " + str(len(civil_buildings)) + "/" + str(int(self.parent.selected_planet.buildings_max)), self.frame_color, (
             x + self.spacing_x, self.world_y, self.get_screen_width(), 20), self.font, "left")
         self.world_y += self.spacing * 3
 
