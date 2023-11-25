@@ -84,8 +84,6 @@ class UIBuilder(SceneBuilder):
         # Info_panel
         self.info_panel = InfoPanel(self.win, x=0, y=self.settings_panel.surface_rect.bottom, width=240, height=300, isSubWidget=False, parent=self.resource_panel, layer=9)
 
-
-
         # build menu
         # self.build_menu = None
         # self.create_build_menu()
@@ -244,4 +242,4 @@ class UIBuilder(SceneBuilder):
             parent=self,
             layer=9,
             icon_size=icon_size,
-            anchor_right=self.advanced_settings_panel.get_screen_x(), app = self)
+            anchor_right=self.advanced_settings_panel.get_screen_x(), app=self)

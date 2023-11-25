@@ -18,7 +18,6 @@ from source.interaction.mouse import Mouse
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zoom_handler
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups
 
-
 ECONOMY_UPDATE_INTERVAL = 2.0
 
 
@@ -206,6 +205,7 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
 
             # pygame update
             pygame.display.update()
+
 
 def main():
     pygame.init()

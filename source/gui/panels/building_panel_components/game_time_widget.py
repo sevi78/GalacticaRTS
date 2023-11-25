@@ -139,7 +139,6 @@ class GameTime(WidgetBase):
                                        self.clock_icon.get_screen_height() - self.year_text.get_height() + 6))
         self.time_factor = self.clock_slider.getValue()
 
-
     def draw_frame(self):
         # frame
         self.surface = pygame.surface.Surface((self.surface_rect.width, self.surface_rect.height))

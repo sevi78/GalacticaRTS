@@ -87,7 +87,8 @@ class BoxSelection:
             rect_pos = (min(self.start_pos[0], self.end_pos[0]), min(self.start_pos[1], self.end_pos[1]))
             rect_size = (abs(self.end_pos[0] - self.start_pos[0]), abs(self.end_pos[1] - self.start_pos[1]))
             pygame.draw.rect(self.window, self.color, (
-                rect_pos, rect_size), int(ui_rounded_corner_small_thickness), int(global_params.ui_rounded_corner_radius_small))
+                rect_pos,
+                rect_size), int(ui_rounded_corner_small_thickness), int(global_params.ui_rounded_corner_radius_small))
 
         # self.draw_fancy_lines()
 

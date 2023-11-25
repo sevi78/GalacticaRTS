@@ -1,8 +1,6 @@
 import copy
 
-
 import pygame
-
 
 from source.multimedia_library.images import get_image, get_gif_frames, get_gif
 from source.multimedia_library.sounds import sounds

@@ -118,7 +118,7 @@ class EditorBase(WidgetBase):
     def draw_frame(self):
         height = self.max_height
         self.frame = pygame.transform.scale(self.frame, (self.get_screen_width(), height))
-        self.frame.fill((0,0,0))
+        self.frame.fill((0, 0, 0))
         rect = pygame.draw.rect(self.frame, self.frame_color, self.frame.get_rect(), int(ui_rounded_corner_big_thickness), int(global_params.ui_rounded_corner_radius_big))
         rect.x = self.world_x
         rect.y = self.world_y + 60
@@ -157,7 +157,7 @@ class EditorBase(WidgetBase):
             include_text=True,
             layer=self.layer,
             onClick=function,
-            name = name
+            name=name
             )
         save_icon.hide()
 

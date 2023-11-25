@@ -79,7 +79,7 @@ class PlanetaryDefenceWidget(WidgetBase):
             onClick=lambda: building_factory.build("missile"))
 
         self.energy_blast_icon = ImageButton(win=self.win,
-            x=self.get_screen_x() + BUTTON_SIZE*2 + 10,
+            x=self.get_screen_x() + BUTTON_SIZE * 2 + 10,
             y=self.surface_rect.y + self.spacing,
             width=self.icon_size,
             height=self.icon_size,
@@ -94,7 +94,7 @@ class PlanetaryDefenceWidget(WidgetBase):
             onClick=lambda: building_factory.build("energy blast"))
 
         self.electro_magnetic_impulse_icon = ImageButton(win=self.win,
-            x=self.get_screen_x() + BUTTON_SIZE*3 + 10,
+            x=self.get_screen_x() + BUTTON_SIZE * 3 + 10,
             y=self.surface_rect.y + self.spacing,
             width=self.icon_size,
             height=self.icon_size,
@@ -169,8 +169,8 @@ class PlanetaryDefenceWidget(WidgetBase):
 
     def _draw_buttons(self):
         for i in self.buttons:
-            i.set_position((self.surface_rect.x + BUTTON_SIZE * self.buttons.index(i) + self.spacing * 3, self.surface_rect.y + self.spacing + 20))
-
+            i.set_position((self.surface_rect.x + BUTTON_SIZE * self.buttons.index(i) + self.spacing * 3,
+                            self.surface_rect.y + self.spacing + 20))
 
 
 # Logging

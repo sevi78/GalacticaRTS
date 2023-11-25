@@ -38,9 +38,6 @@ class GarbageHandler:
         #         if obj in value:
         #             value.remove(obj)
 
-
-
-
     def get_all_references__(self, obj):
         # do something with my_object
         ref_count = ctypes.c_long.from_address(id(obj))

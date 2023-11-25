@@ -169,8 +169,6 @@ def main(test: bool = False, **kwargs) -> None:
         value_format=lambda x: str(float(x)),
         align=pygame_menu.locals.ALIGN_RIGHT)
 
-
-
     # layers =[('0',[0] ),
     #            ('1'[1],),
     #            ('2',[2]),

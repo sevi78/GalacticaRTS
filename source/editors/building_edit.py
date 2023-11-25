@@ -87,7 +87,7 @@ class BuildingEdit(EditorBase):
 
         for key, value in self.building_dict.items():
             input_box_key = InputBox(self.win, x, y, input_box_key_width, text_height,
-                text=key, parent=self, key=key, disabled=True, text_input_type=str, draw_frame= False)
+                text=key, parent=self, key=key, disabled=True, text_input_type=str, draw_frame=False)
             self.input_boxes_key.append(input_box_key)
 
             disabled = False
@@ -157,7 +157,7 @@ class BuildingEdit(EditorBase):
         except (ValueError, SyntaxError):
             # If the value is not a valid Python expression, keep it as a string
             pass
-            #print(f"get_input_box_values:{ValueError},{SyntaxError}  unable to eval string: {value}")
+            # print(f"get_input_box_values:{ValueError},{SyntaxError}  unable to eval string: {value}")
 
         # Set the value into the dictionary
         self.building_dict[key] = value

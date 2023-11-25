@@ -15,7 +15,7 @@ def draw_pulsating_circle(win, color_: tuple[3], center, min_radius, max_radius,
 
     # Draw the pulse circle on the surface
     dim_color = (color_[0], color_[1], color_[2], current_brightness)
-    pygame.draw.circle(pulse_surface, dim_color,(current_radius, current_radius), current_radius,width)
+    pygame.draw.circle(pulse_surface, dim_color, (current_radius, current_radius), current_radius, width)
 
     # Blit the pulse surface onto the window
     win.blit(pulse_surface, (center[0] - current_radius, center[1] - current_radius))
@@ -79,5 +79,4 @@ def gradient_color(colors, progress):
         int(colors[index][0] * (1 - color_progress) + colors[index + 1][0] * color_progress),
         int(colors[index][1] * (1 - color_progress) + colors[index + 1][1] * color_progress),
         int(colors[index][2] * (1 - color_progress) + colors[index + 1][2] * color_progress),
-    )
-
+        )

@@ -1,7 +1,6 @@
 import random
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_game_object import PanZoomGameObject
 
-
 MISSILE_SPEED = 1.0
 MISSILE_POWER = 50
 MISSILE_RANGE = 3000
@@ -56,6 +55,7 @@ class PanZoomMissile_try(PanZoomGameObject):
     world_y: The y-coordinate of the missile in the game world.
     target_reached: A boolean indicating whether the missile has reached its target.
     """
+
     def __init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs):
         PanZoomGameObject.__init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs)
         self.speed = random.uniform(MISSILE_SPEED / 2, MISSILE_SPEED)

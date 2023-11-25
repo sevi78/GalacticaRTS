@@ -96,7 +96,7 @@ class PanZoomUfo(PanZoomGameObject, InteractionHandler):
         startpos = self.rect.center
         endpos = self.target.rect.center
         colors = [pygame.color.THECOLORS["blue"], pygame.color.THECOLORS["purple"], pygame.color.THECOLORS["pink"]]
-        
+
         if r == 3:
             pygame.draw.line(surface=self.win, start_pos=startpos, end_pos=endpos,
                 color=random.choice(colors), width=r2)
@@ -109,7 +109,6 @@ class PanZoomUfo(PanZoomGameObject, InteractionHandler):
     def damage(self):
         if not self.target:
             return
-
 
         if self.target.property == "ship":
             self.target.energy -= self.gun_power
@@ -161,5 +160,5 @@ class PanZoomUfo(PanZoomGameObject, InteractionHandler):
 
         if self.emp_attacked:
             pass
-            
+
         # self.debug_object()

@@ -3,7 +3,9 @@ import pygame.transform
 
 from source.database.saveload import load_file
 from source.utils.global_params import win, WIDTH, HEIGHT
+
 settings = load_file("settings.json")
+
 
 # Zoom with mousewheel, pan with left mouse button
 

@@ -15,6 +15,7 @@ from source.utils.global_params import ui_rounded_corner_small_thickness, ui_rou
 ICON_SIZE = 25
 IMAGE_RAW_SIZE = 125
 
+
 class BuildingButtonWidget(WidgetBase):
     """
     Summary:
@@ -121,6 +122,7 @@ class BuildingButtonWidget(WidgetBase):
         self.widgets = []
         WidgetHandler.remove_widget(self)
         del self
+
     @property
     def parent(self):
         return self._parent
@@ -140,8 +142,8 @@ class BuildingButtonWidget(WidgetBase):
             height=height,
             isSubWidget=False,
             parent=self,
-            image=pygame.transform.scale(get_image(image),(ICON_SIZE, ICON_SIZE)),
-            image_raw= get_image(image),
+            image=pygame.transform.scale(get_image(image), (ICON_SIZE, ICON_SIZE)),
+            image_raw=get_image(image),
             tooltip=tooltip,
             frame_color=self.frame_color,
             moveable=False,
@@ -310,16 +312,15 @@ class BuildingButtonWidget(WidgetBase):
         self.rect.width = self.max_width
         self.rect.height = self.max_height
         self.surface = pygame.Surface((self.rect.width, self.rect.height), pygame.SRCALPHA)
-        self.surface.fill((0,0,0, global_params.ui_panel_alpha))
+        self.surface.fill((0, 0, 0, global_params.ui_panel_alpha))
         pygame.draw.rect(self.surface, self.frame_color, self.surface.get_rect(), int(ui_rounded_corner_small_thickness), self.corner_radius)
 
-        #print (len(self.active_resource_buttons))
+        # print (len(self.active_resource_buttons))
         if len(self.active_resource_buttons) > 0:
             self.win.blit(self.surface, self.rect)
             self.set_frame_height()
         else:
             self.max_height = 0
-
 
     def draw(self):
         if not inside_screen(self.rect.center):

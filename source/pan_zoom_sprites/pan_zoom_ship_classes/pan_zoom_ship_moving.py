@@ -192,7 +192,7 @@ class PanZoomShipMoving:
 
         if self.energy <= 0 and self.move_stop > 4000:
             event_text.text = "how about this: we sacrifice john the cook, i mean do we really need him?" \
-                                     " put him into the plasma reactor of our spaceship and get some energy out of him !"
+                              " put him into the plasma reactor of our spaceship and get some energy out of him !"
             self.move_stop += 1
 
         if self.energy <= 0 and self.move_stop > 5000:

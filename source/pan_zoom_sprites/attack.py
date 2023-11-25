@@ -46,10 +46,10 @@ def launch_missile(attacker, defender):
     app = global_params.app
     screen = app.win
     x, y = pan_zoom_handler.screen_2_world(attacker.rect.centerx, attacker.rect.centery)
-    rx = int(attacker.rect.width/4)
-    ry = int(attacker.rect.height/4)
-    x += random.randint(-rx,rx)
-    y += random.randint(-ry,ry)
+    rx = int(attacker.rect.width / 4)
+    ry = int(attacker.rect.height / 4)
+    x += random.randint(-rx, rx)
+    y += random.randint(-ry, ry)
 
     if defender.energy - MISSILE_POWER >= 0:
         missile = PanZoomMissile(
@@ -68,4 +68,4 @@ def launch_missile(attacker, defender):
             layer=9,
             debug=False,
             target=defender)
-        #missile.set_target(defender)
+        # missile.set_target(defender)

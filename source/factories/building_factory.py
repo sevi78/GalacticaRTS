@@ -127,7 +127,6 @@ class BuildingFactory(BuildingFactoryJsonDictReader):
             sounds.play_sound("bleep", channel=7)
             return
 
-
         defence_units = self.get_defence_unit_names()
         civil_buildings = [i for i in planet.buildings if not i in defence_units]
 

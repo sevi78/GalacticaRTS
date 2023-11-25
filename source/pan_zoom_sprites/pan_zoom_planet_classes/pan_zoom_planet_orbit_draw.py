@@ -11,6 +11,7 @@ from source.utils.positioning import get_distance
 
 ORBIT_COLOR = colors.ui_dark
 
+
 def draw_orbit_simple(self):
     """
     draws the orbit
@@ -92,7 +93,7 @@ def draw_orbit(self):
                 if size > self.orbit_object.rect.width / 2:
                     size = self.orbit_object.rect.width / 2
 
-                #color = dim_color(colors.ui_darker, dist, min_color_value)
+                # color = dim_color(colors.ui_darker, dist, min_color_value)
                 center = (i[0], i[1])
                 pygame.draw.circle(global_params.win, ORBIT_COLOR, center, size, width)
 

@@ -4,7 +4,7 @@ import pygame
 class Colors:
     def __init__(self):
         # set the colors
-        self.emp_color = (123,123,123,123)
+        self.emp_color = (123, 123, 123, 123)
         self.hover_color = pygame.color.THECOLORS["green"]
         self.pressed_color = pygame.color.THECOLORS["cyan"]
         self.inactive_color = pygame.color.THECOLORS["red"]

@@ -83,7 +83,6 @@ class WidgetHandler:
                 if widget == obj:
                     widgetlist.remove(widget)
 
-
     def set_visible(events):
         numbers = [49, 50, 51, 52, 53, 54, 55, 56, 57, 48]
         others = [39]  # ,94]

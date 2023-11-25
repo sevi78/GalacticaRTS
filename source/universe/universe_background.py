@@ -16,7 +16,6 @@ from source.universe.celestial_objects.stars import FlickeringStar, PulsatingSta
 from source.utils import global_params
 from source.multimedia_library.images import get_image
 
-
 COMET_DIVIDE_FACTOR = 500
 ASTEROID_GIF_DIVIDE_FACTOR = 300
 ASTEROID_DIVIDE_FACTOR = 150
@@ -78,7 +77,6 @@ class UniverseFactory:  # original for WidgedBase Widgets
 
         # create universe
         self.celestial_objects = {}
-
 
     def get_random_image(self, images):
         return random.choice(images)

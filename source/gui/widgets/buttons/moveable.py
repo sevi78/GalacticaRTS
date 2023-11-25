@@ -50,4 +50,3 @@ class Moveable:
                         y = global_params.app.building_panel.max_height + self.get_screen_height() * 6
                         spacing_x = global_params.app.building_panel.spacing_x
                         self.set_position((x - self.ui_parent_offset_x + spacing_x / 2, y - self.ui_parent_offset_y))
-

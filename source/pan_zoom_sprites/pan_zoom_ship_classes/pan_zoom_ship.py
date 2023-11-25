@@ -224,7 +224,7 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
                 self.reach_enemy()
                 return
 
-            #print("reached_ufo")
+            # print("reached_ufo")
         elif self.target.property == "planet":
             # Check the distance
             if distance < self.desired_orbit_radius:
@@ -381,7 +381,6 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         self.progress_bar.set_progressbar_position()
         if global_params.game_paused:
             return
-
 
         self.set_tooltip()
         self.listen()

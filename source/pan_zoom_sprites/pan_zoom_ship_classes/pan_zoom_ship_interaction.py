@@ -51,5 +51,3 @@ class PanZoomShipInteraction:
         if value:
             sounds.play_sound("click", channel=7)
             global_params.app.ship = self
-
-

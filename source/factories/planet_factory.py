@@ -101,4 +101,5 @@ class PlanetFactory:
         sprite_groups.planets.add(pan_zoom_planet_button)
         # pan_zoom_planet_button.load_from_db()
 
+
 planet_factory = PlanetFactory()

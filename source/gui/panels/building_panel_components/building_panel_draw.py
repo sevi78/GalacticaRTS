@@ -10,7 +10,6 @@ SMILEY_SIZE = 20
 
 class BuildingPanelDraw:
 
-
     def draw_planet_params(self, x):
         # draw population text
         # population

@@ -132,8 +132,6 @@ class SceneBuilder(EconomyParams, GameObjectStorage):
                 align_image="center", layer=1)
         return ship
 
-
-
     def select_resources(self):
         resources = ["water", "food", "energy", "technology", "minerals"]
         selected_resources = {"water": 0, "food": 0, "energy": 0, "technology": 0, "minerals": 0}

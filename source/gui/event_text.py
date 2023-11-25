@@ -50,6 +50,7 @@ class EventText(TextWrap):
     prefix: The prefix added to each event text.
     event_display_text: The event text to be displayed on the pygame window.
     """
+
     def __init__(self, win):
         TextWrap.__init__(self)
         self.win = win

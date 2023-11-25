@@ -162,7 +162,6 @@ class SpaceHarbor(WidgetBase):
         self.win.blit(self.surface, self.surface_rect)
         pygame.draw.rect(self.win, self.frame_color, self.surface_rect, int(ui_rounded_corner_small_thickness), int(global_params.ui_rounded_corner_radius_small))
 
-
         # label
         drawText(self.win, "Space Harbor", self.frame_color,
             (self.surface_rect.x + self.parent.spacing_x - 36, self.surface_rect.y + self.spacing,

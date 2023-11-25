@@ -24,6 +24,7 @@ from source.multimedia_library.sounds import sounds
 
 TOP_SPACING = 5
 
+
 class BuildingPanel(WidgetBase, BuildingPanelConstructor, BuildingSlot, EconomyParams, BuildingPanelDraw):
     """
 
@@ -171,7 +172,6 @@ class BuildingPanel(WidgetBase, BuildingPanelConstructor, BuildingSlot, EconomyP
         # reposition
         self.surface_rect.x = width - self.surface.get_width()
 
-
         self.planet_minus_arrow_button.screen_x = self.surface_rect.x + self.spacing
         self.planet_plus_arrow_button.screen_x = self.surface_rect.x + self.get_screen_width() - self.spacing * 2 - self.arrow_size
         self.toggle_switch.reposition()
@@ -217,13 +217,11 @@ class BuildingPanel(WidgetBase, BuildingPanelConstructor, BuildingSlot, EconomyP
         if not self.parent.get_planet_name() == "???":
             self.win.blit(self.surface, self.surface_rect)
 
-
         self.surface = pygame.Surface((self.surface_rect.width, self.surface_rect.height), pygame.SRCALPHA)
         self.surface.set_alpha(global_params.ui_panel_alpha)
         self.surface.fill((0, 0, 0, global_params.ui_panel_alpha))
         self.win.blit(self.surface, self.surface_rect)
         pygame.draw.rect(self.win, self.frame_color, self.surface_rect, int(ui_rounded_corner_small_thickness), int(global_params.ui_rounded_corner_radius_small))
-
 
         # UI____________________________________________________________________________________________________________
         x = self.surface_rect.x

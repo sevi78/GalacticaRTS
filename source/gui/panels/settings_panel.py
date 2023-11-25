@@ -185,7 +185,6 @@ class SettingsPanel(WidgetBase):
     def set_info_text(self):
         global_params.app.info_panel.set_text(info_panel_text_generator.info_text)
 
-
     def draw_frame(self):
         # frame
         self.surface = pygame.surface.Surface((self.surface_rect.width, self.surface_rect.height))
@@ -194,7 +193,6 @@ class SettingsPanel(WidgetBase):
 
         self.win.blit(self.surface, self.surface_frame)
         self.surface_frame = pygame.draw.rect(self.win, self.frame_color, self.surface_rect, int(ui_rounded_corner_small_thickness), int(global_params.ui_rounded_corner_radius_small))
-
 
     def reposition(self):
         win = pygame.display.get_surface()

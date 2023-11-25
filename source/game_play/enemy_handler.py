@@ -112,7 +112,7 @@ class EnemyHandler(InterfaceData):
         ufo = PanZoomUfo(self.win, x, y,
             pan_zoom_ufo_config["enemy handler"]["width"],
             pan_zoom_ufo_config["enemy handler"]["height"], pan_zoom=pan_zoom_handler,
-            image_name="ufo_74x30.png", align_image="center", group="ufos", explosion_name= "explosion4.gif")
+            image_name="ufo_74x30.png", align_image="center", group="ufos", explosion_name="explosion4.gif")
 
         return ufo
 

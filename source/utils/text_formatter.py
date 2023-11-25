@@ -2,6 +2,7 @@ import locale
 
 SUFFIXES = ['', 'k', 'M', 'B', 'T']
 
+
 def format_number(n, digits=0):
     if n < 0:
         return str(n)
@@ -15,7 +16,3 @@ def format_number(n, digits=0):
         formatted_number = locale.format_string(f'%.{digits}f', n, grouping=True)
         formatted_number = formatted_number.rstrip('0').rstrip('.')
     return f'{formatted_number}{SUFFIXES[magnitude]}'
-
-
-
-

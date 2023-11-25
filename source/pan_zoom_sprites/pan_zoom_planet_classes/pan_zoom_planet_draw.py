@@ -87,7 +87,5 @@ class PanZoomPlanetDraw:
         # Blit the pulse surface onto the window
         self.win.blit(pulse_surface, (self.center[0] - current_radius, self.center[1] - current_radius))
 
-
-
     def draw_image(self):
         self.win.blit(self.image, self.rect)

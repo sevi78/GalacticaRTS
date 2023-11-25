@@ -141,7 +141,8 @@ class ToolTip(WidgetBase):
         self.win.blit(self.text_img, (self.world_x + 5, self.world_y + 5))
 
         pygame.draw.rect(self.win, self.frame_color, (
-            self.world_x, self.world_y, self.world_width, self.height), 1, int(global_params.ui_rounded_corner_radius_small))
+            self.world_x, self.world_y, self.world_width,
+            self.height), 1, int(global_params.ui_rounded_corner_radius_small))
 
 
 class ToolTipGenerator:

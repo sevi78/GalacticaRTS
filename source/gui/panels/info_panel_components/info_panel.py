@@ -91,7 +91,7 @@ class InfoPanel(WidgetBase, TextWrap):
         self.wrap_text(self.text, self.pos, self.size, self.font, self.color)
         self.set_size_from_text()
         if self.planet_image:
-            self.set_planet_image(self.planet_image,  size=self.planet_image_size, align="topright")
+            self.set_planet_image(self.planet_image, size=self.planet_image_size, align="topright")
         self.reposition()
 
     def set_text(self, text):
