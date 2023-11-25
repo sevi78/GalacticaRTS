@@ -43,7 +43,7 @@ class BuildingPanel(WidgetBase, BuildingPanelConstructor, BuildingSlot, EconomyP
 
         self.frame_color = colors.frame_color
         self.bg_color = pygame.colordict.THECOLORS["black"]
-        self.font_size = 18
+        self.font_size = 16
         self.font = pygame.font.SysFont(global_params.font_name, self.font_size)
         self.resource_image_size = (15, 15)
         self.world_x = 0

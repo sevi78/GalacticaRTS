@@ -1,3 +1,4 @@
+import random
 import time
 
 import pygame
@@ -6,6 +7,7 @@ from source.draw import scope
 from source.draw.pulsating_circle import draw_electromagnetic_impulse
 from source.draw.zigzag_line import draw_zigzag_line
 from source.factories.building_factory import building_factory
+from source.multimedia_library.sounds import sounds
 from source.pan_zoom_sprites.attack import attack, launch_missile
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups
 from source.utils import global_params
@@ -64,12 +66,15 @@ class PanZoomPlanetDefence:
                 if hit_obj in sprite_groups.ufos.sprites():
                     hit_obj.energy -= ENERGY_BLAST_POWER
                     global_params.app.player.energy -= ENERGY_BLAST_POWER
+                    color = random.choice(list(pygame.color.THECOLORS.keys()))
                     draw_zigzag_line(
                         surface=self.parent.win,
-                        color=pygame.color.THECOLORS["red"],
+                        color=color,
                         start_pos=self.parent.rect.center,
                         end_pos=hit_obj.rect.center,
                         num_segments=24)
+                    sounds.play_sound(sounds.laser)
+                    sounds.play_sound(sounds.electricity2)
 
     def defend(self):
         defence_units = self.get_defence_units()

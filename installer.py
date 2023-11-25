@@ -1,3 +1,4 @@
+import os
 import subprocess
 import tkinter as tk
 
@@ -48,7 +49,7 @@ class Installer:
 
         self.root.mainloop()
 
-    def check_for_dependencies(self) -> bool:
+    def check_for_dependencies__(self) -> bool:
         try:
             with open('requirements.txt') as f:
                 dependencies = f.read().splitlines()
@@ -70,6 +71,32 @@ class Installer:
         else:
             self.message = 'All dependencies are already installed.'
             return True
+
+    import os
+
+    def check_for_dependencies(self) -> bool:
+        if os.path.exists('requirements.txt'):
+            os.remove('requirements.txt')  # Delete the old requirements.txt file
+
+        from source.utils.requirements_gen import generate_requirements_file
+        generate_requirements_file()  # Generate a new requirements.txt file
+
+        with open('requirements.txt') as f:
+            dependencies = f.read().splitlines()
+
+        for dependency in dependencies:
+            try:
+                __import__(dependency)
+            except ImportError:
+                self.missing_dependencies.append(dependency)
+
+        if self.missing_dependencies:
+            self.message = "The following dependencies are missing:\n\n" + "\n".join(self.missing_dependencies)
+            return False
+        else:
+            self.message = 'All dependencies are already installed.'
+            return True
+
 
     def install(self):
         subprocess.call(['pip', 'install', '-r', 'requirements.txt'])
