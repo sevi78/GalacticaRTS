@@ -1,12 +1,9 @@
 import math
-
 import pygame
 from pygame import gfxdraw
 
 from source.gui.lod import inside_screen
 from source.universe.celestial_objects.celestial_object import CelestialObject
-from source.utils import global_params
-from source.utils.positioning import rot_center
 
 
 class FlickeringStar(CelestialObject):

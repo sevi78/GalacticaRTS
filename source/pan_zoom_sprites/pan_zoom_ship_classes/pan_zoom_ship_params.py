@@ -1,5 +1,6 @@
 import math
 
+from source.gui.event_text import event_text
 from source.gui.widgets.widget_handler import WidgetHandler
 from source.utils import global_params
 from source.multimedia_library.sounds import sounds
@@ -100,19 +101,6 @@ class PanZoomShipParams():
 
         self.progress_bar = None
         self.kill()
-
-        # # delete_all_references(self, self.parent)
-        # # delete_all_references(self, self.target_object)
-        # # delete_all_references(self, self.progress_bar)
-        #
-        # del self.progress_bar
-        # #self.progress_bar = None
-        # del self.target_object
-        # #self.target_object = None
-        #
-        # self.kill()
-        #
-        # del instance
 
     def set_resources(self):
         self.resources = {"minerals": self.minerals,

@@ -11,9 +11,6 @@ class PanZoomCelestialObjectStatic(PanZoomCelestialObject):
     def __init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs):
         PanZoomCelestialObject.__init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs)
         self.rotation = random.randint(0, 360)
-        # self.rotated_image, self.rotated_rect = rot_center(self.image, self.rotation, self.screen_x, self.screen_y)
-        # self.image = self.rotated_image
-        # self.rect = self.rotated_rect
 
     def draw_(self):
         self.set_screen_position()

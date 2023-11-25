@@ -1,10 +1,8 @@
 import traceback
-
 import pygame
 from pygame_widgets.util import drawText
 
 from source.app.app_helper import select_next_item_in_list
-
 from source.configuration.economy_params import EconomyParams
 from source.game_play.navigation import navigate_to
 from source.gui.building_button_widget import BuildingButtonWidget
@@ -25,6 +23,7 @@ from source.utils.global_params import ui_rounded_corner_small_thickness
 from source.multimedia_library.sounds import sounds
 
 TOP_SPACING = 5
+
 class BuildingPanel(WidgetBase, BuildingPanelConstructor, BuildingSlot, EconomyParams, BuildingPanelDraw):
     """
 
@@ -218,23 +217,12 @@ class BuildingPanel(WidgetBase, BuildingPanelConstructor, BuildingSlot, EconomyP
         if not self.parent.get_planet_name() == "???":
             self.win.blit(self.surface, self.surface_rect)
 
-        # self.surface = pygame.Surface((self.surface_rect.width, self.surface_rect.height))
-        # self.surface.fill((0, 0, 0))
-        # self.surface.set_alpha(global_params.ui_panel_alpha)
 
         self.surface = pygame.Surface((self.surface_rect.width, self.surface_rect.height), pygame.SRCALPHA)
-        #self.surface = pygame.Surface((self.surface_rect.width, self.surface_rect.height))
         self.surface.set_alpha(global_params.ui_panel_alpha)
-
         self.surface.fill((0, 0, 0, global_params.ui_panel_alpha))
-        #self.surface.set_alpha(global_params.ui_panel_alpha)
         self.win.blit(self.surface, self.surface_rect)
         pygame.draw.rect(self.win, self.frame_color, self.surface_rect, int(ui_rounded_corner_small_thickness), int(global_params.ui_rounded_corner_radius_small))
-
-
-
-        # self.win.blit(self.surface, self.surface_rect)
-        # pygame.draw.rect(self.win, self.frame_color, self.surface_rect, int(ui_rounded_corner_small_thickness), int(global_params.ui_rounded_corner_radius_small))
 
 
         # UI____________________________________________________________________________________________________________

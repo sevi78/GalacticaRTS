@@ -1,7 +1,4 @@
-import math
-
 import pygame
-
 
 
 def draw_pulsating_circle(win, color_: tuple[3], center, min_radius, max_radius, width, pulse_time):
@@ -23,32 +20,6 @@ def draw_pulsating_circle(win, color_: tuple[3], center, min_radius, max_radius,
     # Blit the pulse surface onto the window
     win.blit(pulse_surface, (center[0] - current_radius, center[1] - current_radius))
 
-def draw_pulsating_circles__(win, color_: tuple[3], center, min_radius, max_radius, width, pulse_time, circles):
-    # mistake might be usefull:
-    # draws circles that tangent the center, like flower of life :)
-    max_brightness = 255
-
-    # Calculate the current size and brightness based on time
-    time = pygame.time.get_ticks()  # Get the current time in milliseconds
-    pulse_progress = (time % pulse_time) / pulse_time  # Calculate the progress of the pulse (0 to 1)
-    current_radius = int(min_radius + pulse_progress * (max_radius - min_radius))
-    current_brightness = int(pulse_progress * max_brightness)
-
-    # Create a surface for the pulse circle
-    pulse_surface = pygame.Surface((current_radius * 2, current_radius * 2), pygame.SRCALPHA)
-
-    # Draw the pulse circle on the surface
-    dim_color = (color_[0], color_[1], color_[2], current_brightness)
-    pygame.draw.circle(pulse_surface, dim_color, (current_radius, current_radius), current_radius, width)
-
-    # Calculate the angle between each circle
-    angle = 2 * math.pi / circles
-
-    # Draw each circle at an equal distance from the center
-    for i in range(circles):
-        x = center[0] + int(current_radius * math.cos(i * angle))
-        y = center[1] + int(current_radius * math.sin(i * angle))
-        win.blit(pulse_surface, (x - current_radius, y - current_radius))
 
 def draw_pulsating_circles(win, color_: tuple[3], center, min_radius, max_radius, width, pulse_time, circles):
     max_brightness = 255

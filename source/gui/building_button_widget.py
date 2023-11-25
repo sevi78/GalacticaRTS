@@ -96,7 +96,6 @@ class BuildingButtonWidget(WidgetBase):
         self.rect.x = x
         self.rect.y = y
         self.spacing = kwargs.get("spacing", 10)
-        #self.surface_frame = pygame.draw.rect(self.win, self.frame_color, self.rect, int(ui_rounded_corner_small_thickness), ui_rounded_corner_radius_small)
         self.corner_radius = ui_rounded_corner_radius_small
 
         # subwidget height of building panel
@@ -367,19 +366,3 @@ class BuildingButtonWidget(WidgetBase):
         # draw frame must be last to prevent bliting errors
         if not self._hidden:
             self.draw_frame()
-
-# def main(run):
-#     while run:
-#         win.fill((10, 0, 0))
-#         events = pygame.event.get()
-#         widget_handler.update(events)
-#         pygame.display.update()
-#
-#
-# # building_button_widget = BuildingButtonWidget(win, 100, 100, 300, 200, False)
-#
-# if __name__ == "__main__":
-#     run = True
-#     WIDTH, HEIGHT = 1000, 600
-#     win = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
-#     main(run)

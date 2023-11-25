@@ -4,10 +4,9 @@ import pygame
 
 from source.app.ui_helper import UIHelper
 from source.configuration.economy_params import EconomyParams
-from source.database.database_access import get_database_file_path, create_connection
+from source.database.database_access import get_database_file_path
 from source.factories.planet_factory import planet_factory
 from source.pan_zoom_sprites.pan_zoom_collectable_item import PanZoomCollectableItem
-from source.pan_zoom_sprites.pan_zoom_planet_classes.pan_zoom_planet import PanZoomPlanet
 from source.pan_zoom_sprites.pan_zoom_ship_classes.pan_zoom_ships import Spaceship, Spacehunter, Cargoloader
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zoom_handler
 from source.universe.background_image import BackgroundImage

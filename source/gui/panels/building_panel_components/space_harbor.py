@@ -56,7 +56,6 @@ class SpaceHarbor(WidgetBase):
         self.surface_rect.x = self.parent.surface_rect.x + self.parent.spacing
         self.surface_rect.y = self.parent.world_y
         self.spacing = self.parent.spacing
-        #self.surface_frame = pygame.draw.rect(self.win, self.frame_color, self.surface_rect, int(ui_rounded_corner_small_thickness), int(global_params.ui_rounded_corner_radius_small))
 
         # text
         self.font_size = kwargs.get("font_size", 12)

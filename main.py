@@ -1,8 +1,3 @@
-# # install all dependencies first: :)
-# import subprocess
-#
-# subprocess.call(['pip', 'install', '--upgrade', '-r', 'requirements.txt'])
-
 import time
 import pygame
 
@@ -24,9 +19,7 @@ from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zo
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups
 
 
-
 ECONOMY_UPDATE_INTERVAL = 2.0
-
 
 
 class App(AppHelper, UIBuilder, GameLogic, Cheat):
@@ -69,14 +62,9 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
     def __init__(self, width, height):
         # make self global, maybe we need that
         global_params.app = self
-
         AppHelper.__init__(self)
         UIBuilder.__init__(self, width, height)
-        #TextWrap.__init__(self)
 
-
-        # self.event_text_font_size = 20
-        # self.event_text_font = pygame.font.SysFont(global_params.font_name, self.event_text_font_size)
         self.pan_enabled = False
 
         # set app-icon
@@ -93,7 +81,6 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
                 temp.append(key)
 
         self._selected_planet = None
-        #print(f"pan_zoom_planet.__dict__: {self.__dict__} \n __slots__; {self.__slots__}\n tmp:{temp}")
 
     @property
     def selected_planet(self):
@@ -108,7 +95,6 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
     def update_building_button_widgets(self):
         for building_button_widget in self.building_button_widgets:
             building_button_widget.show()
-            # building_button_widget.hide_unused_resources()
 
     def update_economy(self):
         if global_params.game_paused:
@@ -136,11 +122,6 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
                 return
             copy_agent.update(events)
 
-            # only resize background on window resize
-            if event.type == pygame.WINDOWRESIZED:
-                pass
-                # self.bg = pygame.transform.scale(self.bg, (self.win.get_width(), self.win.get_height()))
-
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_b:
                     if self.build_menu_visible:
@@ -157,9 +138,6 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
                 if event.key == pygame.K_d:
                     planet_factory.delete_planets()
 
-
-
-
         # set fps
         pygame.display.set_caption(global_params.root + "   " + str(f"FPS: {self.clock.get_fps()}"))
 
@@ -167,21 +145,6 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
         self.quit_game(events)
         self.ui_helper.update()
         self.player.update()
-
-        # # event text
-        # event_text_height = 25
-        #
-        # prefix = "GPT-1357: "
-        # self.event_display_text = prefix + self.event_text
-        #
-        # if not global_params.edit_mode:
-        #     # drawText(self.win, self.event_display_text, self.frame_color,
-        #     #     (self.ui_helper.left, self.ui_helper.anchor_bottom - event_text_height , self.ui_helper.world_width,
-        #     #      event_text_height), self.event_text_font, "center")
-        #
-        #     self.wrap_text(self.event_display_text, (
-        #         self.ui_helper.left, self.ui_helper.anchor_bottom - event_text_height),
-        #         (self.ui_helper.world_width, event_text_height), self.event_text_font, colors.frame_color)
 
         # cheat
         self.cheat(events)
@@ -191,7 +154,6 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
 
         # store planet positions
         self.save_load(events)
-        # self.background.draw()
 
     def loop(self):
         """
@@ -207,11 +169,6 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
             events = pygame.event.get()
             Mouse.updateMouseState()
 
-            # draw background, fog of war
-            if hasattr(self, "background_image"):
-                pass
-                # self.background_image.draw()
-
             # update pan_zoom_handler
             if global_params.enable_zoom:
                 if not text_input_active:
@@ -222,11 +179,6 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
                             self.pan_enabled = True
 
                     pan_zoom_handler.listen(events, self.pan_enabled)
-                    # self.pan_zoom_handler.listen(events, self.pan_enabled)
-
-                # if pan_zoom_handler.panning:
-                #     if self.selected_planet:
-                #         self.selected_planet.reset_building_buttons_visible_state()
 
             # update sprites
             # dont mess up the order! for some reason it must be drawn first then update
@@ -259,17 +211,6 @@ def main():
     pygame.init()
     app = App(global_params.WIDTH, global_params.HEIGHT)
     app.box_selection = BoxSelection(app.win, sprite_groups.ships.sprites() + sprite_groups.planets.sprites())
-    win = app.win
-    # pygame.event.set_allowed([QUIT, KEYDOWN, KEYUP])
-
-    width = 800
-    height = 600
-    # app.ship_edit = ShipEdit(pygame.display.get_surface(),
-    #     pygame.display.get_surface().get_rect().centerx - width / 2,
-    #     pygame.display.get_surface().get_rect().y,
-    #     width, height, parent=app, obj=app.ship, layer=9)
-    # blabla
-    # building_button_widget = BuildingButtonWidget(win, 200, 100, 300, 200, app, False, layer= 4, parent= sprite_groups.planets.sprites()[0])
     app.loop()
 
 

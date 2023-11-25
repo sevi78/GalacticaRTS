@@ -20,11 +20,9 @@ class PanZoomCollectableItem(PanZoomSprite, PanZoomMouseHandler):
     def __init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs):
         PanZoomSprite.__init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs)
         PanZoomMouseHandler.__init__(self)
-
         self.property = "item"
         self.info_text = kwargs.get("infotext")
         self.tooltip = kwargs.get("tooltip", None)
-
         self.energy = kwargs.get("energy", 0)
         self.food = kwargs.get("food", 0)
         self.minerals = kwargs.get("minerals", 0)

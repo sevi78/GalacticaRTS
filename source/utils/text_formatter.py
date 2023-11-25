@@ -1,7 +1,5 @@
 import locale
 
-
-
 SUFFIXES = ['', 'k', 'M', 'B', 'T']
 
 def format_number(n, digits=0):

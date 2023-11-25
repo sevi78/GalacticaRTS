@@ -93,18 +93,3 @@ class Checkbox(ImageButton):
 
     def update(self, value):
         self.checked = value
-
-#
-# # Initializing Pygame
-# pygame.init()
-#
-# # Initializing surface
-# win = pygame.display.set_mode((400, 300))
-#
-# checkbox = Checkbox(win, 30,30,30,30,False,color=self.frame_color)
-# run = True
-# while run:
-#     events = pygame.event.get()
-#     update(events)
-#     # Displaying Object
-#     pygame.display.flip()

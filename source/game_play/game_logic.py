@@ -1,6 +1,5 @@
 import os
 import sys
-
 import pygame
 
 from source.database.database_access import get_database_file_path
@@ -8,9 +7,6 @@ from source.factories.planet_factory import planet_factory
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups
 from source.utils import global_params
 from source.database.saveload import write_file
-
-
-
 
 
 class GameLogic:
@@ -137,11 +133,9 @@ Fields:
 
         write_file(filename, data)
 
-
-
     def restart_game__(self):
         self.selected_planet = None
-        #self.game_objects = []
+        # self.game_objects = []
         self.explored_planets = []
 
         for planet in sprite_groups.planets:
@@ -176,8 +170,7 @@ Fields:
 
         planet_factory.create_planets_from_db(get_database_file_path())
         self.selected_planet = sprite_groups.planets.sprites()[0]
-        #planet_factory.load_planets()
-
+        # planet_factory.load_planets()
 
         # size_x = 250
         # size_y = 35
@@ -194,6 +187,3 @@ Fields:
         #     spacing=spacing,
         #     parent=self,
         #     layer=9)
-
-
-

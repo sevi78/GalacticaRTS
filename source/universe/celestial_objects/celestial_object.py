@@ -7,7 +7,6 @@ from source.gui.lod import inside_screen
 
 from source.multimedia_library.gif_handler import GifHandler
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
-from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zoom_handler
 from source.utils import global_params
 
 

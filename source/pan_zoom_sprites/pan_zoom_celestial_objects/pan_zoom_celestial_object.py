@@ -1,13 +1,6 @@
 import random
 
-import pygame
-from pygame_widgets.util import drawText
-
 from source.gui.lod import inside_screen
-
-from source.multimedia_library.gif_handler import GifHandler
-from source.gui.widgets.widget_base_components.widget_base import WidgetBase
-from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zoom_handler
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_gif import PanZoomSprite
 from source.utils import global_params
 
@@ -79,50 +72,3 @@ class PanZoomCelestialObject(PanZoomSprite):
             return
         if not self.image_name == "no_image.png":
             self.win.blit(self.image, self.rect)
-        # print ("PanZoomCelestialObject.update")
-
-    # def draw_(self):
-    #     self.set_screen_position()
-    #     x, y = self.center
-    #
-    #     if not inside_screen(self.center):
-    #         return
-    #
-    #     if not self._hidden:
-    #         if self.image:
-    #             nsx, nsy = (self.size_x * self.get_zoom(), self.size_y * self.get_zoom())
-    #             self.rect.width = nsx
-    #             self.rect.height = nsy
-    #
-    #             self.rect.x = self.get_screen_x() + self.image.get_size()[0] / 2 * self.get_zoom()
-    #             self.rect.y = self.get_screen_y() + self.image.get_size()[1] / 2 * self.get_zoom()
-
-    # def debug_object__(self):
-    #     if self.rect:
-    #         pygame.draw.rect(self.win, self.frame_color, self.rect, 1)
-    #     else:
-    #         pygame.draw.rect(self.win, self.frame_color, (
-    #         self.get_screen_x(), self.get_screen_y(), self.get_screen_width(), self.get_screen_height()), 1)
-    #
-    #     font = pygame.font.SysFont(global_params.font_name, 18)
-    #     text = self.type
-    #     drawText(global_params.app.win, text, self.frame_color, (
-    #     self.get_screen_x(), self.get_screen_y(), 400, 30), font, "left")
-
-# class Quadrant(CelestialObject):
-#     def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
-#         CelestialObject.__init__(self, win, x, y, width, height, isSubWidget=False, **kwargs)
-#
-#     def draw(self):
-#         self.set_screen_position()
-#         x, y = self.center
-#         if not inside_screen(self.center):
-#             return
-#
-#         if not self._hidden:
-#             # x, y = pan_zoom_handler.world_2_screen(self.world_x, self.world_y)
-#             # pygame.draw.rect(self.win, self.frame_color, (
-#             #     x, y, self.get_screen_width() / self.get_zoom(), self.get_screen_height() / self.get_zoom()), 1)
-#
-#             if global_params.debug:
-#                 pygame.draw.rect(self.win, self.frame_color, self.rect, 1)

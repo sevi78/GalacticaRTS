@@ -4,7 +4,6 @@ from source.gui.widgets.widget_handler import WidgetHandler
 class VisibilityHandler:
     def __init__(self, isSubWidget=False, **kwargs):
         self._isSubWidget = isSubWidget
-
         self._hidden = False
         self._disabled = False
         self.layer = kwargs.get("layer", None)

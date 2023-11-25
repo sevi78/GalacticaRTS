@@ -9,7 +9,6 @@ from source.multimedia_library.images import get_image
 
 class PanZoomPlanetEconomy:
     def __init__(self, kwargs):
-        # self.technology_upgrades = {"university": {"buildings_max": 3}}
         self.population_grow_factor = 0.1
         self.resources = {"energy": 0, "food": 0, "minerals": 0, "water": 0}
 

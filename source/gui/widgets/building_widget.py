@@ -91,7 +91,6 @@ class BuildingWidget(WidgetBase):
         self.progress_bar_width = kwargs.get("progress_bar_width", 100)
         self.progress_bar_height = kwargs.get("progress_bar_height", 10)
         self.startTime = time.time()
-        # building_production_time[self.name]  # kwargs.get("progress_time", 100)
 
         self.progress_bar = ProgressBar(win=self.win,
             x=self.dynamic_x + self.button.get_screen_width(),

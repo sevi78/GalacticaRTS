@@ -12,8 +12,6 @@ class ImageHandler:
 
     def alignImageRect(self):
         self.rect.center = (self.screen_x + self.screen_width // 2, self.screen_y + self.screen_height // 2)
-        # self.rect.center = (self.screen_x - self.screen_width / 2, self.screen_y - self.screen_height / 2)
-        # self.rect.center = self.center#(self.screen_x - self.screen_width / 2, self.screen_y - self.screen_height / 2)
 
         if self.imageHAlign == 'left':
             self.rect.left = self.screen_x + self.margin - (self.radius_extension / 2)

@@ -1,6 +1,4 @@
 import pygame
-
-# from source.gui.Button import Moveable
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.utils import global_params
 
@@ -26,7 +24,6 @@ class FogOfWar(WidgetBase):
 
     def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
         WidgetBase.__init__(self, win, x, y, width, height, isSubWidget, **kwargs)
-        # Moveable.__init__(self, x, y, width, height, kwargs)
         self.layer = kwargs.get("layer", 2)
         self.surface = pygame.Surface((width, height))
         self.surface.set_colorkey((60, 60, 60))

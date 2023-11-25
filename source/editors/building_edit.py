@@ -4,7 +4,6 @@ import pygame
 from source.editors.editor_base.editor_base import EditorBase
 from source.editors.editor_base.editor_config import TOP_SPACING
 from source.gui.widgets.buttons.button import Button
-
 from source.gui.widgets.inputbox import InputBox
 from source.multimedia_library.images import get_image
 from source.database.saveload import write_file, load_file

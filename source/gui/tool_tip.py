@@ -5,7 +5,6 @@ from pygame_widgets import Mouse
 from source.database.saveload import load_file
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.utils import global_params
-from source.utils.colors import colors
 
 INVISIBLE_X = -1000
 INVISIBLE_Y = -1000

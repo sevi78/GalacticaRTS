@@ -17,7 +17,6 @@ from source.utils import global_params
 from source.multimedia_library.images import images, pictures_path, get_image
 
 PLANET_MAX_SIZE = 200.0
-
 PLANET_MIN_SIZE = 10.0
 
 

@@ -16,13 +16,6 @@ from source.database.saveload import load_file
 from source.utils.text_wrap import TextWrap
 
 
-# pygame.init()
-# WIDTH = 1200
-# HEIGHT = 900
-# pygame.display.set_mode((WIDTH,HEIGHT),pygame.RESIZABLE)
-# win = pygame.display.get_surface()
-
-
 class EventPanel(TextWrap, EditorBase, InterfaceData):
     """Main functionalities:
     The EventPanel class is responsible for creating and managing game events in the GUI. It displays event information,
@@ -352,30 +345,3 @@ class EventPanel(TextWrap, EditorBase, InterfaceData):
             pygame.mixer.Sound.fadeout(sounds.intro_drama, 5000)
             self.yes_button.hide()
             self.no_button.hide()
-
-#
-# ep = EventPanel(win=win, x=300,y=200,width=900,height=600, center= True)
-#
-# def quit_game(events):
-#     # quit the game with quit icon or esc
-#     for event in events:
-#         if event.type == pygame.QUIT:
-#             pygame.quit()
-#             quit()
-#         if event.type == pygame.KEYDOWN:
-#             if event.key == pygame.K_ESCAPE:
-#                 sys.exit()
-# #ep.hide()
-# run = True
-# while run:
-#     # get events, only do this once!! and exactly here. otherwise performance is very bad
-#     events = pygame.event.get()
-#
-#     # call functions, don't mess up the order :)
-#
-#     win.fill((123,23,32))
-#
-#     update(events)
-#
-#     quit_game(events)
-#     pygame.display.update()

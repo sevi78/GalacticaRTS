@@ -1,10 +1,7 @@
 import random
 
-import pygame
-
 from source.multimedia_library.sounds import sounds
 from source.utils import global_params
-from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups
 
 
 class PanZoomShipInteraction:

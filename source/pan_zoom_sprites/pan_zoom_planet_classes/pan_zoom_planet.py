@@ -4,7 +4,6 @@ import pygame
 from pygame import MOUSEBUTTONDOWN, MOUSEBUTTONUP, MOUSEMOTION
 from pygame_widgets.mouse import Mouse, MouseState
 from source.database.database_access import create_connection, get_database_file_path
-from source.gui.building_button_widget import BuildingButtonWidget
 
 from source.gui.lod import inside_screen
 from source.gui.widgets.widget_handler import WidgetHandler
@@ -12,7 +11,6 @@ from source.pan_zoom_sprites.pan_zoom_planet_classes.pan_zoom_planet_orbit_draw 
 from source.pan_zoom_sprites.pan_zoom_planet_classes.pan_zoom_planet_position_handler import \
     PanZoomPlanetPositionHandler
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_visibility_handler import PanZoomVisibilityHandler
-from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_debug import GameObjectDebug
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_mouse_handler import PanZoomMouseHandler
 from source.pan_zoom_sprites.pan_zoom_planet_classes.pan_zoom_planet_overview_buttons import \
@@ -25,9 +23,9 @@ from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_gif import Pan
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zoom_handler
 from source.utils import global_params
 from source.utils.colors import colors
-from source.multimedia_library.images import images, get_image
+from source.multimedia_library.images import get_image
 from source.utils.garbage_handler import garbage_handler
-from source.utils.positioning import limit_positions, orbit
+from source.utils.positioning import orbit
 
 
 class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOverviewButtons, PanZoomPlanetDraw, PanZoomPlanetSaveLoad,
@@ -101,10 +99,8 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
         self.info_text_raw = kwargs.get("info_text")
 
         # buttons
-        # self.planet_button_array = None
-        # self.create_planet_button_array()
         self.create_overview_buttons()
-        #self.building_button_widget = BuildingButtonWidget(win, 200, 100, 300, 200, self.parent, False, layer=4, parent=self, fixed_parent=True)
+        # self.building_button_widget = BuildingButtonWidget(win, 200, 100, 300, 200, self.parent, False, layer=4, parent=self, fixed_parent=True)
 
         # planet defence
         self.planet_defence = PanZoomPlanetDefence(self)
@@ -122,10 +118,8 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
         return self.name
 
     def __delete__(self):
-        #garbage_handler.delete_all_references(self, self.building_button_widget)
+
         garbage_handler.delete_all_references(self, self.planet_defence)
-        #self.building_button_widget.__delete__(self.building_button_widget)
-        #self.building_button_widget = None
         self.overview_buttons = []
 
         WidgetHandler.remove_widget(self.smiley_button)
@@ -137,22 +131,12 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
         self.gif_frames = None
         self.children = None
         self.gif_handler = None
-
-
-        #del self.building_button_widget
         del self.planet_defence
 
-
-
-        # self.building_button_widget.__delete__(self.building_button_widget)
-        #
-        # self.planet_defence.__delete__(self.planet_defence)
-        # garbage_handler.delete_all_references(self, self.planet_defence)
-
         self.kill()
-        #garbage_handler.delete_all_references_from(self)
         print("garbage_handler.get_all_references", garbage_handler.get_all_references(self))
         del self
+
     def select(self, value):
         self.selected = value
 
@@ -180,20 +164,10 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
                 self.moving = False
                 global_params.enable_pan = not self.moving
 
-                # self.orbit_angle = get_orbit_angle(self.screen_x, self.screen_y, self.orbit_object.screen_x, self.orbit_object.screen_y)
-                #
-
             # now move the object
             elif event.type == MOUSEMOTION and self.moving:
                 x, y = panzoom.screen_2_world(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1])
                 x1, y1 = panzoom.screen_2_world(self.orbit_object.screen_x, self.orbit_object.screen_y)
-                if self.orbit_object:
-                    pass
-                    # self.orbit_angle = get_orbit_angle(self.world_x, self.world_y, self.orbit_object.x, self.orbit_object.y)
-                    # self.orbit_angle = math.radians(get_orbit_angle(x, y, x1, y1))
-                    # self.orbit_angle = get_orbit_angle(x, y, x1, y1)
-                    # set_orbit_angle(self, get_orbit_angle(x, y, x1, y1))
-                    # set_orbit_distance(self, self.orbit_object)
                 self.world_x = x
                 self.world_y = y
 
@@ -271,7 +245,6 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
         self.load_from_db()
         self.explored = False
         self.just_explored = False
-        # self.set_orbit_distance(self.orbit_object)
 
         conn.close()
 
@@ -301,11 +274,9 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
 
                 if mouseState == MouseState.RELEASE and self.clicked:
                     self.clicked = False
-                    # self.onRelease(*self.onReleaseParams)
 
                 elif mouseState == MouseState.CLICK:
                     self.clicked = True
-                    # self.onClick(*self.onClickParams)
                     self.parent.set_selected_planet(self)
 
                 elif mouseState == MouseState.DRAG and self.clicked:
@@ -313,14 +284,9 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
 
                 elif mouseState == MouseState.HOVER or mouseState == MouseState.DRAG:
                     self.draw_hover_circle()
-
                     if self.tooltip != "":
                         global_params.tooltip_text = self.tooltip
             else:
-                if mouseState == MouseState.RIGHT_CLICK:
-                    pass
-                    # self.reset_building_buttons_visible_state()
-
                 self.clicked = False
 
     def update(self):
@@ -337,10 +303,8 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
 
         # may we will not need these
         if global_params.planet_button_display_on_panel:
-            # self.hide_planet_button_array()
             self.hide_overview_button()
         elif self.explored:
-            # self.show_planet_button_array()
             self.show_overview_button()
             self.set_overview_buttons_position()
 
@@ -350,7 +314,6 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
 
         if not global_params.game_paused:
             orbit(self, self.orbit_object, self.orbit_speed, 1)
-
 
         if not inside_screen(self.rect.center):
             return

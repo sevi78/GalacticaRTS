@@ -1,6 +1,4 @@
-import pygame
-from pygame.sprite import AbstractGroup, LayeredUpdates
-
+from pygame.sprite import LayeredUpdates
 from source.gui.lod import inside_screen
 
 
@@ -72,18 +70,14 @@ class SpriteGroups:
         self.target_objects.update(*args)
         self.quadrants.update(*args)
         self.celestial_objects.update(*args)
-        # self.grids.update()
 
     def draw(self, surface):
         self.ufos.draw(surface)
-        # self.planets.draw(surface)
         self.missiles.draw(surface)
         self.ships.draw(surface)
         self.collectable_items.draw(surface)
         self.explosions.draw(surface)
         self.target_objects.draw(surface)
-        # self.celestial_objects.draw(surface)
-        # self.quadrants.draw(surface)
 
     def listen(self, events):
         for i in self.planets:

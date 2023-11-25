@@ -1,13 +1,6 @@
-import math
 import random
-
-import pygame.math
-
-from pygame import Vector2
-
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_game_object import PanZoomGameObject
-from source.utils import global_params
-from source.utils.positioning import rot_center
+
 
 MISSILE_SPEED = 1.0
 MISSILE_POWER = 50

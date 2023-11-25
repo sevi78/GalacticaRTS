@@ -4,9 +4,6 @@ from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.utils import global_params
 from source.utils.colors import colors
 
-#
-# pg.init()
-# screen = pg.display.set_mode((640, 480))
 COLOR_INACTIVE = colors.frame_color
 COLOR_ACTIVE = pg.Color('dodgerblue2')
 FONTSIZE = 32
@@ -48,9 +45,6 @@ class InputBox(WidgetBase):
         global_params.text_input_active = self._active
         self.set_color()
 
-        # don't know why i need to set both, name and string to make the text appear ??
-        # self.parent.get_input_box_values("name", self.text)
-        # self.parent.get_input_box_values("string", self.text)
         if not self._disabled:
             if self.text_input_type == int:
                 text = int(self.text)
@@ -112,33 +106,3 @@ class InputBox(WidgetBase):
                 return
 
             pg.draw.rect(self.win, self.color, self.rect, 2)
-
-#
-# def main():
-#     clock = pg.time.Clock()
-#     input_box1 = InputBox(100, 100, 140, 32)
-#     input_box2 = InputBox(100, 300, 140, 32)
-#     input_boxes = [input_box1, input_box2]
-#     done = False
-#
-#     while not done:
-#         for event in pg.event.get():
-#             if event.type == pg.QUIT:
-#                 done = True
-#             for box in input_boxes:
-#                 box.handle_event(event)
-#
-#         for box in input_boxes:
-#             box.update()
-#
-#         screen.fill((30, 30, 30))
-#         for box in input_boxes:
-#             box.draw(screen)
-#
-#         pg.display.flip()
-#         clock.tick(30)
-#
-#
-# if __name__ == '__main__':
-#     main()
-#     pg.quit()

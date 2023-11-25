@@ -1,10 +1,5 @@
 import math
 import random
-from dataclasses import dataclass
-
-import pygame
-
-from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.pan_zoom_sprites.pan_zoom_celestial_objects.pan_zoom_asteroid import PanZoomAsteroid
 from source.pan_zoom_sprites.pan_zoom_celestial_objects.pan_zoom_celestial_object_static import \
     PanZoomCelestialObjectStatic
@@ -19,8 +14,8 @@ from source.universe.celestial_objects.comet import Comet
 from source.universe.celestial_objects.stars import FlickeringStar, PulsatingStar
 
 from source.utils import global_params
-from source.multimedia_library.images import images, pictures_path, get_image
-from source.utils.positioning import limit_positions
+from source.multimedia_library.images import get_image
+
 
 COMET_DIVIDE_FACTOR = 500
 ASTEROID_GIF_DIVIDE_FACTOR = 300
@@ -83,7 +78,7 @@ class UniverseFactory:  # original for WidgedBase Widgets
 
         # create universe
         self.celestial_objects = {}
-        # self.create_universe()
+
 
     def get_random_image(self, images):
         return random.choice(images)

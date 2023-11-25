@@ -47,7 +47,6 @@ class ProgressBar(WidgetBase):
         self.incompletedColour = kwargs.get('incompletedColour', (100, 100, 100))
         self.percent = self.progress()
         self.radius = self.screen_height / 2 if self.curved else 0
-
         self.disable()
 
     def set_progressbar_position(self):
@@ -91,28 +90,3 @@ class ProgressBar(WidgetBase):
             pygame.draw.rect(self.win, self.incompletedColour,
                 (self.screen_x + int(self.screen_width * self.percent), self.screen_y,
                  int(self.screen_width * (1 - self.percent)), self.screen_height))
-
-#
-# if __name__ == '__main__':
-#     import time
-#
-#     startTime = time.time()
-#
-#     pygame.init()
-#     win = pygame.display.set_mode((1000, 600))
-#
-#     progressBar = ProgressBar(win, 100, 100, 500, 40, lambda: 1 - (time.time() - startTime) / 10, curved=True, layer = 9)
-#
-#     run = True
-#     while run:
-#         events = pygame.event.get()
-#         for event in events:
-#             if event.type == pygame.QUIT:
-#                 pygame.quit()
-#                 run = False
-#                 quit()
-#
-#         win.fill((255, 255, 255))
-#
-#         update(events)
-#         pygame.display.update()

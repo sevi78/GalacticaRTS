@@ -8,7 +8,6 @@ from source.utils.text_formatter import format_number
 
 class Icon(WidgetBase):
     def __init__(self, win, x, y, width, height, isSubWidget, **kwargs):
-        # image, key, tooltip, frame_color, moveable, include_text, parent):
         super().__init__(win, x, y, width, height, isSubWidget, **kwargs)
         self.layer = kwargs.get("layer", 4)
         self.parent = kwargs.get("parent")
@@ -75,13 +74,6 @@ class Icon(WidgetBase):
                     if self.function:
                         print("executing:", self.function)
                         exec(self.function)
-
-            elif event.type == MOUSEMOTION:
-                if self.rect.collidepoint(event.pos):
-                    pass
-                    # print ("hovering")
-                    # hr = pygame.draw.rect(self.image,self.rect,pygame.color.THECOLORS["red"])
-                    # self.win.blit(self.win, hr)
 
     def set_text(self):
         if self.display_value_only:

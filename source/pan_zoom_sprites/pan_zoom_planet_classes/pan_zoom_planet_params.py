@@ -152,10 +152,6 @@ class PanZoomPlanetParams:
 
         sounds.play_sound(sounds.happy, channel=4)
 
-        # self.planet_button_array.enable()
-        # for i in self.planet_button_array.getButtons():
-        #     i.show()
-
         self.parent.set_selected_planet(self)
         if not self in self.parent.explored_planets:
             self.parent.add_explored_planet(self)

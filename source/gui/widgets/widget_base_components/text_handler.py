@@ -1,8 +1,3 @@
-import pygame
-
-from source.utils import global_params
-
-
 class TextHandler:
     def __init__(self, **kwargs):
         pass

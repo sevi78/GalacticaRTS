@@ -36,7 +36,6 @@ class Moveable:
                                1] + h_offset - self.ui_parent_offset_y - self.ui_parent.get_screen_height() / 2))
 
     def update_position(self):
-
         """
         this sets the position . and also to set building buttons of planet to its panel-position
 
@@ -52,13 +51,3 @@ class Moveable:
                         spacing_x = global_params.app.building_panel.spacing_x
                         self.set_position((x - self.ui_parent_offset_x + spacing_x / 2, y - self.ui_parent_offset_y))
 
-        else:
-            pass
-            #print ("Button.movable.update_position: no ui_parent!!", self, self.parent, self.name)
-
-            #     else:
-            #         self.set_pos_centered_on_top()
-            #
-            # # set planet_button_array to planet
-            # else:
-            #     self.set_pos_centered_on_top()

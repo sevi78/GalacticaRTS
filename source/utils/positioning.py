@@ -103,25 +103,6 @@ def prevent_object_overlap(objects, min_dist):
                     obj2.world_y -= dy * adjustment
 
 
-def follow_target__(self):# unused
-    if self.target:  # and not self.orbit_object:
-        if hasattr(self.target, "screen_x"):
-            tx, ty = self.target.screen_x, self.target.screen_y
-
-        if self.target.property == "ufo":
-            tx, ty = self.target.rect.centerx, self.target.rect.centery
-
-        dx = (self.screen_x - tx)
-        dy = (self.screen_y - ty)
-
-        if hasattr(self, "set_speed"):
-            speed = self.set_speed()
-        else:
-            speed = self.speed
-
-        self.world_x -= dx / int(global_params.fps) / float(self.get_zoom()) * float(speed) * float(global_params.time_factor)
-        self.world_y -= dy / int(global_params.fps) / float(self.get_zoom()) * float(speed) * float(global_params.time_factor)
-
 
 def orbit(obj, orbit_obj, orbit_speed, direction):
     pos_diff = pygame.math.Vector2(orbit_obj.world_x, orbit_obj.world_y) - pygame.math.Vector2(obj.world_x, obj.world_y)

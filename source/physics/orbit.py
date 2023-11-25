@@ -7,7 +7,6 @@ from source.utils.positioning import get_distance
 
 
 def get_orbit_pos(self):
-    # self.orbit_object.set_center()
     if self.orbit_object.property == "ufo":
         pos = self.orbit_object.rect.center
     else:
@@ -43,7 +42,6 @@ def set_orbit_object_id(self, orbit_object_id):
     """
     self.orbit_object_id = orbit_object_id
     set_orbit_object(self)
-    # self.set_planet_name(self)
 
 
 def set_orbit_object(self):

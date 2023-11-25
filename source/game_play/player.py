@@ -1,7 +1,5 @@
 import time
-
 import pygame
-
 from source.utils import global_params
 
 

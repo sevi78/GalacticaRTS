@@ -6,7 +6,7 @@ from source.gui.lod import inside_screen
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zoom_handler
 from source.physics.orbit import get_orbit_pos
 from source.utils import global_params
-from source.utils.colors import colors, dim_color
+from source.utils.colors import colors
 from source.utils.positioning import get_distance
 
 ORBIT_COLOR = colors.ui_dark
@@ -61,7 +61,6 @@ def draw_orbit(self):
     max_points = 25
     min_dist = 1
     max_dist = 1500
-    #min_color_value = 130
     size_factor = 12
     min_dist_to_draw = self.orbit_object.rect.width / 5
 

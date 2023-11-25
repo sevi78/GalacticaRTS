@@ -1,5 +1,4 @@
 import pygame
-
 from source.utils import global_params
 from source.utils.colors import colors
 

@@ -94,13 +94,8 @@ class AppHelper:
         self.production_technology = self.production["technology"]
 
     def set_selected_planet(self, planet):
-        # if self.selected_planet != planet:
-        #     if self.selected_planet:
-        #         self.selected_planet.reset_building_buttons_visible_state()
-
         if planet:
             self.selected_planet = planet
-            # self.selected_planet.set_building_buttons_visible_state_all_true()
             self.selected_planet.set_info_text()
             self.info_panel.set_text(planet.info_text)
 
@@ -117,7 +112,7 @@ class AppHelper:
         self.fog_of_war.draw_fog_of_war(obj)
 
 
-def create_price_dict(thing_to_build: str):
+def create_price_dict__(thing_to_build: str):
     dict = load_file("building.json")
     print("dict:", dict)
     # price_dict = {}

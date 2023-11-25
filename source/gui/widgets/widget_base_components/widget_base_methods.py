@@ -8,17 +8,14 @@ class WidgetBaseParams:
     def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
         self.name = kwargs.get("name", "no_name")
         self.win = win
-
         self.zoomable = False
         self.property = kwargs.get("property", None)
-
         self.debug = kwargs.get("debug", False)
         self.parent = kwargs.get("parent", None)
         self.key = kwargs.get("key", None)
         self.id = kwargs.get("id", None)
         self.children = []
         self.info_text = kwargs.get("info_text", "")
-
         self.frame_color = colors.frame_color
 
         #  widgets

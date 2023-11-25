@@ -7,7 +7,6 @@ from source.utils import global_params
 
 
 class PositionHandler:
-
     def __init__(self, x, y, width, height, **kwargs):
         self.world_width = width
         self.world_height = height
@@ -48,7 +47,6 @@ class PositionHandler:
     def set_screen_position(self, **kwargs):
         offset_x = kwargs.get("offset_x", 0)
         offset_y = kwargs.get("offset_y", 0)
-
         panzoom = pan_zoom_handler
 
         # get new coordinates

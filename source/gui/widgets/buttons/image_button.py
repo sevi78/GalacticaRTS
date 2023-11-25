@@ -98,12 +98,8 @@ class ImageButton(WidgetBase):
                         building_factory.build(self.string)
 
                     # another dirty hack
-                    # if self.key in building_factory.get_resource_categories():
                     if hasattr(self.parent, "on_resource_click"):
                         self.parent.on_resource_click(self)
-                        # print ("image_button.mouseState == MouseState.CLICK:", self.key)
-                    # if self.function:
-                    #     self.execute(eval(self.function))
 
                 elif mouseState == MouseState.DRAG and self.clicked:
                     pass
@@ -114,7 +110,6 @@ class ImageButton(WidgetBase):
                     # set info_panel
                     if self.info_text:
                         if self.info_text != "":
-                            # global_params.app.info_panel.text = self.info_text
                             global_params.app.info_panel.set_text(self.info_text)
                             global_params.app.info_panel.set_planet_image(self.image_raw, align="topright")
 

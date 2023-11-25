@@ -3,7 +3,6 @@ import pygame
 from source.pan_zoom_sprites.pan_zoom_planet_classes.pan_zoom_planet import PanZoomPlanet
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zoom_handler
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups
-from source.physics import orbit
 from source.utils import global_params
 from source.utils.colors import colors
 from source.multimedia_library.images import get_image
@@ -93,8 +92,6 @@ class CopyObject:
         # Set position
         x, y = panzoom.screen_2_world(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1])
         self.new_planet.world_x, self.new_planet.world_y = x, y
-        # orbit.set_orbit_distance(self.new_planet, self.new_planet.orbit_object)
-        # self.new_planet.orbit_angle = orbit.get_orbit_angle(self.new_planet.x, self.new_planet.y, self.new_planet.orbit_object.x, self.new_planet.orbit_object.y)
 
         # no idea why this is needed, without no resoure buttons ... ??? :)
         self.new_planet.update_planet_resources(self.copy_object.possible_resources)

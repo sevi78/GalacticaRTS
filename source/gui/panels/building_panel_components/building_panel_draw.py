@@ -14,7 +14,6 @@ class BuildingPanelDraw:
     def draw_planet_params(self, x):
         # draw population text
         # population
-
         drawText(self.win, "population: " + str(int(self.parent.selected_planet.population)) + "/" + format_number(self.parent.selected_planet.population_limit, 1), self.frame_color, (
             x + self.spacing_x, self.world_y, self.get_screen_width(), 20), self.font, "left")
         image = get_image("city_25x25.png")
@@ -45,6 +44,7 @@ class BuildingPanelDraw:
         # plus icon
         plus_image = pygame.transform.scale(
             get_image("plus_icon.png"), self.resource_image_size)
+
         # get rect for storage
         plus_image_rect = plus_image.get_rect()
         plus_image_rect.x = x
@@ -52,9 +52,11 @@ class BuildingPanelDraw:
         self.plus_button_image["plus_icon"] = plus_image_rect
         self.win.blit(plus_image, (x, self.world_y))
         self.world_y += self.spacing * 2
+
         # minus icon
         minus_image = pygame.transform.scale(
             get_image("minus_icon.png"), self.resource_image_size)
+
         # get rect for storage
         minus_image_rect = minus_image.get_rect()
         minus_image_rect.x = x
