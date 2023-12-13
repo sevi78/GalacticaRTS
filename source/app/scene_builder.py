@@ -4,9 +4,10 @@ import pygame
 
 from source.app.ui_helper import UIHelper
 from source.configuration.economy_params import EconomyParams
-from source.database.database_access import get_database_file_path
+#from source.database.database_access import get_database_file_path
+from source.database.saveload import load_file
 from source.factories.planet_factory import planet_factory
-from source.pan_zoom_sprites.pan_zoom_collectable_item import PanZoomCollectableItem
+#from source.pan_zoom_sprites.pan_zoom_collectable_item import PanZoomCollectableItem
 from source.pan_zoom_sprites.pan_zoom_ship_classes.pan_zoom_ships import Spaceship, Spacehunter, Cargoloader
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zoom_handler
 from source.universe.background_image import BackgroundImage
@@ -53,7 +54,6 @@ class SceneBuilder(EconomyParams, GameObjectStorage):
         # UI Helper
         self.frame_color = colors.frame_color
         self.ui_helper = UIHelper(self)
-        self.level = 1
 
         # background
         self.create_universe_background()
@@ -62,10 +62,14 @@ class SceneBuilder(EconomyParams, GameObjectStorage):
         self.create_fog_of_war()
 
         # planets
-        planet_factory.create_planets_from_db(get_database_file_path())
+        # planet_factory.create_planets_from_db(get_database_file_path())
+
+
+        #planet_factory.create_planets_from_json(0)
+        planet_factory.create_planets_from_data(load_file(f"level_{0}.json"))
 
         # artefacts
-        self.create_artefacts()
+        # self.create_artefacts()
 
         # ship
         win = pygame.display.get_surface()
@@ -131,74 +135,3 @@ class SceneBuilder(EconomyParams, GameObjectStorage):
                 debug=False, group="ships", parent=self, rotate_to_target=True, move_to_target=True,
                 align_image="center", layer=1)
         return ship
-
-    def select_resources(self):
-        resources = ["water", "food", "energy", "technology", "minerals"]
-        selected_resources = {"water": 0, "food": 0, "energy": 0, "technology": 0, "minerals": 0}
-        amount_of_all = random.randint(0, 1000)
-        total_amount = 0
-        while total_amount < amount_of_all:
-            resource = random.choice(resources)
-            amount = random.randint(0, amount_of_all)
-            if total_amount + amount > 1000:
-                amount = 1000 - total_amount
-            if resource in selected_resources:
-                selected_resources[resource] += amount
-            else:
-                selected_resources[resource] = amount
-            total_amount += amount
-        return selected_resources
-
-    def create_artefacts(self):
-        w = global_params.scene_width * global_params.quadrant_amount
-        h = global_params.scene_height * global_params.quadrant_amount
-        buffer = 100
-
-        images_scaled = {0: get_image("artefact1_60x31.png"),
-                         1: get_image("meteor_50x50.png"),
-                         2: get_image("meteor_60x83.png"),
-                         3: get_image("meteor1_50x50.png")
-                         }
-
-        image_names = ["artefact1_60x31.png",
-                       "meteor_50x50.png",
-                       "meteor_60x83.png",
-                       "meteor1_50x50.png"
-                       ]
-
-        for i in range(20):
-            selected_resources = self.select_resources()
-            artefact = PanZoomCollectableItem(global_params.win,
-                random.randint(buffer, w - buffer), random.randint(buffer, h - buffer), 50, 50,
-                pan_zoom=pan_zoom_handler,
-                image_name=random.choice(image_names),
-                isSubWidget=False,
-                transparent=True,
-                tooltip="...maybe an alien artefact ? ...we don't now what it is ! it might be dangerous --- but maybe useful !?",
-                moveable=True,
-                energy=selected_resources["energy"],
-                minerals=selected_resources["minerals"],
-                food=selected_resources["food"],
-                technology=selected_resources["technology"],
-                water=selected_resources["water"],
-                parent=self,
-                group="collectable_items", gif="sphere.gif", align_image="center")
-
-        for i in range(20):
-            selected_resources = self.select_resources()
-            artefact = PanZoomCollectableItem(global_params.win,
-                random.randint(buffer, w - buffer), random.randint(buffer, h - buffer), 100, 100,
-                pan_zoom=pan_zoom_handler,
-                image_name="sphere.gif",
-                isSubWidget=False,
-                transparent=True,
-                tooltip="...maybe an alien artefact ? ...we don't now what it is ! it might be dangerous --- but maybe useful !?",
-                moveable=True,
-                energy=selected_resources["energy"],
-                minerals=selected_resources["minerals"],
-                food=selected_resources["food"],
-                technology=selected_resources["technology"],
-                water=selected_resources["water"],
-                parent=self,
-                group="collectable_items",
-                gif="sphere.gif", relative_gif_size=0.1, align_image="center")

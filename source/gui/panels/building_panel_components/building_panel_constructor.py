@@ -2,6 +2,7 @@ import pygame
 
 from source.gui.widgets.buttons.button import Button
 from source.multimedia_library.images import get_image
+from source.utils import global_params
 
 
 class BuildingPanelConstructor:
@@ -22,7 +23,7 @@ class BuildingPanelConstructor:
             tooltip="",
             frame_color=self.frame_color,
             transparent=True,
-            onClick=lambda: self.set_planet_selection(-1),
+            onClick=lambda: global_params.app.set_planet_selection(-1),
             parent=self.parent, layer=self.layer
             )
         self.planet_plus_arrow_button = Button(win=self.win,
@@ -36,6 +37,6 @@ class BuildingPanelConstructor:
             tooltip="",
             frame_color=self.frame_color,
             transparent=True,
-            onClick=lambda: self.set_planet_selection(1),
+            onClick=lambda: global_params.app.set_planet_selection(1),
             parent=self.parent, layer=self.layer
             )

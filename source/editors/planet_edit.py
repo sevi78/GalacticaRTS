@@ -5,11 +5,13 @@ import pygame
 from source.editors.editor_base.editor_base import EditorBase
 from source.editors.editor_base.editor_config import ARROW_SIZE, FONT_SIZE, BUTTON_SIZE, TOP_SPACING
 from source.factories.building_factory import building_factory
+from source.factories.planet_factory import planet_factory
 from source.game_play.navigation import navigate_to
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.gui.widgets.checkbox import Checkbox
 from source.gui.widgets.inputbox import InputBox
 from source.gui.widgets.selector import Selector
+from source.level.level_factory import level_factory
 
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups
 from source.physics.orbit import set_orbit_object_id
@@ -56,21 +58,29 @@ class PlanetEditBuilder:
         x = self.world_x + self.world_width / 2 - ARROW_SIZE / 2
         y = 140
 
-        self.selector_planet = Selector(self.win, x, self.world_y + y, ARROW_SIZE, self.frame_color, 9, self.spacing_x,
-            {"list_name": "planets_list", "list": sprite_groups.planets.sprites()}, self, FONT_SIZE)
-        y += self.spacing_y
+        # self.selector_planet = Selector(self.win, x, self.world_y + y, ARROW_SIZE, self.frame_color, 9, self.spacing_x,
+        #     {"list_name": "planets_list", "list": sprite_groups.planets.sprites()}, self, FONT_SIZE)
+        # y += self.spacing_y
 
         self.type_planet = Selector(self.win, x, self.world_y + y, ARROW_SIZE, self.frame_color, 9, self.spacing_x,
             {"list_name": "type_list", "list": self.type_list}, self, FONT_SIZE)
         y += self.spacing_y
 
-        self.selector_id = Selector(self.win, x, self.world_y + y, ARROW_SIZE, self.frame_color, 9, self.spacing_x,
-            {"list_name": "id_list", "list": self.id_list}, self, FONT_SIZE)
+        # self.selector_id = Selector(self.win, x, self.world_y + y, ARROW_SIZE, self.frame_color, 9, self.spacing_x,
+        #     {"list_name": "id_list", "list": self.id_list}, self, FONT_SIZE)
+        # y += self.spacing_y
+
+        self.selector_world_width = Selector(self.win, x, self.world_y + y, ARROW_SIZE, self.frame_color, 9, self.spacing_x,
+            {"list_name": "world_width_list", "list": self.world_width_list}, self, FONT_SIZE)
         y += self.spacing_y
 
-        self.selector_level = Selector(self.win, x, self.world_y + y, ARROW_SIZE, self.frame_color, 9, self.spacing_x,
-            {"list_name": "level_list", "list": self.level_list}, self, FONT_SIZE)
+        self.selector_world_height = Selector(self.win, x, self.world_y + y, ARROW_SIZE, self.frame_color, 9, self.spacing_x,
+            {"list_name": "world_height_list", "list": self.world_height_list}, self, FONT_SIZE)
         y += self.spacing_y
+
+        # self.selector_level = Selector(self.win, x, self.world_y + y, ARROW_SIZE, self.frame_color, 9, self.spacing_x,
+        #     {"list_name": "level_list", "list": self.level_list}, self, FONT_SIZE)
+        # y += self.spacing_y
 
         self.selector_image_name_small = Selector(self.win, x, self.world_y + y, ARROW_SIZE, self.frame_color, 9,
             self.spacing_x, {"list_name": "image_name_small_list", "list": self.image_name_small_list}, self, FONT_SIZE)
@@ -179,7 +189,9 @@ class PlanetEdit(EditorBase, PlanetEditBuilder):
 
         # lists
         self.type_list = ["sun", "planet", "moon"]
-        self.level_list = [_ for _ in range(10)]
+        self.world_width_list = [_ for _ in range(25, 200)]
+        self.world_height_list = [_ for _ in range(25, 200)]
+        #self.level_list = [_ for _ in range(10)]
         self.id_list = [_ for _ in range(len(sprite_groups.planets) + 1)]
         self.building_slot_amount_list = [_ for _ in range(10)]
         self.buildings_max_list = [_ for _ in range(25)]
@@ -188,7 +200,7 @@ class PlanetEdit(EditorBase, PlanetEditBuilder):
         self.atmosphere_name_list = list(images[pictures_path]["atmospheres"].keys())
         self.atmosphere_name_list.append("")
         self.has_atmosphere_list = [_ for _ in range(0, 2)]
-        self.image_name_small_list = list(images[pictures_path]["planets"].keys())
+        self.image_name_small_list = list(images[pictures_path]["planets"].keys()) + list(images[pictures_path]["suns"].keys())
         self.orbit_angle_list = [_ for _ in range(0, 360)]
         self.alien_population_list = [_ for _ in range(0, 10000000, 100000)]
 
@@ -208,7 +220,7 @@ class PlanetEdit(EditorBase, PlanetEditBuilder):
         self.create_checkboxes()
         self.create_selectors()
         self.create_inputboxes()
-        self.create_save_button(lambda: self.parent.save_planets(), "save planet")
+        self.create_save_button(lambda: global_params.app.level_edit.save_level(), "save level")
         self.create_close_button()
         self.create_randomize_button()
 
@@ -224,7 +236,10 @@ class PlanetEdit(EditorBase, PlanetEditBuilder):
     def selected_planet(self, value):
         self._selected_planet = value
         self.set_selector_current_value()
-        navigate_to(self.parent.selected_planet, y_offset=-200)
+        #navigate_to(self.parent.selected_planet, y_offset=-200)
+        self.parent.set_selected_planet(value)
+        #navigate_to(self.parent.selected_planet)
+        #print ("explored: ", [i for i in sprite_groups.planets.sprites() if i.explored])
 
     def set_selector_current_value(self):
         """updates the selectors values"""
@@ -251,6 +266,7 @@ class PlanetEdit(EditorBase, PlanetEditBuilder):
         """gets the values from the checkboxes and calls update_planet_resources()"""
         self.checkbox_values = [i.key for i in self.checkboxes if i.checked]
         self.update_planet_resources()
+        self.parent.building_panel.building_button_widget.show()
 
     def update_planet_resources(self):
         """updates the planets resources"""
@@ -290,6 +306,7 @@ class PlanetEdit(EditorBase, PlanetEditBuilder):
             return
 
         setattr(self.selected_planet, key, value)
+        #print (self.selected_planet.image_name_small)
         self.selected_planet.image_raw = get_image(self.selected_planet.image_name_small)
 
         if self.selected_planet.atmosphere_name != "":
@@ -300,12 +317,18 @@ class PlanetEdit(EditorBase, PlanetEditBuilder):
             self.selected_planet.atmosphere = None
             self.selected_planet.atmosphere_raw = None
 
-    def selector_callback(self, key, value):
+    def selector_callback(self, key, value):# obs leads to max recurssion error ???````
         """this is the selector_callback function called from the selector to return the values to the editor"""
         has_atmosphere_set = False
 
-        if key == "planets":
-            self.parent.set_selected_planet(value)
+        if key == "type":
+            if value == "sun":
+                self.selector_image_name_small.list = list(images[pictures_path]["suns"].keys())
+            if value == "planet":
+                self.selector_image_name_small.list = list(images[pictures_path]["planets"].keys())
+
+        if key == "image_name_small":
+            self.selected_planet.image_name_small = value
 
         if key == "has_atmosphere":
             if value == 0 and self.selector_atmosphere.current_value != "":
@@ -319,45 +342,12 @@ class PlanetEdit(EditorBase, PlanetEditBuilder):
         if key == "orbit_object_id":
             set_orbit_object_id(self.selected_planet, value)
         else:
-            setattr(self.selected_planet, key, value)
+            try:
+                setattr(self.selected_planet, key, value)
+            except AttributeError as e:
+                print (f"error : planet_edit.selector_callback: {e}, key_{key}, value:{value}, app.selected_planet: {self.parent.selected_planet}")
 
-    def scale_planet__(self, events):
-        if self._hidden:
-            return
 
-        for event in events:
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_s:
-                    self.s_pressed = True
-            if event.type == pygame.KEYUP:
-                if event.key == pygame.K_s:
-                    self.s_pressed = False
-
-            if event.type == pygame.MOUSEWHEEL and self.s_pressed:
-                min_size = 10.0
-                max_size = 200.0
-                self.scale = event.y
-                planet = self.parent.selected_planet
-
-                # Check if resulting value is less than min_size
-                if planet.world_width + self.scale < min_size:
-                    planet.world_width = min_size
-
-                # Check if resulting value is greater than max_size
-                elif planet.world_width + self.scale > max_size:
-                    planet.world_width = max_size
-                else:
-                    planet.world_width += self.scale
-
-                # Check if resulting value is less than min_size
-                if planet.world_height + self.scale < min_size:
-                    planet.world_height = min_size
-
-                # Check if resulting value is greater than max_size
-                elif planet.world_height + self.scale > max_size:
-                    planet.world_height = max_size
-                else:
-                    planet.world_height += self.scale
 
     def scale_planet(self, events):
         if self._hidden:
@@ -406,8 +396,13 @@ class PlanetEdit(EditorBase, PlanetEditBuilder):
             self.id_list = [_ for _ in range(len(sprite_groups.planets.sprites()))]
 
     def draw(self):
+        #self.get_selected_planet()
         """"""
         if not self._hidden or self._disabled:
             self.draw_frame()
-            self.get_selected_planet()
+
+            self.selected_planet = self.parent.selected_planet
+            text = self.selected_planet.name  # + ", id: " + str(self.selected_planet.id)
+            self.atmosphere_current = self.selected_planet.atmosphere_name
+            self.inputbox.set_text(text)
             self.inputbox.update()

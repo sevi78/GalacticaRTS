@@ -6,6 +6,8 @@ from source.editors.debug_edit import DebugEdit
 from source.editors.font_edit import FontEdit
 from source.editors.enemy_handler_edit import EnemyHandlerEdit
 from source.editors.event_panel_edit import EventPanelEdit
+from source.editors.level_edit import LevelEdit
+from source.editors.level_select import LevelSelect
 from source.editors.planet_edit import PlanetEdit
 from source.editors.ship_edit import ShipEdit
 from source.game_play.enemy_handler import enemy_handler
@@ -94,10 +96,21 @@ class UIBuilder(SceneBuilder):
         height = EDITOR_HEIGHT
 
         # editors
+
+        self.level_select = LevelSelect(pygame.display.get_surface(),
+            pygame.display.get_surface().get_rect().centerx - width / 2,
+            pygame.display.get_surface().get_rect().y,
+            width, width, parent=self, obj=None)
+
         self.planet_edit = PlanetEdit(pygame.display.get_surface(),
             pygame.display.get_surface().get_rect().centerx - width / 2,
             pygame.display.get_surface().get_rect().y,
             width, height, parent=self, obj=sprite_groups.planets.sprites()[0])
+
+        self.level_edit = LevelEdit(pygame.display.get_surface(),
+            pygame.display.get_surface().get_rect().centerx - width / 2,
+            pygame.display.get_surface().get_rect().y,
+            width, height, parent=self)
 
         self.building_edit = BuildingEdit(pygame.display.get_surface(),
             pygame.display.get_surface().get_rect().centerx - width / 2,

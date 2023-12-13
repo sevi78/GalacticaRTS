@@ -1,7 +1,7 @@
-from source.database.database_access import get_dict_from_database
+
 from source.database.saveload import load_file
 from source.factories.building_factory import building_factory
-from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups
+
 
 
 class InfoPanelTextGenerator:
@@ -58,44 +58,68 @@ class InfoPanelTextGenerator:
         return text
 
     def create_info_panel_planet_text(self, obj):
-        db_dict = get_dict_from_database(obj.id)
-        text_keys = ["name", "possible_resources", "specials", "buildings_max", "alien_population", "orbit_speed",
-                     "orbit_distance", "type"]
-        orbit_object = [i for i in sprite_groups.planets if i.id == obj.orbit_object_id]
+        #text_keys = ["name", "possible_resources", "specials", "buildings_max", "alien_population", "orbit_speed",
+        #             "orbit_distance", "type"]
+        #orbit_object = [i for i in sprite_groups.planets if i.id == obj.orbit_object_id]
+        # for i in text_keys:
+        #
+        #     print (f"{i}:{getattr(obj, i)}")
+        # #print ("data:", data)
+        # return
+        #
+        # info = {}
+        # for key, value in data["celestial_objects"][str(obj.id)].items():
+        #     if key in text_keys:
+        #         if "[" in str(value):
+        #             value = eval(value)
+        #         info[key] = value
+        #
+        # name = info['name']
+        # alien_population = info['alien_population']
+        # buildings_max = info['buildings_max']
+        # specials = info['specials']
+        # possible_resources = info['possible_resources']
+        # orbit_speed = info['orbit_speed']
+        # orbit_distance = str(round(info['orbit_distance'] / 1000, 1)) + " million kilometers"
+        # type = info['type']
+        #
+        # text = f"Welcome to {name}!\n\n"
+        # if alien_population == 0:
+        #     text += f"You are the first to arrive on this {type}. It's a blank slate waiting for you to make your mark.\n"
+        # else:
+        #     text += f"You are not alone on this {type}. There are {alien_population} aliens living here already.\n"
+        #
+        # text += f"You can build up to {buildings_max} buildings on this planet.\n"
+        # if specials:
+        #     text += f"There are special buildings available: {specials}.\n"
+        # else:
+        #     text += "There are no special buildings available on this planet.\n"
+        #
+        # text += "Possible resources on this planet include:\n\n"
+        # for resource in possible_resources:
+        #     text += f"- {resource}\n"
+        #
+        # text += f"\nThe planet's orbits around its sun at a distance of {orbit_distance} with a speed of {orbit_speed}.\n"
+        #
+        # return text
 
-        info = {}
-        for key, value in db_dict.items():
-            if key in text_keys:
-                if "[" in str(value):
-                    value = eval(value)
-                info[key] = value
-
-        name = info['name']
-        alien_population = info['alien_population']
-        buildings_max = info['buildings_max']
-        specials = info['specials']
-        possible_resources = info['possible_resources']
-        orbit_speed = info['orbit_speed']
-        orbit_distance = str(round(info['orbit_distance'] / 1000, 1)) + " million kilometers"
-        type = info['type']
-
-        text = f"Welcome to {name}!\n\n"
-        if alien_population == 0:
-            text += f"You are the first to arrive on this {type}. It's a blank slate waiting for you to make your mark.\n"
+        text = f"Welcome to {obj.name}!\n\n"
+        if obj.alien_population == 0:
+            text += f"You are the first to arrive on this {obj.type}. It's a blank slate waiting for you to make your mark.\n"
         else:
-            text += f"You are not alone on this {type}. There are {alien_population} aliens living here already.\n"
+            text += f"You are not alone on this {obj.type}. There are {obj.alien_population} aliens living here already.\n"
 
-        text += f"You can build up to {buildings_max} buildings on this planet.\n"
-        if specials:
-            text += f"There are special buildings available: {specials}.\n"
+        text += f"You can build up to {obj.buildings_max} buildings on this planet.\n"
+        if obj.specials:
+            text += f"There are special buildings available: {obj.specials}.\n"
         else:
             text += "There are no special buildings available on this planet.\n"
 
         text += "Possible resources on this planet include:\n\n"
-        for resource in possible_resources:
+        for resource in obj.possible_resources:
             text += f"- {resource}\n"
 
-        text += f"\nThe planet's orbits around its sun at a distance of {orbit_distance} with a speed of {orbit_speed}.\n"
+        text += f"\nThe planet's orbits around its sun at a distance of {obj.orbit_distance} with a speed of {obj.orbit_speed}.\n"
 
         return text
 

@@ -20,9 +20,10 @@ from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zo
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_mouse_handler import PanZoomMouseHandler
 from source.pan_zoom_sprites.pan_zoom_target_object import PanZoomTargetObject
+from source.physics.orbit import orbit
 from source.utils import global_params
 from source.interaction.mouse import Mouse, MouseState
-from source.utils.positioning import prevent_object_overlap, orbit, get_distance
+from source.utils.positioning import prevent_object_overlap,  get_distance
 from source.database.saveload import load_file
 
 
@@ -81,7 +82,7 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
     #              'visible', 'speed_up_button', 'radius_button', 'frame_color', 'noenergy_image', 'noenergy_image_x', 'noenergy_image_y', 'moving_image',
     #              'sleep_image', 'orbit_image', 'rank_image_pos', 'progress_bar', '_on_hover', 'on_hover_release', 'orbiting', '_selected')
 
-    def __init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs):
+    def __init__(self, win, x, y, width, height, pan_zoom,   image_name, **kwargs):
         PanZoomGameObject.__init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs)
         PanZoomShipParams.__init__(self, **kwargs)
         PanZoomShipMoving.__init__(self, kwargs)
@@ -135,6 +136,7 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
             "orbit_speed",
             "orbit_radius",
             "min_dist_to_other_ships",
+            "energy_use"
             ]
 
         # register

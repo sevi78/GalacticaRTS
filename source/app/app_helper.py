@@ -93,14 +93,7 @@ class AppHelper:
         self.production_minerals = self.production["minerals"]
         self.production_technology = self.production["technology"]
 
-    def set_selected_planet(self, planet):
-        if planet:
-            self.selected_planet = planet
-            self.selected_planet.set_info_text()
-            self.info_panel.set_text(planet.info_text)
 
-        self.building_panel.reposition()
-        self.info_panel.reposition()
 
     def draw_fog_of_war(self, obj, **kwargs):
         """
@@ -185,7 +178,7 @@ def select_next_item_in_list(my_list: list, current_item: any, value: int):
     if current_item in my_list:
         current_index = my_list.index(current_item)
     else:
-        print('current_item not in my_list:', current_item)
+        print(f"select_next_item_in_list(): current_item not in my_list: {my_list} current_item: {current_item}")
         current_index = 0
 
     next_index = (current_index + value) % len(my_list)

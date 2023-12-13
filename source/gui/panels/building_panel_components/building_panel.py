@@ -106,7 +106,7 @@ class BuildingPanel(WidgetBase, BuildingPanelConstructor, BuildingSlot, EconomyP
     def set_info_text(self):
         global_params.app.info_panel.set_text(info_panel_text_generator.info_text)
 
-    def set_planet_selection(self, value):
+    def set_planet_selection__(self, value):
         try:
             # if empty list: do nothing
             my_list = self.parent.explored_planets
@@ -203,9 +203,9 @@ class BuildingPanel(WidgetBase, BuildingPanelConstructor, BuildingSlot, EconomyP
         for event in events:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RIGHT:
-                    self.set_planet_selection(1)
+                    global_params.app.set_planet_selection(1)
                 elif event.key == pygame.K_LEFT:
-                    self.set_planet_selection(-1)
+                    global_params.app.set_planet_selection(-1)
 
     def draw(self):
 
@@ -245,11 +245,13 @@ class BuildingPanel(WidgetBase, BuildingPanelConstructor, BuildingSlot, EconomyP
             self.draw_planet_params(x)
 
         self.max_height = self.world_y + self.toggle_switch.toggle_size
-        if "space harbor" in self.parent.selected_planet.buildings:
-            self.max_height += self.sub_widget_height
 
-        if "particle accelerator" in self.parent.selected_planet.buildings:
-            self.max_height += self.sub_widget_height
+        if self.parent.selected_planet:
+            if "space harbor" in self.parent.selected_planet.buildings:
+                self.max_height += self.sub_widget_height
+
+            if "particle accelerator" in self.parent.selected_planet.buildings:
+                self.max_height += self.sub_widget_height
 
         self.max_height += self.building_button_widget.max_height
 

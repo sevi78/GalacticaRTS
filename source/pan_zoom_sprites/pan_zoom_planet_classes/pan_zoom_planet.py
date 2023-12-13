@@ -1,9 +1,10 @@
 import time
+from pprint import pprint
 
 import pygame
 from pygame import MOUSEBUTTONDOWN, MOUSEBUTTONUP, MOUSEMOTION
 from pygame_widgets.mouse import Mouse, MouseState
-from source.database.database_access import create_connection, get_database_file_path
+#from source.database.database_access import create_connection, get_database_file_path
 
 from source.gui.lod import inside_screen
 from source.gui.widgets.widget_handler import WidgetHandler
@@ -18,17 +19,17 @@ from source.pan_zoom_sprites.pan_zoom_planet_classes.pan_zoom_planet_overview_bu
 from source.pan_zoom_sprites.pan_zoom_planet_classes.pan_zoom_planet_defence import PanZoomPlanetDefence
 from source.pan_zoom_sprites.pan_zoom_planet_classes.pan_zoom_planet_draw import PanZoomPlanetDraw
 from source.pan_zoom_sprites.pan_zoom_planet_classes.pan_zoom_planet_params import PanZoomPlanetParams
-from source.pan_zoom_sprites.pan_zoom_planet_classes.pan_zoom_planet_save_load import PanZoomPlanetSaveLoad
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_gif import PanZoomSprite
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zoom_handler
+from source.physics.orbit import orbit, orbit_around
 from source.utils import global_params
 from source.utils.colors import colors
 from source.multimedia_library.images import get_image
 from source.utils.garbage_handler import garbage_handler
-from source.utils.positioning import orbit
 
 
-class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOverviewButtons, PanZoomPlanetDraw, PanZoomPlanetSaveLoad,
+
+class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOverviewButtons, PanZoomPlanetDraw,
     PanZoomPlanetParams, PanZoomPlanetPositionHandler, PanZoomMouseHandler):
     """ Main functionalities:
 
@@ -46,7 +47,7 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
         'has_atmosphere', 'atmosphere', 'atmosphere_raw', 'type', 'parent', 'screen_size', 'target',
         'moving', 'tooltip', 'id', 'level', 'fog_of_war_radius', 'explored', 'just_explored', 'moveable', 'orbit_speed',
         'orbit_object', 'orbit_distance', 'string', 'start_time', 'wait', 'selected', 'onClick',
-        'info_text', 'info_text_raw', 'planet_button_array', 'thumpsup_button_size', 'thumpsup_button',
+        'info_text', 'info_text_raw', 'thumpsup_button_size', 'thumpsup_button',
         'smiley_button_size', 'smiley_button', 'planet_defence')
 
     def __init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs):
@@ -58,8 +59,9 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
         PanZoomPlanetPositionHandler.__init__(self, x, y, width, height, **kwargs)
         PanZoomPlanetOverviewButtons.__init__(self, **kwargs)
         PanZoomPlanetDraw.__init__(self, **kwargs)
-        PanZoomPlanetSaveLoad.__init__(self)
 
+
+        self.name = kwargs.get("name", "noname_planet")
         self.type = kwargs.get("type", "")
         self.parent = kwargs.get("parent")
         self.screen_size = (global_params.WIDTH_CURRENT, global_params.HEIGHT_CURRENT)
@@ -78,11 +80,14 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
         self.moveable = kwargs.get("moveable", False)
         self.orbit_speed = kwargs.get("orbit_speed")
         self.orbit_object = None
-        self.orbit_object_id = 0
+        self.orbit_object_id = kwargs.get("orbit_object_id")
         self.orbit_distance = 0
-        self.orbit_angle = None
+        self.orbit_angle = kwargs.get("orbit_angle", None)
         self.world_x = x
         self.world_y = y
+        #self.world_width = kwargs.get("world_width", self.image_raw.get_width())
+        #self.world_height = kwargs.get("world_height", self.image_raw.get_height())
+
 
         self.zoomable = True
         self.string = "?"
@@ -109,8 +114,10 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
         sprite_groups.planets.add(self)
         # self.hide_planet_button_array()
 
-        PanZoomPlanetSaveLoad.__init__(self)
-        self.load_from_db()
+        #PanZoomPlanetSaveLoad.__init__(self, f"lebel_{global_params.level}.json")
+        #self.load_from_db()
+        #self.load_from_file()
+        #pprint (self.get_dict_from_db())
 
         # self.update_pan_zoom_sprite()
 
@@ -242,7 +249,8 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
 
         self.buildings = []
 
-        self.load_from_db()
+        #self.load_from_db()
+        self.load_from_file()
         self.explored = False
         self.just_explored = False
 
@@ -308,12 +316,15 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
             self.show_overview_button()
             self.set_overview_buttons_position()
 
-        if not self.orbit_object:
-            self.orbit_angle = None
+        #if not self.orbit_object:
+        #self.orbit_angle = None
+
+        if len([i for i in sprite_groups.planets if i.id == self.orbit_object_id]) > 0:
             self.orbit_object = [i for i in sprite_groups.planets if i.id == self.orbit_object_id][0]
 
         if not global_params.game_paused:
             orbit(self, self.orbit_object, self.orbit_speed, 1)
+            #self.world_x, self.world_y = orbit_around(self, self.orbit_object)
 
         if not inside_screen(self.rect.center):
             return

@@ -234,7 +234,7 @@ class EventPanel(TextWrap, EditorBase, InterfaceData):
 
         # dirty hack to make shure the planets get loaded correctly
         if len(self.obsolete_events) == 2:
-            planet_factory.load_planets()
+            #planet_factory.load_planets()
             print("""event_panel.close_event: dirty hack to make shure the planets get loaded correctly:
                      if len(self.obsolete_events) == 2:
                             self.parent.load_planets()""")

@@ -1,5 +1,6 @@
 import pygame
 
+from source.factories.planet_factory import planet_factory
 from source.pan_zoom_sprites.pan_zoom_planet_classes.pan_zoom_planet import PanZoomPlanet
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zoom_handler
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups
@@ -99,7 +100,7 @@ class CopyObject:
 
         self.new_planet.id = len(sprite_groups.planets.sprites())
         self.new_planet.set_planet_name()
-        app.save_planets()
+        planet_factory.save_planets()
 
     def move_new_object_to_mouse(self):
         x, y = pygame.mouse.get_pos()

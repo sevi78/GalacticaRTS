@@ -1,6 +1,6 @@
 import pygame
 
-from source.database.database_access import create_connection, get_database_file_path
+#from source.database.database_access import create_connection, get_database_file_path
 from source.gui.event_text import event_text
 from source.multimedia_library.images import images, pictures_path, get_image
 from source.multimedia_library.sounds import sounds
@@ -12,7 +12,9 @@ from source.gui.panels.info_panel_components.info_panel_text_generator import in
 class PanZoomPlanetParams:
     def __init__(self, kwargs):
         self._image_name_small = kwargs.get("image_name_small")
+
         self.image_name_big = kwargs.get("image_name_big")
+
         self.orbit_radius = 0
         self.font_size = kwargs.get('font_size', 20)
         self.font = kwargs.get('font', pygame.font.SysFont(global_params.font_name, self.font_size))
@@ -28,6 +30,8 @@ class PanZoomPlanetParams:
         # dirty hack to make shure image_raw gets updated
         self.image_raw = get_image(value)
 
+    def set_image_name_small__(self, value):
+        self._image_name_small = value
     @property
     def atmosphere_name(self):
         return self._atmosphere_name
@@ -47,33 +51,19 @@ class PanZoomPlanetParams:
 
     def set_atmosphere(self):
         if self.has_atmosphere == 1:
-            conn = create_connection(get_database_file_path())
-            cur = conn.cursor()
-            self.atmosphere_name = cur.execute(f"select atmosphere_name from planets where id = {self.id}").fetchone()[
-                0]
-            conn.close()
+            # conn = create_connection(get_database_file_path())
+            # cur = conn.cursor()
+            # self.atmosphere_name = cur.execute(f"select atmosphere_name from planets where id = {self.id}").fetchone()[
+            #     0]
+            # conn.close()
 
-            self.atmosphere = images[pictures_path]["atmospheres"][self.atmosphere_name]
+
+
+            self.atmosphere = get_image(self.atmosphere_name)
             self.atmosphere_raw = self.atmosphere
 
-    def set_planet_name_(self):
-        if self.property == "ship" or "ufo":
-            return
-
-        planets_with_same_orbit_object_id = [i for i in sprite_groups.planets if
-                                             i.orbit_object_id == self.orbit_object_id]
-        sorted_planets = sorted(planets_with_same_orbit_object_id, key=lambda planet: planet.orbit_distance)
-
-        distance_string = self.name
-        for index, planet in enumerate(sorted_planets):
-            if not self.orbit_distance == 0.0:
-                if planet == self:
-                    if self.orbit_object:
-                        distance_string = f"{self.orbit_object.name} - {chr(64 + index)}"
-
-        self.name = distance_string
-
     def set_planet_name(self):
+
         planets_with_same_orbit_object_id = [i for i in sprite_groups.planets if
                                              i.orbit_object_id == self.orbit_object_id]
         sorted_planets = sorted(planets_with_same_orbit_object_id, key=lambda planet: planet.orbit_distance)

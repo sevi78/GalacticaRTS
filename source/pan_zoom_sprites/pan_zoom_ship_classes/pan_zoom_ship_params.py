@@ -36,7 +36,7 @@ class PanZoomShipParams():
         self.reload_max_distance_max_raw = SHIP_RELOAD_MAX_DISTANCE_MAX
         self.reload_max_distance_max = self.reload_max_distance_max_raw
 
-        self.name = kwargs.get("name", "noname")
+        self.name = kwargs.get("name", "noname_ship")
         self.parent = kwargs.get("parent")
         self.hum = sounds.hum1
         self.sound_channel = 1

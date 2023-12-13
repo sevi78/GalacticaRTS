@@ -158,7 +158,7 @@ def main(test: bool = False, **kwargs) -> None:
         align=pygame_menu.locals.ALIGN_RIGHT)
 
     settings_menu.add.range_slider('zoom_min',
-        settings["zoom_min"], (0.05, 1.0), 0.05,
+        settings["zoom_min"], (0.005, 1.0), 0.005,
         rangeslider_id='zoom_min',
         value_format=lambda x: str(float(x)),
         align=pygame_menu.locals.ALIGN_RIGHT)

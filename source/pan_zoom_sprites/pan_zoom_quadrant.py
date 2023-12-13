@@ -7,6 +7,7 @@ from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_gif import Pan
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups
 from source.universe.universe_background import Universe
 from source.interaction.mouse import Mouse
+from source.utils import global_params
 
 WIDTH, HEIGHT = 800, 800
 
@@ -20,7 +21,7 @@ class Quadrant(PanZoomSprite):
         # we need to overload this, otherwise it will get the image size of PanZoomSprite, wich is no_image size
         self.world_width = width
         self.world_height = height
-        self.universe = Universe(self.win, x, y, width, height)
+        #self.universe = Universe(self.win, x, y, width, height)
 
     def hide_universe(self):
         for key, value in self.universe.celestial_objects.items():
@@ -32,9 +33,12 @@ class Quadrant(PanZoomSprite):
             for obj in value:
                 obj.show()
 
+    def draw(self):
+        pygame.draw.rect(self.win, self.frame_color, (self.world_x, self.world_y, self.world_width, self.world_height), 1)
     def update(self):
         self.update_pan_zoom_sprite()
-        # self.set_world_position((self.world_x, self.world_y))
+        self.draw()
+        #self.set_world_position((self.world_x, self.world_y))
         if inside_screen(self.rect.center):
             # self.show_universe()
             # self.show()
@@ -73,7 +77,7 @@ def main(win):
         # print("pan_zoom_handler", pan_zoom_handler)
         sprite_groups.update()
         # sprite_groups.listen(events)
-        # sprite_groups.draw(win)
+        sprite_groups.draw(win)
 
         pygame.display.flip()
 
@@ -87,6 +91,6 @@ if __name__ == "__main__":
     pan_zoom = pan_zoom_handler
     image_name = "no_icon.png"
 
-    # quadrant = Quadrant(win, x, y, width, height, pan_zoom, image_name, group="quadrants")
+    quadrant = Quadrant(win, x, y, width, height, pan_zoom, image_name, group="quadrants")
 
     main(win)

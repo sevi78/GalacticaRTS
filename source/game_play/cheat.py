@@ -70,6 +70,7 @@ class Cheat:
                     # self.cheat_ufo()
 
                     self.explore_all()
+
                     # self.cheat_population()
                     # self.explore_all()
 

@@ -1,15 +1,18 @@
 import time
+import traceback
+
 import pygame
 
-from source.app.app_helper import AppHelper
+from source.app.app_helper import AppHelper, select_next_item_in_list
 from source.app.ui_builder import UIBuilder
 from source.factories.planet_factory import planet_factory
 from source.game_play.cheat import Cheat
 from source.game_play.enemy_handler import enemy_handler
 from source.game_play.game_logic import GameLogic
+from source.game_play.navigation import navigate_to
 from source.gui.event_text import event_text
 from source.gui.widgets import widget_handler
-from source.interaction import copy_agent
+#from source.interaction import copy_agent
 from source.interaction.box_selection import BoxSelection
 from source.utils import global_params
 from source.utils.global_params import text_input_active, enable_pan, copy_object
@@ -90,6 +93,44 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
         self._selected_planet = value
         if value:
             self.update_building_button_widgets()
+            #self.planet_edit.get_selected_planet()
+            #self.planet_edit.selected_planet = value
+
+        #print (f"main: selected_planet.setter:{value}")
+
+    def set_selected_planet(self, planet):
+        """ planet must be a PanZoomPlanet"""
+        if planet:
+            self.selected_planet = planet
+            self.selected_planet.set_info_text()
+            self.info_panel.set_text(planet.info_text)
+
+        self.building_panel.reposition()
+        self.info_panel.reposition()
+
+    def set_planet_selection(self, value):
+        try:
+            # if empty list: do nothing
+            my_list = self.explored_planets
+            if not my_list:
+                return
+
+            if sprite_groups.planets:
+                if self.selected_planet:
+                    current_item = self.selected_planet
+                else:
+                    current_item = sprite_groups.planets.sprites()[0]
+
+                next = select_next_item_in_list(my_list, current_item, value)
+
+                # set new selected planet
+                # pan_zoom_handler.zoom = 1.8
+                self.set_selected_planet(next)
+                navigate_to(self.selected_planet)
+
+        except Exception as e:
+            print("building_panel.set_planet_selection: An error occurred:", e)
+            traceback.print_exc()
 
     def update_building_button_widgets(self):
         for building_button_widget in self.building_button_widgets:
@@ -119,14 +160,9 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
             # ignore all inputs while any text input is active
             if global_params.text_input_active:
                 return
-            copy_agent.update(events)
+            #copy_agent.update(events)
 
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_b:
-                    if self.build_menu_visible:
-                        self.close_build_menu()
-                    else:
-                        self.open_build_menu()
 
                 if event.key == pygame.K_SPACE:
                     self.pause_game()

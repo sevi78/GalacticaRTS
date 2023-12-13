@@ -1,5 +1,7 @@
 import math
 
+import pygame
+
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zoom_handler
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups
 from source.utils import global_params
@@ -10,7 +12,7 @@ def get_orbit_pos(self):
     if self.orbit_object.property == "ufo":
         pos = self.orbit_object.rect.center
     else:
-        pos = self.orbit_object.center
+        pos = self.orbit_object.rect.center
     return pos
 
 
@@ -73,10 +75,27 @@ def orbit_around(orbit_object, orbit_center, **kwargs):
     orbit_radius = kwargs.get("orbit_radius", 150) * zoom
     orbit_angle = math.atan2(orbit_object.get_screen_y() - orbit_center.get_screen_y(), orbit_object.get_screen_x() - orbit_center.get_screen_x())
 
-    orbit_speed = orbit_object.speed / int(global_params.fps)
+    if hasattr(orbit_object, "speed"):
+        orbit_speed = orbit_object.speed / int(global_params.fps)
+    else:
+        orbit_speed = orbit_object.orbit_speed / int(global_params.fps)
     orbit_angle += orbit_speed * global_params.time_factor * (1 + zoom)
 
     new_x = orbit_center.get_screen_x() + orbit_radius * math.cos(orbit_angle) + orbit_center.orbit_speed * global_params.time_factor
     new_y = orbit_center.get_screen_y() + orbit_radius * math.sin(orbit_angle) + orbit_center.orbit_speed * global_params.time_factor
 
     return new_x, new_y
+
+
+def orbit(obj, orbit_obj, orbit_speed, direction):
+    if not orbit_obj:
+        return
+
+    pos_diff = pygame.math.Vector2(orbit_obj.world_x, orbit_obj.world_y) - pygame.math.Vector2(obj.world_x, obj.world_y)
+    obj.orbit_radius = pos_diff.length()
+    if not obj.orbit_angle:
+        obj.orbit_angle = pos_diff.angle_to(pygame.math.Vector2(0, 1))
+
+    obj.orbit_angle += orbit_speed * global_params.time_factor
+    pos = pygame.math.Vector2(obj.orbit_radius, 0).rotate(obj.orbit_angle * direction)  # Rotate by the negative angle
+    obj.world_x, obj.world_y = (orbit_obj.world_x + pos.x, orbit_obj.world_y + pos.y)

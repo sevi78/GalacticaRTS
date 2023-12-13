@@ -1,51 +1,34 @@
+from pprint import pprint
+
 import pygame.display
+from source.database.saveload import load_file, write_file
+from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups
 
-from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zoom_handler
-from source.pan_zoom_sprites.pan_zoom_quadrant import Quadrant
-from source.utils import global_params
-
-QUADRANT_AMOUNT = global_params.quadrant_amount
 
 
 class LevelFactory:
-    def __init__(self, win, quadrant_amount):
-        self.quadrant_amount = quadrant_amount
+    def __init__(self, win):
         self.win = win
-        self.left = 0
-        self.top = 0
 
-    def create_quadrant(self, x, y, width, height):
-        quadrant = Quadrant(self.win, x, y, width, height, pan_zoom_handler, None,
-            debug=False, group="quadrants")
-        return quadrant
+    def save_level(self, level: int, data: dict):
+        print (f"keys:{data['celestial_objects']['0'].keys()}")
+        #pprint(f"data:{data}")
+        view = []
+        for planet in sprite_groups.planets.sprites():
+            for key, value in data["celestial_objects"][str(planet.id)].items():
+                if hasattr(planet, key):
+                    data["celestial_objects"][str(planet.id)][key] = getattr(planet, key)
+                    view.append(f"{key}:{value}")
 
-    def create_quadrants(self):
-        quadrants = {}
-        left, top = self.left, self.top
-        width, height = global_params.scene_width, global_params.scene_height
+        write_file(f"level_{level}.json", data)
+        pprint(f"save_level: wip{view}")
 
-        for x in range(self.quadrant_amount):
-            left = self.left + (x * width)
+    def load_level(self, level: int):
+        print("load level:", level)
+        return load_file(f"level_{level}.json")
 
-            for y in range(self.quadrant_amount):
-                top = self.top + (y * height)
-                key = f"{x}_{y}"
-                quadrant = level_factory.create_quadrant(left, top, width, height)
-
-                print("key", key)
-
-                quadrants[key] = quadrant
-
-        return quadrants
+    def get_planet_amount(self, data):
+        return len(data.keys())
 
 
-level_factory = LevelFactory(pygame.display.get_surface(), QUADRANT_AMOUNT)
-
-
-class Level:
-    def __init__(self):
-        self.quadrants = {}
-        # self.quadrants = level_factory.create_quadrants()
-
-
-level = Level()
+level_factory = LevelFactory(pygame.display.get_surface())

@@ -18,7 +18,7 @@ global HEIGHT
 HEIGHT = int(settings["HEIGHT"][0][0])  # windowsize[1]
 
 global WIDTH_MINIMIZED
-WIDTH_MINIMIZED = 1400
+WIDTH_MINIMIZED = 1920
 
 global HEIGHT_MINIMIZED
 HEIGHT_MINIMIZED = 800
@@ -54,6 +54,9 @@ moveable = settings["moveable"]  # True
 
 global app
 app = None
+
+global level
+level = 1
 
 global tooltip_text
 tooltip_text = ""

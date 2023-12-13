@@ -42,6 +42,57 @@ class AdvancedSettingsPanel(WidgetBase):
         self.init = 0
 
     def create_icons(self):
+        # level select
+        self.level_select_icon = ImageButton(win=self.win,
+            x=self.get_screen_x(),
+            y=self.surface_rect.y + self.spacing,
+            width=self.icon_size,
+            height=self.icon_size,
+            isSubWidget=False,
+            parent=self,
+            image=pygame.transform.scale(get_image("level_select_icon.png"), (25, 25)),
+            tooltip="open level select",
+            frame_color=self.frame_color,
+            moveable=False,
+            include_text=True, layer=self.layer,
+            onClick=lambda: global_params.app.level_select.set_visible())
+        self.widgets.append(self.level_select_icon)
+        self.max_width += self.icon_size + self.spacing
+
+        # level edit
+        self.level_edit_icon = ImageButton(win=self.win,
+            x=self.get_screen_x(),
+            y=self.surface_rect.y + self.spacing,
+            width=self.icon_size,
+            height=self.icon_size,
+            isSubWidget=False,
+            parent=self,
+            image=pygame.transform.scale(get_image("level_edit_icon.png"), (25, 25)),
+            tooltip="open level edit",
+            frame_color=self.frame_color,
+            moveable=False,
+            include_text=True, layer=self.layer,
+            onClick=lambda: global_params.app.level_edit.set_visible())
+        self.widgets.append(self.level_edit_icon)
+        self.max_width += self.icon_size + self.spacing
+
+        # planet edit icon
+        self.planet_edit_icon = ImageButton(win=self.win,
+            x=self.get_screen_x(),
+            y=self.surface_rect.y + self.spacing,
+            width=self.icon_size,
+            height=self.icon_size,
+            isSubWidget=False,
+            parent=self,
+            image=pygame.transform.scale(get_image("planet_edit.png"), (25, 25)),
+            tooltip="open planet edit",
+            frame_color=self.frame_color,
+            moveable=False,
+            include_text=True, layer=self.layer,
+            onClick=lambda: global_params.app.planet_edit.set_visible())
+        self.widgets.append(self.planet_edit_icon)
+        self.max_width += self.icon_size + self.spacing
+
         # event panel edit icon
         self.building_edit_icon = ImageButton(win=self.win,
             x=self.get_screen_x(),
@@ -109,22 +160,7 @@ class AdvancedSettingsPanel(WidgetBase):
         self.widgets.append(self.enemy_handler_edit_icon)
         self.max_width += self.icon_size + self.spacing
 
-        # planet edit icon
-        self.planet_edit_icon = ImageButton(win=self.win,
-            x=self.get_screen_x(),
-            y=self.surface_rect.y + self.spacing,
-            width=self.icon_size,
-            height=self.icon_size,
-            isSubWidget=False,
-            parent=self,
-            image=pygame.transform.scale(get_image("planet_edit.png"), (25, 25)),
-            tooltip="open planet edit",
-            frame_color=self.frame_color,
-            moveable=False,
-            include_text=True, layer=self.layer,
-            onClick=lambda: global_params.app.planet_edit.set_visible())
-        self.widgets.append(self.planet_edit_icon)
-        self.max_width += self.icon_size + self.spacing
+
 
         # ship icon
         self.ship_edit_icon = ImageButton(win=self.win,

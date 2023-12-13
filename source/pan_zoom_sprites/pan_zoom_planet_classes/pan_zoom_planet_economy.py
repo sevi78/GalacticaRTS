@@ -68,7 +68,7 @@ class PanZoomPlanetEconomy:
         # get new values
         resources = ["water", "energy", "food", "minerals", "technology", "city"]
         self.possible_resources = [i for i in checkbox_values if i in resources]
-        self.building_button_widget.show()
+        #self.building_button_widget.show()
 
     def set_thumpsup_status(self):
 

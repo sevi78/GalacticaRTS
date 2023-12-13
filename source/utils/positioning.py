@@ -103,12 +103,6 @@ def prevent_object_overlap(objects, min_dist):
                     obj2.world_y -= dy * adjustment
 
 
-def orbit(obj, orbit_obj, orbit_speed, direction):
-    pos_diff = pygame.math.Vector2(orbit_obj.world_x, orbit_obj.world_y) - pygame.math.Vector2(obj.world_x, obj.world_y)
-    obj.orbit_radius = pos_diff.length()
-    if not obj.orbit_angle:
-        obj.orbit_angle = pos_diff.angle_to(pygame.math.Vector2(0, 1))
 
-    obj.orbit_angle += orbit_speed * global_params.time_factor
-    pos = pygame.math.Vector2(obj.orbit_radius, 0).rotate(obj.orbit_angle * direction)  # Rotate by the negative angle
-    obj.world_x, obj.world_y = (orbit_obj.world_x + pos.x, orbit_obj.world_y + pos.y)
+
+

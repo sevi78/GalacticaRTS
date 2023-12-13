@@ -5,7 +5,6 @@ from source.gui.widgets.buttons.button import Button
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.gui.widgets.checkbox import Checkbox
 from source.gui.widgets.widget_handler import WidgetHandler
-from source.level.level_factory import level
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zoom_handler
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups, PanZoomLayeredUpdates
 from source.universe.celestial_objects.celestial_object import CelestialObject
@@ -149,9 +148,9 @@ class DebugEdit(EditorBase):
             self.draw_text(self.world_x + self.text_spacing, y, 200, 20, f"celestials: {len(celestials)}")
             y += self.text_spacing
 
-            self.draw_text(self.world_x + self.text_spacing, y, 200, 20,
-                f"quadrants: {len(level.quadrants)}")
-            y += self.text_spacing
+            # self.draw_text(self.world_x + self.text_spacing, y, 200, 20,
+            #     f"quadrants: {len(level.quadrants)}")
+            # y += self.text_spacing
 
             for key, value in universe_factory.celestial_objects.items():
                 self.draw_text(self.world_x + self.text_spacing, y, 200, 20,

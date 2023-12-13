@@ -164,6 +164,32 @@ class EditorBase(WidgetBase):
         self.buttons.append(save_icon)
         self.widgets.append(save_icon)
 
+    def create_load_button(self,  function, tooltip, **kwargs):
+        name = kwargs.get("name", "no_name")
+        button_size = 32
+        load_button = ImageButton(win=self.win,
+            x=self.get_screen_x() + self.get_screen_width() / 2 + button_size,
+            y=self.max_height + button_size / 2,
+            width=button_size,
+            height=button_size,
+            isSubWidget=False,
+            parent=self,
+            image=pygame.transform.scale(
+                get_image("load_icon.png"), (button_size, button_size)),
+            tooltip=tooltip,
+            frame_color=self.frame_color,
+            moveable=False,
+            include_text=False,
+            layer=self.layer,
+            onClick=function,
+            name = name
+            )
+
+        load_button.hide()
+
+        self.buttons.append(load_button)
+        self.widgets.append(load_button)
+
     def create_close_button(self):
         button_size = 32
         close_icon = ImageButton(win=self.win,
