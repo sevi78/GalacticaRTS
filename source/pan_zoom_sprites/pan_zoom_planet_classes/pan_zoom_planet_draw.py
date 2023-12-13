@@ -11,12 +11,11 @@ class PanZoomPlanetDraw:
         self.frame_color = colors.frame_color
         self.gif = kwargs.get("gif", None)
         self.gif_handler = None
-        self._atmosphere_name = ""
-        self.has_atmosphere = kwargs.get("has_atmosphere", 0)
 
-        self.atmosphere = None
-        self.atmosphere_raw = None
 
+        self.setup_gif_handler()
+
+    def setup_gif_handler(self):
         if self.gif:
             if self.gif == "sun.gif":
                 self.gif_handler = GifHandler(self, self.gif, loop=True, relative_gif_size=1.4)

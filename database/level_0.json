@@ -14,8 +14,8 @@
       "id": 0,
       "level": 1,
       "name": "Default",
-      "world_x": 2252.054067819633,
-      "world_y": 2273.6202921370996,
+      "world_x": 2245.461106508357,
+      "world_y": 2282.892293246684,
       "world_width": 110,
       "world_height": 110,
       "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
@@ -31,16 +31,15 @@
       "orbit_speed": 0.014,
       "orbit_object_id": 0,
       "orbit_distance": 0,
-      "atmosphere_name": "",
-      "has_atmosphere": 0,
-      "orbit_angle": 3069.900000001783
+      "atmosphere_name": "sun.gif",
+      "orbit_angle": 3407.230000002572
     },
     "1": {
       "id": 1,
       "level": 1,
       "name": "default planet",
-      "world_x": 1248.8950368340093,
-      "world_y": 998.2830218378563,
+      "world_x": 1849.3382829317154,
+      "world_y": 705.0453828807288,
       "world_width": 70,
       "world_height": 70,
       "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
@@ -61,16 +60,15 @@
       "orbit_speed": 0.001,
       "orbit_object_id": 0,
       "orbit_distance": 0,
-      "atmosphere_name": "atmosphere.png",
-      "has_atmosphere": 1,
-      "orbit_angle": 231.8120000000371
+      "atmosphere_name": "atmosphere.gif",
+      "orbit_angle": 255.9070000000152
     },
     "2": {
       "id": 2,
       "level": 1,
       "name": "default moon",
-      "world_x": 1524.3100415482481,
-      "world_y": 1152.9498538429768,
+      "world_x": 2135.799398732348,
+      "world_y": 875.4216163836024,
       "world_width": 30,
       "world_height": 30,
       "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
@@ -86,14 +84,13 @@
         "food",
         "minerals"
       ],
-      "image_name_small": "Helios 12_70x70.png",
-      "image_name_big": "Helios 12_150x150.png",
+      "image_name_small": "moon.gif",
+      "image_name_big": "moon.gif",
       "orbit_speed": 0.015,
       "orbit_object_id": 1,
       "orbit_distance": 0,
-      "atmosphere_name": "atmosphere.png",
-      "has_atmosphere": 1,
-      "orbit_angle": 2549.317580486955
+      "atmosphere_name": "",
+      "orbit_angle": 2910.7425804860786
     }
   }
 }

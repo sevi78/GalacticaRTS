@@ -1,4 +1,3 @@
-import random
 from source.multimedia_library.images import get_image
 from source.pan_zoom_sprites.pan_zoom_planet_classes.pan_zoom_planet import PanZoomPlanet
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zoom_handler
@@ -17,20 +16,6 @@ class PlanetFactory:
     def create_planets_from_data(self, data, **kwargs):
         explored = kwargs.get("explored", False)
         for key, value in data["celestial_objects"].items():
-            type = value["type"]
-
-            gif = None
-
-            has_atmosphere = value["has_atmosphere"]
-            if type == "sun":
-                gif = "sun.gif"
-
-            if type == "moon":
-                gif = random.choice(["moon1.gif", "moon.gif"])
-
-            elif has_atmosphere:
-                gif = "atmosphere.gif"#value["atmosphere_name"]#atmosphere.gif"
-
             pan_zoom_planet_button = PanZoomPlanet(
                 win=global_params.win,
                 x=value["world_x"],
@@ -39,8 +24,7 @@ class PlanetFactory:
                 height=int(value["world_height"]),
                 pan_zoom=pan_zoom_handler,
                 isSubWidget=False,
-                image=get_image(
-                    value["image_name_small"]),
+                image=get_image(value["image_name_small"]),
                 image_name=value["image_name_small"],
                 transparent=True,
                 info_text=value["info_text"],
@@ -53,7 +37,6 @@ class PlanetFactory:
                 possible_resources=value["possible_resources"],
                 moveable=global_params.moveable,
                 hover_image=get_image("selection_150x150.png"),
-                has_atmosphere=value["has_atmosphere"],
                 textVAlign="below_the_bottom",
                 layer=0,
                 id=value["id"],
@@ -63,14 +46,14 @@ class PlanetFactory:
                 buildings_max=value["buildings_max"],
                 orbit_speed=value["orbit_speed"],
                 orbit_angle=value["orbit_angle"],
-                building_slot_amount=
-                value["building_slot_amount"],
+                building_slot_amount=value["building_slot_amount"],
                 alien_population=value["alien_population"],
                 specials=value["specials"],
                 type=value["type"],
-                gif=gif,
+                gif=value["atmosphere_name"],
                 debug=False,
-                align_image="center"
+                align_image="center",
+                atmosphere_name=value["atmosphere_name"]
                 )
             pan_zoom_planet_button.explored = explored
             sprite_groups.planets.add(pan_zoom_planet_button)

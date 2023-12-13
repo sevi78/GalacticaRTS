@@ -1,22 +1,17 @@
 import random
-
 import pygame
 
 from source.editors.editor_base.editor_base import EditorBase
 from source.editors.editor_base.editor_config import ARROW_SIZE, FONT_SIZE, BUTTON_SIZE, TOP_SPACING
 from source.factories.building_factory import building_factory
-from source.factories.planet_factory import planet_factory
-from source.game_play.navigation import navigate_to
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.gui.widgets.checkbox import Checkbox
 from source.gui.widgets.inputbox import InputBox
 from source.gui.widgets.selector import Selector
-from source.level.level_factory import level_factory
-
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups
 from source.physics.orbit import set_orbit_object_id
 from source.utils import global_params
-from source.multimedia_library.images import images, pictures_path, get_image
+from source.multimedia_library.images import images, pictures_path, get_image, get_image_names_from_folder
 
 PLANET_MAX_SIZE = 200.0
 PLANET_MIN_SIZE = 10.0
@@ -58,17 +53,9 @@ class PlanetEditBuilder:
         x = self.world_x + self.world_width / 2 - ARROW_SIZE / 2
         y = 140
 
-        # self.selector_planet = Selector(self.win, x, self.world_y + y, ARROW_SIZE, self.frame_color, 9, self.spacing_x,
-        #     {"list_name": "planets_list", "list": sprite_groups.planets.sprites()}, self, FONT_SIZE)
-        # y += self.spacing_y
-
         self.type_planet = Selector(self.win, x, self.world_y + y, ARROW_SIZE, self.frame_color, 9, self.spacing_x,
             {"list_name": "type_list", "list": self.type_list}, self, FONT_SIZE)
         y += self.spacing_y
-
-        # self.selector_id = Selector(self.win, x, self.world_y + y, ARROW_SIZE, self.frame_color, 9, self.spacing_x,
-        #     {"list_name": "id_list", "list": self.id_list}, self, FONT_SIZE)
-        # y += self.spacing_y
 
         self.selector_world_width = Selector(self.win, x, self.world_y + y, ARROW_SIZE, self.frame_color, 9, self.spacing_x,
             {"list_name": "world_width_list", "list": self.world_width_list}, self, FONT_SIZE)
@@ -78,19 +65,11 @@ class PlanetEditBuilder:
             {"list_name": "world_height_list", "list": self.world_height_list}, self, FONT_SIZE)
         y += self.spacing_y
 
-        # self.selector_level = Selector(self.win, x, self.world_y + y, ARROW_SIZE, self.frame_color, 9, self.spacing_x,
-        #     {"list_name": "level_list", "list": self.level_list}, self, FONT_SIZE)
-        # y += self.spacing_y
-
         self.selector_image_name_small = Selector(self.win, x, self.world_y + y, ARROW_SIZE, self.frame_color, 9,
             self.spacing_x, {"list_name": "image_name_small_list", "list": self.image_name_small_list}, self, FONT_SIZE)
         y += self.spacing_y
 
-        self.selector_has_atmosphere = Selector(self.win, x, self.world_y + y, ARROW_SIZE, self.frame_color, 9,
-            self.spacing_x, {"list_name": "has_atmosphere_list", "list": self.has_atmosphere_list}, self, FONT_SIZE)
-        y += self.spacing_y
-
-        self.selector_atmosphere = Selector(self.win, x, self.world_y + y, ARROW_SIZE, self.frame_color, 9,
+        self.selector_atmosphere_name = Selector(self.win, x, self.world_y + y, ARROW_SIZE, self.frame_color, 9,
             self.spacing_x, {"list_name": "atmosphere_name_list", "list": self.atmosphere_name_list}, self, FONT_SIZE)
         y += self.spacing_y
 
@@ -183,7 +162,6 @@ class PlanetEdit(EditorBase, PlanetEditBuilder):
 
     def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
         EditorBase.__init__(self, win, x, y, width, height, isSubWidget=False, **kwargs)
-
         self.scale = 1.0
         self.s_pressed = False
 
@@ -191,29 +169,24 @@ class PlanetEdit(EditorBase, PlanetEditBuilder):
         self.type_list = ["sun", "planet", "moon"]
         self.world_width_list = [_ for _ in range(25, 200)]
         self.world_height_list = [_ for _ in range(25, 200)]
-        #self.level_list = [_ for _ in range(10)]
-        self.id_list = [_ for _ in range(len(sprite_groups.planets) + 1)]
         self.building_slot_amount_list = [_ for _ in range(10)]
         self.buildings_max_list = [_ for _ in range(25)]
         self.orbit_object_id_list = [_ for _ in range(len(sprite_groups.planets) + 1)]
         self.orbit_speed_list = [round(0.001 + _ * 0.001, 3) for _ in range(20)]
-        self.atmosphere_name_list = list(images[pictures_path]["atmospheres"].keys())
+        self.atmosphere_name_list = get_image_names_from_folder("gifs")
         self.atmosphere_name_list.append("")
-        self.has_atmosphere_list = [_ for _ in range(0, 2)]
-        self.image_name_small_list = list(images[pictures_path]["planets"].keys()) + list(images[pictures_path]["suns"].keys())
+        self.image_name_small_list = list(images[pictures_path]["planets"].keys()) + list(
+            images[pictures_path]["suns"].keys())
         self.orbit_angle_list = [_ for _ in range(0, 360)]
         self.alien_population_list = [_ for _ in range(0, 10000000, 100000)]
 
         #  widgets
         self.selector_image_name_small = None
         self.selector_orbit_object_id = None
-        self.selector_atmosphere = None
-        self.selector_planet = None
+        self.selector_atmosphere_name = None
         self.inputbox = None
 
         # current values
-        self.atmosphere_current = None
-        self.image_name_small_current = None
         self._selected_planet = None
 
         # create widgets
@@ -236,18 +209,27 @@ class PlanetEdit(EditorBase, PlanetEditBuilder):
     def selected_planet(self, value):
         self._selected_planet = value
         self.set_selector_current_value()
-        #navigate_to(self.parent.selected_planet, y_offset=-200)
-        self.parent.set_selected_planet(value)
-        #navigate_to(self.parent.selected_planet)
-        #print ("explored: ", [i for i in sprite_groups.planets.sprites() if i.explored])
+
+    def set_selector_current_value__orig(self):
+        print(self.selected_planet.atmosphere_name)
+        """updates the selectors values"""
+        for i in self.selectors:
+            if hasattr(self.selected_planet, i.key):
+                i.set_current_value(getattr(self.selected_planet, i.key))
+            else:
+                print(f"not found:{self.selected_planet}: {i}:{i.key}")
 
     def set_selector_current_value(self):
         """updates the selectors values"""
         for i in self.selectors:
-            if i.key == "planets":
-                i.set_current_value(self.parent.selected_planet)
+            if hasattr(self.selected_planet, i.key):
+                if i.key == "atmosphere_name":
+                    print("selected_planet.atmosphere_name:", self.selected_planet.atmosphere_name)
+                    i.set_current_value(self.selected_planet.atmosphere_name)
+                else:
+                    i.set_current_value(getattr(self.selected_planet, i.key))
             else:
-                i.set_current_value(getattr(self.selected_planet, i.key))
+                print(f"not found:{self.selected_planet}: {i}:{i.key}")
 
     def set_checkbox_values(self):
         """this sets the values to the checkboxes when selected planet changes"""
@@ -255,7 +237,6 @@ class PlanetEdit(EditorBase, PlanetEditBuilder):
             return
 
         possible_resources = self.selected_planet.possible_resources
-
         for i in self.checkboxes:
             if i.key in possible_resources:
                 i.update(True)
@@ -272,55 +253,17 @@ class PlanetEdit(EditorBase, PlanetEditBuilder):
         """updates the planets resources"""
         self.selected_planet.update_planet_resources(self.checkbox_values)
 
-    def get_selected_planet(self):
-        """gets the selected planet"""
-        # error handling if no planet selected
-        if not self.parent.selected_planet:
-            return None
-
-        # only set checkbox values if selected planet changes
-        selected_planet = self.selected_planet
-        self.selected_planet = self.parent.selected_planet
-
-        if selected_planet != self.parent.selected_planet:
-            self.set_selector_current_value()
-            self.set_checkbox_values()
-
-        self.image_name_small_current = self.selected_planet.image_name_small
-        self.atmosphere_current = self.selected_planet.atmosphere_name
-
-        text = self.selected_planet.name  # + ", id: " + str(self.selected_planet.id)
-        self.inputbox.set_text(text)
-
     def get_input_box_values(self, obj, key, value):
-        # self.parent.get_input_box_values("name", self.text)
-        # self.parent.get_input_box_values("string", self.text)
-        if key == "name":
-            self.set_new_value_to_planet("name", value)
-            self.set_new_value_to_planet("string", value)
-
-    def set_new_value_to_planet(self, key, value):
-        """sets the new values to the planet, called from outside
-        """
         if not self.selected_planet:
             return
 
-        setattr(self.selected_planet, key, value)
-        #print (self.selected_planet.image_name_small)
-        self.selected_planet.image_raw = get_image(self.selected_planet.image_name_small)
+        """ this is called from inputbox,  """
+        if key == "name":
+            setattr(self.selected_planet, "name", value)
+            setattr(self.selected_planet, "string", value)
 
-        if self.selected_planet.atmosphere_name != "":
-            self.selected_planet.atmosphere = images[pictures_path]["atmospheres"][self.selected_planet.atmosphere_name]
-            self.selected_planet.atmosphere_raw = images[pictures_path]["atmospheres"][
-                self.selected_planet.atmosphere_name]
-        else:
-            self.selected_planet.atmosphere = None
-            self.selected_planet.atmosphere_raw = None
-
-    def selector_callback(self, key, value):# obs leads to max recurssion error ???````
+    def selector_callback(self, key, value):
         """this is the selector_callback function called from the selector to return the values to the editor"""
-        has_atmosphere_set = False
-
         if key == "type":
             if value == "sun":
                 self.selector_image_name_small.list = list(images[pictures_path]["suns"].keys())
@@ -330,14 +273,8 @@ class PlanetEdit(EditorBase, PlanetEditBuilder):
         if key == "image_name_small":
             self.selected_planet.image_name_small = value
 
-        if key == "has_atmosphere":
-            if value == 0 and self.selector_atmosphere.current_value != "":
-                self.selector_atmosphere.current_value = ""
-                has_atmosphere_set = True
-
         if key == "atmosphere_name":
-            if not has_atmosphere_set:
-                setattr(self.selected_planet, key, value)
+            setattr(self.selected_planet, key, value)
 
         if key == "orbit_object_id":
             set_orbit_object_id(self.selected_planet, value)
@@ -345,9 +282,7 @@ class PlanetEdit(EditorBase, PlanetEditBuilder):
             try:
                 setattr(self.selected_planet, key, value)
             except AttributeError as e:
-                print (f"error : planet_edit.selector_callback: {e}, key_{key}, value:{value}, app.selected_planet: {self.parent.selected_planet}")
-
-
+                print(f"error : planet_edit.selector_callback: {e}, key_{key}, value:{value}, app.selected_planet: {self.parent.selected_planet}")
 
     def scale_planet(self, events):
         if self._hidden:
@@ -393,16 +328,11 @@ class PlanetEdit(EditorBase, PlanetEditBuilder):
 
         if not self._hidden or self._disabled:
             self.orbit_object_id_list = [_ for _ in range(len(sprite_groups.planets.sprites()))]
-            self.id_list = [_ for _ in range(len(sprite_groups.planets.sprites()))]
 
     def draw(self):
-        #self.get_selected_planet()
-        """"""
         if not self._hidden or self._disabled:
             self.draw_frame()
-
             self.selected_planet = self.parent.selected_planet
-            text = self.selected_planet.name  # + ", id: " + str(self.selected_planet.id)
-            self.atmosphere_current = self.selected_planet.atmosphere_name
+            text = self.selected_planet.name
             self.inputbox.set_text(text)
             self.inputbox.update()

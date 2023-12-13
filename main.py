@@ -93,6 +93,7 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
         self._selected_planet = value
         if value:
             self.update_building_button_widgets()
+            #self.planet_edit.selected_planet = value
             #self.planet_edit.get_selected_planet()
             #self.planet_edit.selected_planet = value
 
@@ -168,10 +169,12 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
                     self.pause_game()
 
                 if event.key == pygame.K_r:
-                    self.restart_game()
+                    pass
+                    #self.restart_game()
 
                 if event.key == pygame.K_d:
-                    planet_factory.delete_planets()
+                    pass
+                    #planet_factory.delete_planets()
 
         # set fps
         pygame.display.set_caption(global_params.root + "   " + str(f"FPS: {self.clock.get_fps()}"))

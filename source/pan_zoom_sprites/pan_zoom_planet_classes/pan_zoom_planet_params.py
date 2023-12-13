@@ -12,6 +12,7 @@ from source.gui.panels.info_panel_components.info_panel_text_generator import in
 class PanZoomPlanetParams:
     def __init__(self, kwargs):
         self._image_name_small = kwargs.get("image_name_small")
+        self._atmosphere_name = kwargs.get("atmosphere_name")
 
         self.image_name_big = kwargs.get("image_name_big")
 
@@ -40,27 +41,22 @@ class PanZoomPlanetParams:
     def atmosphere_name(self, value):
         self._atmosphere_name = value
 
-        # dirty hack to make shure athmosphere_raw gets updated
         if value != "":
-            if self.has_atmosphere == 1:
-                self.atmosphere_raw = images[pictures_path]["atmospheres"][value]
-                self.atmosphere = self.atmosphere_raw
+            self.gif = self._atmosphere_name
+            self.setup_gif_handler()
         else:
-            self.atmosphere_raw = None
-            self.atmosphere = self.atmosphere_raw
+            self.gif_handler.kill()
 
-    def set_atmosphere(self):
-        if self.has_atmosphere == 1:
-            # conn = create_connection(get_database_file_path())
-            # cur = conn.cursor()
-            # self.atmosphere_name = cur.execute(f"select atmosphere_name from planets where id = {self.id}").fetchone()[
-            #     0]
-            # conn.close()
+        # # dirty hack to make shure athmosphere_raw gets updated
+        # if value != "":
+        #     if self.has_atmosphere == 1:
+        #         self.atmosphere_raw = images[pictures_path]["atmospheres"][value]
+        #         self.atmosphere = self.atmosphere_raw
+        # else:
+        #     self.atmosphere_raw = None
+        #     self.atmosphere = self.atmosphere_raw
 
 
-
-            self.atmosphere = get_image(self.atmosphere_name)
-            self.atmosphere_raw = self.atmosphere
 
     def set_planet_name(self):
 

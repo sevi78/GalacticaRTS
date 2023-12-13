@@ -43,11 +43,10 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
         'production_minerals', 'production_city', 'production_technology', 'population_buildings',
         'population_buildings_values', 'building_buttons_energy', 'building_buttons_water', 'building_buttons_food',
         'building_buttons_minerals', 'building_buttons', 'building_buttons_list', 'building_buttons_visible',
-        'overview_buttons', 'check_image', 'smiley_status', 'thumpsup_status', 'frame_color', 'gif_handler',
-        'has_atmosphere', 'atmosphere', 'atmosphere_raw', 'type', 'parent', 'screen_size', 'target',
-        'moving', 'tooltip', 'id', 'level', 'fog_of_war_radius', 'explored', 'just_explored', 'moveable', 'orbit_speed',
-        'orbit_object', 'orbit_distance', 'string', 'start_time', 'wait', 'selected', 'onClick',
-        'info_text', 'info_text_raw', 'thumpsup_button_size', 'thumpsup_button',
+        'overview_buttons', 'check_image', 'smiley_status', 'thumpsup_status', 'frame_color', 'gif_handler','type',
+        'parent', 'screen_size', 'target','moving', 'tooltip', 'id', 'level', 'fog_of_war_radius', 'explored',
+        'just_explored', 'moveable', 'orbit_speed','orbit_object', 'orbit_distance', 'string', 'start_time', 'wait',
+        'selected', 'onClick','info_text', 'info_text_raw', 'thumpsup_button_size', 'thumpsup_button',
         'smiley_button_size', 'smiley_button', 'planet_defence')
 
     def __init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs):
@@ -73,9 +72,6 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
         self.fog_of_war_radius = self.get_screen_width() * 1.5
         self.explored = False
         self.just_explored = False
-
-        self.set_atmosphere()
-
         self.property = "planet"
         self.moveable = kwargs.get("moveable", False)
         self.orbit_speed = kwargs.get("orbit_speed")
@@ -195,66 +191,7 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
                 #
                 # print(self.orbit_angle, self.orbit_distance, self.offset)
 
-    def reset_planet(self):
-        return
-        print("reset_planet")
-        self.delete_buttons()
-        self.reset_building_buttons_visible_state()
 
-        conn = create_connection(get_database_file_path())
-        cur = conn.cursor()
-
-        image_name = cur.execute(f"select image_name_small from planets where id = {self.id}").fetchone()[0]
-        width, height = map(int, image_name.split("_")[1].split(".")[0].split("x"))
-
-        self.__init__(
-            win=global_params.win,
-            x=cur.execute(f"select world_x from planets where id = {self.id}").fetchone()[0],
-            y=cur.execute(f"select world_y from planets where id = {self.id}").fetchone()[0],
-            width=int(cur.execute(f"select world_width from planets where id = {self.id}").fetchone()[0]),
-            height=int(cur.execute(f"select world_height from planets where id = {self.id}").fetchone()[0]),
-            pan_zoom=pan_zoom_handler,
-            image_name=image_name,
-            isSubWidget=False,
-            image=get_image(
-                cur.execute(f"select image_name_small from planets where id = {self.id}").fetchone()[0]),
-            transparent=True,
-            info_text=cur.execute(f"select info_text from planets where id = {self.id}").fetchone()[0],
-            text=cur.execute(f"select name from planets where id = {self.id}").fetchone()[0],
-            textColour=self.frame_color,
-            property="planet",
-            name=cur.execute(f"select name from planets where id = {self.id}").fetchone()[0],
-            parent=self.parent,
-            tooltip="send your ship to explore the planet!",
-            possible_resources=eval(
-                cur.execute(f"select possible_resources from planets where id = {self.id}").fetchone()[0]),
-            moveable=global_params.moveable,
-            hover_image=get_image("selection_150x150.png"),
-            has_atmosphere=cur.execute(f"SELECT has_atmosphere FROM planets WHERE id = {self.id}").fetchone()[0],
-            textVAlign="below_the_bottom",
-            layer=3,
-            id=self.id,
-            orbit_object_id=cur.execute(f"select orbit_object_id from planets where id = {self.id}").fetchone()[0],
-            image_name_small=cur.execute(f"select image_name_small from planets where id = {self.id}").fetchone()[0],
-            image_name_big=cur.execute(f"select image_name_big from planets where id = {self.id}").fetchone()[0],
-            buildings_max=cur.execute(f"select buildings_max from planets where id = {self.id}").fetchone()[0],
-            orbit_speed=cur.execute(f"select orbit_speed from planets where id = {self.id}").fetchone()[0],
-            orbit_angle=cur.execute(f"select orbit_angle from planets where id = {self.id}").fetchone()[0],
-            building_slot_amount=
-            cur.execute(f"select building_slot_amount from planets where id = {self.id}").fetchone()[0],
-            alien_population=cur.execute(f"select alien_population from planets where id = {self.id}").fetchone()[0],
-            specials=cur.execute(f"select specials from planets where id = {self.id}").fetchone()[0],
-            type=cur.execute(f"select type from planets where id = {self.id}").fetchone()[0],
-            )
-
-        self.buildings = []
-
-        #self.load_from_db()
-        self.load_from_file()
-        self.explored = False
-        self.just_explored = False
-
-        conn.close()
 
     def debug_planet(self):
         if global_params.debug:
