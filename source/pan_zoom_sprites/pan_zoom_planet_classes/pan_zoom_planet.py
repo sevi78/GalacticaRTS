@@ -274,4 +274,5 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
             self.gif_handler.draw()
 
         self.draw_check_image()
-        self.draw_text()
+        if self.show_text:
+            self.draw_text()

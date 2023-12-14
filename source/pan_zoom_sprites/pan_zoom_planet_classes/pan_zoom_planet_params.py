@@ -20,6 +20,7 @@ class PanZoomPlanetParams:
         self.font_size = kwargs.get('font_size', 20)
         self.font = kwargs.get('font', pygame.font.SysFont(global_params.font_name, self.font_size))
         self.check_image = get_image("check.png")
+        self.show_text = True
 
     @property
     def image_name_small(self):

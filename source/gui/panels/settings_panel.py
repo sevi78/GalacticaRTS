@@ -5,6 +5,7 @@ from source.game_play.navigation import navigate_to
 from source.gui.panels.toggle_switch import ToggleSwitch
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.gui.widgets.buttons.image_button import ImageButton
+from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups
 from source.utils import global_params
 from source.utils.colors import colors
 from source.utils.global_params import ui_rounded_corner_small_thickness
@@ -148,7 +149,7 @@ class SettingsPanel(WidgetBase):
         self.max_width += self.icon_size + self.spacing
 
         # self.set_global_variable("show_orbit", True,var="enable_orbit" ))
-        self.grid_icon = ImageButton(win=self.win,
+        self.show_planet_names_icon = ImageButton(win=self.win,
             x=self.info_icon.get_screen_x() - 50,
             y=self.surface_rect.y + self.spacing,
             width=self.icon_size,
@@ -156,13 +157,13 @@ class SettingsPanel(WidgetBase):
             isSubWidget=False,
             parent=self,
             image=pygame.transform.scale(
-                get_image("grid_icon.png"), (25, 25)),
-            tooltip="show grid",
+                get_image("text_icon.png"), (25, 25)),
+            tooltip="show planet names",
             frame_color=self.frame_color,
             moveable=False,
             include_text=True, layer=self.layer,
-            onClick=lambda: self.set_global_variable("show_grid", True))
-        self.widgets.append(self.grid_icon)
+            onClick=lambda: self.show_planet_names())
+        self.widgets.append(self.show_planet_names_icon)
         self.max_width += self.icon_size + self.spacing
 
         self.buttons_icon = ImageButton(win=self.win,
@@ -181,6 +182,11 @@ class SettingsPanel(WidgetBase):
             onClick=lambda: self.set_global_variable("planet_button_display_on_panel", True))
         self.widgets.append(self.buttons_icon)
         self.max_width += self.icon_size + self.spacing + self.spacing
+
+    def show_planet_names(self):
+        for i in sprite_groups.planets.sprites():
+            i.show_text = not i.show_text
+
 
     def set_info_text(self):
         global_params.app.info_panel.set_text(info_panel_text_generator.info_text)
