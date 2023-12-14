@@ -67,7 +67,8 @@ class Selector(WidgetBase):
             onClick=lambda: self.select(-1),
             parent=self.parent,
             layer=self.layer,
-            name="minus_arrow"
+            name="minus_arrow",
+            repeat_clicks=True
             )
 
         self.plus_arrow = Button(win=pygame.display.get_surface(),
@@ -84,7 +85,8 @@ class Selector(WidgetBase):
             onClick=lambda: self.select(1),
             parent=self.parent,
             layer=self.layer,
-            name="plus_arrow"
+            name="plus_arrow",
+            repeat_clicks=True
             )
 
         self.buttons.append(self.minus_arrow)

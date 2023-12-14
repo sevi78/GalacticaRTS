@@ -6,7 +6,8 @@ from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.gui.widgets.buttons.moveable import Moveable
 from source.utils import global_params
 
-
+REPEAT_CLICK_EVENT = pygame.USEREVENT + 1
+INITIAL_DELAY_EVENT = pygame.USEREVENT + 2
 class Button(WidgetBase, Moveable):
     """ A customisable button for Pygame
 
@@ -34,6 +35,7 @@ class Button(WidgetBase, Moveable):
         self.parent = kwargs.get("parent")
         self.layer = kwargs.get("layer", 3)
         self.addition_value = kwargs.get("addition_value", None)
+        self.repeat_clicks = kwargs.get("repeat_clicks", False)
 
         # self.selected = False
         self.center = (
@@ -113,7 +115,7 @@ class Button(WidgetBase, Moveable):
 
             self.win.blit(self.circle, self.rect)
 
-    def listen(self, events):
+    def listen__(self, events):# orig
         """ Wait for inputs
 
         :param events: Use pygame.event.get()
@@ -181,6 +183,103 @@ class Button(WidgetBase, Moveable):
                             global_params.app.info_panel.set_text(self.info_text)
                             global_params.app.info_panel.set_planet_image(self.image, size=(
                                 85, 85), align="topright")
+            else:
+                self.clicked = False
+                self.colour = self.inactiveColour
+                self.borderColour = self.inactiveBorderColour
+                self.drawCircle(self.inactiveColour, 0)
+
+
+
+    def listen(self, events):# _with_repeat not working yet
+        """ Wait for inputs
+
+        :param events: Use pygame.event.get()
+        :type events: list of pygame.event.Event
+        """
+        if not inside_screen(self.get_position(), border=0):
+            return
+
+        global_params.app.tooltip_instance.reset_tooltip(self)
+
+        if not self._hidden and not self._disabled:
+            mouseState = Mouse.getMouseState()
+            x, y = Mouse.getMousePos()
+
+            if self.rect.collidepoint(x, y):
+                for event in events:
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        if mouseState == MouseState.CLICK:
+                            self.clicked = True
+                            self.onClick(*self.onClickParams)
+                            self.colour = self.pressedColour
+                            self.borderColour = self.pressedBorderColour
+                            self.drawCircle(self.pressedColour, 128)
+
+                            # set planet on click of the building slot buttons
+                            if self.parent:
+                                if hasattr(self.parent, "property"):
+                                    if self.parent.property == "planet":
+                                        global_params.app.set_selected_planet(self.parent)
+
+                                # set building_edit.input_box value
+                                if hasattr(self.parent, "property"):
+                                    if self.parent.property == "input_box":
+                                        if hasattr(self, "addition_value"):
+                                            value = int(self.parent.text) - int(self.addition_value)
+                                            self.parent.set_text(str(value))
+
+                            if self.string:
+                                global_params.app.build(self.string)
+
+                            # If repeat_clicks is True, set a timer to start repeating the click after 1 second
+                            if self.repeat_clicks:
+                                #pygame.time.set_timer(INITIAL_DELAY_EVENT, 700)  # 1000 milliseconds = 1 second
+                                pygame.time.set_timer(REPEAT_CLICK_EVENT, 120)  # 200 milliseconds
+
+
+                    # elif event.type == INITIAL_DELAY_EVENT:
+                    #     # After the initial delay, start repeating the click every 200 milliseconds
+                    #     pygame.time.set_timer(REPEAT_CLICK_EVENT, 120)  # 200 milliseconds
+                    #     pygame.time.set_timer(INITIAL_DELAY_EVENT, 0)  # Stop the initial delay timer
+
+                    elif event.type == REPEAT_CLICK_EVENT:
+                        # The timer has triggered a repeat click event
+                        self.onClick(*self.onClickParams)
+                        self.colour = self.pressedColour
+                        self.borderColour = self.pressedBorderColour
+                        self.drawCircle(self.pressedColour, 128)
+
+                    elif event.type == pygame.MOUSEBUTTONUP:
+                        if mouseState == MouseState.RELEASE and self.clicked:
+                            self.clicked = False
+                            self.onRelease(*self.onReleaseParams)
+
+                            # If repeat_clicks is True, stop the timer when the mouse button is released
+                            if self.repeat_clicks:
+                                pygame.time.set_timer(REPEAT_CLICK_EVENT, 0)  # Setting delay to 0 stops the timer
+
+                    elif mouseState == MouseState.DRAG and self.clicked:
+                        self.colour = self.pressedColour
+                        self.borderColour = self.pressedBorderColour
+                        self.drawCircle(self.pressedColour, 128)
+
+                    elif mouseState == MouseState.HOVER or mouseState == MouseState.DRAG:
+                        self.colour = self.hoverColour
+                        self.borderColour = self.hoverBorderColour
+                        self.drawCircle(self.hoverColour, 128)
+
+                        # set tooltip
+                        if self.tooltip:
+                            if self.tooltip != "":
+                                global_params.tooltip_text = self.tooltip
+
+                        # set info_panel
+                        if self.info_text:
+                            if self.info_text != "":
+                                global_params.app.info_panel.set_text(self.info_text)
+                                global_params.app.info_panel.set_planet_image(self.image, size=(
+                                    85, 85), align="topright")
             else:
                 self.clicked = False
                 self.colour = self.inactiveColour

@@ -38,7 +38,7 @@ class PlanetFactory:
                 moveable=global_params.moveable,
                 hover_image=get_image("selection_150x150.png"),
                 textVAlign="below_the_bottom",
-                layer=0,
+                layer=4,
                 id=value["id"],
                 orbit_object_id=value["orbit_object_id"],
                 image_name_small=value["image_name_small"],

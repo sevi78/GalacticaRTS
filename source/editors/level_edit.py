@@ -105,12 +105,12 @@ class LevelEdit(EditorBase, LevelEditBuilder):
         self.inputbox.disable()
 
         # lists
-        self.level_list = [_ for _ in range(10)]
-        self.planets_list = [_ for _ in range(10)]
-        self.suns_list = [_ for _ in range(5)]
-        self.moons_list = [_ for _ in range(10)]
-        self.width_list = [_ for _ in range(5000, 25000, 1000)]
-        self.height_list = [_ for _ in range(5000, 25000, 1000)]
+        self.level_list = [_ for _ in range(12)]
+        self.planets_list = [_ for _ in range(1, 25)]
+        self.suns_list = [_ for _ in range(1, 35)]
+        self.moons_list = [_ for _ in range(1, 50)]
+        self.width_list = [_ for _ in range(5000, 100000, 1000)]
+        self.height_list = [_ for _ in range(5000, 100000, 1000)]
         self.collectable_item_amount_list = [_ for _ in range(0, 50, 1)]
         self.universe_density_list = [_ for _ in range(0, 100, 10)]
         self.lists = ["level_list", "planets_list", "suns_list", "moons_list", "width_list", "height_list",
@@ -161,12 +161,13 @@ class LevelEdit(EditorBase, LevelEditBuilder):
         if not self.data:
             self.data = level_factory.load_level(0)
 
-        self.set_selector_current_value()
+
         planet_factory.delete_planets()
         # planet_factory.create_planets_from_json(self.level)
 
         planet_factory.create_planets_from_data(self.data)
-        self.set_data_to_editor()
+        self.set_data_to_editor(level)
+        self.set_selector_current_value()
         self.create_universe()
 
     def save_level(self):
@@ -181,7 +182,8 @@ class LevelEdit(EditorBase, LevelEditBuilder):
             (360, 360),
             event_text=event_text)
 
-    def set_data_to_editor(self):
+    def set_data_to_editor(self, level):
+        self.level = level
         self.planets = len(self.data["celestial_objects"].keys())
         self.moons = len([(key, value) for key, value in self.data["celestial_objects"].items() if
                           value["type"] == "moon"])
@@ -233,8 +235,7 @@ class LevelEdit(EditorBase, LevelEditBuilder):
         universe_factory.delete_artefacts()
         universe_factory.amount = int(math.sqrt(math.sqrt(self.width)) * self.data["globals"]["universe_density"])
         universe_factory.create_universe(0, 0, self.width, self.height)
-        universe_factory.create_artefacts(0, 0, self.width, self.height,
-            self.data["globals"]["collectable_item_amount"])
+        universe_factory.create_artefacts(0, 0, self.width, self.height, self.data["globals"]["collectable_item_amount"])
 
     def listen(self, events):
         """show or hide, navigate to planet on selection"""

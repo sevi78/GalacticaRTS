@@ -107,9 +107,9 @@ class DebugEdit(EditorBase):
             for obj in getattr(sprite_groups, key).sprites():
                 obj.debug = getattr(self, key + "_debug")
 
-        if key == "quadrants":
-            for k, v in level.quadrants.items():
-                v.debug = getattr(self, key + "_debug")
+        # if key == "quadrants":
+        #     for k, v in level.quadrants.items():
+        #         v.debug = getattr(self, key + "_debug")
 
     def get_checkbox_values(self):
         """gets the values from the checkboxes and calls update_planet_resources()"""
