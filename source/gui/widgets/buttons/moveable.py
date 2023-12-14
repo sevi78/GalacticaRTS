@@ -22,7 +22,7 @@ class Moveable:
 
     def set_pos_centered_on_top(self):
         h_offset = 0
-        if not global_params.planet_button_display_on_panel:
+        if not global_params.show_overview_buttons:
             len_buttons = len(self.ui_parent.planet_button_array.getButtons()) - len(self.ui_parent.overview_buttons)
 
         else:
@@ -44,7 +44,7 @@ class Moveable:
         # set planet_button_array to panel
         if hasattr(self, "ui_parent"):
             if self.ui_parent:
-                if global_params.planet_button_display_on_panel:
+                if global_params.show_overview_buttons:
                     if self.parent == global_params.app.selected_planet:
                         x = global_params.app.building_panel.surface_rect.x
                         y = global_params.app.building_panel.max_height + self.get_screen_height() * 6

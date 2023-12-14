@@ -1,6 +1,6 @@
 import pygame
 
-from source.editors import settings
+
 from source.game_play.navigation import navigate_to
 from source.gui.panels.toggle_switch import ToggleSwitch
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
@@ -46,26 +46,11 @@ class SettingsPanel(WidgetBase):
         self.init = 0
 
     def create_icons(self):
-        # settings icon
-        self.settings_icon = ImageButton(win=self.win,
-            x=self.get_screen_x(),
-            y=self.surface_rect.y + self.spacing,
-            width=self.icon_size,
-            height=self.icon_size,
-            isSubWidget=False,
-            parent=self,
-            image=pygame.transform.scale(get_image("settings_40x40.png"), (25, 25)),
-            tooltip="open settings menu",
-            frame_color=self.frame_color,
-            moveable=False,
-            include_text=True, layer=self.layer,
-            onClick=lambda: settings.main(surface=self.win))
-        self.widgets.append(self.settings_icon)
-        self.max_width += self.icon_size + self.spacing
+
 
         # ship icon
         self.spacehunter_icon = ImageButton(win=self.win,
-            x=self.settings_icon.get_screen_x() + 25,
+            x=self.get_screen_x(),
             y=self.surface_rect.y + self.spacing,
             width=self.icon_size,
             height=self.icon_size,
@@ -174,12 +159,12 @@ class SettingsPanel(WidgetBase):
             isSubWidget=False,
             parent=self,
             image=pygame.transform.scale(
-                get_image("build.png"), (25, 25)),
-            tooltip="show buttons on panel or on planet",
+                get_image("smile.png"), (25, 25)),
+            tooltip="show planet overview",
             frame_color=self.frame_color,
             moveable=False,
             include_text=True, layer=self.layer,
-            onClick=lambda: self.set_global_variable("planet_button_display_on_panel", True))
+            onClick=lambda: self.set_global_variable("show_overview_buttons", True))
         self.widgets.append(self.buttons_icon)
         self.max_width += self.icon_size + self.spacing + self.spacing
 

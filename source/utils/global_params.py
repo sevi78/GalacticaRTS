@@ -121,8 +121,8 @@ hover_object = None
 global edit_mode
 edit_mode = False
 
-global planet_button_display_on_panel
-planet_button_display_on_panel = True
+global show_overview_buttons
+show_overview_buttons = True
 
 global ui_rounded_corner_radius_small
 ui_rounded_corner_radius_small = int(settings["ui_rounded_corner_radius_small"])

@@ -1,5 +1,6 @@
 import pygame
 
+from source.editors import settings
 from source.gui.panels.info_panel_components.info_panel_text_generator import info_panel_text_generator
 from source.gui.panels.toggle_switch import ToggleSwitch
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
@@ -196,6 +197,23 @@ class AdvancedSettingsPanel(WidgetBase):
         self.widgets.append(self.font_edit_icon)
 
         self.max_width += self.icon_size + self.spacing + self.spacing
+
+        # settings icon
+        self.settings_icon = ImageButton(win=self.win,
+            x=self.get_screen_x(),
+            y=self.surface_rect.y + self.spacing,
+            width=self.icon_size,
+            height=self.icon_size,
+            isSubWidget=False,
+            parent=self,
+            image=pygame.transform.scale(get_image("settings_40x40.png"), (25, 25)),
+            tooltip="open settings menu",
+            frame_color=self.frame_color,
+            moveable=False,
+            include_text=True, layer=self.layer,
+            onClick=lambda: settings.main(surface=self.win))
+        self.widgets.append(self.settings_icon)
+        self.max_width += self.icon_size + self.spacing
 
     def set_info_text(self):
         global_params.app.info_panel.set_text(info_panel_text_generator.info_text)

@@ -64,7 +64,7 @@ def launch_missile(attacker, defender):
             loop_gif=True,
             move_to_target=True,
             align_image="topleft",
-            explosion_relative_gif_size=0.3,
+            explosion_relative_gif_size=1.0,
             layer=9,
             debug=False,
             target=defender)

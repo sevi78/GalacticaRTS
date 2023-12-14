@@ -332,7 +332,7 @@ class BuildingButtonWidget(WidgetBase):
         if not self.parent.name == "building panel":
             self.spacing = 5
             self.corner_radius = 5
-            if global_params.planet_button_display_on_panel:
+            if global_params.show_overview_buttons:
                 self.hide()
                 return
 
