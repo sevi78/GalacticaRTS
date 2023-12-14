@@ -13,6 +13,7 @@ from source.universe.celestial_objects.stars import FlickeringStar, PulsatingSta
 
 from source.utils import global_params
 from source.multimedia_library.images import get_image
+from source.utils.positioning import get_random_pos
 
 COMET_DIVIDE_FACTOR = 500
 ASTEROID_GIF_DIVIDE_FACTOR = 300
@@ -26,6 +27,7 @@ PULSATING_STAR_DIVIDE_FACTOR = 4
 
 class UniverseFactory:  # original for WidgedBase Widgets
     def __init__(self, win, x, y, width, height, layer):
+        self.central_compression = 1
         self.win = win
         self.layer = layer
         self.amount = int(math.sqrt(math.sqrt(width)) * global_params.settings["universe_density"])
@@ -78,11 +80,6 @@ class UniverseFactory:  # original for WidgedBase Widgets
 
     def get_random_image(self, images):
         return random.choice(images)
-
-    def get_random_pos(self):
-        x = random.randint(self.left_end, self.right_end)
-        y = random.randint(self.top_end, self.bottom_end)
-        return x, y
 
     def create_artefacts(self, x, y, width, height, amount):
         def select_resources():
@@ -162,7 +159,7 @@ class UniverseFactory:  # original for WidgedBase Widgets
     def create_stars(self):
         # star images
         for i in range(max(1, int(self.amount / STAR_DIVIDE_FACTOR))):
-            x, y = self.get_random_pos()
+            x, y = get_random_pos(self.left_end, self.right_end, self.top_end, self.bottom_end, self.central_compression)
 
             image = random.choice(self.star_images)
             w = image.get_rect().width
@@ -172,14 +169,14 @@ class UniverseFactory:  # original for WidgedBase Widgets
 
         # flickering stars
         for i in range(max(1, int(self.amount / FLICKERING_STAR_DIVIDE_FACTOR))):
-            x, y = self.get_random_pos()
+            x, y = get_random_pos(self.left_end, self.right_end, self.top_end, self.bottom_end, self.central_compression)
             w = random.randint(1, 10)
 
             flickering_star = FlickeringStar(self.win, x, y, w, w, layer=self.layer, parent=self, type="flickering_star")
 
         # puslating stars
         for i in range(max(1, int(self.amount / PULSATING_STAR_DIVIDE_FACTOR))):
-            x, y = self.get_random_pos()
+            x, y = get_random_pos(self.left_end, self.right_end, self.top_end, self.bottom_end, self.central_compression)
             w = 1
 
             pulsating_star = PulsatingStar(self.win, x, y, w, w, layer=self.layer, parent=self, type="pulsating_star")
@@ -191,7 +188,7 @@ class UniverseFactory:  # original for WidgedBase Widgets
             image = random.choice(self.galaxy_images)
             w = image.get_rect().width
             h = image.get_rect().height
-            x, y = self.get_random_pos()
+            x, y = get_random_pos(self.left_end, self.right_end, self.top_end, self.bottom_end, self.central_compression)
 
             galaxy = CelestialObjectStatic(self.win, x, y, w, h, image=image, layer=self.layer, parent=self, type="galaxy")
 
@@ -200,7 +197,7 @@ class UniverseFactory:  # original for WidgedBase Widgets
             image = random.choice(self.nebulae_images)
             w = image.get_rect().width
             h = image.get_rect().height
-            x, y = self.get_random_pos()
+            x, y = get_random_pos(self.left_end, self.right_end, self.top_end, self.bottom_end, self.central_compression)
 
             nebulae = CelestialObjectStatic(self.win, x, y, w, h, image=image, layer=self.layer, parent=self, type="nebulae")
 
@@ -209,7 +206,7 @@ class UniverseFactory:  # original for WidgedBase Widgets
             image = random.choice(self.asteroid_images)
             w = image.get_rect().width
             h = image.get_rect().height
-            x, y = self.get_random_pos()
+            x, y = get_random_pos(self.left_end, self.right_end, self.top_end, self.bottom_end, self.central_compression)
 
             asteroid = Asteroid(self.win, x, y, w, h, image=image, layer=self.layer, parent=self, type="asteroid")
 
@@ -217,7 +214,7 @@ class UniverseFactory:  # original for WidgedBase Widgets
             image = random.choice(self.asteroid_images)
             w = image.get_rect().width
             h = image.get_rect().height
-            x, y = self.get_random_pos()
+            x, y = get_random_pos(self.left_end, self.right_end, self.top_end, self.bottom_end, self.central_compression)
 
             asteroid = Asteroid(self.win, x, y, w, h, image=image, layer=self.layer, parent=self, type="asteroid", gif="asteroid.gif")
 
@@ -226,7 +223,7 @@ class UniverseFactory:  # original for WidgedBase Widgets
             image = random.choice(self.comet_images)
             w = image.get_rect().width
             h = image.get_rect().height
-            x, y = self.get_random_pos()
+            x, y = get_random_pos(self.left_end, self.right_end, self.top_end, self.bottom_end, self.central_compression)
 
             comet = Comet(self.win, x, y, w, h, image=image, layer=self.layer, parent=self, type="comet")
 

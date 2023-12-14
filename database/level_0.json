@@ -7,7 +7,8 @@
       "spaceship",
       "spacehunter"
     ],
-    "collectable_item_amount": 15
+    "collectable_item_amount": 15,
+    "central_compression": 1
   },
   "celestial_objects": {
     "0": {
@@ -73,7 +74,7 @@
       "world_height": 30,
       "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
       "population_grow": 0.0,
-      "alien_population": 0,
+      "alien_population": 1000,
       "buildings_max": 10,
       "building_slot_amount": 3,
       "specials": "[]",

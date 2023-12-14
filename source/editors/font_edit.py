@@ -14,6 +14,7 @@ class FontEdit(EditorBase):
 
         # lists
         self.selectors = []
+        self.current_font = None
         self.font_name_list = pygame.sysfont.get_fonts()
 
         #  widgets
@@ -23,6 +24,7 @@ class FontEdit(EditorBase):
         # create widgets
         self.create_selectors()
         self.create_close_button()
+        self.create_save_button(lambda: self.save_font(self.current_font), "save font")
         self.set_selector_current_value()
 
         # hide initially
@@ -32,11 +34,11 @@ class FontEdit(EditorBase):
         """
         """
         x = self.world_x - ARROW_SIZE / 2 + self.world_width / 2
-        y = 200
+        y = 130
         self.selector_font_name = Selector(self.win, x, self.world_y + y, ARROW_SIZE, self.frame_color, 9,
             self.spacing_x, {"list_name": "font_name_list", "list": self.font_name_list}, self, FONT_SIZE)
 
-        self.max_height = y
+        self.max_height = y + ARROW_SIZE
 
     def set_selector_current_value(self):
         """updates the selectors values
@@ -46,15 +48,18 @@ class FontEdit(EditorBase):
 
     def selector_callback(self, key, value):
         if key == "font_name":
+            self.current_font = value
             for key, widgetlist in WidgetHandler.layers.items():
                 # get widget
                 for widget in widgetlist:
                     if hasattr(widget, "font_size"):
                         widget.font = pygame.font.SysFont(value, widget.font_size)
                         global_params.font_name = value
-                        data = load_file("settings.json")
-                        data["font_name"] = value
-                        write_file("settings.json", data)
+
+    def save_font(self, value):
+        data = load_file("settings.json")
+        data["font_name"] = value
+        write_file("settings.json", data)
 
     def draw(self):
         if not self._hidden and not self._disabled:

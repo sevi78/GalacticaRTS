@@ -21,7 +21,7 @@ class BuildingFactoryJsonDictReader:
             if building in building_names.keys():
                 for item, value in building_names[building].items():
                     building_dict[item] = value
-        print("get_building_dict_from_buildings_json", building_dict)
+        #print("get_building_dict_from_buildings_json", building_dict)
         return building_dict
 
     def get_prices_from_buildings_json(self, building: str) -> dict:
@@ -95,6 +95,13 @@ class BuildingFactoryJsonDictReader:
     #         for building in category.values():
     #             building['technology_upgrade'] = {}
 
+    def get_all_building_names(self) -> list:
+        building_names = []
+        for category, buildings in self.json_dict.items():
+            for building in buildings.values():
+                building_names.append(building['name'])
+        return building_names
+
 
 class BuildingFactory(BuildingFactoryJsonDictReader):
     def __init__(self):
@@ -106,6 +113,9 @@ class BuildingFactory(BuildingFactoryJsonDictReader):
         that overgives the values to the planet if ready
         :param building: string
         """
+
+        if not building in self.get_all_building_names():
+            return
 
         prices = self.get_prices_from_buildings_json(building)
         planet = global_params.app.selected_planet
@@ -225,8 +235,10 @@ building_factory = BuildingFactory()
 
 
 def main():
-    building_factory.insert_technology_upgrade()
-    write_file("buildings.json", building_factory.json_dict)
+    # building_factory.insert_technology_upgrade()
+    # write_file("buildings.json", building_factory.json_dict)
+
+    print (building_factory.get_all_building_names())
 
 
 if __name__ == "__main__":

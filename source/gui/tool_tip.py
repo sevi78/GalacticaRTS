@@ -1,3 +1,5 @@
+from collections import Counter
+
 import pygame
 from pygame.locals import MOUSEMOTION
 from pygame_widgets import Mouse
@@ -5,6 +7,7 @@ from pygame_widgets import Mouse
 from source.database.saveload import load_file
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.utils import global_params
+from source.utils.text_formatter import format_number
 
 INVISIBLE_X = -1000
 INVISIBLE_Y = -1000
@@ -178,6 +181,68 @@ class ToolTipGenerator:
         text = price_text[:-2] + ". " + production_text[:-2]
 
         return text
+
+    def create_level_tooltip(self, level, data):
+        #print (f"create_level_tooltip:{data}")
+        # Count the number of planets
+        num_planets = sum(1 for obj in data["celestial_objects"].values() if obj["type"] == "planet")
+        num_moons = sum(1 for obj in data["celestial_objects"].values() if obj["type"] == "moon")
+
+        # Count the number of suns
+        num_suns = sum(1 for obj in data["celestial_objects"].values() if obj["type"] == "sun")
+
+        # Get the possible resources
+        resources = set()
+        for obj in data["celestial_objects"].values():
+            resources.update(obj["possible_resources"])
+
+        # Count all resources in all planets
+        all_resources = []
+        for obj in data["celestial_objects"].values():
+            all_resources.extend(obj["possible_resources"])
+
+        # Count the alien_population of all planets and moons
+        alien_population_count = sum(
+            obj["alien_population"] for obj in data["celestial_objects"].values() if obj["type"] in ["planet", "moon"])
+
+        # Create the tooltip string
+        if num_suns > 1:
+            suntext = f"There are {num_suns} suns us this part of the universe,"
+        else:
+            suntext = f"There is a single sun in this part of the universe"
+
+        if num_planets > 1:
+            planettext = f"with {num_planets} planets"
+        else:
+            planettext = f"with a single planet"
+
+        if num_moons > 1:
+            moontext = f"and {num_moons} moons."
+        else:
+            moontext = f"and a single moon."
+
+        if alien_population_count > 0:
+            alien_text = f"An estimated {format_number(alien_population_count, 1)} extraterrestrials live there. "
+        else:
+            alien_text = "(un)fortunately there are no aliens here."
+
+        # Order the resources from most to least
+        ordered_resources = dict(sorted(Counter(all_resources).items(), key=lambda item: item[1], reverse=True))
+
+        # Convert the ordered_resources dictionary to a list of tuples and then access the first item
+        ordered_resources_list = list(ordered_resources.items())
+        if ordered_resources_list[0][0] == "city":
+            resource_text = f"A good place to grow population."
+        else:
+            resource_text = f"plenty of {ordered_resources_list[0][0]} can be found here !"
+
+        tooltip = (f"level {level}: {suntext} {planettext} {moontext} Possible resources: {', '.join(resources)}."
+                   f" {resource_text} {alien_text} ")
+
+
+
+        return tooltip
+
 
 
 tooltip_generator = ToolTipGenerator()

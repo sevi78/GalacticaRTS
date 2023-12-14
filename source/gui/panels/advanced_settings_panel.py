@@ -50,7 +50,7 @@ class AdvancedSettingsPanel(WidgetBase):
             height=self.icon_size,
             isSubWidget=False,
             parent=self,
-            image=pygame.transform.scale(get_image("level_select_icon.png"), (25, 25)),
+            image=pygame.transform.scale(get_image("level_icon.png"), (25, 25)),
             tooltip="open level select",
             frame_color=self.frame_color,
             moveable=False,

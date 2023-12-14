@@ -45,7 +45,7 @@ class ImageButton(WidgetBase):
         self.property = kwargs.get("property")
 
         # Text (Remove if using PyInstaller)
-        self.textColour = kwargs.get('textColour', (0, 0, 0))
+        self.textColour = kwargs.get('textColour', (255,255,25))
         self.font_size = kwargs.get('font_size', 20)
         self.string = kwargs.get('text', '')
         self.font = kwargs.get('font', pygame.font.SysFont(global_params.font_name, self.font_size))

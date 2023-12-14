@@ -8,7 +8,7 @@ from source.multimedia_library.images import get_image
 
 
 class Selector(WidgetBase):
-    def __init__(self, win, x, y, buttonsize, color, layer, spacing, data, parent, font_size):
+    def __init__(self, win, x, y, buttonsize, color, layer, spacing, data, parent, font_size, **kwargs):
         WidgetBase.__init__(self, win, x, y, buttonsize, buttonsize, isSubWidget=False)
         # args
         self.win = win
@@ -19,6 +19,7 @@ class Selector(WidgetBase):
         self.layer = layer
         self.spacing = spacing
         self.parent = parent
+        self.repeat_clicks = kwargs.get("repeat_clicks", False)
 
         # widgets
         self.plus_arrow = None
@@ -68,7 +69,7 @@ class Selector(WidgetBase):
             parent=self.parent,
             layer=self.layer,
             name="minus_arrow",
-            repeat_clicks=True
+            repeat_clicks=self.repeat_clicks
             )
 
         self.plus_arrow = Button(win=pygame.display.get_surface(),
@@ -86,7 +87,7 @@ class Selector(WidgetBase):
             parent=self.parent,
             layer=self.layer,
             name="plus_arrow",
-            repeat_clicks=True
+            repeat_clicks=self.repeat_clicks
             )
 
         self.buttons.append(self.minus_arrow)

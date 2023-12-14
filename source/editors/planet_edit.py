@@ -58,11 +58,11 @@ class PlanetEditBuilder:
         y += self.spacing_y
 
         self.selector_world_width = Selector(self.win, x, self.world_y + y, ARROW_SIZE, self.frame_color, 9, self.spacing_x,
-            {"list_name": "world_width_list", "list": self.world_width_list}, self, FONT_SIZE)
+            {"list_name": "world_width_list", "list": self.world_width_list}, self, FONT_SIZE, repeat_clicks=True)
         y += self.spacing_y
 
         self.selector_world_height = Selector(self.win, x, self.world_y + y, ARROW_SIZE, self.frame_color, 9, self.spacing_x,
-            {"list_name": "world_height_list", "list": self.world_height_list}, self, FONT_SIZE)
+            {"list_name": "world_height_list", "list": self.world_height_list}, self, FONT_SIZE, repeat_clicks=True)
         y += self.spacing_y
 
         self.selector_image_name_small = Selector(self.win, x, self.world_y + y, ARROW_SIZE, self.frame_color, 9,
@@ -78,7 +78,7 @@ class PlanetEditBuilder:
         y += self.spacing_y
 
         self.selector_orbit_speed = Selector(self.win, x, self.world_y + y, ARROW_SIZE, self.frame_color, 9,
-            self.spacing_x, {"list_name": "orbit_speed_list", "list": self.orbit_speed_list}, self, FONT_SIZE)
+            self.spacing_x, {"list_name": "orbit_speed_list", "list": self.orbit_speed_list}, self, FONT_SIZE, repeat_clicks=True)
         y += self.spacing_y
 
         self.selector_buildings_max = Selector(self.win, x, self.world_y + y, ARROW_SIZE, self.frame_color, 9,
@@ -90,11 +90,11 @@ class PlanetEditBuilder:
         y += self.spacing_y
 
         self.selector_orbit_angle = Selector(self.win, x, self.world_y + y, ARROW_SIZE, self.frame_color, 9,
-            self.spacing_x, {"list_name": "orbit_angle_list", "list": self.orbit_angle_list}, self, FONT_SIZE)
+            self.spacing_x, {"list_name": "orbit_angle_list", "list": self.orbit_angle_list}, self, FONT_SIZE, repeat_clicks=True)
         y += self.spacing_y
 
         self.selector_alien_population = Selector(self.win, x, self.world_y + y, ARROW_SIZE, self.frame_color, 9,
-            self.spacing_x, {"list_name": "alien_population", "list": self.alien_population_list}, self, FONT_SIZE)
+            self.spacing_x, {"list_name": "alien_population", "list": self.alien_population_list}, self, FONT_SIZE, repeat_clicks=True)
 
         y += self.spacing_y
         self.max_height = y

@@ -1,8 +1,11 @@
 import os
 import pygame
 
+from source.database.saveload import load_file
 from source.editors.editor_base.editor_base import EditorBase
 from source.editors.editor_base.editor_config import TOP_SPACING
+from source.gui.tool_tip import tooltip_generator
+from source.gui.widgets.Icon import Icon
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.multimedia_library.images import get_image
 from source.utils import global_params
@@ -49,6 +52,15 @@ class LevelSelect(EditorBase):
             print("An error occurred: ", e)
             return []
 
+    def update_icons(self):
+        for i in self.buttons:
+            if i.name:
+                if i.name.startswith("level"):
+                    image_name = f"{i.name.split('.json')[0]}{'.png'}"
+                    i.setImage(get_image(image_name))
+
+                    print ("update_icons", image_name)
+
     def create_icons(self):
         rows = 3
         columns = 3
@@ -62,6 +74,8 @@ class LevelSelect(EditorBase):
 
         for index, i in enumerate(data):
             level = i.split('_')[1].split('.json')[0]
+            tooltip = tooltip_generator.create_level_tooltip(level, load_file(f"level_{level}.json"))
+
             icon = ImageButton(win=self.win,
                 x=self.get_screen_x() + x,
                 y=self.get_screen_y() + y + TOP_SPACING,
@@ -70,13 +84,16 @@ class LevelSelect(EditorBase):
                 isSubWidget=False,
                 parent=self,
                 image=pygame.transform.scale(get_image(f"{i.split('.json')[0]}.png"), (button_size, button_size)),
-                tooltip=f"select level {level}",
+                tooltip=tooltip,
                 frame_color=self.frame_color,
                 moveable=False,
                 include_text=True,
                 layer=self.layer,
                 onClick=lambda level_=level: self.select_level(level_),
-                name=i
+                name=i,
+                text=level,
+                textColour=self.frame_color,
+                font_size= 50
                 )
             self.buttons.append(icon)
             self.widgets.append(icon)

@@ -232,13 +232,6 @@ class EventPanel(TextWrap, EditorBase, InterfaceData):
 
         self.obsolete_events.append(self.game_event)
 
-        # dirty hack to make shure the planets get loaded correctly
-        if len(self.obsolete_events) == 2:
-            #planet_factory.load_planets()
-            print("""event_panel.close_event: dirty hack to make shure the planets get loaded correctly:
-                     if len(self.obsolete_events) == 2:
-                            self.parent.load_planets()""")
-
     def create_random_event(self):
         if self.event_time > self.random_event_time:
             self.random_event_time += random.randint(self.min_intervall, self.intervall) * global_params.game_speed

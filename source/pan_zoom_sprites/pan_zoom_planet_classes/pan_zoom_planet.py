@@ -137,7 +137,7 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
         del self.planet_defence
 
         self.kill()
-        print("garbage_handler.get_all_references", garbage_handler.get_all_references(self))
+        #print("garbage_handler.get_all_references", garbage_handler.get_all_references(self))
         del self
 
     def select(self, value):

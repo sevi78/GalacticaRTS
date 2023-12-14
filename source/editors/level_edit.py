@@ -2,6 +2,7 @@ import math
 import random
 import pygame
 
+from source.draw.zoomable_circle import draw_zoomable_circle
 from source.draw.zoomable_rect import draw_zoomable_rect
 from source.editors.editor_base.editor_base import EditorBase
 from source.editors.editor_base.editor_config import ARROW_SIZE, FONT_SIZE, TOP_SPACING
@@ -87,7 +88,7 @@ class LevelEditBuilder:
         for i in self.lists:
             setattr(self, "selector_" + i.split("_list")[0],
                 Selector(self.win, x, self.world_y + y, ARROW_SIZE, self.frame_color, 9, self.spacing_x,
-                    {"list_name": i, "list": getattr(self, i)}, self, FONT_SIZE))
+                    {"list_name": i, "list": getattr(self, i)}, self, FONT_SIZE, repeat_clicks=True))
 
             y += self.spacing_y
             self.max_height = y
@@ -105,18 +106,20 @@ class LevelEdit(EditorBase, LevelEditBuilder):
         self.inputbox.disable()
 
         # lists
+        self.central_compression_list = [_ for _ in range(100)]
         self.level_list = [_ for _ in range(12)]
         self.planets_list = [_ for _ in range(1, 25)]
         self.suns_list = [_ for _ in range(1, 35)]
         self.moons_list = [_ for _ in range(1, 50)]
-        self.width_list = [_ for _ in range(5000, 100000, 1000)]
-        self.height_list = [_ for _ in range(5000, 100000, 1000)]
+        self.width_list = [_ for _ in range(5000, 1000000, 1000)]
+        self.height_list = [_ for _ in range(5000, 1000000, 1000)]
         self.collectable_item_amount_list = [_ for _ in range(0, 50, 1)]
-        self.universe_density_list = [_ for _ in range(0, 100, 10)]
+        self.universe_density_list = [_ for _ in range(0, 110, 10)]
         self.lists = ["level_list", "planets_list", "suns_list", "moons_list", "width_list", "height_list",
-                      "collectable_item_amount_list", "universe_density_list"]
+                      "collectable_item_amount_list", "universe_density_list", "central_compression_list"]
 
         # current values
+        self.central_compression = 1
         self._level = 0
         self.level = 0
         self.planets = 3
@@ -172,7 +175,6 @@ class LevelEdit(EditorBase, LevelEditBuilder):
 
     def save_level(self):
         level_factory.save_level(self.level, self.data)
-
         # save screenshot
         screen_x, screen_y = pan_zoom_handler.world_2_screen(0, 0)
         capture_screenshot(
@@ -181,6 +183,9 @@ class LevelEdit(EditorBase, LevelEditBuilder):
             (screen_x, screen_y, self.width * pan_zoom_handler.zoom, self.height * pan_zoom_handler.zoom),
             (360, 360),
             event_text=event_text)
+
+        self.parent.level_select.get_data()
+        self.parent.level_select.update_icons()
 
     def set_data_to_editor(self, level):
         self.level = level
@@ -208,6 +213,10 @@ class LevelEdit(EditorBase, LevelEditBuilder):
         setattr(self, key, value)
         if key in self.data["globals"].keys():
             self.data["globals"][key] = value
+
+
+        if key == "central_compression":
+            universe_factory.central_compression = value
 
     def randomize_level(self):
         ignorables = ["level"]
@@ -252,3 +261,4 @@ class LevelEdit(EditorBase, LevelEditBuilder):
             self.draw_frame()
             self.inputbox.update()
             draw_zoomable_rect(self.win, colors.ui_darker, 0, 0, self.width, self.height, border_radius=int(pan_zoom_handler.zoom * 250))
+            draw_zoomable_circle(self.win, colors.ui_darker, 0+self.width/2, 0+self.width/2, self.width/2)

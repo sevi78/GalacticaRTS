@@ -54,7 +54,7 @@ class BuildingEdit(EditorBase):
     @category.setter
     def category(self, value):
         self._category = value
-        print("BuildingEdit.category.setter:", self.category)
+        # print("BuildingEdit.category.setter:", self.category)
 
     @property
     def building(self):

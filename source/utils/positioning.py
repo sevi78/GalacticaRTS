@@ -1,4 +1,5 @@
 import math
+import random
 
 import pygame
 from pygame_widgets.util import drawText
@@ -103,6 +104,16 @@ def prevent_object_overlap(objects, min_dist):
                     obj2.world_y -= dy * adjustment
 
 
+def get_random_pos(left_end,right_end,top_end, bottom_end, central_compression):  # circular, more dense in the center
+    radius = (right_end - left_end) / 2
+    center_x = (right_end + left_end) / 2
+    center_y = (top_end + bottom_end) / 2
 
+    theta = 2 * math.pi * random.random()  # Random angle
+    r = radius * (random.random() ** central_compression)  # Random radius to the power of 'power'
 
+    x = center_x + r * math.cos(theta)
+    y = center_y + r * math.sin(theta)
+
+    return x, y
 
