@@ -13,6 +13,7 @@ INVISIBLE_X = -1000
 INVISIBLE_Y = -1000
 INVISIBLE_X_OFFSET = 10
 INVISIBLE_Y_OFFSET = 10
+TOOLTIP_ALPHA = 200
 
 
 class ToolTip(WidgetBase):
@@ -56,7 +57,7 @@ class ToolTip(WidgetBase):
         self.height = height
         self.size = (self.world_width, self.height)
         self.rect_filled = pygame.surface.Surface(self.size)
-        self.rect_filled.set_alpha(250)
+        self.rect_filled.set_alpha(TOOLTIP_ALPHA)
         self.parent = parent
 
         # text
@@ -138,7 +139,7 @@ class ToolTip(WidgetBase):
         self.size = (self.world_width, self.height)
 
         self.rect_filled = pygame.surface.Surface(self.size)
-        self.rect_filled.set_alpha(150)
+        self.rect_filled.set_alpha(TOOLTIP_ALPHA)
 
         self.win.blit(self.rect_filled, (self.world_x, self.world_y))
         self.win.blit(self.text_img, (self.world_x + 5, self.world_y + 5))
@@ -183,12 +184,13 @@ class ToolTipGenerator:
         return text
 
     def create_level_tooltip(self, level, data):
-        #print (f"create_level_tooltip:{data}")
-        # Count the number of planets
+        # get the size of the level
+        width, height = (format_number(data["globals"]["width"] * 1000, 1),
+                         format_number(data["globals"]["height"] * 1000, 1))
+
+        # Count the number of planets, sun, moons
         num_planets = sum(1 for obj in data["celestial_objects"].values() if obj["type"] == "planet")
         num_moons = sum(1 for obj in data["celestial_objects"].values() if obj["type"] == "moon")
-
-        # Count the number of suns
         num_suns = sum(1 for obj in data["celestial_objects"].values() if obj["type"] == "sun")
 
         # Get the possible resources
@@ -201,15 +203,22 @@ class ToolTipGenerator:
         for obj in data["celestial_objects"].values():
             all_resources.extend(obj["possible_resources"])
 
+        # Order the resources from most to least
+        ordered_resources = dict(sorted(Counter(all_resources).items(), key=lambda item: item[1], reverse=True))
+
+        # Convert the ordered_resources dictionary to a list of tuples and then access the first item
+        ordered_resources_list = list(ordered_resources.items())
+
         # Count the alien_population of all planets and moons
         alien_population_count = sum(
             obj["alien_population"] for obj in data["celestial_objects"].values() if obj["type"] in ["planet", "moon"])
 
-        # Create the tooltip string
+        # Create the tooltip strings
+        area_text = f"{width} x{height} km"
         if num_suns > 1:
-            suntext = f"There are {num_suns} suns us this part of the universe,"
+            suntext = f"There are {num_suns} suns in this area of {area_text} of the universe"
         else:
-            suntext = f"There is a single sun in this part of the universe"
+            suntext = f"There is a single sun in this area of {area_text} of the universe"
 
         if num_planets > 1:
             planettext = f"with {num_planets} planets"
@@ -226,23 +235,17 @@ class ToolTipGenerator:
         else:
             alien_text = "(un)fortunately there are no aliens here."
 
-        # Order the resources from most to least
-        ordered_resources = dict(sorted(Counter(all_resources).items(), key=lambda item: item[1], reverse=True))
-
-        # Convert the ordered_resources dictionary to a list of tuples and then access the first item
-        ordered_resources_list = list(ordered_resources.items())
         if ordered_resources_list[0][0] == "city":
             resource_text = f"A good place to grow population."
         else:
             resource_text = f"plenty of {ordered_resources_list[0][0]} can be found here !"
 
+
+        # create the final tooltip
         tooltip = (f"level {level}: {suntext} {planettext} {moontext} Possible resources: {', '.join(resources)}."
                    f" {resource_text} {alien_text} ")
 
-
-
         return tooltip
-
 
 
 tooltip_generator = ToolTipGenerator()

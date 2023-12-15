@@ -4,6 +4,7 @@ import pygame
 from source.database.saveload import load_file
 from source.editors.editor_base.editor_base import EditorBase
 from source.editors.editor_base.editor_config import TOP_SPACING
+from source.gui.panels.info_panel_components.info_panel_text_generator import info_panel_text_generator
 from source.gui.tool_tip import tooltip_generator
 from source.gui.widgets.Icon import Icon
 from source.gui.widgets.buttons.image_button import ImageButton
@@ -74,7 +75,9 @@ class LevelSelect(EditorBase):
 
         for index, i in enumerate(data):
             level = i.split('_')[1].split('.json')[0]
-            tooltip = tooltip_generator.create_level_tooltip(level, load_file(f"level_{level}.json"))
+            level_dict = load_file(f"level_{level}.json")
+            tooltip = tooltip_generator.create_level_tooltip(level, level_dict)
+            infotext = info_panel_text_generator.create_create_info_panel_level_text(level, level_dict)
 
             icon = ImageButton(win=self.win,
                 x=self.get_screen_x() + x,
@@ -93,7 +96,9 @@ class LevelSelect(EditorBase):
                 name=i,
                 text=level,
                 textColour=self.frame_color,
-                font_size= 50
+                font_size= 50,
+                info_text=infotext,
+                info_panel_alpha=255
                 )
             self.buttons.append(icon)
             self.widgets.append(icon)

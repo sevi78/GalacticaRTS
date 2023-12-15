@@ -121,8 +121,8 @@ class InfoPanel(WidgetBase, TextWrap):
         self.planet_rect = self.planet_image.get_rect()
 
         if align == "topright":
-            self.planet_rect.right = self.rect_filled.get_rect().right + self.get_screen_x()
-            self.planet_rect.top = self.rect_filled.get_rect().top + self.get_screen_y()
+            self.planet_rect.right = self.rect_filled.get_rect().right + self.get_screen_x() - 10
+            self.planet_rect.top = self.rect_filled.get_rect().top + self.get_screen_y() + 10
 
         elif align == "center":
             self.planet_rect.left = self.world_x + self.surface_rect.width / 2

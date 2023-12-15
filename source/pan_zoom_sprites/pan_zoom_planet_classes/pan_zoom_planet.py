@@ -4,8 +4,8 @@ from pprint import pprint
 import pygame
 from pygame import MOUSEBUTTONDOWN, MOUSEBUTTONUP, MOUSEMOTION
 from pygame_widgets.mouse import Mouse, MouseState
-#from source.database.database_access import create_connection, get_database_file_path
 
+from source.draw.circles import draw_transparent_circle
 from source.gui.lod import inside_screen
 from source.gui.widgets.widget_handler import WidgetHandler
 from source.pan_zoom_sprites.pan_zoom_planet_classes.pan_zoom_planet_orbit_draw import draw_orbits
@@ -231,6 +231,8 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
                     self.draw_hover_circle()
                     if self.tooltip != "":
                         global_params.tooltip_text = self.tooltip
+                        #draw_transparent_circle(self.win,self.planet_defence.attack_distance_circle_surface, self.frame_color, self.center, self.planet_defence.attack_distance, 20)
+                        draw_transparent_circle(self.win, self.frame_color, self.center, self.planet_defence.attack_distance, 20)
             else:
                 self.clicked = False
 
@@ -238,6 +240,7 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
         self.set_screen_position()
         self.update_pan_zoom_sprite()
         draw_orbits(self)
+        self.planet_defence.update()
         try:
             global_params.app.tooltip_instance.reset_tooltip(self)
         except:

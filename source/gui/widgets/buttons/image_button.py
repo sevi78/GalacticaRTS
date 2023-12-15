@@ -111,7 +111,7 @@ class ImageButton(WidgetBase):
                     if self.info_text:
                         if self.info_text != "":
                             global_params.app.info_panel.set_text(self.info_text)
-                            global_params.app.info_panel.set_planet_image(self.image_raw, align="topright")
+                            global_params.app.info_panel.set_planet_image(self.image_raw, align="topright", alpha=self.info_panel_alpha)
 
                     # set tooltip
                     if self.tooltip:

@@ -59,3 +59,18 @@ def dim_color(color, value, min_value):
     b = max(min_value, min(255, int(b * fade_factor)))
 
     return r, g, b
+
+def gradient_color(colors, progress):
+    # Calculate the index of the two colors to interpolate between
+    index = int(progress * (len(colors) - 1))
+    # If progress is 1, return the last color
+    if progress == 1:
+        return colors[-1]
+    # Calculate the progress between the two colors
+    color_progress = progress * (len(colors) - 1) - index
+    # Interpolate between the two colors
+    return (
+        int(colors[index][0] * (1 - color_progress) + colors[index + 1][0] * color_progress),
+        int(colors[index][1] * (1 - color_progress) + colors[index + 1][1] * color_progress),
+        int(colors[index][2] * (1 - color_progress) + colors[index + 1][2] * color_progress),
+        )

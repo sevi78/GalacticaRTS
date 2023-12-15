@@ -41,6 +41,7 @@ class PanZoomShipParams():
         self.hum = sounds.hum1
         self.sound_channel = 1
         self.energy_use = SHIP_ENERGY_USE
+        self.info_panel_alpha= kwargs.get("info_panel_alpha", 255)
 
         # load_from_db Game variables
         self.food = kwargs.get("food", 100)
@@ -166,7 +167,7 @@ class PanZoomShipParams():
             text += f"target_reached:{self.target_reached}\n"
 
         self.parent.info_panel.set_text(text)
-        self.parent.info_panel.set_planet_image(self.image_raw)
+        self.parent.info_panel.set_planet_image(self.image_raw, alpha=self.info_panel_alpha)
 
     def set_tooltip(self):
         text = "selected: " + str(self.selected)

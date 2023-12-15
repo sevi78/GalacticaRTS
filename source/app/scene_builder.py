@@ -4,10 +4,10 @@ import pygame
 
 from source.app.ui_helper import UIHelper
 from source.configuration.economy_params import EconomyParams
-#from source.database.database_access import get_database_file_path
+# from source.database.database_access import get_database_file_path
 from source.database.saveload import load_file
 from source.factories.planet_factory import planet_factory
-#from source.pan_zoom_sprites.pan_zoom_collectable_item import PanZoomCollectableItem
+# from source.pan_zoom_sprites.pan_zoom_collectable_item import PanZoomCollectableItem
 from source.pan_zoom_sprites.pan_zoom_ship_classes.pan_zoom_ships import Spaceship, Spacehunter, Cargoloader
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zoom_handler
 from source.universe.background_image import BackgroundImage
@@ -64,8 +64,7 @@ class SceneBuilder(EconomyParams, GameObjectStorage):
         # planets
         # planet_factory.create_planets_from_db(get_database_file_path())
 
-
-        #planet_factory.create_planets_from_json(0)
+        # planet_factory.create_planets_from_json(0)
         planet_factory.create_planets_from_data(load_file(f"level_{0}.json"))
 
         # artefacts
@@ -123,15 +122,16 @@ class SceneBuilder(EconomyParams, GameObjectStorage):
         if class_ == "Spaceship":
             ship = Spaceship(global_params.win, x, y, size_x, size_y, pan_zoom_handler, "spaceship_30x30.png",
                 debug=False, group="ships", parent=self, rotate_to_target=True, move_to_target=True,
-                align_image="center", layer=1)
+                align_image="center", layer=1, info_panel_alpha=80)
 
         if class_ == "Spacehunter":
             ship = Spacehunter(global_params.win, x, y, size_x, size_y, pan_zoom_handler, "spacehunter_30x30.png",
                 debug=False, group="ships", parent=self, rotate_to_target=True, move_to_target=True,
-                align_image="center", layer=1)
+                align_image="center", layer=1, info_panel_alpha=80)
 
         if class_ == "Cargoloader":
             ship = Cargoloader(global_params.win, x, y, size_x + 20, size_y + 20, pan_zoom_handler, "cargoloader_30x30.png",
                 debug=False, group="ships", parent=self, rotate_to_target=True, move_to_target=True,
-                align_image="center", layer=1)
+                align_image="center", layer=1, info_panel_alpha=80)
+
         return ship

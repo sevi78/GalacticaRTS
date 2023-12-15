@@ -1,15 +1,16 @@
+from collections import Counter
 
 from source.database.saveload import load_file
 from source.factories.building_factory import building_factory
-
+from source.utils.positioning import distance_between_points
+from source.utils.text_formatter import format_number
 
 
 class InfoPanelTextGenerator:
     def __init__(self):
         self.json_dict = load_file("buildings.json")
-        self.info_text = "PanZoomShip: rightclick to move to a planet, or reload the ship.\n\nctrl and mouse click to navigate\n\n" \
-                         "numbers 1-9 to make layers visible or not\n\nb to open build menu\n\npress E for planet edit\n\n" \
-                         "press SPACE to pause game\n\npress Z for Zen-Modus"
+        self.info_text = "Ships: right click to move to a planet, or reload the ship.\n\nctrl and mouse click to navigate\n\n" \
+                         "press SPACE to pause game.\n\n\n\nproduce enough food to make you population grow! "
 
     def get_building(self, building):
         dict_ = {}
@@ -58,9 +59,9 @@ class InfoPanelTextGenerator:
         return text
 
     def create_info_panel_planet_text(self, obj):
-        #text_keys = ["name", "possible_resources", "specials", "buildings_max", "alien_population", "orbit_speed",
+        # text_keys = ["name", "possible_resources", "specials", "buildings_max", "alien_population", "orbit_speed",
         #             "orbit_distance", "type"]
-        #orbit_object = [i for i in sprite_groups.planets if i.id == obj.orbit_object_id]
+        # orbit_object = [i for i in sprite_groups.planets if i.id == obj.orbit_object_id]
         # for i in text_keys:
         #
         #     print (f"{i}:{getattr(obj, i)}")
@@ -118,8 +119,9 @@ class InfoPanelTextGenerator:
         text += "Possible resources on this planet include:\n\n"
         for resource in obj.possible_resources:
             text += f"- {resource}\n"
-
-        text += f"\nThe planet's orbits around its sun at a distance of {obj.orbit_distance} with a speed of {obj.orbit_speed}.\n"
+        distance = distance_between_points(obj.world_x, obj.world_y, obj.orbit_object.world_x, obj.orbit_object.world_y)
+        text += (f"\nThe planet's orbits around its sun at a distance of {format_number(distance * 1000, 1)}"
+                 f" km with a speed of {format_number(obj.orbit_speed * 1000, 1)}km/s.\n")
 
         return text
 
@@ -140,6 +142,83 @@ class InfoPanelTextGenerator:
             text += key + ": " + str(value) + "\n"
 
         return text
+
+    def create_create_info_panel_level_text(self, level: int, data: dict) -> str:
+        # get the size of the level
+        width, height = (format_number(data["globals"]["width"] * 1000, 1),
+                         format_number(data["globals"]["height"] * 1000, 1))
+
+        # Count the number of planets, sun, moons
+        num_planets = sum(1 for obj in data["celestial_objects"].values() if obj["type"] == "planet")
+        num_moons = sum(1 for obj in data["celestial_objects"].values() if obj["type"] == "moon")
+        num_suns = sum(1 for obj in data["celestial_objects"].values() if obj["type"] == "sun")
+
+        # Get the possible resources
+        resources = set()
+        for obj in data["celestial_objects"].values():
+            resources.update(obj["possible_resources"])
+
+        # Count all resources in all planets
+        all_resources = []
+        for obj in data["celestial_objects"].values():
+            all_resources.extend(obj["possible_resources"])
+
+        # Order the resources from most to least
+        ordered_resources = dict(sorted(Counter(all_resources).items(), key=lambda item: item[1], reverse=True))
+
+        # Convert the ordered_resources dictionary to a list of tuples and then access the first item
+        ordered_resources_list = list(ordered_resources.items())
+
+        # Count the alien_population of all planets and moons
+        alien_population_count = sum(
+            obj["alien_population"] for obj in data["celestial_objects"].values() if obj["type"] in ["planet", "moon"])
+
+        # Create the tooltip strings
+        area_text = f"{width} x{height} km"
+        if num_suns > 1:
+            suntext = f"There are {num_suns} suns in this area of {area_text} of the universe "
+        else:
+            suntext = f"There is a single sun in this area of {area_text} of the universe "
+
+        if num_planets > 1:
+            planettext = f"with {num_planets} planets"
+        else:
+            planettext = f"with a single planet"
+
+        if num_moons > 1:
+            moontext = f"and {num_moons} moons."
+        else:
+            moontext = f"and a single moon."
+
+        if alien_population_count > 0:
+            alien_text = f"An estimated {format_number(alien_population_count, 1)} extraterrestrials live there. "
+        else:
+            alien_text = "(un)fortunately there are no aliens here."
+
+        if ordered_resources_list[0][0] == "city":
+            resource_text = f"A good place to grow population."
+        else:
+            resource_text = f"plenty of {ordered_resources_list[0][0]} can be found here !"
+
+        # create the final tooltip
+        infotext = f"level {level}:\n\n\n\n\n\n"
+        infotext +="stats:"
+        #infotext += "\u0332".join("stats:")
+
+        res_string = ""
+        for i in resources:
+            res_string += i + "\n"
+
+        infotext += (f"\n\narea: {area_text}\nsuns: {num_suns}\nplanets: {num_planets}\nmoons: {num_moons}\n"
+                     f"alien population: {format_number(alien_population_count, 3)}\n\nresources:\n\n{res_string}\n\n")
+
+
+        infotext += (f"{suntext}{planettext}{moontext}\n"
+                   f"{resource_text}\n{alien_text}")
+
+
+
+        return infotext
 
     def get_info_text(self):
         return self.info_text

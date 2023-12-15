@@ -17,6 +17,7 @@ class WidgetBaseParams:
         self.children = []
         self.info_text = kwargs.get("info_text", "")
         self.frame_color = colors.frame_color
+        self.info_panel_alpha = kwargs.get("info_panel_alpha", 255)
 
         #  widgets
         self.widgets = []
