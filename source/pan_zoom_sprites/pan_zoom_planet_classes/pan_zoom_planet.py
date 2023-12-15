@@ -240,7 +240,7 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
         self.set_screen_position()
         self.update_pan_zoom_sprite()
         draw_orbits(self)
-        self.planet_defence.update()
+
         try:
             global_params.app.tooltip_instance.reset_tooltip(self)
         except:

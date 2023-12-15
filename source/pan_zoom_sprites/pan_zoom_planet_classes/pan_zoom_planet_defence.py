@@ -32,7 +32,7 @@ class PanZoomPlanetDefence:
         self.last_emp = time.time()
         self.emp_pulse_time = time.time()
         self.emp_active = False
-        self.attack_distance_circle_surface = pygame.Surface((self.attack_distance*2, self.attack_distance*2), pygame.SRCALPHA)
+
 
     def __delete__(self, instance):
         print("PanZoomPlanetDefence.__delete__: ")
@@ -119,8 +119,3 @@ class PanZoomPlanetDefence:
                     if self.emp_active:
                         self.activate_electro_magnetic_impulse(EMP_PULSE_TIME, ufo)
 
-
-    def update(self):
-        self.attack_distance_circle_surface.get_rect().width = self.attack_distance * 2
-        self.attack_distance_circle_surface.get_rect().height = self.attack_distance * 2
-        self.attack_distance_circle_surface.get_rect().center = self.parent.center
