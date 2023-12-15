@@ -5,7 +5,7 @@ from source.gui.widgets.buttons.button import Button
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.gui.widgets.checkbox import Checkbox
 from source.gui.widgets.widget_handler import WidgetHandler
-from source.multimedia_library.images import pictures_path
+from source.multimedia_library.images import pictures_path, gifs_path
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zoom_handler
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups, PanZoomLayeredUpdates
 from source.universe.celestial_objects.celestial_object import CelestialObject
@@ -186,11 +186,16 @@ class DebugEdit(EditorBase):
 
             buttons = [i for i in WidgetHandler.get_all_widgets() if isinstance(i, Button)]
             self.draw_text(self.world_x + self.text_spacing, y, 200, 20,
+                f"WidgetHandler.buttons: {len(buttons)}")
+            y += self.text_spacing
+
+
+            self.draw_text(self.world_x + self.text_spacing, y, 200, 20,
                 f"pictures_path: {pictures_path}")
             y += self.text_spacing
 
             self.draw_text(self.world_x + self.text_spacing, y, 200, 20,
-                f"WidgetHandler.buttons: {len(buttons)}")
+                f"gifs_path: {gifs_path}")
             y += self.text_spacing
 
             self.max_height = y + self.text_spacing
