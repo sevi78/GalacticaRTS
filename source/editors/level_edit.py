@@ -2,7 +2,7 @@ import math
 import random
 import pygame
 
-
+from source.draw.circles import draw_zoomable_circle
 from source.draw.zoomable_rect import draw_zoomable_rect
 from source.editors.editor_base.editor_base import EditorBase
 from source.editors.editor_base.editor_config import ARROW_SIZE, FONT_SIZE, TOP_SPACING
@@ -172,6 +172,7 @@ class LevelEdit(EditorBase, LevelEditBuilder):
         self.set_data_to_editor(level)
         self.set_selector_current_value()
         self.create_universe()
+        global_params.app.event_panel.goal = self.data.get("globals").get("goal")
 
     def save_level(self):
         level_factory.save_level(self.level, self.data)

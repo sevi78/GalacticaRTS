@@ -60,6 +60,25 @@ class PanZoomPlanetOverviewButtons(PanZoomPlanetEconomy):
             zoomable=False)
 
         self.overview_buttons.append(self.smiley_button)
+        # technology_level
+        self.technology_level_button = Button(self.win,
+            x=0,
+            y=0,
+            width=self.smiley_button_size[0],
+            height=self.smiley_button_size[1],
+            isSubWidget=False,
+            onClick=lambda: print("no function"),
+            transparent=True,
+            image_hover_surface_alpha=255,
+            parent=self.parent,
+            ui_parent=self,
+            tooltip="indicates the technology_level of the population", image=get_image(
+                "badge1.png"),
+            layer=9,
+            zoomable=False)
+
+        self.overview_buttons.append(self.technology_level_button)
+        self.technology_level_button.hide()
         self.smiley_button.hide()
         self.thumpsup_button.hide()
 
@@ -97,3 +116,4 @@ class PanZoomPlanetOverviewButtons(PanZoomPlanetEconomy):
 
         self.smiley_button.set_screen_position(offset_x=self.rect.width / 2, offset_y=-self.min_offset_y_to_text)
         self.thumpsup_button.set_screen_position(offset_x=self.rect.width / 2 - 25, offset_y=-self.min_offset_y_to_text)
+        self.technology_level_button.set_screen_position(offset_x=self.rect.width / 2 + 25, offset_y=-self.min_offset_y_to_text)

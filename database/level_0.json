@@ -1,12 +1,11 @@
 {
   "globals": {
+    "level": 0,
+    "goal": "population > 500",
     "width": 5000,
     "height": 5000,
     "universe_density": 20.0,
-    "ships": [
-      "spaceship",
-      "spacehunter"
-    ],
+    "ships": {"spaceship": [300,300]},
     "collectable_item_amount": 15,
     "central_compression": 1
   },

@@ -11,8 +11,6 @@ class PanZoomPlanetDraw:
         self.frame_color = colors.frame_color
         self.gif = kwargs.get("gif", None)
         self.gif_handler = None
-
-
         self.setup_gif_handler()
 
     def setup_gif_handler(self):

@@ -3,12 +3,14 @@ import pygame
 from source.app.app_helper import get_sum_up_to_n
 
 from source.factories.building_factory import building_factory
+from source.game_play.ranking import Rank
 from source.utils import global_params
 from source.multimedia_library.images import get_image
 
 
-class PanZoomPlanetEconomy:
+class PanZoomPlanetEconomy(Rank):
     def __init__(self, kwargs):
+        Rank.__init__(self)
         self.population_grow_factor = 0.1
         self.resources = {"energy": 0, "food": 0, "minerals": 0, "water": 0}
 
@@ -68,10 +70,9 @@ class PanZoomPlanetEconomy:
         # get new values
         resources = ["water", "energy", "food", "minerals", "technology", "city"]
         self.possible_resources = [i for i in checkbox_values if i in resources]
-        #self.building_button_widget.show()
+        # self.building_button_widget.show()
 
     def set_thumpsup_status(self):
-
         # is everything in plus, show thumpsup green,otherwise red, set smiley to sad if no food production
         vl = []
         for key, value in self.production.items():
@@ -83,11 +84,17 @@ class PanZoomPlanetEconomy:
             self.thumpsup_status = False
 
     def set_smiley_status(self):
-
         if self.production["food"] > 0:
             self.smiley_status = True
         else:
             self.smiley_status = False
+
+    def set_technology_level_status(self):
+
+        self.set_rank_from_population(building_factory.get_build_population_minimum_list())
+
+        print("get_build_population_minimum_list", self.rank)
+        return
 
     def calculate_production(self):
         """
@@ -119,6 +126,7 @@ class PanZoomPlanetEconomy:
         self.calculate_population()
         self.set_thumpsup_status()
         self.set_smiley_status()
+        self.set_technology_level_status()
         self.set_overview_images()
 
     def set_overview_images(self):
@@ -134,6 +142,8 @@ class PanZoomPlanetEconomy:
             self.smiley_button.image_raw = get_image("smile.png")
         else:
             self.smiley_button.image_raw = get_image("sad.png")
+
+        self.technology_level_button.image_raw = self.rank_images[str(self.rank)]
 
     def calculate_population(self):
         """ calculates population"""

@@ -104,6 +104,7 @@ def draw_orbits(self):
     elif self.get_zoom() < 0.8 > 0.1:
         draw_orbit_simple(self)
     elif self.get_zoom() > 0.8:
-        draw_orbit(self)
+        if inside_screen(self.center):
+            draw_orbit(self)
 
     # draw_orbit_angle(self)

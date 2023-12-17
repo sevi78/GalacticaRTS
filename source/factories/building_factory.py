@@ -49,6 +49,14 @@ class BuildingFactoryJsonDictReader:
                     if item == "build_population_minimum":
                         return value
 
+    def get_build_population_minimum_list(self) -> list:
+        build_population_minimum_list = []
+        for category, building_names in self.json_dict.items():
+            for building_name in building_names.keys():
+                build_population_minimum_list.append(self.get_build_population_minimum_from_buildings_json(building_name))
+
+        return sorted(set(build_population_minimum_list))
+
     def get_progress_time_from_buildings_json(self, building):
         for category, building_names in self.json_dict.items():
             if building in building_names.keys():

@@ -144,6 +144,12 @@ class InfoPanelTextGenerator:
         return text
 
     def create_create_info_panel_level_text(self, level: int, data: dict) -> str:
+        # get goal
+        goal = "goal:\n\n"
+        try:
+            goal += f"{data['globals']['goal']}\n"
+        except KeyError:
+            goal += "no goal defined!!\n"
         # get the size of the level
         width, height = (format_number(data["globals"]["width"] * 1000, 1),
                          format_number(data["globals"]["height"] * 1000, 1))
@@ -202,6 +208,7 @@ class InfoPanelTextGenerator:
 
         # create the final tooltip
         infotext = f"level {level}:\n\n\n\n\n\n"
+        infotext += f"{goal}"
         infotext +="stats:"
         #infotext += "\u0332".join("stats:")
 

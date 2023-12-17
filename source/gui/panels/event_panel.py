@@ -4,7 +4,6 @@ import pygame
 from pygame_widgets.mouse import Mouse, MouseState
 
 from source.editors.editor_base.editor_base import EditorBase
-from source.factories.planet_factory import planet_factory
 from source.game_play.game_events import GameEvent, Deal, resources
 from source.gui.widgets.buttons.button import Button
 from source.interfaces.interface import InterfaceData
@@ -15,6 +14,12 @@ from source.multimedia_library.sounds import sounds
 from source.database.saveload import load_file
 from source.utils.text_wrap import TextWrap
 
+class GameEventHandler:
+    def __init__(self):
+        pass
+
+    def handle_game_event(self):
+        pass
 
 class EventPanel(TextWrap, EditorBase, InterfaceData):
     """Main functionalities:
@@ -93,6 +98,7 @@ class EventPanel(TextWrap, EditorBase, InterfaceData):
         self.font = pygame.font.SysFont(global_params.font_name, self.font_size)
         self.title_font = pygame.font.SysFont(global_params.font_name, 50)
         self.center = kwargs.get("center", True)
+        self.goal = None
 
         # surface
         self.surface = pygame.surface.Surface((width, height))
@@ -265,7 +271,8 @@ class EventPanel(TextWrap, EditorBase, InterfaceData):
         self.create_random_event()
 
         player = self.parent.player
-        if player.population >= 500:
+        #print("self.goal:", self.goal, eval(f"player.{self.goal}"))
+        if eval(f"player.{self.goal}"):
             if not "goal1" in self.obsolete_events:
                 self.set_game_event(self.game_events["goal1"])
 
