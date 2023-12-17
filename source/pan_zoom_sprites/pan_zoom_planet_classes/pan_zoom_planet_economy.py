@@ -72,30 +72,6 @@ class PanZoomPlanetEconomy(Rank):
         self.possible_resources = [i for i in checkbox_values if i in resources]
         # self.building_button_widget.show()
 
-    def set_thumpsup_status(self):
-        # is everything in plus, show thumpsup green,otherwise red, set smiley to sad if no food production
-        vl = []
-        for key, value in self.production.items():
-            if value < 0:
-                vl.append(value)
-        if len(vl) > 0:
-            self.thumpsup_status = True
-        else:
-            self.thumpsup_status = False
-
-    def set_smiley_status(self):
-        if self.production["food"] > 0:
-            self.smiley_status = True
-        else:
-            self.smiley_status = False
-
-    def set_technology_level_status(self):
-
-        self.set_rank_from_population(building_factory.get_build_population_minimum_list())
-
-        print("get_build_population_minimum_list", self.rank)
-        return
-
     def calculate_production(self):
         """
         calculates the production, sets the overview icons (smiley, thumpsup) for display the condition of the planet
@@ -128,22 +104,6 @@ class PanZoomPlanetEconomy(Rank):
         self.set_smiley_status()
         self.set_technology_level_status()
         self.set_overview_images()
-
-    def set_overview_images(self):
-        if self.thumpsup_status:
-            self.thumpsup_button.image_raw = pygame.transform.flip(pygame.transform.scale(
-                get_image(
-                    "thumps_upred.png"), self.thumpsup_button_size), True, True)
-        else:
-            self.thumpsup_button.image_raw = pygame.transform.flip(pygame.transform.scale(
-                get_image(
-                    "thumps_up.png"), self.thumpsup_button_size), True, False)
-        if self.smiley_status:
-            self.smiley_button.image_raw = get_image("smile.png")
-        else:
-            self.smiley_button.image_raw = get_image("sad.png")
-
-        self.technology_level_button.image_raw = self.rank_images[str(self.rank)]
 
     def calculate_population(self):
         """ calculates population"""

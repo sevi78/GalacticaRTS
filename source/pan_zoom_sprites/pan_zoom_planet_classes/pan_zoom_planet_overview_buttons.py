@@ -1,4 +1,6 @@
 import pygame
+
+from source.factories.building_factory import building_factory
 from source.gui.widgets.buttons.button import Button
 from source.pan_zoom_sprites.pan_zoom_planet_classes.pan_zoom_planet_economy import PanZoomPlanetEconomy
 from source.multimedia_library.images import get_image
@@ -102,6 +104,46 @@ class PanZoomPlanetOverviewButtons(PanZoomPlanetEconomy):
         for i in self.overview_buttons:
             i.hide()
             i.disable()
+
+    def set_thumpsup_status(self):
+        # is everything in plus, show thumpsup green,otherwise red, set smiley to sad if no food production
+        vl = []
+        for key, value in self.production.items():
+            if value < 0:
+                vl.append(value)
+        if len(vl) > 0:
+            self.thumpsup_status = True
+        else:
+            self.thumpsup_status = False
+
+    def set_smiley_status(self):
+        if self.production["food"] > 0:
+            self.smiley_status = True
+        else:
+            self.smiley_status = False
+
+    def set_technology_level_status(self):
+        self.set_rank_from_population(building_factory.get_build_population_minimum_list())
+        #print("get_build_population_minimum_list", self.rank)
+
+    def set_overview_images(self):
+        if self.thumpsup_status:
+            self.thumpsup_button.image_raw = pygame.transform.flip(pygame.transform.scale(
+                get_image(
+                    "thumps_upred.png"), self.thumpsup_button_size), True, True)
+        else:
+            self.thumpsup_button.image_raw = pygame.transform.flip(pygame.transform.scale(
+                get_image(
+                    "thumps_up.png"), self.thumpsup_button_size), True, False)
+
+
+        if self.smiley_status:
+            self.smiley_button.image_raw = get_image("smile.png")
+        else:
+            self.smiley_button.image_raw = get_image("sad.png")
+
+
+        self.technology_level_button.image_raw = self.rank_images[str(self.rank)]
 
     def delete_overview_buttons(self):
         for i in self.overview_buttons:
