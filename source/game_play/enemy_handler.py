@@ -6,7 +6,7 @@ from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zo
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups
 from source.pan_zoom_sprites.pan_zoom_ufo import PanZoomUfo
 from source.utils import global_params
-from source.database.saveload import load_file
+from source.database.file_handler import load_file
 
 ENEMY_SPAWN_INTERVAL = 1555
 pan_zoom_ufo_config = load_file("enemy_handler_config.json")

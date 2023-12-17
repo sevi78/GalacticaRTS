@@ -5,7 +5,7 @@ import pygame
 
 from source.app.app_helper import AppHelper, select_next_item_in_list
 from source.app.ui_builder import UIBuilder
-from source.factories.planet_factory import planet_factory
+from source.factories.ship_factory import ShipFactory
 from source.game_play.cheat import Cheat
 from source.game_play.enemy_handler import enemy_handler
 from source.game_play.game_logic import GameLogic
@@ -64,6 +64,7 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
     def __init__(self, width, height):
         # make self global, maybe we need that
         global_params.app = self
+        self.ship_factory = ShipFactory()
         AppHelper.__init__(self)
         UIBuilder.__init__(self, width, height)
 

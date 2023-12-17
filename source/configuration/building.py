@@ -1,7 +1,7 @@
 from pprint import pprint
 
 from source.configuration.config import planetary_defence_prices, ship_prices
-from source.database.saveload import write_file, load_file
+from source.database.file_handler import write_file, load_file
 
 """ this is a temporary mess to get all spaghetized values, prices ect into a single buildings.json file.
 todo: need to replace all dependencies from prices ect into buildings.json to make it more eays to work with

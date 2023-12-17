@@ -6,7 +6,9 @@ from source.draw.circles import draw_zoomable_circle
 from source.draw.zoomable_rect import draw_zoomable_rect
 from source.editors.editor_base.editor_base import EditorBase
 from source.editors.editor_base.editor_config import ARROW_SIZE, FONT_SIZE, TOP_SPACING
+
 from source.factories.planet_factory import planet_factory
+
 from source.factories.solar_system_factory import SolarSystemFactory
 from source.gui.event_text import event_text
 from source.gui.widgets.buttons.image_button import ImageButton
@@ -164,6 +166,11 @@ class LevelEdit(EditorBase, LevelEditBuilder):
         if not self.data:
             self.data = level_factory.load_level(0)
 
+        self.parent.ship_factory.delete_ships()
+        ships = self.data.get("globals").get("ships")
+        for key, value in ships.items():
+            #ship_factory.create_ship(key, value[0], value[1], global_params.app)
+            self.parent.ship_factory.create_ship(f"{key}_30x30.png", value[0], value[1], global_params.app)
 
         planet_factory.delete_planets()
         # planet_factory.create_planets_from_json(self.level)

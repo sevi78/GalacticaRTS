@@ -4,7 +4,7 @@ import pygame
 from pygame.locals import MOUSEMOTION
 from pygame_widgets import Mouse
 
-from source.database.saveload import load_file
+from source.database.file_handler import load_file
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.utils import global_params
 from source.utils.text_formatter import format_number

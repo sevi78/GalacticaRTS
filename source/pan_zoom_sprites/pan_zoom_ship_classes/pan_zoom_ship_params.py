@@ -95,8 +95,11 @@ class PanZoomShipParams():
         if self.target_object in sprite_groups.ships:
             sprite_groups.ships.remove(self.target_object)
 
-        if self in self.parent.box_selection.selectable_objects:
-            self.parent.box_selection.selectable_objects.remove(self)
+        try:
+            if self in self.parent.box_selection.selectable_objects:
+                self.parent.box_selection.selectable_objects.remove(self)
+        except:
+            pass
 
         WidgetHandler.remove_widget(self.progress_bar)
 

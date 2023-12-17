@@ -11,7 +11,7 @@ from source.utils import global_params
 from source.utils.colors import colors
 from source.multimedia_library.images import images, pictures_path, get_image
 from source.multimedia_library.sounds import sounds
-from source.database.saveload import load_file
+from source.database.file_handler import load_file
 from source.utils.text_wrap import TextWrap
 
 class GameEventHandler:

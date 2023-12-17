@@ -1,7 +1,7 @@
 import os
 import pygame
 
-from source.database.saveload import load_file
+from source.database.file_handler import load_file
 from source.editors.editor_base.editor_base import EditorBase
 from source.editors.editor_base.editor_config import TOP_SPACING
 from source.gui.panels.info_panel_components.info_panel_text_generator import info_panel_text_generator

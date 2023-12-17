@@ -1,5 +1,4 @@
 import time
-from pprint import pprint
 
 import pygame
 from pygame import MOUSEBUTTONDOWN, MOUSEBUTTONUP, MOUSEMOTION
@@ -21,10 +20,9 @@ from source.pan_zoom_sprites.pan_zoom_planet_classes.pan_zoom_planet_draw import
 from source.pan_zoom_sprites.pan_zoom_planet_classes.pan_zoom_planet_params import PanZoomPlanetParams
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_gif import PanZoomSprite
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zoom_handler
-from source.physics.orbit import orbit, orbit_around
+from source.physics.orbit import orbit
 from source.utils import global_params
 from source.utils.colors import colors
-from source.multimedia_library.images import get_image
 from source.utils.garbage_handler import garbage_handler
 
 
@@ -232,7 +230,10 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
                     if self.tooltip != "":
                         global_params.tooltip_text = self.tooltip
                         #draw_transparent_circle(self.win,self.planet_defence.attack_distance_circle_surface, self.frame_color, self.center, self.planet_defence.attack_distance, 20)
-                        draw_transparent_circle(self.win, self.frame_color, self.center, self.planet_defence.attack_distance, 20)
+                    draw_transparent_circle(self.win, self.frame_color, self.center, self.planet_defence.attack_distance, 20)
+                    self.set_overview_buttons_position()
+                    self.show_overview_button()
+
             else:
                 self.clicked = False
 

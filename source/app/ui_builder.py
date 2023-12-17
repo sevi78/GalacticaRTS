@@ -24,7 +24,7 @@ from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import PanZoo
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups
 from source.utils import global_params
 from source.utils.debugger import debugger
-from source.database.saveload import load_file
+from source.database.file_handler import load_file
 
 EDITOR_HEIGHT = 600
 

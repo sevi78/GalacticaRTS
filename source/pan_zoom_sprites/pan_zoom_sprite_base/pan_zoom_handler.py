@@ -1,7 +1,7 @@
 import pygame as pg
 import pygame.transform
 
-from source.database.saveload import load_file
+from source.database.file_handler import load_file
 from source.utils.global_params import win, WIDTH, HEIGHT
 
 settings = load_file("settings.json")

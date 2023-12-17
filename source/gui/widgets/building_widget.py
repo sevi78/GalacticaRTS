@@ -2,6 +2,7 @@ import time
 
 import pygame
 
+
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.gui.widgets.buttons.button import Button
 from source.gui.widgets.progress_bar import ProgressBar
@@ -124,7 +125,7 @@ class BuildingWidget(WidgetBase):
         # if it is a ship, no calculation has to be done, return
         if self.name in ships:
             x, y = pan_zoom_handler.screen_2_world(self.planet.screen_x, self.planet.screen_y)
-            ship = global_params.app.create_ship(self.name + "_30x30.png", x, y)
+            ship = global_params.app.ship_factory.create_ship(self.name + "_30x30.png", x, y, global_params.app)
             set_orbit_object_id(ship, self.planet.id)
             return
 

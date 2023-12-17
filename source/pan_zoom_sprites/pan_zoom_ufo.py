@@ -11,7 +11,7 @@ from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import
 from source.utils import global_params
 from source.utils.colors import colors
 from source.interaction.mouse import Mouse, MouseState
-from source.database.saveload import load_file
+from source.database.file_handler import load_file
 
 pan_zoom_ufo_config = load_file("enemy_handler_config.json")["enemy handler"]
 
