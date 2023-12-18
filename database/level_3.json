@@ -5,14 +5,8 @@
         "universe_density": 20.0,
         "collectable_item_amount": 22,
         "central_compression": 1,
-        "level": 0,
-        "goal": "population > 500",
-        "ships": {
-            "spaceship": [
-                300,
-                300
-            ]
-        }
+        "level": 3,
+        "goal": "population > 500"
     },
     "celestial_objects": {
         "0": {
@@ -37,7 +31,6 @@
             "orbit_object_id": 0,
             "orbit_distance": 0,
             "atmosphere_name": "",
-            "has_atmosphere": 0,
             "orbit_angle": 931.7686931982673
         },
         "1": {
@@ -66,7 +59,6 @@
             "orbit_object_id": 0,
             "orbit_distance": 0,
             "atmosphere_name": "",
-            "has_atmosphere": 0,
             "orbit_angle": 807.4827681830982
         },
         "2": {
@@ -95,130 +87,19 @@
             "orbit_object_id": 0,
             "orbit_distance": 0,
             "atmosphere_name": "",
-            "has_atmosphere": 0,
             "orbit_angle": 978.8882006426173
+        }
+    },
+    "ships": {
+        "0": {
+            "name": "spaceship",
+            "world_x": 1471.2949027858403,
+            "world_y": 730.6439677544923
         },
-        "3": {
-            "id": 3,
-            "level": 1,
-            "name": "Galactica III",
-            "world_x": 2232.0375505593925,
-            "world_y": 819.5664842737519,
-            "world_width": 40,
-            "world_height": 40,
-            "info_text": "Welcome to Galactica III!\n\nYou are the first to arrive on this planet. It's a blank slate waiting for you to make your mark.\nYou can build up to 8 buildings on this planet.\nThere are special buildings available: [].\nPossible resources on this planet include:\n\n- technology\n- food\n- energy\n- city\n\nThe planet's orbits around its sun at a distance of 0 with a speed of 0.004522533136674705.\n",
-            "population_grow": 0.0,
-            "alien_population": 0,
-            "buildings_max": 8,
-            "building_slot_amount": 5,
-            "specials": "[]",
-            "type": "planet",
-            "possible_resources": [
-                "technology",
-                "food",
-                "energy",
-                "city"
-            ],
-            "image_name_small": "XKGPRZ 7931_40x40.png",
-            "image_name_big": "P0101_150x150.png",
-            "orbit_speed": 0.004522533136674705,
-            "orbit_object_id": 0,
-            "orbit_distance": 0,
-            "atmosphere_name": "",
-            "has_atmosphere": 0,
-            "orbit_angle": 1323.165956833004
-        },
-        "4": {
-            "id": 4,
-            "level": 1,
-            "name": "Galactica IV",
-            "world_x": 3895.181237585569,
-            "world_y": 4623.546698422095,
-            "world_width": 40,
-            "world_height": 40,
-            "info_text": "Welcome to Galactica IV!\n\nYou are the first to arrive on this planet. It's a blank slate waiting for you to make your mark.\nYou can build up to 8 buildings on this planet.\nThere are special buildings available: [].\nPossible resources on this planet include:\n\n- technology\n- city\n- food\n- minerals\n\nThe planet's orbits around its sun at a distance of 0 with a speed of 0.001.\n",
-            "population_grow": 0.0,
-            "alien_population": 0,
-            "buildings_max": 8,
-            "building_slot_amount": 5,
-            "specials": "[]",
-            "type": "planet",
-            "possible_resources": [
-                "technology",
-                "city",
-                "food",
-                "minerals"
-            ],
-            "image_name_small": "XKGPRZ 7931_40x40.png",
-            "image_name_big": "ur-anus_60x60.png",
-            "orbit_speed": 0.001,
-            "orbit_object_id": 0,
-            "orbit_distance": 0,
-            "atmosphere_name": "",
-            "has_atmosphere": 0,
-            "orbit_angle": 793.7338723906197
-        },
-        "5": {
-            "id": 5,
-            "level": 1,
-            "name": "Galactica IV, a",
-            "world_x": 3403.4470736187545,
-            "world_y": 5687.303799638439,
-            "world_width": 36,
-            "world_height": 36,
-            "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
-            "population_grow": 0.0,
-            "alien_population": 0,
-            "buildings_max": 8,
-            "building_slot_amount": 5,
-            "specials": "[]",
-            "type": "moon",
-            "possible_resources": [
-                "technology",
-                "minerals",
-                "energy",
-                "food",
-                "water"
-            ],
-            "image_name_small": "moon1.gif",
-            "image_name_big": "moon1.gif",
-            "orbit_speed": 0.020551659911347032,
-            "orbit_object_id": 4,
-            "orbit_distance": 0,
-            "atmosphere_name": "",
-            "has_atmosphere": 0,
-            "orbit_angle": 4794.809292581213
-        },
-        "6": {
-            "id": 6,
-            "level": 1,
-            "name": "Galactica IV, b",
-            "world_x": 3740.1347181313395,
-            "world_y": 5088.142920288849,
-            "world_width": 30,
-            "world_height": 30,
-            "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
-            "population_grow": 0.0,
-            "alien_population": 0,
-            "buildings_max": 8,
-            "building_slot_amount": 5,
-            "specials": "[]",
-            "type": "moon",
-            "possible_resources": [
-                "water",
-                "city",
-                "minerals",
-                "energy",
-                "technology"
-            ],
-            "image_name_small": "moon1.gif",
-            "image_name_big": "moon1.gif",
-            "orbit_speed": 0.019,
-            "orbit_object_id": 4,
-            "orbit_distance": 0,
-            "atmosphere_name": "",
-            "has_atmosphere": 0,
-            "orbit_angle": 4068.4550483706953
+        "1": {
+            "name": "cargoloader",
+            "world_x": 1393.176793575319,
+            "world_y": 713.3940169665815
         }
     }
 }

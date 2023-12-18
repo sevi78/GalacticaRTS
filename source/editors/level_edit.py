@@ -167,10 +167,15 @@ class LevelEdit(EditorBase, LevelEditBuilder):
             self.data = level_factory.load_level(0)
 
         self.parent.ship_factory.delete_ships()
-        ships = self.data.get("globals").get("ships")
-        for key, value in ships.items():
-            #ship_factory.create_ship(key, value[0], value[1], global_params.app)
-            self.parent.ship_factory.create_ship(f"{key}_30x30.png", value[0], value[1], global_params.app)
+        ships = self.data.get("ships")
+        # print (ships)
+        # for key in ships.keys():
+        #     for attr, value in ships[key].items():
+        #         self.parent.ship_factory.create_ship(f"{ships[key]['name']}_30x30.png", int(ships[key]["world_x"]), int(ships[key]["world_y"]), global_params.app)
+
+        for key in ships.keys():
+            self.parent.ship_factory.create_ship(f"{ships[key]['name']}_30x30.png", int(ships[key]["world_x"]), int(
+                ships[key]["world_y"]), global_params.app)
 
         planet_factory.delete_planets()
         # planet_factory.create_planets_from_json(self.level)
@@ -182,6 +187,7 @@ class LevelEdit(EditorBase, LevelEditBuilder):
         global_params.app.event_panel.goal = self.data.get("globals").get("goal")
 
     def save_level(self):
+        print(self.data)
         level_factory.save_level(self.level, self.data)
         # save screenshot
         screen_x, screen_y = pan_zoom_handler.world_2_screen(0, 0)

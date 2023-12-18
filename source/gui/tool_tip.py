@@ -235,10 +235,16 @@ class ToolTipGenerator:
         else:
             alien_text = "(un)fortunately there are no aliens here."
 
-        if ordered_resources_list[0][0] == "city":
-            resource_text = f"A good place to grow population."
+        resource_text = ""
+        if len(ordered_resources_list) > 0:
+            if ordered_resources_list[0][0] == "city":
+                resource_text = f"A good place to grow population."
+            else:
+                resource_text = f"plenty of {ordered_resources_list[0][0]} can be found here !"
+
         else:
-            resource_text = f"plenty of {ordered_resources_list[0][0]} can be found here !"
+            resource_text = f"No resources can be found here !"
+
 
 
         # create the final tooltip

@@ -18,10 +18,18 @@ class LevelFactory:
             for key, value in data["celestial_objects"][str(planet.id)].items():
                 if hasattr(planet, key):
                     data["celestial_objects"][str(planet.id)][key] = getattr(planet, key)
-                    view.append(f"{key}:{value}")
+
+            for ship in sprite_groups.ships.sprites():
+                if not str(ship.id) in data["ships"].keys():
+                    data["ships"][str(ship.id)] = {"name":"", "world_x":0, "world_y":0}
+                for key, value in data["ships"][str(ship.id)].items():
+
+                    data["ships"][str(ship.id)][key] = getattr(ship, key)
+
+
 
         write_file(f"level_{level}.json", data)
-        pprint(f"save_level: wip{view}")
+
 
     def load_level(self, level: int):
         print("load level:", level)

@@ -95,7 +95,7 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         self.item_collect_distance = SHIP_ITEM_COLLECT_DISTANCE
         self.orbit_direction = random.choice([-1, 1])
         self.speed = SHIP_SPEED
-        self.id = len(sprite_groups.ships)
+
         self.property = "ship"
         self.rotate_correction_angle = SHIP_ROTATE_CORRECTION_ANGLE
         self.orbit_object = None

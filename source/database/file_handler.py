@@ -3,12 +3,29 @@ import os
 import json
 
 
-def update_dict(data, default_dict):
+def update_dict__(data, default_dict):
     for key, value in default_dict.items():
         if key not in data:
             data[key] = value
         elif isinstance(value, dict):
             update_dict(data[key], value)
+
+def update_dict(data, default_dict):
+
+    keys_to_delete = []
+    for key in data:
+        if key not in default_dict:
+            keys_to_delete.append(key)
+        elif isinstance(data[key], dict) and isinstance(default_dict[key], dict):
+            update_dict(data[key], default_dict[key])
+
+    for key in keys_to_delete:
+        del data[key]
+
+    for key, value in default_dict.items():
+        if key not in data:
+            data[key] = value
+
 
 
 def update_json_files(keyword, default_dict):
@@ -27,8 +44,9 @@ def update_json_files(keyword, default_dict):
                 data = json.load(file)
 
             # Update the data with the default dictionary
+            level = int(os.path.basename(filename).split("_")[1].split(".json")[0])
             update_dict(data, default_dict)
-
+            data["globals"]["level"] = level
             # Write the updated data back to the file
             with open(filename, 'w') as file:
                 json.dump(data, file, indent=4)
@@ -66,7 +84,8 @@ def load_file(filename):
 
 
 def main():
-    update_json_files("level_", load_file("level_0.json"))
+    pass
+    #update_json_files("level_", load_file("level_0.json"))
 
 
 if __name__ == "__main__":

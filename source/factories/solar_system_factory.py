@@ -111,19 +111,29 @@ class SolarSystemFactory:
     def initialize_data(self):
         return {
             "globals": {
+                "level": 0,
+                "goal": "population > 500",
                 "width": self.width,
                 "height": self.height,
                 "universe_density": self.universe_density,
-                "collectable_item_amount": self.collectable_item_amount
+                "collectable_item_amount": self.collectable_item_amount,
+                "central_compression": 1
                 },
-            "celestial_objects": {}
-            }
+            "celestial_objects": {},
+            "ships":{"0": {
+            "name": "spaceship",
+            "world_x": 1471.2949027858403,
+            "world_y": 730.6439677544923
+            }}}
+
+
 
     def randomize_data(self):
         data = self.initialize_data()
         self.create_suns(data)
         self.create_planets(data)
         self.create_moons(data)
+
         return data
 
     def create_suns(self, data):

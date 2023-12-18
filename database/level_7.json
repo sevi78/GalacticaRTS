@@ -3,13 +3,9 @@
         "width": 5000,
         "height": 5000,
         "universe_density": 20.0,
-        "ships": [
-            "spaceship",
-            "spacehunter"
-        ],
         "collectable_item_amount": 15,
         "central_compression": 1,
-        "level": 0,
+        "level": 7,
         "goal": "population > 500"
     },
     "celestial_objects": {
@@ -35,7 +31,6 @@
             "orbit_object_id": 0,
             "orbit_distance": 0,
             "atmosphere_name": "",
-            "has_atmosphere": 0,
             "orbit_angle": 3239.090000002179
         },
         "1": {
@@ -65,7 +60,6 @@
             "orbit_object_id": 0,
             "orbit_distance": 0,
             "atmosphere_name": "atmosphere.gif",
-            "has_atmosphere": 1,
             "orbit_angle": 243.8970000000261
         },
         "2": {
@@ -95,8 +89,19 @@
             "orbit_object_id": 1,
             "orbit_distance": 0,
             "atmosphere_name": "atmosphere.gif",
-            "has_atmosphere": 1,
             "orbit_angle": 2730.5925804865155
+        }
+    },
+    "ships": {
+        "0": {
+            "name": "spaceship",
+            "world_x": 1471.2949027858403,
+            "world_y": 730.6439677544923
+        },
+        "1": {
+            "name": "cargoloader",
+            "world_x": 1393.176793575319,
+            "world_y": 713.3940169665815
         }
     }
 }

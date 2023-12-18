@@ -81,7 +81,8 @@ class UniverseFactory:  # original for WidgedBase Widgets
     def get_random_image(self, images):
         return random.choice(images)
 
-    def create_artefacts(self, x, y, width, height, amount):
+    def create_artefacts(self, x, y, width, height, amount):# orig
+
         def select_resources():
             resources = ["water", "food", "energy", "technology", "minerals"]
             selected_resources = {"water": 0, "food": 0, "energy": 0, "technology": 0, "minerals": 0}
@@ -99,11 +100,7 @@ class UniverseFactory:  # original for WidgedBase Widgets
                 total_amount += amount
             return selected_resources
 
-        self.left_end = x
-        self.top_end = y
-        self.right_end = self.left_end + width
-        self.bottom_end = self.top_end + height
-        buffer = 100
+
 
         images_scaled = {0: get_image("artefact1_60x31.png"),
                          1: get_image("meteor_50x50.png"),
@@ -118,12 +115,15 @@ class UniverseFactory:  # original for WidgedBase Widgets
                        ]
 
         for i in range(int(amount / 2)):
+            x, y = get_random_pos(self.left_end, self.right_end, self.top_end, self.bottom_end, self.central_compression)
+            image_name = random.choice(image_names)
+            size = image_name.split("_")[1].split(".png")[0]
+            width, height = int(size.split("x")[0]), int(size.split("x")[1])
             selected_resources = select_resources()
             artefact = PanZoomCollectableItem(global_params.win,
-                random.randint(self.left_end + buffer, self.right_end - buffer),
-                random.randint(self.top_end + buffer, self.bottom_end - buffer), 50, 50,
+                x=x, y=y, width=width, height=height,
                 pan_zoom=pan_zoom_handler,
-                image_name=random.choice(image_names),
+                image_name=image_name,
                 isSubWidget=False,
                 transparent=True,
                 tooltip="...maybe an alien artefact ? ...we don't now what it is ! it might be dangerous --- but maybe useful !?",
@@ -137,10 +137,10 @@ class UniverseFactory:  # original for WidgedBase Widgets
                 group="collectable_items", gif="sphere.gif", align_image="center")
 
         for i in range(int(amount / 2)):
+            x, y = get_random_pos(self.left_end, self.right_end, self.top_end, self.bottom_end, self.central_compression)
             selected_resources = select_resources()
             artefact = PanZoomCollectableItem(global_params.win,
-                random.randint(self.left_end + buffer, self.right_end - buffer),
-                random.randint(self.top_end + buffer, self.bottom_end - buffer), 50, 50,
+                x=x, y=y, width=50, height=50,
                 pan_zoom=pan_zoom_handler,
                 image_name="sphere.gif",
                 isSubWidget=False,
@@ -154,7 +154,7 @@ class UniverseFactory:  # original for WidgedBase Widgets
                 water=selected_resources["water"],
                 parent=self,
                 group="collectable_items",
-                gif="sphere.gif", relative_gif_size=0.1, align_image="center")
+                gif="sphere.gif", relative_gif_size=0.4, align_image="center")
 
     def create_stars(self):
         # star images
