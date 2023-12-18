@@ -14,12 +14,14 @@ from source.multimedia_library.sounds import sounds
 from source.database.file_handler import load_file
 from source.utils.text_wrap import TextWrap
 
+
 class GameEventHandler:
     def __init__(self):
         pass
 
     def handle_game_event(self):
         pass
+
 
 class EventPanel(TextWrap, EditorBase, InterfaceData):
     """Main functionalities:
@@ -271,7 +273,7 @@ class EventPanel(TextWrap, EditorBase, InterfaceData):
         self.create_random_event()
 
         player = self.parent.player
-        #print("self.goal:", self.goal, eval(f"player.{self.goal}"))
+        # print("self.goal:", self.goal, eval(f"player.{self.goal}"))
         if eval(f"player.{self.goal}"):
             if not "goal1" in self.obsolete_events:
                 self.set_game_event(self.game_events["goal1"])

@@ -104,7 +104,7 @@ def prevent_object_overlap(objects, min_dist):
                     obj2.world_y -= dy * adjustment
 
 
-def get_random_pos(left_end,right_end,top_end, bottom_end, central_compression):  # circular, more dense in the center
+def get_random_pos(left_end, right_end, top_end, bottom_end, central_compression):  # circular, more dense in the center
     radius = (right_end - left_end) / 2
     center_x = (right_end + left_end) / 2
     center_y = (top_end + bottom_end) / 2
@@ -116,4 +116,3 @@ def get_random_pos(left_end,right_end,top_end, bottom_end, central_compression):
     y = center_y + r * math.sin(theta)
 
     return x, y
-

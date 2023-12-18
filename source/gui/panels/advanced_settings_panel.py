@@ -161,8 +161,6 @@ class AdvancedSettingsPanel(WidgetBase):
         self.widgets.append(self.enemy_handler_edit_icon)
         self.max_width += self.icon_size + self.spacing
 
-
-
         # ship icon
         self.ship_edit_icon = ImageButton(win=self.win,
             x=self.planet_edit_icon.get_screen_x() + 25,

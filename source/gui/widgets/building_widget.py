@@ -2,7 +2,6 @@ import time
 
 import pygame
 
-
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.gui.widgets.buttons.button import Button
 from source.gui.widgets.progress_bar import ProgressBar

@@ -140,8 +140,6 @@ class InfoPanelTextGenerator:
         text += f"minerals: {settings_dict['minerals_max']}\n"
         text += f"technology: {settings_dict['technology_max']}\n"
 
-
-
         return text
 
     def create_info_panel_planetary_defence_text(self, item):
@@ -222,8 +220,8 @@ class InfoPanelTextGenerator:
         # create the final tooltip
         infotext = f"level {level}:\n\n\n\n\n\n"
         infotext += f"{goal}"
-        infotext +="stats:"
-        #infotext += "\u0332".join("stats:")
+        infotext += "stats:"
+        # infotext += "\u0332".join("stats:")
 
         res_string = ""
         for i in resources:
@@ -232,11 +230,8 @@ class InfoPanelTextGenerator:
         infotext += (f"\n\narea: {area_text}\nsuns: {num_suns}\nplanets: {num_planets}\nmoons: {num_moons}\n"
                      f"alien population: {format_number(alien_population_count, 3)}\n\nresources:\n\n{res_string}\n\n")
 
-
         infotext += (f"{suntext}{planettext}{moontext}\n"
-                   f"{resource_text}\n{alien_text}")
-
-
+                     f"{resource_text}\n{alien_text}")
 
         return infotext
 

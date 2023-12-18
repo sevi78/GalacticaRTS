@@ -19,7 +19,6 @@ class PanZoomPlanetPositionHandler:
         self.set_objects_screen_size()
 
     def set_objects_screen_size(self):
-
         # get new_size size
         new_size = (self.size_x * self.get_zoom(), self.size_y * self.get_zoom())
 

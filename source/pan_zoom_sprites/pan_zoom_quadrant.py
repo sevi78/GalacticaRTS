@@ -21,7 +21,7 @@ class Quadrant(PanZoomSprite):
         # we need to overload this, otherwise it will get the image size of PanZoomSprite, wich is no_image size
         self.world_width = width
         self.world_height = height
-        #self.universe = Universe(self.win, x, y, width, height)
+        # self.universe = Universe(self.win, x, y, width, height)
 
     def hide_universe(self):
         for key, value in self.universe.celestial_objects.items():
@@ -34,11 +34,13 @@ class Quadrant(PanZoomSprite):
                 obj.show()
 
     def draw(self):
-        pygame.draw.rect(self.win, self.frame_color, (self.world_x, self.world_y, self.world_width, self.world_height), 1)
+        pygame.draw.rect(self.win, self.frame_color, (
+        self.world_x, self.world_y, self.world_width, self.world_height), 1)
+
     def update(self):
         self.update_pan_zoom_sprite()
         self.draw()
-        #self.set_world_position((self.world_x, self.world_y))
+        # self.set_world_position((self.world_x, self.world_y))
         if inside_screen(self.rect.center):
             # self.show_universe()
             # self.show()

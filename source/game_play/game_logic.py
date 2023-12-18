@@ -119,11 +119,11 @@ Fields:
             if self.ctrl_pressed and self.s_pressed:
                 print("self.save_planets()")
 
-                #planet_factory.save_planets()
+                # planet_factory.save_planets()
 
             if self.ctrl_pressed and self.l_pressed:
                 pass
-                #planet_factory.load_planets()
+                # planet_factory.load_planets()
 
     def save_objects(self, filename, list_):
         if not list_:
@@ -134,14 +134,11 @@ Fields:
 
         write_file(filename, data)
 
-
-
     def restart_game(self):
         planet_factory.delete_planets()
         self.explored_planets = []
         self.player = None
         self.create_player()
-
 
         self.selected_planet = sprite_groups.planets.sprites()[0]
         # planet_factory.load_planets()

@@ -41,7 +41,7 @@ class PanZoomShipParams():
         self.hum = sounds.hum1
         self.sound_channel = 1
         self.energy_use = SHIP_ENERGY_USE
-        self.info_panel_alpha= kwargs.get("info_panel_alpha", 255)
+        self.info_panel_alpha = kwargs.get("info_panel_alpha", 255)
 
         # load_from_db Game variables
         self.food = kwargs.get("food", 100)

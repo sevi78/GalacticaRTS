@@ -81,7 +81,7 @@ class UniverseFactory:  # original for WidgedBase Widgets
     def get_random_image(self, images):
         return random.choice(images)
 
-    def create_artefacts(self, x, y, width, height, amount):# orig
+    def create_artefacts(self, x, y, width, height, amount):  # orig
 
         def select_resources():
             resources = ["water", "food", "energy", "technology", "minerals"]
@@ -99,8 +99,6 @@ class UniverseFactory:  # original for WidgedBase Widgets
                     selected_resources[resource] = amount
                 total_amount += amount
             return selected_resources
-
-
 
         images_scaled = {0: get_image("artefact1_60x31.png"),
                          1: get_image("meteor_50x50.png"),

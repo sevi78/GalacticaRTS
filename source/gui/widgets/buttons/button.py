@@ -8,6 +8,8 @@ from source.utils import global_params
 
 REPEAT_CLICK_EVENT = pygame.USEREVENT + 1
 INITIAL_DELAY_EVENT = pygame.USEREVENT + 2
+
+
 class Button(WidgetBase, Moveable):
     """ A customisable button for Pygame
 
@@ -115,7 +117,7 @@ class Button(WidgetBase, Moveable):
 
             self.win.blit(self.circle, self.rect)
 
-    def listen__(self, events):# orig
+    def listen__(self, events):  # orig
         """ Wait for inputs
 
         :param events: Use pygame.event.get()
@@ -189,9 +191,7 @@ class Button(WidgetBase, Moveable):
                 self.borderColour = self.inactiveBorderColour
                 self.drawCircle(self.inactiveColour, 0)
 
-
-
-    def listen(self, events):# _with_repeat not working yet
+    def listen(self, events):  # _with_repeat not working yet
         """ Wait for inputs
 
         :param events: Use pygame.event.get()
@@ -234,7 +234,7 @@ class Button(WidgetBase, Moveable):
 
                             # If repeat_clicks is True, set a timer to start repeating the click after 1 second
                             if self.repeat_clicks:
-                                #pygame.time.set_timer(INITIAL_DELAY_EVENT, 700)  # 1000 milliseconds = 1 second
+                                # pygame.time.set_timer(INITIAL_DELAY_EVENT, 700)  # 1000 milliseconds = 1 second
                                 pygame.time.set_timer(REPEAT_CLICK_EVENT, 120)  # 200 milliseconds
 
 

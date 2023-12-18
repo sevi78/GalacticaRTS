@@ -56,7 +56,7 @@ class PanZoomSprite(pygame.sprite.Sprite, PanZoomVisibilityHandler, GameObjectDe
         self.layer = kwargs.get("layer", 0)
         self.group = kwargs.get("group", None)
         self.property = ""
-        #self.name = "noname"
+        # self.name = "noname"
         self.zoomable = kwargs.get("zoomable", True)
         self.frame_color = colors.frame_color
 
@@ -104,8 +104,8 @@ class PanZoomSprite(pygame.sprite.Sprite, PanZoomVisibilityHandler, GameObjectDe
         self.world_y = y
         self._world_x = x
         self._world_y = y
-        self.world_width = width#kwargs.get("width", self.image.get_rect().width)
-        self.world_height = height#kwargs.get("height", self.image.get_rect().height)
+        self.world_width = width  # kwargs.get("width", self.image.get_rect().width)
+        self.world_height = height  # kwargs.get("height", self.image.get_rect().height)
         self.world_position = (self.world_x, self.world_y)
 
         # orbit

@@ -2,7 +2,7 @@ import random
 import pygame
 
 
-def draw_zigzag_line(surface, color, start_pos, end_pos, num_segments):# orig
+def draw_zigzag_line(surface, color, start_pos, end_pos, num_segments):  # orig
     dx = (end_pos[0] - start_pos[0]) / num_segments
     dy = (end_pos[1] - start_pos[1]) / num_segments
 
@@ -35,4 +35,3 @@ def draw_zigzag_line__(surface, color, start_pos, end_pos, num_segments, pan_zoo
             start = (start_pos[0] + (i + 1) * dx + rx, start_pos[1] + (i + 1) * dy + ry)
             end = (start_pos[0] + i * dx + rx, start_pos[1] + i * dy + ry)
         pygame.draw.line(surface, color, start, end)
-

@@ -1,6 +1,5 @@
 import pygame
 
-
 from source.game_play.navigation import navigate_to
 from source.gui.panels.toggle_switch import ToggleSwitch
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
@@ -46,7 +45,6 @@ class SettingsPanel(WidgetBase):
         self.init = 0
 
     def create_icons(self):
-
 
         # ship icon
         self.spacehunter_icon = ImageButton(win=self.win,
@@ -171,7 +169,6 @@ class SettingsPanel(WidgetBase):
     def show_planet_names(self):
         for i in sprite_groups.planets.sprites():
             i.show_text = not i.show_text
-
 
     def set_info_text(self):
         global_params.app.info_panel.set_text(info_panel_text_generator.info_text)

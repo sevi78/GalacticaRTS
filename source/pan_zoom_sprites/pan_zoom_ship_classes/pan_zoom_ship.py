@@ -22,11 +22,11 @@ from source.pan_zoom_sprites.pan_zoom_target_object import PanZoomTargetObject
 from source.physics.orbit import orbit
 from source.utils import global_params
 from source.interaction.mouse import Mouse, MouseState
-from source.utils.positioning import prevent_object_overlap,  get_distance
+from source.utils.positioning import prevent_object_overlap, get_distance
 from source.database.file_handler import load_file
 
 
-#class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZoomShipRanking, PanZoomShipButtons, PanZoomShipDraw, PanZoomMouseHandler, PanZoomShipInteraction):
+# class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZoomShipRanking, PanZoomShipButtons, PanZoomShipDraw, PanZoomMouseHandler, PanZoomShipInteraction):
 class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZoomShipRanking, PanZoomShipDraw, PanZoomMouseHandler, PanZoomShipInteraction):
     # __slots__ = PanZoomGameObject.__slots__ + ('item_collect_distance', 'orbit_direction', 'speed', 'id', 'property',
     #                                            'rotate_correction_angle', 'orbit_object', 'orbit_angle', 'collect_text',
@@ -82,12 +82,12 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
     #              'visible', 'speed_up_button', 'radius_button', 'frame_color', 'noenergy_image', 'noenergy_image_x', 'noenergy_image_y', 'moving_image',
     #              'sleep_image', 'orbit_image', 'rank_image_pos', 'progress_bar', '_on_hover', 'on_hover_release', 'orbiting', '_selected')
 
-    def __init__(self, win, x, y, width, height, pan_zoom,   image_name, **kwargs):
+    def __init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs):
         PanZoomGameObject.__init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs)
         PanZoomShipParams.__init__(self, **kwargs)
         PanZoomShipMoving.__init__(self, kwargs)
         PanZoomShipRanking.__init__(self)
-        #PanZoomShipButtons.__init__(self)
+        # PanZoomShipButtons.__init__(self)
         PanZoomShipDraw.__init__(self, kwargs)
         PanZoomMouseHandler.__init__(self)
         PanZoomShipInteraction.__init__(self)
@@ -386,7 +386,7 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
 
         self.set_tooltip()
         self.listen()
-        #self.reposition_buttons()
+        # self.reposition_buttons()
 
         scope.draw_scope(self)
         self.set_distances()
@@ -409,15 +409,15 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
             self.draw_rank_image()
             prevent_object_overlap(sprite_groups.ships, self.min_dist_to_other_ships)
         else:
-            #self.hide_buttons()
+            # self.hide_buttons()
             self.progress_bar.hide()
 
         if self.selected:
             self.draw_selection()
             self.set_info_text()
-            #self.show_buttons()
+            # self.show_buttons()
         else:
-            #self.hide_buttons()
+            # self.hide_buttons()
             pass
 
         # travel

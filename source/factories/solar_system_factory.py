@@ -8,7 +8,7 @@ from source.utils.text_formatter import to_roman
 MOOON_TO_PLANET_DISTANCE = 500
 
 
-class SolarSystemFactory__:#original
+class SolarSystemFactory__:  # original
     def __init__(self, width, height, universe_density, collectable_item_amount, suns, planets, moons):
         self.width = width
         self.height = height
@@ -122,13 +122,13 @@ class SolarSystemFactory__:#original
                 "central_compression": 1
                 },
             "celestial_objects": {},
-            "ships":{"0": {
-            "name": "spaceship",
-            "world_x": 1471.2949027858403,
-            "world_y": 730.6439677544923
-            }}}
-
-
+            "ships": {"0": {
+                "name": "spaceship",
+                "world_x": 1471.2949027858403,
+                "world_y": 730.6439677544923
+                }
+                }
+            }
 
     def randomize_data(self):
         data = self.initialize_data()
@@ -247,7 +247,7 @@ class SolarSystemFactory__:#original
             return f"{planet_name}, {moon_letter}"
 
 
-class SolarSystemFactory:#original
+class SolarSystemFactory:  # original
     def __init__(self, width, height, universe_density, collectable_item_amount, suns, planets, moons):
         self.width = width
         self.height = height
@@ -361,13 +361,13 @@ class SolarSystemFactory:#original
                 "central_compression": 1
                 },
             "celestial_objects": {},
-            "ships":{"0": {
-            "name": "spaceship",
-            "world_x": 1471.2949027858403,
-            "world_y": 730.6439677544923
-            }}}
-
-
+            "ships": {"0": {
+                "name": "spaceship",
+                "world_x": 1471.2949027858403,
+                "world_y": 730.6439677544923
+                }
+                }
+            }
 
     def randomize_data(self):
         data = self.initialize_data()

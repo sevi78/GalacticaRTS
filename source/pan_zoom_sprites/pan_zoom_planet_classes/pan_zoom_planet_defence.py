@@ -33,7 +33,6 @@ class PanZoomPlanetDefence:
         self.emp_pulse_time = time.time()
         self.emp_active = False
 
-
     def __delete__(self, instance):
         print("PanZoomPlanetDefence.__delete__: ")
         self.parent = None
@@ -118,4 +117,3 @@ class PanZoomPlanetDefence:
 
                     if self.emp_active:
                         self.activate_electro_magnetic_impulse(EMP_PULSE_TIME, ufo)
-

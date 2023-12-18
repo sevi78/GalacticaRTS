@@ -21,7 +21,7 @@ class BuildingFactoryJsonDictReader:
             if building in building_names.keys():
                 for item, value in building_names[building].items():
                     building_dict[item] = value
-        #print("get_building_dict_from_buildings_json", building_dict)
+        # print("get_building_dict_from_buildings_json", building_dict)
         return building_dict
 
     def get_prices_from_buildings_json(self, building: str) -> dict:
@@ -246,7 +246,7 @@ def main():
     # building_factory.insert_technology_upgrade()
     # write_file("buildings.json", building_factory.json_dict)
 
-    print (building_factory.get_all_building_names())
+    print(building_factory.get_all_building_names())
 
 
 if __name__ == "__main__":

@@ -10,8 +10,8 @@ def update_dict__(data, default_dict):
         elif isinstance(value, dict):
             update_dict(data[key], value)
 
-def update_dict(data, default_dict):
 
+def update_dict(data, default_dict):
     keys_to_delete = []
     for key in data:
         if key not in default_dict:
@@ -25,7 +25,6 @@ def update_dict(data, default_dict):
     for key, value in default_dict.items():
         if key not in data:
             data[key] = value
-
 
 
 def update_json_files(keyword, default_dict):
@@ -85,7 +84,7 @@ def load_file(filename):
 
 def main():
     pass
-    #update_json_files("level_", load_file("level_0.json"))
+    # update_json_files("level_", load_file("level_0.json"))
 
 
 if __name__ == "__main__":

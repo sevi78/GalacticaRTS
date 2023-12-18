@@ -26,7 +26,6 @@ from source.utils.colors import colors
 from source.utils.garbage_handler import garbage_handler
 
 
-
 class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOverviewButtons, PanZoomPlanetDraw,
     PanZoomPlanetParams, PanZoomPlanetPositionHandler, PanZoomMouseHandler):
     """ Main functionalities:
@@ -41,10 +40,10 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
         'production_minerals', 'production_city', 'production_technology', 'population_buildings',
         'population_buildings_values', 'building_buttons_energy', 'building_buttons_water', 'building_buttons_food',
         'building_buttons_minerals', 'building_buttons', 'building_buttons_list', 'building_buttons_visible',
-        'overview_buttons', 'check_image', 'smiley_status', 'thumpsup_status', 'frame_color', 'gif_handler','type',
-        'parent', 'screen_size', 'target','moving', 'tooltip', 'id', 'level', 'fog_of_war_radius', 'explored',
-        'just_explored', 'moveable', 'orbit_speed','orbit_object', 'orbit_distance', 'string', 'start_time', 'wait',
-        'selected', 'onClick','info_text', 'info_text_raw', 'thumpsup_button_size', 'thumpsup_button',
+        'overview_buttons', 'check_image', 'smiley_status', 'thumpsup_status', 'frame_color', 'gif_handler', 'type',
+        'parent', 'screen_size', 'target', 'moving', 'tooltip', 'id', 'level', 'fog_of_war_radius', 'explored',
+        'just_explored', 'moveable', 'orbit_speed', 'orbit_object', 'orbit_distance', 'string', 'start_time', 'wait',
+        'selected', 'onClick', 'info_text', 'info_text_raw', 'thumpsup_button_size', 'thumpsup_button',
         'smiley_button_size', 'smiley_button', 'planet_defence')
 
     def __init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs):
@@ -56,7 +55,6 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
         PanZoomPlanetPositionHandler.__init__(self, x, y, width, height, **kwargs)
         PanZoomPlanetOverviewButtons.__init__(self, **kwargs)
         PanZoomPlanetDraw.__init__(self, **kwargs)
-
 
         self.name = kwargs.get("name", "noname_planet")
         self.type = kwargs.get("type", "")
@@ -79,9 +77,8 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
         self.orbit_angle = kwargs.get("orbit_angle", None)
         self.world_x = x
         self.world_y = y
-        #self.world_width = kwargs.get("world_width", self.image_raw.get_width())
-        #self.world_height = kwargs.get("world_height", self.image_raw.get_height())
-
+        # self.world_width = kwargs.get("world_width", self.image_raw.get_width())
+        # self.world_height = kwargs.get("world_height", self.image_raw.get_height())
 
         self.zoomable = True
         self.string = "?"
@@ -108,10 +105,10 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
         sprite_groups.planets.add(self)
         # self.hide_planet_button_array()
 
-        #PanZoomPlanetSaveLoad.__init__(self, f"lebel_{global_params.level}.json")
-        #self.load_from_db()
-        #self.load_from_file()
-        #pprint (self.get_dict_from_db())
+        # PanZoomPlanetSaveLoad.__init__(self, f"lebel_{global_params.level}.json")
+        # self.load_from_db()
+        # self.load_from_file()
+        # pprint (self.get_dict_from_db())
 
         # self.update_pan_zoom_sprite()
 
@@ -135,7 +132,7 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
         del self.planet_defence
 
         self.kill()
-        #print("garbage_handler.get_all_references", garbage_handler.get_all_references(self))
+        # print("garbage_handler.get_all_references", garbage_handler.get_all_references(self))
         del self
 
     def select(self, value):
@@ -189,8 +186,6 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
                 #
                 # print(self.orbit_angle, self.orbit_distance, self.offset)
 
-
-
     def debug_planet(self):
         if global_params.debug:
             pygame.draw.circle(self.win, colors.select_color, self.center, 10, 1)
@@ -229,7 +224,7 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
                     self.draw_hover_circle()
                     if self.tooltip != "":
                         global_params.tooltip_text = self.tooltip
-                        #draw_transparent_circle(self.win,self.planet_defence.attack_distance_circle_surface, self.frame_color, self.center, self.planet_defence.attack_distance, 20)
+                        # draw_transparent_circle(self.win,self.planet_defence.attack_distance_circle_surface, self.frame_color, self.center, self.planet_defence.attack_distance, 20)
                     draw_transparent_circle(self.win, self.frame_color, self.center, self.planet_defence.attack_distance, 20)
                     self.set_overview_buttons_position()
                     self.show_overview_button()
@@ -257,15 +252,15 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
             self.show_overview_button()
             self.set_overview_buttons_position()
 
-        #if not self.orbit_object:
-        #self.orbit_angle = None
+        # if not self.orbit_object:
+        # self.orbit_angle = None
 
         if len([i for i in sprite_groups.planets if i.id == self.orbit_object_id]) > 0:
             self.orbit_object = [i for i in sprite_groups.planets if i.id == self.orbit_object_id][0]
 
         if not global_params.game_paused:
             orbit(self, self.orbit_object, self.orbit_speed, 1)
-            #self.world_x, self.world_y = orbit_around(self, self.orbit_object)
+            # self.world_x, self.world_y = orbit_around(self, self.orbit_object)
 
         if not inside_screen(self.rect.center):
             return

@@ -1,6 +1,6 @@
 import pygame
 
-#from source.database.database_access import create_connection, get_database_file_path
+# from source.database.database_access import create_connection, get_database_file_path
 from source.gui.event_text import event_text
 from source.multimedia_library.images import images, pictures_path, get_image
 from source.multimedia_library.sounds import sounds
@@ -34,6 +34,7 @@ class PanZoomPlanetParams:
 
     def set_image_name_small__(self, value):
         self._image_name_small = value
+
     @property
     def atmosphere_name(self):
         return self._atmosphere_name
@@ -56,8 +57,6 @@ class PanZoomPlanetParams:
         # else:
         #     self.atmosphere_raw = None
         #     self.atmosphere = self.atmosphere_raw
-
-
 
     def set_planet_name(self):
 

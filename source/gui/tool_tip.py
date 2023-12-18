@@ -245,8 +245,6 @@ class ToolTipGenerator:
         else:
             resource_text = f"No resources can be found here !"
 
-
-
         # create the final tooltip
         tooltip = (f"level {level}: {suntext} {planettext} {moontext} Possible resources: {', '.join(resources)}."
                    f" {resource_text} {alien_text} ")

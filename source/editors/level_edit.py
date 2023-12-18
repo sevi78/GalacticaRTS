@@ -228,7 +228,6 @@ class LevelEdit(EditorBase, LevelEditBuilder):
         if key in self.data["globals"].keys():
             self.data["globals"][key] = value
 
-
         if key == "central_compression":
             universe_factory.central_compression = value
 
@@ -258,7 +257,8 @@ class LevelEdit(EditorBase, LevelEditBuilder):
         universe_factory.delete_artefacts()
         universe_factory.amount = int(math.sqrt(math.sqrt(self.width)) * self.data["globals"]["universe_density"])
         universe_factory.create_universe(0, 0, self.width, self.height)
-        universe_factory.create_artefacts(0, 0, self.width, self.height, self.data["globals"]["collectable_item_amount"])
+        universe_factory.create_artefacts(0, 0, self.width, self.height,
+            self.data["globals"]["collectable_item_amount"])
 
     def listen(self, events):
         """show or hide, navigate to planet on selection"""
@@ -275,4 +275,4 @@ class LevelEdit(EditorBase, LevelEditBuilder):
             self.draw_frame()
             self.inputbox.update()
             draw_zoomable_rect(self.win, colors.ui_darker, 0, 0, self.width, self.height, border_radius=int(pan_zoom_handler.zoom * 250))
-            draw_zoomable_circle(self.win, colors.ui_darker, 0+self.width/2, 0+self.width/2, self.width/2)
+            draw_zoomable_circle(self.win, colors.ui_darker, 0 + self.width / 2, 0 + self.width / 2, self.width / 2)

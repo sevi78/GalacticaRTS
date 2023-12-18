@@ -64,11 +64,13 @@ def draw_electromagnetic_impulse__(win, center, min_radius, max_radius, width, p
         color = gradient_color(colors, i / (circles - 1))
         dim_color = (color[0], color[1], color[2], int(pulse_progress * 255))
         color = (color[0], color[1], color[2])
-        #pygame.draw.circle(pulse_surface, dim_color, (max_radius, max_radius), current_radius, width)
-        draw_transparent_circle(pulse_surface, color, (max_radius, max_radius), current_radius, int(pulse_progress * 255))
+        # pygame.draw.circle(pulse_surface, dim_color, (max_radius, max_radius), current_radius, width)
+        draw_transparent_circle(pulse_surface, color, (
+        max_radius, max_radius), current_radius, int(pulse_progress * 255))
 
     # Blit the pulse surface onto the window
     win.blit(pulse_surface, (center[0] - max_radius, center[1] - max_radius))
+
 
 def draw_electromagnetic_impulse(win, center, min_radius, max_radius, width, pulse_time, circles):
     # Define the colors for the gradient
@@ -95,10 +97,10 @@ def draw_electromagnetic_impulse(win, center, min_radius, max_radius, width, pul
 
 def draw_zoomable_circle(surface, color, world_x, world_y, radius):
     screen_x, screen_y = pan_zoom_handler.world_2_screen(world_x, world_y)
-    pygame.draw.circle(surface, color,(screen_x, screen_y), radius * pan_zoom_handler.zoom, 1)
+    pygame.draw.circle(surface, color, (screen_x, screen_y), radius * pan_zoom_handler.zoom, 1)
 
 
 def draw_transparent_circle(surface, color, position, radius, alpha):
-    circle_surface =pygame.Surface((radius*2, radius*2), pygame.SRCALPHA)
+    circle_surface = pygame.Surface((radius * 2, radius * 2), pygame.SRCALPHA)
     pygame.draw.circle(circle_surface, color + (alpha,), (radius, radius), radius)
     surface.blit(circle_surface, (position[0] - radius, position[1] - radius))

@@ -124,7 +124,7 @@ class PanZoomPlanetOverviewButtons(PanZoomPlanetEconomy):
 
     def set_technology_level_status(self):
         self.set_rank_from_population(building_factory.get_build_population_minimum_list())
-        #print("get_build_population_minimum_list", self.rank)
+        # print("get_build_population_minimum_list", self.rank)
 
     def set_overview_images(self):
         if self.thumpsup_status:
@@ -136,12 +136,10 @@ class PanZoomPlanetOverviewButtons(PanZoomPlanetEconomy):
                 get_image(
                     "thumps_up.png"), self.thumpsup_button_size), True, False)
 
-
         if self.smiley_status:
             self.smiley_button.image_raw = get_image("smile.png")
         else:
             self.smiley_button.image_raw = get_image("sad.png")
-
 
         self.technology_level_button.image_raw = self.rank_images[str(self.rank)]
 

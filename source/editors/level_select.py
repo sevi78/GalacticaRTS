@@ -60,7 +60,7 @@ class LevelSelect(EditorBase):
                     image_name = f"{i.name.split('.json')[0]}{'.png'}"
                     i.setImage(get_image(image_name))
 
-                    print ("update_icons", image_name)
+                    print("update_icons", image_name)
 
     def create_icons(self):
         rows = 3
@@ -96,7 +96,7 @@ class LevelSelect(EditorBase):
                 name=i,
                 text=level,
                 textColour=self.frame_color,
-                font_size= 50,
+                font_size=50,
                 info_text=infotext,
                 info_panel_alpha=255
                 )

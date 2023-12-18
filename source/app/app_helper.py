@@ -93,8 +93,6 @@ class AppHelper:
         self.production_minerals = self.production["minerals"]
         self.production_technology = self.production["technology"]
 
-
-
     def draw_fog_of_war(self, obj, **kwargs):
         """
         draws the fog of war circle based on the fog of war radius of the obj

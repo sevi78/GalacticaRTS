@@ -14,6 +14,8 @@ from source.universe.universe_background import universe_factory
 from source.utils import global_params
 
 FONT_SIZE = 16
+
+
 class DebugEdit(EditorBase):
     def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
         EditorBase.__init__(self, win, x, y, width, height, isSubWidget=False, **kwargs)

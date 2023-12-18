@@ -60,6 +60,7 @@ def dim_color(color, value, min_value):
 
     return r, g, b
 
+
 def gradient_color(colors, progress):
     # Calculate the index of the two colors to interpolate between
     index = int(progress * (len(colors) - 1))

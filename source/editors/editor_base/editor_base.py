@@ -164,7 +164,7 @@ class EditorBase(WidgetBase):
         self.buttons.append(save_icon)
         self.widgets.append(save_icon)
 
-    def create_load_button(self,  function, tooltip, **kwargs):
+    def create_load_button(self, function, tooltip, **kwargs):
         name = kwargs.get("name", "no_name")
         button_size = 32
         load_button = ImageButton(win=self.win,
@@ -182,7 +182,7 @@ class EditorBase(WidgetBase):
             include_text=False,
             layer=self.layer,
             onClick=function,
-            name = name
+            name=name
             )
 
         load_button.hide()

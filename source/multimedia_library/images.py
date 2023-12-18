@@ -102,9 +102,11 @@ def get_gif_frames(gif_name):
         frames.append(frame_surface)
     return frames
 
+
 def get_image_names_from_folder(folder):
     image_names = os.listdir(pictures_path + folder)
     return image_names
+
 
 load_folders(os.path.join(pictures_path), images)
 

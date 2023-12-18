@@ -8,7 +8,6 @@ from source.configuration.economy_params import EconomyParams
 from source.database.file_handler import load_file
 from source.factories.planet_factory import planet_factory
 
-
 # from source.pan_zoom_sprites.pan_zoom_collectable_item import PanZoomCollectableItem
 
 from source.universe.background_image import BackgroundImage
@@ -111,5 +110,3 @@ class SceneBuilder(EconomyParams, GameObjectStorage):
     def create_universe_background(self):
         if global_params.draw_universe:
             self.universe = Universe(global_params.win, 0, 0, global_params.scene_width, global_params.scene_height, isSubWidget=False, layer=3)
-
-

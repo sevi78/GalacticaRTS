@@ -3,6 +3,7 @@ from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zo
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups
 from source.utils import global_params
 
+
 class ShipFactory:
     def create_ship(self, name, x, y, parent):
 
@@ -31,4 +32,3 @@ class ShipFactory:
     def delete_ships(self):
         for i in sprite_groups.ships.sprites():
             i.__delete__(i)
-
