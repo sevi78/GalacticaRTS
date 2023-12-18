@@ -126,11 +126,21 @@ class InfoPanelTextGenerator:
         return text
 
     def create_info_panel_ship_text(self, ship):
+        settings_dict = load_file("ship_settings.json")[ship]
         text = ship + ":" + "\n"
         text += "\n" + "prices:" + "\n\n"
 
         for key, value in building_factory.get_prices_from_buildings_json(ship).items():
             text += key + ": " + str(value) + "\n"
+
+        text += f"load capacity:\n\n"
+        text += f"water: {settings_dict['water_max']}\n"
+        text += f"energy: {settings_dict['energy_max']}\n"
+        text += f"food: {settings_dict['food_max']}\n"
+        text += f"minerals: {settings_dict['minerals_max']}\n"
+        text += f"technology: {settings_dict['technology_max']}\n"
+
+
 
         return text
 

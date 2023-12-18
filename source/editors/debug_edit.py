@@ -83,13 +83,13 @@ class DebugEdit(EditorBase):
         self.checkboxes.append(checkbox_celestials)
         self.widgets.append(checkbox_celestials)
 
-        checkbox_quadrant = Checkbox(
+        checkbox_collectable_items = Checkbox(
             self.win, self.world_x - self.spacing_x + x + BUTTON_SIZE * 3, y, 30, 30, isSubWidget=False,
             color=self.frame_color,
-            key="quadrants", image_name="grid_icon.png", tooltip="debug quadrants", onClick=lambda: print("OKOKOK"), layer=9, parent=self)
+            key="collectable_items", image_name="meteor_60x83.png.png", tooltip="debug collectable items", onClick=lambda: print("OKOKOK"), layer=9, parent=self)
         x += BUTTON_SIZE * 1.5
-        self.checkboxes.append(checkbox_quadrant)
-        self.widgets.append(checkbox_quadrant)
+        self.checkboxes.append(checkbox_collectable_items)
+        self.widgets.append(checkbox_collectable_items)
 
         debug_checkbox = Checkbox(
             self.win, self.world_x - self.spacing_x + x + BUTTON_SIZE * 3, y, 30, 30, isSubWidget=False,

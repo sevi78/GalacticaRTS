@@ -58,5 +58,5 @@ class PanZoomCollectableItem(PanZoomSprite, PanZoomMouseHandler):
         self.listen()
 
         global_params.app.tooltip_instance.reset_tooltip(self)
-        if global_params.debug:
-            self.debug_object()
+        # if global_params.debug:
+        #     self.debug_object()
