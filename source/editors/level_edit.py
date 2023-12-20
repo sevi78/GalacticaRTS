@@ -245,6 +245,9 @@ class LevelEdit(EditorBase, LevelEditBuilder):
         for i in sprite_groups.collectable_items.sprites():
             i.end_object()
 
+        for i in sprite_groups.ufos.sprites():
+            i.end_object()
+
         # recreate objects
         self.solar_system_factory = SolarSystemFactory(
             self.width, self.height, self.universe_density, self.collectable_item_amount, self.suns, self.planets, self.moons)

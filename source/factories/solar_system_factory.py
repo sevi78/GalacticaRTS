@@ -400,17 +400,6 @@ class SolarSystemFactory:  # original
             data["celestial_objects"][
                 str(i)] = self.create_celestial_object(i, "planet", planet_images, orbit_object_id, world_x, world_y)
 
-    def create_moons__(self, data):
-        moon_images = ["moon.gif", "moon1.gif"]  # get_image_names_from_folder("moons")#
-        for i in range(self.suns + self.planets, self.suns + self.planets + self.moons):
-            orbit_object_id = random.choice(list(self.planet_names.keys()))  # Get a random planet ID
-            orbit_distance = self.width / len(self.planet_names) / 2
-            world_x, world_y = self.get_orbit_position(data["celestial_objects"][str(orbit_object_id)], orbit_distance)
-            moon_name = f"{self.planet_names[orbit_object_id]}, {chr(97 + i - self.suns - self.planets)}"
-            self.moon_names[i] = moon_name  # Store moon name in the dictionary
-            data["celestial_objects"][
-                str(i)] = self.create_celestial_object(i, "moon", moon_images, orbit_object_id, world_x, world_y)
-
     def create_moons(self, data):
         moon_images = ["moon.gif", "moon1.gif"]
         for i in range(self.suns + self.planets, self.suns + self.planets + self.moons):
@@ -447,16 +436,25 @@ class SolarSystemFactory:  # original
         name = self.generate_name(i, body_type, orbit_object_id)
         gifs = get_image_names_from_folder("gifs")
         atmospheres = []
+        all_specials = ["food * 1.5", "energy * 1.5", "minerals * 1.5", "water * 1.5", "technology * 1.5"]
+        possible_resources = []
+        specials = [random.choice(all_specials)]
 
         if body_type == "sun":
             size = random.randint(90, 110)
             atmospheres = [i for i in gifs if i.startswith("sun")] + [""]
+            possible_resources = []
+            specials = []
+
         elif body_type == "planet":
             size = random.randint(60, 80)
             atmospheres = [i for i in gifs if i.startswith("atmosphere")] + [""]
+            possible_resources = self.randomize_planet_resources()
+
         elif body_type == "moon":
             size = random.randint(30, 50)
             atmospheres = [""]
+            possible_resources = self.randomize_planet_resources()
 
         has_alien_pop = random.randint(0, 4)
         if has_alien_pop == 4:
@@ -477,9 +475,9 @@ class SolarSystemFactory:  # original
             "alien_population": alien_population,
             "buildings_max": random.randint(5, 20),
             "building_slot_amount": random.randint(1, 5),
-            "specials": "[]",
+            "specials": specials,
             "type": body_type,
-            "possible_resources": self.randomize_planet_resources() if body_type != "sun" else [],
+            "possible_resources": possible_resources,
             "image_name_small": random.choice(images),
             "image_name_big": random.choice(images),
             "orbit_speed": random.uniform(0.001, 0.005) * (5 if body_type == "moon" else 1),

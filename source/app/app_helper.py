@@ -56,6 +56,9 @@ class AppHelper:
         return planetname
 
     def calculate_global_production(self):
+        for i in sprite_groups.planets.sprites():
+            i.calculate_production()
+            i.add_population()
         """
         calculates the production of all planets, sets values to player
         :return:
@@ -73,11 +76,13 @@ class AppHelper:
         for planet in sprite_groups.planets:
             # set population limits
             self.population_limit += planet.population_limit
+            for key, value in planet.production.items():
+                self.production[key] += getattr(planet, "production_" + key)
 
-            # set production values
-            for i in planet.buildings:
-                for key, value in building_factory.get_production_from_buildings_json(i).items():
-                    self.production[key] += value
+            # # set production values
+            # for i in planet.buildings:
+            #     for key, value in building_factory.get_production_from_buildings_json(i).items():
+            #         self.production[key] += value
 
         # subtract the building_slot_upgrades ( they cost 1 energy)
         for planet in sprite_groups.planets:

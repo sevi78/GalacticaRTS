@@ -30,6 +30,7 @@ class PanZoomCollectableItem(PanZoomSprite, PanZoomMouseHandler):
         self.population = kwargs.get("population", 0)
         self.technology = kwargs.get("technology", None)
         self.resources = {"water": self.water, "energy": self.energy, "food": self.food, "minerals": self.minerals, "technology": self.technology}
+        self.specials = kwargs.get("specials", [])
         self.collect_text = ""
         self.name = "collectable item"
         self.collected = False
@@ -52,6 +53,10 @@ class PanZoomCollectableItem(PanZoomSprite, PanZoomMouseHandler):
                     if self.tooltip:
                         if self.tooltip != "":
                             global_params.tooltip_text = self.tooltip
+
+                    if self.info_text:
+                        global_params.app.info_panel.set_text(self.info_text)
+
 
     def update(self):
         self.update_pan_zoom_sprite()

@@ -2,6 +2,7 @@ from collections import Counter
 
 from source.database.file_handler import load_file
 from source.factories.building_factory import building_factory
+from source.pan_zoom_sprites.pan_zoom_collectable_item import PanZoomCollectableItem
 from source.utils.positioning import distance_between_points
 from source.utils.text_formatter import format_number
 
@@ -58,6 +59,54 @@ class InfoPanelTextGenerator:
         text = price_text + "\nproduction:\n\n" + production_text + other_text
         return text
 
+    def create_special_info_panel_string(self, planet):
+        text = ""
+
+        for key, value in planet.specials_dict.items():
+            operator = value["operator"]
+            special_key = key
+            special_value = value["value"]
+
+            #text += f"{special_key}:{special_value}\n"
+
+            if special_key in planet.resources:
+                if operator == "*":
+                    operator = "x"
+                    text += f"{special_key} is produced {special_value}x faster!\n"
+
+                elif operator == "+":
+                    text += f"{special_value} {special_key} units are produced for free!\n"
+
+            elif special_key == "population_grow_factor":
+                if operator == "*":
+                    operator = "x"
+                    text += f"The population will grow {special_value}x faster!\n"
+
+                elif operator == "+":
+                    text += f"The population grow rate is increased by{special_value}!\n"
+
+
+        # text += "\n\n"
+        # for special in planet.specials:
+        #     special_key, operator, special_value = special.split()
+        #     special_value = float(special_value)
+        #     if special_key in planet.resources:
+        #         if operator == "*":
+        #             operator = "x"
+        #             text += f"{special_key} is produced {special_value}x faster!\n"
+        #
+        #         elif operator == "+":
+        #             text += f"{special_value} {special_key} units are produced for free!\n"
+        #
+        #     elif special_key == "population_grow_factor":
+        #         if operator == "*":
+        #             operator = "x"
+        #             text += f"The population will grow {special_value}x faster!\n"
+        #
+        #         elif operator == "+":
+        #             text += f"The population grow rate is increased by{special_value}!\n"
+        return text
+
     def create_info_panel_planet_text(self, obj):
         # text_keys = ["name", "possible_resources", "specials", "buildings_max", "alien_population", "orbit_speed",
         #             "orbit_distance", "type"]
@@ -112,7 +161,8 @@ class InfoPanelTextGenerator:
 
         text += f"You can build up to {obj.buildings_max} buildings on this planet.\n"
         if obj.specials:
-            text += f"There are special buildings available: {obj.specials}.\n"
+
+            text += f"This planet has some special properties:\n\n {self.create_special_info_panel_string(obj)}.\n"
         else:
             text += "There are no special buildings available on this planet.\n"
 
@@ -140,8 +190,23 @@ class InfoPanelTextGenerator:
         text += f"minerals: {settings_dict['minerals_max']}\n"
         text += f"technology: {settings_dict['technology_max']}\n"
 
+        # special_text = "\nSpecials:\n\n"
+        # for i in ship.specials:
+        #     special_text += f"{i}\n"
+
         return text
 
+    def create_info_panel_collectable_item_text(self, resources, specials):
+        text = "Alien Artefact:\n\n"
+        for key, value in resources.items():
+            text += f"{key}: {value}\n"
+
+        special_text = "\nSpecials:\n\n"
+        for i in specials:
+            special_text += f"{i}\n"
+
+        text += special_text
+        return text
     def create_info_panel_planetary_defence_text(self, item):
         text = item + ":" + "\n"
         text += "\n" + "prices:" + "\n\n"

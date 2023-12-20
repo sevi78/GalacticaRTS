@@ -118,6 +118,8 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
     def __delete__(self):
 
         garbage_handler.delete_all_references(self, self.planet_defence)
+        for i in self.overview_buttons:
+            WidgetHandler.remove_widget(i)
         self.overview_buttons = []
 
         WidgetHandler.remove_widget(self.smiley_button)
@@ -226,6 +228,7 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
                         global_params.tooltip_text = self.tooltip
                         # draw_transparent_circle(self.win,self.planet_defence.attack_distance_circle_surface, self.frame_color, self.center, self.planet_defence.attack_distance, 20)
                     draw_transparent_circle(self.win, self.frame_color, self.center, self.planet_defence.attack_distance, 20)
+                    self.draw_specials()
                     self.set_overview_buttons_position()
                     self.show_overview_button()
 
@@ -250,6 +253,7 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
             self.hide_overview_button()
         elif self.explored:
             self.show_overview_button()
+            self.draw_specials()
             self.set_overview_buttons_position()
 
         # if not self.orbit_object:
@@ -275,3 +279,5 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
         self.draw_check_image()
         if self.show_text:
             self.draw_text()
+
+

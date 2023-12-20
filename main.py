@@ -12,6 +12,7 @@ from source.game_play.game_logic import GameLogic
 from source.game_play.navigation import navigate_to
 from source.gui.event_text import event_text
 from source.gui.widgets import widget_handler
+from source.handlers.economy_handler import economy_handler
 #from source.interaction import copy_agent
 from source.interaction.box_selection import BoxSelection
 from source.utils import global_params
@@ -144,10 +145,9 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
 
         if time.time() > self.start_time + self.wait:
             self.start_time = time.time()
-            for i in sprite_groups.planets.sprites():
-                i.calculate_production()
-                i.add_population()
+
             self.calculate_global_production()
+            economy_handler.update()
 
     def update(self, events):
         """

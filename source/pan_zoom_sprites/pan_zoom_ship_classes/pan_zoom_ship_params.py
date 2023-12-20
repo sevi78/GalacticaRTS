@@ -61,7 +61,7 @@ class PanZoomShipParams():
                           "water": self.water,
                           "technology": self.technology
                           }
-
+        self.specials = []
         self.energy_max = SHIP_ENERGY_MAX
         self.energy = SHIP_ENERGY
         self.energy_reloader = None
@@ -120,16 +120,22 @@ class PanZoomShipParams():
 
         text = self.name + ":\n\n"
         text += "experience: " + str(self.experience) + "\n"
-        text += "rank: " + self.rank + "\n\n"
+        text += "rank: " + self.rank + "\n"
+        text += "speed: " + str(self.speed) + "\n\n"
         text += "resources loaded: " + "\n\n"
-        text += "water: " + str(self.water) + "/" + str(self.water_max) + "\n"
-        text += "energy: " + str(int(self.energy)) + "/" + str(int(self.energy_max)) + "\n"
-        text += "food: " + str(self.food) + "/" + str(self.food_max) + "\n"
-        text += "minerals: " + str(self.minerals) + "/" + str(self.minerals_max) + "\n"
-        text += "technology: " + str(self.technology) + "/" + str(self.technology_max) + "\n\n"
-        text += "speed: " + str(self.speed) + "\n"
-        text += "scanner range: " + str(self.fog_of_war_radius) + "\n"
-        text += "crew: " + str(self.crew) + "\n"
+        text += "    water: " + str(self.water) + "/" + str(self.water_max) + "\n"
+        text += "    energy: " + str(int(self.energy)) + "/" + str(int(self.energy_max)) + "\n"
+        text += "    food: " + str(self.food) + "/" + str(self.food_max) + "\n"
+        text += "    minerals: " + str(self.minerals) + "/" + str(self.minerals_max) + "\n"
+        text += "    technology: " + str(self.technology) + "/" + str(self.technology_max) + "\n\n"
+
+        if self.specials:
+            text += f"    specials:\n"
+
+            for i in self.specials:
+                text += f"    {i}\n"
+        #text += "scanner range: " + str(self.fog_of_war_radius) + "\n"
+        #text += "crew: " + str(self.crew) + "\n"
 
         if self.debug:
             text += "\n\ndebug:\n"

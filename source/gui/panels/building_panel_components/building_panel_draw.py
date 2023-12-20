@@ -3,20 +3,39 @@ from pygame_widgets.util import drawText
 
 from source.factories.building_factory import building_factory
 from source.multimedia_library.images import images, pictures_path, get_image
+from source.utils.colors import colors
 from source.utils.text_formatter import format_number
 
+SPECIAL_RIGHT_OFFSET = 60
+SPECIAL_Y_OFFSET = 5
+
 SMILEY_SIZE = 20
+SPECIAL_TEXT_COLOR = "palegreen4"#"chartreuse3"
 
 
 class BuildingPanelDraw:
 
     def draw_planet_params(self, x):
+        selected_planet = self.parent.selected_planet
+
         # draw population text
         # population
-        drawText(self.win, "population: " + str(int(self.parent.selected_planet.population)) + "/" + format_number(self.parent.selected_planet.population_limit, 1), self.frame_color, (
+        drawText(self.win, "population: " + str(int(selected_planet.population)) + "/" + format_number(selected_planet.population_limit, 1), self.frame_color, (
             x + self.spacing_x, self.world_y, self.get_screen_width(), 20), self.font, "left")
+
+
+        value = selected_planet.specials_dict["population_grow_factor"]["value"]
+        operator = selected_planet.specials_dict["population_grow_factor"]["operator"]
+        if float(value) > 0.0:
+            if operator == "*":
+                operator = "x"
+
+            drawText(self.win, f"{operator}{str(value)}", SPECIAL_TEXT_COLOR, (
+                x + self.screen_width - SPECIAL_RIGHT_OFFSET, self.world_y - SPECIAL_Y_OFFSET, self.get_screen_width(), 20), self.special_font, "left")
+
         image = get_image("city_25x25.png")
         self.win.blit(image, (x, self.world_y))
+
         self.world_y += self.spacing * 3
 
         if self.parent.selected_planet.smiley_status:
@@ -128,11 +147,25 @@ class BuildingPanelDraw:
             image = pygame.transform.scale(
                 images[pictures_path]["resources"][r + "_25x25.png"], self.resource_image_size)
             self.win.blit(image, (x, self.world_y))
-            value = getattr(self.parent.selected_planet, "production_" + r)
-            text = self.font.render(r + ": " + str(value), True, self.frame_color)
-            self.win.blit(text, (x + self.spacing_x, self.world_y))
 
+            # draw specials
+            value_special = selected_planet.specials_dict[r]["value"]
+            operator = selected_planet.specials_dict[r]["operator"]
+            if operator == "*":
+                operator = "x"
+            text_ = ""
+            if not str(value_special) == "0":
+                text_ += f"  special: ({operator}{value_special})"
+                text = self.special_font.render(operator + str(value_special), True,
+                    pygame.color.THECOLORS[SPECIAL_TEXT_COLOR], )
+                self.win.blit(text, (x + self.screen_width - SPECIAL_RIGHT_OFFSET, self.world_y - SPECIAL_Y_OFFSET))
+
+            # draw resource
+            value = getattr(self.parent.selected_planet, "production_" + r)
+            text = self.font.render(r + ": " + str(value) , True, self.frame_color)
+            self.win.blit(text, (x + self.spacing_x, self.world_y))
             self.world_y += self.spacing * 2
+
         self.world_y += self.spacing * 2
 
         # GLOBAL PRODUCTION_________________________________________________________________________________________

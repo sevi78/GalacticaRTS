@@ -1,6 +1,7 @@
 import math
 import random
 
+from source.gui.panels.info_panel_components.info_panel_text_generator import info_panel_text_generator
 from source.gui.widgets.widget_handler import WidgetHandler
 from source.pan_zoom_sprites.pan_zoom_collectable_item import PanZoomCollectableItem
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zoom_handler
@@ -82,7 +83,7 @@ class UniverseFactory:  # original for WidgedBase Widgets
         return random.choice(images)
 
     def create_artefacts(self, x, y, width, height, amount):  # orig
-
+        all_specials = ["food * 1.5", "energy * 1.5", "minerals * 1.5", "water * 1.5", "technology * 1.5"]
         def select_resources():
             resources = ["water", "food", "energy", "technology", "minerals"]
             selected_resources = {"water": 0, "food": 0, "energy": 0, "technology": 0, "minerals": 0}
@@ -118,6 +119,8 @@ class UniverseFactory:  # original for WidgedBase Widgets
             size = image_name.split("_")[1].split(".png")[0]
             width, height = int(size.split("x")[0]), int(size.split("x")[1])
             selected_resources = select_resources()
+            specials = [random.choice(all_specials)]
+
             artefact = PanZoomCollectableItem(global_params.win,
                 x=x, y=y, width=width, height=height,
                 pan_zoom=pan_zoom_handler,
@@ -125,18 +128,21 @@ class UniverseFactory:  # original for WidgedBase Widgets
                 isSubWidget=False,
                 transparent=True,
                 tooltip="...maybe an alien artefact ? ...we don't now what it is ! it might be dangerous --- but maybe useful !?",
+                infotext=info_panel_text_generator.create_info_panel_collectable_item_text(selected_resources, specials),
                 moveable=True,
                 energy=selected_resources["energy"],
                 minerals=selected_resources["minerals"],
                 food=selected_resources["food"],
                 technology=selected_resources["technology"],
                 water=selected_resources["water"],
+                specials=specials,
                 parent=self,
                 group="collectable_items", gif="sphere.gif", align_image="center")
 
         for i in range(int(amount / 2)):
             x, y = get_random_pos(self.left_end, self.right_end, self.top_end, self.bottom_end, self.central_compression)
             selected_resources = select_resources()
+            specials = [random.choice(all_specials)]
             artefact = PanZoomCollectableItem(global_params.win,
                 x=x, y=y, width=50, height=50,
                 pan_zoom=pan_zoom_handler,
@@ -144,12 +150,14 @@ class UniverseFactory:  # original for WidgedBase Widgets
                 isSubWidget=False,
                 transparent=True,
                 tooltip="...maybe an alien artefact ? ...we don't now what it is ! it might be dangerous --- but maybe useful !?",
+                infotext=info_panel_text_generator.create_info_panel_collectable_item_text(selected_resources, specials),
                 moveable=True,
                 energy=selected_resources["energy"],
                 minerals=selected_resources["minerals"],
                 food=selected_resources["food"],
                 technology=selected_resources["technology"],
                 water=selected_resources["water"],
+                specials=specials,
                 parent=self,
                 group="collectable_items",
                 gif="sphere.gif", relative_gif_size=0.4, align_image="center")

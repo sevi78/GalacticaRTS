@@ -1,7 +1,11 @@
 import pygame
+from pygame_widgets.util import drawText
 
 from source.gui.lod import inside_screen
+from source.gui.panels.building_panel_components.building_panel import SPECIAL_FONT_SIZE
+from source.gui.panels.building_panel_components.building_panel_draw import SPECIAL_TEXT_COLOR
 from source.multimedia_library.gif_handler import GifHandler
+from source.multimedia_library.images import get_image
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zoom_handler
 from source.utils.colors import colors
 
@@ -12,6 +16,13 @@ class PanZoomPlanetDraw:
         self.gif = kwargs.get("gif", None)
         self.gif_handler = None
         self.setup_gif_handler()
+        self.special_images = {}
+        self.setup_special_images()
+
+    def setup_special_images(self):
+        self.special_images = {}
+        for key in self.production.keys():
+            self.special_images[key] = get_image(key + '_25x25.png')
 
     def setup_gif_handler(self):
         if self.gif:
@@ -83,6 +94,52 @@ class PanZoomPlanetDraw:
 
         # Blit the pulse surface onto the window
         self.win.blit(pulse_surface, (self.center[0] - current_radius, self.center[1] - current_radius))
+
+    def draw_specials__(self):
+        if not inside_screen(self.get_position()):
+            return
+        #print ("draw_specials")
+        count = 0
+        x = self.screen_position[0] + self.screen_width/2 + 20
+
+        if len(self.specials) > 0:
+            for key, value in self.specials_dict.items():
+                y = self.rect.centery + (20 * count)
+                operator, value = value["operator"], value["value"]
+                if not value == 0:
+                    if key in self.production.keys():
+                        self.win.blit(self.special_images[key], (x, y))
+
+                        if operator == "*":
+                            operator = "x"
+
+                        drawText(self.win, f"{operator}{str(value)}", SPECIAL_TEXT_COLOR,
+                            (x + 25 , y, 50, 20 ), pygame.font.SysFont("georgiaproblack", SPECIAL_FONT_SIZE), "left")
+                        count += 1
+
+    def draw_specials(self):
+        if not inside_screen(self.get_position()):
+            return
+        # Load the font once
+        font = pygame.font.SysFont("georgiaproblack", SPECIAL_FONT_SIZE)
+
+        if self.specials:
+            count = 0
+            x = self.screen_position[0] + self.screen_width / 2 + 20
+            y = self.rect.centery
+
+            for key, value in self.specials_dict.items():
+                operator, value = value["operator"], value["value"]
+                if value != 0 and key in self.production.keys():
+                    self.win.blit(self.special_images[key], (x, y))
+
+                    if operator == "*":
+                        operator = "x"
+
+                    drawText(self.win, f"{operator}{str(value)}", SPECIAL_TEXT_COLOR,
+                        (x + 25, y, 50, 20), font, "left")
+                    count += 1
+                    y += 20  # Increment y for the next draw
 
     def draw_image(self):
         self.win.blit(self.image, self.rect)

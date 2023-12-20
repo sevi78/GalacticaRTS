@@ -92,6 +92,7 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         PanZoomMouseHandler.__init__(self)
         PanZoomShipInteraction.__init__(self)
 
+
         self.item_collect_distance = SHIP_ITEM_COLLECT_DISTANCE
         self.orbit_direction = random.choice([-1, 1])
         self.speed = SHIP_SPEED
@@ -303,9 +304,17 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
                 if load_amount < value:
                     waste_text += str(value - load_amount) + " of " + key + ", "
 
+        special_text = " Specials: "
+        if len(self.target.specials) != 0:
+            for i in self.target.specials:
+                self.specials.append(i)
+                special_text += f"{i}\n"
+
+
+        self.target.specials = []
+
         if waste_text:
-            self.collect_text += ". because the ship's loading capacity was exceeded, the following resources were wasted: " + waste_text[
-                                                                                                                               :-2] + " !"
+            self.collect_text += f". because the ship's loading capacity was exceeded, the following resources were wasted: {waste_text[:-2]}!{special_text}"
 
         self.set_resources()
         self.set_info_text()
@@ -321,6 +330,12 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
                 setattr(self.parent.player, key, getattr(self.parent.player, key) + value)
                 self.resources[key] = 0
                 setattr(self, key, 0)
+
+        special_text = ""
+        for i in self.specials:
+            self.target.specials.append(i)
+            special_text += f"found special: {i.split(' ')[0]} {i.split(' ')[1]} {i.split(' ')[2]}"
+        self.specials = []
 
         if not text:
             return

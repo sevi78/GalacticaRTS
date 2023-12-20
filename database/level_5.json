@@ -22,7 +22,7 @@
       "alien_population": 605568302,
       "buildings_max": 9,
       "building_slot_amount": 3,
-      "specials": "[]",
+      "specials": [],
       "type": "sun",
       "possible_resources": [],
       "image_name_small": "sonnecomic_110x110.png",
@@ -46,7 +46,7 @@
       "alien_population": 0,
       "buildings_max": 13,
       "building_slot_amount": 5,
-      "specials": "[]",
+      "specials": [],
       "type": "sun",
       "possible_resources": [],
       "image_name_small": "sonnecorona_110x110.png",
@@ -70,7 +70,7 @@
       "alien_population": 0,
       "buildings_max": 11,
       "building_slot_amount": 2,
-      "specials": "[]",
+      "specials": [],
       "type": "planet",
       "possible_resources": [
         "minerals",
@@ -101,7 +101,7 @@
       "alien_population": 0,
       "buildings_max": 18,
       "building_slot_amount": 5,
-      "specials": "[]",
+      "specials": [],
       "type": "planet",
       "possible_resources": [
         "minerals",
@@ -129,7 +129,7 @@
       "alien_population": 26101435,
       "buildings_max": 8,
       "building_slot_amount": 5,
-      "specials": "[]",
+      "specials": [],
       "type": "planet",
       "possible_resources": [
         "water",
@@ -157,7 +157,7 @@
       "alien_population": 0,
       "buildings_max": 19,
       "building_slot_amount": 5,
-      "specials": "[]",
+      "specials": [],
       "type": "planet",
       "possible_resources": [
         "energy",
@@ -188,7 +188,7 @@
       "alien_population": 0,
       "buildings_max": 7,
       "building_slot_amount": 2,
-      "specials": "[]",
+      "specials": [],
       "type": "planet",
       "possible_resources": [
         "food",
@@ -216,7 +216,7 @@
       "alien_population": 374245910,
       "buildings_max": 17,
       "building_slot_amount": 5,
-      "specials": "[]",
+      "specials": [],
       "type": "planet",
       "possible_resources": [
         "minerals",
@@ -246,7 +246,7 @@
       "alien_population": 0,
       "buildings_max": 5,
       "building_slot_amount": 5,
-      "specials": "[]",
+      "specials": [],
       "type": "planet",
       "possible_resources": [
         "food",
@@ -275,7 +275,7 @@
       "alien_population": 0,
       "buildings_max": 6,
       "building_slot_amount": 5,
-      "specials": "[]",
+      "specials": [],
       "type": "moon",
       "possible_resources": [
         "water",
@@ -306,7 +306,7 @@
       "alien_population": 0,
       "buildings_max": 18,
       "building_slot_amount": 1,
-      "specials": "[]",
+      "specials": [],
       "type": "moon",
       "possible_resources": [
         "city",
@@ -334,7 +334,7 @@
       "alien_population": 851521246,
       "buildings_max": 5,
       "building_slot_amount": 4,
-      "specials": "[]",
+      "specials": [],
       "type": "moon",
       "possible_resources": [
         "technology",
@@ -364,7 +364,7 @@
       "alien_population": 0,
       "buildings_max": 11,
       "building_slot_amount": 1,
-      "specials": "[]",
+      "specials": [],
       "type": "moon",
       "possible_resources": [
         "food",
@@ -393,7 +393,7 @@
       "alien_population": 0,
       "buildings_max": 13,
       "building_slot_amount": 1,
-      "specials": "[]",
+      "specials": [],
       "type": "moon",
       "possible_resources": [
         "technology",
@@ -421,7 +421,7 @@
       "alien_population": 0,
       "buildings_max": 16,
       "building_slot_amount": 1,
-      "specials": "[]",
+      "specials": [],
       "type": "moon",
       "possible_resources": [
         "water",

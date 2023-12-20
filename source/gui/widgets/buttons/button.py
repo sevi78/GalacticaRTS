@@ -250,6 +250,7 @@ class Button(WidgetBase, Moveable):
                         self.borderColour = self.pressedBorderColour
                         self.drawCircle(self.pressedColour, 128)
 
+
                     elif event.type == pygame.MOUSEBUTTONUP:
                         if mouseState == MouseState.RELEASE and self.clicked:
                             self.clicked = False
@@ -282,6 +283,7 @@ class Button(WidgetBase, Moveable):
                                     85, 85), align="topright")
             else:
                 self.clicked = False
+
                 self.colour = self.inactiveColour
                 self.borderColour = self.inactiveBorderColour
                 self.drawCircle(self.inactiveColour, 0)

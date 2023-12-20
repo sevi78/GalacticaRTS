@@ -31,14 +31,14 @@
       "orbit_object_id": 0,
       "orbit_distance": 0,
       "atmosphere_name": "sun.gif",
-      "orbit_angle": 3797.3400000034844
+      "orbit_angle": 3769.1300000034184
     },
     "1": {
       "id": 1,
       "level": 1,
       "name": "default planet",
-      "world_x": 2632.7378613770265,
-      "world_y": 702.8508763692244,
+      "world_x": 2576.9423409469723,
+      "world_y": 690.2107949160302,
       "world_width": 70,
       "world_height": 70,
       "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
@@ -46,11 +46,7 @@
       "alien_population": 0,
       "buildings_max": 9,
       "building_slot_amount": 3,
-      "specials": [
-        "population_grow_factor * 2",
-        "food * 2",
-        "food * 1.5"
-      ],
+      "specials": ["population_grow_factor * 2", "food * 2", "food * 1.5", "energy + 1"],
       "type": "planet",
       "possible_resources": [
         "energy",
@@ -64,14 +60,14 @@
       "orbit_object_id": 0,
       "orbit_distance": 0,
       "atmosphere_name": "atmosphere.gif",
-      "orbit_angle": 283.7719999999899
+      "orbit_angle": 281.7569999999917
     },
     "2": {
       "id": 2,
       "level": 1,
       "name": "default moon",
-      "world_x": 2639.520485645823,
-      "world_y": 1005.8335138785424,
+      "world_x": 2749.7569294608843,
+      "world_y": 972.1366185244474,
       "world_width": 30,
       "world_height": 30,
       "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
@@ -93,7 +89,7 @@
       "orbit_object_id": 1,
       "orbit_distance": 0,
       "atmosphere_name": "",
-      "orbit_angle": 3328.717580485065
+      "orbit_angle": 3298.492580485138
     }
   },
   "ships": {
@@ -103,11 +99,6 @@
       "world_y": 730
     },
     "1": {
-      "name": "spaceship",
-      "world_x": 1471,
-      "world_y": 730
-    },
-    "2": {
       "name": "cargoloader",
       "world_x": 1392,
       "world_y": 712
