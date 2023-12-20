@@ -25,6 +25,8 @@ from source.multimedia_library.sounds import sounds
 TOP_SPACING = 5
 
 SPECIAL_FONT_SIZE = 16
+
+
 class BuildingPanel(WidgetBase, BuildingPanelConstructor, BuildingSlot, EconomyParams, BuildingPanelDraw):
     """
 
@@ -45,7 +47,7 @@ class BuildingPanel(WidgetBase, BuildingPanelConstructor, BuildingSlot, EconomyP
         self.bg_color = pygame.colordict.THECOLORS["black"]
         self.font_size = 16
         self.font = pygame.font.SysFont(global_params.font_name, self.font_size)
-        self.special_font = pygame.font.SysFont("georgiaproblack", SPECIAL_FONT_SIZE)# georgiaproblack
+        self.special_font = pygame.font.SysFont("georgiaproblack", SPECIAL_FONT_SIZE)  # georgiaproblack
         self.resource_image_size = (15, 15)
         self.world_x = 0
         self.world_y = 0

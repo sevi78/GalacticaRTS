@@ -29,23 +29,22 @@ class EconomyHandler:
 
     def setup_planet_specials_dict(self, planet):
         planet.specials_dict = {
-            "energy": {"operator":"", "value":0},
-            "food": {"operator":"", "value":0},
-            "minerals": {"operator":"", "value":0},
-            "water": {"operator":"", "value":0},
-            "city": {"operator":"", "value":0},
-            "technology": {"operator":"", "value":0},
-            "population_grow_factor": {"operator":"", "value":0}
-        }
+            "energy": {"operator": "", "value": 0},
+            "food": {"operator": "", "value": 0},
+            "minerals": {"operator": "", "value": 0},
+            "water": {"operator": "", "value": 0},
+            "city": {"operator": "", "value": 0},
+            "technology": {"operator": "", "value": 0},
+            "population_grow_factor": {"operator": "", "value": 0}
+            }
         for special in planet.specials:
             special_key, operator, special_value = special.split()
             special_value = float(special_value)
             planet.specials_dict[special_key]["operator"] = operator
             planet.specials_dict[special_key]["value"] += special_value
 
-        #print (f"setup_planet_specials_dict:{planet}: {planet.specials_dict}")
+        # print (f"setup_planet_specials_dict:{planet}: {planet.specials_dict}")
         return planet.specials_dict
-
 
     def calculate_planet_production(self, planet):
         planet.production = {

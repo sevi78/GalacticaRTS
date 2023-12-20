@@ -67,7 +67,7 @@ class InfoPanelTextGenerator:
             special_key = key
             special_value = value["value"]
 
-            #text += f"{special_key}:{special_value}\n"
+            # text += f"{special_key}:{special_value}\n"
 
             if special_key in planet.resources:
                 if operator == "*":
@@ -84,7 +84,6 @@ class InfoPanelTextGenerator:
 
                 elif operator == "+":
                     text += f"The population grow rate is increased by{special_value}!\n"
-
 
         # text += "\n\n"
         # for special in planet.specials:
@@ -207,6 +206,7 @@ class InfoPanelTextGenerator:
 
         text += special_text
         return text
+
     def create_info_panel_planetary_defence_text(self, item):
         text = item + ":" + "\n"
         text += "\n" + "prices:" + "\n\n"

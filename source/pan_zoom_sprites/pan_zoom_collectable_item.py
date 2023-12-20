@@ -58,7 +58,6 @@ class PanZoomCollectableItem(PanZoomSprite, PanZoomMouseHandler):
                         global_params.app.info_panel.set_text(self.info_text)
                         global_params.app.info_panel.set_planet_image(self.image_raw)
 
-
     def update(self):
         self.update_pan_zoom_sprite()
         self.listen()

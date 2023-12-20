@@ -21,7 +21,7 @@ class SpecialHandler:
             value = float(value)  # Convert the value to a float for arithmetic operations
             if operand == '*':
                 if hasattr(self, key):
-                    print ("getattr(self, key)",key,  getattr(self, key))
+                    print("getattr(self, key)", key, getattr(self, key))
                     setattr(self, key, getattr(self, key) * value)
                 else:
                     self.production[key] = self.production[key] * value
@@ -33,12 +33,12 @@ class SpecialHandler:
             #         self.production[key] += value
 
             self.set_specials_icons(key, value)
-        print ("population_grow_factor:", self.population_grow_factor)
-        print ("production_food:", self.production_food)
+        print("population_grow_factor:", self.population_grow_factor)
+        print("production_food:", self.production_food)
 
     def set_specials_icons(self, key, value):
         if hasattr(self, key):
-            print ("set_specials_icons:", key, value)
+            print("set_specials_icons:", key, value)
 
     def get_special_string(self, key):
         # Specials
@@ -47,7 +47,6 @@ class SpecialHandler:
         for special in specials:
             key, operand, value = special.split(" ")
             value = float(value)  # Convert the value to a float for arithmetic operations
-
 
 
 class PanZoomPlanetEconomy(Rank, SpecialHandler):
@@ -167,7 +166,7 @@ class PanZoomPlanetEconomy(Rank, SpecialHandler):
         #
         # print("self.production_new", self.production)
         # print (self.production_food)
-        #self.calculate_specials_production()
+        # self.calculate_specials_production()
 
         # Convert the string representation of specials to a dictionary
         # specials = eval(self.specials)
@@ -194,18 +193,18 @@ class PanZoomPlanetEconomy(Rank, SpecialHandler):
 
         self.production = economy_handler.calculate_planet_production(self)
         # Calculate the sum only if the list is not empty, otherwise return 1
-        self.water_special = 1#sum([float(entry.split(' * ')[1]) for entry in self.specials if
-                                  #entry.startswith('water')]) if self.water_special else 1
-        self.energy_special = 1#sum([float(entry.split(' * ')[1]) for entry in self.specials if
-                                   #entry.startswith('energy')]) if self.energy_special else 1
-        self.food_special = 1#sum([float(entry.split(' * ')[1]) for entry in self.specials if
-                                 #entry.startswith('food')]) if self.food_special else 1
-        self.minerals_special = 1#sum([float(entry.split(' * ')[1]) for entry in self.specials if
-                                    # entry.startswith('minerals')]) if self.minerals_special else 1
-        self.technology_special = 1#sum([float(entry.split(' * ')[1]) for entry in self.specials if
-                                       #entry.startswith('technology')]) if self.technology_special else 1
-        self.city_special = 1#sum([float(entry.split(' * ')[1]) for entry in self.specials if
-                                 #entry.startswith('city')]) if self.city_special else 1
+        self.water_special = 1  # sum([float(entry.split(' * ')[1]) for entry in self.specials if
+        # entry.startswith('water')]) if self.water_special else 1
+        self.energy_special = 1  # sum([float(entry.split(' * ')[1]) for entry in self.specials if
+        # entry.startswith('energy')]) if self.energy_special else 1
+        self.food_special = 1  # sum([float(entry.split(' * ')[1]) for entry in self.specials if
+        # entry.startswith('food')]) if self.food_special else 1
+        self.minerals_special = 1  # sum([float(entry.split(' * ')[1]) for entry in self.specials if
+        # entry.startswith('minerals')]) if self.minerals_special else 1
+        self.technology_special = 1  # sum([float(entry.split(' * ')[1]) for entry in self.specials if
+        # entry.startswith('technology')]) if self.technology_special else 1
+        self.city_special = 1  # sum([float(entry.split(' * ')[1]) for entry in self.specials if
+        # entry.startswith('city')]) if self.city_special else 1
 
         #
         # print ("specials:",self.water_special, self.energy_special, self.food_special, self.minerals_special, self.technology_special, self.city_special )
@@ -230,15 +229,13 @@ class PanZoomPlanetEconomy(Rank, SpecialHandler):
         self.production_technology = self.production["technology"] * self.technology_special
         self.production_city = self.production["city"] * self.city_special
 
-        #print (self.production_food)
+        # print (self.production_food)
 
         self.calculate_population()
         self.set_thumpsup_status()
         self.set_smiley_status()
         self.set_technology_level_status()
         self.set_overview_images()
-
-
 
     def calculate_population(self):
         """ calculates population"""

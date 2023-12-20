@@ -134,8 +134,8 @@ class PanZoomShipParams():
 
             for i in self.specials:
                 text += f"    {i}\n"
-        #text += "scanner range: " + str(self.fog_of_war_radius) + "\n"
-        #text += "crew: " + str(self.crew) + "\n"
+        # text += "scanner range: " + str(self.fog_of_war_radius) + "\n"
+        # text += "crew: " + str(self.crew) + "\n"
 
         if self.debug:
             text += "\n\ndebug:\n"

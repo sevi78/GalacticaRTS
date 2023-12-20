@@ -35,7 +35,7 @@ class Quadrant(PanZoomSprite):
 
     def draw(self):
         pygame.draw.rect(self.win, self.frame_color, (
-        self.world_x, self.world_y, self.world_width, self.world_height), 1)
+            self.world_x, self.world_y, self.world_width, self.world_height), 1)
 
     def update(self):
         self.update_pan_zoom_sprite()

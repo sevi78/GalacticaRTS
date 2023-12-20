@@ -66,7 +66,7 @@ def draw_electromagnetic_impulse__(win, center, min_radius, max_radius, width, p
         color = (color[0], color[1], color[2])
         # pygame.draw.circle(pulse_surface, dim_color, (max_radius, max_radius), current_radius, width)
         draw_transparent_circle(pulse_surface, color, (
-        max_radius, max_radius), current_radius, int(pulse_progress * 255))
+            max_radius, max_radius), current_radius, int(pulse_progress * 255))
 
     # Blit the pulse surface onto the window
     win.blit(pulse_surface, (center[0] - max_radius, center[1] - max_radius))

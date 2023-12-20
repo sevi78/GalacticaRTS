@@ -10,7 +10,7 @@ SPECIAL_RIGHT_OFFSET = 60
 SPECIAL_Y_OFFSET = 5
 
 SMILEY_SIZE = 20
-SPECIAL_TEXT_COLOR = "palegreen4"#"chartreuse3"
+SPECIAL_TEXT_COLOR = "palegreen4"  # "chartreuse3"
 
 
 class BuildingPanelDraw:
@@ -23,7 +23,6 @@ class BuildingPanelDraw:
         drawText(self.win, "population: " + str(int(selected_planet.population)) + "/" + format_number(selected_planet.population_limit, 1), self.frame_color, (
             x + self.spacing_x, self.world_y, self.get_screen_width(), 20), self.font, "left")
 
-
         value = selected_planet.specials_dict["population_grow_factor"]["value"]
         operator = selected_planet.specials_dict["population_grow_factor"]["operator"]
         if float(value) > 0.0:
@@ -31,7 +30,8 @@ class BuildingPanelDraw:
                 operator = "x"
 
             drawText(self.win, f"{operator}{str(value)}", SPECIAL_TEXT_COLOR, (
-                x + self.screen_width - SPECIAL_RIGHT_OFFSET, self.world_y - SPECIAL_Y_OFFSET, self.get_screen_width(), 20), self.special_font, "left")
+                x + self.screen_width - SPECIAL_RIGHT_OFFSET, self.world_y - SPECIAL_Y_OFFSET, self.get_screen_width(),
+                20), self.special_font, "left")
 
         image = get_image("city_25x25.png")
         self.win.blit(image, (x, self.world_y))
@@ -162,7 +162,7 @@ class BuildingPanelDraw:
 
             # draw resource
             value = getattr(self.parent.selected_planet, "production_" + r)
-            text = self.font.render(r + ": " + str(value) , True, self.frame_color)
+            text = self.font.render(r + ": " + str(value), True, self.frame_color)
             self.win.blit(text, (x + self.spacing_x, self.world_y))
             self.world_y += self.spacing * 2
 

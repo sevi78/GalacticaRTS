@@ -92,7 +92,6 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         PanZoomMouseHandler.__init__(self)
         PanZoomShipInteraction.__init__(self)
 
-
         self.item_collect_distance = SHIP_ITEM_COLLECT_DISTANCE
         self.orbit_direction = random.choice([-1, 1])
         self.speed = SHIP_SPEED
@@ -309,7 +308,6 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
             for i in self.target.specials:
                 self.specials.append(i)
                 special_text += f"{i}\n"
-
 
         self.target.specials = []
 

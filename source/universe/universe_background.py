@@ -84,6 +84,7 @@ class UniverseFactory:  # original for WidgedBase Widgets
 
     def create_artefacts(self, x, y, width, height, amount):  # orig
         all_specials = ["food * 1.5", "energy * 1.5", "minerals * 1.5", "water * 1.5", "technology * 1.5"]
+
         def select_resources():
             resources = ["water", "food", "energy", "technology", "minerals"]
             selected_resources = {"water": 0, "food": 0, "energy": 0, "technology": 0, "minerals": 0}

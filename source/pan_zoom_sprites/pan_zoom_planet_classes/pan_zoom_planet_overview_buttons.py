@@ -141,7 +141,6 @@ class PanZoomPlanetOverviewButtons(PanZoomPlanetEconomy):
         else:
             self.smiley_button.image_raw = get_image("sad.png")
 
-
         self.technology_level_button.image_raw = self.rank_images[str(self.rank)]
 
     def delete_overview_buttons(self):

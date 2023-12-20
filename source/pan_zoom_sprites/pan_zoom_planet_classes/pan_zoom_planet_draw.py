@@ -98,9 +98,9 @@ class PanZoomPlanetDraw:
     def draw_specials__(self):
         if not inside_screen(self.get_position()):
             return
-        #print ("draw_specials")
+        # print ("draw_specials")
         count = 0
-        x = self.screen_position[0] + self.screen_width/2 + 20
+        x = self.screen_position[0] + self.screen_width / 2 + 20
 
         if len(self.specials) > 0:
             for key, value in self.specials_dict.items():
@@ -114,7 +114,7 @@ class PanZoomPlanetDraw:
                             operator = "x"
 
                         drawText(self.win, f"{operator}{str(value)}", SPECIAL_TEXT_COLOR,
-                            (x + 25 , y, 50, 20 ), pygame.font.SysFont("georgiaproblack", SPECIAL_FONT_SIZE), "left")
+                            (x + 25, y, 50, 20), pygame.font.SysFont("georgiaproblack", SPECIAL_FONT_SIZE), "left")
                         count += 1
 
     def draw_specials(self):

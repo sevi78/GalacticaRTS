@@ -279,5 +279,3 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
         self.draw_check_image()
         if self.show_text:
             self.draw_text()
-
-
