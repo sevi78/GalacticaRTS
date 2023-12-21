@@ -187,7 +187,8 @@ class BuildingWidget(WidgetBase):
             self.delete()
 
     def delete(self):
-        global_params.app.building_widget_list.remove(self)
+        if self in global_params.app.building_widget_list:
+            global_params.app.building_widget_list.remove(self)
         self.__del__()
         self.progress_bar.__del__()
         self.button.__del__()

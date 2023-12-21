@@ -127,21 +127,24 @@ class PanZoomPlanetOverviewButtons(PanZoomPlanetEconomy):
         # print("get_build_population_minimum_list", self.rank)
 
     def set_overview_images(self):
-        if self.thumpsup_status:
-            self.thumpsup_button.image_raw = pygame.transform.flip(pygame.transform.scale(
-                get_image(
-                    "thumps_upred.png"), self.thumpsup_button_size), True, True)
-        else:
-            self.thumpsup_button.image_raw = pygame.transform.flip(pygame.transform.scale(
-                get_image(
-                    "thumps_up.png"), self.thumpsup_button_size), True, False)
+        try:
+            if self.thumpsup_status:
+                self.thumpsup_button.image_raw = pygame.transform.flip(pygame.transform.scale(
+                    get_image(
+                        "thumps_upred.png"), self.thumpsup_button_size), True, True)
+            else:
+                self.thumpsup_button.image_raw = pygame.transform.flip(pygame.transform.scale(
+                    get_image(
+                        "thumps_up.png"), self.thumpsup_button_size), True, False)
 
-        if self.smiley_status:
-            self.smiley_button.image_raw = get_image("smile.png")
-        else:
-            self.smiley_button.image_raw = get_image("sad.png")
+            if self.smiley_status:
+                self.smiley_button.image_raw = get_image("smile.png")
+            else:
+                self.smiley_button.image_raw = get_image("sad.png")
 
-        self.technology_level_button.image_raw = self.rank_images[str(self.rank)]
+            self.technology_level_button.image_raw = self.rank_images[str(self.rank)]
+        except AttributeError as e:
+            print ("set_overview_images: error", e)
 
     def delete_overview_buttons(self):
         for i in self.overview_buttons:

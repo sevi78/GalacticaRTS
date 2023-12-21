@@ -5,7 +5,7 @@ from pygame_widgets.util import drawText
 from source.app.app_helper import select_next_item_in_list
 from source.configuration.economy_params import EconomyParams
 from source.game_play.navigation import navigate_to
-from source.gui.building_button_widget import BuildingButtonWidget
+from source.gui.widgets.building_button_widget import BuildingButtonWidget
 from source.gui.event_text import event_text
 from source.gui.panels.building_panel_components.building_panel_constructor import BuildingPanelConstructor
 from source.gui.panels.building_panel_components.building_panel_draw import BuildingPanelDraw

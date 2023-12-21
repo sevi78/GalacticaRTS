@@ -245,6 +245,8 @@ class PanZoomPlanetEconomy(Rank, SpecialHandler):
         if self.production["food"] > 0:
             self.population_grow = self.population_grow_factor * self.production[
                 "food"] * global_params.time_factor
+        if self.population < 0:
+            self.population = self.population +-1
 
     def set_population_limit(self):
         """
