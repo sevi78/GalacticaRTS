@@ -11,7 +11,7 @@ from source.game_play.enemy_handler import enemy_handler
 from source.game_play.game_logic import GameLogic
 from source.game_play.navigation import navigate_to
 from source.gui.event_text import event_text
-from source.gui.widgets import widget_handler
+from source.handlers import widget_handler
 from source.handlers.economy_handler import economy_handler
 #from source.interaction import copy_agent
 from source.interaction.box_selection import BoxSelection
@@ -20,7 +20,7 @@ from source.utils.global_params import text_input_active, enable_pan, copy_objec
 from source.multimedia_library.images import get_image
 from source.interaction.mouse import Mouse
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zoom_handler
-from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups
+from source.handlers.pan_zoom_sprite_handler import sprite_groups
 
 ECONOMY_UPDATE_INTERVAL = 2.0
 

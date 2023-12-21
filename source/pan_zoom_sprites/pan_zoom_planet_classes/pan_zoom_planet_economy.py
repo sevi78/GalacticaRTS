@@ -1,3 +1,5 @@
+import random
+
 import pygame
 
 from source.app.app_helper import get_sum_up_to_n
@@ -68,6 +70,7 @@ class PanZoomPlanetEconomy(Rank, SpecialHandler):
         self.population_limit = 0.0
         self.population_grow = 0.0
         self.alien_population = kwargs.get("alien_population", 0)
+        self.alien_attitude = kwargs.get("alien_attitude", random.randint(0, 100))
 
         self.building_slot_amount = kwargs.get("building_slot_amount", 3)
         self.building_slot_upgrades = 0

@@ -9,8 +9,7 @@ from source.draw.zigzag_line import draw_zigzag_line
 from source.factories.building_factory import building_factory
 from source.multimedia_library.sounds import sounds
 from source.pan_zoom_sprites.attack import attack, launch_missile
-from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zoom_handler
-from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups
+from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.utils import global_params
 from source.utils.positioning import get_distance
 

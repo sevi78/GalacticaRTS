@@ -16,7 +16,7 @@ from source.pan_zoom_sprites.pan_zoom_ship_classes.pan_zoom_ship_params import P
 from source.pan_zoom_sprites.pan_zoom_ship_classes.pan_zoom_ship_ranking import PanZoomShipRanking
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_game_object import PanZoomGameObject
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zoom_handler
-from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups
+from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_mouse_handler import PanZoomMouseHandler
 from source.pan_zoom_sprites.pan_zoom_target_object import PanZoomTargetObject
 from source.physics.orbit import orbit
@@ -461,7 +461,18 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         if self.enemy:
             orbit(self, self.enemy, self.orbit_speed, self.orbit_direction)
             self.follow_target(self.enemy)
-            self.attack(self.enemy)
+
+            if self.enemy.attitude < 50:
+                self.attack(self.enemy)
+            else:
+                global_params.app.trade_edit.setup_trader(self, self.enemy)
+                global_params.app.trade_edit.set_visible()
+                self.enemy = None
+                # self.target = None
+                # self.moving = False
+
+
+                print("here to setup trader")
 
         if self.orbit_object:
             orbit(self, self.orbit_object, self.orbit_speed, self.orbit_direction)

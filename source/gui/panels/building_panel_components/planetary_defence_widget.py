@@ -9,7 +9,7 @@ from source.utils import global_params
 from source.utils.colors import colors
 from source.utils.global_params import ui_rounded_corner_small_thickness
 from source.multimedia_library.images import get_image
-from source.gui.panels.info_panel_components.info_panel_text_generator import info_panel_text_generator
+from source.text.info_panel_text_generator import info_panel_text_generator
 
 # Constants
 FONT_SIZE = 12

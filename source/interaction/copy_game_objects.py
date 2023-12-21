@@ -3,7 +3,7 @@ import pygame
 from source.factories.planet_factory import planet_factory
 from source.pan_zoom_sprites.pan_zoom_planet_classes.pan_zoom_planet import PanZoomPlanet
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zoom_handler
-from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups
+from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.utils import global_params
 from source.utils.colors import colors
 from source.multimedia_library.images import get_image

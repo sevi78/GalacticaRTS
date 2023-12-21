@@ -10,6 +10,7 @@ from source.editors.level_edit import LevelEdit
 from source.editors.level_select import LevelSelect
 from source.editors.planet_edit import PlanetEdit
 from source.editors.ship_edit import ShipEdit
+from source.editors.trade_edit import TradeEdit
 from source.game_play.enemy_handler import enemy_handler
 from source.game_play.player import Player
 from source.gui.panels.advanced_settings_panel import AdvancedSettingsPanel
@@ -21,7 +22,7 @@ from source.gui.panels.resource_panel import ResourcePanel
 from source.gui.panels.settings_panel import SettingsPanel
 from source.gui.tool_tip import ToolTip
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import PanZoomHandler
-from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups
+from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.utils import global_params
 from source.utils.debugger import debugger
 from source.database.file_handler import load_file
@@ -141,6 +142,11 @@ class UIBuilder(SceneBuilder):
             pygame.display.get_surface().get_rect().centerx - width / 2,
             pygame.display.get_surface().get_rect().y,
             width, height, parent=self, obj=self.event_panel, layer=9)
+
+        self.trade_edit = TradeEdit(pygame.display.get_surface(),
+            pygame.display.get_surface().get_rect().centerx - width / 2,
+            pygame.display.get_surface().get_rect().y,
+            width, height, parent=self, obj=None, layer=9, game_paused=True)
 
     def create_player(self):
         self.player = Player(name="zork",

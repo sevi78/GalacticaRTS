@@ -12,7 +12,7 @@ from source.utils.colors import colors
 from source.multimedia_library.images import images, pictures_path, get_image
 from source.multimedia_library.sounds import sounds
 from source.database.file_handler import load_file
-from source.utils.text_wrap import TextWrap
+from source.text.text_wrap import TextWrap
 
 
 class GameEventHandler:
@@ -107,7 +107,7 @@ class EventPanel(TextWrap, EditorBase, InterfaceData):
         self.surface_rect = self.surface.get_rect()
         self.surface_rect[0] = x
         self.surface_rect[1] = y
-        self.image = images[pictures_path]["textures"]["event_panel.png"]
+        self.image = kwargs.get("image", images[pictures_path]["textures"]["event_panel.png"])
         self.image_scaled = pygame.transform.scale(self.image, (width, height))
 
         # events
@@ -229,6 +229,9 @@ class EventPanel(TextWrap, EditorBase, InterfaceData):
         self.game_event = self.event_cue[0]
         if self.game_event.deal:
             self.game_event.deal.create_friendly_offer()
+
+        self.image = event.image
+        self.image_raw = event.image
         self.game_event.set_body()
         self.set_text()
 

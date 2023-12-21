@@ -1,5 +1,3 @@
-import random
-
 import pygame
 
 from source.app.ui_helper import UIHelper
@@ -16,11 +14,12 @@ from source.universe.universe_background import Universe
 from source.utils import global_params
 from source.utils.colors import colors
 from source.multimedia_library.images import get_image
-from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups
+from source.handlers.pan_zoom_sprite_handler import sprite_groups
 
 
 class GameObjectStorage:
     def __init__(self):
+        """TODO: reduce dependencies """
         self.game_objects = []
         self.planets = sprite_groups.planets.sprites()
         self.collectables = []

@@ -3,7 +3,7 @@ import random
 
 from source.factories.building_factory import building_factory
 from source.multimedia_library.images import get_image_names_from_folder
-from source.utils.text_formatter import to_roman
+from source.text.text_formatter import to_roman
 
 MOOON_TO_PLANET_DISTANCE = 500
 

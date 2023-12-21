@@ -1,6 +1,5 @@
 from source.database.file_handler import load_file
-from source.factories.building_factory import building_factory
-from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups
+from source.handlers.pan_zoom_sprite_handler import sprite_groups
 
 
 class AppHelper:

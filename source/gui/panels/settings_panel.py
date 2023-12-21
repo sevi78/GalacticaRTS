@@ -4,12 +4,12 @@ from source.game_play.navigation import navigate_to
 from source.gui.panels.toggle_switch import ToggleSwitch
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.gui.widgets.buttons.image_button import ImageButton
-from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups
+from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.utils import global_params
 from source.utils.colors import colors
 from source.utils.global_params import ui_rounded_corner_small_thickness
 from source.multimedia_library.images import get_image
-from source.gui.panels.info_panel_components.info_panel_text_generator import info_panel_text_generator
+from source.text.info_panel_text_generator import info_panel_text_generator
 
 
 class SettingsPanel(WidgetBase):

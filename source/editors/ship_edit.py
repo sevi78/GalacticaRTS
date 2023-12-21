@@ -1,7 +1,7 @@
 from source.editors.editor_base.editor_config import ARROW_SIZE, FONT_SIZE, TOP_SPACING
 from source.interfaces.interface import Interface
 from source.gui.widgets.selector import Selector
-from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups
+from source.handlers.pan_zoom_sprite_handler import sprite_groups
 
 
 class ShipEdit(Interface):

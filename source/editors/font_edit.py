@@ -3,7 +3,7 @@ import pygame
 from source.editors.editor_base.editor_base import EditorBase
 from source.editors.editor_base.editor_config import ARROW_SIZE, FONT_SIZE, TOP_SPACING
 from source.gui.widgets.selector import Selector
-from source.gui.widgets.widget_handler import WidgetHandler
+from source.handlers.widget_handler import WidgetHandler
 from source.utils import global_params
 from source.database.file_handler import write_file, load_file
 

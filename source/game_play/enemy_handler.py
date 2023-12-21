@@ -3,8 +3,10 @@ import pygame.display
 
 from source.interfaces.interface import InterfaceData
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zoom_handler
-from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups
+from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.pan_zoom_sprites.pan_zoom_ufo import PanZoomUfo
+from source.text.info_panel_text_generator import info_panel_text_generator
+from source.text.tooltip_gen import tooltip_generator
 from source.utils import global_params
 from source.database.file_handler import load_file
 
@@ -112,8 +114,10 @@ class EnemyHandler(InterfaceData):
         ufo = PanZoomUfo(self.win, x, y,
             pan_zoom_ufo_config["enemy handler"]["width"],
             pan_zoom_ufo_config["enemy handler"]["height"], pan_zoom=pan_zoom_handler,
-            image_name="ufo_74x30.png", align_image="center", group="ufos", explosion_name="explosion4.gif")
-
+            image_name="ufo_74x30.png", align_image="center", group="ufos", explosion_name="explosion4.gif",
+            tooltip="",infotext= "", attitude=100)
+        ufo.tooltip = tooltip_generator.create_ufo_tooltip(ufo)
+        ufo.info_text =info_panel_text_generator.create_info_panel_ufo_text(ufo)
         return ufo
 
 

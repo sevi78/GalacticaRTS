@@ -2,7 +2,7 @@ import math
 from pygame import Vector2
 
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_gif import PanZoomSprite
-from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups
+from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.utils import global_params
 from source.utils.positioning import rot_center
 

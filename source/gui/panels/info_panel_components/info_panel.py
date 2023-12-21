@@ -4,8 +4,8 @@ from source.gui.panels.toggle_switch import ToggleSwitch
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.utils import global_params
 from source.utils.global_params import ui_rounded_corner_small_thickness
-from source.gui.panels.info_panel_components.info_panel_text_generator import info_panel_text_generator
-from source.utils.text_wrap import TextWrap
+from source.text.info_panel_text_generator import info_panel_text_generator
+from source.text.text_wrap import TextWrap
 
 PLANET_IMAGE_SIZE = 125
 TOGGLESIZE = 20
@@ -73,7 +73,7 @@ class InfoPanel(WidgetBase, TextWrap):
         self.surface_rect = pygame.draw.rect(self.win, self.frame_color, pygame.Rect(self.world_x, self.world_y, self.world_width,
             self.world_height + 10), 1, int(global_params.ui_rounded_corner_radius_small))
         self.planet_image = None
-        self.planet_image_size = (PLANET_IMAGE_SIZE, PLANET_IMAGE_SIZE)
+        self.planet_image_size = [PLANET_IMAGE_SIZE, PLANET_IMAGE_SIZE]
         self.planet_rect = None
         self.rect_filled = pygame.Surface((self.world_width, self.world_height))
 
@@ -91,7 +91,7 @@ class InfoPanel(WidgetBase, TextWrap):
         self.wrap_text(self.text, self.pos, self.size, self.font, self.color)
         self.set_size_from_text()
         if self.planet_image:
-            self.set_planet_image(self.planet_image, size=self.planet_image_size, align="topright")
+            self.set_planet_image(self.planet_image, size=self.planet_image.get_size(), align="topright")
         self.reposition()
 
     def set_text(self, text):
@@ -113,10 +113,48 @@ class InfoPanel(WidgetBase, TextWrap):
         align = kwargs.get("align", "topright")
         alpha = kwargs.get("alpha", 128)
 
+        # if size:
+        #     self.planet_image = pygame.transform.scale(planet_image, size)
+        # else:
+        #     self.planet_image = pygame.transform.scale(planet_image, self.planet_image_size)
+
+        # if size:
+        #     # Calculate the aspect ratio of the original image
+        #     aspect_ratio = planet_image.get_width() / planet_image.get_height()
+        #
+        #     # Calculate the maximum width and height based on the aspect ratio and self.planet_image_size
+        #     max_width = min(size[0], self.planet_image_size[0])
+        #     max_height = min(size[1], self.planet_image_size[1])
+        #
+        #     # Adjust the width and height to maintain the aspect ratio and fit within the limits
+        #     if (max_width / aspect_ratio) > max_height:
+        #         self.planet_image = pygame.transform.scale(planet_image, (int(max_height * aspect_ratio), max_height))
+        #     else:
+        #         self.planet_image = pygame.transform.scale(planet_image, (max_width, int(max_width / aspect_ratio)))
+        # else:
+        #     self.planet_image = pygame.transform.scale(planet_image, self.planet_image_size)
+
         if size:
-            self.planet_image = pygame.transform.scale(planet_image, size)
+            # Calculate the aspect ratio of the original image
+            aspect_ratio = planet_image.get_width() / planet_image.get_height()
+
+            # Adjust the size to match the aspect ratio and self.planet_image_size
+            if self.planet_image_size[0] > self.planet_image_size[1]:
+                self.planet_image_size[1] = self.planet_image_size[0]
+            else:
+                self.planet_image_size[0] = self.planet_image_size[1]
+
+            # Recalculate the size to maintain the aspect ratio and fit within the limits
+            max_width = min(size[0], self.planet_image_size[0])
+            max_height = min(size[1], self.planet_image_size[1])
+
+            if (max_width / aspect_ratio) > max_height:
+                self.planet_image = pygame.transform.scale(planet_image, (int(max_height * aspect_ratio), max_height))
+            else:
+                self.planet_image = pygame.transform.scale(planet_image, (max_width, int(max_width / aspect_ratio)))
         else:
             self.planet_image = pygame.transform.scale(planet_image, self.planet_image_size)
+
 
         self.planet_rect = self.planet_image.get_rect()
 

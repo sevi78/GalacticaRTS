@@ -1,5 +1,5 @@
 import pygame
-from source.utils.text_wrap import TextWrap
+from source.text.text_wrap import TextWrap
 from source.utils import global_params
 from source.utils.colors import colors
 

@@ -2,11 +2,11 @@ import pygame
 
 # from source.database.database_access import create_connection, get_database_file_path
 from source.gui.event_text import event_text
-from source.multimedia_library.images import images, pictures_path, get_image
+from source.multimedia_library.images import get_image
 from source.multimedia_library.sounds import sounds
-from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups
+from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.utils import global_params
-from source.gui.panels.info_panel_components.info_panel_text_generator import info_panel_text_generator
+from source.text.info_panel_text_generator import info_panel_text_generator
 
 
 class PanZoomPlanetParams:

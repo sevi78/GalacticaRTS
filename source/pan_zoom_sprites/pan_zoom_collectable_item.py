@@ -2,7 +2,7 @@ import pygame.draw
 from pygame_widgets import Mouse
 from pygame_widgets.mouse import MouseState
 from source.gui.lod import inside_screen
-from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups
+from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_mouse_handler import PanZoomMouseHandler
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_gif import PanZoomSprite
 from source.utils import global_params
@@ -56,7 +56,7 @@ class PanZoomCollectableItem(PanZoomSprite, PanZoomMouseHandler):
 
                     if self.info_text:
                         global_params.app.info_panel.set_text(self.info_text)
-                        global_params.app.info_panel.set_planet_image(self.image_raw)
+                        global_params.app.info_panel.set_planet_image(self.image_raw, size=self.image_raw.get_size())
 
     def update(self):
         self.update_pan_zoom_sprite()

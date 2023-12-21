@@ -4,9 +4,8 @@ import pygame
 from source.database.file_handler import load_file
 from source.editors.editor_base.editor_base import EditorBase
 from source.editors.editor_base.editor_config import TOP_SPACING
-from source.gui.panels.info_panel_components.info_panel_text_generator import info_panel_text_generator
-from source.gui.tool_tip import tooltip_generator
-from source.gui.widgets.Icon import Icon
+from source.text.info_panel_text_generator import info_panel_text_generator
+from source.text.tooltip_gen import tooltip_generator
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.multimedia_library.images import get_image
 from source.utils import global_params

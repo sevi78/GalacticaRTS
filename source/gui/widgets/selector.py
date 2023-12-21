@@ -27,6 +27,7 @@ class Selector(WidgetBase):
         self.buttons = []
         self.font_size = font_size
         self.font = pygame.font.SysFont(global_params.font_name, self.font_size)
+        self.text_adds = ""
 
         #  lists, data
         self.list_name = data["list_name"]
@@ -104,16 +105,21 @@ class Selector(WidgetBase):
     def draw_texts(self):
         """
         """
+        self.set_text()
+
+        text = self.font.render(self.display_text, True, self.color)
+        text_rect = text.get_rect()
+        text_rect.x = self.minus_arrow.get_screen_x() + self.spacing - text_rect.width / 2
+        text_rect.y = self.minus_arrow.get_screen_y() + 6
+        self.win.blit(text, text_rect)
+
+    def set_text(self):
         if hasattr(self.current_value, "name"):
             display_text = f"{self.list_name.split('_list')[0]} : {self.current_value.name}"
         else:
             display_text = f"{self.list_name.split('_list')[0]} : {self.current_value}"
 
-        text = self.font.render(display_text, True, self.color)
-        text_rect = text.get_rect()
-        text_rect.x = self.minus_arrow.get_screen_x() + self.spacing - text_rect.width / 2
-        text_rect.y = self.minus_arrow.get_screen_y() + 6
-        self.win.blit(text, text_rect)
+        self.display_text = display_text + self.text_adds
 
     def draw(self):
         """

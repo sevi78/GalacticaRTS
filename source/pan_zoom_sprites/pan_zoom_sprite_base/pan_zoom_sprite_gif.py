@@ -5,7 +5,7 @@ import pygame
 from source.multimedia_library.images import get_image, get_gif_frames, get_gif
 from source.multimedia_library.sounds import sounds
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_debug import GameObjectDebug
-from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups
+from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_visibility_handler import PanZoomVisibilityHandler
 from source.utils import global_params
 from source.utils.colors import colors

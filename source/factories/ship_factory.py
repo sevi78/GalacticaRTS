@@ -1,6 +1,6 @@
 from source.pan_zoom_sprites.pan_zoom_ship_classes.pan_zoom_ships import Spacehunter, Spaceship, Cargoloader
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zoom_handler
-from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups
+from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.utils import global_params
 
 

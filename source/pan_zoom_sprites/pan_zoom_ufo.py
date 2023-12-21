@@ -5,9 +5,9 @@ from source.gui.event_text import event_text
 from source.gui.lod import inside_screen
 from source.gui.widgets.progress_bar import ProgressBar
 from source.gui.widgets.widget_base_components.interaction_handler import InteractionHandler
-from source.gui.widgets.widget_handler import WidgetHandler
+from source.handlers.widget_handler import WidgetHandler
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_game_object import PanZoomGameObject
-from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups
+from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.utils import global_params
 from source.utils.colors import colors
 from source.interaction.mouse import Mouse, MouseState
@@ -25,6 +25,7 @@ class PanZoomUfo(PanZoomGameObject, InteractionHandler):
     def __init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs):
         PanZoomGameObject.__init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs)
         InteractionHandler.__init__(self)
+        self.info_text = kwargs.get("infotext", "")
         self.random_target_interval = pan_zoom_ufo_config["random_target_interval"]
         self.frame_color = colors.frame_color
         self._disabled = False
@@ -36,12 +37,31 @@ class PanZoomUfo(PanZoomGameObject, InteractionHandler):
         self.exploded = False
         self.energy = pan_zoom_ufo_config["energy"]
         self.energy_max = self.energy
+        self.food = kwargs.get("food", 100)
+        self.food_max = 200
+        self.minerals = kwargs.get("minerals", 100)
+        self.minerals_max = 200
+        self.water = kwargs.get("water", 100)
+        self.water_max = 200
+        self.population = kwargs.get("population", 100)
+        self.population_max = 200
+        self.technology = kwargs.get("technology", 100)
+        self.technology_max = 200
+
+        self.resources = {"minerals": self.minerals,
+                          "food": self.food,
+                          "population": self.population,
+                          "water": self.water,
+                          "technology": self.technology
+                          }
+        self.specials = []
+        self.attitude = kwargs.get("attitude", random.randint(0,100))
+        self.attitude_text = "friendly" if self.attitude > 50 else "hostile"
         self.name = "ufo"
         self.property = "ufo"
         self.target = None
         self.set_target(sprite_groups.planets.sprites()[0])
         self.tooltip = "this is a u.f.o,   might be dangerous!"
-        self.property = "ufo"
         self.attack_distance_raw = pan_zoom_ufo_config["attack_distance"]
         self.attack_distance = self.attack_distance_raw
         self.emp_attacked = False
@@ -65,6 +85,7 @@ class PanZoomUfo(PanZoomGameObject, InteractionHandler):
 
         # register
         sprite_groups.ufos.add(self)
+
 
     def setup(self):
         data = load_file("enemy_handler_config.json")
@@ -133,6 +154,14 @@ class PanZoomUfo(PanZoomGameObject, InteractionHandler):
                     if self.tooltip:
                         if self.tooltip != "":
                             global_params.tooltip_text = self.tooltip
+
+
+                    if self.info_text:
+                        if self.info_text != "":
+                            # global_params.app.info_panel.text = self.info_text
+                            global_params.app.info_panel.set_text(self.info_text)
+                            global_params.app.info_panel.set_planet_image(self.image_raw, size=(
+                                self.image_raw.get_width(), self.image_raw.get_height()), align="topright")
 
     def end_object(self):
         self.explode(sound="explosion")

@@ -8,7 +8,7 @@ from source.gui.widgets.buttons.image_button import ImageButton
 from source.gui.widgets.checkbox import Checkbox
 from source.gui.widgets.inputbox import InputBox
 from source.gui.widgets.selector import Selector
-from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups
+from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.physics.orbit import set_orbit_object_id
 from source.utils import global_params
 from source.multimedia_library.images import images, pictures_path, get_image, get_image_names_from_folder

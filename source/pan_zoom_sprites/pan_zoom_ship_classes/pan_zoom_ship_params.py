@@ -1,10 +1,10 @@
 import math
 
 from source.gui.event_text import event_text
-from source.gui.widgets.widget_handler import WidgetHandler
+from source.handlers.widget_handler import WidgetHandler
 from source.utils import global_params
 from source.multimedia_library.sounds import sounds
-from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups
+from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.utils.positioning import get_distance
 
 SHIP_SPEED = 1.5

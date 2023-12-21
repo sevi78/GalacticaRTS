@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from source.gui.widgets.widget_handler import WidgetHandler
+from source.handlers.widget_handler import WidgetHandler
 from source.utils.colors import colors
 
 

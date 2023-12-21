@@ -3,8 +3,7 @@ from pygame_widgets.util import drawText
 
 from source.factories.building_factory import building_factory
 from source.multimedia_library.images import images, pictures_path, get_image
-from source.utils.colors import colors
-from source.utils.text_formatter import format_number
+from source.text.text_formatter import format_number
 
 SPECIAL_RIGHT_OFFSET = 60
 SPECIAL_Y_OFFSET = 5

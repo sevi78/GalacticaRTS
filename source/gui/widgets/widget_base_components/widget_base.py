@@ -6,7 +6,7 @@ from source.gui.widgets.widget_base_components.position_handler import PositionH
 from source.gui.widgets.widget_base_components.text_handler import TextHandler
 from source.gui.widgets.widget_base_components.visibilty_handler import VisibilityHandler
 from source.gui.widgets.widget_base_components.widget_base_methods import WidgetBaseMethods
-from source.gui.widgets.widget_handler import WidgetHandler
+from source.handlers.widget_handler import WidgetHandler
 
 
 class WidgetBase(WidgetBaseMethods, ImageHandler, TextHandler, PositionHandler, InteractionHandler, VisibilityHandler):

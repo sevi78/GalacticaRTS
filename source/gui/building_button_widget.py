@@ -1,11 +1,11 @@
 import pygame.display
-from source.gui.tool_tip import tooltip_generator
-from source.gui.panels.info_panel_components.info_panel_text_generator import info_panel_text_generator
+from source.text.tooltip_gen import tooltip_generator
+from source.text.info_panel_text_generator import info_panel_text_generator
 from source.factories.building_factory import building_factory
 from source.gui.lod import inside_screen
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
-from source.gui.widgets.widget_handler import WidgetHandler
+from source.handlers.widget_handler import WidgetHandler
 
 from source.multimedia_library.images import get_image
 from source.utils import global_params

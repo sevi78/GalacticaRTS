@@ -1,7 +1,7 @@
 import pygame
 
 from source.editors import settings
-from source.gui.panels.info_panel_components.info_panel_text_generator import info_panel_text_generator
+from source.text.info_panel_text_generator import info_panel_text_generator
 from source.gui.panels.toggle_switch import ToggleSwitch
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.gui.widgets.buttons.image_button import ImageButton

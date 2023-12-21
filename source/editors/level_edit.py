@@ -17,7 +17,7 @@ from source.gui.widgets.selector import Selector
 from source.level.level_factory import level_factory
 from source.multimedia_library.screenshot import capture_screenshot
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zoom_handler
-from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups
+from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.universe.universe_background import universe_factory
 from source.utils import global_params
 from source.multimedia_library.images import get_image
@@ -162,11 +162,11 @@ class LevelEdit(EditorBase, LevelEditBuilder):
         self._level = value
 
     def load_level(self, level):
+        self.delete_level()
         self.data = level_factory.load_level(level)
         if not self.data:
             self.data = level_factory.load_level(0)
 
-        self.parent.ship_factory.delete_ships()
         ships = self.data.get("ships")
         # print (ships)
         # for key in ships.keys():
@@ -177,7 +177,7 @@ class LevelEdit(EditorBase, LevelEditBuilder):
             self.parent.ship_factory.create_ship(f"{ships[key]['name']}_30x30.png", int(ships[key]["world_x"]), int(
                 ships[key]["world_y"]), global_params.app)
 
-        planet_factory.delete_planets()
+        #planet_factory.delete_planets()
         # planet_factory.create_planets_from_json(self.level)
 
         planet_factory.create_planets_from_data(self.data)
@@ -240,13 +240,7 @@ class LevelEdit(EditorBase, LevelEditBuilder):
         self.refresh_level()
 
     def refresh_level(self):
-        # delet objects
-        planet_factory.delete_planets()
-        for i in sprite_groups.collectable_items.sprites():
-            i.end_object()
-
-        for i in sprite_groups.ufos.sprites():
-            i.end_object()
+        self.delete_level()
 
         # recreate objects
         self.solar_system_factory = SolarSystemFactory(
@@ -255,9 +249,19 @@ class LevelEdit(EditorBase, LevelEditBuilder):
         planet_factory.create_planets_from_data(data=self.data, explored=True)
         self.create_universe()
 
-    def create_universe(self):
+    def delete_level(self):
+        # delet objects
         universe_factory.delete_universe()
         universe_factory.delete_artefacts()
+        planet_factory.delete_planets()
+        self.parent.ship_factory.delete_ships()
+        for i in sprite_groups.collectable_items.sprites():
+            i.end_object()
+        for i in sprite_groups.ufos.sprites():
+            i.end_object()
+
+    def create_universe(self):
+
         universe_factory.amount = int(math.sqrt(math.sqrt(self.width)) * self.data["globals"]["universe_density"])
         universe_factory.create_universe(0, 0, self.width, self.height)
         universe_factory.create_artefacts(0, 0, self.width, self.height,

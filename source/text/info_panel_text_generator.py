@@ -2,9 +2,8 @@ from collections import Counter
 
 from source.database.file_handler import load_file
 from source.factories.building_factory import building_factory
-from source.pan_zoom_sprites.pan_zoom_collectable_item import PanZoomCollectableItem
 from source.utils.positioning import distance_between_points
-from source.utils.text_formatter import format_number
+from source.text.text_formatter import format_number
 
 
 class InfoPanelTextGenerator:
@@ -206,6 +205,35 @@ class InfoPanelTextGenerator:
 
         text += special_text
         return text
+
+    def create_info_panel_ufo_text(self, ufo):
+        infotext = ""
+        text = ""
+        #print(f"create_ufo_tooltip")
+
+        text += ufo.name + ":\n\n"
+
+        text += "speed: " + str(ufo.speed) + "\n\n"
+        text += "resources loaded: " + "\n\n"
+        text += "    water: " + str(ufo.water) + "/" + str(ufo.water_max) + "\n"
+        text += "    energy: " + str(int(ufo.energy)) + "/" + str(int(ufo.energy_max)) + "\n"
+        text += "    food: " + str(ufo.food) + "/" + str(ufo.food_max) + "\n"
+        text += "    minerals: " + str(ufo.minerals) + "/" + str(ufo.minerals_max) + "\n"
+        text += "    technology: " + str(ufo.technology) + "/" + str(ufo.technology_max) + "\n\n"
+
+        if ufo.specials:
+            text += f"    specials:\n"
+
+            for i in ufo.specials:
+                text += f"    {i}\n"
+
+        text += f"\nattitude: {ufo.attitude_text} ({ufo.attitude})\n"
+        # text += "scanner range: " + str(self.fog_of_war_radius) + "\n"
+        # text += "crew: " + str(self.crew) + "\n"
+
+        infotext += text
+        return infotext
+
 
     def create_info_panel_planetary_defence_text(self, item):
         text = item + ":" + "\n"

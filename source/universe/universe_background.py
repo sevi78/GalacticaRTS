@@ -1,11 +1,11 @@
 import math
 import random
 
-from source.gui.panels.info_panel_components.info_panel_text_generator import info_panel_text_generator
-from source.gui.widgets.widget_handler import WidgetHandler
+from source.text.info_panel_text_generator import info_panel_text_generator
+from source.handlers.widget_handler import WidgetHandler
 from source.pan_zoom_sprites.pan_zoom_collectable_item import PanZoomCollectableItem
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zoom_handler
-from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups
+from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.universe.celestial_objects.asteroid import Asteroid
 from source.universe.celestial_objects.celestial_object import CelestialObject
 from source.universe.celestial_objects.celestial_object_static import CelestialObjectStatic

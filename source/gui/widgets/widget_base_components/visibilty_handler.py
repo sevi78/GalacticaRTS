@@ -1,4 +1,4 @@
-from source.gui.widgets.widget_handler import WidgetHandler
+from source.handlers.widget_handler import WidgetHandler
 
 
 class VisibilityHandler:

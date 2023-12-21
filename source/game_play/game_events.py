@@ -3,6 +3,7 @@ import sys
 
 import pygame
 from source.factories.building_factory import building_factory
+from source.multimedia_library.images import get_image
 from source.utils import global_params
 
 resources = ["water", "food", "energy", "technology", "minerals"]
@@ -104,6 +105,7 @@ class GameEvent:
         self.functions = functions
         self.deal = kwargs.get("deal", None)
         self.event_id = len(GameEvent.game_events.keys())
+        self.image = kwargs.get("image", get_image("trade_panel.png"))
 
         GameEvent.game_events[self.name] = self
 

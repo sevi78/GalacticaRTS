@@ -108,6 +108,22 @@ def get_image_names_from_folder(folder):
     return image_names
 
 
+
+def resize_image(image, new_size):
+    # Calculate the aspect ratio of the original image
+    aspect_ratio = image.get_width() / image.get_height()
+
+    # Adjust the width and height to fit within the new size while maintaining the aspect ratio
+    if new_size[0] / aspect_ratio < new_size[1]:
+        new_height = int(new_size[0] / aspect_ratio)
+        new_image = pygame.transform.scale(image, (new_size[0], new_height))
+    else:
+        new_width = int(new_size[1] * aspect_ratio)
+        new_image = pygame.transform.scale(image, (new_width, new_size[1]))
+
+    return new_image
+
+
 load_folders(os.path.join(pictures_path), images)
 
 # images.get_image(

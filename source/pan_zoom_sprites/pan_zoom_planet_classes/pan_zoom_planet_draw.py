@@ -122,12 +122,19 @@ class PanZoomPlanetDraw:
             return
         # Load the font once
         font = pygame.font.SysFont("georgiaproblack", SPECIAL_FONT_SIZE)
+        x = self.screen_position[0] + self.screen_width / 2 + 20
+        y = self.rect.centery
+
+        if self.alien_population > 0:
+            if self.alien_attitude < 50:
+                alien_image = get_image("alien_face_orange.png")
+            else:
+                alien_image = get_image("alien_face_green.png")
+            self.win.blit(alien_image, (self.rect.centerx, self.rect.bottom + 30))
+
 
         if self.specials:
             count = 0
-            x = self.screen_position[0] + self.screen_width / 2 + 20
-            y = self.rect.centery
-
             for key, value in self.specials_dict.items():
                 operator, value = value["operator"], value["value"]
                 if value != 0 and key in self.production.keys():
@@ -140,6 +147,7 @@ class PanZoomPlanetDraw:
                         (x + 25, y, 50, 20), font, "left")
                     count += 1
                     y += 20  # Increment y for the next draw
+
 
     def draw_image(self):
         self.win.blit(self.image, self.rect)

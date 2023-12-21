@@ -68,6 +68,7 @@ class EditorBase(WidgetBase):
         super().__init__(win, x, y, width, height, isSubWidget, **kwargs)
         self._obj = kwargs.get("obj", None)
         self.obj = kwargs.get("obj", None)
+        self.game_paused = kwargs.get("game_paused", False)
 
         self.win = win
         self.world_x = x
@@ -130,14 +131,32 @@ class EditorBase(WidgetBase):
             if not i == self:
                 i.hide()
 
+    def set_visible__(self):
+        if self._hidden:
+            self.show()
+            if self.game_paused:
+                global_params.game_paused = not self._hidden
+        else:
+            self.hide()
+            if self.game_paused:
+                global_params.game_paused = self._hidden
+
+        if self.game_paused:
+            global_params.game_paused = self._hidden
+
+        global_params.edit_mode = not self._hidden
+        self.hide_other_editors()
+
     def set_visible(self):
         if self._hidden:
             self.show()
         else:
             self.hide()
 
+        global_params.game_paused = self.game_paused and not self._hidden
         global_params.edit_mode = not self._hidden
         self.hide_other_editors()
+
 
     def create_save_button(self, function, tooltip, **kwargs):
         name = kwargs.get("name", "no_name")
@@ -216,5 +235,8 @@ class EditorBase(WidgetBase):
 
     def close(self):
         self.set_global_variable("edit_mode", True)
+        if self.game_paused:
+            global_params.game_paused = False
+
         global_params.tooltip_text = ""
         self.hide()

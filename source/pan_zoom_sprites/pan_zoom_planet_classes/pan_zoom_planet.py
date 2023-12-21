@@ -6,12 +6,12 @@ from pygame_widgets.mouse import Mouse, MouseState
 
 from source.draw.circles import draw_transparent_circle
 from source.gui.lod import inside_screen
-from source.gui.widgets.widget_handler import WidgetHandler
+from source.handlers.widget_handler import WidgetHandler
 from source.pan_zoom_sprites.pan_zoom_planet_classes.pan_zoom_planet_orbit_draw import draw_orbits
 from source.pan_zoom_sprites.pan_zoom_planet_classes.pan_zoom_planet_position_handler import \
     PanZoomPlanetPositionHandler
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_visibility_handler import PanZoomVisibilityHandler
-from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_handler import sprite_groups
+from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_mouse_handler import PanZoomMouseHandler
 from source.pan_zoom_sprites.pan_zoom_planet_classes.pan_zoom_planet_overview_buttons import \
     PanZoomPlanetOverviewButtons
@@ -23,7 +23,7 @@ from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zo
 from source.physics.orbit import orbit
 from source.utils import global_params
 from source.utils.colors import colors
-from source.utils.garbage_handler import garbage_handler
+from source.handlers.garbage_handler import garbage_handler
 
 
 class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOverviewButtons, PanZoomPlanetDraw,
