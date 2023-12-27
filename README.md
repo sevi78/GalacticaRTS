@@ -1,6 +1,6 @@
 # Galactica-RTS
 
-RTS Game WIP, pygame, python, sqlite
+RTS Game WIP, pygame, python
 
 ![Screenshot (5)](https://github.com/sevi78/Galactica-RTS_zoomable1.1/blob/Galactica-RTS_zoomable1.1/Screenshot%20(5).png)
 
@@ -20,9 +20,9 @@ build cities, metrolopes to enhance your population.
 
 **Done so far:**
 
-- building system, building editor,
-- solar system (1) so far.
-- ship moving mechanics, ship energy reloading
+- building system, building editor, several editors for many purposes
+- solar systems (levels) incl. level editor
+- ship moving mechanics, ship energy reloading, ship attacking 
 - planet editor, planet orbit around sun
 - box selection (perplexity.ai)
 
@@ -32,33 +32,22 @@ build cities, metrolopes to enhance your population.
 - extendable layer system for bliting the images in the right order
 
 **work in progress:**
-
-- sqlite database (WIP)
 - event system: feedbacks from the game for the user about what is happening
-- implementing of ingame "technology" for building space harbor
-
+- 
 **TODO:**
 
 - a lot !!!
 - nice images for buildings, planets ect
 
 **Problems:**
-
-i dont know how to create a runtime for windows ;( ... i tried many times with pyinstaller, but somehow the libraries
-are not found
-
 error/ warning:
 libpng warning: iCCP: known incorrect sRGB profile
 
 **technology used:**
 
-python, pygame, pygame_widget, pygame_menu, json, sqlite3
+python, pygame, pygame_widget, pygame_menu, json
 pycharm, GIMP
 
 **to start the game:**
 
-download the whole folder (Galactica-RTS_zoomable1.1). open terminal. drag "main.py" into terminal, press enter.
---- hopefully the game starts --- 
-
-
-
+there is an .exe for windows (GalacticaRTS.7z). Download it and doubleclick on main.exe
