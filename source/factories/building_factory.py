@@ -33,6 +33,14 @@ class BuildingFactoryJsonDictReader:
                         prices[item.split("price_")[1]] = value
         return prices
 
+    def get_prices_from_weapons_dict(self, weapon: str, level: int):
+        prices = {}
+        for key, value in self.json_dict["weapons"][weapon]["upgrade cost"][f"level_{level}"].items():
+            if key.startswith("price_"):
+                prices[key.split("price_")[1]] = value
+
+        return prices
+
     def get_production_from_buildings_json(self, building: str) -> dict:
         production = {}
         for category, building_names in self.json_dict.items():
@@ -122,17 +130,20 @@ class BuildingFactory(BuildingFactoryJsonDictReader):
     def __init__(self):
         BuildingFactoryJsonDictReader.__init__(self)
 
-    def build(self, building, reciever):  # new version based on buildings.json
+    def build(self, building, reciever, **kwargs):  # new version based on buildings.json
         """
         this builds the buildings on the planet: first check for prices ect, then build a building_widget
         that overgives the values to the planet if ready
         :param building: string
         """
 
+
         if not building in self.get_all_building_names():
             return
 
-        prices = self.get_prices_from_buildings_json(building)
+        prices = kwargs.get("prices", None)
+        if not prices:
+            prices = self.get_prices_from_buildings_json(building)
         #reciever = global_params.app.selected_planet
         # only build if selected planet is set
         if not reciever: return
@@ -161,7 +172,7 @@ class BuildingFactory(BuildingFactoryJsonDictReader):
                 sounds.play_sound("bleep", channel=7)
                 return
 
-        check = self.build_payment(building)
+        check = self.build_payment(building, prices)
 
         # predefine variables used to build building widget to make shure it is only created once
         widget_key = None
@@ -213,11 +224,11 @@ class BuildingFactory(BuildingFactoryJsonDictReader):
         # add building widget to building cue to make shure it can be build only if building_cue is < building_slots_amount
         reciever.building_cue += 1
 
-    def check_if_enough_resources_to_build(self, building: str) -> bool:
+    def check_if_enough_resources_to_build(self, building: str, prices) -> bool:
         check = True
         text = f"not enough resources to build a {building}! you are missing: "
 
-        prices = self.get_prices_from_buildings_json(building)
+        #prices = self.get_prices_from_buildings_json(building)
         # check for prices
         for key, value in prices.items():
             if not getattr(global_params.app.player, key) - value >= 0:
@@ -230,7 +241,7 @@ class BuildingFactory(BuildingFactoryJsonDictReader):
 
         return check
 
-    def build_payment(self, building: str) -> bool:  # new version based on buildings.json
+    def build_payment(self, building: str, prices) -> bool:  # new version based on buildings.json
         """
         pays the bills if something is build ;)
         :param building: str
@@ -239,10 +250,10 @@ class BuildingFactory(BuildingFactoryJsonDictReader):
         if not global_params.app.selected_planet: return
 
         # get prices based on building
-        prices = self.get_prices_from_buildings_json(building)
+        #prices = self.get_prices_from_buildings_json(building)
 
         # check for prices, if enough to build
-        check = self.check_if_enough_resources_to_build(building)
+        check = self.check_if_enough_resources_to_build(building, prices)
         if check:
             for key, value in prices.items():
                 setattr(global_params.app.player, key, getattr(global_params.app.player, key) - value)

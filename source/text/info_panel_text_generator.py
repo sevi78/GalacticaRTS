@@ -339,8 +339,8 @@ class InfoPanelTextGenerator:
         infotext = self.create_info_panel_price_text(name)
         weapon_variables = self.json_dict['weapons'][name]["upgrade values"].keys()
         weapon_var = ""
-        for i in weapon_variables:
-            weapon_var += f"{i}: {self.json_dict['weapons'][name]['upgrade values'][i]}"
+        # for i in weapon_variables:
+        #     weapon_var += f"{i}: {self.json_dict['weapons'][name]['upgrade values'][i]}"
 
         # range  = f"range: {self.json_dict['weapons'][name]['range']}"
         # power = f"power: {self.json_dict['weapons'][name]['power']}"
