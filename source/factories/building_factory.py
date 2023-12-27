@@ -1,6 +1,6 @@
 import pygame
 
-from source.database.file_handler import load_file, write_file
+from source.database.file_handler import load_file
 from source.gui.event_text import event_text
 from source.gui.widgets.building_widget import BuildingWidget
 from source.multimedia_library.sounds import sounds
@@ -21,7 +21,6 @@ class BuildingFactoryJsonDictReader:
             if building in building_names.keys():
                 for item, value in building_names[building].items():
                     building_dict[item] = value
-        # print("get_building_dict_from_buildings_json", building_dict)
         return building_dict
 
     def get_prices_from_buildings_json(self, building: str) -> dict:
@@ -137,14 +136,13 @@ class BuildingFactory(BuildingFactoryJsonDictReader):
         :param building: string
         """
 
-
         if not building in self.get_all_building_names():
             return
 
         prices = kwargs.get("prices", None)
         if not prices:
             prices = self.get_prices_from_buildings_json(building)
-        #reciever = global_params.app.selected_planet
+
         # only build if selected planet is set
         if not reciever: return
 
@@ -228,7 +226,6 @@ class BuildingFactory(BuildingFactoryJsonDictReader):
         check = True
         text = f"not enough resources to build a {building}! you are missing: "
 
-        #prices = self.get_prices_from_buildings_json(building)
         # check for prices
         for key, value in prices.items():
             if not getattr(global_params.app.player, key) - value >= 0:
@@ -248,9 +245,6 @@ class BuildingFactory(BuildingFactoryJsonDictReader):
         """
         # only build if has selected planet
         if not global_params.app.selected_planet: return
-
-        # get prices based on building
-        #prices = self.get_prices_from_buildings_json(building)
 
         # check for prices, if enough to build
         check = self.check_if_enough_resources_to_build(building, prices)
