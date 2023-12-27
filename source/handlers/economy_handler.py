@@ -71,9 +71,11 @@ class EconomyHandler:
                 special_value = float(special_value)
                 if special_key in planet.production:
                     if operator == "*":
-                        planet.production[special_key] *= special_value
+                        if planet.production[special_key] > 0:
+                            planet.production[special_key] *= special_value
                     elif operator == "+":
-                        planet.production[special_key] += special_value
+                        if planet.production[special_key] > 0:
+                            planet.production[special_key] += special_value
                 # print(f"calculate_planet_production: name: {planet.name} {planet.production}  {special_key}: {special_value}")
 
         return planet.production

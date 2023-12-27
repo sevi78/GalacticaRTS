@@ -1,7 +1,10 @@
+import copy
 import time
 
 import pygame
 
+
+from source.factories.weapon_factory import weapon_factory
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.gui.widgets.buttons.button import Button
 from source.gui.widgets.progress_bar import ProgressBar
@@ -19,7 +22,7 @@ class BuildingWidget(WidgetBase):
 
     Methods:
     - __init__: Initializes the BuildingWidget object with the necessary parameters and creates the button, progress bar, and text.
-    - set_building_to_planet: Handles the logic for building a building, including updating the planet's production and population limit.
+    - set_building_to_planet: Handles the logic for building a building, including updating the reciever's production and population limit.
     - draw: Repositions the elements dynamically, draws the elements, and deletes the widget when the building is complete.
     - delete: Removes the widget from the list of building widgets and deletes the widget and its references.
     - listen: Handles mouse events and sets the tooltip for the button.
@@ -30,7 +33,7 @@ class BuildingWidget(WidgetBase):
     - x, y: The coordinates of the top left corner of the widget.
     - width, height: The width and height of the widget.
     - name: The name of the building.
-    - planet: The planet object on which the building is being built.
+    - reciever: The reciever object on which the building is being built.
     - key: The key for the building's production value.
     - value: The value of the building's production.
     - immediately_build_cost: The cost to build the building immediately.
@@ -47,12 +50,12 @@ class BuildingWidget(WidgetBase):
     - progress_time: The time it takes to build the building.
     - progress_bar: The progress bar object."""
 
-    def __init__(self, win, x, y, width, height, name, planet, key, value, **kwargs):
+    def __init__(self, win, x, y, width, height, name, reciever, key, value, **kwargs):
         super().__init__(win, x, y, width, height, **kwargs)
         self.layer = kwargs.get("layer")
         self.text = name + ":"
         self.name = name
-        self.planet = planet
+        self.reciever = reciever
         self.key = key
         self.value = value
         self.immediately_build_cost = 0
@@ -105,9 +108,9 @@ class BuildingWidget(WidgetBase):
         # register
         global_params.app.building_widget_list.append(self)
 
-    def set_building_to_planet(self):
+    def set_building_to_reciever(self):
         """
-        overgive the values stores for the planet: wich building to append, sets population limit, calculates production
+        overgive the values stores for the reciever: wich building to append, sets population limit, calculates production
         and calls calculate_global_production()
         and plays some nice sound :)
         :return:
@@ -115,35 +118,56 @@ class BuildingWidget(WidgetBase):
         ships = ["spaceship", "cargoloader", "spacehunter"]
         # technology_upgrades = ["university"]
         planet_defence_upgrades = ["cannon", "missile"]
+        weapons = None
+        if self.reciever.property == "ship":
+            weapons = self.reciever.all_weapons.keys()
 
         sounds.play_sound("success", channel=7)
 
         # remove self from planets building cue:
-        self.planet.building_cue -= 1
+        self.reciever.building_cue -= 1
 
         # if it is a ship, no calculation has to be done, return
         if self.name in ships:
-            x, y = pan_zoom_handler.screen_2_world(self.planet.screen_x, self.planet.screen_y)
+            x, y = pan_zoom_handler.screen_2_world(self.reciever.screen_x, self.reciever.screen_y)
             ship = global_params.app.ship_factory.create_ship(self.name + "_30x30.png", x, y, global_params.app)
-            set_orbit_object_id(ship, self.planet.id)
+            set_orbit_object_id(ship, self.reciever.id)
             return
 
         if self.name in planet_defence_upgrades:
-            self.planet.buildings.append(self.name)
+            self.reciever.buildings.append(self.name)
             return
 
-        # append to planets building list
-        self.planet.buildings.append(self.name)
-        self.planet.set_technology_upgrades(self.name)
+        if weapons:
+            if self.name in weapons:
 
-        # set new value to planets production
-        setattr(self.planet, self.name, getattr(self.planet, "production_" + self.key) - self.value)
+                # upgrade
+                if self.name in self.reciever.weapons.keys():
+                    self.reciever.weapons[self.name]["level"] += 1
+                else:
+                    # buy it
+                    self.reciever.weapons[self.name] = copy.deepcopy(weapon_factory.get_weapon(self.name))
+                    #if global_params.app.ship == self.reciever:
+                    global_params.app.weapon_select.obj = self.reciever
+                    global_params.app.weapon_select.update()
+
+                print (f"self.reciever: {self.reciever}, self.reciever.weapons({self.name}):{self.reciever.weapons[self.name]['level']}\n"
+                       f"all_weapons: {global_params.app.weapon_select.all_weapons[self.name]['level']}")
+                return
+        # append to recievers building list
+        self.reciever.buildings.append(self.name)
+        self.reciever.set_technology_upgrades(self.name)
+
+        # set new value to recievers production
+        setattr(self.reciever, self.name, getattr(self.reciever, "production_" + self.key) - self.value)
         setattr(global_params.app.player, self.name, getattr(global_params.app.player, self.key) - self.value)
 
-        self.planet.set_population_limit()
-        self.planet.calculate_production()
+        self.reciever.set_population_limit()
+        self.reciever.calculate_production()
         global_params.app.calculate_global_production()
         global_params.app.tooltip_instance.reset_tooltip(self)
+
+
 
     def draw(self):
         """
@@ -179,9 +203,9 @@ class BuildingWidget(WidgetBase):
             if global_params.app.building_widget_list[i] == self:
                 self.cue_id = global_params.app.building_widget_list.index(global_params.app.building_widget_list[i])
 
-        # if progress is finished, set building to planet
+        # if progress is finished, set building to reciever
         if self.progress_bar.percent == 1:
-            self.set_building_to_planet()
+            self.set_building_to_reciever()
 
             # finally delete it and its references
             self.delete()
@@ -202,11 +226,11 @@ class BuildingWidget(WidgetBase):
     def function(self, arg):
         global_params.tooltip_text = ""
         self.build_immediately()
-        self.set_building_to_planet()
+        self.set_building_to_reciever()
         self.delete()
 
     def set_tooltip(self):
-        self.button.tooltip = f"are you sure to build this {self.name} immediately? this will cost you {self.immediately_build_cost} technology units?"
+        self.button.tooltip = f"are you sure to build this {self.name} immediately? this will cost you {self.immediately_build_cost} technology units?{self.reciever}"
 
     def build_immediately(self):
         global_params.app.player.technology -= self.immediately_build_cost

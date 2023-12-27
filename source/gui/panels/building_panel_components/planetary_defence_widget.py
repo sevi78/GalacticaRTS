@@ -61,7 +61,7 @@ class PlanetaryDefenceWidget(WidgetBase):
             frame_color=self.frame_color,
             moveable=False,
             include_text=True, layer=self.layer,
-            onClick=lambda: building_factory.build("cannon"))
+            onClick=lambda: building_factory.build("cannon", global_params.app.selected_planet))
 
         self.missile_launcher_icon = ImageButton(win=self.win,
             x=self.get_screen_x() + BUTTON_SIZE + 10,
@@ -76,7 +76,7 @@ class PlanetaryDefenceWidget(WidgetBase):
             frame_color=self.frame_color,
             moveable=False,
             include_text=True, layer=self.layer,
-            onClick=lambda: building_factory.build("missile"))
+            onClick=lambda: building_factory.build("missile", global_params.app.selected_planet))
 
         self.energy_blast_icon = ImageButton(win=self.win,
             x=self.get_screen_x() + BUTTON_SIZE * 2 + 10,
@@ -91,7 +91,7 @@ class PlanetaryDefenceWidget(WidgetBase):
             frame_color=self.frame_color,
             moveable=False,
             include_text=True, layer=self.layer,
-            onClick=lambda: building_factory.build("energy blast"))
+            onClick=lambda: building_factory.build("energy blast", global_params.app.selected_planet))
 
         self.electro_magnetic_impulse_icon = ImageButton(win=self.win,
             x=self.get_screen_x() + BUTTON_SIZE * 3 + 10,
@@ -106,7 +106,7 @@ class PlanetaryDefenceWidget(WidgetBase):
             frame_color=self.frame_color,
             moveable=False,
             include_text=True, layer=self.layer,
-            onClick=lambda: building_factory.build("electro magnetic impulse"))
+            onClick=lambda: building_factory.build("electro magnetic impulse", global_params.app.selected_planet))
 
         self.parent.widgets.append(self)
         self.buttons.append(self.cannon_icon)

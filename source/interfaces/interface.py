@@ -62,26 +62,6 @@ class InterfaceData:
 
             self.interface_variables[i] = InterfaceVariable(i, value, min, max)
 
-    def set_variables__(self, obj):
-        for i in self.interface_variable_names:
-            value = getattr(obj, i)
-
-            if hasattr(obj, i + "_min"):
-                min = getattr(obj, i + "_min")
-            else:
-                if isinstance(value, int):
-                    min = 0
-                elif isinstance(value, float):
-                    min = 0.0
-
-            if hasattr(obj, i + "_max"):
-                max = getattr(obj, i + "_max")
-            else:
-                max = getattr(obj, i)
-
-            self.interface_variables[i] = InterfaceVariable(i, value, min, max)
-        print("self.interface_variables", self.interface_variables)
-
     def get_interface_variables(self):
         self.set_variables(self)
         return self.interface_variables
@@ -254,6 +234,10 @@ class Interface(EditorBase):
             self.sliders[key].setValue(getattr(self.obj, key))
 
     def set_obj_values(self):
+        if self._hidden:
+            return
+
+        print("dammit")
         data = self.get_slider_data()
 
         for key, value in data.items():

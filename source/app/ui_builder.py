@@ -11,6 +11,7 @@ from source.editors.level_select import LevelSelect
 from source.editors.planet_edit import PlanetEdit
 from source.editors.ship_edit import ShipEdit
 from source.editors.trade_edit import TradeEdit
+from source.editors.weapon_select import WeaponSelect
 from source.game_play.enemy_handler import enemy_handler
 from source.game_play.player import Player
 from source.gui.panels.advanced_settings_panel import AdvancedSettingsPanel
@@ -97,6 +98,11 @@ class UIBuilder(SceneBuilder):
         height = EDITOR_HEIGHT
 
         # editors
+
+        self.weapon_select = WeaponSelect(pygame.display.get_surface(),
+            pygame.display.get_surface().get_rect().centerx - width*1.5 / 2,
+            pygame.display.get_surface().get_rect().y,
+            width*1.5, height*1.5, parent=self)
 
         self.level_select = LevelSelect(pygame.display.get_surface(),
             pygame.display.get_surface().get_rect().centerx - width / 2,

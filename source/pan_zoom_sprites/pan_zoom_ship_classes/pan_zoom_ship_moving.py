@@ -135,7 +135,8 @@ class PanZoomShipMoving:
         self.develop_planet()
 
         # unload_cargo goods
-        self.unload_cargo()
+        if not self.target.type == "sun":
+            self.unload_cargo()
         self.set_energy_reloader(self.target)
 
         sounds.stop_sound(self.sound_channel)

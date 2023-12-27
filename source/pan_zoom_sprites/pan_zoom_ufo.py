@@ -1,4 +1,6 @@
 import random
+import time
+
 import pygame
 
 from source.gui.event_text import event_text
@@ -8,12 +10,18 @@ from source.gui.widgets.widget_base_components.interaction_handler import Intera
 from source.handlers.widget_handler import WidgetHandler
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_game_object import PanZoomGameObject
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
+from source.text.info_panel_text_generator import info_panel_text_generator
 from source.utils import global_params
 from source.utils.colors import colors
 from source.interaction.mouse import Mouse, MouseState
 from source.database.file_handler import load_file
 
+# lifetime in seconds
+LIFETIME = 60
+
 pan_zoom_ufo_config = load_file("enemy_handler_config.json")["enemy handler"]
+
+SHRINK_FACTOR = 0.005
 
 
 class PanZoomUfo(PanZoomGameObject, InteractionHandler):
@@ -25,6 +33,10 @@ class PanZoomUfo(PanZoomGameObject, InteractionHandler):
     def __init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs):
         PanZoomGameObject.__init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs)
         InteractionHandler.__init__(self)
+        self.lifetime = kwargs.get("lifetime", LIFETIME)
+        self.shrink = 0.0
+        self.creation_time = time.time()
+        self.elapsed_time = 0.0
         self.info_text = kwargs.get("infotext", "")
         self.random_target_interval = pan_zoom_ufo_config["random_target_interval"]
         self.frame_color = colors.frame_color
@@ -55,7 +67,7 @@ class PanZoomUfo(PanZoomGameObject, InteractionHandler):
                           "technology": self.technology
                           }
         self.specials = []
-        self.attitude = kwargs.get("attitude", random.randint(0,100))
+        self.attitude = kwargs.get("attitude", random.randint(0, 100))
         self.attitude_text = "friendly" if self.attitude > 50 else "hostile"
         self.name = "ufo"
         self.property = "ufo"
@@ -85,7 +97,6 @@ class PanZoomUfo(PanZoomGameObject, InteractionHandler):
 
         # register
         sprite_groups.ufos.add(self)
-
 
     def setup(self):
         data = load_file("enemy_handler_config.json")
@@ -155,13 +166,23 @@ class PanZoomUfo(PanZoomGameObject, InteractionHandler):
                         if self.tooltip != "":
                             global_params.tooltip_text = self.tooltip
 
-
                     if self.info_text:
                         if self.info_text != "":
                             # global_params.app.info_panel.text = self.info_text
+                            self.info_text = info_panel_text_generator.create_info_panel_ufo_text(self)
                             global_params.app.info_panel.set_text(self.info_text)
                             global_params.app.info_panel.set_planet_image(self.image_raw, size=(
                                 self.image_raw.get_width(), self.image_raw.get_height()), align="topright")
+
+    def appear(self):
+        if self.shrink >= 1.0:
+            return
+        self.shrink += SHRINK_FACTOR
+
+    def disappear(self):
+        self.shrink -= SHRINK_FACTOR
+        if self.shrink <= SHRINK_FACTOR:
+            self.end_object()
 
     def end_object(self):
         self.explode(sound="explosion")
@@ -186,6 +207,14 @@ class PanZoomUfo(PanZoomGameObject, InteractionHandler):
         if hasattr(self, "progress_bar"):
             if self.progress_bar:
                 self.progress_bar.set_progressbar_position()
+
+        # Check the elapsed time
+        self.elapsed_time = time.time() - self.creation_time
+
+        if self.elapsed_time > LIFETIME:
+            self.disappear()
+        else:
+            self.appear()
 
         if self.emp_attacked:
             pass

@@ -6,6 +6,7 @@ FADE_OUT_TIME = 0
 
 class TextWrap:  # original
     def __init__(self, **kwargs):
+
         self.border = TEXTBORDER
         self.word_height_sum = 0
 
@@ -43,7 +44,7 @@ class TextWrap:  # original
             # get the last height value
             self.word_height_sum = y
 
-    def wrap_text(self, text, pos, size, font, color=pygame.Color('white'), **kwargs):
+    def wrap_text(self, win,  text, pos, size, font, color=pygame.Color('white'), **kwargs):
         """ text wrapper function """
         if not text: return
         fade_out = kwargs.get("fade_out", False)
@@ -79,10 +80,10 @@ class TextWrap:  # original
                     # To make the text surface transparent, blit the transparent
                     # alpha_surf onto it with the BLEND_RGBA_MULT flag.
                     txt_surf.blit(alpha_surf, (0, 0), special_flags=pygame.BLEND_RGBA_MULT)
-                    self.win.blit(txt_surf, (x, y))
+                    win.blit(txt_surf, (x, y))
 
                 else:
-                    self.win.blit(word_surface, (x, y))
+                    win.blit(word_surface, (x, y))
 
                 x += word_width + space
 

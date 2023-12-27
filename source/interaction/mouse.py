@@ -3,7 +3,7 @@ import pygame
 import time
 
 
-class MouseState(Enum):
+class MouseState__(Enum):
     HOVER = 0
     CLICK = 1
     RIGHT_CLICK = 2
@@ -11,6 +11,18 @@ class MouseState(Enum):
     RIGHT_DRAG = 4  # Not sure when this is ever used but added anyway for completeness
     RELEASE = 5
     RIGHT_RELEASE = 6
+
+
+class MouseState(Enum):
+    HOVER = 0
+    CLICK = 1
+    MIDDLE_CLICK = 2  # New state for middle click
+    RIGHT_CLICK = 3
+    DRAG = 4
+    RIGHT_DRAG = 5
+    RELEASE = 6
+    RIGHT_RELEASE = 7
+    MIDDLE_RELEASE = 8  # New state for middle release
 
 
 class Mouse:
@@ -35,7 +47,7 @@ class Mouse:
             time.sleep(Mouse._refreshTime)
 
     @staticmethod
-    def updateMouseState():
+    def updateMouseState__():
         leftPressed = pygame.mouse.get_pressed()[0]
         rightPressed = pygame.mouse.get_pressed()[2]
 
@@ -58,6 +70,35 @@ class Mouse:
             elif Mouse._mouseState == MouseState.RIGHT_CLICK or Mouse._mouseState == MouseState.RIGHT_DRAG:
                 Mouse._mouseState = MouseState.RIGHT_RELEASE
 
+            else:
+                Mouse._mouseState = MouseState.HOVER
+
+    @staticmethod
+    def updateMouseState():
+        leftPressed, middlePressed, rightPressed = pygame.mouse.get_pressed()
+
+        if leftPressed:
+            if Mouse._mouseState == MouseState.CLICK or Mouse._mouseState == MouseState.DRAG:
+                Mouse._mouseState = MouseState.DRAG
+            else:
+                Mouse._mouseState = MouseState.CLICK
+        elif middlePressed:  # New condition for middle click
+            if Mouse._mouseState == MouseState.MIDDLE_CLICK:
+                Mouse._mouseState = MouseState.MIDDLE_CLICK
+            else:
+                Mouse._mouseState = MouseState.MIDDLE_CLICK
+        elif rightPressed:
+            if Mouse._mouseState == MouseState.RIGHT_CLICK or Mouse._mouseState == MouseState.RIGHT_DRAG:
+                Mouse._mouseState = MouseState.RIGHT_DRAG
+            else:
+                Mouse._mouseState = MouseState.RIGHT_CLICK
+        else:
+            if Mouse._mouseState == MouseState.CLICK or Mouse._mouseState == MouseState.DRAG:
+                Mouse._mouseState = MouseState.RELEASE
+            elif Mouse._mouseState == MouseState.MIDDLE_CLICK:  # New condition for middle release
+                Mouse._mouseState = MouseState.MIDDLE_RELEASE
+            elif Mouse._mouseState == MouseState.RIGHT_CLICK or Mouse._mouseState == MouseState.RIGHT_DRAG:
+                Mouse._mouseState = MouseState.RIGHT_RELEASE
             else:
                 Mouse._mouseState = MouseState.HOVER
 

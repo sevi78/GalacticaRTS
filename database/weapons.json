@@ -1,0 +1,29 @@
+{
+  "laser": {
+    "name": "laser",
+    "level": 0,
+    "range": 100,
+    "power": 100,
+    "shoot_interval": 1.0,
+    "upgrade cost": {"level_1":{"food": 100,"energy": 200, "minerals": 300, "technology": 400, "water": 500 }, "level_2":{"food": 1000,"energy": 1000, "minerals": 1000, "technology": 1000, "water": 1000 }},
+    "upgrade values": {"level_1": {"level": 1, "range": 1.5, "power": 1.5, "shoot_interval": 1.5}}
+  },
+  "phaser": {
+    "name": "phaser",
+    "level": 0,
+    "range": 100,
+    "power": 100,
+    "shoot_interval": 1.0,
+    "upgrade cost": {"level_1":{"food": 100,"energy": 200, "minerals": 300, "technology": 400, "water": 500 }, "level_2":{"food": 1000,"energy": 1000, "minerals": 1000, "technology": 1000, "water": 1000 }},
+    "upgrade values": {"level_1": {"level": 1, "range": 1.3, "power": 1.7, "shoot_interval": 2.5}}
+  },
+  "missile": {
+    "name": "missile",
+    "level": 0,
+    "range": 100,
+    "power": 100,
+    "shoot_interval": 1.0,
+    "upgrade cost": {"level_1":{"food": 100,"energy": 200, "minerals": 300, "technology": 400, "water": 500 }, "level_2":{"food": 1000,"energy": 1000, "minerals": 1000, "technology": 1000, "water": 1000 }},
+    "upgrade values": {"level_1": {"level": 1, "range": 1.5, "power": 1.5, "shoot_interval": 1.2}}
+  }
+}

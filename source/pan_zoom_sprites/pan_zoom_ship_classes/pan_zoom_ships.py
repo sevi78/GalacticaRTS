@@ -40,6 +40,7 @@ class Spaceship(PanZoomShip, InterfaceData):
         self.set_tooltip()
 
         # gun
+        self.current_weapon = self.all_weapons["laser"]
         self.gun_power = 5
         self.gun_power_max = 25
 
@@ -86,6 +87,7 @@ class Cargoloader(PanZoomShip, InterfaceData):
         self.set_tooltip()
 
         # gun
+        self.current_weapon = self.all_weapons["phaser"]
         self.gun_power = 1
         self.gun_power_max = 5
 
@@ -133,6 +135,7 @@ class Spacehunter(PanZoomShip, InterfaceData):
         self.set_tooltip()
 
         # gun
+        self.current_weapon = self.all_weapons["rocket"]
         self.gun_power = 25
         self.gun_power_max = 125
 

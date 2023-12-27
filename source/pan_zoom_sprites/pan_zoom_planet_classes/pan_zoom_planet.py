@@ -268,7 +268,7 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
 
         if not inside_screen(self.rect.center):
             return
-
+            
         self.draw()
 
     def draw(self):

@@ -69,6 +69,7 @@ class PanZoomSprite(pygame.sprite.Sprite, PanZoomVisibilityHandler, GameObjectDe
         self.relative_gif_size = kwargs.get("relative_gif_size", 1.0)
         self.loop_gif = kwargs.get("loop_gif", True)
         self.kill_after_gif_loop = kwargs.get("kill_after_gif_loop", False)
+        self.shrink = 1.0
         self.gif_index = 0
         self.counter = 0
 
@@ -240,7 +241,7 @@ class PanZoomSprite(pygame.sprite.Sprite, PanZoomVisibilityHandler, GameObjectDe
         #
         #         self.image = pygame.transform.rotate(image, self.prev_angle)
         # else:
-        self.image = pygame.transform.scale(self.image_raw, (self.screen_width, self.screen_height))
+        self.image = pygame.transform.scale(self.image_raw, (self.screen_width * self.shrink, self.screen_height * self.shrink))
         self.rect = self.image.get_rect()
 
         self.align_image_rect()

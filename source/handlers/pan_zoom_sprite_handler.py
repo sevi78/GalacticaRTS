@@ -54,6 +54,7 @@ class SpriteGroups:
         self.quadrants = PanZoomLayeredUpdates()
         self.grids = PanZoomLayeredUpdates()
         self.celestial_objects = PanZoomLayeredUpdates()
+        self.moving_images = PanZoomLayeredUpdates()
 
     def __str__(self):
         return (f"ufos: {len(self.ufos)}, missiles: {len(self.missiles)} ships:"
@@ -70,6 +71,7 @@ class SpriteGroups:
         self.target_objects.update(*args)
         self.quadrants.update(*args)
         self.celestial_objects.update(*args)
+        self.moving_images.update()
 
     def draw(self, surface):
         self.ufos.draw(surface)
@@ -78,6 +80,7 @@ class SpriteGroups:
         self.collectable_items.draw(surface)
         self.explosions.draw(surface)
         self.target_objects.draw(surface)
+        self.moving_images.draw(surface)
 
     def listen(self, events):
         for i in self.planets:

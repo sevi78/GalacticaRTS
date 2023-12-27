@@ -17,6 +17,8 @@
     "random_target_interval": 1209,
     "random_target_interval_max": 2500,
     "spawn_interval": 317,
-    "spawn_interval_max": 2500
+    "spawn_interval_max": 2500,
+    "lifetime": 60,
+    "lifetime_max": 200
   }
 }

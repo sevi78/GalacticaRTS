@@ -325,7 +325,7 @@ class EventPanel(TextWrap, EditorBase, InterfaceData):
             self.win.blit(self.title_surface, self.title_surface_rect)
 
             # body
-            self.wrap_text(self.body, (self.get_position()[0] + self.get_screen_width() / 6,
+            self.wrap_text(self.win, self.body, (self.get_position()[0] + self.get_screen_width() / 6,
                                        self.title_surface_rect.y + 60), self.size, self.font, colors.ui_dark)
 
             # end_text

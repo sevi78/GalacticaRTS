@@ -1,11 +1,15 @@
+import copy
 import random
 
 import pygame
 from pygame import Vector2
 
 from source.draw import scope
+from source.factories.weapon_factory import weapon_factory
 from source.gui.event_text import event_text
 from source.gui.lod import inside_screen
+from source.gui.widgets.moving_image import MovingImage, SPECIAL_TEXT_COLOR
+from source.multimedia_library.images import get_image
 from source.multimedia_library.sounds import sounds
 from source.pan_zoom_sprites.pan_zoom_ship_classes.pan_zoom_ship_draw import PanZoomShipDraw
 from source.pan_zoom_sprites.pan_zoom_ship_classes.pan_zoom_ship_interaction import PanZoomShipInteraction
@@ -24,6 +28,7 @@ from source.utils import global_params
 from source.interaction.mouse import Mouse, MouseState
 from source.utils.positioning import prevent_object_overlap, get_distance
 from source.database.file_handler import load_file
+from source.factories.weapon_factory import weapon_factory
 
 
 # class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZoomShipRanking, PanZoomShipButtons, PanZoomShipDraw, PanZoomMouseHandler, PanZoomShipInteraction):
@@ -138,6 +143,11 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
             "min_dist_to_other_ships",
             "energy_use"
             ]
+
+        self.all_weapons = copy.deepcopy(weapon_factory.get_all_weapons())
+        self.weapons = {}
+        self.current_weapon = None
+        self.current_weapon_select = ""
 
         # register
         sprite_groups.ships.add(self)
@@ -303,11 +313,16 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
                 if load_amount < value:
                     waste_text += str(value - load_amount) + " of " + key + ", "
 
+                self.add_moving_image(key, value, (random.uniform(-0.8, 0.8), random.uniform(-1.0, -1.9)), 3, 30,30, self, None)
+
         special_text = " Specials: "
         if len(self.target.specials) != 0:
             for i in self.target.specials:
                 self.specials.append(i)
                 special_text += f"{i}\n"
+                key_s, operand_s, value_s = i.split(" ")
+
+                self.add_moving_image(key_s,value_s,(0, random.uniform(-0.3, -0.6)), 5, 50,50, self, None)
 
         self.target.specials = []
 
@@ -320,19 +335,41 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         event_text.text = "You are a Lucky Guy! you just found some resources: " + self.collect_text
         self.target.collected = True
 
+    def add_moving_image(self, key, value, velocity, lifetime, width, height, parent, target):
+        MovingImage(
+            self.win,
+            self.get_screen_x(),
+            self.get_screen_y(),
+            width,
+            height,
+            get_image(f"{key}_25x25.png"),
+            lifetime,
+            velocity,
+            str(value), SPECIAL_TEXT_COLOR,
+            "georgiaproblack", 1, parent, target=target)
+
     def unload_cargo(self):
         text = ""
         for key, value in self.resources.items():
             if value > 0:
                 text += key + ": " + str(value) + ", "
-                setattr(self.parent.player, key, getattr(self.parent.player, key) + value)
-                self.resources[key] = 0
-                setattr(self, key, 0)
+                if not key == "energy":
+                    setattr(self.parent.player, key, getattr(self.parent.player, key) + value)
+                    self.resources[key] = 0
+                    setattr(self, key, 0)
+                    if hasattr(global_params.app.resource_panel, key + "_icon"):
+                        target_icon = getattr(global_params.app.resource_panel, key + "_icon").rect.center
+                        self.add_moving_image(key, value, (random.uniform(-10.8, 10.8), random.uniform(-1.0, -1.9)),
+                            4, 30,30, self.target, target_icon)
 
         special_text = ""
         for i in self.specials:
             self.target.specials.append(i)
             special_text += f"found special: {i.split(' ')[0]} {i.split(' ')[1]} {i.split(' ')[2]}"
+
+            key_s, operand_s, value_s = i.split(" ")
+
+            self.add_moving_image(key_s, value_s, (0, random.uniform(-0.3, -0.6)), 5, 50, 50, self.target, None)
         self.specials = []
 
         if not text:
@@ -349,6 +386,9 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
             x, y = Mouse.getMousePos()
 
             if self.rect.collidepoint(x, y):  # self.contains(x, y): #
+                if mouseState == MouseState.MIDDLE_RELEASE:
+                    self.open_weapon_select()
+
                 if mouseState == MouseState.RIGHT_CLICK:
                     if global_params.app.ship == self:
                         if self.selected:
@@ -390,6 +430,12 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
                         self.orbit_object = None
                         if self.get_hit_object():
                             self.set_energy_reloader(self.get_hit_object())
+
+    def open_weapon_select(self):
+        if global_params.app.weapon_select.obj == self:
+            global_params.app.weapon_select.set_visible()
+        else:
+            global_params.app.weapon_select.obj = self
 
     def update(self):
         self.update_pan_zoom_game_object()
@@ -480,3 +526,5 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         if self.energy_reloader:
             # reload ship
             self.reload_ship()
+
+

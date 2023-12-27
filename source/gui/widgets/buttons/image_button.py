@@ -95,7 +95,7 @@ class ImageButton(WidgetBase):
 
                     # this is used for build .... dirty hack, but leave it !
                     if self.string:
-                        building_factory.build(self.string)
+                        building_factory.build(self.string, global_params.app.selected_planet)
 
                     # another dirty hack
                     if hasattr(self.parent, "on_resource_click"):

@@ -117,10 +117,11 @@ class BoxSelection:
         """
         # select or deselect
         [selected.select(True) for selected in self.selected_objects]
-        [other.select(False) for other in self.selectable_objects if other not in self.selected_objects]
+        [other.select(False) for other in self.selectable_objects if other not in self.selected_objects and other != global_params.app.ship]
 
         # set selected planet
         selected_planets = [i for i in self.selected_objects if i.property == "planet"]
+
         if len(selected_planets) > 0:
             global_params.app.set_selected_planet(selected_planets[0])
 

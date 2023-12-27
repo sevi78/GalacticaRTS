@@ -85,7 +85,7 @@ class BuildingFactoryJsonDictReader:
         return list_
 
     def get_resource_categories(self):
-        not_resource = ['planetary_defence', 'ship']
+        not_resource = ['planetary_defence', 'ship', 'weapons']
         return [_ for _ in self.json_dict.keys() if not _ in not_resource]
 
     def get_technology_upgrade(self, building) -> dict:
@@ -98,10 +98,17 @@ class BuildingFactoryJsonDictReader:
     def get_defence_unit_names(self) -> list:
         return self.json_dict["planetary_defence"].keys()
 
+    def get_weapons_names(self):
+        return self.json_dict["weapons"].keys()
+
     # def insert_technology_upgrade(self):
     #     for category in self.json_dict.values():
     #         for building in category.values():
     #             building['technology_upgrade'] = {}
+
+
+
+
 
     def get_all_building_names(self) -> list:
         building_names = []
@@ -115,7 +122,7 @@ class BuildingFactory(BuildingFactoryJsonDictReader):
     def __init__(self):
         BuildingFactoryJsonDictReader.__init__(self)
 
-    def build(self, building):  # new version based on buildings.json
+    def build(self, building, reciever):  # new version based on buildings.json
         """
         this builds the buildings on the planet: first check for prices ect, then build a building_widget
         that overgives the values to the planet if ready
@@ -126,13 +133,13 @@ class BuildingFactory(BuildingFactoryJsonDictReader):
             return
 
         prices = self.get_prices_from_buildings_json(building)
-        planet = global_params.app.selected_planet
+        #reciever = global_params.app.selected_planet
         # only build if selected planet is set
-        if not planet: return
+        if not reciever: return
 
         # check for minimum population
         build_population_minimum = self.get_build_population_minimum_from_buildings_json(building)
-        if build_population_minimum > planet.population:
+        if build_population_minimum > reciever.population:
             event_text.text = "you must reach a population of minimum " + str(build_population_minimum) + " people to build a " + building + "!"
 
             sounds.play_sound("bleep", channel=7)
@@ -140,17 +147,17 @@ class BuildingFactory(BuildingFactoryJsonDictReader):
 
         # build building widget, first pay the bill
         # pay the bill
-        if planet.building_cue >= planet.building_slot_amount:
-            event_text.text = "you have reached the maximum(" + str(planet.building_slot_amount) + ") of buildings that can be build at the same time on " + planet.name + "!"
+        if reciever.building_cue >= reciever.building_slot_amount:
+            event_text.text = "you have reached the maximum(" + str(reciever.building_slot_amount) + ") of buildings that can be build at the same time on " + reciever.name + "!"
             sounds.play_sound("bleep", channel=7)
             return
 
         defence_units = self.get_defence_unit_names()
-        civil_buildings = [i for i in planet.buildings if not i in defence_units]
+        civil_buildings = [i for i in reciever.buildings if not i in defence_units]
 
-        if len(civil_buildings) + planet.building_cue >= planet.buildings_max:
+        if len(civil_buildings) + reciever.building_cue >= reciever.buildings_max:
             if not building in defence_units:
-                event_text.text = "you have reached the maximum(" + str(planet.buildings_max) + ") of buildings that can be build on " + planet.name + "!"
+                event_text.text = "you have reached the maximum(" + str(reciever.buildings_max) + ") of buildings that can be build on " + reciever.name + "!"
                 sounds.play_sound("bleep", channel=7)
                 return
 
@@ -172,9 +179,9 @@ class BuildingFactory(BuildingFactoryJsonDictReader):
 
         # create building_widget ( progressbar)
         if widget_key:
-            self.create_building_widget(planet, widget_key, widget_name, widget_value)
+            self.create_building_widget(reciever, widget_key, widget_name, widget_value)
 
-    def create_building_widget(self, planet, widget_key, widget_name, widget_value):
+    def create_building_widget(self, reciever, widget_key, widget_name, widget_value):
         widget_width = global_params.app.building_panel.get_screen_width()
         widget_height = 35
         spacing = 5
@@ -195,12 +202,12 @@ class BuildingFactory(BuildingFactoryJsonDictReader):
             progress_time=5,
             key=widget_key,
             value=widget_value,
-            planet=planet,
-            tooltip="building widdget", layer=4, building_production_time=self.get_progress_time_from_buildings_json(widget_name)
+            reciever=reciever,
+            tooltip="building widget", layer=4, building_production_time=self.get_progress_time_from_buildings_json(widget_name)
             )
 
         # add building widget to building cue to make shure it can be build only if building_cue is < building_slots_amount
-        planet.building_cue += 1
+        reciever.building_cue += 1
 
     def check_if_enough_resources_to_build(self, building: str) -> bool:
         check = True

@@ -98,7 +98,7 @@
   },
   "ships": {
     "0": {
-      "name": "spaceship",
+      "name": "spacehunter",
       "world_x": 1471,
       "world_y": 730
     },

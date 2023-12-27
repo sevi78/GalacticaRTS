@@ -20,21 +20,28 @@ class InfoPanelTextGenerator:
                     dict_[item] = value
         return dict_
 
-    def create_info_panel_building_text(self, building):
-        ignorables = ["name", "category", "building_production_time_scale", "city"]
-        price_text = f"{building}:\n\nprices:\n\n"
-        production_text = ""
-        other_text = ""
+    def create_info_panel_price_text(self, building):
         dict_ = self.get_building(building)
-        time_scale = dict_["building_production_time_scale"]
-
+        price_text = f"{building}:\n\nprices:\n\n"
         for key, value in dict_.items():
             if key.startswith("price_"):
                 resource_key = key.split('price_')[1]
                 if value > 0:
                     price_text += f"{resource_key}: {value}\n"
 
-            elif key.startswith("production_"):
+
+        return price_text
+
+    def create_info_panel_building_text(self, building):
+        ignorables = ["name", "category", "building_production_time_scale", "city"]
+        price_text = self.create_info_panel_price_text(building)
+        production_text = ""
+        other_text = ""
+        dict_ = self.get_building(building)
+        time_scale = dict_["building_production_time_scale"]
+
+        for key, value in dict_.items():
+            if key.startswith("production_"):
                 production_key = key.split('production_')[1]
                 if production_key == "minerals":
                     production_key = "mineral"
@@ -212,7 +219,7 @@ class InfoPanelTextGenerator:
         #print(f"create_ufo_tooltip")
 
         text += ufo.name + ":\n\n"
-
+        text += f"lifetime: {str(ufo.lifetime)}/{str(format_number(ufo.elapsed_time, 1))}\n\n"
         text += "speed: " + str(ufo.speed) + "\n\n"
         text += "resources loaded: " + "\n\n"
         text += "    water: " + str(ufo.water) + "/" + str(ufo.water_max) + "\n"
@@ -327,6 +334,19 @@ class InfoPanelTextGenerator:
                      f"{resource_text}\n{alien_text}")
 
         return infotext
+
+    def create_info_panel_weapon_text(self, name):
+        infotext = self.create_info_panel_price_text(name)
+        weapon_variables = self.json_dict['weapons'][name]["upgrade values"].keys()
+        weapon_var = ""
+        for i in weapon_variables:
+            weapon_var += f"{i}: {self.json_dict['weapons'][name]['upgrade values'][i]}"
+
+        # range  = f"range: {self.json_dict['weapons'][name]['range']}"
+        # power = f"power: {self.json_dict['weapons'][name]['power']}"
+        # shoot_interval =
+        return infotext + weapon_var
+
 
     def get_info_text(self):
         return self.info_text

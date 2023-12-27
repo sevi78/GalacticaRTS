@@ -78,7 +78,7 @@ class SpaceHarbor(WidgetBase):
             moveable=False,
             include_text=True,
             layer=self.layer,
-            onClick=lambda: building_factory.build("spacehunter"),
+            onClick=lambda: building_factory.build("spacehunter", global_params.app.selected_planet),
             )
 
         self.cargoloader_button = ImageButton(win=self.win,
@@ -96,7 +96,7 @@ class SpaceHarbor(WidgetBase):
             moveable=False,
             include_text=True,
             layer=self.layer,
-            onClick=lambda: building_factory.build("cargoloader"),
+            onClick=lambda: building_factory.build("cargoloader", global_params.app.selected_planet),
             )
 
         self.spaceship_button = ImageButton(win=self.win,
@@ -114,7 +114,7 @@ class SpaceHarbor(WidgetBase):
             moveable=False,
             include_text=True,
             layer=self.layer,
-            onClick=lambda: building_factory.build("spaceship"),
+            onClick=lambda: building_factory.build("spaceship", global_params.app.selected_planet),
             )
 
         # initial hide the buttons

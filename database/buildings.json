@@ -562,5 +562,215 @@
       "population_buildings_value": 0,
       "technology_upgrade": {}
     }
+  },
+  "weapons": {
+    "laser": {
+      "name": "laser",
+      "level": 0,
+      "production_energy": 0,
+      "production_food": 0,
+      "production_minerals": 0,
+      "production_water": 0,
+      "production_technology": 0,
+      "production_city": 0,
+      "price_energy": 2500,
+      "price_food": 2000,
+      "price_minerals": 2500,
+      "price_water": 250,
+      "price_technology": 500,
+      "price_city": 0,
+      "build_population_minimum": 0,
+      "building_production_time_scale": 5,
+      "building_production_time": 5,
+      "population_buildings_value": 0,
+      "technology_upgrade": {},
+      "range": 100,
+      "power": 100,
+      "shoot_interval": 1.0,
+      "upgrade cost": {
+        "level_0": {
+          "price_energy": 1500,
+          "price_food": 1000,
+          "price_minerals": 1500,
+          "price_water": 250,
+          "price_technology": 500,
+          "price_city": 0
+        },
+        "level_1": {
+          "price_energy": 2500,
+          "price_food": 2000,
+          "price_minerals": 2500,
+          "price_water": 250,
+          "price_technology": 500,
+          "price_city": 0
+        },
+        "level_2": {
+          "price_energy": 2500,
+          "price_food": 2000,
+          "price_minerals": 2500,
+          "price_water": 250,
+          "price_technology": 500,
+          "price_city": 0
+        }
+      },
+      "upgrade values": {
+        "level_0": {
+          "level": 0,
+          "range": 1.0,
+          "power": 1.0,
+          "shoot_interval": 1.0},
+        "level_1": {
+          "level": 1,
+          "range": 1.5,
+          "power": 1.5,
+          "shoot_interval": 1.5
+        },
+        "level_2": {
+          "level": 2,
+          "range": 2.0,
+          "power": 2.0,
+          "shoot_interval": 2.0
+        }
+      }
+    },
+    "phaser": {
+      "name": "phaser",
+      "level": 0,
+      "production_energy": 0,
+      "production_food": 0,
+      "production_minerals": 0,
+      "production_water": 0,
+      "production_technology": 0,
+      "production_city": 0,
+      "price_energy": 1500,
+      "price_food": 1000,
+      "price_minerals": 1500,
+      "price_water": 250,
+      "price_technology": 500,
+      "price_city": 0,
+      "build_population_minimum": 0,
+      "building_production_time_scale": 5,
+      "building_production_time": 5,
+      "population_buildings_value": 0,
+      "technology_upgrade": {},
+      "range": 100,
+      "power": 100,
+      "shoot_interval": 1.0,
+      "upgrade cost": {
+        "level_0": {
+          "price_energy": 500,
+          "price_food": 1000,
+          "price_minerals": 500,
+          "price_water": 250,
+          "price_technology": 500,
+          "price_city": 0
+        },
+        "level_1": {
+          "price_energy": 1500,
+          "price_food": 1000,
+          "price_minerals": 1500,
+          "price_water": 250,
+          "price_technology": 500,
+          "price_city": 0
+        },
+        "level_2": {
+          "price_energy": 2500,
+          "price_food": 2000,
+          "price_minerals": 2500,
+          "price_water": 250,
+          "price_technology": 500,
+          "price_city": 0
+        }
+      },
+      "upgrade values": {
+        "level_0": {
+          "level": 0,
+          "range": 1.0,
+          "power": 1.0,
+          "shoot_interval": 1.0},
+        "level_1": {
+          "level": 1,
+          "range": 1.5,
+          "power": 1.5,
+          "shoot_interval": 1.5
+        },
+        "level_2": {
+          "level": 2,
+          "range": 2.5,
+          "power": 2.5,
+          "shoot_interval": 5.0
+        }
+      }
+    },
+    "rocket": {
+      "name": "rocket",
+      "level": 0,
+      "production_energy": 0,
+      "production_food": 0,
+      "production_minerals": 0,
+      "production_water": 0,
+      "production_technology": 0,
+      "production_city": 0,
+      "price_energy": 1500,
+      "price_food": 1000,
+      "price_minerals": 1500,
+      "price_water": 250,
+      "price_technology": 500,
+      "price_city": 0,
+      "build_population_minimum": 0,
+      "building_production_time_scale": 5,
+      "building_production_time": 5,
+      "population_buildings_value": 0,
+      "technology_upgrade": {},
+      "range": 100,
+      "power": 100,
+      "shoot_interval": 1.0,
+      "upgrade cost": {
+        "level_0": {
+          "price_energy": 500,
+          "price_food": 1000,
+          "price_minerals": 500,
+          "price_water": 250,
+          "price_technology": 500,
+          "price_city": 0
+        },
+        "level_1": {
+          "price_energy": 1500,
+          "price_food": 1000,
+          "price_minerals": 1500,
+          "price_water": 250,
+          "price_technology": 500,
+          "price_city": 0
+        },
+        "level_2": {
+          "price_energy": 2500,
+          "price_food": 2000,
+          "price_minerals": 2500,
+          "price_water": 250,
+          "price_technology": 500,
+          "price_city": 0
+        }
+      },
+      "upgrade values": {
+        "level_0": {
+          "level": 0,
+          "range": 1.0,
+          "power": 1.0,
+          "shoot_interval": 1.0},
+        "level_1": {
+          "level": 1,
+          "range": 1.5,
+          "power": 1.5,
+          "shoot_interval": 1.5
+        },
+        "level_2": {
+          "level": 2,
+          "range": 2.5,
+          "power": 2.5,
+          "shoot_interval": 3.0
+        }
+      }
+    }
+
   }
 }

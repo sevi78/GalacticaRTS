@@ -117,80 +117,6 @@ class Button(WidgetBase, Moveable):
 
             self.win.blit(self.circle, self.rect)
 
-    def listen__(self, events):  # orig
-        """ Wait for inputs
-
-        :param events: Use pygame.event.get()
-        :type events: list of pygame.event.Event
-        """
-        if not inside_screen(self.get_position(), border=0):
-            return
-
-        global_params.app.tooltip_instance.reset_tooltip(self)
-
-        if not self._hidden and not self._disabled:
-            mouseState = Mouse.getMouseState()
-            x, y = Mouse.getMousePos()
-
-            if self.rect.collidepoint(x, y):
-                if mouseState == MouseState.RELEASE and self.clicked:
-                    self.clicked = False
-                    self.onRelease(*self.onReleaseParams)
-
-                elif mouseState == MouseState.CLICK:
-                    self.clicked = True
-                    self.onClick(*self.onClickParams)
-                    self.colour = self.pressedColour
-                    self.borderColour = self.pressedBorderColour
-                    self.drawCircle(self.pressedColour, 128)
-
-                    # set planet on click of the building slot buttons
-                    if self.parent:
-                        if hasattr(self.parent, "property"):
-                            if self.parent.property == "planet":
-                                global_params.app.set_selected_planet(self.parent)
-                                # self.parent.set_info_text()
-
-                        # set building_edit.input_box value
-                        if hasattr(self.parent, "property"):
-                            if self.parent.property == "input_box":
-                                if hasattr(self, "addition_value"):
-                                    value = int(self.parent.text) - int(self.addition_value)
-                                    self.parent.set_text(str(value))
-
-                    if self.string:
-                        global_params.app.build(self.string)
-
-                elif mouseState == MouseState.DRAG and self.clicked:
-                    self.colour = self.pressedColour
-                    self.borderColour = self.pressedBorderColour
-
-                    self.drawCircle(self.pressedColour, 128)
-
-                elif mouseState == MouseState.HOVER or mouseState == MouseState.DRAG:
-                    self.colour = self.hoverColour
-                    self.borderColour = self.hoverBorderColour
-
-                    self.drawCircle(self.hoverColour, 128)
-
-                    # set tooltip
-                    if self.tooltip:
-                        if self.tooltip != "":
-                            global_params.tooltip_text = self.tooltip
-
-                    # set info_panel
-                    if self.info_text:
-                        if self.info_text != "":
-                            # global_params.app.info_panel.text = self.info_text
-                            global_params.app.info_panel.set_text(self.info_text)
-                            global_params.app.info_panel.set_planet_image(self.image, size=(
-                                85, 85), align="topright")
-            else:
-                self.clicked = False
-                self.colour = self.inactiveColour
-                self.borderColour = self.inactiveBorderColour
-                self.drawCircle(self.inactiveColour, 0)
-
     def listen(self, events):  # _with_repeat not working yet
         """ Wait for inputs
 
@@ -230,7 +156,7 @@ class Button(WidgetBase, Moveable):
                                             self.parent.set_text(str(value))
 
                             if self.string:
-                                global_params.app.build(self.string)
+                                global_params.app.build(self.string, global_params.app.selected_planet)
 
                             # If repeat_clicks is True, set a timer to start repeating the click after 1 second
                             if self.repeat_clicks:

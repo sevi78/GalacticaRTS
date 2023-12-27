@@ -32,11 +32,12 @@ class PanZoomPlanetDraw:
                 self.gif_handler = GifHandler(self, self.gif, loop=True, relative_gif_size=1.0)
 
     def draw_text(self):
-        self.text = self.font.render(self.string, True, colors.frame_color)
-        self.text_rect = self.text.get_rect()
-        self.text_rect.centerx = self.rect.centerx
-        self.text_rect.bottom = self.rect.centery + self.rect.height
-        self.win.blit(self.text, self.text_rect)
+        if self.get_zoom() > 0.1:
+            self.text = self.font.render(self.string, True, colors.frame_color)
+            self.text_rect = self.text.get_rect()
+            self.text_rect.centerx = self.rect.centerx
+            self.text_rect.bottom = self.rect.centery + self.rect.height
+            self.win.blit(self.text, self.text_rect)
 
     def draw_hover_circle(self):
         panzoom = pan_zoom_handler
@@ -127,10 +128,10 @@ class PanZoomPlanetDraw:
 
         if self.alien_population > 0:
             if self.alien_attitude < 50:
-                alien_image = get_image("alien_face_orange.png")
+                alien_image = pygame.transform.scale(get_image("alien_face_orange.png"), (25, 25))
             else:
-                alien_image = get_image("alien_face_green.png")
-            self.win.blit(alien_image, (self.rect.centerx, self.rect.bottom + 30))
+                alien_image = pygame.transform.scale(get_image("alien_face_green.png"), (25, 25))
+            self.win.blit(alien_image, (self.screen_position[0] - self.screen_width / 2 - 60 * self.get_zoom() , self.rect.centery))
 
 
         if self.specials:

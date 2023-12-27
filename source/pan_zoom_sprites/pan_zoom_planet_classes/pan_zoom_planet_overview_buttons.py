@@ -91,8 +91,12 @@ class PanZoomPlanetOverviewButtons(PanZoomPlanetEconomy):
         for i in self.overview_buttons:
             if self.explored:
                 if not self.type == "sun":
-                    i.show()
-                    i.enable()
+                    if self.get_zoom() > 0.2:
+                        i.show()
+                        i.enable()
+                    else:
+                        i.hide()
+                        i.disable()
             else:
                 i.hide()
                 i.disable()

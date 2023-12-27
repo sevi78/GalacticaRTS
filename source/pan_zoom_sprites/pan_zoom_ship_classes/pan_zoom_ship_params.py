@@ -54,16 +54,17 @@ class PanZoomShipParams():
         self.population_max = 200
         self.technology = kwargs.get("technology", 100)
         self.technology_max = 200
+        self.energy_max = SHIP_ENERGY_MAX
+        self.energy = SHIP_ENERGY
 
         self.resources = {"minerals": self.minerals,
                           "food": self.food,
-                          "population": self.population,
+                          "energy":self.energy,
                           "water": self.water,
                           "technology": self.technology
                           }
         self.specials = []
-        self.energy_max = SHIP_ENERGY_MAX
-        self.energy = SHIP_ENERGY
+
         self.energy_reloader = None
         self.energy_reload_rate = SHIP_ENERGY_RELOAD_RATE
         self.move_stop = 0
@@ -83,6 +84,14 @@ class PanZoomShipParams():
 
         # tooltip
         self.tooltip = ""
+
+        # uprade
+        self.building_slot_amount = 1
+        self.building_cue = 0
+        self.buildings_max = 10
+        self.buildings = []
+
+
 
     def __delete__(self, instance):
         # remove all references

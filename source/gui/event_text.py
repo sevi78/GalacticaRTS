@@ -100,7 +100,8 @@ class EventText(TextWrap):
 
     def update(self):
         if global_params.edit_mode:
-            return
+            if global_params.app.weapon_select._hidden:
+                return
 
         if pygame.time.get_ticks() > self.last_update_time + TEXT_DISPLAY_UPDATE:
             if self.alpha > 0:
@@ -108,7 +109,7 @@ class EventText(TextWrap):
             else:
                 self.last_update_time = pygame.time.get_ticks()
 
-        self.wrap_text(self.event_display_text, (
+        self.wrap_text(self.win, self.event_display_text, (
             global_params.app.ui_helper.left, self.new_bottom),
             (global_params.app.ui_helper.world_width, EVENT_TEXT_HEIGHT), self.event_text_font, colors.ui_dark,
             fade_out=True, alpha=self.alpha)

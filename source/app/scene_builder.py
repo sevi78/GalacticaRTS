@@ -92,6 +92,12 @@ class SceneBuilder(EconomyParams, GameObjectStorage):
                 if self.ship_edit:
                     self.ship_edit.set_obj(value)
 
+            if hasattr(self, "weapon_select"):
+                if self.weapon_select:
+                    self.weapon_select.obj = value
+                    self.weapon_select.update_obj()
+                    self.weapon_select.update()
+
     def create_fog_of_war(self):
         return
         self.fog_of_war = FogOfWar(global_params.win, 0, 0, global_params.scene_width, global_params.scene_height, False, layer=2)
