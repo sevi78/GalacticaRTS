@@ -20,16 +20,16 @@ from source.handlers.pan_zoom_sprite_handler import sprite_groups
 class GameObjectStorage:
     def __init__(self):
         """TODO: reduce dependencies """
-        self.game_objects = []
-        self.planets = sprite_groups.planets.sprites()
-        self.collectables = []
-        self.ufos = []
+        #self.game_objects = []
+        #self.planets = sprite_groups.planets.sprites()
+        #self.collectables = []
+        #self.ufos = []
         self.building_widget_list = []
-        self.planet_buttons = []
-        self.ships = sprite_groups.ships.sprites()
+        #self.planet_buttons = []
+        #self.ships = sprite_groups.ships.sprites()
         self.editors = []
-        self.missiles = pygame.sprite.Group()
-        self.gif_handlers = pygame.sprite.Group()
+        #self.missiles = pygame.sprite.Group()
+        #self.gif_handlers = pygame.sprite.Group()
         self.building_button_widgets = []
         self.explored_planets = []
 
