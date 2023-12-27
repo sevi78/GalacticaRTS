@@ -60,6 +60,7 @@ class BuildingWidget(WidgetBase):
         self.value = value
         self.immediately_build_cost = 0
         self.tooltip = kwargs.get("tooltip", "no tooltip set yet!")
+        self.is_building = kwargs.get("is_building", True)
 
         # get the position and size
         self.win = pygame.display.get_surface()
@@ -71,8 +72,13 @@ class BuildingWidget(WidgetBase):
         self.font_size = kwargs.get("fontsize", 15)
         self.font = pygame.font.SysFont(kwargs.get("fontname", global_params.font_name), kwargs.get("fontsize", 15))
         self.spacing = kwargs.get("spacing", 15)
-        self.image = pygame.transform.scale(get_image(self.name + "_25x25.png"), (25, 25))
+        if self.is_building:
+            self.image = pygame.transform.scale(get_image(self.name + "_25x25.png"), (25, 25))
+        else:
+            self.image = pygame.transform.scale(get_image(self.name + ".png"), (25, 25))
+
         self.progress_time = kwargs.get("building_production_time")
+
 
         # button
         self.button = Button(self.win,

@@ -192,6 +192,9 @@ class BuildingFactory(BuildingFactoryJsonDictReader):
         y = height - spacing - widget_height - widget_height * len(global_params.app.building_widget_list)
         sounds.play_sound(sounds.bleep2, channel=7)
 
+        if widget_name in self.json_dict["weapons"].keys():
+            is_building = False
+
         building_widget = BuildingWidget(win=global_params.app.win,
             x=global_params.app.building_panel.screen_x,
             y=y,
@@ -203,7 +206,8 @@ class BuildingFactory(BuildingFactoryJsonDictReader):
             key=widget_key,
             value=widget_value,
             reciever=reciever,
-            tooltip="building widget", layer=4, building_production_time=self.get_progress_time_from_buildings_json(widget_name)
+            tooltip="building widget", layer=4, building_production_time=self.get_progress_time_from_buildings_json(widget_name),
+            is_building= is_building
             )
 
         # add building widget to building cue to make shure it can be build only if building_cue is < building_slots_amount
