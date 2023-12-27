@@ -214,7 +214,7 @@ class Button(WidgetBase, Moveable):
                 self.borderColour = self.inactiveBorderColour
                 self.drawCircle(self.inactiveColour, 0)
 
-    def execute(self, code):
+    def execute__(self, code):# unused
         exec(code)
 
     def draw(self):

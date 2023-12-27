@@ -88,7 +88,7 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
         self.wait = kwargs.get("wait", 1.0)
         self.selected = False
 
-        self.onClick = lambda: self.execute(kwargs)
+        #self.onClick = lambda: self.execute(kwargs)
 
         # load_from_db Game variables___________________________________________________________________________________
         self.info_text = kwargs.get("info_text")

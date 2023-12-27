@@ -177,7 +177,8 @@ class EventPanel(TextWrap, EditorBase, InterfaceData):
                     self.game_event.deal.make_deal()
 
                 else:
-                    exec(self.game_event.functions["yes"])
+                    getattr(self.game_event, self.game_event.functions["yes"])()
+                    #exec(self.game_event.functions["yes"])
 
             self.close_event()
             self.hide()
@@ -186,7 +187,8 @@ class EventPanel(TextWrap, EditorBase, InterfaceData):
     def decline(self):
         if self.game_event.functions:
             if self.game_event.functions["no"]:
-                exec(self.game_event.functions["no"])
+                getattr(self.game_event, self.game_event.functions["no"])()
+
 
         if not self._hidden:
             self.hide()

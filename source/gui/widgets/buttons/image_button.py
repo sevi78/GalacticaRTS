@@ -120,7 +120,7 @@ class ImageButton(WidgetBase):
             else:
                 self.clicked = False
 
-    def execute(self, code):
+    def execute__(self, code):# not used
         exec(code)
 
     def draw(self):

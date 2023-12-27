@@ -221,5 +221,5 @@ end = GameEvent(
     title="GAME OVER !!!",
     body="... Bad Luck !!! ... ",
     end_text="make it better next time!  RESTART?!",
-    functions={"yes": "self.game_event.restart_game()", "no": "self.game_event.end_game()"},
+    functions={"yes": "restart_game", "no": "end_game"},
     )

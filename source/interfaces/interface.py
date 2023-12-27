@@ -237,7 +237,6 @@ class Interface(EditorBase):
         if self._hidden:
             return
 
-        print("dammit")
         data = self.get_slider_data()
 
         for key, value in data.items():
