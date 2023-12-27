@@ -1,6 +1,6 @@
 # Galactica-RTS
 
-RTS Game WIP, pygame, python, sqlite
+RTS Game WIP, pygame, python
 
 ![Screenshot (5)](https://github.com/sevi78/Galactica-RTS_zoomable1.1/blob/Galactica-RTS_zoomable1.1/Screenshot%20(5).png)
 
