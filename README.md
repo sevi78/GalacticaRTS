@@ -50,4 +50,4 @@ pycharm, GIMP
 
 **to start the game:**
 
-Download the direcory "output", there is an .exe for windows (main.exe). doubleclick on main.exe
+Download the whole directory, in "output", there is an .exe for windows (main.exe). doubleclick on main.exe
