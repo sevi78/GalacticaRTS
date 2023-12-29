@@ -140,13 +140,31 @@ class SettingsPanel(WidgetBase):
             isSubWidget=False,
             parent=self,
             image=pygame.transform.scale(
-                get_image("text_icon.png"), (25, 25)),
+                get_image("planet_text_icon.png"), (25, 25)),
             tooltip="show planet names",
             frame_color=self.frame_color,
             moveable=False,
             include_text=True, layer=self.layer,
             onClick=lambda: self.show_planet_names())
         self.widgets.append(self.show_planet_names_icon)
+        self.max_width += self.icon_size + self.spacing
+
+        self.show_tooltip_icon = ImageButton(win=self.win,
+            x=self.info_icon.get_screen_x() - 50,
+            y=self.surface_rect.y + self.spacing,
+            width=self.icon_size,
+            height=self.icon_size,
+            isSubWidget=False,
+            parent=self,
+            image=pygame.transform.scale(
+                get_image("text_icon.png"), (25, 25)),
+            tooltip="show tooltips",
+            frame_color=self.frame_color,
+            moveable=False,
+            include_text=True, layer=self.layer,
+            onClick=lambda: self.show_tooltip())
+
+        self.widgets.append(self.show_tooltip_icon)
         self.max_width += self.icon_size + self.spacing
 
         self.buttons_icon = ImageButton(win=self.win,
@@ -172,6 +190,8 @@ class SettingsPanel(WidgetBase):
 
     def set_info_text(self):
         global_params.app.info_panel.set_text(info_panel_text_generator.info_text)
+        global_params.app.info_panel.set_planet_image(get_image("info_30x30.png"), size=(
+        50, 50), alpha=78, align="center")
 
     def draw_frame(self):
         # frame
@@ -210,3 +230,6 @@ class SettingsPanel(WidgetBase):
             return
 
         self.draw_frame()
+
+    def show_tooltip(self):
+        global_params.app.tooltip_instance.active = not global_params.app.tooltip_instance.active

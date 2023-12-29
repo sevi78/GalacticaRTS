@@ -5,10 +5,11 @@ import pygame
 from pygame import Vector2
 
 from source.draw import scope
-from source.factories.weapon_factory import weapon_factory
 from source.gui.event_text import event_text
 from source.gui.lod import inside_screen
 from source.gui.widgets.moving_image import MovingImage, SPECIAL_TEXT_COLOR
+from source.handlers.weapon_handler import WeaponHandler
+from source.interfaces.interface import InterfaceData
 from source.multimedia_library.images import get_image
 from source.multimedia_library.sounds import sounds
 from source.pan_zoom_sprites.pan_zoom_ship_classes.pan_zoom_ship_draw import PanZoomShipDraw
@@ -32,7 +33,7 @@ from source.factories.weapon_factory import weapon_factory
 
 
 # class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZoomShipRanking, PanZoomShipButtons, PanZoomShipDraw, PanZoomMouseHandler, PanZoomShipInteraction):
-class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZoomShipRanking, PanZoomShipDraw, PanZoomMouseHandler, PanZoomShipInteraction):
+class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZoomShipRanking, PanZoomShipDraw, PanZoomMouseHandler, PanZoomShipInteraction, InterfaceData):
     # __slots__ = PanZoomGameObject.__slots__ + ('item_collect_distance', 'orbit_direction', 'speed', 'id', 'property',
     #                                            'rotate_correction_angle', 'orbit_object', 'orbit_angle', 'collect_text',
     #                                            'target_object', 'target_object_reset_distance_raw',
@@ -97,9 +98,11 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         PanZoomMouseHandler.__init__(self)
         PanZoomShipInteraction.__init__(self)
 
+        self.name = kwargs.get("name", "no_name")
         self.item_collect_distance = SHIP_ITEM_COLLECT_DISTANCE
         self.orbit_direction = random.choice([-1, 1])
         self.speed = SHIP_SPEED
+        self.attack_distance_raw = 200
 
         self.property = "ship"
         self.rotate_correction_angle = SHIP_ROTATE_CORRECTION_ANGLE
@@ -144,10 +147,8 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
             "energy_use"
             ]
 
-        self.all_weapons = copy.deepcopy(weapon_factory.get_all_weapons())
-        self.weapons = {}
-        self.current_weapon = None
-        self.current_weapon_select = ""
+        self.weapon_handler = WeaponHandler(self, kwargs.get("current_weapon", "laser"))
+
 
         # register
         sprite_groups.ships.add(self)
@@ -155,13 +156,17 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
             if not self in self.parent.box_selection.selectable_objects:
                 self.parent.box_selection.selectable_objects.append(self)
 
+        InterfaceData.__init__(self, self.interface_variable_names)
+
+        self.setup()
+
     def setup(self):
         data = load_file("ship_settings.json")
         for name, dict in data.items():
             if name == self.name:
                 for key, value in dict.items():
-                    if key in self.__dict__:
-                        setattr(self, key, value)
+                    #if key in self.__dict__ or key in self.__slots__:
+                    setattr(self, key, value)
 
         self.orbit_radius = 100 + self.id * 30
 
@@ -263,32 +268,7 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
                 self.target = None
                 self.target_reached = True
 
-    def attack(self, defender):
-        if not inside_screen(self.get_screen_position()):
-            return
 
-        r0 = random.randint(-4, 5)
-        r = random.randint(-3, 4)
-
-        startpos = (self.rect.centerx, self.rect.centery)
-        endpos = (defender.rect.centerx + r0, defender.rect.centery + r0)
-
-        # shoot laser
-        if r == 2 and defender.energy > 0:
-            pygame.draw.line(surface=self.win, start_pos=startpos, end_pos=endpos,
-                color=pygame.color.THECOLORS["white"], width=2)
-
-            # make damage to target
-            defender.energy -= self.gun_power
-            sounds.play_sound(sounds.laser)
-
-        if defender.energy <= defender.energy_max / 2:
-            defender.target = self
-
-        if defender.energy <= 0:
-            # explode
-            defender.end_object()
-            self.enemy = None
 
     def load_cargo(self):
         if self.target.collected:
@@ -313,7 +293,7 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
                 if load_amount < value:
                     waste_text += str(value - load_amount) + " of " + key + ", "
 
-                self.add_moving_image(key, value, (random.uniform(-0.8, 0.8), random.uniform(-1.0, -1.9)), 3, 30,30, self, None)
+                self.add_moving_image(key, "", value, (random.uniform(-0.8, 0.8), random.uniform(-1.0, -1.9)), 3, 30,30, self, None)
 
         special_text = " Specials: "
         if len(self.target.specials) != 0:
@@ -322,7 +302,7 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
                 special_text += f"{i}\n"
                 key_s, operand_s, value_s = i.split(" ")
 
-                self.add_moving_image(key_s,value_s,(0, random.uniform(-0.3, -0.6)), 5, 50,50, self, None)
+                self.add_moving_image(key_s, operand_s, value_s,(0, random.uniform(-0.3, -0.6)), 5, 50,50, self, None)
 
         self.target.specials = []
 
@@ -335,7 +315,9 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         event_text.text = "You are a Lucky Guy! you just found some resources: " + self.collect_text
         self.target.collected = True
 
-    def add_moving_image(self, key, value, velocity, lifetime, width, height, parent, target):
+    def add_moving_image(self, key, operand, value, velocity, lifetime, width, height, parent, target):
+        if operand == "*":
+            operand = "x"
         MovingImage(
             self.win,
             self.get_screen_x(),
@@ -345,7 +327,7 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
             get_image(f"{key}_25x25.png"),
             lifetime,
             velocity,
-            str(value), SPECIAL_TEXT_COLOR,
+            f" {value}{operand}", SPECIAL_TEXT_COLOR,
             "georgiaproblack", 1, parent, target=target)
 
     def unload_cargo(self):
@@ -359,17 +341,15 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
                     setattr(self, key, 0)
                     if hasattr(global_params.app.resource_panel, key + "_icon"):
                         target_icon = getattr(global_params.app.resource_panel, key + "_icon").rect.center
-                        self.add_moving_image(key, value, (random.uniform(-10.8, 10.8), random.uniform(-1.0, -1.9)),
+                        self.add_moving_image(key,"", value, (random.uniform(-10.8, 10.8), random.uniform(-1.0, -1.9)),
                             4, 30,30, self.target, target_icon)
 
         special_text = ""
         for i in self.specials:
             self.target.specials.append(i)
             special_text += f"found special: {i.split(' ')[0]} {i.split(' ')[1]} {i.split(' ')[2]}"
-
             key_s, operand_s, value_s = i.split(" ")
-
-            self.add_moving_image(key_s, value_s, (0, random.uniform(-0.3, -0.6)), 5, 50, 50, self.target, None)
+            self.add_moving_image(key_s, operand_s, value_s, (0, random.uniform(-0.3, -0.6)), 5, 50, 50, self.target, None)
         self.specials = []
 
         if not text:
@@ -509,15 +489,13 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
             self.follow_target(self.enemy)
 
             if self.enemy.attitude < 50:
-                self.attack(self.enemy)
+                self.weapon_handler.attack(self.enemy)
             else:
                 global_params.app.trade_edit.setup_trader(self, self.enemy)
                 global_params.app.trade_edit.set_visible()
                 self.enemy = None
                 # self.target = None
                 # self.moving = False
-
-
                 print("here to setup trader")
 
         if self.orbit_object:

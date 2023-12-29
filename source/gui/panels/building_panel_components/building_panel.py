@@ -1,10 +1,7 @@
-import traceback
 import pygame
 from pygame_widgets.util import drawText
 
-from source.app.app_helper import select_next_item_in_list
 from source.configuration.economy_params import EconomyParams
-from source.game_play.navigation import navigate_to
 from source.gui.widgets.building_button_widget import BuildingButtonWidget
 from source.gui.event_text import event_text
 from source.gui.panels.building_panel_components.building_panel_constructor import BuildingPanelConstructor
@@ -16,7 +13,6 @@ from source.text.info_panel_text_generator import info_panel_text_generator
 from source.gui.panels.toggle_switch import ToggleSwitch
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.multimedia_library.images import get_image
-from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.utils import global_params
 from source.utils.colors import colors
 from source.utils.global_params import ui_rounded_corner_small_thickness
@@ -109,29 +105,6 @@ class BuildingPanel(WidgetBase, BuildingPanelConstructor, BuildingSlot, EconomyP
     def set_info_text(self):
         global_params.app.info_panel.set_text(info_panel_text_generator.info_text)
 
-    def set_planet_selection__(self, value):
-        try:
-            # if empty list: do nothing
-            my_list = self.parent.explored_planets
-            if not my_list:
-                return
-
-            if sprite_groups.planets:
-                if self.parent.selected_planet:
-                    current_item = self.parent.selected_planet
-                else:
-                    current_item = sprite_groups.planets.sprites()[0]
-
-                next = select_next_item_in_list(my_list, current_item, value)
-
-                # set new selected planet
-                # pan_zoom_handler.zoom = 1.8
-                self.parent.set_selected_planet(next)
-                navigate_to(self.parent.selected_planet)
-
-        except Exception as e:
-            print("building_panel.set_planet_selection: An error occurred:", e)
-            traceback.print_exc()
 
     def show_planet_selection_buttons(self):
         if len(self.parent.explored_planets) > 1 and not self._hidden:

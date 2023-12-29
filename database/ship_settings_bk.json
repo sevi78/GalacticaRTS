@@ -27,8 +27,7 @@
     "orbit_radius_max": 300,
     "min_dist_to_other_ships": 80,
     "min_dist_to_other_ships_max": 200,
-    "energy_use": 0.0005,
-    "energy_reload_rate": 0.1
+    "energy_use": 0.0005
   },
   "cargoloader": {
     "food": 0,
@@ -58,9 +57,7 @@
     "orbit_radius_max": 300,
     "min_dist_to_other_ships": 80,
     "min_dist_to_other_ships_max": 200,
-    "energy_use": 0.000,
-    "energy_reload_rate": 0.05,
-    "move_stop": 0
+    "energy_use": 0.000
   },
   "spacehunter": {
     "food": 0,
@@ -90,8 +87,6 @@
     "orbit_radius_max": 300,
     "min_dist_to_other_ships": 80,
     "min_dist_to_other_ships_max": 200,
-    "energy_use": 0.0005,
-    "energy_reload_rate": 0.15,
-    "move_stop": 0
+    "energy_use": 0.0005
   }
 }

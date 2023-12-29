@@ -7,6 +7,7 @@ from source.gui.event_text import event_text
 from source.gui.lod import inside_screen
 from source.gui.widgets.progress_bar import ProgressBar
 from source.gui.widgets.widget_base_components.interaction_handler import InteractionHandler
+from source.handlers.weapon_handler import WeaponHandler
 from source.handlers.widget_handler import WidgetHandler
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_game_object import PanZoomGameObject
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
@@ -76,6 +77,7 @@ class PanZoomUfo(PanZoomGameObject, InteractionHandler):
         self.tooltip = "this is a u.f.o,   might be dangerous!"
         self.attack_distance_raw = pan_zoom_ufo_config["attack_distance"]
         self.attack_distance = self.attack_distance_raw
+        self.gun_power = 0
         self.emp_attacked = False
 
         # energy progress bar
@@ -93,7 +95,9 @@ class PanZoomUfo(PanZoomGameObject, InteractionHandler):
             )
 
         # gun
-        self.gun_power = pan_zoom_ufo_config["gun_power"]
+
+        self.weapon_handler = WeaponHandler(self, kwargs.get("current_weapon", "laser"))
+        self.weapon_handler.gun_power = pan_zoom_ufo_config["gun_power"]
 
         # register
         sprite_groups.ufos.add(self)

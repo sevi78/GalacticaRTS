@@ -131,22 +131,6 @@ class EditorBase(WidgetBase):
             if not i == self:
                 i.hide()
 
-    def set_visible__(self):
-        if self._hidden:
-            self.show()
-            if self.game_paused:
-                global_params.game_paused = not self._hidden
-        else:
-            self.hide()
-            if self.game_paused:
-                global_params.game_paused = self._hidden
-
-        if self.game_paused:
-            global_params.game_paused = self._hidden
-
-        global_params.edit_mode = not self._hidden
-        self.hide_other_editors()
-
     def set_visible(self):
         if self._hidden:
             self.show()

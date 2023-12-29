@@ -60,7 +60,7 @@ class WeaponSelect(EditorBase):
                 text=key + ":",
                 textColour=self.frame_color,
                 font_size=23,
-                info_text="",#info_panel_text_generator.create_info_panel_weapon_text(key),
+                info_text="",  # info_panel_text_generator.create_info_panel_weapon_text(key),
                 textHAlign="right_outside"
                 )
 
@@ -139,10 +139,10 @@ class WeaponSelect(EditorBase):
         level = self.current_weapon['level']
         already_bought = False
         price_text = "prices "
-        x = self.screen_x + self.screen_width - self.screen_width/3.3
+        x = self.screen_x + self.screen_width - self.screen_width / 3.3
         y = self.world_y + TOP_SPACING + self.text_spacing * 4
 
-        if level == 0 and not self.current_weapon["name"] in self.obj.weapons.keys():
+        if level == 0 and not self.current_weapon["name"] in self.obj.weapon_handler.weapons.keys():
             price_text += "to buy:"
         else:
             price_text += f"for upgrade to level {level + 1}:"
@@ -177,21 +177,23 @@ class WeaponSelect(EditorBase):
     def obj(self, value):
         self._obj = value
         if self._obj:
-            self.current_weapon_select = self.obj.current_weapon["name"]
+            self.current_weapon_select = self._obj.weapon_handler.current_weapon["name"]
             self.update_obj()
             self.update()
 
     def update_obj(self):
         self.obj.current_weapon_select = self.current_weapon_select
         # if obj has selected weapon already, upgrade it
-        if self.obj.current_weapon_select in self.obj.weapons.keys():
-            self.obj.current_weapon = copy.deepcopy(self.obj.weapons[self.obj.current_weapon_select])
+        if self.obj.weapon_handler.current_weapon_select in self.obj.weapon_handler.weapons.keys():
+            self.obj.weapon_handler.current_weapon = copy.deepcopy(
+                self.obj.weapon_handler.weapons[self.obj.weapon_handler.current_weapon_select])
             self.current_weapon = copy.deepcopy(self.all_weapons[self.current_weapon_select])
-            self.current_weapon["level"] = copy.deepcopy(self.obj.weapons[self.obj.current_weapon_select]["level"])
+            self.current_weapon["level"] = copy.deepcopy(
+                self.obj.weapon_handler.weapons[self.obj.weapon_handler.current_weapon_select]["level"])
             self.upgrade_button.set_text("upgrade")
             self.upgrade_button.tooltip = "upgrade"
         else:
-            self.obj.current_weapon = copy.deepcopy(self.all_weapons[self.current_weapon_select])
+            self.obj.weapon_handler.current_weapon = copy.deepcopy(self.all_weapons[self.current_weapon_select])
             self.current_weapon = copy.deepcopy(self.all_weapons[self.current_weapon_select])
             self.upgrade_button.set_text("buy")
             self.upgrade_button.tooltip = "buy"
@@ -204,9 +206,10 @@ class WeaponSelect(EditorBase):
 
     def upgrade(self):
         if self.current_weapon["level"] < self.max_weapons_upgrade_level:
-            #prices = self.current_weapon["upgrade cost"]["level_" + str(self.current_weapon['level'])]
-            prices = building_factory.get_prices_from_weapons_dict(self.current_weapon["name"], self.current_weapon["level"])
-            building_factory.build(self.current_weapon["name"], self.obj, prices =prices)
+            # prices = self.current_weapon["upgrade cost"]["level_" + str(self.current_weapon['level'])]
+            prices = building_factory.get_prices_from_weapons_dict(
+                self.current_weapon["name"], self.current_weapon["level"])
+            building_factory.build(self.current_weapon["name"], self.obj, prices=prices)
             self.update_obj()
         else:
             event_text.text = f"maximum upgrade level of {self.max_weapons_upgrade_level} reached !!!"
@@ -221,9 +224,7 @@ class WeaponSelect(EditorBase):
         self.current_weapon_icon.setImage(get_image(f"{self.current_weapon_select}.png"))
 
     def draw(self):
-        global_params.app.info_panel._hidden = not self._hidden
         if not self._hidden and not self._disabled:
-
             self.update_obj()
             self.update()
             self.draw_image()

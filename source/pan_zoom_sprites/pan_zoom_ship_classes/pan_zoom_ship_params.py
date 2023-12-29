@@ -2,6 +2,7 @@ import math
 
 from source.gui.event_text import event_text
 from source.handlers.widget_handler import WidgetHandler
+from source.text.info_panel_text_generator import info_panel_text_generator
 from source.utils import global_params
 from source.multimedia_library.sounds import sounds
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
@@ -127,63 +128,7 @@ class PanZoomShipParams():
         if not self == global_params.app.ship:
             return
 
-        text = self.name + ":\n\n"
-        text += "experience: " + str(self.experience) + "\n"
-        text += "rank: " + self.rank + "\n"
-        text += "speed: " + str(self.speed) + "\n\n"
-        text += "resources loaded: " + "\n\n"
-        text += "    water: " + str(self.water) + "/" + str(self.water_max) + "\n"
-        text += "    energy: " + str(int(self.energy)) + "/" + str(int(self.energy_max)) + "\n"
-        text += "    food: " + str(self.food) + "/" + str(self.food_max) + "\n"
-        text += "    minerals: " + str(self.minerals) + "/" + str(self.minerals_max) + "\n"
-        text += "    technology: " + str(self.technology) + "/" + str(self.technology_max) + "\n\n"
-
-        if self.specials:
-            text += f"    specials:\n"
-
-            for i in self.specials:
-                text += f"    {i}\n"
-        # text += "scanner range: " + str(self.fog_of_war_radius) + "\n"
-        # text += "crew: " + str(self.crew) + "\n"
-
-        if self.debug:
-            text += "\n\ndebug:\n"
-
-            text += "selected: " + str(self.selected) + "\n"
-
-            if self.energy_reloader:
-                text += "reloader: " + str(self.energy_reloader.name) + "\n"
-            else:
-                text += "reloader: " + str(None) + "\n"
-
-            text += "move_stop: " + str(self.move_stop) + "\n"
-            text += "moving: " + str(self.moving) + "\n"
-            text += "position, x,y:" + str(int(self.get_screen_x())) + "/" + str(int(self.get_screen_y()))
-
-            if self.target:
-                text += "\ntarget: " + str(self.target.name) + "\n"
-            else:
-                text += "\ntarget: " + str(None) + "\n"
-
-            if self.orbit_object:
-                text += f"orbit_object:{self.orbit_object.name}\n"
-            else:
-                text += f"orbit_object: None\n"
-
-            if self.orbit_angle:
-                text += f"orbit_angle:{self.orbit_angle}\n"
-            else:
-                text += f"orbit_angle:{None}\n"
-
-            if self.enemy:
-                text += f"enemy:{self.enemy}\n"
-                text += f"distance:{get_distance(self.rect.center, self.enemy.rect.center)}\n"
-
-            else:
-                text += f"enemy:{None}\n"
-
-            text += f"target_reached:{self.target_reached}\n"
-
+        text = info_panel_text_generator.create_info_panel_ship_text(self)
         self.parent.info_panel.set_text(text)
         self.parent.info_panel.set_planet_image(self.image_raw, alpha=self.info_panel_alpha)
 
@@ -195,18 +140,6 @@ class PanZoomShipParams():
         if self.tooltip:
             if self.tooltip != "":
                 global_params.tooltip_text = self.tooltip
-
-    def get_distance_to__(self, obj):
-        if not obj:
-            return 0
-
-        x = self.get_screen_x()
-        y = self.get_screen_y()
-        x1 = obj.get_screen_x()
-        y1 = obj.get_screen_y()
-        distance = math.dist((x, y), (x1, y1))
-
-        return distance
 
     def reload_ship(self):
         if self.energy_reloader:
@@ -249,5 +182,4 @@ class PanZoomShipParams():
         else:
             sounds.stop_sound(self.sound_channel)
 
-    def upgrade(self, key):
-        setattr(self, key, getattr(self, key) * self.upgrade_factor)
+

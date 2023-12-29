@@ -177,7 +177,7 @@ class MovingImage(pygame.sprite.Sprite):
 
     def draw(self, surface):
         surface.blit(self.image, self.rect)
-        self.text_wrap.wrap_text(self.win, self.text, (self.rect.right - 10, self.rect.top - 40), (50, 20), self.font,
+        self.text_wrap.wrap_text(self.win, self.text, (self.rect.right - 10, self.rect.top - 40), (250, 20), self.font,
             self.text_color, fade_out=True, alpha=self.alpha)
 
 

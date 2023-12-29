@@ -2,15 +2,16 @@ from collections import Counter
 
 from source.database.file_handler import load_file
 from source.factories.building_factory import building_factory
-from source.utils.positioning import distance_between_points
+from source.utils.positioning import distance_between_points, get_distance
 from source.text.text_formatter import format_number
 
 
 class InfoPanelTextGenerator:
     def __init__(self):
         self.json_dict = load_file("buildings.json")
-        self.info_text = "Ships: right click to move to a planet, or reload the ship.\n\nctrl and mouse click to navigate\n\n" \
-                         "press SPACE to pause game.\n\n\n\nproduce enough food to make you population grow! "
+        self.info_text = (f"Ships:\n\nright click to move to a planet, or reload the ship."
+                          f"\n\nctrl and mouse click to navigate\n\nmouse wheel click to open upgrade menu\n\n"
+                          f"press SPACE to pause game.\n\n\n\nproduce enough food to make you population grow! ")
 
     def get_building(self, building):
         dict_ = {}
@@ -182,23 +183,70 @@ class InfoPanelTextGenerator:
         return text
 
     def create_info_panel_ship_text(self, ship):
-        settings_dict = load_file("ship_settings.json")[ship]
-        text = ship + ":" + "\n"
-        text += "\n" + "prices:" + "\n\n"
+        text = ship.name + ":\n\n"
+        text += "experience: " + str(ship.experience) + "\n"
+        text += "rank: " + ship.rank + "\n"
+        text += "speed: " + str(ship.speed) + "\n\n"
+        text += "resources loaded: " + "\n\n"
+        text += "    water: " + str(ship.water) + "/" + str(ship.water_max) + "\n"
+        text += "    energy: " + str(int(ship.energy)) + "/" + str(int(ship.energy_max)) + "\n"
+        text += "    food: " + str(ship.food) + "/" + str(ship.food_max) + "\n"
+        text += "    minerals: " + str(ship.minerals) + "/" + str(ship.minerals_max) + "\n"
+        text += "    technology: " + str(ship.technology) + "/" + str(ship.technology_max) + "\n\n"
 
-        for key, value in building_factory.get_prices_from_buildings_json(ship).items():
-            text += key + ": " + str(value) + "\n"
+        if ship.specials:
+            text += f"    specials:\n"
 
-        text += f"load capacity:\n\n"
-        text += f"water: {settings_dict['water_max']}\n"
-        text += f"energy: {settings_dict['energy_max']}\n"
-        text += f"food: {settings_dict['food_max']}\n"
-        text += f"minerals: {settings_dict['minerals_max']}\n"
-        text += f"technology: {settings_dict['technology_max']}\n"
+            for i in ship.specials:
+                text += f"    {i}\n"
 
-        # special_text = "\nSpecials:\n\n"
-        # for i in ship.specials:
-        #     special_text += f"{i}\n"
+        text += "\n"
+
+        if ship.weapon_handler.weapons:
+            text += "weapons:\n\n"
+            for key in ship.weapon_handler.weapons.keys():
+                text += f"    {key} level {ship.weapon_handler.weapons[key]['level']}\n"
+
+        # text += "scanner range: " + str(self.fog_of_war_radius) + "\n"
+        # text += "crew: " + str(self.crew) + "\n"
+
+        if ship.debug:
+            text += "\n\ndebug:\n"
+
+            text += "selected: " + str(ship.selected) + "\n"
+
+            if ship.energy_reloader:
+                text += "reloader: " + str(ship.energy_reloader.name) + "\n"
+            else:
+                text += "reloader: " + str(None) + "\n"
+
+            text += "move_stop: " + str(ship.move_stop) + "\n"
+            text += "moving: " + str(ship.moving) + "\n"
+            text += "position, x,y:" + str(int(ship.get_screen_x())) + "/" + str(int(ship.get_screen_y()))
+
+            if ship.target:
+                text += "\ntarget: " + str(ship.target.name) + "\n"
+            else:
+                text += "\ntarget: " + str(None) + "\n"
+
+            if ship.orbit_object:
+                text += f"orbit_object:{ship.orbit_object.name}\n"
+            else:
+                text += f"orbit_object: None\n"
+
+            if ship.orbit_angle:
+                text += f"orbit_angle:{ship.orbit_angle}\n"
+            else:
+                text += f"orbit_angle:{None}\n"
+
+            if ship.enemy:
+                text += f"enemy:{ship.enemy}\n"
+                text += f"distance:{get_distance(ship.rect.center, ship.enemy.rect.center)}\n"
+
+            else:
+                text += f"enemy:{None}\n"
+
+            text += f"target_reached:{ship.target_reached}\n"
 
         return text
 

@@ -11,9 +11,7 @@ class PanZoomShipMoving:
     """
 
     def __init__(self, kwargs):
-        self.attack_distance_raw = 200
-        self.attack_distance = self.attack_distance_raw
-        self.attack_distance_max = 500
+
         self.desired_orbit_radius_raw = 100
         self.desired_orbit_radius = self.desired_orbit_radius_raw
         self.desired_orbit_radius_max = 200

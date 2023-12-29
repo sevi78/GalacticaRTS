@@ -124,7 +124,7 @@ class BuildingWidget(WidgetBase):
         planet_defence_upgrades = ["cannon", "missile"]
         weapons = None
         if self.reciever.property == "ship":
-            weapons = self.reciever.all_weapons.keys()
+            weapons = self.reciever.weapon_handler.all_weapons.keys()
 
         sounds.play_sound("success", channel=7)
 
@@ -146,16 +146,16 @@ class BuildingWidget(WidgetBase):
             if self.name in weapons:
 
                 # upgrade
-                if self.name in self.reciever.weapons.keys():
+                if self.name in self.reciever.weapon_handler.weapons.keys():
                     self.reciever.weapons[self.name]["level"] += 1
                 else:
                     # buy it
-                    self.reciever.weapons[self.name] = copy.deepcopy(weapon_factory.get_weapon(self.name))
+                    self.reciever.weapon_handler.weapons[self.name] = copy.deepcopy(weapon_factory.get_weapon(self.name))
                     # if global_params.app.ship == self.reciever:
                     global_params.app.weapon_select.obj = self.reciever
                     global_params.app.weapon_select.update()
 
-                print(f"self.reciever: {self.reciever}, self.reciever.weapons({self.name}):{self.reciever.weapons[self.name]['level']}\n"
+                print(f"self.reciever: {self.reciever}, self.reciever.weapons({self.name}):{self.reciever.weapon_handler.weapons[self.name]['level']}\n"
                       f"all_weapons: {global_params.app.weapon_select.all_weapons[self.name]['level']}")
                 return
 

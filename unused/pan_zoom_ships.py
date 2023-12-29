@@ -2,7 +2,7 @@ from source.interfaces.interface import InterfaceData
 from source.multimedia_library.sounds import sounds
 from source.pan_zoom_sprites.pan_zoom_ship_classes.pan_zoom_ship import PanZoomShip
 
-
+"""no longer used"""
 class Spaceship(PanZoomShip, InterfaceData):
     def __init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs):
         PanZoomShip.__init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs)

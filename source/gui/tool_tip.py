@@ -38,7 +38,8 @@ class ToolTip(WidgetBase):
     - font: the font used for the text.
     - text_img: a surface representing the rendered text.
     - txt_rect: the rectangle containing the rendered text.
-    - visible: a boolean indicating whether the tooltip is visible or not."""
+    - visible: a boolean indicating whether the tooltip is visible or not.
+    - active: a boolean indicating whether the tooltip is active or not, could be set by a button """
 
     def __init__(self, surface, x, y, width, height, color, text_color, isSubWidget, parent, **kwargs):
         super().__init__(surface, x, y, width, height, isSubWidget, **kwargs)
@@ -62,6 +63,7 @@ class ToolTip(WidgetBase):
         self.font = pygame.font.SysFont(global_params.font_name, self.font_size)
         self.text_img = None
         self.txt_rect = None
+        self.active = True
 
     @property
     def text(self):
@@ -106,6 +108,8 @@ class ToolTip(WidgetBase):
             self.world_y = INVISIBLE_Y
 
     def get_text(self):
+        if not self.active:
+            return
         self._text = global_params.tooltip_text
         if self._text != "":
             self.visible = True
@@ -118,16 +122,22 @@ class ToolTip(WidgetBase):
             global_params.tooltip_text = ""
 
     def listen(self, events):
+        if not self.active:
+            return
         for event in events:
             if event.type == MOUSEMOTION:
                 self.update(event)
 
     def update(self, events):
+        if not self.active:
+            return
         self.get_text()
         self.move(events)
         self.draw()
 
     def draw(self):
+        if not self.active:
+            return
         self.text_img = self.font.render(self._text, True, self.text_color)
 
         self.world_width = self.text_img.get_rect().width + 10
@@ -143,5 +153,3 @@ class ToolTip(WidgetBase):
         pygame.draw.rect(self.win, self.frame_color, (
             self.world_x, self.world_y, self.world_width,
             self.height), 1, int(global_params.ui_rounded_corner_radius_small))
-
-

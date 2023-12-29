@@ -73,7 +73,7 @@ class SpaceHarbor(WidgetBase):
             image=pygame.transform.scale(
                 get_image("spacehunter_30x30.png"), (25, 25)),
             tooltip="build spacehunter",
-            info_text=info_panel_text_generator.create_info_panel_ship_text("spacehunter"),
+            info_text="", #info_panel_text_generator.create_info_panel_ship_text("spacehunter"),
             frame_color=self.frame_color,
             moveable=False,
             include_text=True,
@@ -91,7 +91,7 @@ class SpaceHarbor(WidgetBase):
             image=pygame.transform.scale(
                 get_image("cargoloader_30x30.png"), (25, 25)),
             tooltip="build cargoloader",
-            info_text=info_panel_text_generator.create_info_panel_ship_text("cargoloader"),
+            info_text="", #info_panel_text_generator.create_info_panel_ship_text("cargoloader"),
             frame_color=self.frame_color,
             moveable=False,
             include_text=True,
@@ -109,7 +109,7 @@ class SpaceHarbor(WidgetBase):
             image=pygame.transform.scale(
                 get_image("spaceship_30x30.png"), (25, 25)),
             tooltip="build spaceship",
-            info_text=info_panel_text_generator.create_info_panel_ship_text("spaceship"),
+            info_text="", #info_panel_text_generator.create_info_panel_ship_text("spaceship"),
             frame_color=self.frame_color,
             moveable=False,
             include_text=True,

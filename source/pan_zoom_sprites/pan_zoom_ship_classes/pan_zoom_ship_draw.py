@@ -93,47 +93,6 @@ class PanZoomShipDraw:
         if inside_screen(self.get_screen_position()):
             self.win.blit(self.image, self.rect)
 
-    def draw_scope(self):
-        """
-        draws line to mouse position and draws the scope
-        """
-        if global_params.hover_object != None:
-            color = colors.hover_color
-            # print("draw_scope", global_params.hover_object,global_params.hover_object.name )
-        else:
-            color = self.frame_color
-
-        # draw line from selected object to mouse cursor
-        if self.selected:
-            pygame.draw.line(surface=self.win, start_pos=self.rect.center, end_pos=pygame.mouse.get_pos(), color=color)
-
-            # scope
-            pos = pygame.mouse.get_pos()
-            size_x = 30
-            size_y = 30
-            arrow = pygame.draw.arc(self.win, color, (
-                (pos[0] - size_x / 2, pos[1] - size_y / 2), (size_x, size_y)), 2, 10, 2)
-
-            arrow = pygame.draw.arc(self.win, color, (
-                (pos[0] - size_x, pos[1] - size_y), (size_x * 2, size_y * 2)), 2, 10, 2)
-
-            # horizontal line
-            factor = size_x / 12
-            x = pos[0] - size_x * factor / 2
-            y = pos[1]
-            x1 = x + size_x * factor
-            y1 = y
-            pygame.draw.line(surface=self.win, start_pos=(x, y), end_pos=(
-                x1, y1), color=color)
-
-            # vertical line
-            x = pos[0]
-            y = pos[1] - size_x * factor / 2
-            x1 = x
-            y1 = y + size_x * factor
-            pygame.draw.line(surface=self.win, start_pos=(x, y), end_pos=(
-                x1, y1), color=color)
-
     def draw_selection(self):
         pygame.draw.circle(self.win, self.frame_color, self.rect.center, self.get_screen_width(), int(6 * self.get_zoom()))
 
@@ -177,38 +136,4 @@ class PanZoomShipDraw:
             self.win.blit(self.noenergy_image, (
                 self.rect.centerx + self.noenergy_image_x, self.rect.centery + self.noenergy_image_y))
 
-    def draw__(self):
-        self.progress_bar.set_progressbar_position()
-        self.draw_scope()
 
-        if inside_screen(self.get_screen_position()):
-            self.draw_state()
-            self.draw_rank_image()
-
-        if self.selected:
-            self.draw_selection()
-            self.set_info_text()
-
-        # travel
-        if self.target:
-            if self.energy > 0:
-                self.move_to_connection()
-                self.draw_connections()
-
-        if self.energy_reloader:
-            # reload ship
-            self.reload_ship()
-
-        # move stopp reset
-        if self.energy > 0:
-            self.move_stop = 0
-
-        # move stopp
-        if self.energy <= 0:
-            self.move_stop += 1
-
-            sounds.stop_sound(self.sound_channel)
-            self.draw_noenergy_image()
-            self.set_experience(-1)
-
-        self.low_energy_warning()

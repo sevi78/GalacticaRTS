@@ -15,29 +15,6 @@ class SpecialHandler:
     def __init__(self):
         pass
 
-    def calculate_specials_production__(self):
-        # Specials
-        specials = eval(self.specials)
-        for special in specials:
-            key, operand, value = special.split(" ")
-            value = float(value)  # Convert the value to a float for arithmetic operations
-            if operand == '*':
-                if hasattr(self, key):
-                    print("getattr(self, key)", key, getattr(self, key))
-                    setattr(self, key, getattr(self, key) * value)
-                else:
-                    self.production[key] = self.production[key] * value
-
-            # elif operand == '+':
-            #     if hasattr(self, key):
-            #         setattr(self, key, getattr(self, key) + value)
-            #     else:
-            #         self.production[key] += value
-
-            self.set_specials_icons(key, value)
-        print("population_grow_factor:", self.population_grow_factor)
-        print("production_food:", self.production_food)
-
     def set_specials_icons(self, key, value):
         if hasattr(self, key):
             print("set_specials_icons:", key, value)
