@@ -24,10 +24,6 @@ SPECIAL_FONT_SIZE = 16
 
 
 class BuildingPanel(WidgetBase, BuildingPanelConstructor, BuildingSlot, EconomyParams, BuildingPanelDraw):
-    """
-
-    """
-
     def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
         super().__init__(win, x, y, width, height, isSubWidget, **kwargs)
         EconomyParams.__init__(self)

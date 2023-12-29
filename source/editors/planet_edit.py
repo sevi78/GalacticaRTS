@@ -224,7 +224,7 @@ class PlanetEdit(EditorBase, PlanetEditBuilder):
         for i in self.selectors:
             if hasattr(self.selected_planet, i.key):
                 if i.key == "atmosphere_name":
-                    print("selected_planet.atmosphere_name:", self.selected_planet.atmosphere_name)
+                    #print("selected_planet.atmosphere_name:", self.selected_planet.atmosphere_name)
                     i.set_current_value(self.selected_planet.atmosphere_name)
                 else:
                     i.set_current_value(getattr(self.selected_planet, i.key))
