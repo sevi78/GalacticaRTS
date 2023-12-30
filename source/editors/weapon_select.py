@@ -182,7 +182,7 @@ class WeaponSelect(EditorBase):
             self.update()
 
     def update_obj(self):
-        self.obj.current_weapon_select = self.current_weapon_select
+        self.obj.weapon_handler.current_weapon_select = self.current_weapon_select
         # if obj has selected weapon already, upgrade it
         if self.obj.weapon_handler.current_weapon_select in self.obj.weapon_handler.weapons.keys():
             self.obj.weapon_handler.current_weapon = copy.deepcopy(

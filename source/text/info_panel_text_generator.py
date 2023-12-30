@@ -202,10 +202,10 @@ class InfoPanelTextGenerator:
 
         text += "\n"
 
-        if ship.weapon_handler.weapons:
-            text += "weapons:\n\n"
-            for key in ship.weapon_handler.weapons.keys():
-                text += f"    {key} level {ship.weapon_handler.weapons[key]['level']}\n"
+        #if ship.weapon_handler.weapons:
+        text += "weapons:\n\n"
+        for key in ship.weapon_handler.weapons.keys():
+            text += f"    {key} level {ship.weapon_handler.weapons[key]['level']}\n"
 
         # text += "scanner range: " + str(self.fog_of_war_radius) + "\n"
         # text += "crew: " + str(self.crew) + "\n"

@@ -20,6 +20,8 @@ class WeaponHandler:
         if not inside_screen(self.parent.get_screen_position()):
             return
 
+
+        print (f"weapons: {self.weapons}")
         r0 = random.randint(-4, 5)
         r = random.randint(-3, 4)
 
@@ -32,7 +34,7 @@ class WeaponHandler:
                 color=pygame.color.THECOLORS["white"], width=2)
 
             # make damage to target
-            defender.energy -= self.gun_power
+            defender.energy -= self.current_weapon.get("power", 0)
             sounds.play_sound(sounds.laser)
 
         if defender.energy <= defender.energy_max / 2:

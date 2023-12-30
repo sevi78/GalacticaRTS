@@ -45,38 +45,89 @@ class Deal:
         for key, value in self.request.items():
             setattr(player, key, getattr(player, key) - value)
 
-    def create_friendly_offer(self):
+    def create_friendly_offer__(self):# orig
         """
         this should create an offer based on the resources of the player, always what you need
         """
-        player = None  # define player variable
-        if global_params.app:
-            player = global_params.app.player
+        if not global_params.app:
+            return
 
-            # extract "city" from dict
-            d_raw = player.get_stock()
-            d = {key: max(0, value) for key, value in d_raw.items() if key != "city"}
+        player = global_params.app.player
 
-            # check if any value in the stock is less than 0
-            if any(value < 0 for value in d.values()):
-                # replace negative values with 0
-                d = {key: max(0, value) for key, value in d.items()}
+        # extract "city" from dict
+        d_raw = player.get_stock()
+        d = {key: max(0, value) for key, value in d_raw.items() if key != "city"}
 
-            # get key with lowest value
-            lowest_value_key = min(d, key=d.get)
+        # check if any value in the stock is less than 0
+        if any(value < 0 for value in d.values()):
+            # replace negative values with 0
+            d = {key: max(0, value) for key, value in d.items()}
 
-            # calculate minimum value needed to set lowest value to 25
-            min_value = max(25 - d[lowest_value_key], 0)
+        # get key with lowest value
+        lowest_value_key = min(d, key=d.get)
 
-            # calculate offer value
-            offer_value = d[lowest_value_key] + min_value + random.randint(25, 250)
-            self.offer = {lowest_value_key: offer_value}
+        # calculate minimum value needed to set lowest value to 25
+        min_value = max(25 - d[lowest_value_key], 0)
 
-            # calculate request value
-            request_key = max(d, key=d.get)
-            request_value = getattr(player, request_key)
-            request_value -= random.randint(25, 250)
-            self.request = {request_key: request_value}
+        # calculate offer value
+        offer_value = d[lowest_value_key] + min_value + random.randint(25, 250)
+        self.offer = {lowest_value_key: offer_value}
+
+        # calculate request value
+        request_key = max(d, key=d.get)
+        request_value = getattr(player, request_key)
+        request_value -= random.randint(25, 250)
+        self.request = {request_key: request_value}
+
+    def create_friendly_offer__(self):
+        """This should create an offer based on the resources of the player, always what you need"""
+        if not global_params.app:
+            return
+        player = global_params.app.player
+        # extract "city" from dict
+        d_raw = player.get_stock()
+        d = {key: max(0, value) for key, value in d_raw.items() if key != "city"}
+
+        # get key with lowest value
+        lowest_value_key = min(d, key=d.get)
+        # calculate offer value
+        offer_value = d[lowest_value_key] + random.randint(25, 250)
+        self.offer = {lowest_value_key: offer_value}
+
+        # get key with highest value
+        highest_value_key = max(d, key=d.get)
+        # calculate request value
+        request_value = int(d[highest_value_key] * 0.25)
+        self.request = {highest_value_key: request_value}
+
+    def create_friendly_offer(self):
+        """This should create an offer based on the resources of the player, always what you need"""
+        if not global_params.app:
+            return
+        player = global_params.app.player
+        # extract "city" from dict
+        d_raw = player.get_stock()
+        d = {key: max(0, value) for key, value in d_raw.items() if key != "city"}
+
+        # get key with lowest value
+        lowest_value_key = min(d, key=d.get)
+        # calculate offer value
+        offer_value = d[lowest_value_key] + random.randint(25, 250)
+        self.offer = {lowest_value_key: offer_value}
+
+        # get key with highest value
+        highest_value_key = max(d, key=d.get)
+        # calculate request value
+        request_value = int(d[highest_value_key] * 0.25)
+        self.request = {highest_value_key: request_value}
+
+        # ensure the difference between the offer and the request is not more than 15% of the player's stock for the requested resource
+        if abs(offer_value - request_value) > 0.15 * d[highest_value_key]:
+            difference = abs(offer_value - request_value) - 0.15 * d[highest_value_key]
+            if offer_value > request_value:
+                self.offer[lowest_value_key] -= difference
+            else:
+                self.request[highest_value_key] -= difference
 
 
 class GameEvent:

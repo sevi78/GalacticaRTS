@@ -147,7 +147,7 @@ class BuildingWidget(WidgetBase):
 
                 # upgrade
                 if self.name in self.reciever.weapon_handler.weapons.keys():
-                    self.reciever.weapons[self.name]["level"] += 1
+                    self.reciever.weapon_handler.weapons[self.name]["level"] += 1
                 else:
                     # buy it
                     self.reciever.weapon_handler.weapons[self.name] = copy.deepcopy(weapon_factory.get_weapon(self.name))
