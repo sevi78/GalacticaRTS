@@ -1,0 +1,24 @@
+{
+  "enemy handler": {
+    "width": 74,
+    "width_max": 90,
+    "height": 30,
+    "height_max": 60,
+    "speed": 0.62,
+    "speed_max": 1.2,
+    "orbit_speed": 0.1,
+    "orbit_speed_max": 0.5,
+    "gun_power": 1,
+    "gun_power_max": 150,
+    "attack_distance": 250,
+    "attack_distance_max": 500,
+    "energy": 3970,
+    "energy_max": 10000,
+    "random_target_interval": 1209,
+    "random_target_interval_max": 2500,
+    "spawn_interval": 317,
+    "spawn_interval_max": 2500,
+    "lifetime": 60,
+    "lifetime_max": 200
+  }
+}
