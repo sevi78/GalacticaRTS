@@ -58,7 +58,7 @@
     "orbit_radius_max": 300,
     "min_dist_to_other_ships": 80,
     "min_dist_to_other_ships_max": 200,
-    "energy_use": 0.000,
+    "energy_use": 0.0001,
     "energy_reload_rate": 0.05,
     "move_stop": 0
   },

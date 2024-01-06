@@ -248,7 +248,7 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
         except:
             pass
 
-        self.planet_defence.defend()
+        self.planet_defence.update()
         self.set_planet_name()
 
         # may we will not need these

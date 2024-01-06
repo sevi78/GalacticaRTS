@@ -58,5 +58,8 @@ class PlanetFactory:
             pan_zoom_planet_button.explored = explored
             sprite_groups.planets.add(pan_zoom_planet_button)
 
+    def get_all_planets(self, keys):
+        return [_ for _ in sprite_groups.planets.sprites() if _.type in keys]
+
 
 planet_factory = PlanetFactory()

@@ -1,6 +1,6 @@
 import pygame
 
-from source.pan_zoom_sprites import attack
+import source.handlers.weapon_handler
 from source.game_play import enemy_handler
 from source.configuration import global_params
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
@@ -51,7 +51,7 @@ class Cheat:
         if not self.selected_planet:
             return
         ufo = enemy_handler.enemy_handler.spawn_ufo(self.selected_planet)
-        attack.launch_missile(self.selected_planet, ufo)
+        source.handlers.weapon_handler.launch_missile(self.selected_planet, ufo)
 
     def cheat(self, events):
         # ignore all inputs while any text input is active

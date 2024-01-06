@@ -8,7 +8,7 @@ from source.draw.circles import draw_electromagnetic_impulse
 from source.draw.zigzag_line import draw_zigzag_line
 from source.factories.building_factory import building_factory
 from source.multimedia_library.sounds import sounds
-from source.pan_zoom_sprites.attack import attack, launch_missile
+from source.handlers.weapon_handler import attack, launch_missile
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.configuration import global_params
 from source.handlers.position_handler import get_distance

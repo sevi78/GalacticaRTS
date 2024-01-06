@@ -75,3 +75,10 @@ def gradient_color(colors, progress):
         int(colors[index][1] * (1 - color_progress) + colors[index + 1][1] * color_progress),
         int(colors[index][2] * (1 - color_progress) + colors[index + 1][2] * color_progress),
         )
+
+def calculate_gradient_color(start_color, end_color, percent):
+    """Calculate the color gradient based on the start and end colors and the current progress percentage"""
+    r = int(start_color[0] + (end_color[0] - start_color[0]) * percent)
+    g = int(start_color[1] + (end_color[1] - start_color[1]) * percent)
+    b = int(start_color[2] + (end_color[2] - start_color[2]) * percent)
+    return r, g, b

@@ -155,8 +155,8 @@ class BuildingWidget(WidgetBase):
                     global_params.app.weapon_select.obj = self.reciever
                     global_params.app.weapon_select.update()
 
-                print(f"self.reciever: {self.reciever}, self.reciever.weapons({self.name}):{self.reciever.weapon_handler.weapons[self.name]['level']}\n"
-                      f"all_weapons: {global_params.app.weapon_select.all_weapons[self.name]['level']}")
+                # print(f"self.reciever: {self.reciever}, self.reciever.weapons({self.name}):{self.reciever.weapon_handler.weapons[self.name]['level']}\n"
+                #       f"all_weapons: {global_params.app.weapon_select.all_weapons[self.name]['level']}")
                 return
 
         # append to recievers building list

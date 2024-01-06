@@ -1,8 +1,12 @@
 from typing import Callable
 
 import pygame
+from pygame_widgets.util import drawText
 
+from source.configuration import global_params
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
+from source.handlers.color_handler import calculate_gradient_color
+from source.handlers.position_handler import align_vertical, align_horizontal
 
 
 class ProgressBar(WidgetBase):
@@ -36,9 +40,12 @@ class ProgressBar(WidgetBase):
     - incompletedColour: the color of the incomplete portion of the progress bar
     - percent: the current progress value of the bar (between 0 and 1)
     - radius: the radius of the curved progress bar (half of the height)"""
+    HORIZONTAL = 0
+    VERTICAL = 1
 
     def __init__(self, win, x, y, width, height, progress: Callable[[], float], **kwargs):
-        super().__init__(win, x, y, width, height, **kwargs)
+        WidgetBase.__init__(self, win, x, y, width, height, **kwargs)
+        self.orientation = kwargs.get('orientation', self.HORIZONTAL)
         self.layer = kwargs.get("layer")
         self.parent = kwargs.get("parent", None)
         self.progress = progress
@@ -47,18 +54,48 @@ class ProgressBar(WidgetBase):
         self.incompletedColour = kwargs.get('incompletedColour', (100, 100, 100))
         self.percent = self.progress()
         self.radius = self.screen_height / 2 if self.curved else 0
+
+        self.h_align = kwargs.get("h_align", None)
+        self.v_align = kwargs.get("v_align", None)
+        self.h_size = kwargs.get("h_size", None)
+        self.v_size = kwargs.get("v_size", None)
+
+        self.string = kwargs.get("text", None)
+        # self.textHAlign = kwargs.get("textHAlign", "center")
+        # self.textVAlign = kwargs.get("textVAlign", "center")
+        self.font = pygame.font.SysFont(global_params.font_name, 12)
+        # self.textColour = color_handler.colors.ui_darker
+        # self.text = self.font.render(self.string, True, self.textColour)
+        # self.textRect = self.text.get_rect()
+        # self.set_text(self.string)
+
+        self.gradient_color = kwargs.get("gradient_color", True)
         self.disable()
 
     def set_progressbar_position(self):
         """
          # set progress bar position based on the images ccordinates
         """
-        self.set_position((self.parent.rect.x, self.parent.rect.y + self.parent.rect.height * 1.3))
-        self.setWidth(self.parent.rect.width)
+        x, y = self.parent.rect.x, self.parent.rect.y + self.parent.rect.height * 1.3
 
-    def draw(self):
+        if self.h_align:
+            x = align_horizontal(self.parent.rect, self.h_align)
+
+        if self.v_align:
+            y = align_vertical(self.parent.rect, self.v_align)
+
+        self.set_position((x, y))
+        if self.h_size:
+            self.setWidth(self.h_size)
+        else:
+            self.setWidth(self.parent.rect.width)
+
+    def draw(self):  # orig
         """ Display to surface """
         self.percent = min(max(self.progress(), 0), 1)
+        if self.gradient_color:
+            self.completedColour = calculate_gradient_color((200, 0, 0), pygame.color.THECOLORS["darkgreen"], self.percent)
+
         if self.parent:
             if self.parent._disabled:
                 return
@@ -90,3 +127,6 @@ class ProgressBar(WidgetBase):
             pygame.draw.rect(self.win, self.incompletedColour,
                 (self.screen_x + int(self.screen_width * self.percent), self.screen_y,
                  int(self.screen_width * (1 - self.percent)), self.screen_height))
+
+            if self.string:
+                drawText(self.win, self.string, self.frame_color, (self.screen_x - 40, self.screen_y - self.font.get_height()/6 , 200, self.font.get_height()), self.font, align="left")

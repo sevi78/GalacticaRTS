@@ -112,3 +112,29 @@ def get_random_pos(left_end, right_end, top_end, bottom_end, central_compression
     y = center_y + r * math.sin(theta)
 
     return x, y
+
+
+def align_horizontal(rect, h_align):
+    #
+    if h_align == "right_outside":
+        return rect.right
+
+    return rect.x
+
+def align_vertical(rect,v_align):
+    # if v_align == "below_the_bottom":
+    #     x, y = pan_zoom_handler.screen_2_world(rect.x, rect.bottom)
+    #     return y
+    #
+    # elif v_align == "over_the_top":
+    #     x, y = pan_zoom_handler.screen_2_world(rect.x, rect.top )
+    #     return y
+    if  v_align == "below_the_bottom":
+        return rect.y + rect.height * 1.3
+
+    elif v_align == "over_the_top":
+        return rect.y - rect.height * .3
+
+    return rect.y
+
+

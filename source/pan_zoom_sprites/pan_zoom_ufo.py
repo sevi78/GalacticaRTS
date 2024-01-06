@@ -73,7 +73,7 @@ class PanZoomUfo(PanZoomGameObject, InteractionHandler):
         self.name = "ufo"
         self.property = "ufo"
         self.target = None
-        self.set_target(sprite_groups.planets.sprites()[0])
+        self.set_target(random.choice([_ for _ in sprite_groups.planets.sprites() if _.type != "sun"]))
         self.tooltip = "this is a u.f.o,   might be dangerous!"
         self.attack_distance_raw = pan_zoom_ufo_config["attack_distance"]
         self.attack_distance = self.attack_distance_raw
@@ -111,14 +111,15 @@ class PanZoomUfo(PanZoomGameObject, InteractionHandler):
 
     def set_random_target(self, **kwargs):
         immediately = kwargs.get("immediately")
+        planets = [_ for _ in sprite_groups.planets.sprites() if _.type != "sun"]
         if immediately:
-            self.set_target(random.choice(sprite_groups.planets.sprites()))
+            self.set_target(random.choice(planets))
             self.target_reached = False
             return
 
         r = random.randint(0, self.random_target_interval)
         if r == 1:
-            self.set_target(random.choice(sprite_groups.planets.sprites()))
+            self.set_target(random.choice(planets))
             self.target_reached = False
 
     def flickering(self):
