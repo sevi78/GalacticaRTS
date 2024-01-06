@@ -20,6 +20,7 @@ class PanZoomShipMoving:
         self._moving = False
         self._orbiting = False
         self.orbit_speed = SHIP_ORBIT_SPEED
+        #self.orbit_speed_raw = SHIP_ORBIT_SPEED
         self.orbit_speed_max = SHIP_ORBIT_SPEED_MAX
         self.zoomable = True
         self.min_dist_to_other_ships = 80

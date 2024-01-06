@@ -142,9 +142,11 @@ class PanZoomGameObject(PanZoomSprite):
 
     def explode(self, **kwargs):
         sound = kwargs.get("sound", None)
+        size = kwargs.get("size", (40, 40))
+
         x, y = self.world_x, self.world_y
         if not self.exploded:
-            explosion = PanZoomSprite(screen, x, y, 40, 40, self.pan_zoom, self.explosion_name,
+            explosion = PanZoomSprite(screen, x, y, size[0], size[1], self.pan_zoom, self.explosion_name,
                 loop_gif=False, kill_after_gif_loop=True, align_image="center",
                 relative_gif_size=self.explosion_relative_gif_size, layer=10, sound=sound)
             explosions.add(explosion)

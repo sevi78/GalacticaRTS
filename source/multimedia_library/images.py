@@ -3,6 +3,7 @@ import pygame
 from PIL import Image
 
 images = {}
+all_image_names = []
 dirpath = os.path.dirname(os.path.realpath(__file__))
 pictures_path = os.path.split(dirpath)[0].split("source")[0] + "assets" + os.sep + "pictures" + os.sep
 gifs_path = os.path.split(dirpath)[0].split("source")[0] + "assets" + os.sep + "gifs" + os.sep
@@ -48,6 +49,7 @@ def load_folders(folder, dict):
                 img = pygame.image.load(os.path.join(folder, sub, image))
                 img.convert_alpha()
                 dict[folder][sub][image] = img
+                all_image_names.append(image)
 
             if file_extension == ".gif":
                 load_gif(image)
@@ -106,6 +108,8 @@ def get_gif_frames(gif_name):
 def get_image_names_from_folder(folder):
     image_names = os.listdir(pictures_path + folder)
     return image_names
+
+
 
 
 

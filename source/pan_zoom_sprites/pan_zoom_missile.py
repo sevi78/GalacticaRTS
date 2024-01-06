@@ -11,10 +11,13 @@ class PanZoomMissile(PanZoomGameObject):
         self.explode_if_target_reached = True
         self.target = kwargs.get("target")
         self.speed = MISSILE_SPEED
+        self.missile_power = kwargs.get("missile_power", MISSILE_POWER)
 
     def damage(self):
         if not self.target:
             return
-        self.target.energy -= MISSILE_POWER
+        self.target.energy -= self.missile_power
+        self.target.weapon_handler.draw_moving_image(self.target, self.missile_power)
+
         if self.target.energy <= 0:
             self.explode()

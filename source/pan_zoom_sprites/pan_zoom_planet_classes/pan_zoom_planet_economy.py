@@ -102,6 +102,15 @@ class PanZoomPlanetEconomy(Rank, SpecialHandler):
         self.building_buttons_list = self.building_buttons_energy + self.building_buttons_food + \
                                      self.building_buttons_minerals + self.building_buttons_water
 
+    @property
+    def population(self):
+        return self._population
+    @population.setter
+    def population(self, value):
+        self._population = value
+        if self._population < 1:
+            self._population = 0
+
     def update_planet_resources(self, checkbox_values):
         # get new values
         resources = ["water", "energy", "food", "minerals", "technology", "city"]
@@ -223,7 +232,7 @@ class PanZoomPlanetEconomy(Rank, SpecialHandler):
             self.population_grow = self.population_grow_factor * self.production[
                 "food"] * global_params.time_factor
         if self.population < 0:
-            self.population = self.population +-1
+            self.population = 0
 
     def set_population_limit(self):
         """
@@ -240,6 +249,7 @@ class PanZoomPlanetEconomy(Rank, SpecialHandler):
             setattr(self, key, getattr(self, key) + value)
 
     def add_population(self):
+        # check if it can grow
         if self.population_limit > self.population and self.production_food > 0:
             self.population += self.population_grow * global_params.game_speed
         if self.production_food < 0 and self.population > 0:

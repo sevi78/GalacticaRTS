@@ -44,8 +44,8 @@ class InfoPanelTextGenerator:
         for key, value in dict_.items():
             if key.startswith("production_"):
                 production_key = key.split('production_')[1]
-                if production_key == "minerals":
-                    production_key = "mineral"
+                # if production_key == "minerals":
+                #     production_key = "mineral"
                 if not production_key in ignorables:
                     production_text += f"{production_key}: {value}\n"
 

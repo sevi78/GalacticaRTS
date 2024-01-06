@@ -115,7 +115,7 @@ class EnemyHandler(InterfaceData):
             pan_zoom_ufo_config["enemy handler"]["width"],
             pan_zoom_ufo_config["enemy handler"]["height"], pan_zoom=pan_zoom_handler,
             image_name="ufo_74x30.png", align_image="center", group="ufos", explosion_name="explosion4.gif",
-            tooltip="",infotext= "", attitude=0, lifetime= random.randint(30,60))
+            tooltip="",infotext= "", attitude=0, lifetime= random.randint(30,60), explosion_relative_gif_size=5.0)
         ufo.tooltip = tooltip_generator.create_ufo_tooltip(ufo)
         ufo.info_text =info_panel_text_generator.create_info_panel_ufo_text(ufo)
         return ufo

@@ -133,8 +133,11 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
         self.gif_handler = None
         del self.planet_defence
 
+        if self in global_params.app.explored_planets:
+            global_params.app.explored_planets.remove(self)
         self.kill()
         # print("garbage_handler.get_all_references", garbage_handler.get_all_references(self))
+
         del self
 
     def select(self, value):

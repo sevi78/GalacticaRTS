@@ -28,11 +28,16 @@ class PanZoomShipDraw:
 
         self.moving_image = pygame.transform.scale(
             get_image("moving.png"), (STATE_IMAGE_SIZE - 5, STATE_IMAGE_SIZE - 5))
+
         self.sleep_image = pygame.transform.scale(
             get_image("sleep.png"), (STATE_IMAGE_SIZE, STATE_IMAGE_SIZE))
         self.sleep_image.set_alpha(130)
+
         self.orbit_image = pygame.transform.scale(
             get_image("orbit_icon.png"), (STATE_IMAGE_SIZE, STATE_IMAGE_SIZE))
+
+        self.autopilot_image = pygame.transform.scale(
+            get_image("autopilot.png"), (STATE_IMAGE_SIZE, STATE_IMAGE_SIZE))
 
         self.rank_image_pos = (self.rect.centerx + self.get_screen_width() / 2 / self.get_zoom(),
                                self.rect.centery - self.get_screen_height() / 2 / self.get_zoom())
@@ -124,16 +129,29 @@ class PanZoomShipDraw:
         if self.move_stop > 0:
             self.draw_noenergy_image()
             return
+
         if self.moving:
             self.draw_moving_image()
         elif self.orbiting:
             self.draw_orbit_image()
+        elif self.autopilot:
+            self.draw_autopilot_image()
         else:
             self.draw_sleep_image()
+
+
+
+        #self.draw_autopilot_image()
+
 
     def draw_noenergy_image(self):
         if not self._disabled:
             self.win.blit(self.noenergy_image, (
                 self.rect.centerx + self.noenergy_image_x, self.rect.centery + self.noenergy_image_y))
+
+    def draw_autopilot_image(self):
+        self.win.blit(self.autopilot_image, self.get_state_image_position())
+
+
 
 

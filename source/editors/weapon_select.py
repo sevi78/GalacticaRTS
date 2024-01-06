@@ -8,6 +8,7 @@ from source.factories.building_factory import building_factory
 from source.factories.weapon_factory import weapon_factory
 from source.gui.event_text import event_text
 from source.gui.widgets.buttons.image_button import ImageButton
+from source.gui.widgets.checkbox import Checkbox
 from source.multimedia_library.images import get_image
 from source.utils import global_params
 
@@ -24,6 +25,9 @@ class WeaponSelect(EditorBase):
         self.current_weapon_select = "laser"
 
         #  widgets
+        BUTTON_SIZE = 40
+        self.auto_pilot_checkbox = None
+
         self.widgets = []
 
         # create widgets
@@ -120,6 +124,18 @@ class WeaponSelect(EditorBase):
 
         self.buttons.append(self.upgrade_button)
         self.widgets.append(self.upgrade_button)
+
+        self.auto_pilot_checkbox = Checkbox(self.win, self.upgrade_button.get_screen_x() + button_size * 3,
+            self.upgrade_button.get_screen_y(), button_size, button_size, isSubWidget=False, color=self.frame_color,
+            key="auto_pilot", tooltip="auto_pilot", onClick=lambda: print("OKOKOK"), layer=9, parent=self,
+            image_name= "autopilot.png")
+
+        self.checkboxes.append(self.auto_pilot_checkbox)
+        self.widgets.append(self.auto_pilot_checkbox)
+
+    def get_checkbox_values(self):
+        """ gets the values from the checkboxes """
+        self.obj.autopilot = self.auto_pilot_checkbox.checked
 
     def draw_image(self):
         self.win.blit(self.image, (

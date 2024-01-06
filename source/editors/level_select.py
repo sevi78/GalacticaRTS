@@ -1,6 +1,7 @@
 import os
 import pygame
 
+from source.database import file_handler
 from source.database.file_handler import load_file
 from source.editors.editor_base.editor_base import EditorBase
 from source.editors.editor_base.editor_config import TOP_SPACING
@@ -17,7 +18,7 @@ class LevelSelect(EditorBase):
 
         self.max_height = width
         # lists
-        self.data = self.get_data()
+        self.data = file_handler.get_level_list()
 
         #  widgets
         self.widgets = []
@@ -29,28 +30,8 @@ class LevelSelect(EditorBase):
         # hide initially
         self.hide()
 
-    def get_data(self):
-        """
-        Get a list of all files in the database directory which starts with "level_".
 
-        Parameters:
-        database_directory (str): The path to the database directory.
 
-        Returns:
-        list: A list of filenames that start with "level_".
-        """
-        try:
-            # Get the path of the file the code is written
-            current_file_path = os.path.abspath(__file__)
-
-            # Go back two directories
-            database_path = os.path.abspath(os.path.join(current_file_path, '..', '..', '..', 'database'))
-
-            file_list = [file for file in os.listdir(database_path) if file.startswith("level_")]
-            return file_list
-        except Exception as e:
-            print("An error occurred: ", e)
-            return []
 
     def update_icons(self):
         for i in self.buttons:

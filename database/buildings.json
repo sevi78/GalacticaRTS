@@ -585,7 +585,7 @@
       "population_buildings_value": 0,
       "technology_upgrade": {},
       "range": 100,
-      "power": 100,
+      "power": 3,
       "shoot_interval": 1.0,
       "upgrade cost": {
         "level_0": {
@@ -654,7 +654,7 @@
       "population_buildings_value": 0,
       "technology_upgrade": {},
       "range": 100,
-      "power": 100,
+      "power": 5,
       "shoot_interval": 1.0,
       "upgrade cost": {
         "level_0": {

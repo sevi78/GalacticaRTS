@@ -128,7 +128,7 @@ class PanZoomUfo(PanZoomGameObject, InteractionHandler):
         if not inside_screen(self.get_screen_position()):
             return
         r = random.randint(-3, 4)
-        r2 = random.randint(0, 9)
+        r2 = random.randint(0, 6)
         startpos = self.rect.center
         endpos = self.target.rect.center
         colors = [pygame.color.THECOLORS["blue"], pygame.color.THECOLORS["purple"], pygame.color.THECOLORS["pink"]]

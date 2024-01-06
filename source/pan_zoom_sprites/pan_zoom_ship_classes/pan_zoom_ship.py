@@ -5,9 +5,11 @@ import pygame
 from pygame import Vector2
 
 from source.draw import scope
+from source.draw.circles import draw_transparent_circle
 from source.gui.event_text import event_text
 from source.gui.lod import inside_screen
 from source.gui.widgets.moving_image import MovingImage, SPECIAL_TEXT_COLOR
+from source.handlers.autopilot_handler import AutopilotHandler
 from source.handlers.weapon_handler import WeaponHandler
 from source.interfaces.interface import InterfaceData
 from source.multimedia_library.images import get_image
@@ -105,6 +107,7 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         self.attack_distance_raw = 200
 
         self.property = "ship"
+        self.autopilot = False
         self.rotate_correction_angle = SHIP_ROTATE_CORRECTION_ANGLE
         self.orbit_object = None
         self.orbit_angle = None
@@ -148,6 +151,7 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
             ]
 
         self.weapon_handler = WeaponHandler(self, kwargs.get("current_weapon", "laser"))
+        self.autopilot_handler = AutopilotHandler(self)
 
         # register
         sprite_groups.ships.add(self)
@@ -166,6 +170,8 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
                 for key, value in dict.items():
                     # if key in self.__dict__ or key in self.__slots__:
                     setattr(self, key, value)
+                    # if key == "orbit_speed":
+                    #     setattr(self, f"{key}_raw", value)
 
         self.orbit_radius = 100 + self.id * 30
 
@@ -193,8 +199,11 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         speed = self.set_speed()
 
         # Normalize the direction vector
-        if not direction == 0:
-            direction.normalize()
+        if not direction.length() == 0.0:
+            try:
+                direction.normalize()
+            except ValueError as e:
+                print ("move_towards_target: exc:", e)
 
         # Calculate the displacement vector for each time step
         displacement = direction * speed * global_params.time_factor
@@ -359,6 +368,8 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
 
     def listen(self):
         global_params.app.tooltip_instance.reset_tooltip(self)
+        if not global_params.app.weapon_select._hidden:
+            return
 
         if not self._hidden and not self._disabled:
             mouseState = Mouse.getMouseState()
@@ -390,6 +401,7 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
                 elif mouseState == MouseState.HOVER or mouseState == MouseState.DRAG:
                     self.submit_tooltip()
                     self.draw_hover_circle()
+                    self.weapon_handler.draw_attack_distance()
             else:
                 self.clicked = False
 
@@ -411,10 +423,13 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
                             self.set_energy_reloader(self.get_hit_object())
 
     def open_weapon_select(self):
+        self.set_info_text()
         if global_params.app.weapon_select.obj == self:
             global_params.app.weapon_select.set_visible()
         else:
             global_params.app.weapon_select.obj = self
+
+
 
     def update(self):
         self.update_pan_zoom_game_object()
@@ -503,3 +518,7 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         if self.energy_reloader:
             # reload ship
             self.reload_ship()
+
+
+        if self.autopilot:
+            self.autopilot_handler.update()

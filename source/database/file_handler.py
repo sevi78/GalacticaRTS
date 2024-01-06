@@ -82,6 +82,22 @@ def load_file(filename):
     return data
 
 
+def get_level_list():
+    """
+    Get a list of all files in the database directory which starts with "level_".
+
+    Parameters:
+    database_directory (str): The path to the database directory.
+
+    Returns:
+    list: A list of filenames that start with "level_".
+    """
+
+    database_path = abs_database()
+    file_list = [file for file in os.listdir(database_path) if file.startswith("level_")]
+    return file_list
+
+
 def main():
     pass
     # update_json_files("level_", load_file("level_0.json"))

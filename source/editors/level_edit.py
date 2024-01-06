@@ -2,6 +2,7 @@ import math
 import random
 import pygame
 
+from source.database import file_handler
 from source.draw.circles import draw_zoomable_circle
 from source.draw.zoomable_rect import draw_zoomable_rect
 from source.editors.editor_base.editor_base import EditorBase
@@ -198,7 +199,7 @@ class LevelEdit(EditorBase, LevelEditBuilder):
             (360, 360),
             event_text=event_text)
 
-        self.parent.level_select.get_data()
+        file_handler.get_level_list()
         self.parent.level_select.update_icons()
 
     def set_data_to_editor(self, level):

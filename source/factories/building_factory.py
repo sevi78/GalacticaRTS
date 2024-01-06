@@ -108,6 +108,10 @@ class BuildingFactoryJsonDictReader:
     def get_weapons_names(self):
         return self.json_dict["weapons"].keys()
 
+    def get_building_names(self, category) -> list:
+        return self.json_dict[category].keys()
+
+
     # def insert_technology_upgrade(self):
     #     for category in self.json_dict.values():
     #         for building in category.values():

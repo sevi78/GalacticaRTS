@@ -12,7 +12,7 @@ class PlanetFactory:
             sprite_groups.planets.remove(planet)
             planet.__delete__()
             planet.kill()
-
+        global_params.app.selected_planet = None
     def create_planets_from_data(self, data, **kwargs):
         explored = kwargs.get("explored", False)
         for key, value in data["celestial_objects"].items():
