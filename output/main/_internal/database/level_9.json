@@ -1,0 +1,97 @@
+{
+    "globals": {
+        "width": 49000,
+        "height": 49000,
+        "universe_density": 50,
+        "collectable_item_amount": 15,
+        "central_compression": 1,
+        "level": 9,
+        "goal": "population > 500"
+    },
+    "celestial_objects": {
+        "0": {
+            "id": 0,
+            "level": 1,
+            "name": "Milkywaya",
+            "world_x": 19863.32701365327,
+            "world_y": 22460.038149229604,
+            "world_width": 99,
+            "world_height": 99,
+            "info_text": "unknown sun:\n\nresources: ???\nenergy: ???\n",
+            "population_grow": 0.0,
+            "alien_population": 0,
+            "buildings_max": 8,
+            "building_slot_amount": 5,
+            "specials": [],
+            "type": "sun",
+            "possible_resources": [],
+            "image_name_small": "sonnecorona_110x110.png",
+            "image_name_big": "sonnecorona_110x110.png",
+            "orbit_speed": 0.00489488128076606,
+            "orbit_object_id": 0,
+            "orbit_distance": 0,
+            "atmosphere_name": "sun.gif",
+            "orbit_angle": 472.41943510965916
+        },
+        "1": {
+            "id": 1,
+            "level": 1,
+            "name": "Ecliptor",
+            "world_x": 27262.460496900334,
+            "world_y": 22349.76441651257,
+            "world_width": 105,
+            "world_height": 105,
+            "info_text": "unknown sun:\n\nresources: ???\nenergy: ???\n",
+            "population_grow": 0.0,
+            "alien_population": 0,
+            "buildings_max": 8,
+            "building_slot_amount": 5,
+            "specials": [],
+            "type": "sun",
+            "possible_resources": [],
+            "image_name_small": "sonnecomic_110x110.png",
+            "image_name_big": "sonnecomic_110x110.png",
+            "orbit_speed": 0.003429815577895209,
+            "orbit_object_id": 1,
+            "orbit_distance": 0,
+            "atmosphere_name": "sun.gif",
+            "orbit_angle": 363.38391301509006
+        },
+        "2": {
+            "id": 2,
+            "level": 1,
+            "name": "Interstella",
+            "world_x": 13091.81101416095,
+            "world_y": 37795.759719553826,
+            "world_width": 108,
+            "world_height": 108,
+            "info_text": "Welcome to Interstella!\n\nYou are the first to arrive on this sun. It's a blank slate waiting for you to make your mark.\nYou can build up to 8 buildings on this planet.\nThere are special buildings available: [].\nPossible resources on this planet include:\n\n\nThe planet's orbits around its sun at a distance of 0 with a speed of 0.004915499391573302.\n",
+            "population_grow": 0.0,
+            "alien_population": 0,
+            "buildings_max": 8,
+            "building_slot_amount": 5,
+            "specials": [],
+            "type": "sun",
+            "possible_resources": [],
+            "image_name_small": "sonnenature_110x110.png",
+            "image_name_big": "sonnenature_110x110.png",
+            "orbit_speed": 0.004915499391573302,
+            "orbit_object_id": 2,
+            "orbit_distance": 0,
+            "atmosphere_name": "sun.gif",
+            "orbit_angle": 419.764952875432
+        }
+    },
+    "ships": {
+        "0": {
+            "name": "spaceship",
+            "world_x": 1471.2949027858403,
+            "world_y": 730.6439677544923
+        },
+        "1": {
+            "name": "cargoloader",
+            "world_x": 1393.176793575319,
+            "world_y": 713.3940169665815
+        }
+    }
+}
