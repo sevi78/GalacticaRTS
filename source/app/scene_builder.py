@@ -2,11 +2,8 @@ import pygame
 
 from source.app.ui_helper import UIHelper
 from source.configuration.economy_params import EconomyParams
-# from source.database.database_access import get_database_file_path
 from source.database.file_handler import load_file
 from source.factories.planet_factory import planet_factory
-
-# from source.pan_zoom_sprites.pan_zoom_collectable_item import PanZoomCollectableItem
 
 from source.universe.background_image import BackgroundImage
 from source.universe.fog_of_war import FogOfWar
@@ -14,22 +11,13 @@ from source.universe.universe_background import Universe
 from source.utils import global_params
 from source.utils.colors import colors
 from source.multimedia_library.images import get_image
-from source.handlers.pan_zoom_sprite_handler import sprite_groups
 
 
 class GameObjectStorage:
     def __init__(self):
         """TODO: reduce dependencies """
-        #self.game_objects = []
-        #self.planets = sprite_groups.planets.sprites()
-        #self.collectables = []
-        #self.ufos = []
         self.building_widget_list = []
-        #self.planet_buttons = []
-        #self.ships = sprite_groups.ships.sprites()
         self.editors = []
-        #self.missiles = pygame.sprite.Group()
-        #self.gif_handlers = pygame.sprite.Group()
         self.building_button_widgets = []
         self.explored_planets = []
 
@@ -48,7 +36,7 @@ class SceneBuilder(EconomyParams, GameObjectStorage):
 
         EconomyParams.__init__(self)
         GameObjectStorage.__init__(self)
-        # BuildMenu.__init__(self, config)
+
 
         # UI Helper
         self.frame_color = colors.frame_color
@@ -61,13 +49,7 @@ class SceneBuilder(EconomyParams, GameObjectStorage):
         self.create_fog_of_war()
 
         # planets
-        # planet_factory.create_planets_from_db(get_database_file_path())
-
-        # planet_factory.create_planets_from_json(0)
         planet_factory.create_planets_from_data(load_file(f"level_{0}.json"))
-
-        # artefacts
-        # self.create_artefacts()
 
         # ship
         win = pygame.display.get_surface()

@@ -32,18 +32,6 @@ HEIGHT_CURRENT = HEIGHT
 global win
 win = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE, pygame.DOUBLEBUF)
 
-# root path
-# dirty hack to get version of the game based on the folder name
-file_path = os.path.dirname(os.path.realpath(__file__))
-abs_root = os.path.split(file_path)[0]
-
-global root
-root = abs_root.split(os.sep)[-1]
-dirpath = os.path.dirname(os.path.realpath(__file__))
-
-global pictures_path
-pictures_path = os.path.split(dirpath)[0].split("source")[0] + "pictures" + os.sep
-
 # Sounds
 global sounds
 sounds = Sounds()

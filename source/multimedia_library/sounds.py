@@ -2,6 +2,8 @@ import os
 
 import pygame
 
+from source.database.file_handler import soundpath
+
 pygame.mixer.pre_init(frequency=44100, size=-16, channels=8, buffer=512, devicename=None, allowedchanges=5)
 pygame.mixer.init()
 
@@ -47,8 +49,7 @@ class Sounds:
         6 =
         7 = Ui
         """
-        dirpath = os.path.dirname(os.path.realpath(__file__))
-        soundpath = os.path.split(dirpath)[0].split("source")[0] + "assets" + os.sep + "sounds" + os.sep
+
 
         self.click = pygame.mixer.Sound(soundpath + "mixkit-interface-device-click-2577.wav")
         self.hum1 = pygame.mixer.Sound(soundpath + "mixkit-underwater-transmitter-hum-2135.wav")

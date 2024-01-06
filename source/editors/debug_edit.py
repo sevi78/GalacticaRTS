@@ -1,3 +1,4 @@
+from source.database.file_handler import abs_database, soundpath
 from source.editors.editor_base.editor_base import EditorBase
 from source.editors.editor_base.editor_config import TOP_SPACING, BUTTON_SIZE
 from source.gui.widgets.Icon import Icon
@@ -5,7 +6,7 @@ from source.gui.widgets.buttons.button import Button
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.gui.widgets.checkbox import Checkbox
 from source.handlers.widget_handler import WidgetHandler
-from source.multimedia_library.images import pictures_path, gifs_path
+from source.database.file_handler import pictures_path, gifs_path
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups, PanZoomLayeredUpdates
 from source.universe.celestial_objects.celestial_object import CelestialObject
@@ -191,5 +192,11 @@ class DebugEdit(EditorBase):
         y += self.text_spacing
         self.draw_text(self.world_x + self.text_spacing, y, 200, FONT_SIZE,
             f"gifs_path: {gifs_path}")
+        y += self.text_spacing
+        self.draw_text(self.world_x + self.text_spacing, y, 200, FONT_SIZE,
+            f"database_path: {abs_database()}")
+        y += self.text_spacing
+        self.draw_text(self.world_x + self.text_spacing, y, 200, FONT_SIZE,
+            f"sound_path: {soundpath}")
         y += self.text_spacing
         return y

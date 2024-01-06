@@ -2,11 +2,11 @@ import os
 import pygame
 from PIL import Image
 
+from source.database.file_handler import pictures_path
+
 images = {}
 all_image_names = []
-dirpath = os.path.dirname(os.path.realpath(__file__))
-pictures_path = os.path.split(dirpath)[0].split("source")[0] + "assets" + os.sep + "pictures" + os.sep
-gifs_path = os.path.split(dirpath)[0].split("source")[0] + "assets" + os.sep + "gifs" + os.sep
+
 
 gifs = {}
 gif_frames = {}
@@ -108,9 +108,6 @@ def get_gif_frames(gif_name):
 def get_image_names_from_folder(folder):
     image_names = os.listdir(pictures_path + folder)
     return image_names
-
-
-
 
 
 def resize_image(image, new_size):

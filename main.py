@@ -179,7 +179,7 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
                     #planet_factory.delete_planets()
 
         # set fps
-        pygame.display.set_caption(global_params.root + "   " + str(f"FPS: {self.clock.get_fps()}"))
+        pygame.display.set_caption("GalacticaRTS" + "   " + str(f"FPS: {self.clock.get_fps()}"))
 
         # necessary functions, maybe could put these outside somehow
         self.quit_game(events)

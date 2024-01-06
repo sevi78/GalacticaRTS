@@ -2,6 +2,12 @@ import glob
 import os
 import json
 
+dirpath = os.path.dirname(os.path.realpath(__file__))
+pictures_path = os.path.split(dirpath)[0].split("source")[0] + "assets" + os.sep + "pictures" + os.sep
+gifs_path = os.path.split(dirpath)[0].split("source")[0] + "assets" + os.sep + "gifs" + os.sep
+soundpath = os.path.split(dirpath)[0].split("source")[0] + "assets" + os.sep + "sounds" + os.sep
+
+
 
 def update_dict__(data, default_dict):
     for key, value in default_dict.items():

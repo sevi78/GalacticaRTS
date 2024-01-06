@@ -5,11 +5,12 @@ import pygame
 from PIL import Image
 from pygame import Vector2
 
-from source.multimedia_library.images import gifs_path, get_gif_frames
+from source.database.file_handler import gifs_path
+from source.multimedia_library.images import get_gif_frames
 from source.multimedia_library.sounds import sounds
 from source.utils.positioning import rot_center
 
-gif_path = os.path.join("assets", "gifs")
+
 
 
 class GifHandler(pygame.sprite.Sprite):
