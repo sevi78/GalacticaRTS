@@ -10,8 +10,8 @@ from source.factories.building_factory import building_factory
 from source.multimedia_library.sounds import sounds
 from source.pan_zoom_sprites.attack import attack, launch_missile
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
-from source.utils import global_params
-from source.utils.positioning import get_distance
+from source.configuration import global_params
+from source.handlers.position_handler import get_distance
 
 MISSILE_LAUNCH_INTERVAL = 2
 EMP_PULSE_INTERVAL = 7

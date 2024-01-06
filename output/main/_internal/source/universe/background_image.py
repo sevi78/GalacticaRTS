@@ -1,8 +1,8 @@
 import pygame
 
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
-from source.utils import global_params
-from source.utils.colors import colors
+from source.configuration import global_params
+from source.handlers.color_handler import colors
 
 
 class BackgroundImage(WidgetBase):

@@ -1,4 +1,4 @@
-from source.utils import global_params
+from source.configuration import global_params
 
 BORDER = 10
 DEBUG_BORDER = 200

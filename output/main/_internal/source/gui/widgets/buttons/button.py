@@ -4,7 +4,7 @@ from pygame_widgets.mouse import MouseState, Mouse
 from source.gui.lod import inside_screen
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.gui.widgets.buttons.moveable import Moveable
-from source.utils import global_params
+from source.configuration import global_params
 
 REPEAT_CLICK_EVENT = pygame.USEREVENT + 1
 INITIAL_DELAY_EVENT = pygame.USEREVENT + 2

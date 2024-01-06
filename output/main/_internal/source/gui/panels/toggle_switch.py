@@ -1,7 +1,7 @@
 import pygame
 
 from source.gui.widgets.buttons.image_button import ImageButton
-from source.utils.colors import colors
+from source.handlers.color_handler import colors
 from source.multimedia_library.images import get_image
 
 

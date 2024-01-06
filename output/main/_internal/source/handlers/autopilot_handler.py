@@ -3,8 +3,8 @@ import time
 
 from source.factories.building_factory import building_factory
 from source.handlers.pan_zoom_sprite_handler import sprite_groups, PanZoomLayeredUpdates
-from source.utils import global_params
-from source.utils.positioning import get_distance
+from source.configuration import global_params
+from source.handlers.position_handler import get_distance
 
 
 class AutopilotHandler:

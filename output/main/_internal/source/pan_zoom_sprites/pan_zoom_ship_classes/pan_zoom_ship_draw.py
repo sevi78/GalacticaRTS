@@ -5,10 +5,8 @@ import pygame
 from source.gui.event_text import event_text
 from source.gui.lod import inside_screen
 from source.gui.widgets.progress_bar import ProgressBar
-from source.utils import global_params
-from source.utils.colors import colors
+from source.handlers.color_handler import colors
 from source.multimedia_library.images import get_image
-from source.multimedia_library.sounds import sounds
 
 STATE_IMAGE_SIZE = 27
 

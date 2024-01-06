@@ -4,7 +4,7 @@ import sys
 import pygame
 from source.factories.building_factory import building_factory
 from source.multimedia_library.images import get_image
-from source.utils import global_params
+from source.configuration import global_params
 
 resources = ["water", "food", "energy", "technology", "minerals"]
 

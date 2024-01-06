@@ -5,7 +5,7 @@ import pygame
 from source.gui.lod import inside_screen
 from source.pan_zoom_sprites.pan_zoom_missile import PanZoomMissile, MISSILE_POWER
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zoom_handler
-from source.utils import global_params
+from source.configuration import global_params
 
 from source.multimedia_library.sounds import sounds
 

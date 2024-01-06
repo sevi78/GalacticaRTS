@@ -35,7 +35,7 @@ def update_dict(data, default_dict):
 
 def update_json_files(keyword, default_dict):
     # Full path to the 'database' directory
-    path = 'C:/Users/sever/Documents/Galactica-RTS_zoomable1.107/database'
+    path = '/database'
 
     # Use os.path.join to create the full path to the .json files
     full_path = os.path.join(path, '*.json')

@@ -1,7 +1,7 @@
 import pygame
 from source.text.text_wrap import TextWrap
-from source.utils import global_params
-from source.utils.colors import colors
+from source.configuration import global_params
+from source.handlers.color_handler import colors
 
 pygame.font.init()
 

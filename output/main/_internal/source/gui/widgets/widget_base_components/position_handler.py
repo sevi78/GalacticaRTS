@@ -3,7 +3,7 @@ from pygame import Vector2
 
 from source.gui.lod import inside_screen
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zoom_handler
-from source.utils import global_params
+from source.configuration import global_params
 
 
 class PositionHandler:

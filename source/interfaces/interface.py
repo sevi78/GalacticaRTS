@@ -3,8 +3,8 @@ from pygame_widgets.util import drawText
 from source.editors.editor_base.editor_base import EditorBase
 from source.editors.editor_base.editor_config import TOP_SPACING, SLIDER_HEIGHT, ROUND_PRECISION
 from source.gui.widgets.slider import Slider
-from source.utils import global_params
-from source.utils.colors import colors
+from source.configuration import global_params
+from source.handlers.color_handler import colors
 
 
 class InterfaceVariable:

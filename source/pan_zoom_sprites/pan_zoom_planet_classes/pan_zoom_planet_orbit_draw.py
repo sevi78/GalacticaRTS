@@ -4,10 +4,10 @@ import pygame
 
 from source.gui.lod import inside_screen
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zoom_handler
-from source.physics.orbit import get_orbit_pos
-from source.utils import global_params
-from source.utils.colors import colors
-from source.utils.positioning import get_distance
+from source.handlers.orbit_handler import get_orbit_pos
+from source.configuration import global_params
+from source.handlers.color_handler import colors
+from source.handlers.position_handler import get_distance
 
 ORBIT_COLOR = colors.ui_dark
 

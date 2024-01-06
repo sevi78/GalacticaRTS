@@ -1,14 +1,11 @@
 import random
 
-import pygame
-
 from source.app.app_helper import get_sum_up_to_n
 
 from source.factories.building_factory import building_factory
 from source.game_play.ranking import Rank
 from source.handlers.economy_handler import economy_handler
-from source.utils import global_params
-from source.multimedia_library.images import get_image
+from source.configuration import global_params
 
 
 class SpecialHandler:

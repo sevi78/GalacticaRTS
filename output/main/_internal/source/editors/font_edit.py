@@ -4,8 +4,8 @@ from source.editors.editor_base.editor_base import EditorBase
 from source.editors.editor_base.editor_config import ARROW_SIZE, FONT_SIZE, TOP_SPACING
 from source.gui.widgets.selector import Selector
 from source.handlers.widget_handler import WidgetHandler
-from source.utils import global_params
-from source.database.file_handler import write_file, load_file
+from source.configuration import global_params
+from source.handlers.file_handler import write_file, load_file
 
 
 class FontEdit(EditorBase):

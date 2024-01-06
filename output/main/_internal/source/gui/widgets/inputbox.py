@@ -1,8 +1,8 @@
 import pygame as pg
 
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
-from source.utils import global_params
-from source.utils.colors import colors
+from source.configuration import global_params
+from source.handlers.color_handler import colors
 
 COLOR_INACTIVE = colors.frame_color
 COLOR_ACTIVE = pg.Color('dodgerblue2')

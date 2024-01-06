@@ -1,5 +1,5 @@
 from source.gui.widgets.buttons.image_button import ImageButton
-from source.utils import global_params
+from source.configuration import global_params
 from source.multimedia_library.images import get_image
 
 

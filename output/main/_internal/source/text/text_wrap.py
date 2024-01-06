@@ -1,7 +1,6 @@
 import pygame
 
-from source.multimedia_library.images import get_image, all_image_names
-from source.utils.colors import colors
+from source.multimedia_library.images import get_image
 
 TEXTBORDER = 10
 FADE_OUT_TIME = 0

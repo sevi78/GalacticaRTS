@@ -1,4 +1,4 @@
-from source.database.file_handler import write_file, load_file
+from source.handlers.file_handler import write_file, load_file
 
 
 class WeaponFactory:

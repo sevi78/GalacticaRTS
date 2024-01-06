@@ -2,7 +2,7 @@ import os
 import pygame
 from PIL import Image
 
-from source.database.file_handler import pictures_path
+from source.handlers.file_handler import pictures_path
 
 images = {}
 all_image_names = []

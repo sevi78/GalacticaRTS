@@ -1,11 +1,9 @@
-import copy
 import random
 
 import pygame
 from pygame import Vector2
 
 from source.draw import scope
-from source.draw.circles import draw_transparent_circle
 from source.gui.event_text import event_text
 from source.gui.lod import inside_screen
 from source.gui.widgets.moving_image import MovingImage, SPECIAL_TEXT_COLOR
@@ -19,19 +17,18 @@ from source.pan_zoom_sprites.pan_zoom_ship_classes.pan_zoom_ship_interaction imp
 from source.pan_zoom_sprites.pan_zoom_ship_classes.pan_zoom_ship_moving import PanZoomShipMoving
 from source.pan_zoom_sprites.pan_zoom_ship_classes.pan_zoom_ship_params import PanZoomShipParams, \
     SHIP_ITEM_COLLECT_DISTANCE, SHIP_SPEED, SHIP_ROTATE_CORRECTION_ANGLE, SHIP_TARGET_OBJECT_RESET_DISTANCE, \
-    SHIP_GUN_POWER_MAX, SHIP_GUN_POWER, SHIP_INSIDE_SCREEN_BORDER
+    SHIP_INSIDE_SCREEN_BORDER
 from source.pan_zoom_sprites.pan_zoom_ship_classes.pan_zoom_ship_ranking import PanZoomShipRanking
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_game_object import PanZoomGameObject
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_mouse_handler import PanZoomMouseHandler
 from source.pan_zoom_sprites.pan_zoom_target_object import PanZoomTargetObject
-from source.physics.orbit import orbit
-from source.utils import global_params
+from source.handlers.orbit_handler import orbit
+from source.configuration import global_params
 from source.interaction.mouse import Mouse, MouseState
-from source.utils.positioning import prevent_object_overlap, get_distance
-from source.database.file_handler import load_file
-from source.factories.weapon_factory import weapon_factory
+from source.handlers.position_handler import prevent_object_overlap, get_distance
+from source.handlers.file_handler import load_file
 
 
 # class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZoomShipRanking, PanZoomShipButtons, PanZoomShipDraw, PanZoomMouseHandler, PanZoomShipInteraction):

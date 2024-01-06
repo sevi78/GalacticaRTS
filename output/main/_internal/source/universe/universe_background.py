@@ -12,9 +12,9 @@ from source.universe.celestial_objects.celestial_object_static import CelestialO
 from source.universe.celestial_objects.comet import Comet
 from source.universe.celestial_objects.stars import FlickeringStar, PulsatingStar
 
-from source.utils import global_params
+from source.configuration import global_params
 from source.multimedia_library.images import get_image
-from source.utils.positioning import get_random_pos
+from source.handlers.position_handler import get_random_pos
 
 COMET_DIVIDE_FACTOR = 500
 ASTEROID_GIF_DIVIDE_FACTOR = 300

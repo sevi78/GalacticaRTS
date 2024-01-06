@@ -7,7 +7,6 @@ from source.gui.widgets.checkbox import Checkbox
 from source.gui.widgets.moving_image import MovingImage, SPECIAL_TEXT_COLOR
 from source.gui.widgets.selector import Selector
 from source.multimedia_library.images import get_image, resize_image
-from source.utils import global_params
 
 
 class TradeEdit(EditorBase):

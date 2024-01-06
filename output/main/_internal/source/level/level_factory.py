@@ -1,5 +1,5 @@
 import pygame.display
-from source.database.file_handler import load_file, write_file
+from source.handlers.file_handler import load_file, write_file
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 
 

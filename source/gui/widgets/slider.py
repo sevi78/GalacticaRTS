@@ -4,7 +4,7 @@ from pygame_widgets.mouse import Mouse, MouseState
 
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.handlers.widget_handler import update
-from source.utils import global_params
+from source.configuration import global_params
 
 
 class Slider(WidgetBase):

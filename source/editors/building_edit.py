@@ -6,7 +6,7 @@ from source.editors.editor_base.editor_config import TOP_SPACING
 from source.gui.widgets.buttons.button import Button
 from source.gui.widgets.inputbox import InputBox
 from source.multimedia_library.images import get_image
-from source.database.file_handler import write_file, load_file
+from source.handlers.file_handler import write_file, load_file
 from source.factories.building_factory import building_factory
 
 ICON_SIZE = 25

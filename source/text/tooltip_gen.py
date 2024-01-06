@@ -1,6 +1,6 @@
 from collections import Counter
 
-from source.database.file_handler import load_file
+from source.handlers.file_handler import load_file
 from source.text.text_formatter import format_number
 
 

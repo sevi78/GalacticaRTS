@@ -1,8 +1,8 @@
 from collections import Counter
 
-from source.database.file_handler import load_file
+from source.handlers.file_handler import load_file
 from source.factories.building_factory import building_factory
-from source.utils.positioning import distance_between_points, get_distance
+from source.handlers.position_handler import distance_between_points, get_distance
 from source.text.text_formatter import format_number
 
 

@@ -2,7 +2,7 @@ import random
 
 from source.gui.lod import inside_screen
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_gif import PanZoomSprite
-from source.utils import global_params
+from source.configuration import global_params
 
 
 class PanZoomCelestialObject(PanZoomSprite):

@@ -1,7 +1,6 @@
 # initialize pygame and window
-import os
 import pygame
-from source.database.file_handler import load_file
+from source.handlers.file_handler import load_file
 from source.multimedia_library.sounds import Sounds
 
 # load settings

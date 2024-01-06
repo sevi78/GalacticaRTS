@@ -2,7 +2,7 @@ import pygame
 from pygame.event import Event
 from pygame_widgets import Mouse
 
-from source.utils import global_params
+from source.configuration import global_params
 
 
 class WidgetHandler:

@@ -12,10 +12,10 @@ from source.handlers.widget_handler import WidgetHandler
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_game_object import PanZoomGameObject
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.text.info_panel_text_generator import info_panel_text_generator
-from source.utils import global_params
-from source.utils.colors import colors
+from source.configuration import global_params
+from source.handlers.color_handler import colors
 from source.interaction.mouse import Mouse, MouseState
-from source.database.file_handler import load_file
+from source.handlers.file_handler import load_file
 
 # lifetime in seconds
 LIFETIME = 60

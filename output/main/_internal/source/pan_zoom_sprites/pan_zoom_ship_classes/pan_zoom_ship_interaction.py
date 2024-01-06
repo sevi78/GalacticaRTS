@@ -1,7 +1,7 @@
 import random
 
 from source.multimedia_library.sounds import sounds
-from source.utils import global_params
+from source.configuration import global_params
 
 
 class PanZoomShipInteraction:

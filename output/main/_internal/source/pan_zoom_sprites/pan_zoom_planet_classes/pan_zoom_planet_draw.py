@@ -7,7 +7,7 @@ from source.gui.panels.building_panel_components.building_panel_draw import SPEC
 from source.multimedia_library.gif_handler import GifHandler
 from source.multimedia_library.images import get_image
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zoom_handler
-from source.utils.colors import colors
+from source.handlers.color_handler import colors
 
 
 class PanZoomPlanetDraw:

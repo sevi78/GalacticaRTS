@@ -7,7 +7,7 @@ from source.gui.lod import inside_screen
 
 from source.multimedia_library.gif_handler import GifHandler
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
-from source.utils import global_params
+from source.configuration import global_params
 
 
 class CelestialObject(WidgetBase):

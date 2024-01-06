@@ -16,8 +16,8 @@ from source.handlers import widget_handler
 from source.handlers.economy_handler import economy_handler
 #from source.interaction import copy_agent
 from source.interaction.box_selection import BoxSelection
-from source.utils import global_params
-from source.utils.global_params import text_input_active, enable_pan, copy_object
+from source.configuration import global_params
+from source.configuration.global_params import text_input_active, enable_pan, copy_object
 from source.multimedia_library.images import get_image
 from source.interaction.mouse import Mouse
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zoom_handler

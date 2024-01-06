@@ -4,8 +4,8 @@ import pygame
 
 from source.factories.planet_factory import planet_factory
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
-from source.utils import global_params
-from source.database.file_handler import write_file
+from source.configuration import global_params
+from source.handlers.file_handler import write_file
 
 
 class GameLogic:

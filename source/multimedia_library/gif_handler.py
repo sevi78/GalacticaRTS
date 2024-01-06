@@ -5,10 +5,10 @@ import pygame
 from PIL import Image
 from pygame import Vector2
 
-from source.database.file_handler import gifs_path
+from source.handlers.file_handler import gifs_path
 from source.multimedia_library.images import get_gif_frames
 from source.multimedia_library.sounds import sounds
-from source.utils.positioning import rot_center
+from source.handlers.position_handler import rot_center
 
 
 

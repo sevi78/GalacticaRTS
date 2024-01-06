@@ -2,7 +2,7 @@ import pygame
 
 from source.pan_zoom_sprites import attack
 from source.game_play import enemy_handler
-from source.utils import global_params
+from source.configuration import global_params
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 
 

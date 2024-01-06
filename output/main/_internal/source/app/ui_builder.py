@@ -18,15 +18,15 @@ from source.gui.panels.advanced_settings_panel import AdvancedSettingsPanel
 from source.gui.panels.building_panel_components.game_time_widget import GameTime
 from source.gui.panels.building_panel_components.building_panel import BuildingPanel
 from source.gui.panels.event_panel import EventPanel
-from source.gui.panels.info_panel_components.info_panel import InfoPanel
+from source.gui.panels.info_panel import InfoPanel
 from source.gui.panels.resource_panel import ResourcePanel
 from source.gui.panels.settings_panel import SettingsPanel
 from source.gui.tool_tip import ToolTip
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import PanZoomHandler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
-from source.utils import global_params
+from source.configuration import global_params
 from source.utils.debugger import debugger
-from source.database.file_handler import load_file
+from source.handlers.file_handler import load_file
 
 EDITOR_HEIGHT = 600
 

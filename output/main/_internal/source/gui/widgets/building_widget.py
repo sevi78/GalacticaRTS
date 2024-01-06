@@ -8,8 +8,8 @@ from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.gui.widgets.buttons.button import Button
 from source.gui.widgets.progress_bar import ProgressBar
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zoom_handler
-from source.physics.orbit import set_orbit_object_id
-from source.utils import global_params
+from source.handlers.orbit_handler import set_orbit_object_id
+from source.configuration import global_params
 from source.multimedia_library.images import get_image
 from source.multimedia_library.sounds import sounds
 

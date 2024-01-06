@@ -1,6 +1,6 @@
 import pygame
-from source.utils import global_params
-from source.utils.colors import colors
+from source.configuration import global_params
+from source.handlers.color_handler import colors
 
 
 def draw_scope(self):

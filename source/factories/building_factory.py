@@ -1,10 +1,10 @@
 import pygame
 
-from source.database.file_handler import load_file
+from source.handlers.file_handler import load_file
 from source.gui.event_text import event_text
 from source.gui.widgets.building_widget import BuildingWidget
 from source.multimedia_library.sounds import sounds
-from source.utils import global_params
+from source.configuration import global_params
 
 
 class BuildingFactoryJsonDictReader:

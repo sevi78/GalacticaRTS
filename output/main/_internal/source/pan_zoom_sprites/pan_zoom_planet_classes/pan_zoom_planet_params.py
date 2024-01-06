@@ -5,7 +5,7 @@ from source.gui.event_text import event_text
 from source.multimedia_library.images import get_image
 from source.multimedia_library.sounds import sounds
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
-from source.utils import global_params
+from source.configuration import global_params
 from source.text.info_panel_text_generator import info_panel_text_generator
 
 

@@ -3,7 +3,7 @@ from pygame_widgets import Mouse
 from pygame_widgets.mouse import MouseState
 
 from source.gui.widgets.buttons.image_button import ImageButton
-from source.utils import global_params
+from source.configuration import global_params
 from source.multimedia_library.images import images, pictures_path, get_image
 
 BUTTON_SIZE = 30

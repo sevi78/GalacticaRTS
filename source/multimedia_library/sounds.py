@@ -1,8 +1,6 @@
-import os
-
 import pygame
 
-from source.database.file_handler import soundpath
+from source.handlers.file_handler import soundpath
 
 pygame.mixer.pre_init(frequency=44100, size=-16, channels=8, buffer=512, devicename=None, allowedchanges=5)
 pygame.mixer.init()

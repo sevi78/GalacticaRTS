@@ -2,7 +2,7 @@ import math
 import random
 import pygame
 
-from source.database import file_handler
+from source.handlers import file_handler
 from source.draw.circles import draw_zoomable_circle
 from source.draw.zoomable_rect import draw_zoomable_rect
 from source.editors.editor_base.editor_base import EditorBase
@@ -15,14 +15,14 @@ from source.gui.event_text import event_text
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.gui.widgets.inputbox import InputBox
 from source.gui.widgets.selector import Selector
-from source.level.level_factory import level_factory
+from source.factories.level_factory import level_factory
 from source.multimedia_library.screenshot import capture_screenshot
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.universe.universe_background import universe_factory
-from source.utils import global_params
+from source.configuration import global_params
 from source.multimedia_library.images import get_image
-from source.utils.colors import colors
+from source.handlers.color_handler import colors
 
 PLANET_MAX_SIZE = 200.0
 PLANET_MIN_SIZE = 10.0

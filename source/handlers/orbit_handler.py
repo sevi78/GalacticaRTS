@@ -4,8 +4,8 @@ import pygame
 
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
-from source.utils import global_params
-from source.utils.positioning import get_distance
+from source.configuration import global_params
+from source.handlers.position_handler import get_distance
 
 
 def get_orbit_pos(self):

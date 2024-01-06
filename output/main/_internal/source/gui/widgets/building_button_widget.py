@@ -8,9 +8,9 @@ from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.handlers.widget_handler import WidgetHandler
 
 from source.multimedia_library.images import get_image
-from source.utils import global_params
-from source.utils.colors import colors
-from source.utils.global_params import ui_rounded_corner_small_thickness, ui_rounded_corner_radius_small
+from source.configuration import global_params
+from source.handlers.color_handler import colors
+from source.configuration.global_params import ui_rounded_corner_small_thickness, ui_rounded_corner_radius_small
 
 ICON_SIZE = 25
 IMAGE_RAW_SIZE = 125

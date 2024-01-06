@@ -1,12 +1,10 @@
-import math
-
 from source.gui.event_text import event_text
 from source.handlers.widget_handler import WidgetHandler
 from source.text.info_panel_text_generator import info_panel_text_generator
-from source.utils import global_params
+from source.configuration import global_params
 from source.multimedia_library.sounds import sounds
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
-from source.utils.positioning import get_distance
+from source.handlers.position_handler import get_distance
 
 SHIP_SPEED = 1.5
 SHIP_GUN_POWER = 30

@@ -2,10 +2,6 @@ import math
 import random
 
 import pygame
-from pygame_widgets.util import drawText
-
-from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zoom_handler
-from source.utils import global_params
 
 
 def smooth_position(prev_x, prev_y, x, y, smooth):

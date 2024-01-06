@@ -5,7 +5,7 @@ from source.gui.lod import inside_screen
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_mouse_handler import PanZoomMouseHandler
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_gif import PanZoomSprite
-from source.utils import global_params
+from source.configuration import global_params
 
 
 class PanZoomCollectableItem(PanZoomSprite, PanZoomMouseHandler):

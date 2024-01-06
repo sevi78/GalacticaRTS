@@ -6,7 +6,7 @@ from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zo
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_gif import PanZoomSprite
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.interaction.mouse import Mouse
-from source.utils import global_params
+from source.configuration import global_params
 
 WIDTH, HEIGHT = 800, 800
 

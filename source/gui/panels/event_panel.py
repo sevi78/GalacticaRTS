@@ -7,11 +7,11 @@ from source.editors.editor_base.editor_base import EditorBase
 from source.game_play.game_events import GameEvent, Deal, resources
 from source.gui.widgets.buttons.button import Button
 from source.interfaces.interface import InterfaceData
-from source.utils import global_params
-from source.utils.colors import colors
+from source.configuration import global_params
+from source.handlers.color_handler import colors
 from source.multimedia_library.images import images, pictures_path, get_image
 from source.multimedia_library.sounds import sounds
-from source.database.file_handler import load_file
+from source.handlers.file_handler import load_file
 from source.text.text_wrap import TextWrap
 
 

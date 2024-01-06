@@ -5,7 +5,7 @@ import time
 
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.text.text_wrap import TextWrap
-from source.utils.positioning import get_distance
+from source.handlers.position_handler import get_distance
 
 # Initialize Pygame
 pygame.init()

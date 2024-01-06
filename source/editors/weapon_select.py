@@ -10,7 +10,6 @@ from source.gui.event_text import event_text
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.gui.widgets.checkbox import Checkbox
 from source.multimedia_library.images import get_image
-from source.utils import global_params
 
 
 class WeaponSelect(EditorBase):

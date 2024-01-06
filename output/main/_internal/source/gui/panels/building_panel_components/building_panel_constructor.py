@@ -2,7 +2,7 @@ import pygame
 
 from source.gui.widgets.buttons.button import Button
 from source.multimedia_library.images import get_image
-from source.utils import global_params
+from source.configuration import global_params
 
 
 class BuildingPanelConstructor:

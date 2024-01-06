@@ -1,10 +1,8 @@
-import pygame
-
 from source.gui.lod import inside_screen
 from source.pan_zoom_sprites.pan_zoom_celestial_objects.pan_zoom_celestial_object import PanZoomCelestialObject
 
-from source.utils import global_params
-from source.utils.positioning import rot_center
+from source.configuration import global_params
+from source.handlers.position_handler import rot_center
 
 
 class PanZoomAsteroid(PanZoomCelestialObject):
