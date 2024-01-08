@@ -7,7 +7,7 @@ from source.factories.planet_factory import planet_factory
 
 from source.universe.background_image import BackgroundImage
 from source.universe.fog_of_war import FogOfWar
-from source.universe.universe_background import Universe
+from source.factories.universe_factory import Universe
 from source.configuration import global_params
 from source.handlers.color_handler import colors
 from source.multimedia_library.images import get_image

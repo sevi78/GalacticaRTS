@@ -9,6 +9,7 @@ from source.gui.widgets.progress_bar import ProgressBar
 from source.gui.widgets.widget_base_components.interaction_handler import InteractionHandler
 from source.handlers.weapon_handler import WeaponHandler
 from source.handlers.widget_handler import WidgetHandler
+from source.multimedia_library.gif_handler import GifHandler
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_game_object import PanZoomGameObject
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.text.info_panel_text_generator import info_panel_text_generator
@@ -79,6 +80,9 @@ class PanZoomUfo(PanZoomGameObject, InteractionHandler):
         self.attack_distance = self.attack_distance_raw
         self.gun_power = 0
         self.emp_attacked = False
+        self.gif = "electro_discharge.gif"
+        self.gif_handler = GifHandler(self, self.gif, loop=True, relative_gif_size=1.2, offset_y= 5)
+
 
         # energy progress bar
         self.progress_bar = ProgressBar(
@@ -225,6 +229,6 @@ class PanZoomUfo(PanZoomGameObject, InteractionHandler):
             self.appear()
 
         if self.emp_attacked:
-            pass
+            self.gif_handler.draw()
 
         # self.debug_object()

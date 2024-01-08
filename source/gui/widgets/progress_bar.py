@@ -40,6 +40,8 @@ class ProgressBar(WidgetBase):
     - incompletedColour: the color of the incomplete portion of the progress bar
     - percent: the current progress value of the bar (between 0 and 1)
     - radius: the radius of the curved progress bar (half of the height)"""
+
+    # doesnt work yet
     HORIZONTAL = 0
     VERTICAL = 1
 
@@ -61,14 +63,7 @@ class ProgressBar(WidgetBase):
         self.v_size = kwargs.get("v_size", None)
 
         self.string = kwargs.get("text", None)
-        # self.textHAlign = kwargs.get("textHAlign", "center")
-        # self.textVAlign = kwargs.get("textVAlign", "center")
         self.font = pygame.font.SysFont(global_params.font_name, 12)
-        # self.textColour = color_handler.colors.ui_darker
-        # self.text = self.font.render(self.string, True, self.textColour)
-        # self.textRect = self.text.get_rect()
-        # self.set_text(self.string)
-
         self.gradient_color = kwargs.get("gradient_color", True)
         self.disable()
 
@@ -94,7 +89,7 @@ class ProgressBar(WidgetBase):
         """ Display to surface """
         self.percent = min(max(self.progress(), 0), 1)
         if self.gradient_color:
-            self.completedColour = calculate_gradient_color((200, 0, 0), pygame.color.THECOLORS["darkgreen"], self.percent)
+            self.completedColour = calculate_gradient_color((200, 0, 0), pygame.color.THECOLORS["darkgreen"], self.percent, ignore_colors=["b"])
 
         if self.parent:
             if self.parent._disabled:

@@ -19,7 +19,7 @@ from source.factories.level_factory import level_factory
 from source.multimedia_library.screenshot import capture_screenshot
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
-from source.universe.universe_background import universe_factory
+from source.factories.universe_factory import universe_factory
 from source.configuration import global_params
 from source.multimedia_library.images import get_image
 from source.handlers.color_handler import colors
@@ -251,7 +251,7 @@ class LevelEdit(EditorBase, LevelEditBuilder):
         self.create_universe()
 
     def delete_level(self):
-        # delet objects
+        # delete objects
         universe_factory.delete_universe()
         universe_factory.delete_artefacts()
         planet_factory.delete_planets()
@@ -259,6 +259,9 @@ class LevelEdit(EditorBase, LevelEditBuilder):
         for i in sprite_groups.collectable_items.sprites():
             i.end_object()
         for i in sprite_groups.ufos.sprites():
+            i.end_object()
+
+        for i in sprite_groups.gif_handlers.sprites():
             i.end_object()
 
     def create_universe(self):

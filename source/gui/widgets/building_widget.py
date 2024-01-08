@@ -150,7 +150,8 @@ class BuildingWidget(WidgetBase):
                     self.reciever.weapon_handler.weapons[self.name]["level"] += 1
                 else:
                     # buy it
-                    self.reciever.weapon_handler.weapons[self.name] = copy.deepcopy(weapon_factory.get_weapon(self.name))
+                    self.reciever.weapon_handler.weapons[
+                        self.name] = copy.deepcopy(weapon_factory.get_weapon(self.name))
                     # if global_params.app.ship == self.reciever:
                     global_params.app.weapon_select.obj = self.reciever
                     global_params.app.weapon_select.update()

@@ -220,6 +220,9 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
 
                     pan_zoom_handler.listen(events, self.pan_enabled)
 
+
+            # update pygame_widgets
+            widget_handler.update(events)
             # update sprites
             # dont mess up the order! for some reason it must be drawn first then update
 
@@ -227,8 +230,7 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
             sprite_groups.listen(events)
             sprite_groups.draw(self.win)
 
-            # update pygame_widgets
-            widget_handler.update(events)
+
 
             # update box selection, might be mived to self.update
             self.box_selection.listen(events)

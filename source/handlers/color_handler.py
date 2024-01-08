@@ -76,9 +76,12 @@ def gradient_color(colors, progress):
         int(colors[index][2] * (1 - color_progress) + colors[index + 1][2] * color_progress),
         )
 
-def calculate_gradient_color(start_color, end_color, percent):
+def calculate_gradient_color(start_color, end_color, percent, **kwargs):
     """Calculate the color gradient based on the start and end colors and the current progress percentage"""
-    r = int(start_color[0] + (end_color[0] - start_color[0]) * percent)
-    g = int(start_color[1] + (end_color[1] - start_color[1]) * percent)
-    b = int(start_color[2] + (end_color[2] - start_color[2]) * percent)
+    ignore_colors = kwargs.get("ignore_colors", [])
+    r,g,b = 0,0,0
+    r = int(start_color[0] + (end_color[0] - start_color[0]) * percent) if not str(r) in ignore_colors else 0
+    g = int(start_color[1] + (end_color[1] - start_color[1]) * percent) if not str(g) in ignore_colors else 0
+    b = int(start_color[2] + (end_color[2] - start_color[2]) * percent) if not str(b) in ignore_colors else 0
+
     return r, g, b

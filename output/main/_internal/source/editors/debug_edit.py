@@ -11,7 +11,7 @@ from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zo
 from source.handlers.pan_zoom_sprite_handler import sprite_groups, PanZoomLayeredUpdates
 from source.universe.celestial_objects.celestial_object import CelestialObject
 from source.universe.celestial_objects.celestial_object_static import CelestialObjectStatic
-from source.universe.universe_background import universe_factory
+from source.factories.universe_factory import universe_factory
 from source.configuration import global_params
 
 FONT_SIZE = 16
