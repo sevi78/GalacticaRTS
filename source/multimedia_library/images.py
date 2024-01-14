@@ -1,5 +1,10 @@
 import os
 import pygame
+# remove this if not used elsewhere, only needet to test the scripts that run on their own
+# pygame.init()
+# pygame.display.set_mode((1000,1000), pygame.RESIZABLE, pygame.DOUBLEBUF)
+#
+
 from PIL import Image
 
 from source.handlers.file_handler import pictures_path

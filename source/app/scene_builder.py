@@ -4,7 +4,6 @@ from source.app.ui_helper import UIHelper
 from source.configuration.economy_params import EconomyParams
 from source.handlers.file_handler import load_file
 from source.factories.planet_factory import planet_factory
-
 from source.universe.background_image import BackgroundImage
 from source.universe.fog_of_war import FogOfWar
 from source.factories.universe_factory import Universe

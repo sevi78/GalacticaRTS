@@ -59,6 +59,11 @@ Fields:
                 if event.key == pygame.K_ESCAPE:
                     sys.exit()
 
+    def end_game(self):
+        pygame.quit()
+        quit()
+
+
     def set_screen_size(self, size, events):
         """
         set the screen size using 's'

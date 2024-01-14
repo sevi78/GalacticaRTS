@@ -2,23 +2,16 @@ import math
 import random
 import pygame
 
-from source.handlers import file_handler
 from source.draw.circles import draw_zoomable_circle
 from source.draw.zoomable_rect import draw_zoomable_rect
 from source.editors.editor_base.editor_base import EditorBase
 from source.editors.editor_base.editor_config import ARROW_SIZE, FONT_SIZE, TOP_SPACING
-
 from source.factories.planet_factory import planet_factory
-
 from source.factories.solar_system_factory import SolarSystemFactory
-from source.gui.event_text import event_text
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.gui.widgets.inputbox import InputBox
 from source.gui.widgets.selector import Selector
-from source.factories.level_factory import level_factory
-from source.multimedia_library.screenshot import capture_screenshot
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zoom_handler
-from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.factories.universe_factory import universe_factory
 from source.configuration import global_params
 from source.multimedia_library.images import get_image
@@ -136,16 +129,16 @@ class LevelEdit(EditorBase, LevelEditBuilder):
 
         # create widgets
         self.create_selectors()
-        self.create_save_button(lambda: self.save_level(), "save level")
-        self.create_load_button(lambda: self.load_level(self.level), "load level")
+        self.create_save_button(lambda: global_params.app.level_handler.save_level(), "save level")
+        self.create_load_button(lambda: global_params.app.level_handler.load_level(self.level), "load level")
         self.create_close_button()
         self.create_randomize_button()
         self.create_update_button()
 
         # set default values
-        self.data = None
+        self.data = global_params.app.level_handler.data
         self.default_data = None
-        self.load_level(self.level)
+
         self.set_selector_current_value()
 
         # hide initially
@@ -161,46 +154,6 @@ class LevelEdit(EditorBase, LevelEditBuilder):
     @level.setter
     def level(self, value):
         self._level = value
-
-    def load_level(self, level):
-        self.delete_level()
-        self.data = level_factory.load_level(level)
-        if not self.data:
-            self.data = level_factory.load_level(0)
-
-        ships = self.data.get("ships")
-        # print (ships)
-        # for key in ships.keys():
-        #     for attr, value in ships[key].items():
-        #         self.parent.ship_factory.create_ship(f"{ships[key]['name']}_30x30.png", int(ships[key]["world_x"]), int(ships[key]["world_y"]), global_params.app)
-
-        for key in ships.keys():
-            self.parent.ship_factory.create_ship(f"{ships[key]['name']}_30x30.png", int(ships[key]["world_x"]), int(
-                ships[key]["world_y"]), global_params.app)
-
-        #planet_factory.delete_planets()
-        # planet_factory.create_planets_from_json(self.level)
-
-        planet_factory.create_planets_from_data(self.data)
-        self.set_data_to_editor(level)
-        self.set_selector_current_value()
-        self.create_universe()
-        global_params.app.event_panel.goal = self.data.get("globals").get("goal")
-
-    def save_level(self):
-        print(self.data)
-        level_factory.save_level(self.level, self.data)
-        # save screenshot
-        screen_x, screen_y = pan_zoom_handler.world_2_screen(0, 0)
-        capture_screenshot(
-            self.win,
-            f"level_{self.level}.png",
-            (screen_x, screen_y, self.width * pan_zoom_handler.zoom, self.height * pan_zoom_handler.zoom),
-            (360, 360),
-            event_text=event_text)
-
-        file_handler.get_level_list()
-        self.parent.level_select.update_icons()
 
     def set_data_to_editor(self, level):
         self.level = level
@@ -220,9 +173,6 @@ class LevelEdit(EditorBase, LevelEditBuilder):
         for i in self.selectors:
             i.set_current_value(getattr(self, i.key))
 
-    def get_input_box_values(self, obj, key, value):
-        pass
-
     def selector_callback(self, key, value):
         """this is the selector_callback function called from the selector to return the values to the editor"""
         setattr(self, key, value)
@@ -241,7 +191,7 @@ class LevelEdit(EditorBase, LevelEditBuilder):
         self.refresh_level()
 
     def refresh_level(self):
-        self.delete_level()
+        global_params.app.level_handler.delete_level()
 
         # recreate objects
         self.solar_system_factory = SolarSystemFactory(
@@ -250,22 +200,7 @@ class LevelEdit(EditorBase, LevelEditBuilder):
         planet_factory.create_planets_from_data(data=self.data, explored=True)
         self.create_universe()
 
-    def delete_level(self):
-        # delete objects
-        universe_factory.delete_universe()
-        universe_factory.delete_artefacts()
-        planet_factory.delete_planets()
-        self.parent.ship_factory.delete_ships()
-        for i in sprite_groups.collectable_items.sprites():
-            i.end_object()
-        for i in sprite_groups.ufos.sprites():
-            i.end_object()
-
-        for i in sprite_groups.gif_handlers.sprites():
-            i.end_object()
-
     def create_universe(self):
-
         universe_factory.amount = int(math.sqrt(math.sqrt(self.width)) * self.data["globals"]["universe_density"])
         universe_factory.create_universe(0, 0, self.width, self.height)
         universe_factory.create_artefacts(0, 0, self.width, self.height,

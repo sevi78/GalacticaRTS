@@ -34,7 +34,7 @@ class GifHandler(pygame.sprite.Sprite):
         self.image_raw = self.frames[self.index]
         self.image = self.frames[self.index]
         self.rect = self.image.get_rect()
-        self.layer = kwargs.get("layer", 10)
+        self.layer = kwargs.get("layer", self.parent.layer)
 
         if self.relative_gif_size:
             self.max_size = max(self.parent.rect.width, self.parent.rect.height) * self.relative_gif_size

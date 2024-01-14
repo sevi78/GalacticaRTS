@@ -9,6 +9,7 @@ from source.draw.zigzag_line import draw_zigzag_line
 from source.factories.building_factory import building_factory
 from source.gui.widgets.progress_bar import ProgressBar
 from source.handlers.color_handler import colors
+from source.multimedia_library.gif_handler import GifHandler
 from source.multimedia_library.sounds import sounds
 from source.handlers.weapon_handler import attack, launch_missile
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
@@ -52,7 +53,7 @@ class PanZoomPlanetDefence:
 
         #self.emp_progress_display.colour = colors.ui_darker
 
-    def __delete__(self, instance):
+    def __delete____(self, instance):# unused ?
         print("PanZoomPlanetDefence.__delete__: ")
         self.parent = None
         del self
@@ -73,6 +74,8 @@ class PanZoomPlanetDefence:
                 15,
                 self.attack_distance,
                 1, pulse_time * 1000, circles=5)
+
+            #gif_handler = GifHandler(self.parent, "emp.gif", loop=False, relative_gif_size=5.0)
 
             ufo.emp_attacked = True
         else:
@@ -110,6 +113,9 @@ class PanZoomPlanetDefence:
                     #     end_pos=hit_obj.rect.center,
                     #     num_segments=24,
                     #     pan_zoom_handler=pan_zoom_handler)
+
+
+
                     draw_zigzag_line(
                         surface=self.parent.win,
                         color=color,

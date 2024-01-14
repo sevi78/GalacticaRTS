@@ -6,7 +6,6 @@ from source.editors.debug_edit import DebugEdit
 from source.editors.font_edit import FontEdit
 from source.editors.enemy_handler_edit import EnemyHandlerEdit
 from source.editors.event_panel_edit import EventPanelEdit
-from source.editors.level_edit import LevelEdit
 from source.editors.level_select import LevelSelect
 from source.editors.planet_edit import PlanetEdit
 from source.editors.ship_edit import ShipEdit
@@ -114,10 +113,7 @@ class UIBuilder(SceneBuilder):
             pygame.display.get_surface().get_rect().y,
             width, height, parent=self, obj=sprite_groups.planets.sprites()[0])
 
-        self.level_edit = LevelEdit(pygame.display.get_surface(),
-            pygame.display.get_surface().get_rect().centerx - width / 2,
-            pygame.display.get_surface().get_rect().y,
-            width, height, parent=self)
+
 
         self.building_edit = BuildingEdit(pygame.display.get_surface(),
             pygame.display.get_surface().get_rect().centerx - width / 2,
@@ -144,15 +140,15 @@ class UIBuilder(SceneBuilder):
             pygame.display.get_surface().get_rect().y,
             width, height, parent=self, obj=debugger, layer=9)
 
-        self.event_panel_edit = EventPanelEdit(pygame.display.get_surface(),
-            pygame.display.get_surface().get_rect().centerx - width / 2,
-            pygame.display.get_surface().get_rect().y,
-            width, height, parent=self, obj=self.event_panel, layer=9)
+        # self.event_panel_edit = EventPanelEdit(pygame.display.get_surface(),
+        #     pygame.display.get_surface().get_rect().centerx - width / 2,
+        #     pygame.display.get_surface().get_rect().y,
+        #     width, height, parent=self, obj=self.event_panel, layer=9)
 
         self.trade_edit = TradeEdit(pygame.display.get_surface(),
             pygame.display.get_surface().get_rect().centerx - width / 2,
             pygame.display.get_surface().get_rect().y,
-            width, height, parent=self, obj=None, layer=9, game_paused=True)
+            width, height, parent=self, obj=None, layer=9)#, game_paused=True)
 
     def create_player(self):
         self.player = Player(name="zork",
@@ -171,7 +167,7 @@ class UIBuilder(SceneBuilder):
         x = pygame.display.get_surface().get_width() / 2 - w / 2
         y = pygame.display.get_surface().get_height() / 2 - h / 2
         self.event_panel = EventPanel(win=self.win, x=x, y=y, width=w, height=h, center=True, parent=self, layer=9,
-            interface_variables=load_file("event_panel.json"))
+            interface_variables=load_file("event_panel.json"), game_paused=True)
 
     def create_tooltip(self):
         # tooltip

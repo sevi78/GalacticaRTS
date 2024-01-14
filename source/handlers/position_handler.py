@@ -137,4 +137,20 @@ def align_vertical(rect,v_align):
 
     return rect.y
 
+def center_pos(width, height):# unused
+    """
+    gets center of the screen
+    :param width:
+    :param height:
+    :return: center of the screen
+    """
+    win = pygame.display.get_surface()
+    win_width = win.get_width()
+    win_height = win.get_height()
+
+    x = win_width / 2 - width / 2
+    y = win_height / 2 - height / 2
+    pos = (x, y)
+    return pos
+
 

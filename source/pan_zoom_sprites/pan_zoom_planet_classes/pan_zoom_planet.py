@@ -88,7 +88,7 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
         self.wait = kwargs.get("wait", 1.0)
         self.selected = False
 
-        #self.onClick = lambda: self.execute(kwargs)
+        # self.onClick = lambda: self.execute(kwargs)
 
         # load_from_db Game variables___________________________________________________________________________________
         self.info_text = kwargs.get("info_text")
@@ -116,8 +116,10 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
         return self.name
 
     def __delete__(self):
-
         garbage_handler.delete_all_references(self, self.planet_defence)
+        WidgetHandler.remove_widget(self.planet_defence.emp_progress_display)
+        self.planet_defence.emp_progress_display = None
+
         for i in self.overview_buttons:
             WidgetHandler.remove_widget(i)
         self.overview_buttons = []
@@ -148,6 +150,9 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
             return
 
         if not self.moveable:
+            return
+
+        if global_params.app.level_edit._hidden:
             return
 
         panzoom = pan_zoom_handler
@@ -271,7 +276,7 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
 
         if not inside_screen(self.rect.center):
             return
-            
+
         self.draw()
 
     def draw(self):

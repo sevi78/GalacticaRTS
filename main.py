@@ -5,15 +5,17 @@ import pygame
 
 from source.app.app_helper import AppHelper, select_next_item_in_list
 from source.app.ui_builder import UIBuilder
+from source.editors.level_edit import LevelEdit
 from source.factories.ship_factory import ShipFactory
-
 from source.game_play.cheat import Cheat
 from source.game_play.enemy_handler import enemy_handler
 from source.game_play.game_logic import GameLogic
 from source.game_play.navigation import navigate_to
 from source.gui.event_text import event_text
-from source.handlers import widget_handler
 from source.handlers.economy_handler import economy_handler
+from source.handlers.file_handler import load_file
+from source.handlers.game_event_handler import GameEventHandler
+from source.handlers.level_handler import LevelHandler
 #from source.interaction import copy_agent
 from source.interaction.box_selection import BoxSelection
 from source.configuration import global_params
@@ -156,6 +158,8 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
         :param events:
         :return:
         """
+        self.level_handler.update()
+        self.game_event_handler.update()
         self.update_economy()
 
         self.events = events
@@ -220,17 +224,15 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
 
                     pan_zoom_handler.listen(events, self.pan_enabled)
 
-
-            # update pygame_widgets
-            widget_handler.update(events)
             # update sprites
             # dont mess up the order! for some reason it must be drawn first then update
 
-            sprite_groups.update()
+            sprite_groups.update(events=events)
             sprite_groups.listen(events)
-            sprite_groups.draw(self.win)
+            sprite_groups.draw(self.win, events=events)
 
-
+            # update pygame_widgets
+            #widget_handler.update(events)# moved to sprite handler
 
             # update box selection, might be mived to self.update
             self.box_selection.listen(events)
@@ -251,9 +253,20 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
 
 
 def main():
+    EDITOR_WIDTH = 700
+    EDITOR_HEIGHT = 600
+
     pygame.init()
     app = App(global_params.WIDTH, global_params.HEIGHT)
     app.box_selection = BoxSelection(app.win, sprite_groups.ships.sprites() + sprite_groups.planets.sprites())
+    app.level_handler = LevelHandler(app)
+    app.level_edit = LevelEdit(pygame.display.get_surface(),
+        pygame.display.get_surface().get_rect().centerx - EDITOR_WIDTH / 2,
+        pygame.display.get_surface().get_rect().y,
+        EDITOR_WIDTH, EDITOR_HEIGHT, parent=app)
+    app.game_event_handler = GameEventHandler(data=load_file("game_event_handler.json"), app=app)
+    app.level_handler.load_level(0)
+
     app.loop()
 
 

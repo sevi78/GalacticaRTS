@@ -1,5 +1,6 @@
 from collections import Counter
 
+from source.configuration import global_params
 from source.handlers.file_handler import load_file
 from source.factories.building_factory import building_factory
 from source.handlers.position_handler import distance_between_points, get_distance
@@ -396,6 +397,21 @@ class InfoPanelTextGenerator:
     #     # shoot_interval =
     #     return infotext + weapon_var
 
+    def create_info_panel_mission_text(self):
+        level = global_params.app.level_handler.data.get("globals").get("level")
+        goal = global_params.app.level_handler.data.get("globals").get("goal")
+        infotext = f"your mission in level {level}:\n\n\n\n\n\n"
+        infotext += f"goals:\n\n"
+
+
+        for key, value in goal.items():
+            infotext += f"  {key}: {value}"
+            if global_params.app.game_event_handler.goal_success[key]:
+                infotext += ' \u2713'
+            infotext += "\n\n"
+
+
+        return infotext
 
     def get_info_text(self):
         return self.info_text

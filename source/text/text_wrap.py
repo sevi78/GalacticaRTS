@@ -12,40 +12,6 @@ class TextWrap:  # original
         self.border = TEXTBORDER
         self.word_height_sum = 0
 
-    def wrap_text_(self, text, pos, size, font, color=pygame.Color('white')):  # original
-        """ text wrapper function """
-        if not text: return
-        words = [word.split(' ') for word in text.splitlines()]  # 2D array where each row is a list of words.
-        space = font.size(' ')[0]  # The width of a space.
-        max_width, max_height = size  # Use self instead of undefined surface variable
-        x, y = pos
-
-        x += self.border
-        y += self.border
-
-        # store the sum of all words to get the max height of all text to resize the panel
-        self.word_height_sum = 0
-
-        for line in words:
-            for word in line:
-                word_surface = font.render(word, 0, color)
-                word_width, word_height = word_surface.get_size()
-
-                self.word_height_sum += word_height
-
-                if x + word_width >= max_width:
-                    x = pos[0] + self.border  # Reset the x.
-                    y += word_height  # Start on new row.
-
-                self.win.blit(word_surface, (x, y))
-                x += word_width + space
-
-            x = pos[0] + self.border  # Reset the x.
-            y += word_height  # Start on new row.
-
-            # get the last height value
-            self.word_height_sum = y
-
     def wrap_text(self, win,  text, pos, size, font, color=pygame.Color('white'), **kwargs):
         """ text wrapper function """
         if not text: return
@@ -67,6 +33,7 @@ class TextWrap:  # original
 
         for line in words:
             for word in line:
+
                 word_surface = font.render(word, True, color)
                 word_width, word_height = word_surface.get_size()
                 #pygame.draw.rect(win, colors.ui_darker,(x,y,word_width, word_height),1 )
@@ -82,6 +49,10 @@ class TextWrap:  # original
                             image_name = word.split(":")[0] + "_25x25.png"
                         else:
                             image_name = word.split(":")[0] + ".png"
+
+                            # if image_name == "✓.png":
+                            #     image_name = "check.png"
+
 
                         img = pygame.transform.scale(get_image(image_name), (word_height, word_height))
                         win.blit(img, (x, y))

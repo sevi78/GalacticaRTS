@@ -29,9 +29,6 @@ class LevelSelect(EditorBase):
         # hide initially
         self.hide()
 
-
-
-
     def update_icons(self):
         for i in self.buttons:
             if i.name:
@@ -93,7 +90,7 @@ class LevelSelect(EditorBase):
         self.max_height = 900  # self.world_y + 200 + min(y + button_size + self.text_spacing * 3, max_button_height)
 
     def select_level(self, i):
-        self.parent.level_edit.load_level(i)
+        self.parent.level_handler.load_level(i)
         self.hide()
         global_params.tooltip_text = ""
 

@@ -1,6 +1,7 @@
 import time
 import pygame
 from source.configuration import global_params
+from source.handlers.pan_zoom_sprite_handler import sprite_groups
 
 
 class Player:
@@ -85,6 +86,12 @@ class Player:
                       "city": self.city
                       }
         return self.stock
+
+    def get_all_buildings(self):
+        buildings = []
+        for i in sprite_groups.planets:
+            buildings += i.buildings
+        return buildings
 
     def set_population_limit(self):
         population_buildings = ["town", "city", "metropole"]

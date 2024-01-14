@@ -1,5 +1,7 @@
 import pygame
 
+from source.gui.widgets.buttons.button import Button
+from source.gui.widgets.buttons.image_button import ImageButton
 from source.text.info_panel_text_generator import info_panel_text_generator
 from source.gui.panels.toggle_switch import ToggleSwitch
 from source.gui.widgets.Icon import Icon
@@ -56,6 +58,46 @@ class ResourcePanel(WidgetBase):
         spacing = 150
         pos_x = self.world_x + self.icon_size * 2
         pos_y = 15
+
+        # self.mission_icon = ImageButton(win=self.win,
+        #     x=pos_x,
+        #     y=pos_y,
+        #     width=25,
+        #     height=25,
+        #     isSubWidget=False,
+        #     parent=self.parent,
+        #     image=get_image("mission.png"),
+        #     key="",
+        #     tooltip="this is your mission",
+        #     info_text="mission",
+        #     frame_color=self.frame_color,
+        #     moveable=False,
+        #     include_text=False,
+        #     layer=9)
+
+        self.mission_icon = ImageButton(win=self.win,
+            x=25,
+            y=pos_y,
+            width=25,
+            height=25,
+            isSubWidget=False,
+            parent=self,
+            image=pygame.transform.scale(get_image("mission_512x512.png"),(25,25)),
+            image_raw=get_image("mission_512x512.png"),
+            tooltip="this is your mission",
+            frame_color=self.frame_color,
+            moveable=False,
+            include_text=True,
+            layer=self.layer,
+            key="",
+            info_text="mission",
+            name="mission_icon",
+            textColours=(0, 0, 0),
+            font_size=0)
+
+        self.widgets.append(self.mission_icon)
+        # self.max_width += self.icon_size + self.spacing
+        # pos_x += self.spacing
 
         self.water_icon = Icon(win=self.win,
             x=pos_x,
