@@ -22,4 +22,3 @@ class WeaponFactory:
 
 
 weapon_factory = WeaponFactory("buildings.json")
-

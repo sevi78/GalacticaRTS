@@ -17,10 +17,10 @@ from source.configuration import global_params
 
 CANNON_GUNPOWER = 3
 class WeaponHandler:
-    def __init__(self, parent, current_weapon):
+    def __init__(self, parent, current_weapon, **kwargs):
         self.parent = parent
         self.all_weapons = copy.deepcopy(weapon_factory.get_all_weapons())
-        self.weapons = {}
+        self.weapons = kwargs.get("weapons", {})
         self.current_weapon = self.all_weapons[current_weapon]
         self.current_weapon_select = ""
         self.setup_interval_timers()

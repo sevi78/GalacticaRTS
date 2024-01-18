@@ -26,13 +26,18 @@ class PanZoomShipInteraction:
     @orbit_object.setter
     def orbit_object(self, value):
         self._orbit_object = value
+
         if value:
             self.target = None
             self.orbiting = True
             self.orbit_direction = random.choice([-1, 1])
+            self.orbit_object_id = value.id
+            self.orbit_object_name = value.name
         else:
             self.orbiting = False
             self.orbit_angle = None
+            self.orbit_object_id = -1
+            self.orbit_object_name = ""
 
     @property
     def enemy(self):

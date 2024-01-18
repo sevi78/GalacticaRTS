@@ -59,24 +59,8 @@ class ResourcePanel(WidgetBase):
         pos_x = self.world_x + self.icon_size * 2
         pos_y = 15
 
-        # self.mission_icon = ImageButton(win=self.win,
-        #     x=pos_x,
-        #     y=pos_y,
-        #     width=25,
-        #     height=25,
-        #     isSubWidget=False,
-        #     parent=self.parent,
-        #     image=get_image("mission.png"),
-        #     key="",
-        #     tooltip="this is your mission",
-        #     info_text="mission",
-        #     frame_color=self.frame_color,
-        #     moveable=False,
-        #     include_text=False,
-        #     layer=9)
-
         self.mission_icon = ImageButton(win=self.win,
-            x=25,
+            x=5,
             y=pos_y,
             width=25,
             height=25,
@@ -96,6 +80,28 @@ class ResourcePanel(WidgetBase):
             font_size=0)
 
         self.widgets.append(self.mission_icon)
+
+        self.save_game_icon = ImageButton(win=self.win,
+            x=35,
+            y=pos_y,
+            width=25,
+            height=25,
+            isSubWidget=False,
+            parent=self,
+            image=pygame.transform.scale(get_image("save_icon_bk.png"), (25, 25)),
+            image_raw=get_image("save_icon_bk.png"),
+            tooltip="save game",
+            frame_color=self.frame_color,
+            moveable=False,
+            include_text=True,
+            layer=self.layer,
+            key="",
+            name="save_game_icon",
+            textColours=(0, 0, 0),
+            font_size=0,
+            onClick=lambda: global_params.app.save_game_edit.set_visible())
+
+        self.widgets.append(self.save_game_icon)
         # self.max_width += self.icon_size + self.spacing
         # pos_x += self.spacing
 

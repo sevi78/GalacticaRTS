@@ -98,6 +98,8 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         PanZoomShipInteraction.__init__(self)
 
         self.name = kwargs.get("name", "no_name")
+        self.data = kwargs.get("data", {})
+
         self.item_collect_distance = SHIP_ITEM_COLLECT_DISTANCE
         self.orbit_direction = random.choice([-1, 1])
         self.speed = SHIP_SPEED
@@ -123,10 +125,6 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         # orbit
         self._orbit_object = None
 
-        # # gun
-        # self.gun_power = SHIP_GUN_POWER
-        # self.gun_power_max = SHIP_GUN_POWER_MAX
-
         # interface
         self.interface_variable_names = [
             "food",
@@ -147,7 +145,7 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
             "energy_use"
             ]
 
-        self.weapon_handler = WeaponHandler(self, kwargs.get("current_weapon", "laser"))
+        self.weapon_handler = WeaponHandler(self, kwargs.get("current_weapon", "laser"), weapons=kwargs.get("weapons", {}))
         self.autopilot_handler = AutopilotHandler(self)
 
         # register
@@ -161,14 +159,29 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         self.setup()
 
     def setup(self):
-        data = load_file("ship_settings.json")
-        for name, dict in data.items():
-            if name == self.name:
-                for key, value in dict.items():
-                    # if key in self.__dict__ or key in self.__slots__:
-                    setattr(self, key, value)
-                    # if key == "orbit_speed":
-                    #     setattr(self, f"{key}_raw", value)
+        data = self.data
+        if not data:
+            data = load_file("ship_settings.json")[self.name]
+
+        for key, value in data.items():
+            setattr(self, key, value)
+
+
+        # set orbit object
+        if self.orbit_object_id != -1 and self.orbit_object_name:
+            # if orbit object is in planets
+            if self.orbit_object_name in [i.name for i in sprite_groups.planets.sprites()]:
+                self.orbit_object = [i for i in sprite_groups.planets.sprites() if i.id == self.orbit_object_id and i.name == self.orbit_object_name][0]
+
+            # if orbit object is in ships
+            elif self.orbit_object_name in [i.name for i in sprite_groups.ships.sprites()]:
+                self.orbit_object = [i for i in sprite_groups.ships.sprites() if
+                                     i.id == self.orbit_object_id and i.name == self.orbit_object_name][0]
+
+            # if orbit object is in ufos
+            elif self.orbit_object_name in [i.name for i in sprite_groups.ufos.sprites()]:
+                self.orbit_object = [i for i in sprite_groups.ufos.sprites() if
+                                     i.id == self.orbit_object_id and i.name == self.orbit_object_name][0]
 
         self.orbit_radius = 100 + self.id * 30
 
@@ -251,6 +264,14 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
             # Check the distance
             if distance < self.desired_orbit_radius:
                 self.reach_planet()
+                self.target_reached = True
+                self.moving = False
+                self.orbit_object = self.target
+                return
+
+        elif self.target.property == "ship":
+            # Check the distance
+            if distance < self.desired_orbit_radius:
                 self.target_reached = True
                 self.moving = False
                 self.orbit_object = self.target
@@ -372,7 +393,7 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
             mouseState = Mouse.getMouseState()
             x, y = Mouse.getMousePos()
 
-            if self.rect.collidepoint(x, y):  # self.contains(x, y): #
+            if self.rect.collidepoint(x, y):
                 if mouseState == MouseState.MIDDLE_RELEASE:
                     self.open_weapon_select()
 
@@ -515,7 +536,6 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         if self.energy_reloader:
             # reload ship
             self.reload_ship()
-
 
         if self.autopilot:
             self.autopilot_handler.update()

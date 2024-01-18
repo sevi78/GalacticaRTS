@@ -156,6 +156,7 @@ class LevelEdit(EditorBase, LevelEditBuilder):
         self._level = value
 
     def set_data_to_editor(self, level):
+        self.data = global_params.app.level_handler.data
         self.level = level
         self.planets = len(self.data["celestial_objects"].keys())
         self.moons = len([(key, value) for key, value in self.data["celestial_objects"].items() if

@@ -1,7 +1,10 @@
 {
   "globals": {
     "level": 1,
-    "goal": {"population": 1500, "particle accelerator":  1},
+    "goal": {
+      "population": 1500,
+      "particle accelerator": 1
+    },
     "width": 5000,
     "height": 5000,
     "universe_density": 20.0,
@@ -31,14 +34,14 @@
       "orbit_object_id": 0,
       "orbit_distance": 0,
       "atmosphere_name": "sun.gif",
-      "orbit_angle": 387.55613035872875
+      "orbit_angle": 436.21103632219416
     },
     "1": {
       "id": 1,
       "level": 1,
       "name": "Tucana I",
-      "world_x": 2880.489601803338,
-      "world_y": 2392.3714509451556,
+      "world_x": 2820.7472273374974,
+      "world_y": 2726.4671790015736,
       "world_width": 64,
       "world_height": 64,
       "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
@@ -61,14 +64,14 @@
       "orbit_object_id": 0,
       "orbit_distance": 0,
       "atmosphere_name": "",
-      "orbit_angle": 350.2343964210797
+      "orbit_angle": 390.04234239143045
     },
     "2": {
       "id": 2,
       "level": 1,
       "name": "Tucana II",
-      "world_x": 2935.8140792264294,
-      "world_y": 3615.690747050072,
+      "world_x": 2530.4083020643247,
+      "world_y": 3732.1499228833814,
       "world_width": 61,
       "world_height": 61,
       "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
@@ -91,14 +94,14 @@
       "orbit_object_id": 0,
       "orbit_distance": 0,
       "atmosphere_name": "atmosphere2.gif",
-      "orbit_angle": 64.3610441206979
+      "orbit_angle": 83.58386943448203
     },
     "3": {
       "id": 3,
       "level": 1,
       "name": "Tucana III",
-      "world_x": 1485.9399081977613,
-      "world_y": 2475.9618160555724,
+      "world_x": 1965.6795766015982,
+      "world_y": 1679.070760337659,
       "world_width": 60,
       "world_height": 60,
       "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
@@ -119,14 +122,14 @@
       "orbit_object_id": 0,
       "orbit_distance": 0,
       "atmosphere_name": "atmosphere.gif",
-      "orbit_angle": 180.06070921733053
+      "orbit_angle": 242.0363598673368
     },
     "4": {
       "id": 4,
       "level": 1,
       "name": "Tucana III, a",
-      "world_x": 1486.073864078981,
-      "world_y": 2475.7683148055844,
+      "world_x": 1481.2565985123979,
+      "world_y": 1662.0538679875808,
       "world_width": 36,
       "world_height": 36,
       "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
@@ -150,7 +153,7 @@
       "orbit_object_id": 3,
       "orbit_distance": 0,
       "atmosphere_name": "",
-      "orbit_angle": 664.6938479185255
+      "orbit_angle": 902.0118685699259
     }
   },
   "ships": {
@@ -158,21 +161,7 @@
       "name": "spaceship",
       "world_x": 1471.2949027858403,
       "world_y": 730.6439677544923
-    },
-    "1": {
-      "name": "spaceship",
-      "world_x": 1499.2870369461127,
-      "world_y": 763.3044686338382
-    },
-    "2": {
-      "name": "spaceship",
-      "world_x": 1456.4230462957044,
-      "world_y": 695.7568683395305
-    },
-    "3": {
-      "name": "cargoloader",
-      "world_x": 1378.289916758183,
-      "world_y": 712.9386630266314
     }
+
   }
 }

@@ -170,7 +170,7 @@ class GameEventHandler():
         # create event if succeeded
         all_values_are_true = all(value for value in self.goal_success.values())
         if all_values_are_true:
-
+            print (self.data)
             if not f"goal{self.level}" in self.obsolete_events.keys():
                 self.game_events[f"goal{self.level}"] = GameEvent(
                     name=f"goal{self.level}",

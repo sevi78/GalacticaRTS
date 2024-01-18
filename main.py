@@ -158,7 +158,7 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
         :param events:
         :return:
         """
-        self.level_handler.update()
+
         self.game_event_handler.update()
         self.update_economy()
 

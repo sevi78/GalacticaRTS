@@ -8,6 +8,7 @@
     "collectable_item_amount": 15,
     "central_compression": 1
   },
+  "player": {"water":1000, "energy":1000, "food": 1000, "mineral": 1000, "technology":1000, "city": 1000},
   "celestial_objects": {
     "0": {
       "id": 0,
@@ -23,6 +24,7 @@
       "buildings_max": 8,
       "building_slot_amount": 5,
       "specials": [],
+      "buildings": [],
       "type": "sun",
       "possible_resources": [],
       "image_name_small": "sonnecomic_110x110.png",
@@ -51,6 +53,7 @@
         "food * 2",
         "food * 1.5"
       ],
+      "buildings": [],
       "type": "planet",
       "possible_resources": [
         "energy",
@@ -80,6 +83,7 @@
       "buildings_max": 10,
       "building_slot_amount": 3,
       "specials": [],
+      "buildings": [],
       "type": "moon",
       "possible_resources": [
         "water",
@@ -100,7 +104,8 @@
     "0": {
       "name": "spaceship",
       "world_x": 1471,
-      "world_y": 730
+      "world_y": 730,
+      "weapons": {}
     }
   }
 }

@@ -3,11 +3,11 @@ from source.handlers.file_handler import load_file, write_file
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 
 
-class LevelFactory:
+class LevelFactory__:
     def __init__(self, win):
         self.win = win
 
-    def save_level(self, level: int, data: dict):
+    def save_level__(self, level: int, data: dict):
         print(f"keys:{data['celestial_objects']['0'].keys()}")
         # pprint(f"data:{data}")
         view = []
@@ -24,12 +24,8 @@ class LevelFactory:
 
         write_file(f"level_{level}.json", data)
 
-    def load_level(self, level: int):
-        print("load level:", level)
-        return load_file(f"level_{level}.json")
-
-    def get_planet_amount(self, data):
-        return len(data.keys())
 
 
-level_factory = LevelFactory(pygame.display.get_surface())
+
+
+#level_factory = LevelFactory(pygame.display.get_surface())

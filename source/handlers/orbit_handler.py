@@ -87,7 +87,7 @@ def orbit_around(orbit_object, orbit_center, **kwargs):
     return new_x, new_y
 
 
-def orbit(obj, orbit_obj, orbit_speed, direction):
+def orbit(obj, orbit_obj, orbit_speed, direction):# origin
     if not orbit_obj:
         return
 
@@ -102,3 +102,28 @@ def orbit(obj, orbit_obj, orbit_speed, direction):
     obj.orbit_angle += orbit_speed * global_params.time_factor
     pos = pygame.math.Vector2(obj.orbit_radius, 0).rotate(obj.orbit_angle * direction)  # Rotate by the negative angle
     obj.world_x, obj.world_y = (orbit_obj.world_x + pos.x, orbit_obj.world_y + pos.y)
+
+    # fix orit_objs orbit_obj position
+    # if hasattr(orbit_obj, "orbiting"):
+    #     if orbit_obj.orbiting:
+    #         obj.world_x, obj.world_y = (orbit_obj.world_x + pos.x - orbit_obj.world_x, orbit_obj.world_y + pos.y - orbit_obj.world_y)
+
+def orbit(obj, orbit_obj, orbit_speed, direction):
+    if not orbit_obj:
+        return
+    if hasattr(obj, "enemy"):
+        orbit_speed = orbit_speed/5
+    pos_diff = pygame.math.Vector2(orbit_obj.world_x, orbit_obj.world_y) - pygame.math.Vector2(obj.world_x, obj.world_y)
+    obj.orbit_radius = pos_diff.length()
+    if not obj.orbit_angle:
+        obj.orbit_angle = pos_diff.angle_to(pygame.math.Vector2(0, 1))
+    obj.orbit_angle += orbit_speed * global_params.time_factor
+    pos = pygame.math.Vector2(obj.orbit_radius, 0).rotate(obj.orbit_angle * direction) # Rotate by the negative angle
+
+    # fix orbit_obj's position if it is also orbiting
+    if hasattr(orbit_obj, "orbiting") and orbit_obj.orbiting:
+        obj.world_x = orbit_obj.world_x + pos.x
+        obj.world_y = orbit_obj.world_y + pos.y
+    else:
+        obj.world_x, obj.world_y = (orbit_obj.world_x + pos.x, orbit_obj.world_y + pos.y)
+

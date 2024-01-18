@@ -134,7 +134,7 @@ class BuildingWidget(WidgetBase):
         # if it is a ship, no calculation has to be done, return
         if self.name in ships:
             x, y = pan_zoom_handler.screen_2_world(self.reciever.screen_x, self.reciever.screen_y)
-            ship = global_params.app.ship_factory.create_ship(self.name + "_30x30.png", x, y, global_params.app)
+            ship = global_params.app.ship_factory.create_ship(self.name + "_30x30.png", x, y, global_params.app, {})
             set_orbit_object_id(ship, self.reciever.id)
             return
 

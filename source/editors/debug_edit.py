@@ -1,4 +1,4 @@
-from source.handlers.file_handler import abs_database, soundpath
+from source.handlers.file_handler import abs_database_path, soundpath
 from source.editors.editor_base.editor_base import EditorBase
 from source.editors.editor_base.editor_config import TOP_SPACING, BUTTON_SIZE
 from source.gui.widgets.Icon import Icon
@@ -195,7 +195,7 @@ class DebugEdit(EditorBase):
             f"gifs_path: {gifs_path}")
         y += self.text_spacing
         self.draw_text(self.world_x + self.text_spacing, y, 200, FONT_SIZE,
-            f"database_path: {abs_database()}")
+            f"database_path: {abs_database_path()}")
         y += self.text_spacing
         self.draw_text(self.world_x + self.text_spacing, y, 200, FONT_SIZE,
             f"sound_path: {soundpath}")

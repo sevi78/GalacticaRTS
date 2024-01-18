@@ -213,7 +213,8 @@ class InfoPanelTextGenerator:
 
         if ship.debug:
             text += "\n\ndebug:\n"
-
+            text += f"id: {ship.id}\n"
+            text += f"name: {ship.name}\n"
             text += "selected: " + str(ship.selected) + "\n"
 
             if ship.energy_reloader:
@@ -232,14 +233,20 @@ class InfoPanelTextGenerator:
 
             if ship.orbit_object:
                 text += f"orbit_object:{ship.orbit_object.name}\n"
+                text += f"orbit_object_id:{ship.orbit_object_id}\n"
+                text += f"orbit_object_name:{ship.orbit_object_name}\n"
+
             else:
                 text += f"orbit_object: None\n"
+                text += f"orbit_object_id:{ship.orbit_object_id}\n"
+                text += f"orbit_object_name:{ship.orbit_object_name}\n"
 
             if ship.orbit_angle:
                 text += f"orbit_angle:{ship.orbit_angle}\n"
             else:
                 text += f"orbit_angle:{None}\n"
-
+            text += f"desired_orbit_radius:{ship.desired_orbit_radius}\n"
+            text += f"orbit_radius:{ship.orbit_radius}\n"
             if ship.enemy:
                 text += f"enemy:{ship.enemy}\n"
                 text += f"distance:{get_distance(ship.rect.center, ship.enemy.rect.center)}\n"

@@ -51,7 +51,7 @@ class LevelSelect(EditorBase):
 
         for index, i in enumerate(data):
             level = i.split('_')[1].split('.json')[0]
-            level_dict = load_file(f"level_{level}.json")
+            level_dict = load_file(f"level_{level}.json", folder="levels")
             tooltip = tooltip_generator.create_level_tooltip(level, level_dict)
             infotext = info_panel_text_generator.create_create_info_panel_level_text(level, level_dict)
 

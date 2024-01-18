@@ -8,6 +8,7 @@ from source.editors.enemy_handler_edit import EnemyHandlerEdit
 from source.editors.event_panel_edit import EventPanelEdit
 from source.editors.level_select import LevelSelect
 from source.editors.planet_edit import PlanetEdit
+from source.editors.save_game_edit import SaveGameEdit
 from source.editors.ship_edit import ShipEdit
 from source.editors.trade_edit import TradeEdit
 from source.editors.weapon_select import WeaponSelect
@@ -113,6 +114,10 @@ class UIBuilder(SceneBuilder):
             pygame.display.get_surface().get_rect().y,
             width, height, parent=self, obj=sprite_groups.planets.sprites()[0])
 
+        self.save_game_edit = SaveGameEdit(pygame.display.get_surface(),
+            pygame.display.get_surface().get_rect().centerx - width / 2,
+            pygame.display.get_surface().get_rect().y,
+            800, height, parent=self, obj=None)
 
 
         self.building_edit = BuildingEdit(pygame.display.get_surface(),

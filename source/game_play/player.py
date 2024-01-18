@@ -36,14 +36,17 @@ class Player:
     """
 
     def __init__(self, **kwargs):
-        self.city = 0
-        self.technology = 0
-        self.water = 0
-        self.minerals = 0
-        self.food = 0
-        self.energy = 0
+        self.city = kwargs.get("city", 0)
+        self.technology = kwargs.get("technology", 0)
+        self.water = kwargs.get("water", 0)
+        self.minerals = kwargs.get("minerals", 0)
+        self.food = kwargs.get("food", 0)
+        self.energy = kwargs.get("energy", 0)
+        self.population = kwargs.get("population", 0)
+
         for key, value in kwargs.items():
             setattr(self, key, value)
+
         self.clock_ = 2367
         self.start_wait = kwargs.get("wait", 5.0)
         self.wait = kwargs.get("wait", 5.0)
@@ -61,20 +64,21 @@ class Player:
 
         self.stock = None
         self.get_stock()
-        self.population = 0
+
         self.population_limit = 0
 
-    def reset(self):
+    def reset(self, data):
         self.__init__(
             name="zork",
             color=pygame.Color('red'),
-            energy=1000,
-            food=1000,
-            minerals=1000,
-            water=1000,
-            technology=1000,
-            city=0,
-            clock=0
+            energy=data["stock"]["energy"],
+            food=data["stock"]["food"],
+            minerals=data["stock"]["minerals"],
+            water=data["stock"]["water"],
+            technology=data["stock"]["technology"],
+            city=data["population"],
+            clock=0,
+            population = data["population"]
             )
 
     def get_stock(self):
@@ -110,6 +114,7 @@ class Player:
             self.water += self.production["water"]
             self.technology += self.production["technology"]
             self.city += self.production["city"]
+            print (f"city:{self.city}, population: {self.population}, self.stock: {self.stock}")
 
     def update(self):
         if global_params.game_speed == 0:
