@@ -85,7 +85,7 @@ class ProgressBar(WidgetBase):
         else:
             self.setWidth(self.parent.rect.width)
 
-    def draw(self):  # orig
+    def draw(self):
         """ Display to surface """
         self.percent = min(max(self.progress(), 0), 1)
         if self.gradient_color:

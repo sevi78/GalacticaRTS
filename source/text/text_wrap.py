@@ -29,7 +29,7 @@ class TextWrap:  # original
         # store the sum of all words to get the max height of all text to resize the panel
         self.word_height_sum = 0
 
-        resources = ["water", "energy", "food", "minerals", "technology", "city"]
+        resources = ["water", "energy", "food", "minerals", "technology", "population"]
 
         for line in words:
             for word in line:

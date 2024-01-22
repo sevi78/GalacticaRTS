@@ -53,9 +53,9 @@ class Deal:
 
         player = global_params.app.player
 
-        # extract "city" from dict
+        # extract "population" from dict
         d_raw = player.get_stock()
-        d = {key: max(0, value) for key, value in d_raw.items() if key != "city"}
+        d = {key: max(0, value) for key, value in d_raw.items() if key != "population"}
 
         # check if any value in the stock is less than 0
         if any(value < 0 for value in d.values()):
@@ -83,9 +83,9 @@ class Deal:
         if not global_params.app:
             return
         player = global_params.app.player
-        # extract "city" from dict
+        # extract "population" from dict
         d_raw = player.get_stock()
-        d = {key: max(0, value) for key, value in d_raw.items() if key != "city"}
+        d = {key: max(0, value) for key, value in d_raw.items() if key != "population"}
 
         # get key with lowest value
         lowest_value_key = min(d, key=d.get)
@@ -104,9 +104,9 @@ class Deal:
         if not global_params.app:
             return
         player = global_params.app.player
-        # extract "city" from dict
+        # extract "population" from dict
         d_raw = player.get_stock()
-        d = {key: max(0, value) for key, value in d_raw.items() if key != "city"}
+        d = {key: max(0, value) for key, value in d_raw.items() if key != "population"}
 
         # get key with lowest value
         lowest_value_key = min(d, key=d.get)
@@ -200,12 +200,12 @@ class GameEvent:
         else:
             self.body = f"some aliens offer you a deal: they want {request_text} for {offer_text}"
 
-    def end_game(self):
+    def end_game__(self):
         pygame.quit()
         quit()
         sys.exit()
 
-    def restart_game(self):
+    def restart_game__(self):
         print("restart game")
         global_params.app.restart_game()
 

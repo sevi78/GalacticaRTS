@@ -35,7 +35,7 @@ class InfoPanelTextGenerator:
         return price_text
 
     def create_info_panel_building_text(self, building):
-        ignorables = ["name", "category", "building_production_time_scale", "city"]
+        ignorables = ["name", "category", "building_production_time_scale", "population"]
         price_text = self.create_info_panel_price_text(building)
         production_text = ""
         other_text = ""
@@ -177,9 +177,11 @@ class InfoPanelTextGenerator:
         text += "Possible resources on this planet include:\n\n"
         for resource in obj.possible_resources:
             text += f"- {resource}\n"
-        distance = distance_between_points(obj.world_x, obj.world_y, obj.orbit_object.world_x, obj.orbit_object.world_y)
-        text += (f"\nThe planet's orbits around its sun at a distance of {format_number(distance * 1000, 1)}"
-                 f" km with a speed of {format_number(obj.orbit_speed * 1000, 1)}km/s.\n")
+
+        if obj.orbit_object:
+            distance = distance_between_points(obj.world_x, obj.world_y, obj.orbit_object.world_x, obj.orbit_object.world_y)
+            text += (f"\nThe planet's orbits around its sun at a distance of {format_number(distance * 1000, 1)}"
+                     f" km with a speed of {format_number(obj.orbit_speed * 1000, 1)}km/s.\n")
 
         return text
 
@@ -367,7 +369,7 @@ class InfoPanelTextGenerator:
             alien_text = "(un)fortunately there are no aliens here."
 
         if len(ordered_resources_list) > 0:
-            if ordered_resources_list[0][0] == "city":
+            if ordered_resources_list[0][0] == "population":
                 resource_text = f"A good place to grow population."
             else:
                 resource_text = f"plenty of {ordered_resources_list[0][0]} can be found here !"

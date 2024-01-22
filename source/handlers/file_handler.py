@@ -70,8 +70,7 @@ def abs_level_path():
 def abs_games_path():
     return (os.path.join(abs_database_path(), "games" ))
 
-def write_file(filename, data, **kwargs):
-    folder = kwargs.get("folder", "")
+def write_file(filename, folder, data):
     with open(os.path.join(abs_database_path() + folder  + os.sep + filename), 'w') as file:
         json.dump(data, file)
 

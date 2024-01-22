@@ -78,15 +78,15 @@ class CelestialObject(WidgetBase):
             self.world_x -= self.speed * global_params.time_factor
             self.world_y += self.speed * global_params.time_factor / 2
 
-        if self.world_x > global_params.app.level_edit.width * global_params.quadrant_amount:
+        if self.world_x > global_params.app.level_handler.data["globals"]["width"] * global_params.quadrant_amount:
             self.world_x = 0
         if self.world_x < 0:
-            self.world_x = global_params.app.level_edit.width * global_params.quadrant_amount
+            self.world_x = global_params.app.level_handler.data["globals"]["width"] * global_params.quadrant_amount
 
-        if self.world_y > global_params.app.level_edit.height * global_params.quadrant_amount:
+        if self.world_y > global_params.app.level_handler.data["globals"]["height"] * global_params.quadrant_amount:
             self.world_y = 0
         if self.world_y < 0:
-            self.world_y = global_params.app.level_edit.height * global_params.quadrant_amount
+            self.world_y = global_params.app.level_handler.data["globals"]["height"] * global_params.quadrant_amount
 
     def draw(self):
         self.set_screen_position()

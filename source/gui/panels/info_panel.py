@@ -89,7 +89,7 @@ class InfoPanel(WidgetBase, TextWrap):
     def update_text(self):
         # Wrap text before rendering onto surface
         self.wrap_text(self.win, self.text, self.pos, self.size, self.font, self.color,
-            iconize =["water", "energy", "food", "minerals", "technology", "city", "phaser", "laser", "rocket", "\u2713"])
+            iconize =["water", "energy", "food", "minerals", "technology", "population", "phaser", "laser", "rocket", "\u2713"])
         self.set_size_from_text()
         if self.planet_image:
             self.set_planet_image(self.planet_image, size=self.planet_image.get_size(), align="topright")

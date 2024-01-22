@@ -1,11 +1,7 @@
-import random
 import time
-from itertools import count
-
 from source.configuration import global_params
-from source.factories.building_factory import building_factory
-from source.game_play.game_events import GameEvent, Deal, resources
-from source.handlers.economy_handler import economy_handler
+from source.game_play.game_events import GameEvent
+
 from source.handlers.file_handler import load_file
 from source.text.info_panel_text_generator import info_panel_text_generator
 
@@ -112,6 +108,11 @@ class GameEventHandler():
                     if not "end" in self.obsolete_events:
                         self.app.event_panel.set_game_event(self.game_events["end"])
 
+    def restart_game(self):
+        if self.app.level_handler.current_game:
+            self.app.level_handler.load_level(0, data=load_file(self.app.level_handler.current_game, folder="games"), current_game=self.app.level_handler.current_game)
+        else:
+            self.app.level_handler.load_level(self.app.level_handler.level)
     def update(self):
         # check the cue and activate first event, then delete it
         if len(self.event_cue) > 0:
@@ -186,7 +187,7 @@ class GameEventHandler():
 
     def load_next_level(self):
         self.level += 1
-        global_params.app.level_handler.load_level(self.level)
+        global_params.app.level_handler.load_level(f"level_{self.level}.json", "levels")
 
 
 

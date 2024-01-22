@@ -113,6 +113,7 @@ def orbit(obj, orbit_obj, orbit_speed, direction):
         return
     if hasattr(obj, "enemy"):
         orbit_speed = orbit_speed/5
+
     pos_diff = pygame.math.Vector2(orbit_obj.world_x, orbit_obj.world_y) - pygame.math.Vector2(obj.world_x, obj.world_y)
     obj.orbit_radius = pos_diff.length()
     if not obj.orbit_angle:

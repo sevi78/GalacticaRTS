@@ -65,6 +65,7 @@ class EnemyHandler(InterfaceData):
         self.explored_planets_with_aliens = []
         self.win = pygame.display.get_surface()
         self.interface_variable_names = []
+        self.ufo_id = 0
 
         for dict_name, dict in interface_variables.items():
             for key, value in dict.items():
@@ -115,9 +116,11 @@ class EnemyHandler(InterfaceData):
             pan_zoom_ufo_config["enemy handler"]["width"],
             pan_zoom_ufo_config["enemy handler"]["height"], pan_zoom=pan_zoom_handler,
             image_name="ufo_74x30.png", align_image="center", group="ufos", explosion_name="explosion4.gif",
-            tooltip="",infotext= "", attitude=0, lifetime= random.randint(30,60), explosion_relative_gif_size=5.0)
+            tooltip="",infotext= "", attitude=0, lifetime= random.randint(30,60),
+            explosion_relative_gif_size=5.0, id=self.ufo_id)
         ufo.tooltip = tooltip_generator.create_ufo_tooltip(ufo)
         ufo.info_text =info_panel_text_generator.create_info_panel_ufo_text(ufo)
+        self.ufo_id += 1
         return ufo
 
 

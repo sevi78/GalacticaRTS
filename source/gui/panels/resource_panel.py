@@ -191,7 +191,7 @@ class ResourcePanel(WidgetBase):
         self.max_width += self.icon_size + self.spacing
         pos_x += self.spacing
 
-        self.city_icon = Icon(win=self.win,
+        self.population_icon = Icon(win=self.win,
             x=pos_x,
             y=pos_y,
             width=25,
@@ -199,12 +199,12 @@ class ResourcePanel(WidgetBase):
             isSubWidget=False,
             parent=self.parent,
             image=get_image("city_25x25.png"),
-            key="city",
+            key="population",
             tooltip="population; produce food and water to make it grow!",
             frame_color=self.frame_color,
             moveable=False,
             include_text=False, layer=9)
-        self.widgets.append(self.city_icon)
+        self.widgets.append(self.population_icon)
         self.max_width += self.icon_size + self.spacing
         pos_x += self.spacing
 

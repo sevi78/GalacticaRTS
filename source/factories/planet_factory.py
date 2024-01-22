@@ -1,3 +1,5 @@
+import pprint
+
 from source.multimedia_library.images import get_image
 from source.pan_zoom_sprites.pan_zoom_planet_classes.pan_zoom_planet import PanZoomPlanet
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zoom_handler
@@ -13,10 +15,25 @@ class PlanetFactory:
             planet.__delete__()
             planet.kill()
         global_params.app.selected_planet = None
+
     def create_planets_from_data(self, data, **kwargs):
+        #pprint.pprint(data)
 
         for key, value in data["celestial_objects"].items():
-            explored = kwargs.get("explored", data["celestial_objects"][key]["explored"])
+            if "explored" in data["celestial_objects"][key].keys():
+                explored = kwargs.get("explored", data["celestial_objects"][key]["explored"])
+            else:
+                explored = False
+
+            if "buildings" in value.keys():
+                buildings = data["celestial_objects"][key]["buildings"]
+            else:
+                buildings = []
+
+            if type(value) == list:
+                value= eval(value)
+
+
             pan_zoom_planet_button = PanZoomPlanet(
                 win=global_params.win,
                 x=value["world_x"],
@@ -45,6 +62,7 @@ class PlanetFactory:
                 image_name_small=value["image_name_small"],
                 image_name_big=value["image_name_big"],
                 buildings_max=value["buildings_max"],
+                buildings=buildings,#value["buildings"],
                 orbit_speed=value["orbit_speed"],
                 orbit_angle=value["orbit_angle"],
                 building_slot_amount=value["building_slot_amount"],
@@ -54,16 +72,17 @@ class PlanetFactory:
                 gif=value["atmosphere_name"],
                 debug=False,
                 align_image="center",
-                atmosphere_name=value["atmosphere_name"]
+                atmosphere_name=value["atmosphere_name"],
+                data= data["celestial_objects"][key]
                 )
             if explored:
                 pan_zoom_planet_button.get_explored()
-                #pan_zoom_planet_button.explored = explored
+            pan_zoom_planet_button.set_population_limit()
+
             sprite_groups.planets.add(pan_zoom_planet_button)
 
     def get_all_planets(self, keys):
         return [_ for _ in sprite_groups.planets.sprites() if _.type in keys]
-
 
 
 planet_factory = PlanetFactory()

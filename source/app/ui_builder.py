@@ -158,12 +158,13 @@ class UIBuilder(SceneBuilder):
     def create_player(self):
         self.player = Player(name="zork",
             color=pygame.Color('red'),
-            energy=1000,
-            food=1000,
-            minerals=1000,
-            water=1000,
-            technology=1000,
-            city=0,
+            stock= {
+            "energy": 1000,
+            "food": 1000,
+            "minerals": 1000,
+            "water": 1000,
+            "technology": 1000,
+            "population": 0},
             clock=0
             )
 

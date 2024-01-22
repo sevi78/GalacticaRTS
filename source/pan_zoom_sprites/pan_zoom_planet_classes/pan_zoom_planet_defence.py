@@ -9,7 +9,6 @@ from source.draw.zigzag_line import draw_zigzag_line
 from source.factories.building_factory import building_factory
 from source.gui.widgets.progress_bar import ProgressBar
 from source.handlers.color_handler import colors
-from source.multimedia_library.gif_handler import GifHandler
 from source.multimedia_library.sounds import sounds
 from source.handlers.weapon_handler import attack, launch_missile
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
@@ -40,20 +39,18 @@ class PanZoomPlanetDefence:
             y=self.parent.get_screen_y() + self.parent.get_screen_height() + self.parent.get_screen_height() / 5,
             width=self.parent.get_screen_width(),
             height=5,
-            progress=lambda :0.0,
+            progress=lambda: 0.0,
             curved=True,
             completedColour=colors.frame_color,
             layer=self.parent.layer,
             parent=self.parent,
             h_align="right_outside",
-            v_align= "over_the_top",
-            h_size= 25, orientation= 1, text= "E.M.P."
+            v_align="over_the_top",
+            h_size=25, orientation=1, text="E.M.P."
             )
         self.emp_progress_display.hide()
 
-        #self.emp_progress_display.colour = colors.ui_darker
-
-    def __delete____(self, instance):# unused ?
+    def __delete____(self, instance):  # unused ?
         print("PanZoomPlanetDefence.__delete__: ")
         self.parent = None
         del self
@@ -75,7 +72,7 @@ class PanZoomPlanetDefence:
                 self.attack_distance,
                 1, pulse_time * 1000, circles=5)
 
-            #gif_handler = GifHandler(self.parent, "emp.gif", loop=False, relative_gif_size=5.0)
+            # gif_handler = GifHandler(self.parent, "emp.gif", loop=False, relative_gif_size=5.0)
 
             ufo.emp_attacked = True
         else:
@@ -83,20 +80,23 @@ class PanZoomPlanetDefence:
             self.emp_active = False
 
         self.emp_progress_display.progress = lambda: ((time.time() - self.last_emp) / self.emp_pulse_interval)
-        #self.emp_progress_display.completedColour = [int(255/((time.time() - self.last_emp) / self.emp_pulse_interval)), self.emp_progress_display.completedColour[1], self.emp_progress_display.completedColour[2]]
-        #self.update_emp_progress_display()
-    def update_emp_progress_display(self):# unused
+        # self.emp_progress_display.completedColour = [int(255/((time.time() - self.last_emp) / self.emp_pulse_interval)), self.emp_progress_display.completedColour[1], self.emp_progress_display.completedColour[2]]
+        # self.update_emp_progress_display()
+
+    def update_emp_progress_display(self):  # unused
         # Calculate the percentage of time elapsed
         elapsed_time_percentage = ((time.time() - self.last_emp) / self.emp_pulse_interval)
 
         # Interpolate the color from green to red based on the elapsed time percentage
-        green_to_red = (1 - elapsed_time_percentage) * pygame.color.THECOLORS.get("green") + elapsed_time_percentage * pygame.color.THECOLORS.get("red")
+        green_to_red = (
+                               1 - elapsed_time_percentage) * pygame.color.THECOLORS.get("green") + elapsed_time_percentage * pygame.color.THECOLORS.get("red")
 
         # Update the progress bar color
         self.emp_progress_display.completedColour = green_to_red
 
         # Update the progress bar progress
         self.emp_progress_display.progress = lambda: elapsed_time_percentage * 100
+
     def activate_energy_blast(self):
         scope.draw_scope(self.parent)
         if pygame.mouse.get_pressed()[2]:
@@ -114,8 +114,6 @@ class PanZoomPlanetDefence:
                     #     num_segments=24,
                     #     pan_zoom_handler=pan_zoom_handler)
 
-
-
                     draw_zigzag_line(
                         surface=self.parent.win,
                         color=color,
@@ -128,11 +126,19 @@ class PanZoomPlanetDefence:
     def update(self):
         defence_units = self.get_defence_units()
         self.attack_distance = self.attack_distance_raw * self.parent.get_zoom()
+
+        # handle self.emp_progress_display
+        if "electro magnetic impulse" in defence_units:
+            self.emp_progress_display.set_progressbar_position()
+            self.emp_progress_display.show()
+        else:
+            self.emp_progress_display.hide()
+
+        # don't do anything if no defense units
         if len(defence_units) == 0:
             return
 
-        self.emp_progress_display.set_progressbar_position()
-        # for ufo in global_params.app.ufos:
+        # ckeck for ufos in range self.attack_distance and then activate defence
         for ufo in sprite_groups.ufos:
             dist = get_distance(self.parent.rect.center, ufo.rect.center)
             if dist < self.attack_distance:
@@ -150,8 +156,6 @@ class PanZoomPlanetDefence:
                         self.activate_energy_blast()
 
                 if "electro magnetic impulse" in defence_units:
-
-                    self.emp_progress_display.draw()
                     if time.time() - self.emp_pulse_interval > self.last_emp:
                         self.emp_active = True
                         self.last_emp = time.time()

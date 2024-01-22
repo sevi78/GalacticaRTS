@@ -37,7 +37,7 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
         'alien_population', 'building_slot_amount', 'building_slot_upgrades', 'building_slot_upgrade_prices',
         'building_slot_upgrade_energy_consumption', 'building_slot_max_amount', 'building_cue', 'specials',
         'possible_resources', 'production', 'production_water', 'production_energy', 'production_food',
-        'production_minerals', 'production_city', 'production_technology', 'population_buildings',
+        'production_minerals', 'production_population', 'production_technology', 'population_buildings',
         'population_buildings_values', 'building_buttons_energy', 'building_buttons_water', 'building_buttons_food',
         'building_buttons_minerals', 'building_buttons', 'building_buttons_list', 'building_buttons_visible',
         'overview_buttons', 'check_image', 'smiley_status', 'thumpsup_status', 'frame_color', 'gif_handler', 'type',
@@ -77,8 +77,6 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
         self.orbit_angle = kwargs.get("orbit_angle", None)
         self.world_x = x
         self.world_y = y
-        # self.world_width = kwargs.get("world_width", self.image_raw.get_width())
-        # self.world_height = kwargs.get("world_height", self.image_raw.get_height())
 
         self.zoomable = True
         self.string = "?"
@@ -88,37 +86,35 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
         self.wait = kwargs.get("wait", 1.0)
         self.selected = False
 
-        # self.onClick = lambda: self.execute(kwargs)
-
         # load_from_db Game variables___________________________________________________________________________________
         self.info_text = kwargs.get("info_text")
         self.info_text_raw = kwargs.get("info_text")
 
         # buttons
         self.create_overview_buttons()
-        # self.building_button_widget = BuildingButtonWidget(win, 200, 100, 300, 200, self.parent, False, layer=4, parent=self, fixed_parent=True)
 
         # planet defence
         self.planet_defence = PanZoomPlanetDefence(self)
 
+        # setup loaded data
+        # for key, value in kwargs.items():
+        #     setattr(self, key, value)
+        self.data = kwargs.get("data", {})
+        for key, value in self.data.items():
+            setattr(self, key, value)
+
         # register the button
         sprite_groups.planets.add(self)
-        # self.hide_planet_button_array()
-
-        # PanZoomPlanetSaveLoad.__init__(self, f"lebel_{global_params.level}.json")
-        # self.load_from_db()
-        # self.load_from_file()
-        # pprint (self.get_dict_from_db())
-
-        # self.update_pan_zoom_sprite()
 
     def __repr__(self):
         return self.name
 
     def __delete__(self):
-        garbage_handler.delete_all_references(self, self.planet_defence)
-        WidgetHandler.remove_widget(self.planet_defence.emp_progress_display)
-        self.planet_defence.emp_progress_display = None
+        if hasattr(self, "planet_defence"):
+            garbage_handler.delete_all_references(self, self.planet_defence)
+            WidgetHandler.remove_widget(self.planet_defence.emp_progress_display)
+            self.planet_defence.emp_progress_display = None
+            del self.planet_defence
 
         for i in self.overview_buttons:
             WidgetHandler.remove_widget(i)
@@ -129,16 +125,17 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
         self.smiley_button = None
         self.thumpsup_button = None
         self.overview_buttons = []
+        if self.gif_handler:
+            self.gif_handler.end_object()
         self.gif = None
         self.gif_frames = None
         self.children = None
         self.gif_handler = None
-        del self.planet_defence
+
 
         if self in global_params.app.explored_planets:
             global_params.app.explored_planets.remove(self)
         self.kill()
-        # print("garbage_handler.get_all_references", garbage_handler.get_all_references(self))
 
         del self
 
@@ -152,8 +149,8 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
         if not self.moveable:
             return
 
-        if global_params.app.level_edit._hidden:
-            return
+        # if global_params.app.level_edit._hidden:
+        #     return
 
         panzoom = pan_zoom_handler
 
@@ -234,7 +231,7 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
                     self.draw_hover_circle()
                     if self.tooltip != "":
                         global_params.tooltip_text = self.tooltip
-                        # draw_transparent_circle(self.win,self.planet_defence.attack_distance_circle_surface, self.frame_color, self.center, self.planet_defence.attack_distance, 20)
+
                     draw_transparent_circle(self.win, self.frame_color, self.center, self.planet_defence.attack_distance, 20)
                     self.draw_specials()
                     self.set_overview_buttons_position()
@@ -264,15 +261,11 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
             self.draw_specials()
             self.set_overview_buttons_position()
 
-        # if not self.orbit_object:
-        # self.orbit_angle = None
-
         if len([i for i in sprite_groups.planets if i.id == self.orbit_object_id]) > 0:
             self.orbit_object = [i for i in sprite_groups.planets if i.id == self.orbit_object_id][0]
 
         if not global_params.game_paused:
             orbit(self, self.orbit_object, self.orbit_speed, 1)
-            # self.world_x, self.world_y = orbit_around(self, self.orbit_object)
 
         if not inside_screen(self.rect.center):
             return

@@ -112,13 +112,14 @@ class SaveGameEdit(EditorBase):
                 i.text = self.font.render(i.string, True, i.textColour)
 
     def save_game(self, value):
-        filename = generate_json_filename_based_on_datetime("galactica")
-        data = self.parent.level_handler.generate_level_dict()
-        write_file(filename, data, folder="games")
+        filename = generate_json_filename_based_on_datetime(f"galactica level {self.parent.level_handler.data['globals']['level']} ")
+        data = self.parent.level_handler.generate_level_dict_from_scene()
+        write_file(filename, "games", data)
         self.create_games_icons()
 
     def load_game(self, value):
-        self.parent.level_handler.load_level(0, data=load_file(self.current_game, folder="games"))
+        #self.parent.level_handler.load_level(0, data=load_file(self.current_game, folder="games"), current_game= self.current_game)
+        self.parent.level_handler.load_level(self.current_game, "games")
         print(f"load game: {value}")
 
     def delete_game(self, current_game):
@@ -137,4 +138,4 @@ class SaveGameEdit(EditorBase):
     def draw(self):
         if not self._hidden and not self._disabled:
             self.draw_frame()
-            self.draw_text(self.world_x + self.text_spacing, self.world_y + TOP_SPACING + self.text_spacing, 200, 30, f"Current Game: {self.current_game}")
+            self.draw_text(self.world_x + self.text_spacing, self.world_y + TOP_SPACING + self.text_spacing, 200, 25, f"Current Game: {self.current_game}")

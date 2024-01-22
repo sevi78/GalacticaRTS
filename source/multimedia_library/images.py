@@ -12,7 +12,6 @@ from source.handlers.file_handler import pictures_path
 images = {}
 all_image_names = []
 
-
 gifs = {}
 gif_frames = {}
 MAX_GIF_SIZE = 150
@@ -131,6 +130,3 @@ def resize_image(image, new_size):
 
 
 load_folders(os.path.join(pictures_path), images)
-
-# images.get_image(
-#     cur.execute(f"select image_name_small from planets where id = {self.id}").fetchone()[0]],

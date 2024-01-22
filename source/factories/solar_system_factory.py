@@ -1,6 +1,8 @@
 import math
 import random
+from pprint import pprint
 
+from source.configuration import global_params
 from source.factories.building_factory import building_factory
 from source.multimedia_library.images import get_image_names_from_folder
 from source.text.text_formatter import to_roman
@@ -8,7 +10,7 @@ from source.text.text_formatter import to_roman
 MOOON_TO_PLANET_DISTANCE = 500
 
 
-class SolarSystemFactory__:  # original
+class SolarSystemFactory:  # original
     def __init__(self, width, height, universe_density, collectable_item_amount, suns, planets, moons):
         self.width = width
         self.height = height
@@ -222,7 +224,7 @@ class SolarSystemFactory__:  # original
             "alien_population": alien_population,
             "buildings_max": random.randint(5, 20),
             "building_slot_amount": random.randint(1, 5),
-            "specials": "[]",
+            "specials": [],
             "type": body_type,
             "possible_resources": self.randomize_planet_resources() if body_type != "sun" else [],
             "image_name_small": random.choice(images),
@@ -247,7 +249,7 @@ class SolarSystemFactory__:  # original
             return f"{planet_name}, {moon_letter}"
 
 
-class SolarSystemFactory:  # original
+class SolarSystemFactory__:  # original
     def __init__(self, width, height, universe_density, collectable_item_amount, suns, planets, moons):
         self.width = width
         self.height = height
@@ -350,31 +352,38 @@ class SolarSystemFactory:  # original
         self.moon_names = {}  # Dictionary to store moon names
 
     def initialize_data(self):
-        return {
-            "globals": {
-                "level": 0,
-                "goal": "population > 500",
-                "width": self.width,
-                "height": self.height,
-                "universe_density": self.universe_density,
-                "collectable_item_amount": self.collectable_item_amount,
-                "central_compression": 1
-                },
-            "celestial_objects": {},
-            "ships": {"0": {
-                "name": "spaceship",
-                "world_x": 1471.2949027858403,
-                "world_y": 730.6439677544923
-                }
-                }
-            }
+        data = global_params.app.level_handler.default_level_data
+        data["globals"]["width"] = self.width
+        data["globals"]["height"] =  self.height
+        data["globals"]["universe_density"] =  self.universe_density
+        data["globals"]["collectable_item_amount"] = self.collectable_item_amount
+
+        return data
+        # return {
+        #     "globals": {
+        #         "level": 0,
+        #         "goal": "population > 500",
+        #         "width": self.width,
+        #         "height": self.height,
+        #         "universe_density": self.universe_density,
+        #         "collectable_item_amount": self.collectable_item_amount,
+        #         "central_compression": 1
+        #         },
+        #     "celestial_objects": {},
+        #     "ships": {"0": {
+        #         "name": "spaceship",
+        #         "world_x": 1471.2949027858403,
+        #         "world_y": 730.6439677544923
+        #         }
+        #         }
+        #     }
 
     def randomize_data(self):
         data = self.initialize_data()
         self.create_suns(data)
         self.create_planets(data)
         self.create_moons(data)
-
+        #pprint(f"Data_ :{data}")
         return data
 
     def create_suns(self, data):
@@ -475,6 +484,7 @@ class SolarSystemFactory:  # original
             "alien_population": alien_population,
             "buildings_max": random.randint(5, 20),
             "building_slot_amount": random.randint(1, 5),
+            "buildings": [],
             "specials": specials,
             "type": body_type,
             "possible_resources": possible_resources,
@@ -484,7 +494,8 @@ class SolarSystemFactory:  # original
             "orbit_object_id": orbit_object_id,
             "orbit_distance": 0,
             "atmosphere_name": random.choice(atmospheres),
-            "orbit_angle": random.uniform(0, 360)
+            "orbit_angle": random.uniform(0, 360),
+            "explored": False
             }
 
     def generate_name(self, i, body_type, orbit_object_id):

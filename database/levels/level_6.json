@@ -45,7 +45,7 @@
             "world_y": 5987.682617529664,
             "world_width": 79,
             "world_height": 79,
-            "info_text": "Welcome to Piscea I!\n\nYou are the first to arrive on this planet. It's a blank slate waiting for you to make your mark.\nYou can build up to 10 buildings on this planet.\nThere are special buildings available: [].\nPossible resources on this planet include:\n\n- technology\n- minerals\n- city\n- energy\n- food\n\nThe planet's orbits around its sun at a distance of 1.9M km with a speed of 2km/s.\n",
+            "info_text": "Welcome to Piscea I!\n\nYou are the first to arrive on this planet. It's a blank slate waiting for you to make your mark.\nYou can build up to 10 buildings on this planet.\nThere are special buildings available: [].\nPossible resources on this planet include:\n\n- technology\n- minerals\n- population\n- energy\n- food\n\nThe planet's orbits around its sun at a distance of 1.9M km with a speed of 2km/s.\n",
             "population_grow": 0.0,
             "alien_population": 0,
             "buildings_max": 10,
@@ -55,7 +55,7 @@
             "possible_resources": [
                 "technology",
                 "minerals",
-                "city",
+                "population",
                 "energy",
                 "food"
             ],
@@ -75,7 +75,7 @@
             "world_y": 10330.442426940892,
             "world_width": 78,
             "world_height": 78,
-            "info_text": "Welcome to Piscea II!\n\nYou are the first to arrive on this planet. It's a blank slate waiting for you to make your mark.\nYou can build up to 13 buildings on this planet.\nThere are special buildings available: [].\nPossible resources on this planet include:\n\n- food\n- technology\n- minerals\n- city\n- energy\n- water\n\nThe planet's orbits around its sun at a distance of 4.4M km with a speed of 1km/s.\n",
+            "info_text": "Welcome to Piscea II!\n\nYou are the first to arrive on this planet. It's a blank slate waiting for you to make your mark.\nYou can build up to 13 buildings on this planet.\nThere are special buildings available: [].\nPossible resources on this planet include:\n\n- food\n- technology\n- minerals\n- population\n- energy\n- water\n\nThe planet's orbits around its sun at a distance of 4.4M km with a speed of 1km/s.\n",
             "population_grow": 0.0,
             "alien_population": 0,
             "buildings_max": 13,
@@ -86,7 +86,7 @@
                 "food",
                 "technology",
                 "minerals",
-                "city",
+                "population",
                 "energy",
                 "water"
             ],
@@ -113,13 +113,13 @@
                     "production_minerals": 0,
                     "production_water": 0,
                     "production_technology": 0,
-                    "production_city": 0,
+                    "production_population": 0,
                     "price_energy": 2500,
                     "price_food": 2500,
                     "price_minerals": 2500,
                     "price_water": 2500,
                     "price_technology": 2500,
-                    "price_city": 0,
+                    "price_population": 0,
                     "build_population_minimum": 0,
                     "building_production_time_scale": 5,
                     "building_production_time": 5,
@@ -135,7 +135,7 @@
                             "price_minerals": 1500,
                             "price_water": 250,
                             "price_technology": 500,
-                            "price_city": 0
+                            "price_population": 0
                         },
                         "level_1": {
                             "price_energy": 2500,
@@ -143,7 +143,7 @@
                             "price_minerals": 2500,
                             "price_water": 250,
                             "price_technology": 500,
-                            "price_city": 0
+                            "price_population": 0
                         },
                         "level_2": {
                             "price_energy": 2500,
@@ -151,7 +151,7 @@
                             "price_minerals": 2500,
                             "price_water": 250,
                             "price_technology": 500,
-                            "price_city": 0
+                            "price_population": 0
                         }
                     },
                     "upgrade values": {

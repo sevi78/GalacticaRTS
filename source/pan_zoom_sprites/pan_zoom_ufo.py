@@ -35,6 +35,7 @@ class PanZoomUfo(PanZoomGameObject, InteractionHandler):
     def __init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs):
         PanZoomGameObject.__init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs)
         InteractionHandler.__init__(self)
+        self.id = kwargs.get("id", 0)
         self.lifetime = kwargs.get("lifetime", LIFETIME)
         self.shrink = 0.0
         self.creation_time = time.time()

@@ -18,7 +18,7 @@ class Player:
     - update: updates the player's clock and wait time based on the game speed.
 
     Fields:
-    - city: the player's current number of cities.
+    - population: the player's current number of cities.
     - technology: the player's current level of technology.
     - water: the player's current amount of water resources.
     - minerals: the player's current amount of mineral resources.
@@ -36,15 +36,17 @@ class Player:
     """
 
     def __init__(self, **kwargs):
-        self.city = kwargs.get("city", 0)
-        self.technology = kwargs.get("technology", 0)
-        self.water = kwargs.get("water", 0)
-        self.minerals = kwargs.get("minerals", 0)
-        self.food = kwargs.get("food", 0)
-        self.energy = kwargs.get("energy", 0)
-        self.population = kwargs.get("population", 0)
+        # self.population = kwargs.get("population", 0)
+        # self.technology = kwargs.get("technology", 0)
+        # self.water = kwargs.get("water", 0)
+        # self.minerals = kwargs.get("minerals", 0)
+        # self.food = kwargs.get("food", 0)
+        # self.energy = kwargs.get("energy", 0)
+
 
         for key, value in kwargs.items():
+            setattr(self, key, value)
+        for key, value in self.stock.items():
             setattr(self, key, value)
 
         self.clock_ = 2367
@@ -59,37 +61,44 @@ class Player:
             "minerals": 0,
             "water": 0,
             "technology": 0,
-            "city": 0
+            "population": 0
             }
 
-        self.stock = None
-        self.get_stock()
-
+        #self.stock = None
+        #self.get_stock()
+        #self.population = self.stock["population"]
         self.population_limit = 0
 
     def reset(self, data):
+        # self.__init__(
+        #     name="zork",
+        #     color=pygame.Color('red'),
+        #     energy=data["stock"]["energy"],
+        #     food=data["stock"]["food"],
+        #     minerals=data["stock"]["minerals"],
+        #     water=data["stock"]["water"],
+        #     technology=data["stock"]["technology"],
+        #     population=data["stock"]["population"],
+        #     clock=0,
+        #
+        #     )
         self.__init__(
             name="zork",
             color=pygame.Color('red'),
-            energy=data["stock"]["energy"],
-            food=data["stock"]["food"],
-            minerals=data["stock"]["minerals"],
-            water=data["stock"]["water"],
-            technology=data["stock"]["technology"],
-            city=data["population"],
+            stock=data["stock"],
             clock=0,
-            population = data["population"]
+
             )
 
     def get_stock(self):
-        self.stock = {"energy": self.energy,
+        stock = {"energy": self.energy,
                       "food": self.food,
                       "minerals": self.minerals,
                       "water": self.water,
                       "technology": self.technology,
-                      "city": self.city
+                      "population": self.population
                       }
-        return self.stock
+        return stock
 
     def get_all_buildings(self):
         buildings = []
@@ -113,8 +122,8 @@ class Player:
             self.minerals += self.production["minerals"]
             self.water += self.production["water"]
             self.technology += self.production["technology"]
-            self.city += self.production["city"]
-            print (f"city:{self.city}, population: {self.population}, self.stock: {self.stock}")
+            self.population += self.production["population"]
+            #print (f"population:{self.population}, population: {self.population}, self.stock: {self.stock}")
 
     def update(self):
         if global_params.game_speed == 0:
@@ -124,3 +133,9 @@ class Player:
         self.clock = "Year: " + str(int(self.clock_))
         self.wait = self.start_wait / global_params.time_factor / global_params.game_speed
         self.produce()
+        # set global population
+
+        self.population = int(sum([i.population for i in sprite_groups.planets]))
+
+        # problem: this overwrites the population of player if set from data. but it also makes no sense to have any population if no planets has population.
+        # solution: set population to the planets NOT to player itself!!!

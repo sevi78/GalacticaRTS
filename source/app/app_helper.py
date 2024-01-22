@@ -67,7 +67,7 @@ class AppHelper:
             "minerals": 0,
             "water": 0,
             "technology": 0,
-            "city": 0
+            "population": 0
             }
 
         self.population_limit = 0

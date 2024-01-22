@@ -43,9 +43,9 @@ class AutopilotHandler:
                 building_factory.build(random.choice(building_factory.get_all_building_names()), i)
 
             elif strategy == "clever":
-                # extract "city" from dict
+                # extract "population" from dict
                 d_raw = player.get_stock()
-                d = {key: max(0, value) for key, value in d_raw.items() if key != "city"}
+                d = {key: max(0, value) for key, value in d_raw.items() if key != "population"}
 
                 # get key with lowest value
                 lowest_value_key = min(d, key=d.get)

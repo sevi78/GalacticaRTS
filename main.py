@@ -53,8 +53,8 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
         'singleton_buildings',
         'resources', 'water_buildings', 'energy_buildings', 'food_buildings', 'mineral_buildings',
         'technology_buildings',
-        'city_buildings', 'population_buildings', 'buildings', 'buildings_list', 'production', 'production_water',
-        'production_energy', 'production_food', 'production_minerals', 'production_city', 'production_technology',
+        'population_buildings', 'population_buildings', 'buildings', 'buildings_list', 'production', 'production_water',
+        'production_energy', 'production_food', 'production_minerals', 'production_population', 'production_technology',
         'prices',
         'game_objects', 'planets', 'collectables', 'ufos', 'building_widget_list', 'planet_buttons', 'ships', 'editors',
         'missiles', 'gif_handlers', 'build_menu_visible', 'build_menu_widgets', 'build_menu_widgets_buildings',
@@ -193,8 +193,7 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
         # cheat
         self.cheat(events)
 
-        # set global population
-        self.player.population = int(sum([i.population for i in sprite_groups.planets]))
+
 
         # store planet positions
         self.save_load(events)
@@ -265,7 +264,7 @@ def main():
         pygame.display.get_surface().get_rect().y,
         EDITOR_WIDTH, EDITOR_HEIGHT, parent=app)
     app.game_event_handler = GameEventHandler(data=load_file("game_event_handler.json"), app=app)
-    app.level_handler.load_level(0)
+    app.level_handler.load_level("level_0.json", "levels")
 
     app.loop()
 

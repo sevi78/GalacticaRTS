@@ -6,6 +6,7 @@ from PIL import Image
 from pygame import Vector2
 
 from source.handlers.file_handler import gifs_path
+from source.handlers.garbage_handler import garbage_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.multimedia_library.images import get_gif_frames
 from source.multimedia_library.sounds import sounds
@@ -47,6 +48,10 @@ class GifHandler(pygame.sprite.Sprite):
             getattr(sprite_groups, self.group).add(self)
 
     def end_object(self):
+        #self.parent = None
+        #garbage_handler.delete_all_references_from(self)
+        #sprite_groups.gif_handlers.sprites().remove(self)
+
         self.kill()
     def set_gif(self, gif, **kwargs):
         self.gif = gif
