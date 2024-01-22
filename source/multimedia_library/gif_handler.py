@@ -141,6 +141,9 @@ class GifHandler(pygame.sprite.Sprite):
         self.target_position = position
 
     def draw(self):
+        if self._hidden:
+            return
+
         try:
             self.update()
 

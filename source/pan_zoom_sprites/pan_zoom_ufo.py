@@ -7,6 +7,7 @@ from source.gui.event_text import event_text
 from source.gui.lod import inside_screen
 from source.gui.widgets.progress_bar import ProgressBar
 from source.gui.widgets.widget_base_components.interaction_handler import InteractionHandler
+from source.handlers.garbage_handler import garbage_handler
 from source.handlers.weapon_handler import WeaponHandler
 from source.handlers.widget_handler import WidgetHandler
 from source.multimedia_library.gif_handler import GifHandler
@@ -201,6 +202,13 @@ class PanZoomUfo(PanZoomGameObject, InteractionHandler):
 
         WidgetHandler.remove_widget(self.progress_bar)
         self.progress_bar = None
+
+        for i in sprite_groups.ships.sprites():
+            garbage_handler.delete_all_references(self, i)
+            # for key, value in i.__dict__.items():
+            #     if self == i.__dict__[key]:
+            #         i.__dict__[key] = None
+
         self.kill()
 
     def update(self):
@@ -229,7 +237,8 @@ class PanZoomUfo(PanZoomGameObject, InteractionHandler):
         else:
             self.appear()
 
-        if self.emp_attacked:
-            self.gif_handler.draw()
+        # set gif handler to make sure its only drawn if self emp attacked
+        self.gif_handler._hidden = not self.emp_attacked
+
 
         # self.debug_object()

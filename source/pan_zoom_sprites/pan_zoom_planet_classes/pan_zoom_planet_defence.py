@@ -139,6 +139,7 @@ class PanZoomPlanetDefence:
             return
 
         # ckeck for ufos in range self.attack_distance and then activate defence
+
         for ufo in sprite_groups.ufos:
             dist = get_distance(self.parent.rect.center, ufo.rect.center)
             if dist < self.attack_distance:
