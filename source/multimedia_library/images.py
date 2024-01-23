@@ -5,7 +5,7 @@ from source.configuration import global_params
 
 # remove this if not used elsewhere, only needed to test the scripts that load images or gifs
 pygame.init()
-pygame.display.set_mode((global_params.WIDTH,global_params.HEIGHT), pygame.RESIZABLE, pygame.DOUBLEBUF)
+pygame.display.set_mode((global_params.WIDTH, global_params.HEIGHT), pygame.RESIZABLE, pygame.DOUBLEBUF)
 #
 
 from PIL import Image
@@ -17,6 +17,7 @@ all_image_names = []
 gifs = {}
 gif_frames = {}
 gif_fps = {}
+gif_durations = {}
 MAX_GIF_SIZE = 150
 
 
@@ -71,45 +72,60 @@ def get_image(image_name):
     return no_icon
 
 
+def load_gif_durations(gif):
+    durations = []
+    for frame in range(0, gif.n_frames):
+        gif.seek(frame)
+        durations.append(gif.info['duration'])
+
+    # Calculate the average duration
+    avg_duration = sum(durations) / len(durations)
+    if avg_duration == 0.0:
+        avg_duration = 20.0
+
+    return avg_duration
+
+
+
+def get_gif_duration(gif_name):
+    return gif_durations[gif_name]
+
+
 def load_gif(gif_name):
     path = os.path.join(pictures_path + "gifs", gif_name)
     gif = Image.open(path)
     gifs[gif_name] = gif
     gif_frames[gif_name] = get_gif_frames(gif_name)
-    gif_fps[gif_name] = load_gif_fps(path)
+    gif_fps[gif_name] = load_gif_fps(gif)
+    gif_durations[gif_name] = load_gif_durations(gif)
 
-    #print (f"gif: {gif_name}, fps: {gif_fps[gif_name]}")
+    print (f"gif: {gif_name},frames: {len(gif_frames[gif_name])}, fps: {gif_fps[gif_name]}, duration: {gif_durations[gif_name]}")
+
+
+def load_gif_fps(gif_file):
+    # Get the durations of all frames
+    durations = []
+    for i in range(0, gif_file.n_frames):
+        gif_file.seek(i)
+        durations.append(gif_file.info['duration'])
+
+    # Calculate the average FPS
+    avg_duration = sum(durations) / len(durations)
+
+    try:
+        fps = 1000 / avg_duration  # Calculate the FPS (1000 ms = 1 second)
+    except ZeroDivisionError:
+        fps = 20
+    return fps
 
 
 def get_gif(gif_name):
     return gifs[gif_name]
+
+
 def get_gif_fps(gif_name):
     return gif_fps[gif_name]
-def get_gif_fps__(file_path):
-    with Image.open(file_path) as im:
-        duration = im.info['duration']  # Get the duration of the current frame
-        try:
-            fps = 1000 / duration  # Calculate the FPS (1000 ms = 1 second)
-        except ZeroDivisionError:
-            fps = 0
-        return fps
 
-def load_gif_fps(file_path):
-    with Image.open(file_path) as im:
-        # Get the durations of all frames
-        durations = []
-        for i in range(0, im.n_frames):
-            im.seek(i)
-            durations.append(im.info['duration'])
-
-        # Calculate the average FPS
-        avg_duration = sum(durations) / len(durations)
-
-        try:
-            fps = 1000 / avg_duration  # Calculate the FPS (1000 ms = 1 second)
-        except ZeroDivisionError:
-            fps = 20
-        return fps
 
 def get_gif_frames(gif_name):
     """ Load explosion GIF and extract frames"""
@@ -138,7 +154,7 @@ def get_gif_frames(gif_name):
             frame_surface = frame_surface_raw
 
         frames.append(frame_surface)
-        #frames.pop(0)
+        # frames.pop(0)
     return frames
 
 

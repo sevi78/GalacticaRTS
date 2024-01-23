@@ -108,7 +108,7 @@ class AnimatedSprite(pygame.sprite.Sprite):
 
 
 def main():
-    images = get_gif_frames("explosion1.gif")  # Make sure to provide the relative or full path to the images directory.
+    images = get_gif_frames("explosion2.gif")  # Make sure to provide the relative or full path to the images directory.
     player = AnimatedSprite(position=(100, 100), images=images)
     all_sprites = pygame.sprite.Group(player)  # Creates a sprite group and adds 'player' to it.
 

@@ -3,7 +3,7 @@ import time
 
 import pygame
 
-from source.multimedia_library.images import get_image, get_gif_frames, get_gif, get_gif_fps
+from source.multimedia_library.images import get_image, get_gif_frames, get_gif, get_gif_fps, get_gif_duration
 from source.multimedia_library.sounds import sounds
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_debug import GameObjectDebug
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
@@ -75,6 +75,7 @@ class PanZoomSprite(pygame.sprite.Sprite, PanZoomVisibilityHandler, GameObjectDe
         self.gif_index = 1
         self.gif_start = time.time()
         self.gif_animation_time = 0.1
+        self.current_time = 0
         self.counter = 0
 
         if not self.image_name:
@@ -88,7 +89,7 @@ class PanZoomSprite(pygame.sprite.Sprite, PanZoomVisibilityHandler, GameObjectDe
             self.gif = get_gif(self.image_name)
             self.gif_frames = get_gif_frames(self.image_name)
             self.gif_fps = get_gif_fps(self.image_name)
-            self.gif_animation_time = kwargs.get("gif_animation_time", 1000 / self.gif_fps)
+            self.gif_animation_time = kwargs.get("gif_animation_time", get_gif_duration(self.image_name)/1000)
             self.image_raw = self.gif_frames[1]
             self.image = copy.copy(self.image_raw)
 
@@ -243,7 +244,7 @@ class PanZoomSprite(pygame.sprite.Sprite, PanZoomVisibilityHandler, GameObjectDe
                 if self.sound:
                     sounds.play_sound(self.sound)
 
-        if self.gif_start + self.gif_animation_time > time.time():
+        if time.time() > self.gif_start + self.gif_animation_time:
             self.image_raw = self.gif_frames[self.gif_index]
             self.gif_index += 1
             self.gif_start += self.gif_animation_time
