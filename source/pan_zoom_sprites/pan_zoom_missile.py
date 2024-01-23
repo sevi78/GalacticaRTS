@@ -1,4 +1,3 @@
-import random
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_game_object import PanZoomGameObject
 
 MISSILE_SPEED = 1.0
@@ -19,5 +18,5 @@ class PanZoomMissile(PanZoomGameObject):
         self.target.energy -= self.missile_power
         self.target.weapon_handler.draw_moving_image(self.target, self.missile_power)
 
-        if self.target.energy <= 0:
-            self.explode()
+        # if self.target.energy <= 0:
+        #     self.explode()

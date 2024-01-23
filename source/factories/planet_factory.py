@@ -17,7 +17,7 @@ class PlanetFactory:
         global_params.app.selected_planet = None
 
     def create_planets_from_data(self, data, **kwargs):
-        #pprint.pprint(data)
+        # pprint.pprint(data)
 
         for key, value in data["celestial_objects"].items():
             if "explored" in data["celestial_objects"][key].keys():
@@ -31,8 +31,7 @@ class PlanetFactory:
                 buildings = []
 
             if type(value) == list:
-                value= eval(value)
-
+                value = eval(value)
 
             pan_zoom_planet_button = PanZoomPlanet(
                 win=global_params.win,
@@ -62,7 +61,7 @@ class PlanetFactory:
                 image_name_small=value["image_name_small"],
                 image_name_big=value["image_name_big"],
                 buildings_max=value["buildings_max"],
-                buildings=buildings,#value["buildings"],
+                buildings=buildings,  # value["buildings"],
                 orbit_speed=value["orbit_speed"],
                 orbit_angle=value["orbit_angle"],
                 building_slot_amount=value["building_slot_amount"],
@@ -73,12 +72,16 @@ class PlanetFactory:
                 debug=False,
                 align_image="center",
                 atmosphere_name=value["atmosphere_name"],
-                data= data["celestial_objects"][key]
+                data=data["celestial_objects"][key]
                 )
+
             if explored:
                 pan_zoom_planet_button.get_explored()
+
+            # update stats
             pan_zoom_planet_button.set_population_limit()
 
+            # register
             sprite_groups.planets.add(pan_zoom_planet_button)
 
     def get_all_planets(self, keys):

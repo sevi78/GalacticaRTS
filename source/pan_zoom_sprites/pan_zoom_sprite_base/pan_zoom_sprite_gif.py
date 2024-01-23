@@ -1,8 +1,9 @@
 import copy
+import time
 
 import pygame
 
-from source.multimedia_library.images import get_image, get_gif_frames, get_gif
+from source.multimedia_library.images import get_image, get_gif_frames, get_gif, get_gif_fps
 from source.multimedia_library.sounds import sounds
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_debug import GameObjectDebug
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
@@ -26,7 +27,7 @@ class PanZoomSprite(pygame.sprite.Sprite, PanZoomVisibilityHandler, GameObjectDe
     it has the ability to pan_zoom, means: scale and reposition the images or gif based on the pan_zoom_handler
     to run it, add the instance to a sprite.group.
     the sprite group will then be updated from the main loop and updates all its members
-    always set the world position of the object, the screen position will be calculated automaticaly
+    always set the world position of the object, the screen position will be calculated automatically
     """
 
     # PanZoomSprite
@@ -56,7 +57,7 @@ class PanZoomSprite(pygame.sprite.Sprite, PanZoomVisibilityHandler, GameObjectDe
         self.layer = kwargs.get("layer", 0)
         self.group = kwargs.get("group", None)
         self.property = ""
-        # self.name = "noname"
+        self.name = kwargs.get("name", "no_name")
         self.zoomable = kwargs.get("zoomable", True)
         self.frame_color = colors.frame_color
 
@@ -66,11 +67,14 @@ class PanZoomSprite(pygame.sprite.Sprite, PanZoomVisibilityHandler, GameObjectDe
         self.image_name = image_name
         self.gif = None
         self.gif_frames = None
+        self.gif_fps = None
         self.relative_gif_size = kwargs.get("relative_gif_size", 1.0)
         self.loop_gif = kwargs.get("loop_gif", True)
         self.kill_after_gif_loop = kwargs.get("kill_after_gif_loop", False)
         self.shrink = 1.0
-        self.gif_index = 0
+        self.gif_index = 1
+        self.gif_start = time.time()
+        self.gif_animation_time = 0.1
         self.counter = 0
 
         if not self.image_name:
@@ -83,6 +87,8 @@ class PanZoomSprite(pygame.sprite.Sprite, PanZoomVisibilityHandler, GameObjectDe
         elif self.image_name.endswith(".gif"):
             self.gif = get_gif(self.image_name)
             self.gif_frames = get_gif_frames(self.image_name)
+            self.gif_fps = get_gif_fps(self.image_name)
+            self.gif_animation_time = kwargs.get("gif_animation_time", 1000 / self.gif_fps)
             self.image_raw = self.gif_frames[1]
             self.image = copy.copy(self.image_raw)
 
@@ -141,69 +147,6 @@ class PanZoomSprite(pygame.sprite.Sprite, PanZoomVisibilityHandler, GameObjectDe
 
         self.update_rect()
 
-    # @world_position.setter
-    # def world_position(self, position):
-    #     if not self.previous_world_x:
-    #         self.previous_world_x, self.previous_world_y = position
-    #
-    #     self.world_x, self.world_y = position
-    #     smooth_position(position[0], position[1], self.previous_world_x, self.previous_world_y, 30)
-    #
-    #     #self.screen_position = self.pan_zoom.world_2_screen(self.world_x, self.world_y)
-    #     x,y = smooth_position(self.world_x, self.world_y, self.previous_world_x, self.previous_world_y, 0.1)
-    #     self.screen_position = self.pan_zoom.world_2_screen(x,y)
-    #
-    #
-    #     self.previous_world_x, self.previous_world_y = position
-    #
-    #
-    #     if self.zoomable:
-    #         self.set_screen_size(self.world_width * self.pan_zoom.zoom * self.relative_gif_size,
-    #                              self.world_height * self.pan_zoom.zoom * self.relative_gif_size)
-    #     else:
-    #         self.set_screen_size(self.world_width,
-    #             self.world_height)
-    #     self.update_rect()
-
-    # @world_position.setter
-    # def world_position(self, position):
-    #     self.world_x, self.world_y = position
-    #     diff_x = self.world_x - self.screen_position[0]
-    #     diff_y = self.world_y - self.screen_position[1]
-    #     if abs(diff_x) > 10:
-    #         diff_x = 10 if diff_x > 0 else -10
-    #     if abs(diff_y) > 10:
-    #         diff_y = 10 if diff_y > 0 else -10
-    #     self.screen_position = (self.screen_position[0] + diff_x, self.screen_position[1] + diff_y)
-    #     self.world_x, self.world_y = self.pan_zoom.screen_2_world(*self.screen_position)
-    #
-    #     if self.zoomable:
-    #         self.set_screen_size(self.world_width * self.pan_zoom.zoom * self.relative_gif_size,
-    #                              self.world_height * self.pan_zoom.zoom * self.relative_gif_size)
-    #     else:
-    #         self.set_screen_size(self.world_width,
-    #             self.world_height)
-    #     self.update_rect()
-
-    # @world_position.setter
-    # def world_position(self, position):
-    #     prev_position = (self.world_x, self.world_y)
-    #     self.world_x, self.world_y = position
-    #     distance = math.sqrt((self.world_x - prev_position[0]) ** 2 + (self.world_y - prev_position[1]) ** 2)
-    #
-    #     # Smoothing algorithm
-    #     if distance > 1000:
-    #         dx = self.world_x - prev_position[0]
-    #         dy = self.world_y - prev_position[1]
-    #         angle = math.atan2(dy, dx)
-    #         self.world_x = prev_position[0] + 15 * math.cos(angle)
-    #         self.world_y = prev_position[1] + 15 * math.sin(angle)
-    #
-    #     self.screen_position = self.pan_zoom.world_2_screen(self.world_x, self.world_y)
-    #     self.screen_width = self.world_width * self.pan_zoom.zoom * self.relative_gif_size
-    #     self.screen_height = self.world_height * self.pan_zoom.zoom * self.relative_gif_size
-    #     self.update_rect()
-
     def set_world_position(self, position):
         self.world_position = position
 
@@ -235,13 +178,9 @@ class PanZoomSprite(pygame.sprite.Sprite, PanZoomVisibilityHandler, GameObjectDe
     def update_rect(self):
         if not self.image_raw:
             return
-        # if hasattr(self, "prev_angle"):
-        #     if self.prev_angle and not self.moving:
-        #         image = pygame.transform.scale(self.image_raw, (self.screen_width, self.screen_height))
-        #
-        #         self.image = pygame.transform.rotate(image, self.prev_angle)
-        # else:
-        self.image = pygame.transform.scale(self.image_raw, (self.screen_width * self.shrink, self.screen_height * self.shrink))
+
+        self.image = pygame.transform.scale(self.image_raw, (
+            self.screen_width * self.shrink, self.screen_height * self.shrink))
         self.rect = self.image.get_rect()
 
         self.align_image_rect()
@@ -262,6 +201,30 @@ class PanZoomSprite(pygame.sprite.Sprite, PanZoomVisibilityHandler, GameObjectDe
         elif self.align_image == "bottomright":
             self.rect.bottomright = self.screen_position
 
+    def update_gif_index__(self):
+        if not self.gif:
+            return
+
+        if not self.gif_frames:
+            return
+
+        if self.gif_start + self.gif_animation_time > time.time():
+            if self.gif_index == 1:
+                if self.sound:
+                    sounds.play_sound(self.sound)
+            # print (f"pan_zoom_sprite_gif: update_gif_index: self.gif_index: {self.gif_index}, len(self.gif_frames): {len(self.gif_frames)}")
+            if self.gif_index == len(self.gif_frames) - 1:
+                if self.loop_gif:
+                    self.gif_index = 1
+                if self.kill_after_gif_loop:
+                    self.kill()
+                    return
+            else:
+                self.image_raw = self.gif_frames[self.gif_index]
+                self.gif_index += 1
+
+            self.gif_start += self.gif_animation_time
+
     def update_gif_index(self):
         if not self.gif:
             return
@@ -269,23 +232,21 @@ class PanZoomSprite(pygame.sprite.Sprite, PanZoomVisibilityHandler, GameObjectDe
         if not self.gif_frames:
             return
 
-        self.counter += 1
-        if self.counter % 5 == 0:
-            self.gif_index += 1
+        if self.gif_index == len(self.gif_frames) - 1:
+            if self.loop_gif:
+                self.gif_index = 1
+            if self.kill_after_gif_loop:
+                self.kill()
+                return
+        else:
             if self.gif_index == 1:
                 if self.sound:
                     sounds.play_sound(self.sound)
 
-            if self.gif_index >= len(self.gif_frames):
-                if self.loop_gif:
-                    self.gif_index = 0
-                elif self.kill_after_gif_loop:
-                    self.kill()
-            else:
-                self.image_raw = self.gif_frames[self.gif_index]
-
-    def get_game_paused(self):
-        return global_params.game_paused
+        if self.gif_start + self.gif_animation_time > time.time():
+            self.image_raw = self.gif_frames[self.gif_index]
+            self.gif_index += 1
+            self.gif_start += self.gif_animation_time
 
     def update_pan_zoom_sprite(self):
         # if self.get_game_paused():

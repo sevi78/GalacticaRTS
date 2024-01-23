@@ -1,5 +1,6 @@
 import math
 import os
+import time
 
 import pygame
 from PIL import Image
@@ -8,7 +9,7 @@ from pygame import Vector2
 from source.handlers.file_handler import gifs_path
 from source.handlers.garbage_handler import garbage_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
-from source.multimedia_library.images import get_gif_frames
+from source.multimedia_library.images import get_gif_frames, get_gif_fps
 from source.multimedia_library.sounds import sounds
 from source.handlers.position_handler import rot_center
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zoom_handler
@@ -30,7 +31,10 @@ class GifHandler(pygame.sprite.Sprite):
         self.relative_gif_size = kwargs.get("relative_gif_size", None)
 
         self.frames = get_gif_frames(self.gif)
-        self.index = 0
+        self.gif_start = time.time()
+        self.gif_fps = get_gif_fps(self.gif)
+        self.gif_animation_time = kwargs.get("gif_animation_time", 1000 / self.gif_fps)
+        self.index = 1
         self.counter = 0
         self.image_raw = self.frames[self.index]
         self.image = self.frames[self.index]
@@ -48,11 +52,12 @@ class GifHandler(pygame.sprite.Sprite):
             getattr(sprite_groups, self.group).add(self)
 
     def end_object(self):
-        #self.parent = None
-        #garbage_handler.delete_all_references_from(self)
-        #sprite_groups.gif_handlers.sprites().remove(self)
+        # self.parent = None
+        # garbage_handler.delete_all_references_from(self)
+        # sprite_groups.gif_handlers.sprites().remove(self)
 
         self.kill()
+
     def set_gif(self, gif, **kwargs):
         self.gif = gif
         self.loop = kwargs.get("loop", False)
@@ -78,23 +83,28 @@ class GifHandler(pygame.sprite.Sprite):
             gif.seek(frame)
             frame_surface = pygame.image.fromstring(gif.tobytes(), gif.size, gif.mode)
             frames.append(frame_surface)
+
         return frames
 
     def update(self):
-        self.counter += 1
-        if self.counter % 5 == 0:
-            self.index += 1
+        if self.gif_start + self.gif_animation_time > time.time():
+            # self.counter += 1
+            # if self.counter % 5 == 0:
+
             if self.index == 1:
                 if self.sound:
                     sounds.play_sound(getattr(sounds, self.sound))
 
-            if self.index >= len(self.frames):
+            if self.index == len(self.frames) - 1:
                 if self.loop:
-                    self.index = 0
-
+                    self.index = 1
             else:
                 self.image_raw = self.frames[self.index]
                 self.image = self.frames[self.index]
+
+                self.index += 1
+
+            self.gif_start += self.gif_animation_time
 
         self.set_size()
         self.set_gif_position()
@@ -131,8 +141,10 @@ class GifHandler(pygame.sprite.Sprite):
     def set_gif_position(self):
 
         if self.relative_gif_size:
-            self.rect.x = self.parent.rect.x - (self.max_size - self.parent.rect.width) / 2 + (self.offset_x * pan_zoom_handler.zoom)
-            self.rect.y = self.parent.rect.y - (self.max_size - self.parent.rect.height) / 2 + (self.offset_y * pan_zoom_handler.zoom)
+            self.rect.x = self.parent.rect.x - (self.max_size - self.parent.rect.width) / 2 + (
+                        self.offset_x * pan_zoom_handler.zoom)
+            self.rect.y = self.parent.rect.y - (self.max_size - self.parent.rect.height) / 2 + (
+                        self.offset_y * pan_zoom_handler.zoom)
         else:
             self.rect.x = self.parent.rect.x + (self.offset_x * pan_zoom_handler.zoom)
             self.rect.y = self.parent.rect.y + (self.offset_y * pan_zoom_handler.zoom)
@@ -143,7 +155,6 @@ class GifHandler(pygame.sprite.Sprite):
     def draw(self):
         if self._hidden:
             return
-
         try:
             self.update()
 
@@ -155,5 +166,3 @@ class GifHandler(pygame.sprite.Sprite):
                 self.parent.win.blit(self.image, self.rect)
         except AttributeError as e:
             print("gif_handler error", e)
-
-

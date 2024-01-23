@@ -1,4 +1,3 @@
-import math
 import random
 import pygame
 
@@ -7,11 +6,9 @@ from source.draw.zoomable_rect import draw_zoomable_rect
 from source.editors.editor_base.editor_base import EditorBase
 from source.editors.editor_base.editor_config import ARROW_SIZE, FONT_SIZE, TOP_SPACING
 from source.factories.planet_factory import planet_factory
-from source.factories.solar_system_factory import SolarSystemFactory
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.gui.widgets.inputbox import InputBox
 from source.gui.widgets.selector import Selector
-from source.handlers import level_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zoom_handler
 from source.factories.universe_factory import universe_factory
@@ -29,13 +26,6 @@ class LevelEdit(EditorBase):
 
     def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
         EditorBase.__init__(self, win, x, y, width, height, isSubWidget=False, **kwargs)
-        # # editor vars
-        # self.win = win
-        # self.world_x = x
-        # self.world_y = y
-        # self.width = width
-        # self.height = height
-        # self.spacing_x =
         self.level_handler = global_params.app.level_handler
 
         #  widgets
@@ -67,9 +57,6 @@ class LevelEdit(EditorBase):
 
         # hide initially
         self.hide()
-
-        # self.solar_system_factory = SolarSystemFactory(
-        # self.width, self.height, self.universe_density, self.collectable_item_amount, self.suns, self.planets, self.moons)
 
     def create_randomize_button(self):
         button_size = 32
@@ -126,7 +113,6 @@ class LevelEdit(EditorBase):
         self.widgets.append(self.inputbox)
 
     def create_selectors(self):
-        """"""
         x = self.world_x + self.world_width / 2 - ARROW_SIZE / 2
         y = 140
 
@@ -143,17 +129,14 @@ class LevelEdit(EditorBase):
             else:
                 print(f"cant create selector, no list availlable:{key}")
 
-
-
     def set_selector_current_value(self):
         """updates the selectors values"""
         for i in self.selectors:
-            # i.set_current_value(getattr(self, i.key))
             i.set_current_value(self.level_handler.data["globals"][i.key])
 
     def selector_callback(self, key, value):
         """this is the selector_callback function called from the selector to return the values to the editor"""
-        # setattr(self, key, value)
+
         if key in self.level_handler.data["globals"].keys():
             self.level_handler.data["globals"][key] = value
         else:
@@ -174,12 +157,7 @@ class LevelEdit(EditorBase):
 
     def refresh_level(self):
         self.level_handler.delete_level()
-
         self.level_handler.generate_level_dict_from_editor()
-        # recreate objects
-        # self.solar_system_factory = SolarSystemFactory(
-        #     self.width, self.height, self.universe_density, self.collectable_item_amount, self.suns, self.planets, self.moons)
-        # self.level_handler.data = self.solar_system_factory.randomize_data()
         planet_factory.create_planets_from_data(data=self.level_handler.data)
         self.level_handler.create_universe()
 
@@ -231,5 +209,3 @@ class LevelEdit(EditorBase):
             self.draw_frame()
             self.inputbox.update()
             self.draw_level_borders()
-
-

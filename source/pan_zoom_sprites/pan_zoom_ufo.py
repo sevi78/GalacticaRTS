@@ -83,8 +83,7 @@ class PanZoomUfo(PanZoomGameObject, InteractionHandler):
         self.gun_power = 0
         self.emp_attacked = False
         self.gif = "electro_discharge.gif"
-        self.gif_handler = GifHandler(self, self.gif, loop=True, relative_gif_size=1.2, offset_y= 5)
-
+        self.gif_handler = GifHandler(self, self.gif, loop=True, relative_gif_size=1.2, offset_y=5)
 
         # energy progress bar
         self.progress_bar = ProgressBar(
@@ -202,7 +201,7 @@ class PanZoomUfo(PanZoomGameObject, InteractionHandler):
 
         WidgetHandler.remove_widget(self.progress_bar)
         self.progress_bar = None
-
+        self.gif_handler.end_object()
         for i in sprite_groups.ships.sprites():
             garbage_handler.delete_all_references(self, i)
             # for key, value in i.__dict__.items():
@@ -212,6 +211,7 @@ class PanZoomUfo(PanZoomGameObject, InteractionHandler):
         self.kill()
 
     def update(self):
+        #print (f"ufo.update: explode_calls {self.explode_calls}")
         if not global_params.game_paused:
             self.update_pan_zoom_game_object()
             self.set_attack_distance()
@@ -239,6 +239,5 @@ class PanZoomUfo(PanZoomGameObject, InteractionHandler):
 
         # set gif handler to make sure its only drawn if self emp attacked
         self.gif_handler._hidden = not self.emp_attacked
-
 
         # self.debug_object()

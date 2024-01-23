@@ -7,22 +7,21 @@ from source.text.info_panel_text_generator import info_panel_text_generator
 
 
 # def create_random_event(self):
-    #     if self.event_time > self.random_event_time:
-    #         self.random_event_time += random.randint(self.min_intervall, self.intervall) * global_params.game_speed
-    #         event = GameEvent(
-    #             name="alien_deal_random",
-    #             title="Deal Offer",
-    #             body="the alien population of the planet (not set) offers you a deal: they want 200 food for 33 technology.",
-    #             end_text="do you accept the offer?",
-    #             deal=Deal(offer={random.choice(resources): random.randint(0, 1000)}, request={random.choice(resources): random.randint(0, 1000)}),
-    #             functions={"yes": None, "no": None},
-    #             condition=None
-    #             )
-    #         event.offer = {random.choice(resources): random.randint(0, 1000)}
-    #         event.request = {random.choice(resources): random.randint(0, 1000)}
-    #         GameEvent.game_events[event.name] = event.name
-    #         self.set_game_event(event)
-
+#     if self.event_time > self.random_event_time:
+#         self.random_event_time += random.randint(self.min_intervall, self.intervall) * global_params.game_speed
+#         event = GameEvent(
+#             name="alien_deal_random",
+#             title="Deal Offer",
+#             body="the alien population of the planet (not set) offers you a deal: they want 200 food for 33 technology.",
+#             end_text="do you accept the offer?",
+#             deal=Deal(offer={random.choice(resources): random.randint(0, 1000)}, request={random.choice(resources): random.randint(0, 1000)}),
+#             functions={"yes": None, "no": None},
+#             condition=None
+#             )
+#         event.offer = {random.choice(resources): random.randint(0, 1000)}
+#         event.request = {random.choice(resources): random.randint(0, 1000)}
+#         GameEvent.game_events[event.name] = event.name
+#         self.set_game_event(event)
 
 
 class GameEventHandler():
@@ -45,17 +44,17 @@ class GameEventHandler():
 
         # add game events
         self.game_events["start"] = GameEvent(
-                name="start",
-                title="Welcome !!!",
-                body="... after 75000 years of darkness, you finally reached the the solar system " \
-                     "of ExoPrime I.\nYou are the last survivors from PlanetEarth.Mankind is " \
-                     "counting on you, so don't mess it up!!!\nYour goal is to get at least 500 people " \
-                     "surviving ! ",
-                end_text="GOOD LUCK !",
-                functions=None,
-                condition=None,
-                id = len(self.game_events.keys())
-                )
+            name="start",
+            title="Welcome !!!",
+            body="... after 75000 years of darkness, you finally reached the the solar system " \
+                 "of ExoPrime I.\nYou are the last survivors from PlanetEarth.Mankind is " \
+                 "counting on you, so don't mess it up!!!\nYour goal is to get at least 500 people " \
+                 "surviving ! ",
+            end_text="GOOD LUCK !",
+            functions=None,
+            condition=None,
+            id=len(self.game_events.keys())
+            )
 
         self.game_events["end"] = GameEvent(
             name="end",
@@ -64,14 +63,14 @@ class GameEventHandler():
             end_text="make it better next time!  RESTART?!",
             functions={"yes": "restart_game", "no": "end_game"},
             condition=None,
-            id = len(self.game_events.keys())
+            id=len(self.game_events.keys())
             )
 
         self.event_cue.append(self.game_events["start"])
 
         # setup variables
         self.setup()
-        
+
     def setup(self):
         data = load_file("game_event_handler.json")
         for key, value in data.items():
@@ -95,7 +94,6 @@ class GameEventHandler():
         # print (f"self.parent.player.{self.goal},  {eval(f'self.parent.player.{self.goal}')}")
         # check if level goal is reached
 
-
         # end game event
         # self.end_game(self.parent.player)
         # self.end_game()
@@ -104,7 +102,7 @@ class GameEventHandler():
         for key, value in player.get_stock().items():
             if value < 0:
                 if not key == "energy":
-                    print (f"end_game: {key} is lower than 0")
+                    print(f"end_game: {key} is lower than 0")
                     if not "end" in self.obsolete_events:
                         self.app.event_panel.set_game_event(self.game_events["end"])
 
@@ -113,6 +111,7 @@ class GameEventHandler():
             self.app.level_handler.load_level(0, data=load_file(self.app.level_handler.current_game, folder="games"), current_game=self.app.level_handler.current_game)
         else:
             self.app.level_handler.load_level(self.app.level_handler.level)
+
     def update(self):
         # check the cue and activate first event, then delete it
         if len(self.event_cue) > 0:
@@ -138,7 +137,7 @@ class GameEventHandler():
 
         # end game event
         self.end_game()
-        #print (self.game_events)
+        # print (self.game_events)
 
     def evaluate_goal(self):
         # reset the goal success to make sure values are correct after level load
@@ -171,16 +170,16 @@ class GameEventHandler():
         # create event if succeeded
         all_values_are_true = all(value for value in self.goal_success.values())
         if all_values_are_true:
-            print (self.data)
+            print(self.data)
             if not f"goal{self.level}" in self.obsolete_events.keys():
                 self.game_events[f"goal{self.level}"] = GameEvent(
                     name=f"goal{self.level}",
                     title="Congratulation!",
                     body=f"{body}. Well Done! move to next level !",
                     end_text="",
-                    functions= {"yes": "load_next_level"},
-                    condition= "",
-                    id = len(self.game_events.keys())
+                    functions={"yes": "load_next_level"},
+                    condition="",
+                    id=len(self.game_events.keys())
                     )
                 self.event_cue.append(self.game_events[f"goal{self.level}"])
                 self.app.event_panel.set_game_event(self.game_events[f"goal{self.level}"])
@@ -189,11 +188,9 @@ class GameEventHandler():
         self.level += 1
         global_params.app.level_handler.load_level(f"level_{self.level}.json", "levels")
 
-
-
     def activate_timed_events(self):
         pass
-        #print (f"activating timed event:")
+        # print (f"activating timed event:")
 
 
 def main():
@@ -202,8 +199,6 @@ def main():
     while run:
         game_event_handler.update()
 
+
 if __name__ == "__main__":
     main()
-
-
-

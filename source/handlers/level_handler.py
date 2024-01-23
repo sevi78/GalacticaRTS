@@ -4,8 +4,6 @@ import random
 from pprint import pprint
 
 from source.configuration import global_params
-from source.factories.building_factory import building_factory
-
 from source.factories.planet_factory import planet_factory
 from source.factories.universe_factory import universe_factory
 from source.gui.event_text import event_text
@@ -209,7 +207,7 @@ class LevelDictGenerator:
             "world_height": size,
             "info_text": "unknown " + body_type + ":\n\nresources: ???\nenergy: ???\n",
             "population_grow": random.uniform(0.1, 1.0),
-            "population":0,
+            "population": 0,
             "alien_population": alien_population,
             "alien_attitude": random.randint(0, 100),
             "buildings_max": random.randint(5, 20),
@@ -323,7 +321,6 @@ class LevelHandler:
         self.data = load_file(filename, folder=folder)
         global_params.app.level_edit.set_selector_current_value()
 
-
         # delete level
         self.delete_level()
 
@@ -340,13 +337,6 @@ class LevelHandler:
                 ships[key]["world_x"]), int(
                 ships[key]["world_y"]), global_params.app, ships[key]["weapons"], data=ships[key])
 
-        # setup level_edit
-        # self.app.level_edit.data = self.data
-        # self.app.level_edit.set_data_to_editor(self.level)
-        # self.app.level_edit.set_selector_current_value()
-        # self.app.level_edit.width = self.data.get("globals").get("width")
-        # self.app.level_edit.height = self.data.get("globals").get("height")
-        #
         # # create universe
         self.create_universe()
 

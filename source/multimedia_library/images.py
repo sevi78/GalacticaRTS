@@ -1,12 +1,14 @@
 import os
 import pygame
-# remove this if not used elsewhere, only needet to test the scripts that run on their own
-# pygame.init()
-# pygame.display.set_mode((1000,1000), pygame.RESIZABLE, pygame.DOUBLEBUF)
+
+from source.configuration import global_params
+
+# remove this if not used elsewhere, only needed to test the scripts that load images or gifs
+pygame.init()
+pygame.display.set_mode((global_params.WIDTH,global_params.HEIGHT), pygame.RESIZABLE, pygame.DOUBLEBUF)
 #
 
 from PIL import Image
-
 from source.handlers.file_handler import pictures_path
 
 images = {}
@@ -14,6 +16,7 @@ all_image_names = []
 
 gifs = {}
 gif_frames = {}
+gif_fps = {}
 MAX_GIF_SIZE = 150
 
 
@@ -73,11 +76,40 @@ def load_gif(gif_name):
     gif = Image.open(path)
     gifs[gif_name] = gif
     gif_frames[gif_name] = get_gif_frames(gif_name)
+    gif_fps[gif_name] = load_gif_fps(path)
+
+    #print (f"gif: {gif_name}, fps: {gif_fps[gif_name]}")
 
 
 def get_gif(gif_name):
     return gifs[gif_name]
+def get_gif_fps(gif_name):
+    return gif_fps[gif_name]
+def get_gif_fps__(file_path):
+    with Image.open(file_path) as im:
+        duration = im.info['duration']  # Get the duration of the current frame
+        try:
+            fps = 1000 / duration  # Calculate the FPS (1000 ms = 1 second)
+        except ZeroDivisionError:
+            fps = 0
+        return fps
 
+def load_gif_fps(file_path):
+    with Image.open(file_path) as im:
+        # Get the durations of all frames
+        durations = []
+        for i in range(0, im.n_frames):
+            im.seek(i)
+            durations.append(im.info['duration'])
+
+        # Calculate the average FPS
+        avg_duration = sum(durations) / len(durations)
+
+        try:
+            fps = 1000 / avg_duration  # Calculate the FPS (1000 ms = 1 second)
+        except ZeroDivisionError:
+            fps = 20
+        return fps
 
 def get_gif_frames(gif_name):
     """ Load explosion GIF and extract frames"""
@@ -106,11 +138,17 @@ def get_gif_frames(gif_name):
             frame_surface = frame_surface_raw
 
         frames.append(frame_surface)
+        #frames.pop(0)
     return frames
 
 
-def get_image_names_from_folder(folder):
+def get_image_names_from_folder(folder, **kwargs):
+    startswith_string = kwargs.get("startswith_string", "")
     image_names = os.listdir(pictures_path + folder)
+
+    if startswith_string:
+        image_names = [i for i in image_names if i.startswith(startswith_string)]
+
     return image_names
 
 
