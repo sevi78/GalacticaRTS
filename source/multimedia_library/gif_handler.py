@@ -7,7 +7,6 @@ from PIL import Image
 from pygame import Vector2
 
 from source.handlers.file_handler import gifs_path
-from source.handlers.garbage_handler import garbage_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.multimedia_library.images import get_gif_frames, get_gif_fps, get_gif_duration
 from source.multimedia_library.sounds import sounds
@@ -92,9 +91,9 @@ class GifHandler(pygame.sprite.Sprite):
                 if self.sound:
                     sounds.play_sound(getattr(sounds, self.sound))
 
-            if self.index == len(self.frames) - 1:
+            if self.index == len(self.frames):
                 if self.loop:
-                    self.index = 1
+                    self.index = 0
             else:
                 self.image_raw = self.frames[self.index]
                 self.image = self.frames[self.index]

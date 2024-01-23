@@ -233,9 +233,9 @@ class PanZoomSprite(pygame.sprite.Sprite, PanZoomVisibilityHandler, GameObjectDe
         if not self.gif_frames:
             return
 
-        if self.gif_index == len(self.gif_frames) - 1:
+        if self.gif_index == len(self.gif_frames):
             if self.loop_gif:
-                self.gif_index = 1
+                self.gif_index = 0
             if self.kill_after_gif_loop:
                 self.kill()
                 return

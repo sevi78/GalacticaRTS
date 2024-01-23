@@ -8,7 +8,7 @@ pygame.init()
 pygame.display.set_mode((global_params.WIDTH, global_params.HEIGHT), pygame.RESIZABLE, pygame.DOUBLEBUF)
 #
 
-from PIL import Image
+from PIL import Image, ImageSequence
 from source.handlers.file_handler import pictures_path
 
 images = {}
@@ -143,18 +143,28 @@ def get_gif_frames(gif_name):
         rescale = True
 
     for frame in range(gif.n_frames):
-        gif.seek(frame)
-        frame_surface_raw = pygame.image.fromstring(gif.tobytes(), gif.size, gif.mode).convert_alpha()
+        if not frame == 0:
+            gif.seek(frame)
+            frame_surface_raw = pygame.image.fromstring(gif.tobytes(), gif.size, gif.mode).convert_alpha()
 
-        # Rescale the images if necessary
-        if rescale:
-            new_size = (int(gif.size[0] * ratio), int(gif.size[1] * ratio))
-            frame_surface = pygame.transform.scale(frame_surface_raw, new_size)
-        else:
-            frame_surface = frame_surface_raw
+            # Rescale the images if necessary
+            if rescale:
+                new_size = (int(gif.size[0] * ratio), int(gif.size[1] * ratio))
+                frame_surface = pygame.transform.scale(frame_surface_raw, new_size)
+            else:
+                frame_surface = frame_surface_raw
 
-        frames.append(frame_surface)
+            frames.append(frame_surface)
         # frames.pop(0)
+    return frames
+
+def get_gif_frames__(gif_name):
+    frames = []
+    im = get_gif(gif_name)
+
+    for frame in ImageSequence.Iterator(im):
+        frames.append(frame.copy())
+
     return frames
 
 
