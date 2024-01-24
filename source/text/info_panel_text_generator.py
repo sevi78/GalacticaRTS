@@ -387,7 +387,7 @@ class InfoPanelTextGenerator:
             res_string += i + "\n"
 
         infotext += (f"\n\narea: {area_text}\nsuns: {num_suns}\nplanets: {num_planets}\nmoons: {num_moons}\n"
-                     f"alien population: {format_number(alien_population_count, 3)}\n\nresources:\n\n{res_string}\n\n")
+                     f"alien population: {format_number(alien_population_count, 1)}\n\nresources:\n\n{res_string}\n\n")
 
         infotext += (f"{suntext}{planettext}{moontext}\n"
                      f"{resource_text}\n{alien_text}")
