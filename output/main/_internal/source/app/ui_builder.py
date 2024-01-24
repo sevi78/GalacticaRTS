@@ -104,10 +104,10 @@ class UIBuilder(SceneBuilder):
             pygame.display.get_surface().get_rect().y,
             width*1.5, height*1.5, parent=self)
 
-        self.level_select = LevelSelect(pygame.display.get_surface(),
-            pygame.display.get_surface().get_rect().centerx - width / 2,
-            pygame.display.get_surface().get_rect().y,
-            width, width, parent=self, obj=None)
+        # self.level_select = LevelSelect(pygame.display.get_surface(),
+        #     pygame.display.get_surface().get_rect().centerx - width / 2,
+        #     pygame.display.get_surface().get_rect().y,
+        #     width, width, parent=self, obj=None)
 
         self.planet_edit = PlanetEdit(pygame.display.get_surface(),
             pygame.display.get_surface().get_rect().centerx - width / 2,
