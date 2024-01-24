@@ -1,10 +1,9 @@
 import random
 import sys
-
 import pygame
-from source.factories.building_factory import building_factory
-from source.multimedia_library.images import get_image
+#from source.multimedia_library.images import get_image
 from source.configuration import global_params
+from source.multimedia_library.images import get_image
 
 resources = ["water", "food", "energy", "technology", "minerals"]
 
@@ -54,9 +53,9 @@ class Deal:
 
         player = global_params.app.player
 
-        # extract "city" from dict
+        # extract "population" from dict
         d_raw = player.get_stock()
-        d = {key: max(0, value) for key, value in d_raw.items() if key != "city"}
+        d = {key: max(0, value) for key, value in d_raw.items() if key != "population"}
 
         # check if any value in the stock is less than 0
         if any(value < 0 for value in d.values()):
@@ -84,9 +83,9 @@ class Deal:
         if not global_params.app:
             return
         player = global_params.app.player
-        # extract "city" from dict
+        # extract "population" from dict
         d_raw = player.get_stock()
-        d = {key: max(0, value) for key, value in d_raw.items() if key != "city"}
+        d = {key: max(0, value) for key, value in d_raw.items() if key != "population"}
 
         # get key with lowest value
         lowest_value_key = min(d, key=d.get)
@@ -105,9 +104,9 @@ class Deal:
         if not global_params.app:
             return
         player = global_params.app.player
-        # extract "city" from dict
+        # extract "population" from dict
         d_raw = player.get_stock()
-        d = {key: max(0, value) for key, value in d_raw.items() if key != "city"}
+        d = {key: max(0, value) for key, value in d_raw.items() if key != "population"}
 
         # get key with lowest value
         lowest_value_key = min(d, key=d.get)
@@ -146,20 +145,23 @@ class GameEvent:
     - functions: any functions associated with the event.
     - deal: the deal offered by the alien population of a randomly selected planet.
     - event_id: the unique identifier of the event."""
-    game_events = {}
 
-    def __init__(self, name, title, body, end_text, functions, **kwargs):
+
+    def __init__(self, name, title, body, end_text, functions, condition,id,  **kwargs):
         self.name = name
         self.title = title
         self.body = body
         self.end_text = end_text
         self.functions = functions
         self.deal = kwargs.get("deal", None)
-        self.event_id = len(GameEvent.game_events.keys())
+        self.event_id = id
         self.image = kwargs.get("image", get_image("trade_panel.png"))
+        self.level = kwargs.get("level", 0)
+        self.condition = condition
 
-        GameEvent.game_events[self.name] = self
-
+        #GameEvent.game_events[self.name] = self
+    def __repr__(self):
+        return self.name
     def set_body(self):
         # check for valid references, otherwise return
         if not global_params.app:
@@ -198,79 +200,86 @@ class GameEvent:
         else:
             self.body = f"some aliens offer you a deal: they want {request_text} for {offer_text}"
 
-    def end_game(self):
+    def end_game__(self):
         pygame.quit()
         quit()
         sys.exit()
 
-    def restart_game(self):
+    def restart_game__(self):
         print("restart game")
         global_params.app.restart_game()
 
 
+
+
 # define GameEvents
-start = GameEvent(
-    name="start",
-    title="Welcome !!!",
-    body="... after 75000 years of darkness, you finally reached the the solar system " \
-         "of ExoPrime I.\nYou are the last survivors from PlanetEarth.Mankind is " \
-         "counting on you, so don't mess it up!!!\nYour goal is to get at least 500 people " \
-         "surviving ! ",
-    end_text="GOOD LUCK !",
-    functions=None,
-    )
+# start = GameEvent(
+#     name="start",
+#     title="Welcome !!!",
+#     body="... after 75000 years of darkness, you finally reached the the solar system " \
+#          "of ExoPrime I.\nYou are the last survivors from PlanetEarth.Mankind is " \
+#          "counting on you, so don't mess it up!!!\nYour goal is to get at least 500 people " \
+#          "surviving ! ",
+#     end_text="GOOD LUCK !",
+#     functions=None,
+#     condition=None
+#     )
 
-goal1 = GameEvent(
-    name="goal1",
-    title="Congratulation!",
-    body="your population has reached 500 people.  ",
-    end_text="",
-    functions=None
-    )
+# goal = GameEvent(
+#     name="goal",
+#     title="Congratulation!",
+#     body=f"your population has reached {} people. Well Done! move to next level ?",
+#     end_text="",
+#     functions= {"yes": "load_next_level", "no": "end_game"}
+#     )
 
-goal2 = GameEvent(
-    name="goal2",
-    title="Congratulation!",
-    body="your population has reached 1000 people.\nYou are now able to build second level buildings like:\n\n" +
-         str(building_factory.get_a_list_of_building_names_with_build_population_minimum_bigger_than(1000)).split("[")[
-             1].split("]")[0],
-    end_text="go for it!",
-    functions=None
-    )
+# goal1 = GameEvent(
+#     name="goal1",
+#     title="Congratulation!",
+#     body="your population has reached 500 people. Well Done! move to next level ?",
+#     end_text="",
+#     functions= {"yes": "load_next_level", "no": "end_game"}
+#     )
+#
+# goal2 = GameEvent(
+#     name="goal2",
+#     title="Congratulation!",
+#     body="your population has reached 1000 people.\nYou are now able to build second level buildings like:\n\n" +
+#          str(building_factory.get_a_list_of_building_names_with_build_population_minimum_bigger_than(1000)).split("[")[
+#              1].split("]")[0],
+#     end_text="go for it!",
+#     functions=None
+#     )
+#
+# goal3 = GameEvent(
+#     name="goal3",
+#     title="Congratulation!",
+#     body="your population has reached 10000 people.\nYou are now able to build third level buildings like:\n\n" +
+#          str(building_factory.get_a_list_of_building_names_with_build_population_minimum_bigger_than(10000)).split("[")[
+#              1].split("]")[0],
+#     end_text="go for it!",
+#     functions=None
+#     )
 
-goal3 = GameEvent(
-    name="goal3",
-    title="Congratulation!",
-    body="your population has reached 10000 people.\nYou are now able to build third level buildings like:\n\n" +
-         str(building_factory.get_a_list_of_building_names_with_build_population_minimum_bigger_than(10000)).split("[")[
-             1].split("]")[0],
-    end_text="go for it!",
-    functions=None
-    )
+# alien_deal_random = GameEvent(
+#     name="alien_deal_random",
+#     title="Deal Offer",
+#     body="the alien population of the planet (not set) offers you a deal: they want 200 food for 33 technology.",
+#     end_text="do you accept the offer?",
+#     deal=Deal(offer={random.choice(resources): random.randint(0, 1000)}, request={random.choice(resources): random.randint(0, 1000)}),
+#     functions={"yes": None, "no": None},
+#     condition=None
+#     )
+#
+# friendly_trader = GameEvent(
+#     name="friendly_trader",
+#     title="Deal Offer",
+#     body="the alien population of the planet (not set) offers you a deal: they want 200 food for 33 technology.",
+#     end_text="do you accept the offer?",
+#     deal=Deal(offer={random.choice(resources): random.randint(0, 1000)}, request={random.choice(resources): random.randint(0, 1000)}, friendly=True),
+#     functions={"yes": None, "no": None},
+#     condition=None,
+#     friendly=True
+#     )
+#
 
-alien_deal_random = GameEvent(
-    name="alien_deal_random",
-    title="Deal Offer",
-    body="the alien population of the planet (not set) offers you a deal: they want 200 food for 33 technology.",
-    end_text="do you accept the offer?",
-    deal=Deal(offer={random.choice(resources): random.randint(0, 1000)}, request={random.choice(resources): random.randint(0, 1000)}),
-    functions={"yes": None, "no": None},
-    )
-
-friendly_trader = GameEvent(
-    name="friendly_trader",
-    title="Deal Offer",
-    body="the alien population of the planet (not set) offers you a deal: they want 200 food for 33 technology.",
-    end_text="do you accept the offer?",
-    deal=Deal(offer={random.choice(resources): random.randint(0, 1000)}, request={random.choice(resources): random.randint(0, 1000)}, friendly=True),
-    functions={"yes": None, "no": None},
-    friendly=True
-    )
-
-end = GameEvent(
-    name="end",
-    title="GAME OVER !!!",
-    body="... Bad Luck !!! ... ",
-    end_text="make it better next time!  RESTART?!",
-    functions={"yes": "restart_game", "no": "end_game"},
-    )

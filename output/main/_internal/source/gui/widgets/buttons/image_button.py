@@ -120,9 +120,6 @@ class ImageButton(WidgetBase):
             else:
                 self.clicked = False
 
-    def execute__(self, code):# not used
-        exec(code)
-
     def draw(self):
         """ Display to surface """
         # self.update_position()

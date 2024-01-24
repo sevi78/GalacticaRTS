@@ -73,15 +73,14 @@ class Icon(WidgetBase):
                 if self.rect.collidepoint(event.pos):
                     if self.function:
                         print("executing:", self.function)
-                        exec(self.function)
 
     def set_text(self):
         if self.display_value_only:
             self.text = str(self.value)
 
         if self.key != "":
-            if self.key == "city":
-                self.text = str(int(getattr(self.parent.player, "population"))) + "/" + format_number(self.parent.player.population_limit, 1)
+            if self.key == "population":
+                self.text = str(int(self.value)) + "/" + format_number(self.parent.player.population_limit, 1)
             else:
                 self.text = str(int(self.value)) + "/" + str(int(getattr(self.parent, "production_" + self.key)))
 

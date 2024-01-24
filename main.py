@@ -6,6 +6,7 @@ import pygame
 from source.app.app_helper import AppHelper, select_next_item_in_list
 from source.app.ui_builder import UIBuilder
 from source.editors.level_edit import LevelEdit
+from source.editors.level_select import LevelSelect
 from source.factories.ship_factory import ShipFactory
 from source.game_play.cheat import Cheat
 from source.game_play.enemy_handler import enemy_handler
@@ -254,18 +255,33 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
 def main():
     EDITOR_WIDTH = 700
     EDITOR_HEIGHT = 600
-
+    # initialize pygame
     pygame.init()
+
+    # initialize app
     app = App(global_params.WIDTH, global_params.HEIGHT)
+
+    # initialize editors
     app.box_selection = BoxSelection(app.win, sprite_groups.ships.sprites() + sprite_groups.planets.sprites())
     app.level_handler = LevelHandler(app)
+    app.level_select = LevelSelect(pygame.display.get_surface(),
+            pygame.display.get_surface().get_rect().centerx - EDITOR_WIDTH / 2,
+            pygame.display.get_surface().get_rect().y,
+            EDITOR_WIDTH, EDITOR_WIDTH, parent=app, obj=None)
+
     app.level_edit = LevelEdit(pygame.display.get_surface(),
         pygame.display.get_surface().get_rect().centerx - EDITOR_WIDTH / 2,
         pygame.display.get_surface().get_rect().y,
         EDITOR_WIDTH, EDITOR_HEIGHT, parent=app)
     app.game_event_handler = GameEventHandler(data=load_file("game_event_handler.json"), app=app)
-    app.level_handler.load_level("level_0.json", "levels")
 
+    # load first level
+    app.level_handler.load_level("level_0.json", "levels")
+    # update level_successes
+    app.level_handler.update_level_successes()
+
+
+    # start game loop
     app.loop()
 
 

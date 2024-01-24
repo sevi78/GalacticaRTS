@@ -2,13 +2,13 @@ import math
 from pygame import Vector2
 
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_gif import PanZoomSprite
-from source.handlers.pan_zoom_sprite_handler import sprite_groups
+
 from source.configuration import global_params
 from source.handlers.position_handler import rot_center
 
 GAME_OBJECT_SPEED = 2.0
 screen = global_params.win
-explosions = sprite_groups.explosions
+
 
 
 class PanZoomGameObject(PanZoomSprite):
@@ -84,10 +84,13 @@ class PanZoomGameObject(PanZoomSprite):
                     self.target.world_y - self.target.world_height / 2))
 
     def rotate_image_to_target(self, **kwargs):
+        """
         # 0 - image is looking to the right
         # 90 - image is looking up
         # 180 - image is looking to the left
         # 270 - image is looking down
+        """
+
         target = kwargs.get("target", self.target)
         rotate_correction_angle = kwargs.get("rotate_correction_angle", self.rotate_correction_angle)
 
@@ -124,7 +127,10 @@ class PanZoomGameObject(PanZoomSprite):
             return
 
         # Normalize the direction vector
-        direction.normalize()
+        try:
+            direction.normalize()
+        except Exception as e:
+            print (f"move_towards_target error! (direction.normalize()):{e}")
 
         # Calculate the displacement vector for each time step
         displacement = direction * self.speed * global_params.time_factor
@@ -136,21 +142,24 @@ class PanZoomGameObject(PanZoomSprite):
         try:
             self.world_x += displacement.x / time_steps
             self.world_y += displacement.y / time_steps
-        except ZeroDivisionError:
-            pass
-            # print("move_towards_target.ZeroDivisionError")
+        except ZeroDivisionError as e:
+            print (f"move_towards_target error! (self.world_x += displacement.x / time_steps...):{e}")
 
     def explode(self, **kwargs):
+        #self.explode_calls += 1
         sound = kwargs.get("sound", None)
         size = kwargs.get("size", (40, 40))
 
         x, y = self.world_x, self.world_y
         if not self.exploded:
-            explosion = PanZoomSprite(screen, x, y, size[0], size[1], self.pan_zoom, self.explosion_name,
+            explosion = PanZoomSprite(
+                screen, x, y, size[0], size[1], self.pan_zoom, self.explosion_name,
                 loop_gif=False, kill_after_gif_loop=True, align_image="center",
-                relative_gif_size=self.explosion_relative_gif_size, layer=10, sound=sound)
-            explosions.add(explosion)
+                relative_gif_size=self.explosion_relative_gif_size,
+                layer=10, sound=sound, group="explosions", name="explosion")
+
             self.exploded = True
+
         if hasattr(self, "__delete__"):
             self.__delete__(self)
         self.kill()

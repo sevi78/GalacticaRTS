@@ -1,5 +1,6 @@
 from pygame.sprite import LayeredUpdates
 from source.gui.lod import inside_screen
+from source.handlers import widget_handler
 
 
 class PanZoomLayeredUpdates(LayeredUpdates):
@@ -55,13 +56,15 @@ class SpriteGroups:
         self.grids = PanZoomLayeredUpdates()
         self.celestial_objects = PanZoomLayeredUpdates()
         self.moving_images = PanZoomLayeredUpdates()
+        self.gif_handlers = PanZoomLayeredUpdates()
 
     def __str__(self):
         return (f"ufos: {len(self.ufos)}, missiles: {len(self.missiles)} ships:"
                 f" {len(self.ships)} planets: {len(self.planets)} collectable_items:{len(self.collectable_items)} "
                 f"explosions: {len(self.explosions)} target_objects: {self.target_objects} quadrants: {self.quadrants}")
 
-    def update(self, *args):
+    def update(self, *args, **kwargs):
+        self.celestial_objects.update(*args)
         self.ufos.update(*args)
         self.planets.update(*args)
         self.missiles.update(*args)
@@ -70,10 +73,11 @@ class SpriteGroups:
         self.explosions.update(*args)
         self.target_objects.update(*args)
         self.quadrants.update(*args)
-        self.celestial_objects.update(*args)
         self.moving_images.update()
+        self.gif_handlers.update()
 
-    def draw(self, surface):
+    def draw(self, surface, **kwargs):
+        events = kwargs.get("events")
         self.ufos.draw(surface)
         self.missiles.draw(surface)
         self.ships.draw(surface)
@@ -81,6 +85,8 @@ class SpriteGroups:
         self.explosions.draw(surface)
         self.target_objects.draw(surface)
         self.moving_images.draw(surface)
+        self.gif_handlers.draw(surface)
+        widget_handler.update(events)
 
     def listen(self, events):
         for i in self.planets:

@@ -23,11 +23,7 @@ class Button(WidgetBase, Moveable):
         :type width: int
         :param height: Height of button
         :type height: int
-        :param kwargs: Optional parameters:
-
-        to make button execute:
-        overgive:  self.onClick = lambda: self.execute(kwargs)  to the class that inherits from Button,
-        then implement: def execute(self, kwargs): in this class
+        :param kwargs: Optional parameters
         """
 
     def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
@@ -214,8 +210,6 @@ class Button(WidgetBase, Moveable):
                 self.borderColour = self.inactiveBorderColour
                 self.drawCircle(self.inactiveColour, 0)
 
-    def execute__(self, code):# unused
-        exec(code)
 
     def draw(self):
         """ Display to surface """

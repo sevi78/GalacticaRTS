@@ -6,7 +6,7 @@ from source.handlers.color_handler import colors
 
 class WidgetBaseParams:
     def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
-        self.name = kwargs.get("name", "no_name")
+        self.name = kwargs.get("name", self.__class__.__name__)
         self.win = win
         self.zoomable = False
         self.property = kwargs.get("property", None)

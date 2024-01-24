@@ -185,6 +185,7 @@ class GameEventHandler():
                 self.app.event_panel.set_game_event(self.game_events[f"goal{self.level}"])
 
     def load_next_level(self):
+        global_params.app.level_handler.save_level_succcess_to_file(f"level_{self.level}.json", "levels", True)
         self.level += 1
         global_params.app.level_handler.load_level(f"level_{self.level}.json", "levels")
 

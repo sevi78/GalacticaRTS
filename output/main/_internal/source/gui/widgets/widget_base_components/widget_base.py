@@ -100,13 +100,22 @@ class WidgetBase(WidgetBaseMethods, ImageHandler, TextHandler, PositionHandler, 
         :type height: int
         """
 
+
         WidgetBaseMethods.__init__(self, win, x, y, width, height, isSubWidget=False, **kwargs)
         ImageHandler.__init__(self, **kwargs)
         PositionHandler.__init__(self, x, y, width, height, **kwargs)
         TextHandler.__init__(self, **kwargs)
         InteractionHandler.__init__(self)
         VisibilityHandler.__init__(self, **kwargs)
+        #pygame.sprite.Sprite.__init__(self)
 
+        # # register
+        # if self.group:
+        #     getattr(sprite_groups, self.group).add(self)
         WidgetHandler.addWidget(self)
+
+
+
+
 
         # print (self,self.__dict__, self.__slots__)

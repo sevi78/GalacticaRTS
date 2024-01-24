@@ -1,5 +1,6 @@
 {
   "spaceship": {
+    "name": "spaceship",
     "food": 0,
     "food_max": 500,
     "minerals": 0,
@@ -25,12 +26,15 @@
     "orbit_speed_max": 0.6,
     "orbit_radius": 108.42557525826295,
     "orbit_radius_max": 300,
+    "orbit_object_id": -1,
+    "orbit_object_name": "",
     "min_dist_to_other_ships": 80,
     "min_dist_to_other_ships_max": 200,
     "energy_use": 0.0005,
     "energy_reload_rate": 0.1
   },
   "cargoloader": {
+    "name": "cargoloader",
     "food": 0,
     "food_max": 1500,
     "minerals": 0,
@@ -56,13 +60,16 @@
     "orbit_speed_max": 0.6,
     "orbit_radius": 134.06,
     "orbit_radius_max": 300,
+    "orbit_object_id": -1,
+    "orbit_object_name": "",
     "min_dist_to_other_ships": 80,
     "min_dist_to_other_ships_max": 200,
-    "energy_use": 0.000,
+    "energy_use": 0.0001,
     "energy_reload_rate": 0.05,
     "move_stop": 0
   },
   "spacehunter": {
+    "name": "spacehunter",
     "food": 0,
     "food_max": 200,
     "minerals": 0,
@@ -88,6 +95,8 @@
     "orbit_speed_max": 0.6,
     "orbit_radius": 137.2495028025798,
     "orbit_radius_max": 300,
+    "orbit_object_id": -1,
+    "orbit_object_name": "",
     "min_dist_to_other_ships": 80,
     "min_dist_to_other_ships_max": 200,
     "energy_use": 0.0005,

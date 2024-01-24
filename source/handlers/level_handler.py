@@ -8,7 +8,7 @@ from source.factories.planet_factory import planet_factory
 from source.factories.universe_factory import universe_factory
 from source.gui.event_text import event_text
 from source.handlers.economy_handler import economy_handler
-from source.handlers.file_handler import load_file, write_file
+from source.handlers.file_handler import load_file, write_file, get_level_list
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.multimedia_library.images import get_image_names_from_folder
 from source.multimedia_library.screenshot import capture_screenshot
@@ -235,6 +235,8 @@ class LevelHandler:
         self.data = load_file(f"level_{0}.json", folder="levels")
         self.data_default = copy.deepcopy(self.data)
         self.level_dict_generator = LevelDictGenerator(self)
+        self.level_successes ={}
+
 
     def delete_level(self):
         # delete objects
@@ -366,3 +368,34 @@ class LevelHandler:
 
         # file_handler.get_level_list()
         self.app.level_select.update_icons()
+
+    def save_level_succcess_to_file(self, filename, folder, value):
+        # load file
+        data = load_file(filename, folder=folder)
+
+        # write value into the dict
+        data["globals"]["level_success"] = value
+
+        # write the data back to the file
+        write_file(filename, folder, data)
+
+
+
+    def get_level_success_from_file(self, filename, folder) -> dict:
+        # load file
+        data = load_file(filename, folder=folder)
+        return {str(data["globals"]["level"]): data["globals"]["level_success"]}
+
+    def update_level_successes(self):
+        # update level_successes
+        for filename in get_level_list():
+            level_success_dict = self.get_level_success_from_file(filename, "levels")
+            for key, value in level_success_dict.items():
+                self.level_successes[key] = value
+
+        print(f"self.update_level_successes(): self.level_successes: {self.level_successes}")
+        # update the icons of level select to displax the successes
+        self.app.level_select.update_icons()
+
+
+

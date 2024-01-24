@@ -61,22 +61,6 @@ class UIHelper:
     def set_spacing(self, spacing):
         self.spacing = spacing
 
-    def center_pos(self, width, height):
-        """
-        gets center of the screen
-        :param width:
-        :param height:
-        :return: center of the screen
-        """
-        win = pygame.display.get_surface()
-        win_width = win.get_width()
-        win_height = win.get_height()
-
-        x = win_width / 2 - width / 2
-        y = win_height / 2 - height / 2
-        pos = (x, y)
-        return pos
-
     def update(self):
         """
         updates positions for dynamic UI

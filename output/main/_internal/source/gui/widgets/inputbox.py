@@ -45,7 +45,7 @@ class InputBox(WidgetBase):
         global_params.text_input_active = self._active
         self.set_color()
 
-        if not self._disabled:
+        if not self._disabled and not self._hidden:
             if self.text_input_type == int:
                 text = int(self.text)
             else:

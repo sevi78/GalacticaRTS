@@ -4,7 +4,6 @@ from source.app.ui_helper import UIHelper
 from source.configuration.economy_params import EconomyParams
 from source.handlers.file_handler import load_file
 from source.factories.planet_factory import planet_factory
-
 from source.universe.background_image import BackgroundImage
 from source.universe.fog_of_war import FogOfWar
 from source.factories.universe_factory import Universe
@@ -49,7 +48,7 @@ class SceneBuilder(EconomyParams, GameObjectStorage):
         self.create_fog_of_war()
 
         # planets
-        planet_factory.create_planets_from_data(load_file(f"level_{0}.json"))
+        planet_factory.create_planets_from_data(load_file(f"level_{0}.json", folder="levels"))
 
         # ship
         win = pygame.display.get_surface()
@@ -60,7 +59,7 @@ class SceneBuilder(EconomyParams, GameObjectStorage):
         spacing = 100
 
         self._ship = None
-        self.ship = self.ship_factory.create_ship("spaceship_30x30.png", center_x, center_y + 300, self)
+        self.ship = self.ship_factory.create_ship("spaceship_30x30.png", center_x, center_y + 300, self, {})
 
     @property
     def ship(self):

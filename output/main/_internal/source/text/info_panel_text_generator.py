@@ -1,5 +1,6 @@
 from collections import Counter
 
+from source.configuration import global_params
 from source.handlers.file_handler import load_file
 from source.factories.building_factory import building_factory
 from source.handlers.position_handler import distance_between_points, get_distance
@@ -34,7 +35,7 @@ class InfoPanelTextGenerator:
         return price_text
 
     def create_info_panel_building_text(self, building):
-        ignorables = ["name", "category", "building_production_time_scale", "city"]
+        ignorables = ["name", "category", "building_production_time_scale", "population"]
         price_text = self.create_info_panel_price_text(building)
         production_text = ""
         other_text = ""
@@ -176,9 +177,11 @@ class InfoPanelTextGenerator:
         text += "Possible resources on this planet include:\n\n"
         for resource in obj.possible_resources:
             text += f"- {resource}\n"
-        distance = distance_between_points(obj.world_x, obj.world_y, obj.orbit_object.world_x, obj.orbit_object.world_y)
-        text += (f"\nThe planet's orbits around its sun at a distance of {format_number(distance * 1000, 1)}"
-                 f" km with a speed of {format_number(obj.orbit_speed * 1000, 1)}km/s.\n")
+
+        if obj.orbit_object:
+            distance = distance_between_points(obj.world_x, obj.world_y, obj.orbit_object.world_x, obj.orbit_object.world_y)
+            text += (f"\nThe planet's orbits around its sun at a distance of {format_number(distance * 1000, 1)}"
+                     f" km with a speed of {format_number(obj.orbit_speed * 1000, 1)}km/s.\n")
 
         return text
 
@@ -212,7 +215,8 @@ class InfoPanelTextGenerator:
 
         if ship.debug:
             text += "\n\ndebug:\n"
-
+            text += f"id: {ship.id}\n"
+            text += f"name: {ship.name}\n"
             text += "selected: " + str(ship.selected) + "\n"
 
             if ship.energy_reloader:
@@ -231,14 +235,20 @@ class InfoPanelTextGenerator:
 
             if ship.orbit_object:
                 text += f"orbit_object:{ship.orbit_object.name}\n"
+                text += f"orbit_object_id:{ship.orbit_object_id}\n"
+                text += f"orbit_object_name:{ship.orbit_object_name}\n"
+
             else:
                 text += f"orbit_object: None\n"
+                text += f"orbit_object_id:{ship.orbit_object_id}\n"
+                text += f"orbit_object_name:{ship.orbit_object_name}\n"
 
             if ship.orbit_angle:
                 text += f"orbit_angle:{ship.orbit_angle}\n"
             else:
                 text += f"orbit_angle:{None}\n"
-
+            text += f"desired_orbit_radius:{ship.desired_orbit_radius}\n"
+            text += f"orbit_radius:{ship.orbit_radius}\n"
             if ship.enemy:
                 text += f"enemy:{ship.enemy}\n"
                 text += f"distance:{get_distance(ship.rect.center, ship.enemy.rect.center)}\n"
@@ -359,7 +369,7 @@ class InfoPanelTextGenerator:
             alien_text = "(un)fortunately there are no aliens here."
 
         if len(ordered_resources_list) > 0:
-            if ordered_resources_list[0][0] == "city":
+            if ordered_resources_list[0][0] == "population":
                 resource_text = f"A good place to grow population."
             else:
                 resource_text = f"plenty of {ordered_resources_list[0][0]} can be found here !"
@@ -396,6 +406,21 @@ class InfoPanelTextGenerator:
     #     # shoot_interval =
     #     return infotext + weapon_var
 
+    def create_info_panel_mission_text(self):
+        level = global_params.app.level_handler.data.get("globals").get("level")
+        goal = global_params.app.level_handler.data.get("globals").get("goal")
+        infotext = f"your mission in level {level}:\n\n\n\n\n\n"
+        infotext += f"goals:\n\n"
+
+
+        for key, value in goal.items():
+            infotext += f"  {key}: {value}"
+            if global_params.app.game_event_handler.goal_success[key]:
+                infotext += ' \u2713'
+            infotext += "\n\n"
+
+
+        return infotext
 
     def get_info_text(self):
         return self.info_text

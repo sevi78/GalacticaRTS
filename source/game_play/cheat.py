@@ -64,6 +64,11 @@ class Cheat:
         ufo = enemy_handler.enemy_handler.spawn_ufo(self.selected_planet)
         source.handlers.weapon_handler.launch_missile(self.selected_planet, ufo)
 
+    def cheat_level_success(self):
+        for key, value in self.level_handler.level_successes.items():
+            self.level_handler.level_successes[key] = True
+            self.level_select.update_icons()
+
     def cheat(self, events):
         # ignore all inputs while any text input is active
         if global_params.text_input_active:
@@ -83,9 +88,12 @@ class Cheat:
                     # self.cheat_ufo()
 
                     self.explore_all()
+                    self.cheat_level_success()
 
 
                     # self.cheat_population()
                     # self.explore_all()
 
                     # print (building_factory.get_a_list_of_building_names_with_build_population_minimum_bigger_than(1000))
+
+

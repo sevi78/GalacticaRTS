@@ -12,6 +12,10 @@ class TextHandler:
 
         if self.textHAlign == 'left':
             self.textRect.left = self.screen_x + self.margin
+
+        if self.textHAlign == 'left_outside':
+            self.textRect.left = self.screen_x + self.screen_width + self.margin
+
         elif self.textHAlign == 'right':
             self.textRect.right = self.screen_x + self.screen_width - self.margin
 

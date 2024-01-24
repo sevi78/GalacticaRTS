@@ -147,7 +147,7 @@ class TradeEdit(EditorBase):
 
     def draw(self):
         #pygame.draw.circle(self.win, self.frame_color, self.player_image.get_rect().center, 20,2)
-        pygame.draw.circle(self.win, self.frame_color, self.player_image_pos, 20, 2)
+        #pygame.draw.circle(self.win, self.frame_color, self.player_image_pos, 20, 2)
         #self.set_screen_position()
         if not self._hidden and not self._disabled:
             self.draw_frame()

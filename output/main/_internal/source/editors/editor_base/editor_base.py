@@ -68,7 +68,7 @@ class EditorBase(WidgetBase):
         super().__init__(win, x, y, width, height, isSubWidget, **kwargs)
         self._obj = kwargs.get("obj", None)
         self.obj = kwargs.get("obj", None)
-        self.game_paused = kwargs.get("game_paused", False)
+        #self.game_paused = kwargs.get("game_paused", False)
 
         self.win = win
         self.world_x = x
@@ -137,7 +137,7 @@ class EditorBase(WidgetBase):
         else:
             self.hide()
 
-        global_params.game_paused = self.game_paused and not self._hidden
+        #global_params.game_paused = self.game_paused and not self._hidden
         global_params.edit_mode = not self._hidden
         self.hide_other_editors()
 
@@ -219,8 +219,8 @@ class EditorBase(WidgetBase):
 
     def close(self):
         self.set_global_variable("edit_mode", True)
-        if self.game_paused:
-            global_params.game_paused = False
+        # if self.game_paused:
+        #     global_params.game_paused = False
 
         global_params.tooltip_text = ""
         self.hide()

@@ -1,15 +1,23 @@
 import os
 import pygame
-from PIL import Image
 
+from source.configuration import global_params
+
+# remove this if not used elsewhere, only needed to test the scripts that load images or gifs
+pygame.init()
+pygame.display.set_mode((global_params.WIDTH, global_params.HEIGHT), pygame.RESIZABLE, pygame.DOUBLEBUF)
+#
+
+from PIL import Image, ImageSequence
 from source.handlers.file_handler import pictures_path
 
 images = {}
 all_image_names = []
 
-
 gifs = {}
 gif_frames = {}
+gif_fps = {}
+gif_durations = {}
 MAX_GIF_SIZE = 150
 
 
@@ -64,15 +72,59 @@ def get_image(image_name):
     return no_icon
 
 
+def load_gif_durations(gif):
+    durations = []
+    for frame in range(0, gif.n_frames):
+        gif.seek(frame)
+        durations.append(gif.info['duration'])
+
+    # Calculate the average duration
+    avg_duration = sum(durations) / len(durations)
+    if avg_duration == 0.0:
+        avg_duration = 20.0
+
+    return avg_duration
+
+
+
+def get_gif_duration(gif_name):
+    return gif_durations[gif_name]
+
+
 def load_gif(gif_name):
     path = os.path.join(pictures_path + "gifs", gif_name)
     gif = Image.open(path)
     gifs[gif_name] = gif
     gif_frames[gif_name] = get_gif_frames(gif_name)
+    gif_fps[gif_name] = load_gif_fps(gif)
+    gif_durations[gif_name] = load_gif_durations(gif)
+
+    print (f"gif: {gif_name},frames: {len(gif_frames[gif_name])}, fps: {gif_fps[gif_name]}, duration: {gif_durations[gif_name]}")
+
+
+def load_gif_fps(gif_file):
+    # Get the durations of all frames
+    durations = []
+    for i in range(0, gif_file.n_frames):
+        gif_file.seek(i)
+        durations.append(gif_file.info['duration'])
+
+    # Calculate the average FPS
+    avg_duration = sum(durations) / len(durations)
+
+    try:
+        fps = 1000 / avg_duration  # Calculate the FPS (1000 ms = 1 second)
+    except ZeroDivisionError:
+        fps = 20
+    return fps
 
 
 def get_gif(gif_name):
     return gifs[gif_name]
+
+
+def get_gif_fps(gif_name):
+    return gif_fps[gif_name]
 
 
 def get_gif_frames(gif_name):
@@ -91,22 +143,38 @@ def get_gif_frames(gif_name):
         rescale = True
 
     for frame in range(gif.n_frames):
-        gif.seek(frame)
-        frame_surface_raw = pygame.image.fromstring(gif.tobytes(), gif.size, gif.mode).convert_alpha()
+        if not frame == 0:
+            gif.seek(frame)
+            frame_surface_raw = pygame.image.fromstring(gif.tobytes(), gif.size, gif.mode).convert_alpha()
 
-        # Rescale the images if necessary
-        if rescale:
-            new_size = (int(gif.size[0] * ratio), int(gif.size[1] * ratio))
-            frame_surface = pygame.transform.scale(frame_surface_raw, new_size)
-        else:
-            frame_surface = frame_surface_raw
+            # Rescale the images if necessary
+            if rescale:
+                new_size = (int(gif.size[0] * ratio), int(gif.size[1] * ratio))
+                frame_surface = pygame.transform.scale(frame_surface_raw, new_size)
+            else:
+                frame_surface = frame_surface_raw
 
-        frames.append(frame_surface)
+            frames.append(frame_surface)
+        # frames.pop(0)
+    return frames
+
+def get_gif_frames__(gif_name):
+    frames = []
+    im = get_gif(gif_name)
+
+    for frame in ImageSequence.Iterator(im):
+        frames.append(frame.copy())
+
     return frames
 
 
-def get_image_names_from_folder(folder):
+def get_image_names_from_folder(folder, **kwargs):
+    startswith_string = kwargs.get("startswith_string", "")
     image_names = os.listdir(pictures_path + folder)
+
+    if startswith_string:
+        image_names = [i for i in image_names if i.startswith(startswith_string)]
+
     return image_names
 
 
@@ -126,6 +194,3 @@ def resize_image(image, new_size):
 
 
 load_folders(os.path.join(pictures_path), images)
-
-# images.get_image(
-#     cur.execute(f"select image_name_small from planets where id = {self.id}").fetchone()[0]],

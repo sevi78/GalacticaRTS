@@ -6,9 +6,9 @@ from source.editors.debug_edit import DebugEdit
 from source.editors.font_edit import FontEdit
 from source.editors.enemy_handler_edit import EnemyHandlerEdit
 from source.editors.event_panel_edit import EventPanelEdit
-from source.editors.level_edit import LevelEdit
 from source.editors.level_select import LevelSelect
 from source.editors.planet_edit import PlanetEdit
+from source.editors.save_game_edit import SaveGameEdit
 from source.editors.ship_edit import ShipEdit
 from source.editors.trade_edit import TradeEdit
 from source.editors.weapon_select import WeaponSelect
@@ -22,10 +22,10 @@ from source.gui.panels.info_panel import InfoPanel
 from source.gui.panels.resource_panel import ResourcePanel
 from source.gui.panels.settings_panel import SettingsPanel
 from source.gui.tool_tip import ToolTip
+from source.handlers.debug_handler import debugger
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import PanZoomHandler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.configuration import global_params
-from source.utils.debugger import debugger
 from source.handlers.file_handler import load_file
 
 EDITOR_HEIGHT = 600
@@ -114,10 +114,11 @@ class UIBuilder(SceneBuilder):
             pygame.display.get_surface().get_rect().y,
             width, height, parent=self, obj=sprite_groups.planets.sprites()[0])
 
-        self.level_edit = LevelEdit(pygame.display.get_surface(),
+        self.save_game_edit = SaveGameEdit(pygame.display.get_surface(),
             pygame.display.get_surface().get_rect().centerx - width / 2,
             pygame.display.get_surface().get_rect().y,
-            width, height, parent=self)
+            800, height, parent=self, obj=None)
+
 
         self.building_edit = BuildingEdit(pygame.display.get_surface(),
             pygame.display.get_surface().get_rect().centerx - width / 2,
@@ -144,25 +145,26 @@ class UIBuilder(SceneBuilder):
             pygame.display.get_surface().get_rect().y,
             width, height, parent=self, obj=debugger, layer=9)
 
-        self.event_panel_edit = EventPanelEdit(pygame.display.get_surface(),
-            pygame.display.get_surface().get_rect().centerx - width / 2,
-            pygame.display.get_surface().get_rect().y,
-            width, height, parent=self, obj=self.event_panel, layer=9)
+        # self.event_panel_edit = EventPanelEdit(pygame.display.get_surface(),
+        #     pygame.display.get_surface().get_rect().centerx - width / 2,
+        #     pygame.display.get_surface().get_rect().y,
+        #     width, height, parent=self, obj=self.event_panel, layer=9)
 
         self.trade_edit = TradeEdit(pygame.display.get_surface(),
             pygame.display.get_surface().get_rect().centerx - width / 2,
             pygame.display.get_surface().get_rect().y,
-            width, height, parent=self, obj=None, layer=9, game_paused=True)
+            width, height, parent=self, obj=None, layer=9)#, game_paused=True)
 
     def create_player(self):
         self.player = Player(name="zork",
             color=pygame.Color('red'),
-            energy=1000,
-            food=1000,
-            minerals=1000,
-            water=1000,
-            technology=1000,
-            city=0,
+            stock= {
+            "energy": 1000,
+            "food": 1000,
+            "minerals": 1000,
+            "water": 1000,
+            "technology": 1000,
+            "population": 0},
             clock=0
             )
 
@@ -171,7 +173,7 @@ class UIBuilder(SceneBuilder):
         x = pygame.display.get_surface().get_width() / 2 - w / 2
         y = pygame.display.get_surface().get_height() / 2 - h / 2
         self.event_panel = EventPanel(win=self.win, x=x, y=y, width=w, height=h, center=True, parent=self, layer=9,
-            interface_variables=load_file("event_panel.json"))
+            interface_variables=load_file("event_panel.json"), game_paused=True)
 
     def create_tooltip(self):
         # tooltip

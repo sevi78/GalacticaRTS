@@ -98,14 +98,6 @@ class PositionHandler:
         else:
             return 1
 
-    def setX__(self, x):
-        self.screen_x = x
-        self.set_center()
-
-    def setY__(self, y):
-        self.screen_y = y
-        self.set_center()
-
     def set_position(self, pos):
         self.screen_x = pos[0]
         self.screen_y = pos[1]

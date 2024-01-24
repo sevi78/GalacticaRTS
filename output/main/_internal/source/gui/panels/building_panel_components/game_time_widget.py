@@ -128,6 +128,11 @@ class GameTime(WidgetBase):
         self.plus_arrow_button.screen_x = self.clock_icon.get_screen_x() + self.spacing * 2 + self.arrow_size + 3
 
     def draw_clock(self):
+        if global_params.game_paused:
+            self.clock_icon.image = get_image("sleep.png")
+        else:
+            self.clock_icon.image = self.image
+
         self.time_warp_text = self.font.render(str(self.clock_slider.getValue()) + "x", True, self.frame_color)
         self.win.blit(self.time_warp_text,
             (self.surface_rect.x + self.spacing_x, self.clock_icon.screen_y + self.clock_icon.rect.height / 2))

@@ -7,8 +7,10 @@ from source.gui.event_text import event_text
 from source.gui.lod import inside_screen
 from source.gui.widgets.progress_bar import ProgressBar
 from source.gui.widgets.widget_base_components.interaction_handler import InteractionHandler
+from source.handlers.garbage_handler import garbage_handler
 from source.handlers.weapon_handler import WeaponHandler
 from source.handlers.widget_handler import WidgetHandler
+from source.multimedia_library.gif_handler import GifHandler
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_game_object import PanZoomGameObject
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.text.info_panel_text_generator import info_panel_text_generator
@@ -34,6 +36,7 @@ class PanZoomUfo(PanZoomGameObject, InteractionHandler):
     def __init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs):
         PanZoomGameObject.__init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs)
         InteractionHandler.__init__(self)
+        self.id = kwargs.get("id", 0)
         self.lifetime = kwargs.get("lifetime", LIFETIME)
         self.shrink = 0.0
         self.creation_time = time.time()
@@ -73,12 +76,14 @@ class PanZoomUfo(PanZoomGameObject, InteractionHandler):
         self.name = "ufo"
         self.property = "ufo"
         self.target = None
-        self.set_target(sprite_groups.planets.sprites()[0])
+        self.set_target(random.choice([_ for _ in sprite_groups.planets.sprites() if _.type != "sun"]))
         self.tooltip = "this is a u.f.o,   might be dangerous!"
         self.attack_distance_raw = pan_zoom_ufo_config["attack_distance"]
         self.attack_distance = self.attack_distance_raw
         self.gun_power = 0
         self.emp_attacked = False
+        self.gif = "electro_discharge.gif"
+        self.gif_handler = GifHandler(self, self.gif, loop=True, relative_gif_size=1.2, offset_y=5)
 
         # energy progress bar
         self.progress_bar = ProgressBar(
@@ -111,14 +116,15 @@ class PanZoomUfo(PanZoomGameObject, InteractionHandler):
 
     def set_random_target(self, **kwargs):
         immediately = kwargs.get("immediately")
+        planets = [_ for _ in sprite_groups.planets.sprites() if _.type != "sun"]
         if immediately:
-            self.set_target(random.choice(sprite_groups.planets.sprites()))
+            self.set_target(random.choice(planets))
             self.target_reached = False
             return
 
         r = random.randint(0, self.random_target_interval)
         if r == 1:
-            self.set_target(random.choice(sprite_groups.planets.sprites()))
+            self.set_target(random.choice(planets))
             self.target_reached = False
 
     def flickering(self):
@@ -195,9 +201,17 @@ class PanZoomUfo(PanZoomGameObject, InteractionHandler):
 
         WidgetHandler.remove_widget(self.progress_bar)
         self.progress_bar = None
+        self.gif_handler.end_object()
+        for i in sprite_groups.ships.sprites():
+            garbage_handler.delete_all_references(self, i)
+            # for key, value in i.__dict__.items():
+            #     if self == i.__dict__[key]:
+            #         i.__dict__[key] = None
+
         self.kill()
 
     def update(self):
+        #print (f"ufo.update: explode_calls {self.explode_calls}")
         if not global_params.game_paused:
             self.update_pan_zoom_game_object()
             self.set_attack_distance()
@@ -223,7 +237,7 @@ class PanZoomUfo(PanZoomGameObject, InteractionHandler):
         else:
             self.appear()
 
-        if self.emp_attacked:
-            pass
+        # set gif handler to make sure its only drawn if self emp attacked
+        self.gif_handler._hidden = not self.emp_attacked
 
         # self.debug_object()

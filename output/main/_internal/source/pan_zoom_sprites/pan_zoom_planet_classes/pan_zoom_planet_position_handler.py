@@ -25,10 +25,6 @@ class PanZoomPlanetPositionHandler:
         # set new image size
         self.image = pygame.transform.scale(self.image_raw, new_size)
 
-        # if hasattr(self, "atmosphere"):
-        #     if self.atmosphere:
-        #         self.atmosphere = pygame.transform.scale(self.atmosphere_raw, new_size)
-
         # set new size
         self.setWidth(new_size[0] * self.get_zoom())
         self.setHeight(new_size[1] * self.get_zoom())

@@ -25,11 +25,12 @@ def navigate_to(obj, **kwargs):
         first_item = sprite_groups.ships.sprites()[0]
         sprite_groups.ships.add(first_item)
         sprite_groups.ships.change_layer(first_item, len(sprite_groups.ships) - 1)
+        global_params.app.ship = obj
+        obj.set_info_text()
 
         # set the new position
         panzoom.world_offset_x, panzoom.world_offset_y = panzoom.screen_2_world(obj.rect.centerx - panzoom.screen_width / 2, obj.rect.centery - panzoom.screen_height / 2)
         return
 
     panzoom.world_offset_x, panzoom.world_offset_y = panzoom.screen_2_world(obj.get_screen_x() + x_offset - panzoom.screen_width / 2, obj.get_screen_y() + y_offset - panzoom.screen_height / 2)
-    global_params.app.info_panel.set_text(obj.info_text)
-    # global_params.app.info_panel.set_image(obj.info_text)
+

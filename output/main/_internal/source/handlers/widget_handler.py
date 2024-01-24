@@ -1,3 +1,5 @@
+from pprint import pprint
+
 import pygame
 from pygame.event import Event
 from pygame_widgets import Mouse
@@ -52,8 +54,9 @@ class WidgetHandler:
     def main(events: [Event]) -> None:
         # WidgetHandler.set_visible(events)
         # 0:[...]
-        # print (WidgetHandler.layers.items())
+        #pprint (WidgetHandler.layers.items())
         for key, widgetlist in WidgetHandler.layers.items():
+            #print (f"layer: {key}\n widgetlist: {[_.name for _ in widgetlist]}")
             # get widget
             for widget in widgetlist:
                 widget.draw()

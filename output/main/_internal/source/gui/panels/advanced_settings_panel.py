@@ -111,21 +111,21 @@ class AdvancedSettingsPanel(WidgetBase):
         self.widgets.append(self.building_edit_icon)
         self.max_width += self.icon_size + self.spacing
 
-        self.event_panel_edit_icon = ImageButton(win=self.win,
-            x=self.get_screen_x(),
-            y=self.surface_rect.y + self.spacing,
-            width=self.icon_size,
-            height=self.icon_size,
-            isSubWidget=False,
-            parent=self,
-            image=pygame.transform.scale(get_image("game_play_icon.png"), (25, 25)),
-            tooltip="open event panel edit",
-            frame_color=self.frame_color,
-            moveable=False,
-            include_text=True, layer=self.layer,
-            onClick=lambda: global_params.app.event_panel_edit.set_visible())
-        self.widgets.append(self.event_panel_edit_icon)
-        self.max_width += self.icon_size + self.spacing
+        # self.event_panel_edit_icon = ImageButton(win=self.win,
+        #     x=self.get_screen_x(),
+        #     y=self.surface_rect.y + self.spacing,
+        #     width=self.icon_size,
+        #     height=self.icon_size,
+        #     isSubWidget=False,
+        #     parent=self,
+        #     image=pygame.transform.scale(get_image("game_play_icon.png"), (25, 25)),
+        #     tooltip="open event panel edit",
+        #     frame_color=self.frame_color,
+        #     moveable=False,
+        #     include_text=True, layer=self.layer,
+        #     onClick=lambda: global_params.app.event_panel_edit.set_visible())
+        # self.widgets.append(self.event_panel_edit_icon)
+        # self.max_width += self.icon_size + self.spacing
 
         # debug edit icon
         self.debug_edit_icon = ImageButton(win=self.win,

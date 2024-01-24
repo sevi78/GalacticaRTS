@@ -29,9 +29,6 @@ class LevelSelect(EditorBase):
         # hide initially
         self.hide()
 
-
-
-
     def update_icons(self):
         for i in self.buttons:
             if i.name:
@@ -39,7 +36,7 @@ class LevelSelect(EditorBase):
                     image_name = f"{i.name.split('.json')[0]}{'.png'}"
                     i.setImage(get_image(image_name))
 
-                    print("update_icons", image_name)
+                    #print("update_icons", image_name)
 
     def create_icons(self):
         rows = 3
@@ -54,7 +51,7 @@ class LevelSelect(EditorBase):
 
         for index, i in enumerate(data):
             level = i.split('_')[1].split('.json')[0]
-            level_dict = load_file(f"level_{level}.json")
+            level_dict = load_file(f"level_{level}.json", folder="levels")
             tooltip = tooltip_generator.create_level_tooltip(level, level_dict)
             infotext = info_panel_text_generator.create_create_info_panel_level_text(level, level_dict)
 
@@ -93,7 +90,7 @@ class LevelSelect(EditorBase):
         self.max_height = 900  # self.world_y + 200 + min(y + button_size + self.text_spacing * 3, max_button_height)
 
     def select_level(self, i):
-        self.parent.level_edit.load_level(i)
+        self.parent.level_handler.load_level(f"level_{i}.json", "levels")
         self.hide()
         global_params.tooltip_text = ""
 
