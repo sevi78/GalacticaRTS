@@ -107,10 +107,12 @@ class GameEventHandler():
                         self.app.event_panel.set_game_event(self.game_events["end"])
 
     def restart_game(self):
-        if self.app.level_handler.current_game:
-            self.app.level_handler.load_level(0, data=load_file(self.app.level_handler.current_game, folder="games"), current_game=self.app.level_handler.current_game)
+        if self.app.level_handler.current_game.startswith("level_"):
+            self.app.level_handler.load_level(self.app.level_handler.current_game, "levels")
         else:
-            self.app.level_handler.load_level(self.app.level_handler.level)
+            self.app.level_handler.load_level(self.app.level_handler.current_game, "games")
+
+
 
     def update(self):
         # check the cue and activate first event, then delete it
@@ -140,14 +142,21 @@ class GameEventHandler():
         # print (self.game_events)
 
     def evaluate_goal(self):
+        """ goal must  be a dict:
+            keys can be resources or buildings, or any other ideas ??
+
+            if key is a resource, value must be int
+            if key is a building , value must be int
+        """
         # reset the goal success to make sure values are correct after level load
         self.set_goal_success()
+
         # set body text
         body = "you have reached the goal:"
 
         # check for goal
         for key, value in self.goal.items():
-            # evaluate the goals
+            # evaluate the goals: check if certain resource is > value
             if key in self.resources:
                 player_value = eval(f"self.app.player.{key}")
                 if player_value > value:
@@ -155,6 +164,8 @@ class GameEventHandler():
                     body += f"your {key} is greater than {value} "
                 else:
                     self.goal_success[key] = False
+
+            # check if has the building amount > value
             if key in self.app.player.get_all_buildings():
                 if self.app.player.get_all_buildings().count(key) >= value:
                     self.goal_success[key] = True
@@ -163,10 +174,13 @@ class GameEventHandler():
                     self.goal_success[key] = False
             # else:
             #     self.goal_success[key] = False
+
         # debug only
         body += f"event_cue: {self.event_cue}, obsolete_events: {self.obsolete_events}, goal_success: {self.goal_success}"
 
+        # set mission text
         self.app.resource_panel.mission_icon.info_text = info_panel_text_generator.create_info_panel_mission_text()
+
         # create event if succeeded
         all_values_are_true = all(value for value in self.goal_success.values())
         if all_values_are_true:

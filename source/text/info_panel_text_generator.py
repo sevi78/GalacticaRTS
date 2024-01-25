@@ -31,7 +31,6 @@ class InfoPanelTextGenerator:
                 if value > 0:
                     price_text += f"{resource_key}: {value}\n"
 
-
         return price_text
 
     def create_info_panel_building_text(self, building):
@@ -205,7 +204,7 @@ class InfoPanelTextGenerator:
 
         text += "\n"
 
-        #if ship.weapon_handler.weapons:
+        # if ship.weapon_handler.weapons:
         text += "weapons:\n\n"
         for key in ship.weapon_handler.weapons.keys():
             text += f"    {key} level {ship.weapon_handler.weapons[key]['level']}\n"
@@ -275,7 +274,7 @@ class InfoPanelTextGenerator:
     def create_info_panel_ufo_text(self, ufo):
         infotext = ""
         text = ""
-        #print(f"create_ufo_tooltip")
+        # print(f"create_ufo_tooltip")
 
         text += ufo.name + ":\n\n"
         text += f"lifetime: {str(ufo.lifetime)}/{str(format_number(ufo.elapsed_time, 1))}\n\n"
@@ -299,7 +298,6 @@ class InfoPanelTextGenerator:
 
         infotext += text
         return infotext
-
 
     def create_info_panel_planetary_defence_text(self, item):
         text = item + ":" + "\n"
@@ -347,7 +345,7 @@ class InfoPanelTextGenerator:
             obj["alien_population"] for obj in data["celestial_objects"].values() if obj["type"] in ["planet", "moon"])
 
         # Create the tooltip strings
-        area_text = f"{width} x{height} km"
+        area_text = f"{width} x {height} km"
         if num_suns > 1:
             suntext = f"There are {num_suns} suns in this area of {area_text} of the universe "
         else:
@@ -359,9 +357,9 @@ class InfoPanelTextGenerator:
             planettext = f"with a single planet"
 
         if num_moons > 1:
-            moontext = f"and {num_moons} moons."
+            moontext = f" and {num_moons} moons."
         else:
-            moontext = f"and a single moon."
+            moontext = f" and a single moon."
 
         if alien_population_count > 0:
             alien_text = f"An estimated {format_number(alien_population_count, 1)} extraterrestrials live there. "
@@ -392,7 +390,7 @@ class InfoPanelTextGenerator:
         infotext += (f"{suntext}{planettext}{moontext}\n"
                      f"{resource_text}\n{alien_text}")
 
-        return infotext
+        return str(infotext)
 
     # def create_info_panel_weapon_text(self, name):# unused
     #     infotext = self.create_info_panel_price_text(name)
@@ -412,13 +410,11 @@ class InfoPanelTextGenerator:
         infotext = f"your mission in level {level}:\n\n\n\n\n\n"
         infotext += f"goals:\n\n"
 
-
         for key, value in goal.items():
             infotext += f"  {key}: {value}"
             if global_params.app.game_event_handler.goal_success[key]:
                 infotext += ' \u2713'
             infotext += "\n\n"
-
 
         return infotext
 

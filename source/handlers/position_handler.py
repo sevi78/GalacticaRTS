@@ -3,6 +3,8 @@ import random
 
 import pygame
 
+from source.handlers.pan_zoom_sprite_handler import sprite_groups
+
 
 def smooth_position(prev_x, prev_y, x, y, smooth):
     new_x, new_y = None, None
@@ -121,7 +123,8 @@ def align_horizontal(rect, h_align):
 
     return rect.x
 
-def align_vertical(rect,v_align):
+
+def align_vertical(rect, v_align):
     # if v_align == "below_the_bottom":
     #     x, y = pan_zoom_handler.screen_2_world(rect.x, rect.bottom)
     #     return y
@@ -129,7 +132,7 @@ def align_vertical(rect,v_align):
     # elif v_align == "over_the_top":
     #     x, y = pan_zoom_handler.screen_2_world(rect.x, rect.top )
     #     return y
-    if  v_align == "below_the_bottom":
+    if v_align == "below_the_bottom":
         return rect.y + rect.height * 1.3
 
     elif v_align == "over_the_top":
@@ -137,7 +140,8 @@ def align_vertical(rect,v_align):
 
     return rect.y
 
-def center_pos(width, height):# unused
+
+def center_pos(width, height):  # unused
     """
     gets center of the screen
     :param width:
@@ -154,3 +158,40 @@ def center_pos(width, height):# unused
     return pos
 
 
+def smooth_planet_positions__(width, height):# original
+
+    for planet in sprite_groups.planets.sprites():
+        # check if has an orbit object
+        if planet.orbit_object:
+            dist_x = abs(planet.world_x - planet.orbit_object.world_x)
+            dist_y = abs(planet.world_x - planet.orbit_object.world_x)
+
+            if planet.world_x + dist_x > width:
+                planet.world_x = width - dist_x
+
+            if planet.world_x - dist_x < 0:
+                planet.world_x = dist_x
+
+            if planet.world_y + dist_y > height:
+                planet.world_y = height - dist_y
+
+            if planet.world_x - dist_y < 0:
+                planet.world_x = dist_y
+
+def smooth_planet_positions(width, height):#ki
+    center_x = width / 2
+    center_y = height / 2
+    for planet in sprite_groups.planets.sprites():
+        # check if it has an orbit object
+
+        if planet.orbit_object:
+            dist_x = planet.world_x - center_x
+            dist_y = planet.world_y - center_y
+            distance_from_center = math.hypot(dist_x, dist_y)
+
+            if distance_from_center > min(width, height) / 2:
+                # Calculate the angle from the center to the current position
+                angle = math.atan2(dist_y, dist_x)
+                # Set the position to the edge of the circular boundary
+                planet.world_x = center_x + (min(width, height) / 2) * math.cos(angle)
+                planet.world_y = center_y + (min(width, height) / 2) * math.sin(angle)

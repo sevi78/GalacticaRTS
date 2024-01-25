@@ -44,14 +44,16 @@ class PlanetEditBuilder:
 
     def create_inputboxes(self):
         """"""
-        self.inputbox = InputBox(self.win, self.world_x - self.spacing_x / 2 + self.world_width / 2, self.world_y + TOP_SPACING, self.spacing_x * 2, 32,
+        self.inputbox = InputBox(self.win,
+            self.world_x - self.spacing_x / 2 + self.world_width / 2, self.world_y + TOP_SPACING + 16, self.spacing_x * 2,
+            32,
             text="", parent=self, key="name")
         self.widgets.append(self.inputbox)
 
     def create_selectors(self):
         """"""
         x = self.world_x + self.world_width / 2 - ARROW_SIZE / 2
-        y = 140
+        y = 156
 
         self.type_planet = Selector(self.win, x, self.world_y + y, ARROW_SIZE, self.frame_color, 9, self.spacing_x,
             {"list_name": "type_list", "list": self.type_list}, self, FONT_SIZE)
@@ -102,12 +104,12 @@ class PlanetEditBuilder:
     def create_checkboxes(self):
         """"""
         all_possible_resources = building_factory.get_resource_categories()
-        y = self.world_y + 100
+        y = self.world_y + 116
         x = self.world_width / 2 + BUTTON_SIZE
 
         for i in all_possible_resources:
             checkbox = Checkbox(
-                self.win, self.world_x - self.spacing_x + x + BUTTON_SIZE * 3, y, 30, 30, isSubWidget=False,
+                self.win, self.world_x - self.spacing_x + x + BUTTON_SIZE * 4, y, 30, 30, isSubWidget=False,
                 color=self.frame_color,
                 key=i, tooltip=i, onClick=lambda: print("OKOKOK"), layer=9, parent=self)
             x += BUTTON_SIZE * 1.5
@@ -193,7 +195,9 @@ class PlanetEdit(EditorBase, PlanetEditBuilder):
         self.create_checkboxes()
         self.create_selectors()
         self.create_inputboxes()
-        self.create_save_button(lambda: global_params.app.level_edit.save_level(), "save level")
+        self.create_save_button(lambda:
+            global_params.app.level_handler.save_level(global_params.app.level_handler.current_game,
+            "levels" if global_params.app.level_handler.current_game.startswith("level_") else "games"), "save level")
         self.create_close_button()
         self.create_randomize_button()
 
@@ -224,7 +228,7 @@ class PlanetEdit(EditorBase, PlanetEditBuilder):
         for i in self.selectors:
             if hasattr(self.selected_planet, i.key):
                 if i.key == "atmosphere_name":
-                    #print("selected_planet.atmosphere_name:", self.selected_planet.atmosphere_name)
+                    # print("selected_planet.atmosphere_name:", self.selected_planet.atmosphere_name)
                     i.set_current_value(self.selected_planet.atmosphere_name)
                 else:
                     i.set_current_value(getattr(self.selected_planet, i.key))

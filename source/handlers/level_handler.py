@@ -112,6 +112,7 @@ class LevelDictGenerator:
         self.sun_names = {}  # Dictionary to store sun names
         self.planet_names = {}  # Dictionary to store planet names
         self.moon_names = {}  # Dictionary to store moon names
+        self.ship_settings = load_file("ship_settings.json")
 
     def create_suns(self, data):
         sun_images = get_image_names_from_folder("suns")
@@ -125,8 +126,6 @@ class LevelDictGenerator:
             data["celestial_objects"][str(i)] = self.create_celestial_object(i, "sun", sun_images, i, world_x, world_y)
 
     def create_planets(self, data):
-        # !!! here must be the orbit bug!!! setting the orbit distance and angele might be a bad idea
-        planet_ids = []
         planet_images = get_image_names_from_folder("planets")
         for i in range(
                 self.parent.data["globals"]["suns"],
@@ -140,7 +139,7 @@ class LevelDictGenerator:
                 str(i)] = self.create_celestial_object(i, "planet", planet_images, orbit_object_id, world_x, world_y)
 
     def create_moons(self, data):
-        moon_images = ["moon.gif", "moon1.gif"]  # get_image_names_from_folder("moons")#
+        moon_images = get_image_names_from_folder("gifs", startswith_string="moon")
         for i in range(
                 self.parent.data["globals"]["suns"] + self.parent.data["globals"]["planets"],
                 self.parent.data["globals"]["suns"] + self.parent.data["globals"]["planets"] +
@@ -152,6 +151,135 @@ class LevelDictGenerator:
             self.moon_names[i] = moon_name  # Store moon name in the dictionary
             data["celestial_objects"][
                 str(i)] = self.create_celestial_object(i, "moon", moon_images, orbit_object_id, world_x, world_y)
+
+    def create_ships(self, data):
+        # get all ships from editor
+        all_ships = (["spaceship" for _ in range(self.parent.data["globals"]["spaceship"])] +
+                     ["spacehunter" for _ in range(self.parent.data["globals"]["spacehunter"])] +
+                     ["cargoloader" for _ in range(self.parent.data["globals"]["cargoloader"])])
+
+        border = min(self.parent.data["globals"]["width"], self.parent.data["globals"]["height"]) / 4
+
+        # reset data
+        self.parent.data["ships"] = {}
+
+        # create data
+        for index, ship_name in enumerate(all_ships):
+            world_x = self.get_random_position(self.parent.data["globals"]["width"], border)
+            world_y = self.get_random_position(self.parent.data["globals"]["height"], border)
+            weapons = {
+                "laser": {
+                    "name": "laser",
+                    "level": 0,
+                    "production_energy": 0,
+                    "production_food": 0,
+                    "production_minerals": 0,
+                    "production_water": 0,
+                    "production_technology": 0,
+                    "production_population": 0,
+                    "price_energy": 2500,
+                    "price_food": 2500,
+                    "price_minerals": 2500,
+                    "price_water": 2500,
+                    "price_technology": 2500,
+                    "price_population": 0,
+                    "build_population_minimum": 0,
+                    "building_production_time_scale": 5,
+                    "building_production_time": 5,
+                    "population_buildings_value": 0,
+                    "technology_upgrade": {},
+                    "range": 100,
+                    "power": 3,
+                    "shoot_interval": 1.0,
+                    "upgrade cost": {
+                        "level_0": {
+                            "price_energy": 1500,
+                            "price_food": 1000,
+                            "price_minerals": 1500,
+                            "price_water": 250,
+                            "price_technology": 500,
+                            "price_population": 0
+                            },
+                        "level_1": {
+                            "price_energy": 2500,
+                            "price_food": 2000,
+                            "price_minerals": 2500,
+                            "price_water": 250,
+                            "price_technology": 500,
+                            "price_population": 0
+                            },
+                        "level_2": {
+                            "price_energy": 2500,
+                            "price_food": 2000,
+                            "price_minerals": 2500,
+                            "price_water": 250,
+                            "price_technology": 500,
+                            "price_population": 0
+                            }
+                        },
+                    "upgrade values": {
+                        "level_0": {
+                            "level": 0,
+                            "range": 1.0,
+                            "power": 1.0,
+                            "shoot_interval": 1.0
+                            },
+                        "level_1": {
+                            "level": 1,
+                            "range": 1.5,
+                            "power": 1.5,
+                            "shoot_interval": 1.5
+                            },
+                        "level_2": {
+                            "level": 2,
+                            "range": 2.0,
+                            "power": 2.0,
+                            "shoot_interval": 2.0
+                            }
+                        }
+                    }
+                }
+
+            ship_data = {
+                "name": ship_name,
+                "world_x": world_x,
+                "world_y": world_y,
+                "weapons": weapons if ship_name == "spacehunter" else {},
+                "food": 0,
+                "food_max": self.ship_settings[ship_name]["food_max"],
+                "minerals": 0,
+                "minerals_max": self.ship_settings[ship_name]["minerals_max"],
+                "water": 0,
+                "water_max": self.ship_settings[ship_name]["water_max"],
+                "technology": 0,
+                "technology_max": self.ship_settings[ship_name]["technology_max"],
+                "energy": 9306,
+                "energy_max": self.ship_settings[ship_name]["energy_max"],
+                "crew": self.ship_settings[ship_name]["crew"],
+                "crew_max": self.ship_settings[ship_name]["crew_max"],
+                "fog_of_war_radius": 100,
+                "fog_of_war_radius_max": 300,
+                "upgrade_factor": 1.5,
+                "upgrade_factor_max": 3.0,
+                "reload_max_distance_raw": 300,
+                "attack_distance_raw": 200,
+                "desired_orbit_radius_raw": 100,
+                "speed": self.ship_settings[ship_name]["speed"],
+                "speed_max": self.ship_settings[ship_name]["speed_max"],
+                "orbit_speed": 0.5,
+                "orbit_speed_max": 0.6,
+                "orbit_radius": 130,
+                "orbit_radius_max": 300,
+                "min_dist_to_other_ships": 80,
+                "min_dist_to_other_ships_max": 200,
+                "energy_use": self.ship_settings[ship_name]["energy_use"],
+                "energy_reload_rate": self.ship_settings[ship_name]["energy_reload_rate"],
+                "specials": [],
+                "orbit_object_id": -1,
+                "orbit_object_name": ""
+                }
+
+            self.parent.data["ships"][str(index)] = ship_data
 
     def get_random_position(self, limit, border):
         position = random.uniform(0 + border, limit - border)
@@ -235,21 +363,41 @@ class LevelHandler:
         self.data = load_file(f"level_{0}.json", folder="levels")
         self.data_default = copy.deepcopy(self.data)
         self.level_dict_generator = LevelDictGenerator(self)
-        self.level_successes ={}
-
+        self.level_successes = {}
+        self.current_game = None
 
     def delete_level(self):
         # delete objects
+        # universe
         universe_factory.delete_universe()
+
+        # artefacts
         universe_factory.delete_artefacts()
+
+        # planets
         planet_factory.delete_planets()
+
+        # ships
         self.app.ship_factory.delete_ships()
+
+        # collectable items
         for i in sprite_groups.collectable_items.sprites():
             i.end_object()
+
+        # ufos
         for i in sprite_groups.ufos.sprites():
             i.end_object(explode=False)
+
+        # gif_handlers
         for i in sprite_groups.gif_handlers.sprites():
             i.end_object()
+
+        # building widgets
+        for i in global_params.app.building_widget_list:
+            i.delete()
+
+        global_params.app.building_widget_list = []
+
 
     def create_universe(self):
         universe_factory.amount = int(math.sqrt(math.sqrt(self.data["globals"]["width"])) * self.data["globals"][
@@ -308,20 +456,23 @@ class LevelHandler:
         return data
 
     def generate_level_dict_from_editor(self):
-        print("self.data:")
+        #print("self.data:")
         # pprint (self.data["globals"])
         self.level_dict_generator.create_suns(self.data)
         self.level_dict_generator.create_planets(self.data)
         self.level_dict_generator.create_moons(self.data)
+        self.level_dict_generator.create_ships(self.data)
 
-        print("celestial_objects:")
-        # print (f"identical:{self.data['celestial_objects']['0'].keys() == self.data_default['celestial_objects']['0'].keys()}")
-        print(f"not in keys(): {[i for i in self.data['celestial_objects']['0'].keys() if i not in self.data_default['celestial_objects']['0'].keys()]}")
-        pprint(self.data['celestial_objects'])
+        # print("celestial_objects:")
+        # # print (f"identical:{self.data['celestial_objects']['0'].keys() == self.data_default['celestial_objects']['0'].keys()}")
+        # print(f"not in keys(): {[i for i in self.data['celestial_objects']['0'].keys() if i not in self.data_default['celestial_objects']['0'].keys()]}")
+        # pprint(self.data['celestial_objects'])
 
     def load_level(self, filename, folder):
+        self.current_game = filename
         self.data = load_file(filename, folder=folder)
         global_params.app.level_edit.set_selector_current_value()
+
 
         # delete level
         self.delete_level()
@@ -339,7 +490,7 @@ class LevelHandler:
                 ships[key]["world_x"]), int(
                 ships[key]["world_y"]), global_params.app, ships[key]["weapons"], data=ships[key])
 
-        # # create universe
+        # create universe
         self.create_universe()
 
         # setup game_event_handler
@@ -352,7 +503,7 @@ class LevelHandler:
 
         self.app.calculate_global_production()
 
-    def save_level(self, filename, folder, data):
+    def save_level(self, filename, folder):
         data = self.generate_level_dict_from_scene()
         write_file(filename, folder, data)
 
@@ -379,8 +530,6 @@ class LevelHandler:
         # write the data back to the file
         write_file(filename, folder, data)
 
-
-
     def get_level_success_from_file(self, filename, folder) -> dict:
         # load file
         data = load_file(filename, folder=folder)
@@ -396,6 +545,3 @@ class LevelHandler:
         print(f"self.update_level_successes(): self.level_successes: {self.level_successes}")
         # update the icons of level select to displax the successes
         self.app.level_select.update_icons()
-
-
-

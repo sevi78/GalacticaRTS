@@ -8,7 +8,7 @@ pygame.init()
 pygame.display.set_mode((global_params.WIDTH, global_params.HEIGHT), pygame.RESIZABLE, pygame.DOUBLEBUF)
 #
 
-from PIL import Image, ImageSequence
+from PIL import Image
 from source.handlers.file_handler import pictures_path
 
 images = {}
@@ -86,7 +86,6 @@ def load_gif_durations(gif):
     return avg_duration
 
 
-
 def get_gif_duration(gif_name):
     return gif_durations[gif_name]
 
@@ -99,7 +98,7 @@ def load_gif(gif_name):
     gif_fps[gif_name] = load_gif_fps(gif)
     gif_durations[gif_name] = load_gif_durations(gif)
 
-    print (f"gif: {gif_name},frames: {len(gif_frames[gif_name])}, fps: {gif_fps[gif_name]}, duration: {gif_durations[gif_name]}")
+    #print(f"gif: {gif_name},frames: {len(gif_frames[gif_name])}, fps: {gif_fps[gif_name]}, duration: {gif_durations[gif_name]}")
 
 
 def load_gif_fps(gif_file):
@@ -156,15 +155,6 @@ def get_gif_frames(gif_name):
 
             frames.append(frame_surface)
         # frames.pop(0)
-    return frames
-
-def get_gif_frames__(gif_name):
-    frames = []
-    im = get_gif(gif_name)
-
-    for frame in ImageSequence.Iterator(im):
-        frames.append(frame.copy())
-
     return frames
 
 

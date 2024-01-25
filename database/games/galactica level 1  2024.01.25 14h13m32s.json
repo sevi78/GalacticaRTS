@@ -13,7 +13,7 @@
             "image_name_small": "sonnecorona_110x110.png",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Ursara",
-            "orbit_angle": 511.7793638674605,
+            "orbit_angle": 530.3586670266673,
             "orbit_distance": 0,
             "orbit_object_id": 0,
             "orbit_speed": 0.0024318459632576154,
@@ -39,7 +39,7 @@
             "image_name_small": "P0101_40x40.png",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Ursara I",
-            "orbit_angle": 771.9553565915386,
+            "orbit_angle": 796.5542465221798,
             "orbit_distance": 0,
             "orbit_object_id": 0,
             "orbit_speed": 0.003219749990931349,
@@ -56,8 +56,8 @@
             "type": "planet",
             "world_height": 63,
             "world_width": 63,
-            "world_x": 4405.634620198694,
-            "world_y": 4386.026156223821
+            "world_x": 3519.4245312243406,
+            "world_y": 4813.391617573536
         },
         "2": {
             "alien_population": 0,
@@ -72,7 +72,7 @@
             "image_name_small": "ur-anus_150x150.png",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Ursara II",
-            "orbit_angle": 467.42153473519113,
+            "orbit_angle": 489.4850663215544,
             "orbit_distance": 0,
             "orbit_object_id": 0,
             "orbit_speed": 0.002887896804500057,
@@ -86,8 +86,8 @@
             "type": "planet",
             "world_height": 70,
             "world_width": 70,
-            "world_x": 2610.805979967201,
-            "world_y": 3751.6971680142224
+            "world_x": 2193.140782709894,
+            "world_y": 3525.3640524569473
         },
         "3": {
             "alien_population": 0,
@@ -102,7 +102,7 @@
             "image_name_small": "moon.gif",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Ursara II, a",
-            "orbit_angle": 2253.6067175820313,
+            "orbit_angle": 2398.7667175817255,
             "orbit_distance": 0,
             "orbit_object_id": 2,
             "orbit_speed": 0.019,
@@ -118,8 +118,8 @@
             "type": "moon",
             "world_height": 50,
             "world_width": 50,
-            "world_x": 2575.0918796129936,
-            "world_y": 4318.296470595588
+            "world_x": 2048.7361138459655,
+            "world_y": 3287.2358892728894
         },
         "4": {
             "alien_population": 0,
@@ -134,7 +134,7 @@
             "image_name_small": "moon1.gif",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Ursara I, b",
-            "orbit_angle": 3263.341691479685,
+            "orbit_angle": 3397.8333375605193,
             "orbit_distance": 0,
             "orbit_object_id": 1,
             "orbit_speed": 0.017603618596936033,
@@ -148,8 +148,8 @@
             "type": "moon",
             "world_height": 36,
             "world_width": 36,
-            "world_x": 5344.486956494941,
-            "world_y": 4791.16997363277
+            "world_x": 2919.406539687592,
+            "world_y": 5057.847257965121
         },
         "5": {
             "alien_population": 72012741,
@@ -164,7 +164,7 @@
             "image_name_small": "moon.gif",
             "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
             "name": "Ursara II, c",
-            "orbit_angle": 4299.970047613225,
+            "orbit_angle": 4489.154327723435,
             "orbit_distance": 0,
             "orbit_object_id": 2,
             "orbit_speed": 0.02476234032857607,
@@ -180,8 +180,8 @@
             "type": "moon",
             "world_height": 45,
             "world_width": 45,
-            "world_x": 3309.396784734244,
-            "world_y": 3497.0172499197706
+            "world_x": 1240.8084225316488,
+            "world_y": 3707.818044585205
         }
     },
     "globals": {

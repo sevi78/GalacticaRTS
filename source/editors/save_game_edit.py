@@ -20,7 +20,7 @@ class SaveGameEdit(EditorBase):
         self.max_height = 700
         # create widgets
 
-        self.create_save_button(lambda: self.save_game(self.current_game), "save game", name="save_button")
+        self.create_save_button(lambda: self.save_game(), "save game", name="save_button")
         self.create_load_button(lambda: self.load_game(self.current_game), "load game", name="load_button")
         self.create_delete_button(lambda: self.delete_game(self.current_game), "delete game, no undo !!!", name="delete_button")
         self.create_games_icons()
@@ -111,7 +111,7 @@ class SaveGameEdit(EditorBase):
                 i.textColour = self.frame_color
                 i.text = self.font.render(i.string, True, i.textColour)
 
-    def save_game(self, value):
+    def save_game(self):
         filename = generate_json_filename_based_on_datetime(f"galactica level {self.parent.level_handler.data['globals']['level']} ")
         data = self.parent.level_handler.generate_level_dict_from_scene()
         write_file(filename, "games", data)
@@ -120,6 +120,7 @@ class SaveGameEdit(EditorBase):
     def load_game(self, value):
         #self.parent.level_handler.load_level(0, data=load_file(self.current_game, folder="games"), current_game= self.current_game)
         self.parent.level_handler.load_level(self.current_game, "games")
+        self.parent.level_handler.current_game = self.current_game
         print(f"load game: {value}")
 
     def delete_game(self, current_game):

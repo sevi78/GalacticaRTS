@@ -11,7 +11,6 @@ gifs_path = os.path.split(dirpath)[0].split("source")[0] + "assets" + os.sep + "
 soundpath = os.path.split(dirpath)[0].split("source")[0] + "assets" + os.sep + "sounds" + os.sep
 
 
-
 def update_dict__(data, default_dict):
     for key, value in default_dict.items():
         if key not in data:
@@ -58,25 +57,84 @@ def update_json_files(default_dict):
             json.dump(data, file, indent=4)
 
 
+# def compare_json_files(folder, default_file):
+#     for file_name in os.listdir(folder):
+#         if file_name.endswith('.json'):
+#             with open(os.path.join(folder, file_name)) as json_file:
+#                 data = json.load(json_file)
+#                 print(f"Comparing file: {file_name}")
+#                 compare_json(default_file, data, file_name)
+#
+# def compare_json(default, data, file_name):
+#     # Check for keys in data that are not in default
+#     for key in data:
+#         if key not in default:
+#             print(f"Key '{key}' with value '{data[key]}' is not in default_file in {file_name}")
+#
+#     # Check for keys in default that are not in data
+#     for key in default:
+#         if key not in data:
+#             print(f"Key '{key}' is missing in {file_name}")
+# def compare_json_files(folder, default_file):
+#     for file_name in os.listdir(folder):
+#         if file_name.endswith('.json'):
+#             with open(os.path.join(folder, file_name)) as json_file:
+#                 data = json.load(json_file)
+#                 print(f"Comparing file: {file_name}")
+#                 compare_json(default_file, data, file_name)
+#
+# def compare_json(default, data, file_name, path=""):
+#     for key in default:
+#         if key not in data:
+#             print(f"Key '{key}' is missing in {file_name} at path {path}")
+#         else:
+#             if isinstance(default[key], dict) and isinstance(data[key], dict):
+#                 compare_json(default[key], data[key], file_name, path + f"['{key}']")
+#             elif default[key] != data[key]:
+#                 print(f"Value of key '{key}' is changed from '{default[key]}' to '{data[key]}' in {file_name} at path {path}")
+
+def compare_json_files(folder, default_file):
+    for file_name in os.listdir(folder):
+        if file_name.endswith('.json'):
+            with open(os.path.join(folder, file_name)) as json_file:
+                data = json.load(json_file)
+                print(f"Comparing file: {file_name}")
+                compare_json(default_file, data, file_name)
+
+def compare_json(default, data, file_name, path=""):
+    for key in default:
+        if key not in data:
+            print(f"Key '{key}' is missing in {file_name} at path {path}")
+        else:
+            if isinstance(default[key], dict) and isinstance(data[key], dict):
+                compare_json(default[key], data[key], file_name, path + f"['{key}']")
+            # Check for exact match of nested dictionaries
+            elif default[key] != data[key]:
+                pass
+                #print(f"Value of key '{key}' is changed from '{default[key]}' to '{data[key]}' in {file_name} at path {path}")
 def abs_database_path():
     # gets the path to store the files: database at root
     dir_path = os.path.dirname(os.path.realpath(__file__))
     abs_database_path = os.path.split(dir_path)[0].split("source")[0] + "database" + os.sep
     return abs_database_path
 
+
 def abs_level_path():
-    return (os.path.join(abs_database_path(), "levels" ))
+    return (os.path.join(abs_database_path(), "levels"))
+
 
 def abs_games_path():
-    return (os.path.join(abs_database_path(), "games" ))
+    return (os.path.join(abs_database_path(), "games"))
+
 
 def write_file(filename, folder, data):
-    with open(os.path.join(abs_database_path() + folder  + os.sep + filename), 'w') as file:
-        json.dump(data, file)
+    with open(os.path.join(abs_database_path() + folder + os.sep + filename), 'w') as file:
+        json.dump(data, file, indent=4, sort_keys=True)
+
 
 def load_file(filename, **kwargs):
     folder = kwargs.get("folder", "")
-    path = os.path.join(abs_database_path() + folder  + os.sep +  filename)
+    path = os.path.join(abs_database_path() + folder + os.sep + filename)
     try:
         with open(path, 'r+') as file:
             data = json.load(file)
@@ -94,27 +152,36 @@ def get_level_list():
     file_list = [file for file in os.listdir(abs_level_path()) if file.startswith("level_")]
     return file_list
 
+
 def get_games_list():
     file_list = [file for file in os.listdir(abs_games_path())]
+    # sort: oldest last
+    file_list.sort(key=lambda x: os.path.getctime(os.path.join(abs_games_path(), x)), reverse=True)
     return file_list
+
 
 def generate_json_filename_based_on_datetime(prefix):
     current_datetime = datetime.datetime.now().strftime("%Y.%m.%d %Hh%Mm%Ss")
     return f"{prefix} {current_datetime}.json"
+
+
 def move_file_to_trash(file_path):
     try:
         send2trash.send2trash(file_path)
         print(f"The file at {file_path} has been moved to the trash.")
     except Exception as e:
         print(f"An error occurred: {e}")
+
+
 def main():
     pass
-    update_json_files(load_file("level_0.json", folder="levels"))
+    #update_json_files(load_file("level_0.json", folder="levels"))
+    compare_json_files(abs_level_path(),load_file("level_0.json", folder="levels"))
 
 
 if __name__ == "__main__":
     main()
-    #print (load_file("level_0.json", folder ="levels"))
+    # print (load_file("level_0.json", folder ="levels"))
     # tests
     # print ("os.path.join(os.getcwd(),settings.json", os.path.join(os.getcwd(),"settings.json"))
     # print("working dir: os.path.join(os.getcwd()) :", os.path.join(os.getcwd()))

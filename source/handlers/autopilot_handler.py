@@ -50,7 +50,8 @@ class AutopilotHandler:
                 # get key with lowest value
                 lowest_value_key = min(d, key=d.get)
                 prior_buildings = building_factory.json_dict.get(lowest_value_key, [])
-                building = random.choice(prior_buildings)
+                prior_buildings_list = list(prior_buildings.keys())
+                building = random.choice(prior_buildings_list)
                 building_factory.build(building, i)
 
     def update(self):

@@ -12,6 +12,15 @@
             "space harbor": 1
         }
     },
+    "player": {
+    "stock": {
+      "energy": 1000,
+      "food": 1000,
+      "minerals": 1000,
+      "water": 1000,
+      "technology": 1000,
+      "population": 0
+    }},
     "celestial_objects": {
         "0": {
             "id": 0,

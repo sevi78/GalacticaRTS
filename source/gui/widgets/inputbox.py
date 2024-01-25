@@ -105,4 +105,4 @@ class InputBox(WidgetBase):
             if not self.draw_frame:
                 return
 
-            pg.draw.rect(self.win, self.color, self.rect, 2)
+            pg.draw.rect(self.win, self.color, self.rect, 2, global_params.ui_rounded_corner_radius_small)

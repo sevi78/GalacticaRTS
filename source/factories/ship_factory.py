@@ -15,6 +15,13 @@ class ShipFactory:
             align_image="center", layer=1, info_panel_alpha=80, current_weapon="laser", name=name, weapons=weapons, data=data)
         return ship
 
+    def create_ships_from_data(self, data):
+        for key, value in data["ships"].items():
+            self.create_ship(
+                data["ships"][key]["name"] + "_30x30.png",
+                data["ships"][key]["world_x"],
+                data["ships"][key]["world_y"], global_params.app, data["ships"][key]["weapons"], data=data)
+
     def delete_ships(self):
         for i in sprite_groups.ships.sprites():
             i.__delete__(i)

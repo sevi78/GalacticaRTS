@@ -9,12 +9,14 @@ from source.factories.planet_factory import planet_factory
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.gui.widgets.inputbox import InputBox
 from source.gui.widgets.selector import Selector
+from source.handlers import position_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zoom_handler
 from source.factories.universe_factory import universe_factory
 from source.configuration import global_params
 from source.multimedia_library.images import get_image
 from source.handlers.color_handler import colors
+from source.text.info_panel_text_generator import info_panel_text_generator
 
 PLANET_MAX_SIZE = 200.0
 PLANET_MIN_SIZE = 10.0
@@ -38,6 +40,9 @@ class LevelEdit(EditorBase):
         self.planets_list = [_ for _ in range(1, 25)]
         self.suns_list = [_ for _ in range(1, 35)]
         self.moons_list = [_ for _ in range(1, 50)]
+        self.spaceship_list = [_ for _ in range(0, 5)]
+        self.spacehunter_list = [_ for _ in range(0, 5)]
+        self.cargoloader_list = [_ for _ in range(0, 5)]
         self.width_list = [_ for _ in range(5000, 1000000, 1000)]
         self.height_list = [_ for _ in range(5000, 1000000, 1000)]
         self.collectable_item_amount_list = [_ for _ in range(0, 50, 1)]
@@ -47,10 +52,11 @@ class LevelEdit(EditorBase):
 
         # create widgets
         self.create_selectors()
-        self.create_save_button(lambda: self.level_handler.save_level(f"level_{self.level_handler.data['globals']['level']}.json", "levels", self.level_handler.data), "save level")
+        self.create_save_button(lambda: self.level_handler.save_level(f"level_{self.level_handler.data['globals']['level']}.json", "levels"), "save level")
         self.create_load_button(lambda: self.level_handler.load_level(f"level_{self.level_handler.data['globals']['level']}.json", 'levels'), "load level")
         self.create_close_button()
         self.create_randomize_button()
+        self.create_smoothing_button()
         self.create_update_button()
 
         self.set_selector_current_value()
@@ -70,6 +76,8 @@ class LevelEdit(EditorBase):
             image=pygame.transform.scale(
                 get_image("randomize_icon.png"), (button_size, button_size)),
             tooltip="randomize level",
+            info_text=info_panel_text_generator.create_create_info_panel_level_text(
+                self.level_handler.data["globals"]["level"], self.level_handler.data),
             frame_color=self.frame_color,
             moveable=False,
             include_text=False,
@@ -94,6 +102,8 @@ class LevelEdit(EditorBase):
             image=pygame.transform.scale(
                 get_image("update_icon.png"), (button_size, button_size)),
             tooltip="refresh level",
+            info_text=info_panel_text_generator.create_create_info_panel_level_text(
+                self.level_handler.data["globals"]["level"], self.level_handler.data),
             frame_color=self.frame_color,
             moveable=False,
             include_text=False,
@@ -106,33 +116,69 @@ class LevelEdit(EditorBase):
         self.buttons.append(update_button)
         self.widgets.append(update_button)
 
+    def create_smoothing_button(self):
+        button_size = 32
+        smoothing_button = ImageButton(win=self.win,
+            x=self.get_screen_x() + button_size * 3 + button_size / 2,
+            y=self.world_y + TOP_SPACING + button_size / 2,
+            width=button_size,
+            height=button_size,
+            isSubWidget=False,
+            parent=self,
+            image=pygame.transform.scale(
+                get_image("calculate.png"), (button_size, button_size)),
+            tooltip="smooth planet positions",
+            info_text=info_panel_text_generator.create_create_info_panel_level_text(
+                self.level_handler.data["globals"]["level"], self.level_handler.data),
+            frame_color=self.frame_color,
+            moveable=False,
+            include_text=False,
+            layer=self.layer,
+            onClick=lambda: position_handler.smooth_planet_positions(
+                self.level_handler.data["globals"]["width"], self.level_handler.data["globals"]["height"]),
+            )
+
+        smoothing_button.hide()
+
+        self.buttons.append(smoothing_button)
+        self.widgets.append(smoothing_button)
+
     def create_inputboxes(self):
         """"""
-        self.inputbox = InputBox(self.win, self.world_x - self.spacing_x / 2 + self.world_width / 2, self.world_y + TOP_SPACING, self.spacing_x * 2, 32,
-            text=f"Level {self.level_handler.data['globals']['level']}", parent=self, key="name")
+        self.inputbox = InputBox(self.win, self.world_x - self.spacing_x / 2 + self.world_width / 2, self.world_y + TOP_SPACING + 16, self.spacing_x * 2, 32,
+            text="          Edit Level!", parent=self, key="name", draw_frame=False)
         self.widgets.append(self.inputbox)
 
     def create_selectors(self):
         x = self.world_x + self.world_width / 2 - ARROW_SIZE / 2
         y = 140
 
+        # create global selectors
         for key, value in self.level_handler.data["globals"].items():
-            print(f"key:{key}, value: {value}")
+            # print(f"key:{key}, value: {value}")
             if hasattr(self, key + "_list"):
                 setattr(self, "selector_" + key.split("_list")[0],
                     Selector(self.win, x, self.world_y + y, ARROW_SIZE, self.frame_color, 9, self.spacing_x,
                         {"list_name": key, "list": getattr(self, key + "_list")}, self, FONT_SIZE, repeat_clicks=True))
 
                 y += self.spacing_y
-                self.max_height = y
 
             else:
                 print(f"cant create selector, no list availlable:{key}")
 
+        # finally set the max height of the panel based on the selectors
+        self.max_height = y
+
     def set_selector_current_value(self):
         """updates the selectors values"""
         for i in self.selectors:
-            i.set_current_value(self.level_handler.data["globals"][i.key])
+            if i.key in self.level_handler.data["globals"]:
+                i.set_current_value(self.level_handler.data["globals"][i.key])
+
+            else:
+                print(f"missing {i.key} in level_handler.data['globals'], (level_{self.level_handler.data['globals']['level']})")
+
+
 
     def selector_callback(self, key, value):
         """this is the selector_callback function called from the selector to return the values to the editor"""
@@ -145,7 +191,7 @@ class LevelEdit(EditorBase):
         if key == "central_compression":
             universe_factory.central_compression = value
 
-        self.inputbox.set_text(f"Level {self.level_handler.data['globals']['level']}")
+        #self.inputbox.set_text(f"Level {self.level_handler.data['globals']['level']}")
 
     def randomize_level(self):
         ignorables = ["level"]
@@ -159,7 +205,13 @@ class LevelEdit(EditorBase):
         self.level_handler.delete_level()
         self.level_handler.generate_level_dict_from_editor()
         planet_factory.create_planets_from_data(data=self.level_handler.data)
+        self.parent.ship_factory.create_ships_from_data(data=self.level_handler.data)
         self.level_handler.create_universe()
+
+        # set info text
+        for i in self.buttons:
+            i.info_text = info_panel_text_generator.create_create_info_panel_level_text(
+                self.level_handler.data["globals"]["level"], self.level_handler.data)
 
     def delete_object(self):
         selected_ships = global_params.app.box_selection.selected_objects
