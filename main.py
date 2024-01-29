@@ -1,5 +1,7 @@
+import os
 import time
 import traceback
+from pprint import pprint
 
 import pygame
 
@@ -14,14 +16,14 @@ from source.game_play.game_logic import GameLogic
 from source.game_play.navigation import navigate_to
 from source.gui.event_text import event_text
 from source.handlers.economy_handler import economy_handler
-from source.handlers.file_handler import load_file
+from source.handlers.file_handler import load_file, pictures_path
 from source.handlers.game_event_handler import GameEventHandler
 from source.handlers.level_handler import LevelHandler
 #from source.interaction import copy_agent
 from source.interaction.box_selection import BoxSelection
 from source.configuration import global_params
 from source.configuration.global_params import text_input_active, enable_pan, copy_object
-from source.multimedia_library.images import get_image
+from source.multimedia_library.images import get_image, find_unused_images_gifs, images, gifs
 from source.interaction.mouse import Mouse
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
@@ -250,6 +252,8 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
 
             # pygame update
             pygame.display.update()
+
+            #pprint(f"find_unused_images_gifs: {find_unused_images_gifs(os.path.join(pictures_path), os.path.join(pictures_path + 'gifs'), images, gifs)}")
 
 
 def main():

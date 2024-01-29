@@ -552,6 +552,6 @@ class LevelHandler:
             for key, value in level_success_dict.items():
                 self.level_successes[key] = value
 
-        print(f"self.update_level_successes(): self.level_successes: {self.level_successes}")
+        print(f"level_handler.update_level_successes(): self.level_successes: {self.level_successes}")
         # update the icons of level select to displax the successes
         self.app.level_select.update_icons()

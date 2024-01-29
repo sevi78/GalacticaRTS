@@ -1,4 +1,6 @@
 import os
+from pprint import pprint
+
 import pygame
 
 from source.configuration import global_params
@@ -182,5 +184,28 @@ def resize_image(image, new_size):
 
     return new_image
 
+import os
+
+def find_unused_images_gifs(image_dir, gif_dir, images_dict, gifs_dict):
+    unused_files = []
+
+    # Check for unused images
+    for folder, subfolders in images_dict.items():
+        for subfolder, image_files in subfolders.items():
+            actual_files = os.listdir(os.path.join(image_dir, folder, subfolder))
+            for file in actual_files:
+                if file not in image_files:
+                    unused_files.append(os.path.join(image_dir, folder, subfolder, file))
+
+    # Check for unused gifs
+    actual_gif_files = os.listdir(gif_dir)
+    for file in actual_gif_files:
+        if file not in gifs_dict:
+            unused_files.append(os.path.join(gif_dir, file))
+
+    return unused_files
 
 load_folders(os.path.join(pictures_path), images)
+
+
+

@@ -81,7 +81,10 @@ class EventPanel(TextWrap, EditorBase):
                 #     self.game_event.deal.make_deal()
                 #
                 # else:
-                getattr(global_params.app, self.functions["no"])()
+                if hasattr(global_params.app.game_event_handler, self.functions["no"]):
+                    getattr(global_params.app.game_event_handler, self.functions["no"])()
+                else:
+                    print (f"event_panel. error: cannot call: {self.functions['no']}")
 
             self.hide()
             global_params.game_paused = False

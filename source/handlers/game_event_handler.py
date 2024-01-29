@@ -184,19 +184,24 @@ class GameEventHandler():
         # create event if succeeded
         all_values_are_true = all(value for value in self.goal_success.values())
         if all_values_are_true:
-            print(self.data)
+            #print(self.data)
             if not f"goal{self.level}" in self.obsolete_events.keys():
                 self.game_events[f"goal{self.level}"] = GameEvent(
                     name=f"goal{self.level}",
                     title="Congratulation!",
                     body=f"{body}. Well Done! move to next level !",
                     end_text="",
-                    functions={"yes": "load_next_level"},
+                    functions={"yes": "load_next_level", "no": "update_level_success"},
                     condition="",
                     id=len(self.game_events.keys())
                     )
                 self.event_cue.append(self.game_events[f"goal{self.level}"])
                 self.app.event_panel.set_game_event(self.game_events[f"goal{self.level}"])
+
+    def update_level_success(self):
+        self.app.level_handler.save_level_succcess_to_file(f"level_{self.level}.json", "levels", True)
+        self.app.level_handler.update_level_successes()
+        self.app.level_select.update_icons()
 
     def load_next_level(self):
         global_params.app.level_handler.save_level_succcess_to_file(f"level_{self.level}.json", "levels", True)

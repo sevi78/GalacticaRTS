@@ -80,9 +80,30 @@ class PanZoomPlanetOverviewButtons(PanZoomPlanetEconomy):
             zoomable=False)
 
         self.overview_buttons.append(self.technology_level_button)
+
+        self.planetary_defence_button = Button(self.win,
+            x=0,
+            y=0,
+            width=self.smiley_button_size[0],
+            height=self.smiley_button_size[1],
+            isSubWidget=False,
+            onClick=lambda: print("no function"),
+            transparent=True,
+            image_hover_surface_alpha=255,
+            parent=self.parent,
+            ui_parent=self,
+            tooltip="indicates if planetary defence is built", image=get_image(
+                "planet defence.png"),
+            layer=9,
+            zoomable=False,
+            name="planetary_defence_button")
+
+        self.overview_buttons.append(self.planetary_defence_button)
+
         self.technology_level_button.hide()
         self.smiley_button.hide()
         self.thumpsup_button.hide()
+        self.planetary_defence_button.hide()
 
     def show_overview_button(self):
         """
@@ -94,6 +115,10 @@ class PanZoomPlanetOverviewButtons(PanZoomPlanetEconomy):
                     if self.get_zoom() > 0.2:
                         i.show()
                         i.enable()
+                        if i.name == "planetary_defence_button":
+                            if not "particle accelerator" in self.buildings:
+                                i.hide()
+                                i.disable()
                     else:
                         i.hide()
                         i.disable()
@@ -164,3 +189,4 @@ class PanZoomPlanetOverviewButtons(PanZoomPlanetEconomy):
         self.smiley_button.set_screen_position(offset_x=self.rect.width / 2, offset_y=-self.min_offset_y_to_text)
         self.thumpsup_button.set_screen_position(offset_x=self.rect.width / 2 - 25, offset_y=-self.min_offset_y_to_text)
         self.technology_level_button.set_screen_position(offset_x=self.rect.width / 2 + 25, offset_y=-self.min_offset_y_to_text)
+        self.planetary_defence_button.set_screen_position(offset_x=self.rect.width / 2 + 50, offset_y=-self.min_offset_y_to_text)

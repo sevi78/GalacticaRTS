@@ -88,7 +88,7 @@ class Cheat:
                     # self.cheat_ufo()
 
                     self.explore_all()
-                    self.cheat_level_success()
+                    #self.cheat_level_success()
 
 
                     # self.cheat_population()

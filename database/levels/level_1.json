@@ -193,7 +193,7 @@
         },
         "height": 6000,
         "level": 1,
-        "level_success": true,
+        "level_success": false,
         "moons": 3,
         "planets": 2,
         "suns": 1,
