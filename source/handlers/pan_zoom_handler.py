@@ -128,7 +128,7 @@ class PanZoomHandler:
         self.world_offset_y = (self.screen_height / 2) / self.zoom - (level_height / 2)
 
     def listen(self, events, pan_enabled):
-        print (f"pan_zoom_handler: offset(x,y): {self.world_offset_y}, {self.world_offset_y}, {self.zoom}")
+        #print (f"pan_zoom_handler: offset(x,y): {self.world_offset_y}, {self.world_offset_y}, {self.zoom}")
         # Mouse screen coords
         mouse_x, mouse_y = pg.mouse.get_pos()
         # event handler

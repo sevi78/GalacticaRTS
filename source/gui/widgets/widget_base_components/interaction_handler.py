@@ -2,6 +2,7 @@ import pygame
 
 from source.configuration import global_params
 from source.handlers.color_handler import colors
+from source.multimedia_library.images import get_image
 
 
 class InteractionHandler:
@@ -42,6 +43,7 @@ class InteractionHandler:
 
     def set_global_variable(self, key, value, **kwargs):
         var = kwargs.get("var", None)
+        button = kwargs.get("button", None)
 
         if var:
             if getattr(global_params, var):
@@ -51,8 +53,22 @@ class InteractionHandler:
 
         if getattr(global_params, key):
             setattr(global_params, key, False)
+
         else:
             setattr(global_params, key, True)
+
+        self.overblit_button_image(button, "uncheck.png", getattr(global_params, key))
+
+    def overblit_button_image(self, button, image_name, value):
+        if not button:
+            return
+        if not value:
+            size = (button.image.get_rect().width, button.image.get_rect().height)
+            button.image.blit(pygame.transform.scale(get_image(image_name), size), (0, 0))  # Scale and blit the image
+        else:
+            # Restore the original image before overblitting
+            button.image.fill((0, 0, 0, 0))  # Fill with transparent black
+            button.image.blit(button.image_raw, (0, 0))  # Blit the original image
 
     def draw_hover_rect(self):
         pygame.draw.rect(self.win, colors.ui_dark, (

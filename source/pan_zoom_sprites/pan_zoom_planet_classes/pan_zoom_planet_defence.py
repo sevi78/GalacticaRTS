@@ -62,7 +62,8 @@ class PanZoomPlanetDefence:
         return len([i for i in self.parent.buildings if i == "missile"])
 
     def activate_electro_magnetic_impulse(self, pulse_time, ufo):
-        self.emp_progress_display.show()
+        # if global_params.show_overview_buttons:
+        #     self.emp_progress_display.show()
         if time.time() - pulse_time < self.emp_pulse_time:
 
             draw_electromagnetic_impulse(
@@ -128,7 +129,7 @@ class PanZoomPlanetDefence:
         self.attack_distance = self.attack_distance_raw * self.parent.get_zoom()
 
         # handle self.emp_progress_display
-        if "electro magnetic impulse" in defence_units:
+        if "electro magnetic impulse" in defence_units and global_params.show_overview_buttons:
             self.emp_progress_display.set_progressbar_position()
             self.emp_progress_display.show()
         else:

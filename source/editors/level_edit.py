@@ -205,6 +205,14 @@ class LevelEdit(EditorBase):
         self.widgets.append(self.inputbox)
 
     def create_selectors(self):
+        # Desired order of keys
+        desired_order = ["level", "level_success", "width", "height", "universe_density", "central_compression",
+                         "goal", "suns", "planets", "moons", "collectable_item_amount", "spaceship", "spacehunter",
+                         "cargoloader"]
+
+        # Create a new dictionary with the desired key order
+        self.level_handler.data["globals"] = {key: self.level_handler.data["globals"][key] for key in desired_order}
+
         x = self.world_x + self.world_width / 2 - ARROW_SIZE / 2
         y = 140
         no_repeat_clicks = ["suns", "planets", "moons", "spaceship", "spacehunter", "cargoloader"]

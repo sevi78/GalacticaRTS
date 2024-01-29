@@ -254,7 +254,7 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
         self.set_planet_name()
 
         # may we will not need these
-        if global_params.show_overview_buttons:
+        if not global_params.show_overview_buttons:
             self.hide_overview_button()
         elif self.explored:
             self.show_overview_button()

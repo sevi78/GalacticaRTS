@@ -96,29 +96,10 @@ class PanZoomPlanetDraw:
         # Blit the pulse surface onto the window
         self.win.blit(pulse_surface, (self.center[0] - current_radius, self.center[1] - current_radius))
 
-    def draw_specials__(self):
-        if not inside_screen(self.get_position()):
-            return
-        # print ("draw_specials")
-        count = 0
-        x = self.screen_position[0] + self.screen_width / 2 + 20
 
-        if len(self.specials) > 0:
-            for key, value in self.specials_dict.items():
-                y = self.rect.centery + (20 * count)
-                operator, value = value["operator"], value["value"]
-                if not value == 0:
-                    if key in self.production.keys():
-                        self.win.blit(self.special_images[key], (x, y))
-
-                        if operator == "*":
-                            operator = "x"
-
-                        drawText(self.win, f"{operator}{str(value)}", SPECIAL_TEXT_COLOR,
-                            (x + 25, y, 50, 20), pygame.font.SysFont("georgiaproblack", SPECIAL_FONT_SIZE), "left")
-                        count += 1
 
     def draw_specials(self):
+        #print ("draw_specials:", self.specials)
         if not inside_screen(self.get_position()):
             return
         # Load the font once

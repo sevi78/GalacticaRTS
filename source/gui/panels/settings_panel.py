@@ -16,6 +16,7 @@ class SettingsPanel(WidgetBase):
     def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
         super().__init__(win, x, y, width, height, isSubWidget, **kwargs)
 
+        self.orbit_icon = None
         self.name = "settings panel"
         self.anchor_right = kwargs.get("anchor_right")
         self.bg_color = pygame.colordict.THECOLORS["black"]
@@ -127,7 +128,7 @@ class SettingsPanel(WidgetBase):
             frame_color=self.frame_color,
             moveable=False,
             include_text=True, layer=self.layer,
-            onClick=lambda: self.set_global_variable("show_orbit", True))
+            onClick=lambda: self.set_global_variable("show_orbit", True, button=self.orbit_icon))
         self.widgets.append(self.orbit_icon)
         self.max_width += self.icon_size + self.spacing
 
@@ -145,7 +146,7 @@ class SettingsPanel(WidgetBase):
             frame_color=self.frame_color,
             moveable=False,
             include_text=True, layer=self.layer,
-            onClick=lambda: self.show_planet_names())
+            onClick=lambda: self.show_planet_names(button=self.show_planet_names_icon))
         self.widgets.append(self.show_planet_names_icon)
         self.max_width += self.icon_size + self.spacing
 
@@ -162,7 +163,7 @@ class SettingsPanel(WidgetBase):
             frame_color=self.frame_color,
             moveable=False,
             include_text=True, layer=self.layer,
-            onClick=lambda: self.show_tooltip())
+            onClick=lambda: self.show_tooltip(button=self.show_tooltip_icon))
 
         self.widgets.append(self.show_tooltip_icon)
         self.max_width += self.icon_size + self.spacing
@@ -180,14 +181,17 @@ class SettingsPanel(WidgetBase):
             frame_color=self.frame_color,
             moveable=False,
             include_text=True, layer=self.layer,
-            onClick=lambda: self.set_global_variable("show_overview_buttons", True))
+            onClick=lambda: self.set_global_variable("show_overview_buttons", True, button=self.buttons_icon))
         self.widgets.append(self.buttons_icon)
         self.max_width += self.icon_size + self.spacing + self.spacing
 
-    def show_planet_names(self):
+    def show_planet_names(self, button):
+        value = False
         for i in sprite_groups.planets.sprites():
             i.show_text = not i.show_text
+            value = i.show_text
 
+        self.overblit_button_image(button, "uncheck.png", value)
     def set_info_text(self):
         global_params.app.info_panel.set_text(info_panel_text_generator.info_text)
         global_params.app.info_panel.set_planet_image(get_image("info_30x30.png"), size=(
@@ -231,5 +235,6 @@ class SettingsPanel(WidgetBase):
 
         self.draw_frame()
 
-    def show_tooltip(self):
+    def show_tooltip(self, button):
         global_params.app.tooltip_instance.active = not global_params.app.tooltip_instance.active
+        self.overblit_button_image(button, "uncheck.png", global_params.app.tooltip_instance.active)

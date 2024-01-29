@@ -8,7 +8,7 @@ from source.handlers.economy_handler import economy_handler
 from source.configuration import global_params
 
 
-class SpecialHandler:
+class SpecialHandler:#unused
     def __init__(self):
         pass
 
@@ -25,10 +25,10 @@ class SpecialHandler:
             value = float(value)  # Convert the value to a float for arithmetic operations
 
 
-class PanZoomPlanetEconomy(Rank, SpecialHandler):
+class PanZoomPlanetEconomy(Rank):#, SpecialHandler):
     def __init__(self, kwargs):
         Rank.__init__(self)
-        SpecialHandler.__init__(self)
+        #SpecialHandler.__init__(self)
         self.population_special = None
         self.technology_special = None
         self.minerals_special = None

@@ -22,6 +22,7 @@ class BuildingPanelDraw:
         drawText(self.win, "population: " + str(int(selected_planet.population)) + "/" + format_number(selected_planet.population_limit, 1), self.frame_color, (
             x + self.spacing_x, self.world_y, self.get_screen_width(), 20), self.font, "left")
 
+        #print ("selected_planet.specials_dict:", selected_planet.specials_dict)
         value = selected_planet.specials_dict["population_grow_factor"]["value"]
         operator = selected_planet.specials_dict["population_grow_factor"]["operator"]
         if float(value) > 0.0:
@@ -32,8 +33,8 @@ class BuildingPanelDraw:
                 x + self.screen_width - SPECIAL_RIGHT_OFFSET, self.world_y - SPECIAL_Y_OFFSET, self.get_screen_width(),
                 20), self.special_font, "left")
 
-        image = get_image("city_25x25.png")
-        self.win.blit(image, (x, self.world_y))
+        image = pygame.transform.scale(get_image("population_25x25.png"), (25,25))
+        self.win.blit(image, (x-4, self.world_y))
 
         self.world_y += self.spacing * 3
 
@@ -42,7 +43,7 @@ class BuildingPanelDraw:
         else:
             self.smiley = self.smiley_image_sad
 
-        self.win.blit(self.smiley, (x, self.world_y))
+        self.win.blit(self.smiley, (x-1, self.world_y))
 
         # draw background planet icon
         name = self.parent.selected_planet.name

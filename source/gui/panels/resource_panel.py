@@ -198,7 +198,7 @@ class ResourcePanel(WidgetBase):
             height=25,
             isSubWidget=False,
             parent=self.parent,
-            image=get_image("city_25x25.png"),
+            image=get_image("population_25x25.png"),
             key="population",
             tooltip="population; produce food and water to make it grow!",
             frame_color=self.frame_color,

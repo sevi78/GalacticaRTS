@@ -1,4 +1,5 @@
 import random
+from pprint import pprint
 
 from source.factories.building_factory import building_factory
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
@@ -35,7 +36,8 @@ class EconomyHandler:
             "water": {"operator": "", "value": 0},
             "population": {"operator": "", "value": 0},
             "technology": {"operator": "", "value": 0},
-            "population_grow_factor": {"operator": "", "value": 0}
+            "population_grow_factor": {"operator": "", "value": 0},
+            "buildings_max": {"operator": "", "value": 0}
             }
         for special in planet.specials:
             special_key, operator, special_value = special.split()
@@ -43,7 +45,7 @@ class EconomyHandler:
             planet.specials_dict[special_key]["operator"] = operator
             planet.specials_dict[special_key]["value"] += special_value
 
-        # print (f"setup_planet_specials_dict:{planet}: {planet.specials_dict}")
+        #pprint (f"setup_planet_specials_dict:{planet}: {planet.specials_dict}")
         return planet.specials_dict
 
     def calculate_planet_production(self, planet):
@@ -66,7 +68,7 @@ class EconomyHandler:
 
         # Apply specials if they exist
         if hasattr(planet, 'specials') and planet.specials:
-            for special in planet.specials:
+            for index, special in enumerate(planet.specials):
                 special_key, operator, special_value = special.split()
                 special_value = float(special_value)
                 if special_key in planet.production:
@@ -76,7 +78,15 @@ class EconomyHandler:
                     elif operator == "+":
                         if planet.production[special_key] > 0:
                             planet.production[special_key] += special_value
-                # print(f"calculate_planet_production: name: {planet.name} {planet.production}  {special_key}: {special_value}")
+                else:
+                    # set the value to the planet
+                    if not special_key == "population_grow_factor":
+                        setattr(planet, special_key, eval(f"{getattr(planet, special_key)}{operator}{special_value}"))
+                        # delete special to make sure it is only applied once
+                        planet.specials.pop(index)
+                    else:
+                        pass
+
 
         return planet.production
 
@@ -85,6 +95,7 @@ class EconomyHandler:
         num_resources = random.randint(3, len(all_possible_resources))
         resources = random.sample(all_possible_resources, num_resources)
         return resources
+
     def update(self):
         self.set_planet_buildings()
         for planet in sprite_groups.planets.sprites():
