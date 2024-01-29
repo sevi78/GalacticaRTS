@@ -34,7 +34,7 @@ class BuildingEdit(EditorBase):
         self.building = "spring"  # just a default to make shure buttons gets created
         self.category = building_factory.get_category_by_building(self.building)
         self.building_dict = building_factory.get_building_dict_from_buildings_json(self.building)
-        self.data = load_file("buildings.json")
+        self.data = load_file("buildings.json", "config")
 
         # create widgets
         self.buttonsize = 15
@@ -193,4 +193,4 @@ class BuildingEdit(EditorBase):
 
     def save_buildings(self):
         self.data[self.category][self.building] = self.building_dict
-        write_file("buildings.json", self.data)
+        write_file("buildings.json","config", self.data)

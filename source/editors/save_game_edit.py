@@ -118,7 +118,7 @@ class SaveGameEdit(EditorBase):
         self.create_games_icons()
 
     def load_game(self, value):
-        #self.parent.level_handler.load_level(0, data=load_file(self.current_game, folder="games"), current_game= self.current_game)
+        # self.parent.level_handler.load_level(0, data=load_file(self.current_game, folder="games"), current_game= self.current_game)
         self.parent.level_handler.load_level(self.current_game, "games")
         self.parent.level_handler.current_game = self.current_game
         print(f"load game: {value}")

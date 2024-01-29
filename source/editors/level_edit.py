@@ -10,11 +10,12 @@ from source.gui.widgets.buttons.image_button import ImageButton
 from source.gui.widgets.inputbox import InputBox
 from source.gui.widgets.selector import Selector
 from source.handlers import position_handler
+from source.handlers.file_handler import get_ships_list
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zoom_handler
 from source.factories.universe_factory import universe_factory
 from source.configuration import global_params
-from source.multimedia_library.images import get_image
+from source.multimedia_library.images import get_image, get_image_names_from_folder
 from source.handlers.color_handler import colors
 from source.text.info_panel_text_generator import info_panel_text_generator
 
@@ -50,6 +51,9 @@ class LevelEdit(EditorBase):
         self.lists = ["level_list", "planets_list", "suns_list", "moons_list", "width_list", "height_list",
                       "collectable_item_amount_list", "universe_density_list", "central_compression_list"]
 
+        # temp dict
+        self.last_created = {}
+
         # create widgets
         self.create_selectors()
         self.create_save_button(lambda: self.level_handler.save_level(f"level_{self.level_handler.data['globals']['level']}.json", "levels"), "save level")
@@ -58,7 +62,8 @@ class LevelEdit(EditorBase):
         self.create_randomize_button()
         self.create_smoothing_button()
         self.create_update_button()
-
+        self.create_rename_button()
+        self.create_explore_button()
         self.set_selector_current_value()
 
         # hide initially
@@ -143,6 +148,56 @@ class LevelEdit(EditorBase):
         self.buttons.append(smoothing_button)
         self.widgets.append(smoothing_button)
 
+    def create_rename_button(self):
+        button_size = 32
+        rename_button = ImageButton(win=self.win,
+            x=self.get_screen_x() + button_size * 4 + button_size,
+            y=self.world_y + TOP_SPACING + button_size / 2,
+            width=button_size,
+            height=button_size,
+            isSubWidget=False,
+            parent=self,
+            image=pygame.transform.scale(
+                get_image("rename_planets_icon.png"), (button_size, button_size)),
+            tooltip="rename planets",
+            info_text=info_panel_text_generator.create_create_info_panel_level_text(
+                self.level_handler.data["globals"]["level"], self.level_handler.data),
+            frame_color=self.frame_color,
+            moveable=False,
+            include_text=False,
+            layer=self.layer,
+            onClick=lambda: planet_factory.generate_planet_names())
+
+        rename_button.hide()
+
+        self.buttons.append(rename_button)
+        self.widgets.append(rename_button)
+
+    def create_explore_button(self):
+        button_size = 32
+        explore_button = ImageButton(win=self.win,
+            x=self.get_screen_x() + button_size * 6 + button_size / 2,
+            y=self.world_y + TOP_SPACING + button_size / 2,
+            width=button_size,
+            height=button_size,
+            isSubWidget=False,
+            parent=self,
+            image=pygame.transform.scale(
+                get_image("explore_icon.png"), (button_size, button_size)),
+            tooltip="explore planets",
+            info_text=info_panel_text_generator.create_create_info_panel_level_text(
+                self.level_handler.data["globals"]["level"], self.level_handler.data),
+            frame_color=self.frame_color,
+            moveable=False,
+            include_text=False,
+            layer=self.layer,
+            onClick=lambda: planet_factory.explore_planets())
+
+        explore_button.hide()
+
+        self.buttons.append(explore_button)
+        self.widgets.append(explore_button)
+
     def create_inputboxes(self):
         """"""
         self.inputbox = InputBox(self.win, self.world_x - self.spacing_x / 2 + self.world_width / 2, self.world_y + TOP_SPACING + 16, self.spacing_x * 2, 32,
@@ -152,14 +207,15 @@ class LevelEdit(EditorBase):
     def create_selectors(self):
         x = self.world_x + self.world_width / 2 - ARROW_SIZE / 2
         y = 140
-
+        no_repeat_clicks = ["suns", "planets", "moons", "spaceship", "spacehunter", "cargoloader"]
         # create global selectors
         for key, value in self.level_handler.data["globals"].items():
             # print(f"key:{key}, value: {value}")
+            repeat_clicks = key not in no_repeat_clicks
             if hasattr(self, key + "_list"):
                 setattr(self, "selector_" + key.split("_list")[0],
                     Selector(self.win, x, self.world_y + y, ARROW_SIZE, self.frame_color, 9, self.spacing_x,
-                        {"list_name": key, "list": getattr(self, key + "_list")}, self, FONT_SIZE, repeat_clicks=True))
+                        {"list_name": key, "list": getattr(self, key + "_list")}, self, FONT_SIZE, repeat_clicks=repeat_clicks, restrict_list_jump=not repeat_clicks))
 
                 y += self.spacing_y
 
@@ -178,8 +234,6 @@ class LevelEdit(EditorBase):
             else:
                 print(f"missing {i.key} in level_handler.data['globals'], (level_{self.level_handler.data['globals']['level']})")
 
-
-
     def selector_callback(self, key, value):
         """this is the selector_callback function called from the selector to return the values to the editor"""
 
@@ -191,7 +245,117 @@ class LevelEdit(EditorBase):
         if key == "central_compression":
             universe_factory.central_compression = value
 
-        #self.inputbox.set_text(f"Level {self.level_handler.data['globals']['level']}")
+        # update scene: to make sure changes got displayed
+        self.update_scene(key)
+
+    def update_scene(self, key: str):
+        # get selector value
+        selector_value = self.level_handler.data["globals"][key]
+
+        # add object to scene:
+        self.update_ships(key, selector_value)
+        self.update_planets(key, selector_value)
+
+    def update_ships(self, key, selector_value):
+        # check if key is a ship
+        if not key in get_ships_list():
+            return
+
+        # get all ships with the given key
+        ship_key_list = [_.id for _ in sprite_groups.ships.sprites() if _.name == key]
+
+        # check if object needs to be added or deleted based on selector_value
+        if selector_value > len(ship_key_list):
+            add = True
+        else:
+            add = False
+
+        # add ship
+        if add:
+            # get values for the constructor
+            border = min(self.level_handler.data["globals"]["width"], self.level_handler.data["globals"]["height"]) / 4
+            world_x = self.level_handler.level_dict_generator.get_random_position(
+                self.level_handler.data["globals"]["width"], border)
+            world_y = self.level_handler.level_dict_generator.get_random_position(
+                self.level_handler.data["globals"]["height"], border)
+            name = key + "_30x30.png"
+            data = self.level_handler.data_default
+            weapons = {}
+
+            # add ship to the scene
+            ship = self.parent.ship_factory.create_ship(name, world_x, world_y, self.parent, weapons, data=data)
+        else:
+            # remove object from scene
+            if len(sprite_groups.ships.sprites()) > 0:
+                # get id of the last created ship
+                last_ship_id = max([_.id for _ in sprite_groups.ships.sprites() if _.name == key])
+
+                # get last created ship
+                last_ship = [_ for _ in sprite_groups.ships.sprites() if _.name == key and _.id == last_ship_id][0]
+
+                # finally delete the ship
+                sprite_groups.ships.sprites()[
+                    sprite_groups.ships.sprites().index(last_ship)].__delete__(sprite_groups.ships.sprites().index(last_ship))
+
+    def update_planets(self, key, selector_value):
+        # check if key is a planet:
+        if not key in ["suns", "planets", "moons"]:
+            return
+
+        key_ = key[:-1]
+        # get all planets with the given key
+        planet_key_list = [_.id for _ in sprite_groups.planets.sprites() if _.type == key_]
+
+        # check if object needs to be added or deleted based on selector_value
+        if selector_value > len(planet_key_list):
+            add = True
+        else:
+            add = False
+
+        # add planet
+        if add:
+            # get values for the constructor
+            border = min(self.level_handler.data["globals"]["width"], self.level_handler.data["globals"]["height"]) / 4
+            world_x = self.level_handler.level_dict_generator.get_random_position(
+                self.level_handler.data["globals"]["width"], border)
+            world_y = self.level_handler.level_dict_generator.get_random_position(
+                self.level_handler.data["globals"]["height"], border)
+            id_ = len(sprite_groups.planets.sprites())
+
+            if key_ == "sun":
+                orbit_object_id = id_
+                image_names = get_image_names_from_folder(key)
+
+            elif key_ == "planet":
+                orbit_object_id = random.choice([_.id for _ in sprite_groups.planets.sprites() if _.type == "sun"])
+                image_names = get_image_names_from_folder(key)
+
+            elif key_ == "moon":
+                orbit_object_id = random.choice([_.id for _ in sprite_groups.planets.sprites() if _.type == "planet"])
+                image_names = get_image_names_from_folder("gifs", startswith_string="moon")
+
+            # generate data
+            planet_data = self.level_handler.level_dict_generator.create_celestial_object(
+                id_, key_, image_names, orbit_object_id, world_x, world_y)
+            data = {"celestial_objects": {str(id_): planet_data}}
+
+            # add planet to the scene
+            planet_factory.create_planets_from_data(data)
+            planet = [_ for _ in sprite_groups.planets.sprites() if _.id == id_][0]
+
+            planet.name = "not set"
+        else:
+            # remove object from scene
+            if len(sprite_groups.planets.sprites()) > 0:
+                # get id of the last created planet
+                last_planet_id = max([_.id for _ in sprite_groups.planets.sprites() if _.type == key_])
+
+                # get last created planet
+                last_planet = [_ for _ in sprite_groups.planets.sprites() if _.type == key_ and _.id == last_planet_id][
+                    0]
+
+                # finally delete the planet
+                planet_factory.delete_planet(last_planet)
 
     def randomize_level(self):
         ignorables = ["level"]
@@ -223,15 +387,7 @@ class LevelEdit(EditorBase):
 
         # used for planets
         selected_planet = global_params.app.selected_planet
-        if selected_planet:
-            sprite_groups.planets.remove(selected_planet)
-            selected_planet.__delete__()
-            selected_planet.kill()
-
-            # delete gif handlers attached to planet
-            for i in sprite_groups.gif_handlers.sprites():
-                if i.parent == selected_planet:
-                    i.end_object()
+        self.delete_planet(selected_planet)
 
     def listen(self, events):
         """show or hide, navigate to planet on selection"""

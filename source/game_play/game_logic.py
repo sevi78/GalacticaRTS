@@ -137,7 +137,7 @@ Fields:
         for obj in list_:
             data[obj.name] = obj.get_dict()
 
-        write_file(filename, data)
+        write_file(filename,"config", data)
 
     def restart_game(self):
         planet_factory.delete_planets()

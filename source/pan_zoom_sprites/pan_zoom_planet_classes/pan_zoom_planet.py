@@ -274,6 +274,7 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
 
     def draw(self):
         self.draw_image()
+
         if self.gif_handler:
             self.gif_handler.draw()
 

@@ -22,7 +22,7 @@ from source.handlers.file_handler import load_file
 # lifetime in seconds
 LIFETIME = 60
 
-pan_zoom_ufo_config = load_file("enemy_handler_config.json")["enemy handler"]
+pan_zoom_ufo_config = load_file("enemy_handler_config.json", "config")["enemy handler"]
 
 SHRINK_FACTOR = 0.005
 

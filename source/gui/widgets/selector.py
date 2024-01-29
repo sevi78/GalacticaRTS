@@ -20,6 +20,7 @@ class Selector(WidgetBase):
         self.spacing = spacing
         self.parent = parent
         self.repeat_clicks = kwargs.get("repeat_clicks", False)
+        self.restrict_list_jump = kwargs.get("restrict_list_jump", False)
 
         # widgets
         self.plus_arrow = None
@@ -99,6 +100,10 @@ class Selector(WidgetBase):
     def select(self, value):
         """
         """
+        if (self.current_value == min(self.list) and value == -1) or (self.current_value == max(self.list) and value == 1):
+            if self.restrict_list_jump:
+                return
+
         self.current_value = select_next_item_in_list(self.list, self.current_value, value)
         self.parent.selector_callback(self.key, self.current_value)
 

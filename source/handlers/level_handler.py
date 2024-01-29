@@ -112,7 +112,7 @@ class LevelDictGenerator:
         self.sun_names = {}  # Dictionary to store sun names
         self.planet_names = {}  # Dictionary to store planet names
         self.moon_names = {}  # Dictionary to store moon names
-        self.ship_settings = load_file("ship_settings.json")
+        self.ship_settings = load_file("ship_settings.json", "config")
 
     def create_suns(self, data):
         sun_images = get_image_names_from_folder("suns")
@@ -292,19 +292,24 @@ class LevelDictGenerator:
         return world_x, world_y
 
     def generate_name(self, i, body_type, orbit_object_id):
-        if body_type == "sun":
-            return self.sun_names[orbit_object_id]  # Retrieve sun name from the dictionary
-        elif body_type == "planet":
-            sun_name = self.sun_names[orbit_object_id]
-            planet_number = to_roman(i - self.parent.data["globals"]["suns"] + 1)
-            return f"{sun_name} {planet_number}"
-        elif body_type == "moon":
-            planet_name = self.planet_names[orbit_object_id]
-            moon_letter = chr(97 + i - self.parent.data["globals"]["suns"] - self.parent.data["globals"][
-                "planets"])  # 97 is the ASCII value for 'a'
-            return f"{planet_name}, {moon_letter}"
+        try:
+            if body_type == "sun":
+                return self.sun_names[orbit_object_id]  # Retrieve sun name from the dictionary
+            elif body_type == "planet":
+                sun_name = self.sun_names[orbit_object_id]
+                planet_number = to_roman(i - self.parent.data["globals"]["suns"] + 1)
+                return f"{sun_name} {planet_number}"
+            elif body_type == "moon":
+                planet_name = self.planet_names[orbit_object_id]
+                moon_letter = chr(97 + i - self.parent.data["globals"]["suns"] - self.parent.data["globals"][
+                    "planets"])  # 97 is the ASCII value for 'a'
+                return f"{planet_name}, {moon_letter}"
 
-    def create_celestial_object(self, i, body_type, images, orbit_object_id, world_x, world_y):
+        except KeyError as e:
+            print ("generate_name error: ", e)
+            return "no name generated"
+
+    def create_celestial_object(self, i: int, body_type: str, images: list, orbit_object_id: int, world_x: int, world_y: int):
         name = self.generate_name(i, body_type, orbit_object_id)
         gifs = get_image_names_from_folder("gifs")
         atmospheres = []
@@ -398,7 +403,6 @@ class LevelHandler:
 
         global_params.app.building_widget_list = []
 
-
     def create_universe(self):
         universe_factory.amount = int(math.sqrt(math.sqrt(self.data["globals"]["width"])) * self.data["globals"][
             "universe_density"])
@@ -428,7 +432,7 @@ class LevelHandler:
                     print(f"generate_level_dict_from_scene key error: {planet} has no attribute {key}\n")
 
         # get ship config, used if ship is created dynamically
-        ship_config = load_file("ship_settings.json")
+        ship_config = load_file("ship_settings.json", "config")
 
         # get all ships
         for ship in sprite_groups.ships.sprites():
@@ -456,7 +460,7 @@ class LevelHandler:
         return data
 
     def generate_level_dict_from_editor(self):
-        #print("self.data:")
+        # print("self.data:")
         # pprint (self.data["globals"])
         self.level_dict_generator.create_suns(self.data)
         self.level_dict_generator.create_planets(self.data)
@@ -472,7 +476,6 @@ class LevelHandler:
         self.current_game = filename
         self.data = load_file(filename, folder=folder)
         global_params.app.level_edit.set_selector_current_value()
-
 
         # delete level
         self.delete_level()

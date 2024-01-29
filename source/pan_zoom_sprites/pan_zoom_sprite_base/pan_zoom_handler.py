@@ -4,7 +4,7 @@ import pygame.transform
 from source.handlers.file_handler import load_file
 from source.configuration.global_params import win, WIDTH, HEIGHT
 
-settings = load_file("settings.json")
+settings = load_file("settings.json", "config")
 
 
 # Zoom with mousewheel, pan with left mouse button

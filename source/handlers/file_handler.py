@@ -10,7 +10,11 @@ pictures_path = os.path.split(dirpath)[0].split("source")[0] + "assets" + os.sep
 gifs_path = os.path.split(dirpath)[0].split("source")[0] + "assets" + os.sep + "gifs" + os.sep
 soundpath = os.path.split(dirpath)[0].split("source")[0] + "assets" + os.sep + "sounds" + os.sep
 
-
+"""TODO: 
+fix write_file/load_file for make more consitency:
+write_file(folder, filename, data)
+load_file(folder, filename)
+"""
 def update_dict__(data, default_dict):
     for key, value in default_dict.items():
         if key not in data:
@@ -132,8 +136,7 @@ def write_file(filename, folder, data):
         json.dump(data, file, indent=4, sort_keys=True)
 
 
-def load_file(filename, **kwargs):
-    folder = kwargs.get("folder", "")
+def load_file(filename, folder):
     path = os.path.join(abs_database_path() + folder + os.sep + filename)
     try:
         with open(path, 'r+') as file:
@@ -158,6 +161,11 @@ def get_games_list():
     # sort: oldest last
     file_list.sort(key=lambda x: os.path.getctime(os.path.join(abs_games_path(), x)), reverse=True)
     return file_list
+
+def get_ships_list():
+    file = load_file("ship_settings.json", "config")
+    return file.keys()
+
 
 
 def generate_json_filename_based_on_datetime(prefix):

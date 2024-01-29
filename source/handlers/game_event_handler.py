@@ -72,7 +72,7 @@ class GameEventHandler():
         self.setup()
 
     def setup(self):
-        data = load_file("game_event_handler.json")
+        data = load_file("game_event_handler.json", "config")
         for key, value in data.items():
             if key in self.__dict__:
                 setattr(self, key, value)
@@ -209,7 +209,7 @@ class GameEventHandler():
 
 
 def main():
-    game_event_handler = GameEventHandler(data=load_file("game_event_handler.json"))
+    game_event_handler = GameEventHandler(data=load_file("game_event_handler.json", "config"))
     run = True
     while run:
         game_event_handler.update()

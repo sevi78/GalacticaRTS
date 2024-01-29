@@ -38,7 +38,7 @@ def main(test: bool = False, **kwargs) -> None:
     settings_menu_theme.widget_font_size = 20
 
     # gets values from save_load file(settings.json)
-    settings = load_file("settings.json")
+    settings = load_file("settings.json", "config")
 
     # create menu
     settings_menu = pygame_menu.Menu(
@@ -238,7 +238,7 @@ def main(test: bool = False, **kwargs) -> None:
             print(f'setting.data_fun: \t{k}\t=>\t{data[k]}')
 
         global_params.settings = data
-        write_file("settings.json", data)
+        write_file("settings.json", "config", data)
 
         # set new values to game
         for key, value in data.items():

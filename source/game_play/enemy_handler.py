@@ -12,7 +12,7 @@ from source.configuration import global_params
 from source.handlers.file_handler import load_file
 
 ENEMY_SPAWN_INTERVAL = 1555
-pan_zoom_ufo_config = load_file("enemy_handler_config.json")
+pan_zoom_ufo_config = load_file("enemy_handler_config.json", "config")
 
 
 # pan_zoom_ufo_config = load_file("pan_zoom_ufo_config.json")
@@ -80,7 +80,7 @@ class EnemyHandler(InterfaceData):
         self.setup()
 
     def setup(self):
-        data = load_file("enemy_handler_config.json")
+        data = load_file("enemy_handler_config.json", "config")
         for name, dict in data.items():
             if name == self.name:
                 for key, value in dict.items():

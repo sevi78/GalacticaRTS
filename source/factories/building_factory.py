@@ -12,7 +12,7 @@ class BuildingFactoryJsonDictReader:
         self.json_dict = self.load_json_dict()
 
     def load_json_dict(self):
-        dict_ = load_file("buildings.json")
+        dict_ = load_file("buildings.json", "config")
         return dict_
 
     def get_building_dict_from_buildings_json(self, building: str) -> dict:

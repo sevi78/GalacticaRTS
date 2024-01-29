@@ -1,4 +1,7 @@
+import copy
 import pprint
+import random
+import string
 
 from source.multimedia_library.images import get_image
 from source.pan_zoom_sprites.pan_zoom_planet_classes.pan_zoom_planet import PanZoomPlanet
@@ -6,6 +9,7 @@ from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zo
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.configuration import global_params
 from source.handlers.color_handler import colors
+from source.text.text_formatter import to_roman
 
 
 class PlanetFactory:
@@ -87,5 +91,44 @@ class PlanetFactory:
     def get_all_planets(self, keys):
         return [_ for _ in sprite_groups.planets.sprites() if _.type in keys]
 
+    def generate_planet_names(self):
+        solar_system_names = copy.deepcopy(global_params.app.level_handler.level_dict_generator.solar_system_names)
+        suns = [i for i in sprite_groups.planets if i.type == "sun"]
+
+        for sun in suns:
+            sun.name = solar_system_names.pop(solar_system_names.index(random.choice(solar_system_names)))
+            planets = sorted([i for i in sprite_groups.planets if
+                              i.type == "planet" and i.orbit_object_id == sun.id], key=lambda
+                planet: planet.orbit_distance)
+            for index, planet in enumerate(reversed(planets)):
+                planet.name = f"{sun.name} {to_roman(len(planets) - index)}"
+                moons = sorted([i for i in sprite_groups.planets if
+                                i.type == "moon" and i.orbit_object_id == planet.id], key=lambda
+                    moon: moon.orbit_distance)
+                for index_, moon in enumerate(reversed(moons)):
+                    moon.name = f"{planet.name} - {string.ascii_uppercase[len(moons) - 1 - index_]}"
+
+        for i in sprite_groups.planets.sprites():
+            i.string = i.name
+
+    def explore_planets(self):
+        for i in sprite_groups.planets.sprites():
+            if not i.explored:
+                i.get_explored()
+            else:
+                i.explored = False
+                i.string = "?"
+                i.just_explored = False
+
+    def delete_planet(self, selected_planet):
+        if selected_planet:
+            sprite_groups.planets.remove(selected_planet)
+            selected_planet.__delete__()
+            selected_planet.kill()
+
+            # delete gif handlers attached to planet
+            for i in sprite_groups.gif_handlers.sprites():
+                if i.parent == selected_planet:
+                    i.end_object()
 
 planet_factory = PlanetFactory()

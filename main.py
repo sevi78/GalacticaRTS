@@ -273,7 +273,7 @@ def main():
         pygame.display.get_surface().get_rect().centerx - EDITOR_WIDTH / 2,
         pygame.display.get_surface().get_rect().y,
         EDITOR_WIDTH, EDITOR_HEIGHT, parent=app)
-    app.game_event_handler = GameEventHandler(data=load_file("game_event_handler.json"), app=app)
+    app.game_event_handler = GameEventHandler(data=load_file("game_event_handler.json", "config"), app=app)
 
     # load first level
     app.level_handler.load_level("level_0.json", "levels")

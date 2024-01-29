@@ -173,7 +173,7 @@ class UIBuilder(SceneBuilder):
         x = pygame.display.get_surface().get_width() / 2 - w / 2
         y = pygame.display.get_surface().get_height() / 2 - h / 2
         self.event_panel = EventPanel(win=self.win, x=x, y=y, width=w, height=h, center=True, parent=self, layer=9,
-            interface_variables=load_file("event_panel.json"), game_paused=True)
+            interface_variables=load_file("event_panel.json", "config"), game_paused=True)
 
     def create_tooltip(self):
         # tooltip

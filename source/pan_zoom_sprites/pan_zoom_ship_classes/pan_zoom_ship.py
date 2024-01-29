@@ -161,7 +161,7 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
     def setup(self):
         data = self.data
         if not data:
-            data = load_file("ship_settings.json")[self.name]
+            data = load_file("ship_settings.json", "config")[self.name]
 
         for key, value in data.items():
             setattr(self, key, value)

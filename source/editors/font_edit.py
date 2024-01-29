@@ -57,9 +57,9 @@ class FontEdit(EditorBase):
                         global_params.font_name = value
 
     def save_font(self, value):
-        data = load_file("settings.json")
+        data = load_file("settings.json", "config")
         data["font_name"] = value
-        write_file("settings.json", data)
+        write_file("settings.json", "config", data)
 
     def draw(self):
         if not self._hidden and not self._disabled:

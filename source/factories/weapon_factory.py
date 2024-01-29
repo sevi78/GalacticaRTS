@@ -14,11 +14,11 @@ class WeaponFactory:
     def get_all_weapons(self):
         return self.weapons
 
-    def save_weapons(self):
+    def save_weapons__(self):# unused
         write_file(self.filename, self.weapons)
 
     def load_weapons(self):
-        self.weapons = load_file(self.filename)["weapons"]
+        self.weapons = load_file(self.filename, "config")["weapons"]
 
 
 weapon_factory = WeaponFactory("buildings.json")

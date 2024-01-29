@@ -6,7 +6,7 @@ from source.text.text_formatter import format_number
 
 class ToolTipGenerator:
     def __init__(self):
-        self.json_dict = load_file("buildings.json")
+        self.json_dict = load_file("buildings.json", "config")
 
     def get_building(self, building):
         dict_ = {}
