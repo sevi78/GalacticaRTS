@@ -4,7 +4,7 @@ import random
 from source.text.info_panel_text_generator import info_panel_text_generator
 from source.handlers.widget_handler import WidgetHandler
 from source.pan_zoom_sprites.pan_zoom_collectable_item import PanZoomCollectableItem
-from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zoom_handler
+from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.universe.celestial_objects.asteroid import Asteroid
 from source.universe.celestial_objects.celestial_object import CelestialObject

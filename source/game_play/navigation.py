@@ -1,4 +1,4 @@
-from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zoom_handler
+from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.configuration import global_params
 
@@ -34,3 +34,8 @@ def navigate_to(obj, **kwargs):
 
     panzoom.world_offset_x, panzoom.world_offset_y = panzoom.screen_2_world(obj.get_screen_x() + x_offset - panzoom.screen_width / 2, obj.get_screen_y() + y_offset - panzoom.screen_height / 2)
 
+
+def navigate_to_position(x, y):
+    panzoom = pan_zoom_handler
+    screen_x, screen_y = panzoom.world_2_screen(x, y)
+    panzoom.world_offset_x, panzoom.world_offset_y = panzoom.screen_2_world(screen_x - panzoom.screen_width / 2, screen_y - panzoom.screen_height / 2)

@@ -11,7 +11,7 @@ from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.multimedia_library.images import get_gif_frames, get_gif_fps, get_gif_duration
 from source.multimedia_library.sounds import sounds
 from source.handlers.position_handler import rot_center
-from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zoom_handler
+from source.handlers.pan_zoom_handler import pan_zoom_handler
 
 
 class GifHandler(pygame.sprite.Sprite):

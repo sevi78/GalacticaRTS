@@ -91,7 +91,44 @@ class PanZoomHandler:
     def __str__(self):
         return f"world_offset_x: {self.world_offset_x}, world_offset_y: {self.world_offset_y}, zoom: {self.zoom}"
 
+    def setup__(self, level_width, level_height):
+        # Set the world offsets to the center of the level
+        self.world_offset_x = level_width / 2
+        self.world_offset_y = level_height / 2
+
+        # Calculate the zoom level needed to fit the entire level on the screen
+        zoom_x = self.screen_width / level_width
+        zoom_y = self.screen_height / level_height
+
+        # Set the zoom level to the smaller of the two to ensure the entire level fits on the screen
+        self.zoom = min(zoom_x, zoom_y)
+
+    def setup__(self, level_width, level_height):
+        # Set the world offsets to center the view on the level
+        self.world_offset_x = level_width / 2 - (self.screen_width / 2) / self.zoom
+        self.world_offset_y = level_height / 2 - (self.screen_height / 2) / self.zoom
+
+        # Calculate the zoom level needed to fit the entire level on the screen
+        zoom_x = self.screen_width / level_width
+        zoom_y = self.screen_height / level_height
+
+        # Set the zoom level to the smaller of the two to ensure the entire level fits on the screen
+        self.zoom = min(zoom_x, zoom_y)
+
+    def setup(self, level_width, level_height):
+        # Calculate the zoom level needed to fit the entire level on the screen
+        zoom_x = self.screen_width / (level_width * 2)
+        zoom_y = self.screen_height / (level_height * 2)
+
+        # Set the zoom level to the smaller of the two to ensure the entire level fits on the screen
+        self.zoom = min(zoom_x, zoom_y)
+
+        # Set the world offsets to center the view on the level
+        self.world_offset_x = (self.screen_width / 2) / self.zoom - (level_width / 2)
+        self.world_offset_y = (self.screen_height / 2) / self.zoom - (level_height / 2)
+
     def listen(self, events, pan_enabled):
+        print (f"pan_zoom_handler: offset(x,y): {self.world_offset_y}, {self.world_offset_y}, {self.zoom}")
         # Mouse screen coords
         mouse_x, mouse_y = pg.mouse.get_pos()
         # event handler
@@ -168,6 +205,12 @@ class PanZoomHandler:
         # pygame.draw.circle(win, pygame.color.THECOLORS["white"], (mx,my ), 10)
         return mx, my
 
+    def set_offset(self, x, y):
+        #self.world_offset_x, self.world_offset_y = self.world_2_screen(x,y)
+        self.world_offset_x, self.world_offset_y = self.screen_2_world(x, y)
+
+    def set_zoom(self, zoom):
+        self.zoom = zoom
 
 pan_zoom_handler = PanZoomHandler(
     win, WIDTH, HEIGHT)

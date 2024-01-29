@@ -1,5 +1,5 @@
 import pygame.draw
-from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zoom_handler
+from source.handlers.pan_zoom_handler import pan_zoom_handler
 
 
 def draw_zoomable_rect(surface, color, world_x, world_y, width, height, **kwargs):

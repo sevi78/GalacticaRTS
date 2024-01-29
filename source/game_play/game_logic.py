@@ -63,7 +63,6 @@ Fields:
         pygame.quit()
         quit()
 
-
     def set_screen_size(self, size, events):
         """
         set the screen size using 's'
@@ -78,9 +77,14 @@ Fields:
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_UP:
+                    """ x = 0
+                        y = 0
+                        os.environ['SDL_VIDEO_WINDOW_POS'] = f"{x},{y}"""
                     screen_info = pygame.display.Info()
                     current_size = (screen_info.current_w, screen_info.current_h)
                     os.environ['SDL_VIDEO_CENTERED'] = '1'
+                    # # Set the position of the window to the second monitor
+                    # os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (0, -1080)
 
                     if current_size[0] == global_params.WIDTH:
                         pygame.display.set_mode(size, pygame.RESIZABLE, pygame.DOUBLEBUF)
@@ -91,10 +95,6 @@ Fields:
                             global_params.WIDTH, global_params.HEIGHT), pygame.RESIZABLE, pygame.DOUBLEBUF)
                         global_params.WIDTH_CURRENT = size[0]
                         global_params.HEIGHT_CURRENT = size[1]
-
-                    # self.universe.set_screen_size((global_params.WIDTH_CURRENT, global_params.WIDTH_CURRENT))
-                    # for i in sprite_groups.planets:
-                    #     i.set_screen_size((global_params.WIDTH_CURRENT, global_params.WIDTH_CURRENT))
 
     def save_load(self, events):
         """
@@ -137,7 +137,7 @@ Fields:
         for obj in list_:
             data[obj.name] = obj.get_dict()
 
-        write_file(filename,"config", data)
+        write_file(filename, "config", data)
 
     def restart_game(self):
         planet_factory.delete_planets()

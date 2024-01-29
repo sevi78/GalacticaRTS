@@ -1,6 +1,6 @@
 import pygame
 
-from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zoom_handler
+from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.color_handler import gradient_color
 
 

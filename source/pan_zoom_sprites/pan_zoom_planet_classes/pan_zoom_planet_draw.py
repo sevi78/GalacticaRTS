@@ -6,7 +6,7 @@ from source.gui.panels.building_panel_components.building_panel import SPECIAL_F
 from source.gui.panels.building_panel_components.building_panel_draw import SPECIAL_TEXT_COLOR
 from source.multimedia_library.gif_handler import GifHandler
 from source.multimedia_library.images import get_image
-from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zoom_handler
+from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.color_handler import colors
 
 

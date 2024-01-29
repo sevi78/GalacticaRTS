@@ -1,18 +1,18 @@
 import copy
 import math
 import random
-from pprint import pprint
 
 from source.configuration import global_params
 from source.factories.planet_factory import planet_factory
 from source.factories.universe_factory import universe_factory
+from source.game_play.navigation import navigate_to, navigate_to_position
 from source.gui.event_text import event_text
 from source.handlers.economy_handler import economy_handler
 from source.handlers.file_handler import load_file, write_file, get_level_list
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.multimedia_library.images import get_image_names_from_folder
 from source.multimedia_library.screenshot import capture_screenshot
-from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zoom_handler
+from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.text.info_panel_text_generator import info_panel_text_generator
 from source.text.text_formatter import to_roman
 
@@ -505,6 +505,13 @@ class LevelHandler:
         global_params.edit_mode = False
 
         self.app.calculate_global_production()
+
+        # setup pan_zoom_handler
+        #pan_zoom_handler.setup(self.data["globals"]["width"], self.data["globals"]["height"])
+
+        #navigate_to([_ for _ in sprite_groups.planets.sprites() if _.id == 0][0])
+        navigate_to_position(self.data["globals"]["width"]/2, self.data["globals"]["height"]/2)
+
 
     def save_level(self, filename, folder):
         data = self.generate_level_dict_from_scene()

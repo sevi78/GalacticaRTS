@@ -5,8 +5,6 @@ from source.editors.building_edit import BuildingEdit
 from source.editors.debug_edit import DebugEdit
 from source.editors.font_edit import FontEdit
 from source.editors.enemy_handler_edit import EnemyHandlerEdit
-from source.editors.event_panel_edit import EventPanelEdit
-from source.editors.level_select import LevelSelect
 from source.editors.planet_edit import PlanetEdit
 from source.editors.save_game_edit import SaveGameEdit
 from source.editors.ship_edit import ShipEdit
@@ -23,7 +21,7 @@ from source.gui.panels.resource_panel import ResourcePanel
 from source.gui.panels.settings_panel import SettingsPanel
 from source.gui.tool_tip import ToolTip
 from source.handlers.debug_handler import debugger
-from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import PanZoomHandler
+from source.handlers.pan_zoom_handler import PanZoomHandler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.configuration import global_params
 from source.handlers.file_handler import load_file

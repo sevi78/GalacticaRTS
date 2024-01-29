@@ -4,8 +4,8 @@ import pygame
 from source.configuration import global_params
 
 # remove this if not used elsewhere, only needed to test the scripts that load images or gifs
-pygame.init()
-pygame.display.set_mode((global_params.WIDTH, global_params.HEIGHT), pygame.RESIZABLE, pygame.DOUBLEBUF)
+# pygame.init()
+# pygame.display.set_mode((global_params.WIDTH, global_params.HEIGHT), pygame.RESIZABLE, pygame.DOUBLEBUF)
 #
 
 from PIL import Image

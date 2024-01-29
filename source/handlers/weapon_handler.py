@@ -12,7 +12,7 @@ from source.gui.widgets.moving_image import MovingImage
 from source.multimedia_library.images import get_image
 from source.multimedia_library.sounds import sounds
 from source.pan_zoom_sprites.pan_zoom_missile import PanZoomMissile, MISSILE_POWER
-from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_handler import pan_zoom_handler
+from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.configuration import global_params
 
 CANNON_GUNPOWER = 3

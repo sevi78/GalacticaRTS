@@ -1,4 +1,6 @@
 # initialize pygame and window
+import os
+import ctypes
 import pygame
 from source.handlers.file_handler import load_file
 from source.multimedia_library.sounds import Sounds
@@ -29,7 +31,18 @@ global HEIGHT_CURRENT
 HEIGHT_CURRENT = HEIGHT
 
 global win
-win = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE, pygame.DOUBLEBUF)
+
+# Call the GetSystemMetrics function with index 80 to get the number of monitors
+number_of_monitors = ctypes.windll.user32.GetSystemMetrics(80)
+
+if number_of_monitors > 1:
+    print("Multiple monitors detected")
+else:
+    print("Only one monitor detected")
+# Set the position of the window to the second monitor
+os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (0, -1080)
+# Set the display mode to full screen on the second monitor
+win = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
 
 # Sounds
 global sounds
