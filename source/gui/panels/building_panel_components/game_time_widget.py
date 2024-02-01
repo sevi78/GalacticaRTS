@@ -1,3 +1,5 @@
+import time
+
 from datetime import datetime
 
 import pygame
@@ -113,7 +115,7 @@ class GameTime(WidgetBase):
                 self.clock_slider.setValue(self.clock_slider.getValue() + value)
 
     def update_time(self):
-        self.world_year += 0.01 * self.time_factor * global_params.game_speed
+        self.world_year += 0.01 * self.time_factor * global_params.game_speed * 10000
         global_params.time_factor = self.time_factor
 
     def reposition(self):
@@ -136,10 +138,25 @@ class GameTime(WidgetBase):
         self.time_warp_text = self.font.render(str(self.clock_slider.getValue()) + "x", True, self.frame_color)
         self.win.blit(self.time_warp_text,
             (self.surface_rect.x + self.spacing_x, self.clock_icon.screen_y + self.clock_icon.rect.height / 2))
-        year_text = str(round(self.world_year, 2))
-        # year_text = get_day_month_year_string(offset=0, year= 2000)
+
+        now = datetime.fromtimestamp(self.world_year)
+        new_datetime = f"{now.year + 70000}-{now.strftime(str(now.month))}-{now.strftime(str(now.day))}-{now.hour}"
+        #new_datetime = new_datetime_.strftime('%Y, %B %d, %A %H')
+
+
+
+        #original_datetime = datetime.fromtimestamp(self.world_year)
+
+        #original_year = int(str(datetime.fromtimestamp(self.world_year)).split("-")[0])
+        #faked_year = original_year + 70000
+        #new_datetime = f"{faked_year}-{original_datetime.split('-')[1:]}"
+
+        #new_datetime = original_datetime.replace(year=original_datetime.year + 5000)
+        #year_text = new_datetime
+        #year_text = str(round(self.world_year, 2))
+        #year_text = datetime.now()# get_day_month_year_string(offset=0, year= 2000)
         # print (get_day_month_year_string(offset=0))
-        self.year_text = self.font.render("year: " + year_text, True, self.frame_color)
+        self.year_text = self.font.render(f"year:{new_datetime}", True, self.frame_color)
         self.win.blit(self.year_text, (self.surface_rect.x + self.spacing_x + self.spacing_x, self.clock_icon.screen_y +
                                        self.clock_icon.get_screen_height() - self.year_text.get_height() + 6))
         self.time_factor = self.clock_slider.getValue()

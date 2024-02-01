@@ -204,9 +204,11 @@ class GameEventHandler():
         self.app.level_select.update_icons()
 
     def load_next_level(self):
-        global_params.app.level_handler.save_level_succcess_to_file(f"level_{self.level}.json", "levels", True)
+        self.app.level_handler.save_level_succcess_to_file(f"level_{self.level}.json", "levels", True)
         self.level += 1
-        global_params.app.level_handler.load_level(f"level_{self.level}.json", "levels")
+        self.app.level_handler.load_level(f"level_{self.level}.json", "levels")
+        self.app.level_handler.update_level_successes()
+        self.app.level_select.update_icons()
 
     def activate_timed_events(self):
         pass

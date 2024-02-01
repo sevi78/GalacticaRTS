@@ -15,6 +15,7 @@ from source.game_play.enemy_handler import enemy_handler
 from source.game_play.game_logic import GameLogic
 from source.game_play.navigation import navigate_to
 from source.gui.event_text import event_text
+from source.gui.map_panel import MapPanel
 from source.handlers.economy_handler import economy_handler
 from source.handlers.file_handler import load_file, pictures_path
 from source.handlers.game_event_handler import GameEventHandler
@@ -70,6 +71,7 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
 
     def __init__(self, width, height):
         # make self global, maybe we need that
+        self.map_panel = None
         global_params.app = self
         self.ship_factory = ShipFactory()
         AppHelper.__init__(self)
@@ -249,6 +251,10 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
 
             # update event_text
             event_text.update()
+            
+            # update map
+            self.map_panel.listen(events)
+            self.map_panel.draw()
 
             # pygame update
             pygame.display.update()
@@ -284,6 +290,9 @@ def main():
     # update level_successes
     app.level_handler.update_level_successes()
 
+    # create map
+    width, height = app.info_panel.world_width, app.info_panel.world_width
+    app.map_panel = MapPanel(app.win, app.info_panel.world_x, app.win.get_size()[1] - width, width, height)
 
     # start game loop
     app.loop()

@@ -1,4 +1,8 @@
 import pygame
+import numpy as np
+from PIL import Image
+
+from source.multimedia_library.images import get_image
 
 
 class Colors:
@@ -135,3 +139,9 @@ def calculate_gradient_color(start_color, end_color, percent, **kwargs):
         b = int(b * factor)
 
     return r, g, b
+
+
+
+def get_average_color(image: pygame.surface.Surface):
+    color = pygame.transform.average_color(image, image.get_rect())
+    return color

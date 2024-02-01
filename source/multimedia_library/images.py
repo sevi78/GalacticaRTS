@@ -1,4 +1,5 @@
 import os
+from functools import lru_cache
 from pprint import pprint
 
 import pygame
@@ -23,7 +24,7 @@ gif_durations = {}
 MAX_GIF_SIZE = 150
 
 
-def load_folders(folder, dict):
+def load_folders(folder):
     """Objective:
     The objective of the "load_folders" function is to load all the PNG images from a given folder and its subfolders
     into a dictionary, where the keys are the folder names and the subfolder names, and the values are the loaded images.
@@ -46,23 +47,33 @@ def load_folders(folder, dict):
     - The function only loads PNG images and ignores other file types.
     - The function assumes that all PNG images have a ".png" file extension."""
     subfolders = [str(f.path).split(os.sep)[-1] for f in os.scandir(folder) if f.is_dir()]
-    dict[folder] = {}
+    dict_ = {}
+    dict_[folder] = {}
 
     for sub in subfolders:
         path = os.path.join(folder, sub)
         # files = [f for f in os.listdir(path) if isfile(join(path, f))]
         # print (files)
-        dict[folder][sub] = {}
+        dict_[folder][sub] = {}
         for image in os.listdir(path):
             filename, file_extension = os.path.splitext(image)
             if file_extension == ".png":
-                img = pygame.image.load(os.path.join(folder, sub, image))
+                img = load_image(folder, image, sub)
                 img.convert_alpha()
-                dict[folder][sub][image] = img
+                dict_[folder][sub][image] = img
                 all_image_names.append(image)
 
             if file_extension == ".gif":
                 load_gif(image)
+
+    return dict_
+
+@lru_cache(maxsize=None)
+def load_image(folder, image, sub):
+    img = pygame.image.load(os.path.join(folder, sub, image))
+    return img
+
+
 
 
 def get_image(image_name):
@@ -205,7 +216,7 @@ def find_unused_images_gifs(image_dir, gif_dir, images_dict, gifs_dict):
 
     return unused_files
 
-load_folders(os.path.join(pictures_path), images)
+images = load_folders(os.path.join(pictures_path))
 
 
 

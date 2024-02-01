@@ -110,7 +110,7 @@ class EventText(TextWrap):
                 self.last_update_time = pygame.time.get_ticks()
 
         self.wrap_text(self.win, self.event_display_text, (
-            global_params.app.ui_helper.left, self.new_bottom),
+            global_params.app.ui_helper.left + global_params.app.map_panel.world_width, self.new_bottom),
             (global_params.app.ui_helper.world_width, EVENT_TEXT_HEIGHT), self.event_text_font, colors.ui_dark,
             fade_out=True, alpha=self.alpha)
 

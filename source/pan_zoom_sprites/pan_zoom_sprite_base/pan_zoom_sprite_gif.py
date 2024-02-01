@@ -9,7 +9,7 @@ from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_debug import G
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_visibility_handler import PanZoomVisibilityHandler
 from source.configuration import global_params
-from source.handlers.color_handler import colors
+from source.handlers.color_handler import colors, get_average_color
 
 # pygame.init()
 WIDTH = 800
@@ -84,6 +84,7 @@ class PanZoomSprite(pygame.sprite.Sprite, PanZoomVisibilityHandler, GameObjectDe
         if self.image_name.endswith(".png"):
             self.image_raw = get_image(self.image_name)
             self.image = copy.copy(self.image_raw)
+            self.average_color = get_average_color(self.image_raw)
 
         elif self.image_name.endswith(".gif"):
             self.gif = get_gif(self.image_name)
@@ -92,6 +93,7 @@ class PanZoomSprite(pygame.sprite.Sprite, PanZoomVisibilityHandler, GameObjectDe
             self.gif_animation_time = kwargs.get("gif_animation_time", get_gif_duration(self.image_name)/1000)
             self.image_raw = self.gif_frames[1]
             self.image = copy.copy(self.image_raw)
+            self.average_color = get_average_color(self.image_raw)
 
         self.align_image = kwargs.get("align_image", "topleft")
         self.rect = self.image.get_rect()
