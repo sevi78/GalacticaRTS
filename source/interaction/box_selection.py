@@ -160,7 +160,7 @@ class BoxSelection:
             return
 
         self.draw()
-        event_text.text = f"global_params.hover_object: {global_params.hover_object}"
+        #event_text.text = f"global_params.hover_object: {global_params.hover_object}"
         for event in events:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == pygame.BUTTON_LEFT and not pygame.key.get_mods() & pygame.KMOD_CTRL:

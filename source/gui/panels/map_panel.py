@@ -1,5 +1,4 @@
 import copy
-
 import pygame
 
 from source.game_play.navigation import navigate_to_position
@@ -12,7 +11,6 @@ from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.multimedia_library.images import get_image
 
 PLANET_IMAGE_SIZE = 125
-TOGGLESIZE = 20
 MIN_OBJECT_SIZE = 2
 MIN_MAP_SIZE = 240
 BUTTON_SIZE = 25
