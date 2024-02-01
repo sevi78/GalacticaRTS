@@ -46,7 +46,6 @@ class SettingsPanel(WidgetBase):
         self.init = 0
 
     def create_icons(self):
-
         # ship icon
         self.spacehunter_icon = ImageButton(win=self.win,
             x=self.get_screen_x(),
@@ -183,6 +182,23 @@ class SettingsPanel(WidgetBase):
             include_text=True, layer=self.layer,
             onClick=lambda: self.set_global_variable("show_overview_buttons", True, button=self.buttons_icon))
         self.widgets.append(self.buttons_icon)
+        self.max_width += self.icon_size + self.spacing + self.spacing
+
+        self.map_icon = ImageButton(win=self.win,
+            x=self.info_icon.get_screen_x() - 50,
+            y=self.surface_rect.y + self.spacing,
+            width=self.icon_size,
+            height=self.icon_size,
+            isSubWidget=False,
+            parent=self,
+            image=pygame.transform.scale(
+                get_image("map_icon.png"), (25, 25)),
+            tooltip="show map",
+            frame_color=self.frame_color,
+            moveable=False,
+            include_text=True, layer=self.layer,
+            onClick=lambda: self.set_global_variable("show_map_panel", True, button=self.map_icon))
+        self.widgets.append(self.map_icon)
         self.max_width += self.icon_size + self.spacing + self.spacing
 
     def show_planet_names(self, button):

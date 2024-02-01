@@ -45,6 +45,12 @@ class PanZoomGameObject(PanZoomSprite):
         self.attack_distance = self.attack_distance_raw * self.pan_zoom.zoom
 
     def set_target(self, obj):
+        if self.target:
+            if obj != self.target:
+                if hasattr(self.target, "under_attack"):
+                    if self.target.under_attack:
+                        self.target.under_attack = False
+
         self.target = obj
 
     def set_target_position(self):

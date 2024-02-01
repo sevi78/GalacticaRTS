@@ -1,26 +1,96 @@
+import copy
+
 import pygame
 
 from source.game_play.navigation import navigate_to_position
 from source.configuration import global_params
 from source.configuration.global_params import ui_rounded_corner_small_thickness
+from source.gui.widgets.buttons.image_button import ImageButton
 from source.handlers.color_handler import colors
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
+from source.multimedia_library.images import get_image
 
 PLANET_IMAGE_SIZE = 125
 TOGGLESIZE = 20
 MIN_OBJECT_SIZE = 2
 MIN_MAP_SIZE = 240
-
-SHIP_COLOR = pygame.color.THECOLORS["red"]
-MOON_COLOR = pygame.color.THECOLORS["grey"]
-PLANET_COLOR = pygame.color.THECOLORS["green"]
-SUN_COLOR = pygame.color.THECOLORS["yellow"]
-ITEM_COLOR = pygame.color.THECOLORS["brown"]
-UFO_COLOR = pygame.color.THECOLORS["purple"]
+BUTTON_SIZE = 25
+WARNING_ICON_SIZE = 32
+SCALE_FACTOR = 20
 
 
-class MapPanel():
+class MapPanel:
+    """
+    Summary:
+
+    The MapPanel class represents a panel that displays a map with various objects such as planets, ships, and
+    collectible items. It allows the user to interact with the map by zooming in/out, moving the camera, and toggling
+    the visibility of different objects.
+
+    Example Usage:
+    # Create a MapPanel object
+    map_panel = MapPanel(win, x, y, width, height)
+
+    # Listen for events
+    map_panel.listen(events)
+
+    # Draw the map panel
+    map_panel.draw()
+    Code Analysis
+    Main functionalities
+    Displaying a map with various objects such as planets, ships, and collectible items.
+    Allowing the user to zoom in/out on the map.
+    Allowing the user to move the camera to navigate the map.
+    Toggling the visibility of different objects on the map.
+
+    Methods:
+    __init__(self, win: pygame.surface.Surface, x: int, y: int, width: int, height: int) -> None:
+    Initializes the MapPanel object with the specified parameters.
+    create_checkboxes(self) -> None: Creates checkboxes for toggling the visibility of different objects on the map.
+    update_checkboxes(self) -> None: Updates the checkboxes based on the current visibility settings.
+    show_objects(self, object_category) -> None: Toggles the visibility of objects in the specified category.
+    scale_map(self, event) -> None: Scales the map based on the mouse wheel event.
+    update_camera_position(self) -> None: Updates the camera position based on the mouse movement.
+    draw_objects(self, sprites: list, surface: pygame.surface.Surface) -> None:
+    Draws the specified objects on the map surface.
+    draw_object(self, pos, radius, color, sprite, surface, **kwargs) -> None: Draws a single object on the map surface.
+    reposition(self) -> None: Repositions the map panel and checkboxes based on the current window size.
+    listen(self, events) -> None: Listens for events and handles user interactions with the map panel.
+    draw(self) -> None: Draws the map panel and its contents on the window.
+
+    Fields:
+    win: pygame.surface.Surface: The surface on which to draw the map panel.
+    world_x: int: The x-coordinate of the top left corner of the map panel in world coordinates.
+    world_y: int: The y-coordinate of the top left corner of the map panel in world coordinates.
+    world_width: int: The width of the map panel in world coordinates.
+    world_height: int: The height of the map panel in world coordinates.
+    app: global_params.app: The global app object.
+    scale: int: The scale factor for zooming in/out on the map.
+    scale_factor: int: The factor by which to scale the map when zooming.
+    name: str: The name of the map panel.
+    frame_color: colors.frame_color: The color of the frame around the map panel.
+    factor: float: The factor used to convert between world coordinates and screen coordinates.
+    background_surface: pygame.surface.Surface: The surface used to draw the map and its objects.
+    frame_rect: pygame.Rect: The rectangle representing the frame of the map panel.
+    warning_image: pygame.surface.Surface: The image used to display warning icons on the map.
+    ctrl_pressed: bool: Flag indicating whether the Ctrl key is pressed.
+    left_mouse_button_pressed: bool: Flag indicating whether the left mouse button is pressed.
+    checkboxes: list: The list of checkboxes for toggling object visibility.
+    checkbox_camera: ImageButton: The checkbox for toggling the visibility of the camera focus.
+    checkbox_items: ImageButton: The checkbox for toggling the visibility of collectible items.
+    checkbox_orbits: ImageButton: The checkbox for toggling the visibility of orbits.
+    checkbox_planets: ImageButton: The checkbox for toggling the visibility of planets.
+    checkbox_ships: ImageButton: The checkbox for toggling the visibility of ships.
+    show_ships: bool: Flag indicating whether ships should be shown on the map.
+    show_planets: bool: Flag indicating whether planets should be shown on the map.
+    show_items: bool: Flag indicating whether collectible items should be shown on the map.
+    show_ufos: bool: Flag indicating whether UFOs should be shown on the map.
+    show_orbits: bool: Flag indicating whether orbits should be shown on the map.
+    show_camera: bool: Flag indicating whether the camera focus should be shown on the map.
+    show_warnings: bool: Flag indicating whether warning icons should be shown on the map.
+    checkbox_frame: pygame.Rect: The rectangle representing the frame around the checkboxes.
+    """
 
     def __init__(self, win: pygame.surface.Surface, x: int, y: int, width: int, height: int) -> None:
         # params
@@ -33,7 +103,7 @@ class MapPanel():
         # vars
         self.app = global_params.app
         self.scale = 1
-        self.scale_factor = 10
+        self.scale_factor = SCALE_FACTOR
         self.name = "map panel"
         self.frame_color = colors.frame_color
         self.factor = self.app.level_handler.data["globals"]["width"] / self.world_width
@@ -41,109 +111,238 @@ class MapPanel():
         # surfaces, rect
         self.background_surface = pygame.Surface((self.world_width, self.world_height))
         self.frame_rect = pygame.Rect(self.world_x, self.world_y, self.world_width, self.world_height)
+        self.images = {}
+        self.warning_image = pygame.transform.scale(get_image("warning.png"), (WARNING_ICON_SIZE, WARNING_ICON_SIZE))
 
         # interaction stuff
         self.ctrl_pressed = False
         self.left_mouse_button_pressed = False
+        self.visible = True
 
-    def draw_camera_focus(self, pan_zoom_handler) -> None:
-        # calculate the position
-        x, y = (pan_zoom_handler.world_offset_x / self.factor), (pan_zoom_handler.world_offset_y / self.factor)
+        # init checkboxes
+        self.checkboxes = []
+        self.checkbox_images = None
+        self.checkbox_warnings = None
+        self.checkbox_ufos = None
+        self.checkbox_alpha = None
+        self.checkbox_camera = None
+        self.checkbox_items = None
+        self.checkbox_orbits = None
+        self.checkbox_planets = None
+        self.checkbox_ships = None
 
-        # Calculate the width and height of the rectangle
-        width = global_params.WIDTH / self.factor / pan_zoom_handler.zoom
-        height = global_params.HEIGHT / self.factor / pan_zoom_handler.zoom
+        # init checkbox values
+        self.show_ships = True
+        self.show_planets = True
+        self.show_items = True
+        self.show_ufos = True
+        self.show_orbits = True
+        self.show_camera = True
+        self.show_warnings = True
+        self.show_images = True
+        self.show_alpha = True
 
-        # draw the rect onto background_surface
-        pygame.draw.rect(self.background_surface, colors.ui_dark, pygame.Rect(x, y, width, height), 1, 3)
+        # create checkboxes
+        self.checkbox_frame = None
+        self.create_checkboxes()
+        self._on_hover = False
 
-    def draw_objects(self, sprites: list, surface: pygame.surface.Surface) -> None:
-        # update factor 
-        self.factor = self.app.level_handler.data["globals"]["width"] / self.world_width
+    @property
+    def on_hover(self):
+        return self._on_hover
 
-        # init radius
-        radius = MIN_OBJECT_SIZE
+    @on_hover.setter
+    def on_hover(self, value):
+        self._on_hover = value
+        if value:
+            global_params.hover_object = self
+        else:
+            if global_params.hover_object == self:
+                global_params.hover_object = None
 
-        # get all objects to display
-        for sprite in sprites:
-            # get average color of object
-            color = sprite.average_color
+    def create_checkboxes(self) -> None:
+        y = self.world_y
+        x = self.world_x
 
-            # planets, sun, moons
-            if hasattr(sprite, "type"):
-                radius = sprite.world_width / self.factor if sprite.world_width / self.factor > MIN_OBJECT_SIZE else MIN_OBJECT_SIZE
+        self.checkbox_ships = ImageButton(win=self.win,
+            x=self.world_x + x,
+            y=y - BUTTON_SIZE,
+            width=BUTTON_SIZE,
+            height=BUTTON_SIZE,
+            isSubWidget=False,
+            parent=self,
+            image=pygame.transform.scale(
+                get_image("ships_25x25.png"), (BUTTON_SIZE, BUTTON_SIZE)),
+            tooltip="",  # "show ships",
+            frame_color=self.frame_color,
+            moveable=False,
+            include_text=True, layer=10,
+            onClick=lambda: self.show_objects("ships"),
+            name="ships")
 
-                # draw orbits
-                orbit_objects = [_ for _ in sprite_groups.planets.sprites() if _.orbit_object == sprite]
-                for i in orbit_objects:
-                    pygame.draw.circle(
-                        surface=surface,
-                        color=colors.ui_darker,
-                        center=((sprite.world_x / self.factor),
-                                (sprite.world_y / self.factor)),
-                        radius=i.orbit_radius / self.factor,
-                        width=1)
+        x += BUTTON_SIZE * 1.5
+        self.checkboxes.append(self.checkbox_ships)
 
-            # ships
-            if hasattr(sprite, "property"):
-                if sprite.property == "ship":
-                    radius = sprite.world_width / self.factor if sprite.world_width / self.factor > MIN_OBJECT_SIZE else MIN_OBJECT_SIZE
+        self.checkbox_planets = ImageButton(win=self.win,
+            x=self.world_x + x,
+            y=y - BUTTON_SIZE,
+            width=BUTTON_SIZE,
+            height=BUTTON_SIZE,
+            isSubWidget=False,
+            parent=self,
+            image=pygame.transform.scale(
+                get_image("Zeta Bentauri_60x60.png"), (BUTTON_SIZE, BUTTON_SIZE)),
+            tooltip="",  # "show planets",
+            frame_color=self.frame_color,
+            moveable=False,
+            include_text=True, layer=10,
+            onClick=lambda: self.show_objects("planets"),
+            name="planets")
 
-                    # display selection
-                    if sprite == self.app.ship:
-                        pygame.draw.circle(
-                            surface=surface,
-                            color=colors.select_color,
-                            center=(
-                                (sprite.world_x / self.factor),
-                                (sprite.world_y / self.factor)),
-                            radius=radius * 2, width=1)
+        x += BUTTON_SIZE * 1.5
+        self.checkboxes.append(self.checkbox_planets)
 
-                # set rqdius
-                if sprite.property == "ufo":
-                    radius = sprite.world_width / self.factor if sprite.world_width / self.factor > MIN_OBJECT_SIZE else MIN_OBJECT_SIZE
+        self.checkbox_orbits = ImageButton(win=self.win,
+            x=self.world_x + x,
+            y=y - BUTTON_SIZE,
+            width=BUTTON_SIZE,
+            height=BUTTON_SIZE,
+            isSubWidget=False,
+            parent=self,
+            image=pygame.transform.scale(
+                get_image("orbit_icon.png"), (BUTTON_SIZE, BUTTON_SIZE)),
+            tooltip="",  # "show planets",
+            frame_color=self.frame_color,
+            moveable=False,
+            include_text=True, layer=10,
+            onClick=lambda: self.show_objects("orbits"),
+            name="orbits")
 
-                if sprite.property == "item":
-                    radius = 1
+        x += BUTTON_SIZE * 1.5
+        self.checkboxes.append(self.checkbox_orbits)
 
-            # draw object
-            pos = ((sprite.world_x / self.factor), (sprite.world_y / self.factor))
-            pygame.draw.circle(
-                surface=surface,
-                color=color,
-                center=pos,
-                radius=radius)
+        self.checkbox_items = ImageButton(win=self.win,
+            x=self.world_x + x,
+            y=y - BUTTON_SIZE,
+            width=BUTTON_SIZE,
+            height=BUTTON_SIZE,
+            isSubWidget=False,
+            parent=self,
+            image=pygame.transform.scale(
+                get_image("artefact1_60x31.png"), (BUTTON_SIZE, BUTTON_SIZE)),
+            tooltip="",  # "show collectable items",
+            frame_color=self.frame_color,
+            moveable=False,
+            include_text=True, layer=10,
+            onClick=lambda: self.show_objects("items"),
+            name="items")
 
-    def reposition(self) -> None:
-        self.world_y = self.win.get_size()[1] - self.world_height
+        x += BUTTON_SIZE * 1.5
+        self.checkboxes.append(self.checkbox_items)
 
-    def listen(self, events) -> None:
-        for event in events:
-            # ctrl_pressed
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_LCTRL:
-                    self.ctrl_pressed = True
+        self.checkbox_ufos = ImageButton(win=self.win,
+            x=self.world_x + x,
+            y=y - BUTTON_SIZE,
+            width=BUTTON_SIZE,
+            height=BUTTON_SIZE,
+            isSubWidget=False,
+            parent=self,
+            image=pygame.transform.scale(
+                get_image("ufo_74x30.png"), (BUTTON_SIZE, BUTTON_SIZE)),
+            tooltip="",  # "show collectable items",
+            frame_color=self.frame_color,
+            moveable=False,
+            include_text=True, layer=10,
+            onClick=lambda: self.show_objects("ufos"),
+            name="ufos")
 
-            elif event.type == pygame.KEYUP:
-                self.ctrl_pressed = False
+        x += BUTTON_SIZE * 1.5
+        self.checkboxes.append(self.checkbox_ufos)
 
-            # on hover
-            if self.frame_rect.collidepoint(pygame.mouse.get_pos()):
-                if event.type == pygame.MOUSEWHEEL and not self.ctrl_pressed:
-                    self.scale_map(event)
+        self.checkbox_camera = ImageButton(win=self.win,
+            x=self.world_x + x,
+            y=y - BUTTON_SIZE,
+            width=BUTTON_SIZE,
+            height=BUTTON_SIZE,
+            isSubWidget=False,
+            parent=self,
+            image=pygame.transform.scale(
+                get_image("camera_icon.png"), (BUTTON_SIZE, BUTTON_SIZE)),
+            tooltip="",  # "show collectable items",
+            frame_color=self.frame_color,
+            moveable=False,
+            include_text=True, layer=10,
+            onClick=lambda: self.show_objects("camera"),
+            name="camera")
 
-                # navigate
-                elif event.type == pygame.MOUSEBUTTONDOWN and not self.ctrl_pressed:
-                    # left button
-                    if pygame.mouse.get_pressed()[0]:
-                        self.left_mouse_button_pressed = True
-                elif event.type == pygame.MOUSEBUTTONUP:
-                    self.left_mouse_button_pressed = False
+        x += BUTTON_SIZE * 1.5
+        self.checkboxes.append(self.checkbox_camera)
 
-        if self.left_mouse_button_pressed:
-            self.update_camera_position()
+        self.checkbox_warnings = ImageButton(win=self.win,
+            x=self.world_x + x,
+            y=y - BUTTON_SIZE,
+            width=BUTTON_SIZE,
+            height=BUTTON_SIZE,
+            isSubWidget=False,
+            parent=self,
+            image=pygame.transform.scale(
+                get_image("warning.png"), (BUTTON_SIZE, BUTTON_SIZE)),
+            tooltip="",  # "show collectable items",
+            frame_color=self.frame_color,
+            moveable=False,
+            include_text=True, layer=10,
+            onClick=lambda: self.show_objects("warnings"),
+            name="warnings")
 
-    def scale_map(self, event):
+        x += BUTTON_SIZE * 1.5
+        self.checkboxes.append(self.checkbox_warnings)
+
+        self.checkbox_images = ImageButton(win=self.win,
+            x=self.world_x + x,
+            y=y - BUTTON_SIZE,
+            width=BUTTON_SIZE,
+            height=BUTTON_SIZE,
+            isSubWidget=False,
+            parent=self,
+            image=pygame.transform.scale(
+                get_image("paint.png"), (BUTTON_SIZE, BUTTON_SIZE)),
+            tooltip="",  # "show collectable items",
+            frame_color=self.frame_color,
+            moveable=False,
+            include_text=True, layer=10,
+            onClick=lambda: self.show_objects("images"),
+            name="images")
+
+        x += BUTTON_SIZE * 1.5
+        self.checkboxes.append(self.checkbox_images)
+
+        self.checkbox_alpha = ImageButton(win=self.win,
+            x=self.world_x + x,
+            y=y - BUTTON_SIZE,
+            width=BUTTON_SIZE,
+            height=BUTTON_SIZE,
+            isSubWidget=False,
+            parent=self,
+            image=pygame.transform.scale(
+                get_image("alpha.png"), (BUTTON_SIZE, BUTTON_SIZE)),
+            tooltip="",  # "show collectable items",
+            frame_color=self.frame_color,
+            moveable=False,
+            include_text=True, layer=10,
+            onClick=lambda: self.show_objects("alpha"),
+            name="alpha")
+
+        x += BUTTON_SIZE * 1.5
+        self.checkboxes.append(self.checkbox_alpha)
+
+    def update_checkboxes(self) -> None:
+        for checkbox in self.checkboxes:
+            checkbox.overblit_button_image(checkbox, "uncheck.png", getattr(self, "show_" + checkbox.name))
+
+    def show_objects(self, object_category) -> None:
+        setattr(self, "show_" + object_category, not getattr(self, "show_" + object_category))
+
+    def scale_map(self, event) -> None:
         # get scale direction
         self.scale = event.y
 
@@ -157,7 +356,7 @@ class MapPanel():
         if self.world_height < MIN_MAP_SIZE:
             self.world_height = MIN_MAP_SIZE
 
-    def update_camera_position(self):
+    def update_camera_position(self) -> None:
         # get the mouse position
         mx, my = pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1]
 
@@ -170,15 +369,173 @@ class MapPanel():
         # navigate to position
         navigate_to_position(x, y)
 
+    def draw_objects(self, sprites: list, surface: pygame.surface.Surface) -> None:
+        # update factor 
+        self.factor = self.app.level_handler.data["globals"]["width"] / self.world_width
+
+        # get all objects to display
+        for sprite in sprites:
+            if hasattr(sprite, "property"):
+                # get average color of object
+                color = sprite.average_color
+                pos = ((sprite.world_x / self.factor), (sprite.world_y / self.factor))
+                size = (
+                    sprite.world_width / self.factor if sprite.world_width / self.factor > MIN_OBJECT_SIZE else MIN_OBJECT_SIZE,
+                    sprite.world_height / self.factor if sprite.world_height / self.factor > MIN_OBJECT_SIZE else MIN_OBJECT_SIZE)
+
+                # planets, sun, moons
+                if sprite.property == "planet" and self.show_planets:
+                    radius = sprite.world_width / self.factor if sprite.world_width / self.factor > MIN_OBJECT_SIZE else MIN_OBJECT_SIZE
+                    self.draw_object(pos, radius, color, sprite, surface)
+                    self.draw_image(pos, size, sprite.image_raw)
+
+                    # draw orbits
+                    if self.show_orbits:
+                        orbit_objects = [_ for _ in sprite_groups.planets.sprites() if _.orbit_object == sprite]
+                        color = colors.ui_darker
+                        for i in orbit_objects:
+                            radius = i.orbit_radius / self.factor
+                            self.draw_object(pos, radius, color, sprite, surface, width=1, draw_anyway=True)
+
+                    if self.show_warnings:
+                        if sprite.under_attack:
+                            self.draw_image(pos, (
+                                WARNING_ICON_SIZE,
+                                WARNING_ICON_SIZE), self.warning_image, offset_y=-15, draw_anyway=True)
+
+                # ships
+                if sprite.property == "ship" and self.show_ships:
+                    radius = sprite.world_width / self.factor if sprite.world_width / self.factor > MIN_OBJECT_SIZE else MIN_OBJECT_SIZE
+                    self.draw_object(pos, radius, color, sprite, surface)
+                    self.draw_image(pos, size, sprite.image_raw)
+
+                    # display selection
+                    if sprite == self.app.ship:
+                        self.draw_object(pos, radius, colors.select_color, sprite, surface, draw_anyway=True)
+
+                # ufos
+                if sprite.property == "ufo" and self.show_ufos:
+                    radius = sprite.world_width / self.factor / 2 if sprite.world_width / self.factor > MIN_OBJECT_SIZE else MIN_OBJECT_SIZE
+                    self.draw_object(pos, radius, color, sprite, surface)
+                    self.draw_image(pos, size, sprite.image_raw)
+
+                # collectable items
+                if sprite.property == "item" and self.show_items:
+                    radius = 1
+                    self.draw_object(pos, radius, color, sprite, surface)
+                    self.draw_image(pos, size, sprite.image_raw)
+
+    def draw_image(self, pos, size, image, **kwargs):
+        draw_anyway = kwargs.get("draw_anyway", False)
+        if not self.show_images and not draw_anyway:
+            return
+
+        offset_x = kwargs.get("offset_x", 0)
+        offset_y = kwargs.get("offset_y", 0)
+
+        image_copy = copy.copy(image)
+        new_image = pygame.transform.scale(image_copy, size)
+        image_rect = new_image.get_rect()
+        pos = pos[0] + offset_x, pos[1] + offset_y
+        image_rect.center = pos
+        self.background_surface.blit(new_image, image_rect)
+
+    def draw_object(self, pos, radius, color, sprite, surface, **kwargs):
+        draw_anyway = kwargs.get("draw_anyway", False)
+        if self.show_images and not draw_anyway:
+            return
+
+        width = kwargs.get("width", 0)
+        # draw object
+        pos = ((sprite.world_x / self.factor), (sprite.world_y / self.factor))
+        pygame.draw.circle(
+            surface=surface,
+            color=color,
+            center=pos,
+            radius=radius,
+            width=width)
+
+    def draw_camera_focus(self, pan_zoom_handler) -> None:
+        if not self.show_camera:
+            return
+
+        # calculate the position
+        x, y = (pan_zoom_handler.world_offset_x / self.factor), (pan_zoom_handler.world_offset_y / self.factor)
+
+        # Calculate the width and height of the rectangle
+        width = global_params.WIDTH / self.factor / pan_zoom_handler.zoom
+        height = global_params.HEIGHT / self.factor / pan_zoom_handler.zoom
+
+        # draw the rect onto background_surface
+        pygame.draw.rect(self.background_surface, colors.ui_dark, pygame.Rect(x, y, width, height), 1, 3)
+
+    def reposition(self) -> None:
+        self.world_y = self.win.get_size()[1] - self.world_height
+        buffer_x = 1
+        buffer_y = 3
+        for i in self.checkboxes:
+            i.screen_x = self.world_x + buffer_x + ((BUTTON_SIZE + buffer_x) * self.checkboxes.index(i))
+            i.screen_y = self.world_y - buffer_y - BUTTON_SIZE
+
+        self.checkbox_frame = pygame.Rect(self.world_x, self.world_y - BUTTON_SIZE - buffer_y * 2, MIN_MAP_SIZE, BUTTON_SIZE + (
+                buffer_y * 2))
+
+    def set_visible(self) -> None:
+        self.visible = global_params.show_map_panel
+        for i in self.checkboxes:
+            i._hidden = not self.visible
+
+    def listen(self, events) -> None:
+        if not self.visible:
+            return
+
+        for event in events:
+            # ctrl_pressed
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LCTRL:
+                    self.ctrl_pressed = True
+
+            elif event.type == pygame.KEYUP:
+                self.ctrl_pressed = False
+
+            # on hover
+            if self.frame_rect.collidepoint(pygame.mouse.get_pos()):
+                self.on_hover = True
+                if event.type == pygame.MOUSEWHEEL and not self.ctrl_pressed:
+                    self.scale_map(event)
+
+                # navigate
+                elif event.type == pygame.MOUSEBUTTONDOWN and not self.ctrl_pressed:
+                    # left button
+                    if pygame.mouse.get_pressed()[0]:
+                        self.left_mouse_button_pressed = True
+                elif event.type == pygame.MOUSEBUTTONUP:
+                    self.left_mouse_button_pressed = False
+            else:
+                self.on_hover = False
+
+        if self.left_mouse_button_pressed:
+            self.update_camera_position()
+
     def draw(self) -> None:
+        self.set_visible()
+        if not self.visible:
+            return
+
         self.reposition()
+        self.update_checkboxes()
+
         # generate rect
         self.frame_rect = pygame.Rect(self.world_x, self.world_y, self.world_width, self.world_height)
 
         # draw the panel
         self.background_surface = pygame.Surface((self.world_width, self.world_height))
         self.background_surface.fill((0, 0, 0))
-        self.background_surface.set_alpha(global_params.ui_panel_alpha)
+
+        if self.show_alpha:
+            self.background_surface.set_alpha(global_params.ui_panel_alpha)
+        else:
+            self.background_surface.set_alpha(255)
 
         # draw the objects
         self.draw_objects(sprite_groups.planets.sprites(), self.background_surface)
@@ -195,3 +552,6 @@ class MapPanel():
         # draw the frame
         pygame.draw.rect(self.win, self.frame_color, pygame.Rect(self.world_x, self.world_y, self.world_width,
             self.world_height), int(ui_rounded_corner_small_thickness), int(global_params.ui_rounded_corner_radius_small))
+
+        # draw button frame
+        pygame.draw.rect(self.win, self.frame_color, self.checkbox_frame, int(ui_rounded_corner_small_thickness), int(global_params.ui_rounded_corner_radius_small))

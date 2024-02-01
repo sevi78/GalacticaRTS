@@ -1,6 +1,7 @@
 import pygame
 
 from source.configuration import global_params
+from source.gui.event_text import event_text
 from source.handlers.color_handler import colors
 from source.configuration.global_params import ui_rounded_corner_small_thickness
 
@@ -154,8 +155,12 @@ class BoxSelection:
         check_selection() method and deselects the objects using the deselect_objects() method. Finally,
         it resets the start and end positions of the selection.
         """
-        self.draw()
 
+        if global_params.hover_object:
+            return
+
+        self.draw()
+        event_text.text = f"global_params.hover_object: {global_params.hover_object}"
         for event in events:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == pygame.BUTTON_LEFT and not pygame.key.get_mods() & pygame.KMOD_CTRL:

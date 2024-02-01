@@ -109,6 +109,9 @@ show_orbit = True
 global show_grid
 show_grid = False
 
+global show_map_panel
+show_map_panel = True
+
 global text_input_active
 text_input_active = False
 
