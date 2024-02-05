@@ -1,6 +1,8 @@
 import random
+
 import pygame
 
+from source.configuration import global_params
 from source.editors.editor_base.editor_base import EditorBase
 from source.editors.editor_base.editor_config import ARROW_SIZE, FONT_SIZE, BUTTON_SIZE, TOP_SPACING
 from source.factories.building_factory import building_factory
@@ -8,9 +10,8 @@ from source.gui.widgets.buttons.image_button import ImageButton
 from source.gui.widgets.checkbox import Checkbox
 from source.gui.widgets.inputbox import InputBox
 from source.gui.widgets.selector import Selector
-from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.handlers.orbit_handler import set_orbit_object_id
-from source.configuration import global_params
+from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.multimedia_library.images import images, pictures_path, get_image, get_image_names_from_folder
 
 PLANET_MAX_SIZE = 200.0

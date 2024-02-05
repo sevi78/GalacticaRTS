@@ -1,9 +1,9 @@
 import pygame
 
 import source.handlers.weapon_handler
+from source.configuration import global_params
 from source.factories.planet_factory import planet_factory
 from source.game_play import enemy_handler
-from source.configuration import global_params
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 
 

@@ -1,8 +1,4 @@
 import pygame
-import numpy as np
-from PIL import Image
-
-from source.multimedia_library.images import get_image
 
 
 class Colors:

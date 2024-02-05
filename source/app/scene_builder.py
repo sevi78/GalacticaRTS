@@ -2,9 +2,9 @@ import pygame
 
 from source.app.ui_helper import UIHelper
 from source.configuration.economy_params import EconomyParams
-from source.handlers.file_handler import load_file
 from source.factories.planet_factory import planet_factory
 from source.handlers.color_handler import colors
+from source.handlers.file_handler import load_file
 
 
 class GameObjectStorage:

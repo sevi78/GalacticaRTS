@@ -1,4 +1,5 @@
 import pygame.draw
+
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 
 

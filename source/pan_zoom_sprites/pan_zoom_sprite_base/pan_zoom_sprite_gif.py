@@ -3,13 +3,13 @@ import time
 
 import pygame
 
+from source.configuration import global_params
+from source.handlers.color_handler import colors, get_average_color
+from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.multimedia_library.images import get_image, get_gif_frames, get_gif, get_gif_fps, get_gif_duration
 from source.multimedia_library.sounds import sounds
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_debug import GameObjectDebug
-from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_visibility_handler import PanZoomVisibilityHandler
-from source.configuration import global_params
-from source.handlers.color_handler import colors, get_average_color
 
 # pygame.init()
 WIDTH = 800

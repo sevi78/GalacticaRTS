@@ -3,14 +3,19 @@ import random
 import pygame
 from pygame import Vector2
 
+from source.configuration import global_params
 from source.draw import scope
 from source.gui.event_text import event_text
 from source.gui.lod import inside_screen
 from source.gui.widgets.moving_image import MovingImage, SPECIAL_TEXT_COLOR
 from source.handlers.autopilot_handler import AutopilotHandler
-
+from source.handlers.file_handler import load_file
+from source.handlers.orbit_handler import orbit
+from source.handlers.pan_zoom_handler import pan_zoom_handler
+from source.handlers.pan_zoom_sprite_handler import sprite_groups
+from source.handlers.position_handler import prevent_object_overlap
 from source.handlers.weapon_handler import WeaponHandler
-
+from source.interaction.mouse import Mouse, MouseState
 from source.interfaces.interface import InterfaceData
 from source.multimedia_library.images import get_image
 from source.multimedia_library.sounds import sounds
@@ -22,16 +27,8 @@ from source.pan_zoom_sprites.pan_zoom_ship_classes.pan_zoom_ship_params import P
     SHIP_INSIDE_SCREEN_BORDER
 from source.pan_zoom_sprites.pan_zoom_ship_classes.pan_zoom_ship_ranking import PanZoomShipRanking
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_game_object import PanZoomGameObject
-from source.handlers.pan_zoom_handler import pan_zoom_handler
-from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_mouse_handler import PanZoomMouseHandler
 from source.pan_zoom_sprites.pan_zoom_target_object import PanZoomTargetObject
-from source.handlers.orbit_handler import orbit
-from source.configuration import global_params
-from source.interaction.mouse import Mouse, MouseState
-from source.handlers.position_handler import prevent_object_overlap
-from source.handlers.file_handler import load_file
-
 
 
 class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZoomShipRanking, PanZoomShipDraw, PanZoomMouseHandler, PanZoomShipInteraction, InterfaceData):

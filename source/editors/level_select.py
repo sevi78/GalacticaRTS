@@ -1,15 +1,14 @@
 import pygame
 
-from source.gui.event_text import event_text
-from source.handlers import file_handler
-from source.handlers.file_handler import load_file
+from source.configuration import global_params
 from source.editors.editor_base.editor_base import EditorBase
 from source.editors.editor_base.editor_config import TOP_SPACING
-from source.text.info_panel_text_generator import info_panel_text_generator
-from source.text.tooltip_gen import tooltip_generator
+from source.gui.event_text import event_text
 from source.gui.widgets.buttons.image_button import ImageButton
+from source.handlers import file_handler
+from source.handlers.file_handler import load_file
 from source.multimedia_library.images import get_image
-from source.configuration import global_params
+from source.text.info_panel_text_generator import info_panel_text_generator
 
 
 class LevelSelect(EditorBase):

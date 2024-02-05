@@ -1,5 +1,4 @@
 import pstats
-from pprint import pprint
 
 """
 how to use:

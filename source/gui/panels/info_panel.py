@@ -1,9 +1,9 @@
 import pygame
 
-from source.gui.panels.toggle_switch import ToggleSwitch
-from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.configuration import global_params
 from source.configuration.global_params import ui_rounded_corner_small_thickness
+from source.gui.panels.toggle_switch import ToggleSwitch
+from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.text.info_panel_text_generator import info_panel_text_generator
 from source.text.text_wrap import TextWrap
 

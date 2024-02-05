@@ -1,7 +1,7 @@
 import pygame
 
-from source.gui.event_text import event_text
 from source.configuration import global_params
+from source.gui.event_text import event_text
 
 
 class BuildingSlot:

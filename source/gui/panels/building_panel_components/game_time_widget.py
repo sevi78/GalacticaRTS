@@ -1,16 +1,14 @@
-import time
-
 from datetime import datetime
 
 import pygame
 
-from source.gui.widgets.buttons.image_button import ImageButton
-from source.gui.widgets.widget_base_components.widget_base import WidgetBase
-from source.gui.widgets.buttons.button import Button
-from source.gui.widgets.slider import Slider
 from source.configuration import global_params
-from source.handlers.color_handler import colors
 from source.configuration.global_params import ui_rounded_corner_small_thickness
+from source.gui.widgets.buttons.button import Button
+from source.gui.widgets.buttons.image_button import ImageButton
+from source.gui.widgets.slider import Slider
+from source.gui.widgets.widget_base_components.widget_base import WidgetBase
+from source.handlers.color_handler import colors
 from source.handlers.time_handler import time_handler
 from source.multimedia_library.images import get_image
 

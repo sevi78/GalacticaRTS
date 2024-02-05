@@ -3,21 +3,21 @@ import time
 
 import pygame
 
+from source.configuration import global_params
 from source.gui.event_text import event_text
 from source.gui.lod import inside_screen
 from source.gui.widgets.progress_bar import ProgressBar
 from source.gui.widgets.widget_base_components.interaction_handler import InteractionHandler
+from source.handlers.color_handler import colors
+from source.handlers.file_handler import load_file
 from source.handlers.garbage_handler import garbage_handler
+from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.handlers.weapon_handler import WeaponHandler
 from source.handlers.widget_handler import WidgetHandler
+from source.interaction.mouse import Mouse, MouseState
 from source.multimedia_library.gif_handler import GifHandler
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_game_object import PanZoomGameObject
-from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.text.info_panel_text_generator import info_panel_text_generator
-from source.configuration import global_params
-from source.handlers.color_handler import colors
-from source.interaction.mouse import Mouse, MouseState
-from source.handlers.file_handler import load_file
 
 # lifetime in seconds
 LIFETIME = 60

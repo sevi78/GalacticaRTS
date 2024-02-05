@@ -1,9 +1,9 @@
 import pygame
 
 from source.app.app_helper import select_next_item_in_list
-from source.gui.widgets.widget_base_components.widget_base import WidgetBase
-from source.gui.widgets.buttons.button import Button
 from source.configuration import global_params
+from source.gui.widgets.buttons.button import Button
+from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.multimedia_library.images import get_image
 
 

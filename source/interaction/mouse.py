@@ -1,6 +1,7 @@
-from enum import Enum
-import pygame
 import time
+from enum import Enum
+
+import pygame
 
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 

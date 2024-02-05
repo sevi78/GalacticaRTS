@@ -1,22 +1,23 @@
 import random
+
 import pygame
 
+from source.configuration import global_params
 from source.draw.circles import draw_zoomable_circle
 from source.draw.zoomable_rect import draw_zoomable_rect
 from source.editors.editor_base.editor_base import EditorBase
 from source.editors.editor_base.editor_config import ARROW_SIZE, FONT_SIZE, TOP_SPACING
 from source.factories.planet_factory import planet_factory
+from source.factories.universe_factory import universe_factory
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.gui.widgets.inputbox import InputBox
 from source.gui.widgets.selector import Selector
 from source.handlers import position_handler
-from source.handlers.file_handler import get_ships_list
-from source.handlers.pan_zoom_sprite_handler import sprite_groups
-from source.handlers.pan_zoom_handler import pan_zoom_handler
-from source.factories.universe_factory import universe_factory
-from source.configuration import global_params
-from source.multimedia_library.images import get_image, get_image_names_from_folder
 from source.handlers.color_handler import colors
+from source.handlers.file_handler import get_ships_list
+from source.handlers.pan_zoom_handler import pan_zoom_handler
+from source.handlers.pan_zoom_sprite_handler import sprite_groups
+from source.multimedia_library.images import get_image, get_image_names_from_folder
 from source.text.info_panel_text_generator import info_panel_text_generator
 
 PLANET_MAX_SIZE = 200.0

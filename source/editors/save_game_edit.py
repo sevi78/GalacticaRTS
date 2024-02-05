@@ -1,10 +1,11 @@
 import os.path
+
 import pygame
 
 from source.editors.editor_base.editor_base import EditorBase
 from source.editors.editor_base.editor_config import TOP_SPACING
 from source.gui.widgets.buttons.image_button import ImageButton
-from source.handlers.file_handler import write_file, load_file, abs_games_path, \
+from source.handlers.file_handler import write_file, abs_games_path, \
     generate_json_filename_based_on_datetime, get_games_list, move_file_to_trash
 from source.multimedia_library.images import get_image
 

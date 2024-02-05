@@ -2,9 +2,9 @@ import pygame
 from pygame import gfxdraw
 from pygame_widgets.mouse import Mouse, MouseState
 
-from source.gui.widgets.widget_base_components.widget_base import WidgetBase
-#from source.handlers.widget_handler import update
+# from source.handlers.widget_handler import update
 from source.configuration import global_params
+from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 
 
 class Slider(WidgetBase):

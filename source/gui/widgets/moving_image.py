@@ -1,11 +1,11 @@
 import math
-
-import pygame
 import time
 
+import pygame
+
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
-from source.text.text_wrap import TextWrap
 from source.handlers.position_handler import get_distance
+from source.text.text_wrap import TextWrap
 
 # Initialize Pygame
 #pygame.init()

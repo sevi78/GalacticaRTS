@@ -3,11 +3,10 @@ import random
 import pygame
 from pygame_widgets.util import drawText
 
-from source.gui.lod import inside_screen
-
-from source.multimedia_library.gif_handler import GifHandler
-from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.configuration import global_params
+from source.gui.lod import inside_screen
+from source.gui.widgets.widget_base_components.widget_base import WidgetBase
+from source.multimedia_library.gif_handler import GifHandler
 
 
 class CelestialObject(WidgetBase):

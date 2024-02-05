@@ -1,5 +1,4 @@
 import random
-from pprint import pprint
 
 from source.factories.building_factory import building_factory
 from source.handlers.pan_zoom_sprite_handler import sprite_groups

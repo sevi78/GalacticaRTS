@@ -43,8 +43,9 @@
 
 
 import json
-import networkx as nx
+
 import matplotlib.pyplot as plt
+import networkx as nx
 
 # Step 1: Load the JSON data
 with open('C:\\Users\\sever\\Documents\\Galactica-RTS_zoomable1.107\\database\\config\\buildings.json', 'r') as file:

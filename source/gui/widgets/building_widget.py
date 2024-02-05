@@ -1,15 +1,15 @@
 import copy
 import time
+
 import pygame
 
+from source.configuration import global_params
 from source.factories.weapon_factory import weapon_factory
-from source.gui.event_text import event_text
-from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.gui.widgets.buttons.button import Button
 from source.gui.widgets.progress_bar import ProgressBar
-from source.handlers.pan_zoom_handler import pan_zoom_handler
+from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.handlers.orbit_handler import set_orbit_object_id
-from source.configuration import global_params
+from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.multimedia_library.images import get_image
 from source.multimedia_library.sounds import sounds
 

@@ -1,9 +1,10 @@
 # initialize pygame and window
-import os
 import ctypes
+import os
+
 import pygame
+
 from source.handlers.file_handler import load_file
-from source.multimedia_library.sounds import Sounds
 
 # load settings
 settings = load_file("settings.json", "config")

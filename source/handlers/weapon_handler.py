@@ -4,16 +4,16 @@ import time
 
 import pygame
 
+from source.configuration import global_params
 from source.draw.circles import draw_transparent_circle
 from source.draw.zigzag_line import draw_zigzag_line
 from source.factories.weapon_factory import weapon_factory
 from source.gui.lod import inside_screen
 from source.gui.widgets.moving_image import MovingImage
+from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.multimedia_library.images import get_image
 from source.multimedia_library.sounds import sounds
 from source.pan_zoom_sprites.pan_zoom_missile import PanZoomMissile, MISSILE_POWER
-from source.handlers.pan_zoom_handler import pan_zoom_handler
-from source.configuration import global_params
 
 CANNON_GUNPOWER = 3
 

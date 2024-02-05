@@ -1,14 +1,14 @@
 import pygame
 
-from source.editors import settings
-from source.text.info_panel_text_generator import info_panel_text_generator
-from source.gui.panels.toggle_switch import ToggleSwitch
-from source.gui.widgets.widget_base_components.widget_base import WidgetBase
-from source.gui.widgets.buttons.image_button import ImageButton
 from source.configuration import global_params
-from source.handlers.color_handler import colors
 from source.configuration.global_params import ui_rounded_corner_small_thickness
+from source.editors import settings
+from source.gui.panels.toggle_switch import ToggleSwitch
+from source.gui.widgets.buttons.image_button import ImageButton
+from source.gui.widgets.widget_base_components.widget_base import WidgetBase
+from source.handlers.color_handler import colors
 from source.multimedia_library.images import get_image
+from source.text.info_panel_text_generator import info_panel_text_generator
 
 
 class AdvancedSettingsPanel(WidgetBase):

@@ -1,10 +1,10 @@
 import math
-from pygame import Vector2
 
-from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_gif import PanZoomSprite
+from pygame import Vector2
 
 from source.configuration import global_params
 from source.handlers.position_handler import rot_center
+from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_gif import PanZoomSprite
 
 GAME_OBJECT_SPEED = 2.0
 screen = global_params.win

@@ -1,4 +1,5 @@
 import pygame
+
 from source.configuration import global_params
 from source.handlers.color_handler import colors
 

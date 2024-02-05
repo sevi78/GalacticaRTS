@@ -1,22 +1,22 @@
 import pygame
 from pygame_widgets.util import drawText
 
+from source.configuration import global_params
 from source.configuration.economy_params import EconomyParams
-from source.gui.widgets.building_button_widget import BuildingButtonWidget
+from source.configuration.global_params import ui_rounded_corner_small_thickness
 from source.gui.event_text import event_text
 from source.gui.panels.building_panel_components.building_panel_constructor import BuildingPanelConstructor
 from source.gui.panels.building_panel_components.building_panel_draw import BuildingPanelDraw
 from source.gui.panels.building_panel_components.building_slot import BuildingSlot
 from source.gui.panels.building_panel_components.planetary_defence_widget import PlanetaryDefenceWidget
 from source.gui.panels.building_panel_components.space_harbor import SpaceHarbor
-from source.text.info_panel_text_generator import info_panel_text_generator
 from source.gui.panels.toggle_switch import ToggleSwitch
+from source.gui.widgets.building_button_widget import BuildingButtonWidget
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
-from source.multimedia_library.images import get_image
-from source.configuration import global_params
 from source.handlers.color_handler import colors
-from source.configuration.global_params import ui_rounded_corner_small_thickness
+from source.multimedia_library.images import get_image
 from source.multimedia_library.sounds import sounds
+from source.text.info_panel_text_generator import info_panel_text_generator
 
 TOP_SPACING = 5
 

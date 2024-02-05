@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
-from source.handlers.widget_handler import WidgetHandler
 from source.handlers.color_handler import colors
+from source.handlers.widget_handler import WidgetHandler
 
 
 class WidgetBaseParams:

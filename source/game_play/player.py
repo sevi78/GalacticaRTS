@@ -1,5 +1,7 @@
 import time
+
 import pygame
+
 from source.configuration import global_params
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 

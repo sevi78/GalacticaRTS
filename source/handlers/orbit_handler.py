@@ -2,9 +2,9 @@ import math
 
 import pygame
 
+from source.configuration import global_params
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
-from source.configuration import global_params
 from source.handlers.position_handler import get_distance
 
 

@@ -1,7 +1,7 @@
 import pygame
 
-from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.configuration import global_params
+from source.handlers.pan_zoom_handler import pan_zoom_handler
 
 
 class PanZoomMouseHandler:

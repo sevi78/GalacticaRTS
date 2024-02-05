@@ -1,7 +1,9 @@
 import random
 import sys
+
 import pygame
-#from source.multimedia_library.images import get_image
+
+# from source.multimedia_library.images import get_image
 from source.configuration import global_params
 from source.multimedia_library.images import get_image
 

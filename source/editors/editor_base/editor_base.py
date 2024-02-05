@@ -1,12 +1,12 @@
 import pygame
 
+from source.configuration import global_params
+from source.configuration.global_params import ui_rounded_corner_big_thickness
 from source.editors.editor_base.editor_config import ARROW_SIZE, SPACING_Y, FONT_SIZE, TOP_SPACING
 from source.gui.widgets.buttons.image_button import ImageButton
-from source.configuration import global_params
-from source.handlers.color_handler import colors
-from source.configuration.global_params import ui_rounded_corner_big_thickness
-from source.multimedia_library.images import get_image
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
+from source.handlers.color_handler import colors
+from source.multimedia_library.images import get_image
 
 
 class EditorBase(WidgetBase):

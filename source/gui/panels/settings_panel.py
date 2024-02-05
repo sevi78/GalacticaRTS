@@ -1,13 +1,13 @@
 import pygame
 
+from source.configuration import global_params
+from source.configuration.global_params import ui_rounded_corner_small_thickness
 from source.game_play.navigation import navigate_to
 from source.gui.panels.toggle_switch import ToggleSwitch
-from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.gui.widgets.buttons.image_button import ImageButton
-from source.handlers.pan_zoom_sprite_handler import sprite_groups
-from source.configuration import global_params
+from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.handlers.color_handler import colors
-from source.configuration.global_params import ui_rounded_corner_small_thickness
+from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.multimedia_library.images import get_image
 from source.text.info_panel_text_generator import info_panel_text_generator
 

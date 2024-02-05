@@ -1,4 +1,5 @@
 import pygame
+
 from source.multimedia_library.images import get_image
 
 

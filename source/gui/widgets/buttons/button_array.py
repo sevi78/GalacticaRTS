@@ -1,7 +1,7 @@
 import pygame
 
-from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.gui.widgets.buttons.button import Button
+from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 
 
 class ButtonArray(WidgetBase):

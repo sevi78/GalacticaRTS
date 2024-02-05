@@ -4,7 +4,7 @@ from pprint import pprint
 
 import pygame
 
-#from source.configuration import global_params
+# from source.configuration import global_params
 
 # remove this if not used elsewhere, only needed to test the scripts that load images or gifs
 # pygame.init()
@@ -65,7 +65,7 @@ LOAD_AT_GAME_START = True
 #     gif_durations[gif_name] = load_gif_durations(gif)
 #     return gif
 ########################################
-
+@lru_cache(maxsize=None)
 def load_folders(folder):
     """Objective:
     The objective of the "load_folders" function is to load all the PNG images from a given folder and its subfolders
@@ -110,14 +110,12 @@ def load_folders(folder):
 
     return dict_
 
-
 @lru_cache(maxsize=None)
 def load_image(folder, image, sub):
     img = pygame.image.load(os.path.join(folder, sub, image))
     return img
 
-
-
+@lru_cache(maxsize=None)
 def load_gif(gif_name):
     path = os.path.join(pictures_path + "gifs", gif_name)
     gif = Image.open(path)
@@ -126,7 +124,6 @@ def load_gif(gif_name):
     gif_fps[gif_name] = load_gif_fps(gif)
     gif_durations[gif_name] = load_gif_durations(gif)
     return gif
-    # print(f"gif: {gif_name},frames: {len(gif_frames[gif_name])}, fps: {gif_fps[gif_name]}, duration: {gif_durations[gif_name]}")
 
 
 def load_gif_durations(gif):
@@ -142,11 +139,12 @@ def load_gif_durations(gif):
 
     return avg_duration
 
+
 @lru_cache(maxsize=None)
 def get_gif_duration(gif_name):
     return gif_durations[gif_name]
 
-
+#@lru_cache(maxsize=None)
 def load_gif_fps(gif_file):
     # Get the durations of all frames
     durations = []
@@ -163,6 +161,7 @@ def load_gif_fps(gif_file):
         fps = 20
     return fps
 
+
 @lru_cache(maxsize=None)
 def get_image(image_name):
     try:
@@ -175,6 +174,7 @@ def get_image(image_name):
                 return items[image_name]
     return no_icon
 
+
 @lru_cache(maxsize=None)
 def get_gif(gif_name):
     try:
@@ -182,9 +182,11 @@ def get_gif(gif_name):
     except KeyError:
         return load_gif(gif_name)
 
+
 @lru_cache(maxsize=None)
 def get_gif_fps(gif_name):
     return gif_fps[gif_name]
+
 
 @lru_cache(maxsize=None)
 def get_gif_frames(gif_name):
@@ -196,7 +198,6 @@ def get_gif_frames(gif_name):
     rescale = False
 
     # Check if the size of the GIF is bigger than MAX_GIF_SIZE
-
     if max(gif.size) > MAX_GIF_SIZE:
         # Calculate the ratio to rescale the images
         ratio = MAX_GIF_SIZE / max(gif.size)
@@ -218,6 +219,7 @@ def get_gif_frames(gif_name):
         # frames.pop(0)
     return frames
 
+
 @lru_cache(maxsize=None)
 def get_image_names_from_folder(folder, **kwargs):
     startswith_string = kwargs.get("startswith_string", "")
@@ -228,7 +230,7 @@ def get_image_names_from_folder(folder, **kwargs):
 
     return image_names
 
-
+@lru_cache(maxsize=None)
 def resize_image(image, new_size):
     # Calculate the aspect ratio of the original image
     aspect_ratio = image.get_width() / image.get_height()
@@ -243,7 +245,7 @@ def resize_image(image, new_size):
 
     return new_image
 
-
+@lru_cache(maxsize=None)
 def find_unused_images_gifs(image_dir, gif_dir, images_dict, gifs_dict):
     unused_files = []
 
@@ -266,4 +268,4 @@ def find_unused_images_gifs(image_dir, gif_dir, images_dict, gifs_dict):
 
 if LOAD_AT_GAME_START:
     images = load_folders(os.path.join(pictures_path))
-    pprint (find_unused_images_gifs(pictures_path,os.path.join(pictures_path, "gifs"), images, gifs))
+    #pprint(find_unused_images_gifs(pictures_path, os.path.join(pictures_path, "gifs"), images, gifs))

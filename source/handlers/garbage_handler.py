@@ -1,8 +1,9 @@
-import inspect
-import sys
-import gc
 import ctypes
+import gc
+import inspect
 import os
+import sys
+
 import psutil
 
 
@@ -43,10 +44,6 @@ class GarbageHandler:
         ref_count = ctypes.c_long.from_address(id(obj))
         return ref_count
 
-    import sys
-    import gc
-    import inspect
-
     def get_all_references(self, obj):
         ref_count = sys.getrefcount(obj) - 1  # Subtract 1 to account for the temporary reference created by getrefcount()
         referrers = gc.get_referrers(obj)
@@ -59,8 +56,6 @@ class GarbageHandler:
         ref_count = sys.getrefcount(obj) - 1  # Subtract 1 to account for the temporary reference created by getrefcount()
         referrers = gc.get_referrers(obj)
         return ref_count, referrers
-
-    import gc
 
     def delete_all_references_from(self, obj):# stupid ki function
         referrers = gc.get_referrers(obj)

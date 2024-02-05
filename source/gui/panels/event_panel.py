@@ -1,9 +1,9 @@
 import pygame
-
 from pygame_widgets.mouse import Mouse, MouseState
+
+from source.configuration import global_params
 from source.editors.editor_base.editor_base import EditorBase
 from source.gui.widgets.buttons.button import Button
-from source.configuration import global_params
 from source.handlers.color_handler import colors
 from source.multimedia_library.images import get_image
 from source.multimedia_library.sounds import sounds

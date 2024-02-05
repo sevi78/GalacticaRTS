@@ -1,9 +1,10 @@
 import copy
+
 import pygame
 
-from source.game_play.navigation import navigate_to_position
 from source.configuration import global_params
 from source.configuration.global_params import ui_rounded_corner_small_thickness
+from source.game_play.navigation import navigate_to_position
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.handlers.color_handler import colors
 from source.handlers.pan_zoom_handler import pan_zoom_handler

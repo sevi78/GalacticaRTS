@@ -1,7 +1,6 @@
 import time
-from source.configuration import global_params
-from source.game_play.game_events import GameEvent
 
+from source.game_play.game_events import GameEvent
 from source.handlers.file_handler import load_file
 from source.text.info_panel_text_generator import info_panel_text_generator
 

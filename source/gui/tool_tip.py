@@ -2,8 +2,8 @@ import pygame
 from pygame.locals import MOUSEMOTION
 from pygame_widgets import Mouse
 
-from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.configuration import global_params
+from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 
 INVISIBLE_X = -1000
 INVISIBLE_Y = -1000

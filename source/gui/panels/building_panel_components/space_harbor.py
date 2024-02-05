@@ -1,11 +1,12 @@
 import pygame
 from pygame_widgets.util import drawText
-from source.factories.building_factory import building_factory
-from source.gui.widgets.widget_base_components.widget_base import WidgetBase
-from source.gui.widgets.buttons.image_button import ImageButton
+
 from source.configuration import global_params
-from source.handlers.color_handler import colors
 from source.configuration.global_params import ui_rounded_corner_small_thickness
+from source.factories.building_factory import building_factory
+from source.gui.widgets.buttons.image_button import ImageButton
+from source.gui.widgets.widget_base_components.widget_base import WidgetBase
+from source.handlers.color_handler import colors
 from source.multimedia_library.images import get_image
 
 

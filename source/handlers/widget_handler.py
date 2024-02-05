@@ -1,5 +1,3 @@
-from pprint import pprint
-
 import pygame
 from pygame.event import Event
 from pygame_widgets import Mouse
@@ -10,70 +8,14 @@ from source.gui.event_text import event_text
 DEFAULT_LAYER = 9
 
 
-
-
 class WidgetHandler:
-    """Main functionalities:
-    The WidgetHandler class is responsible for managing and displaying widgets in a layered manner.
-    It allows for widgets to be added to specific layers and for layers to be toggled on and off using keyboard input.
-    The class also provides a method for retrieving all widgets currently being managed.
-
-    Methods:
-    - main(events): the main method of the class, responsible for iterating through all widgets and drawing them to the
-      screen. It also listens for input to toggle layers on and off.
-    - get_all_widgets(): returns a list of all widgets currently being managed.
-    - addWidget(widget): adds a widget to the appropriate layer.
-    - set_visible(events): listens for input to toggle layers on and off.
-
-    Fields:
-    - layers: a dictionary containing lists of widgets for each layer.
-    - layer_switch: a dictionary containing a binary value for each layer,
-      indicating whether the layer is currently visible or not."""
-
-    print("WidgetHandler: init")
     layers = {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: [], 7: [], 8: [], 9: [], 10: [], 11: [], 12: [], 13: [], 14: []}
     layer_switch = {"0": 0, "1": 0, "2": 0, "3": 0, "4": 0, "5": 0, "6": 0, "7": 0, "8": 0, "9": 0, "10": 0, "11": 0, "12": 0, "13": 0, "14": 0}
     draw_layers = True
     for key, value in layer_switch.items():
         layer_switch[key] = 1
 
-    # layer_switch["2"] = 0
-    # layer_switch["10"] = 0
-
-    """
-    layers: 
-    0 = background
-    1 = universe
-    2 = 
-    3 = planets
-    4 = 
-    5 = fog of war
-    6 = 
-    7 =
-    8 = ships
-    9 = ui 
-    10 = tooltip
-    """
-
-    @staticmethod
-    def main(events: [Event]) -> None:
-        # WidgetHandler.set_visible(events)
-        # 0:[...]
-        # pprint (WidgetHandler.layers.items())
-        for key, widgetlist in WidgetHandler.layers.items():
-            # print (f"layer: {key}\n widgetlist: {[_.name for _ in widgetlist]}")
-            if not WidgetHandler.layer_switch[str(key)]:
-                return
-            # get widget
-            for widget in widgetlist:
-                widget.draw()
-
-                if widget.isSubWidget:
-                    if hasattr(widget, "listen"):
-                        widget.listen(events)
-
     def draw_layer(events, layer: int) -> None:
-        #Mouse.updateMouseState()
         if not WidgetHandler.draw_layers:
             return
 
@@ -136,41 +78,7 @@ class WidgetHandler:
                 if event.key == pygame.K_z:
                     WidgetHandler.draw_layers = not WidgetHandler.draw_layers
 
-                # next
-
-                # elif event.key in others:
-                #     key = "9"
-                #
-                #     # set value
-                #     if WidgetHandler.layer_switch[key] == 0:
-                #         WidgetHandler.layer_switch[key] = 1
-                #         return
-                #     if WidgetHandler.layer_switch[key] == 1:
-                #         WidgetHandler.layer_switch[key] = 0
-                #         return
-
 
 def update(events: [Event]):
-    """Objective:
-    The 'update' function is responsible for updating the state of the mouse and managing and displaying widgets using
-    the 'WidgetHandler' class. Its main objective is to provide an interface for updating the GUI elements of a game
-    or application.
-
-    Inputs:
-    - events: a list of pygame events that have occurred since the last update.
-
-    Flow:
-    1. Call the 'updateMouseState' method of the 'Mouse' class to update the state of the mouse.
-    2. Call the 'main' method of the 'WidgetHandler' class to manage and display widgets based on the provided events.
-
-    Outputs:
-    None
-
-    Additional aspects:
-    - The 'update' function assumes that the 'Mouse' and 'WidgetHandler' classes have been properly initialized
-      and imported.
-    - The 'update' function is typically called once per game loop iteration to update the GUI elements of the game or
-      application."""
     Mouse.updateMouseState()
-    #WidgetHandler.main(events)
     WidgetHandler.set_visible(events)

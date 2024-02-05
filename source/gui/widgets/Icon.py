@@ -1,8 +1,9 @@
 import pygame
 from pygame.locals import MOUSEBUTTONDOWN, MOUSEBUTTONUP, MOUSEMOTION
 from pygame_widgets.mouse import Mouse, MouseState
-from source.gui.widgets.widget_base_components.widget_base import WidgetBase
+
 from source.configuration import global_params
+from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.text.text_formatter import format_number
 
 

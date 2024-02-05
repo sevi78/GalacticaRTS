@@ -1,7 +1,7 @@
 import pygame
 
-from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.color_handler import gradient_color
+from source.handlers.pan_zoom_handler import pan_zoom_handler
 
 
 def draw_pulsating_circle(win, color_: tuple[3], center, min_radius, max_radius, width, pulse_time):

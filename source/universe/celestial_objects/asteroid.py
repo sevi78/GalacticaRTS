@@ -1,7 +1,7 @@
-from source.gui.lod import inside_screen
-from source.universe.celestial_objects.celestial_object import CelestialObject
 from source.configuration import global_params
+from source.gui.lod import inside_screen
 from source.handlers.position_handler import rot_center
+from source.universe.celestial_objects.celestial_object import CelestialObject
 
 
 class Asteroid(CelestialObject):

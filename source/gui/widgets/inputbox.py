@@ -1,7 +1,7 @@
 import pygame as pg
 
-from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.configuration import global_params
+from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.handlers.color_handler import colors
 
 COLOR_INACTIVE = colors.frame_color

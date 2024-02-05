@@ -1,4 +1,5 @@
 from pygame.sprite import LayeredUpdates
+
 from source.gui.lod import inside_screen
 from source.handlers import widget_handler
 from source.handlers.widget_handler import WidgetHandler
@@ -96,6 +97,7 @@ class SpriteGroups:
         WidgetHandler.draw_layer(events, 9)
         WidgetHandler.draw_layer(events, 10)
         # ships must be updated here, because they draw also... this is bullshit but... ;)
+
         self.ships.update()
 
 

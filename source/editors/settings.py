@@ -48,14 +48,7 @@ def main(test: bool = False, **kwargs) -> None:
         width=WINDOW_SIZE[0] * 0.9,
         onclose=pygame_menu.events.BACK, )  # User press ESC button)
 
-    # settings_menu.add.text_input(
-    #     'TODO: ',
-    #     default=settings["todo"],
-    #     maxwidth=0,
-    #     textinput_id='todo',
-    #     input_underline='_',
-    #     align=pygame_menu.locals.ALIGN_RIGHT,
-    #     textwrap=True)
+
 
     settings_menu.add.text_input(
         'FPS: ',

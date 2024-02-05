@@ -1,9 +1,9 @@
 import random
 
-from source.gui.lod import inside_screen
-from source.universe.celestial_objects.celestial_object import CelestialObject
 from source.configuration import global_params
+from source.gui.lod import inside_screen
 from source.handlers.position_handler import rot_center
+from source.universe.celestial_objects.celestial_object import CelestialObject
 
 
 class CelestialObjectStatic(CelestialObject):
@@ -25,8 +25,6 @@ class CelestialObjectStatic(CelestialObject):
         if not self._hidden:
             if self.gif:
                 self.gif_handler.rect = self.rect
-                # self.gif_handler.draw()
-
             else:
                 nsx, nsy = (self.size_x * self.get_zoom(), self.size_y * self.get_zoom())
                 self.rect.width = nsx

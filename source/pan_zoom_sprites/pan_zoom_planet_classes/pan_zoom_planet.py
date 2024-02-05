@@ -242,7 +242,6 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
     def update(self):
         self.set_screen_position()
         self.update_pan_zoom_sprite()
-        draw_orbits(self)
 
         try:
             global_params.app.tooltip_instance.reset_tooltip(self)
@@ -274,9 +273,9 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
     def draw(self):
         # self.draw_image()
 
-        if self.gif_handler:
-            self.gif_handler.draw()
-
+        # if self.gif_handler:
+        #     self.gif_handler.draw()
+        draw_orbits(self)
         self.draw_check_image()
         if self.show_text:
             self.draw_text()

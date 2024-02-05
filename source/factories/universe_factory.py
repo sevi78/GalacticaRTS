@@ -1,20 +1,19 @@
 import math
 import random
 
-from source.text.info_panel_text_generator import info_panel_text_generator
-from source.handlers.widget_handler import WidgetHandler
-from source.pan_zoom_sprites.pan_zoom_collectable_item import PanZoomCollectableItem
+from source.configuration import global_params
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
+from source.handlers.position_handler import get_random_pos
+from source.handlers.widget_handler import WidgetHandler
+from source.multimedia_library.images import get_image
+from source.pan_zoom_sprites.pan_zoom_collectable_item import PanZoomCollectableItem
+from source.text.info_panel_text_generator import info_panel_text_generator
 from source.universe.celestial_objects.asteroid import Asteroid
 from source.universe.celestial_objects.celestial_object import CelestialObject
 from source.universe.celestial_objects.celestial_object_static import CelestialObjectStatic
 from source.universe.celestial_objects.comet import Comet
 from source.universe.celestial_objects.stars import FlickeringStar, PulsatingStar
-
-from source.configuration import global_params
-from source.multimedia_library.images import get_image
-from source.handlers.position_handler import get_random_pos
 
 COMET_DIVIDE_FACTOR = 500
 ASTEROID_GIF_DIVIDE_FACTOR = 300

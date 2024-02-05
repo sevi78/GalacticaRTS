@@ -1,9 +1,9 @@
 import pygame
 from pygame import Vector2
 
+from source.configuration import global_params
 from source.gui.lod import inside_screen
 from source.handlers.pan_zoom_handler import pan_zoom_handler
-from source.configuration import global_params
 
 
 class PositionHandler:
