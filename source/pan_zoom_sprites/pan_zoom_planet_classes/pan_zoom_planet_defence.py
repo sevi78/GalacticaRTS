@@ -9,6 +9,8 @@ from source.draw.zigzag_line import draw_zigzag_line
 from source.factories.building_factory import building_factory
 from source.gui.widgets.progress_bar import ProgressBar
 from source.handlers.color_handler import colors
+from source.interaction.mouse import Mouse
+
 from source.multimedia_library.sounds import sounds
 from source.handlers.weapon_handler import attack, launch_missile
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
@@ -101,7 +103,7 @@ class PanZoomPlanetDefence:
     def activate_energy_blast(self):
         scope.draw_scope(self.parent)
         if pygame.mouse.get_pressed()[2]:
-            hit_obj = self.parent.get_hit_object()
+            hit_obj = Mouse.get_hit_object()
             if hit_obj:
                 if hit_obj in sprite_groups.ufos.sprites():
                     hit_obj.energy -= ENERGY_BLAST_POWER

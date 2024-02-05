@@ -16,6 +16,8 @@ from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.configuration import global_params
 
 CANNON_GUNPOWER = 3
+
+
 class WeaponHandler:
     def __init__(self, parent, current_weapon, **kwargs):
         self.parent = parent
@@ -24,7 +26,6 @@ class WeaponHandler:
         self.current_weapon = self.all_weapons[current_weapon]
         self.current_weapon_select = ""
         self.setup_interval_timers()
-
 
     def setup_interval_timers(self):
         for i in self.all_weapons.keys():
@@ -96,8 +97,7 @@ class WeaponHandler:
                     layer=9,
                     debug=False,
                     target=defender, missile_power=power)
-                    # missile.set_target(defender)
-
+                # missile.set_target(defender)
 
     def draw_moving_image(self, defender, power):
         MovingImage(
@@ -118,8 +118,6 @@ class WeaponHandler:
         weapon_value = self.current_weapon.get(var)
         value = weapon_value * upgrade_value
         return value
-
-
 
     def attack(self, defender):
         if not inside_screen(self.parent.get_screen_position()):
@@ -143,9 +141,6 @@ class WeaponHandler:
 
     def draw_attack_distance(self):
         draw_transparent_circle(self.parent.win, self.parent.frame_color, self.parent.rect.center, self.get_current_value("range"), 20)
-
-
-
 
 
 def launch_missile(attacker, defender):
@@ -175,7 +170,10 @@ def launch_missile(attacker, defender):
             debug=False,
             target=defender)
         # missile.set_target(defender)
+
+
 def attack(attacker, defender):
+    # this might be deleted: should not attacker attack defender even if not on screen ???
     if not inside_screen(attacker.get_screen_position()):
         return
 

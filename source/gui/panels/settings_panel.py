@@ -46,6 +46,24 @@ class SettingsPanel(WidgetBase):
         self.init = 0
 
     def create_icons(self):
+        self.economy_overview_icon = ImageButton(win=self.win,
+            x=self.get_screen_x(),
+            y=self.surface_rect.y + self.spacing,
+            width=self.icon_size,
+            height=self.icon_size,
+            isSubWidget=False,
+            parent=self,
+            image=pygame.transform.scale(
+                get_image("economy_icon.png"), (25, 25)),
+            tooltip="navigate to this ship",
+            frame_color=self.frame_color,
+            moveable=False,
+            include_text=True, layer=self.layer,
+            onClick=lambda: global_params.app.economy_overview.set_visible())
+        self.widgets.append(self.economy_overview_icon)
+        self.max_width += self.icon_size + self.spacing
+
+
         # ship icon
         self.spacehunter_icon = ImageButton(win=self.win,
             x=self.get_screen_x(),

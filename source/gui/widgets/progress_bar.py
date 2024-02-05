@@ -55,6 +55,7 @@ class ProgressBar(WidgetBase):
         self.completedColour = kwargs.get('completedColour', (0, 200, 0))
         self.incompletedColour = kwargs.get('incompletedColour', (100, 100, 100))
         self.percent = self.progress()
+        self.ignore_progress = kwargs.get("ignore_progress", False)
         self.radius = self.screen_height / 2 if self.curved else 0
 
         self.h_align = kwargs.get("h_align", None)
@@ -87,7 +88,12 @@ class ProgressBar(WidgetBase):
 
     def draw(self):
         """ Display to surface """
-        self.percent = min(max(self.progress(), 0), 1)
+        if not self.ignore_progress:
+            self.percent = min(max(self.progress(), 0), 1)
+        # else:
+        #     if self.percent > 1.0:
+        #         self.percent = 1
+
         if self.gradient_color:
             self.completedColour = calculate_gradient_color((200, 0, 0), pygame.color.THECOLORS["darkgreen"], self.percent, ignore_colors=["b"])
 

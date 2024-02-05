@@ -11,14 +11,18 @@ class Asteroid(CelestialObject):
     def draw(self):
         self.move(self.direction)
         self.set_screen_position()
-        x, y = self.center
+
         if not inside_screen(self.center):
+            if self.gif_handler:
+                self.gif_handler._hidden = True
             return
+        else:
+            if self.gif_handler:
+                self.gif_handler._hidden = False
 
         if not self._hidden:
             if self.gif:
                 self.gif_handler.rect = self.rect
-                self.gif_handler.draw()
 
             rotated_image, new_rect = rot_center(self.image, self.rotation, self.screen_x, self.screen_y)
             self.image = rotated_image

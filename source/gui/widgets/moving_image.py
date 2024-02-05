@@ -8,7 +8,7 @@ from source.text.text_wrap import TextWrap
 from source.handlers.position_handler import get_distance
 
 # Initialize Pygame
-pygame.init()
+#pygame.init()
 
 # Define constants for the screen width and height
 SCREEN_WIDTH = 800

@@ -6,6 +6,7 @@ from source.handlers.color_handler import colors
 pygame.font.init()
 
 EVENT_TEXT_HEIGHT = 20
+EVENT_TEXT_FADE = False
 TEXT_DISPLAY_UPDATE = 15000
 TEXT_LINES = 4
 
@@ -113,7 +114,7 @@ class EventText(TextWrap):
         x = global_params.app.ui_helper.left + global_params.app.map_panel.world_width if global_params.app.map_panel.visible else global_params.app.ui_helper.left
         self.wrap_text(self.win, self.event_display_text, (x, self.new_bottom),
             (global_params.app.ui_helper.world_width, EVENT_TEXT_HEIGHT), self.event_text_font, colors.ui_dark,
-            fade_out=True, alpha=self.alpha)
+            fade_out=EVENT_TEXT_FADE, alpha=self.alpha)
 
 
 event_text = EventText(global_params.win)

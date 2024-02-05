@@ -133,7 +133,7 @@ class ToolTip(WidgetBase):
             return
         self.get_text()
         self.move(events)
-        self.draw()
+        #self.draw()
 
     def draw(self):
         if not self.active:

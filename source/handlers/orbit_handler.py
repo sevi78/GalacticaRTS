@@ -79,10 +79,10 @@ def orbit_around(orbit_object, orbit_center, **kwargs):
         orbit_speed = orbit_object.speed / int(global_params.fps)
     else:
         orbit_speed = orbit_object.orbit_speed / int(global_params.fps)
-    orbit_angle += orbit_speed * global_params.time_factor * (1 + zoom)
+    orbit_angle += orbit_speed * global_params.game_speed * (1 + zoom)
 
-    new_x = orbit_center.get_screen_x() + orbit_radius * math.cos(orbit_angle) + orbit_center.orbit_speed * global_params.time_factor
-    new_y = orbit_center.get_screen_y() + orbit_radius * math.sin(orbit_angle) + orbit_center.orbit_speed * global_params.time_factor
+    new_x = orbit_center.get_screen_x() + orbit_radius * math.cos(orbit_angle) + orbit_center.orbit_speed * global_params.game_speed
+    new_y = orbit_center.get_screen_y() + orbit_radius * math.sin(orbit_angle) + orbit_center.orbit_speed * global_params.game_speed
 
     return new_x, new_y
 
@@ -99,7 +99,7 @@ def orbit(obj, orbit_obj, orbit_speed, direction):# origin
     if not obj.orbit_angle:
         obj.orbit_angle = pos_diff.angle_to(pygame.math.Vector2(0, 1))
 
-    obj.orbit_angle += orbit_speed * global_params.time_factor
+    obj.orbit_angle += orbit_speed * global_params.game_speed
     pos = pygame.math.Vector2(obj.orbit_radius, 0).rotate(obj.orbit_angle * direction)  # Rotate by the negative angle
     obj.world_x, obj.world_y = (orbit_obj.world_x + pos.x, orbit_obj.world_y + pos.y)
 
@@ -118,7 +118,7 @@ def orbit(obj, orbit_obj, orbit_speed, direction):
     obj.orbit_radius = pos_diff.length()
     if not obj.orbit_angle:
         obj.orbit_angle = pos_diff.angle_to(pygame.math.Vector2(0, 1))
-    obj.orbit_angle += orbit_speed * global_params.time_factor
+    obj.orbit_angle += orbit_speed * global_params.game_speed
     pos = pygame.math.Vector2(obj.orbit_radius, 0).rotate(obj.orbit_angle * direction) # Rotate by the negative angle
 
     # fix orbit_obj's position if it is also orbiting

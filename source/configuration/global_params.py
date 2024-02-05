@@ -45,8 +45,8 @@ os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (0, -1080)
 win = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
 
 # Sounds
-global sounds
-sounds = Sounds()
+# global sounds
+# sounds = Sounds()
 
 # Game variables
 global moveable
@@ -55,8 +55,8 @@ moveable = settings["moveable"]  # True
 global app
 app = None
 
-global level
-level = 1
+# global level
+# level = 1
 
 global tooltip_text
 tooltip_text = ""
@@ -64,8 +64,6 @@ tooltip_text = ""
 global game_paused
 game_paused = False
 
-global time_factor
-time_factor = int(settings["time_factor"])  # 1
 
 global game_speed
 game_speed = int(settings["game_speed"])  # 10
@@ -82,23 +80,23 @@ scene_height = int(settings["scene_height"])  # 60
 global quadrant_amount
 quadrant_amount = 1
 
-global draw_background_image
-draw_background_image = settings["draw_background_image"]
+# global draw_background_image
+# draw_background_image = settings["draw_background_image"]
 
 global building_editor_draw
 building_editor_draw = False
 
 global enable_zoom
-enable_zoom = settings["enable_zoom"]  # False
+enable_zoom = True  # False
 
 global enable_pan
-enable_pan = settings["enable_pan"]
+enable_pan = True#settings["enable_pan"]
 
 global debug
 debug = settings["debug"]
 
 global enable_orbit
-enable_orbit = settings["enable_orbit"]
+enable_orbit = True#settings["enable_orbit"]
 
 global enable_game_events
 enable_game_events = settings["enable_game_events"]
@@ -143,4 +141,4 @@ global ui_panel_alpha
 ui_panel_alpha = settings["ui_panel_alpha"]  # 160
 
 global draw_universe
-draw_universe = settings["draw_universe"]
+draw_universe = True#settings["draw_universe"]

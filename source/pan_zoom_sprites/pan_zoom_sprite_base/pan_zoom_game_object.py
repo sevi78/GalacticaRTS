@@ -139,7 +139,7 @@ class PanZoomGameObject(PanZoomSprite):
             print (f"move_towards_target error! (direction.normalize()):{e}")
 
         # Calculate the displacement vector for each time step
-        displacement = direction * self.speed * global_params.time_factor
+        displacement = direction * self.speed * global_params.game_speed
 
         # Calculate the number of time steps needed to reach the target position
         time_steps = int(distance / self.speed) / self.get_zoom()

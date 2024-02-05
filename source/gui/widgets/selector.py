@@ -131,5 +131,5 @@ class Selector(WidgetBase):
         """
         if not self._hidden or self._disabled:
             self.draw_texts()
-            for i in self.buttons:
-                i.draw()
+            # for i in self.buttons:
+            #     i.draw()

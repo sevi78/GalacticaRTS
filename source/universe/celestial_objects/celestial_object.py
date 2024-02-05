@@ -31,7 +31,8 @@ class CelestialObject(WidgetBase):
         self.world_x = x
         self.world_y = y
         self.world_width = width
-        self.height = height
+        self.world_height = height
+        self.display_border = max(self.world_width, self.world_height)
         self.image = kwargs.get("image", None)
         self.image_raw = self.image
         self.rect = None
@@ -72,11 +73,11 @@ class CelestialObject(WidgetBase):
 
     def move(self, direction):
         if direction:
-            self.world_x += direction[0] * global_params.time_factor
-            self.world_y += direction[1] * global_params.time_factor
+            self.world_x += direction[0] * global_params.game_speed
+            self.world_y += direction[1] * global_params.game_speed
         else:
-            self.world_x -= self.speed * global_params.time_factor
-            self.world_y += self.speed * global_params.time_factor / 2
+            self.world_x -= self.speed * global_params.game_speed
+            self.world_y += self.speed * global_params.game_speed / 2
 
         if self.world_x > global_params.app.level_handler.data["globals"]["width"] * global_params.quadrant_amount:
             self.world_x = 0
@@ -90,11 +91,11 @@ class CelestialObject(WidgetBase):
 
     def draw(self):
         self.set_screen_position()
-        x, y = self.center
-
-        if not inside_screen(self.center):
+        # x, y = self.center
+        #
+        if not inside_screen(self.center, border=0):
             return
-
+        #
         if not self._hidden:
             if self.image:
                 nsx, nsy = (self.size_x * self.get_zoom(), self.size_y * self.get_zoom())

@@ -494,7 +494,8 @@ class LevelHandler:
                 ships[key]["world_y"]), global_params.app, ships[key]["weapons"], data=ships[key])
 
         # create universe
-        self.create_universe()
+        if global_params.draw_universe:
+            self.create_universe()
 
         # setup game_event_handler
         self.app.game_event_handler.level = global_params.app.level_handler.data.get("globals").get("level")

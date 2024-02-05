@@ -149,8 +149,8 @@ class ButtonArray(WidgetBase):
             for circle in circles:
                 pygame.draw.circle(self.win, self.colour, circle, self.borderRadius)
 
-            for button in self.buttons:
-                button.draw()
+            # for button in self.buttons:
+            #     button.draw()
 
     def getButtons(self):
         return self.buttons

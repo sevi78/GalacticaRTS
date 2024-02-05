@@ -133,7 +133,7 @@ class BuildingFactory(BuildingFactoryJsonDictReader):
     def __init__(self):
         BuildingFactoryJsonDictReader.__init__(self)
 
-    def build(self, building, reciever, **kwargs):  # new version based on buildings.json
+    def build(self, building, receiver, **kwargs):  # new version based on buildings.json
         """
         this builds the buildings on the planet: first check for prices ect, then build a building_widget
         that overgives the values to the planet if ready
@@ -148,11 +148,11 @@ class BuildingFactory(BuildingFactoryJsonDictReader):
             prices = self.get_prices_from_buildings_json(building)
 
         # only build if selected planet is set
-        if not reciever: return
+        if not receiver: return
 
         # check for minimum population
         build_population_minimum = self.get_build_population_minimum_from_buildings_json(building)
-        if build_population_minimum > reciever.population:
+        if build_population_minimum > receiver.population:
             event_text.text = "you must reach a population of minimum " + str(build_population_minimum) + " people to build a " + building + "!"
 
             sounds.play_sound("bleep", channel=7)
@@ -160,17 +160,17 @@ class BuildingFactory(BuildingFactoryJsonDictReader):
 
         # build building widget, first pay the bill
         # pay the bill
-        if reciever.building_cue >= reciever.building_slot_amount:
-            event_text.text = "you have reached the maximum(" + str(reciever.building_slot_amount) + ") of buildings that can be build at the same time on " + reciever.name + "!"
+        if receiver.building_cue >= receiver.building_slot_amount:
+            event_text.text = "you have reached the maximum(" + str(receiver.building_slot_amount) + ") of buildings that can be build at the same time on " + receiver.name + "!"
             sounds.play_sound("bleep", channel=7)
             return
 
         defence_units = self.get_defence_unit_names()
-        civil_buildings = [i for i in reciever.buildings if not i in defence_units]
+        civil_buildings = [i for i in receiver.buildings if not i in defence_units]
 
-        if len(civil_buildings) + reciever.building_cue >= reciever.buildings_max:
+        if len(civil_buildings) + receiver.building_cue >= receiver.buildings_max:
             if not building in defence_units:
-                event_text.text = "you have reached the maximum(" + str(reciever.buildings_max) + ") of buildings that can be build on " + reciever.name + "!"
+                event_text.text = "you have reached the maximum(" + str(receiver.buildings_max) + ") of buildings that can be build on " + receiver.name + "!"
                 sounds.play_sound("bleep", channel=7)
                 return
 
@@ -192,9 +192,9 @@ class BuildingFactory(BuildingFactoryJsonDictReader):
 
         # create building_widget ( progressbar)
         if widget_key:
-            self.create_building_widget(reciever, widget_key, widget_name, widget_value)
+            self.create_building_widget(receiver, widget_key, widget_name, widget_value)
 
-    def create_building_widget(self, reciever, widget_key, widget_name, widget_value):
+    def create_building_widget(self, receiver, widget_key, widget_name, widget_value):
         widget_width = global_params.app.building_panel.get_screen_width()
         widget_height = 35
         spacing = 5
@@ -219,13 +219,13 @@ class BuildingFactory(BuildingFactoryJsonDictReader):
             progress_time=5,
             key=widget_key,
             value=widget_value,
-            reciever=reciever,
+            receiver=receiver,
             tooltip="building widget", layer=4, building_production_time=self.get_progress_time_from_buildings_json(widget_name),
             is_building= is_building
             )
 
         # add building widget to building cue to make shure it can be build only if building_cue is < building_slots_amount
-        reciever.building_cue += 1
+        receiver.building_cue += 1
 
     def check_if_enough_resources_to_build(self, building: str, prices) -> bool:
         check = True

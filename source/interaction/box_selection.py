@@ -157,7 +157,8 @@ class BoxSelection:
         """
 
         if global_params.hover_object:
-            return
+            if not hasattr(global_params.hover_object, "property"):
+                return
 
         self.draw()
         #event_text.text = f"global_params.hover_object: {global_params.hover_object}"

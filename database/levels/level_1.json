@@ -220,7 +220,7 @@
             "energy": 7315,
             "energy_max": 10000,
             "energy_reload_rate": 0.1,
-            "energy_use": 0.001,
+            "energy_use": 1.0,
             "fog_of_war_radius": 100,
             "fog_of_war_radius_max": 300,
             "food": 0,

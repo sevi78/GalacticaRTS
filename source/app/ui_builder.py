@@ -3,6 +3,7 @@ import pygame
 from source.app.scene_builder import SceneBuilder
 from source.editors.building_edit import BuildingEdit
 from source.editors.debug_edit import DebugEdit
+from source.editors.economy_overview import EconomyOverview
 from source.editors.font_edit import FontEdit
 from source.editors.enemy_handler_edit import EnemyHandlerEdit
 from source.editors.planet_edit import PlanetEdit
@@ -58,7 +59,7 @@ class UIBuilder(SceneBuilder):
         self.planet_edit = None
         self.create_editors()
 
-        self.clock = pygame.time.Clock()
+
 
         self.box_selection = None
 
@@ -152,6 +153,11 @@ class UIBuilder(SceneBuilder):
             pygame.display.get_surface().get_rect().centerx - width / 2,
             pygame.display.get_surface().get_rect().y,
             width, height, parent=self, obj=None, layer=9)#, game_paused=True)
+
+        self.economy_overview = EconomyOverview(pygame.display.get_surface(),
+            pygame.display.get_surface().get_rect().centerx - width / 2,
+            pygame.display.get_surface().get_rect().y,
+            width, height, parent=self, obj=None, layer=9)  # , game_paused=True)
 
     def create_player(self):
         self.player = Player(name="zork",

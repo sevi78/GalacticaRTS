@@ -5,6 +5,11 @@ from pygame.event import Event
 from pygame_widgets import Mouse
 
 from source.configuration import global_params
+from source.gui.event_text import event_text
+
+DEFAULT_LAYER = 9
+
+
 
 
 class WidgetHandler:
@@ -28,12 +33,12 @@ class WidgetHandler:
     print("WidgetHandler: init")
     layers = {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: [], 7: [], 8: [], 9: [], 10: [], 11: [], 12: [], 13: [], 14: []}
     layer_switch = {"0": 0, "1": 0, "2": 0, "3": 0, "4": 0, "5": 0, "6": 0, "7": 0, "8": 0, "9": 0, "10": 0, "11": 0, "12": 0, "13": 0, "14": 0}
-
+    draw_layers = True
     for key, value in layer_switch.items():
         layer_switch[key] = 1
 
-    layer_switch["2"] = 0
-    layer_switch["10"] = 0
+    # layer_switch["2"] = 0
+    # layer_switch["10"] = 0
 
     """
     layers: 
@@ -54,9 +59,11 @@ class WidgetHandler:
     def main(events: [Event]) -> None:
         # WidgetHandler.set_visible(events)
         # 0:[...]
-        #pprint (WidgetHandler.layers.items())
+        # pprint (WidgetHandler.layers.items())
         for key, widgetlist in WidgetHandler.layers.items():
-            #print (f"layer: {key}\n widgetlist: {[_.name for _ in widgetlist]}")
+            # print (f"layer: {key}\n widgetlist: {[_.name for _ in widgetlist]}")
+            if not WidgetHandler.layer_switch[str(key)]:
+                return
             # get widget
             for widget in widgetlist:
                 widget.draw()
@@ -64,6 +71,22 @@ class WidgetHandler:
                 if widget.isSubWidget:
                     if hasattr(widget, "listen"):
                         widget.listen(events)
+
+    def draw_layer(events, layer: int) -> None:
+        #Mouse.updateMouseState()
+        if not WidgetHandler.draw_layers:
+            return
+
+        for key, widgetlist in WidgetHandler.layers.items():
+            if not WidgetHandler.layer_switch[str(layer)]:
+                return
+            if key == layer:
+                for widget in widgetlist:
+                    widget.draw()
+
+                    if widget.isSubWidget:
+                        if hasattr(widget, "listen"):
+                            widget.listen(events)
 
     @staticmethod
     def get_all_widgets():
@@ -104,15 +127,15 @@ class WidgetHandler:
                     # set value
                     if WidgetHandler.layer_switch[key] == 0:
                         WidgetHandler.layer_switch[key] = 1
+                        event_text.text = f"changing visibility of WidgetHandler.layer {key}: {WidgetHandler.layer_switch[key]}"
                         return
                     if WidgetHandler.layer_switch[key] == 1:
                         WidgetHandler.layer_switch[key] = 0
+                        event_text.text = f"changing visibility of WidgetHandler.layer {key}: {WidgetHandler.layer_switch[key]}"
                         return
                 if event.key == pygame.K_z:
-                    if WidgetHandler.layer_switch[str(9)] == 1:
-                        WidgetHandler.layer_switch[str(9)] = 0
-                    else:
-                        WidgetHandler.layer_switch[str(9)] = 1
+                    WidgetHandler.draw_layers = not WidgetHandler.draw_layers
+
                 # next
 
                 # elif event.key in others:
@@ -149,4 +172,5 @@ def update(events: [Event]):
     - The 'update' function is typically called once per game loop iteration to update the GUI elements of the game or
       application."""
     Mouse.updateMouseState()
-    WidgetHandler.main(events)
+    #WidgetHandler.main(events)
+    WidgetHandler.set_visible(events)

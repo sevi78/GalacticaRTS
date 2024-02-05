@@ -91,14 +91,7 @@ class AppHelper:
         self.production_minerals = self.production["minerals"]
         self.production_technology = self.production["technology"]
 
-    def draw_fog_of_war(self, obj, **kwargs):
-        """
-        draws the fog of war circle based on the fog of war radius of the obj
-        :param obj:
-        :param kwargs:
-        :return:
-        """
-        self.fog_of_war.draw_fog_of_war(obj)
+
 
 def select_next_item_in_list(my_list: list, current_item: any, value: int):
     """Selects the next item in a list based on the current item and a value.

@@ -129,9 +129,9 @@ class Player:
         if global_params.game_speed == 0:
             return
 
-        self.clock_ += 0.01 * global_params.time_factor * global_params.game_speed
+        self.clock_ += 0.01 * global_params.game_speed
         self.clock = "Year: " + str(int(self.clock_))
-        self.wait = self.start_wait / global_params.time_factor / global_params.game_speed
+        self.wait = self.start_wait / global_params.game_speed
         self.produce()
         # set global population
 

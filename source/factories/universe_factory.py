@@ -234,19 +234,6 @@ class UniverseFactory:  # original for WidgedBase Widgets
 
             comet = Comet(self.win, x, y, w, h, image=image, layer=self.layer, parent=self, type="comet")
 
-    def create_quadrant(self):
-        scene_width, scene_height = global_params.scene_width, global_params.scene_height
-
-        quadrant_amount = 10
-        quadrant_size_x = int(scene_width / quadrant_amount)
-        quadrant_size_y = int(scene_height / quadrant_amount)
-
-        for x in range(quadrant_amount):
-            for y in range(quadrant_amount):
-                w, h = quadrant_size_x, quadrant_size_y
-                quadrant = CelestialObject(
-                    self.win, quadrant_size_x * x, quadrant_size_y * y, w, h,
-                    image=None, layer=0, parent=self, type="quadrant")
 
     def create_universe(self, x, y, width, height):
         self.left_end = x
@@ -285,6 +272,7 @@ class UniverseFactory:  # original for WidgedBase Widgets
 
 
 universe_factory = UniverseFactory(global_params.win, 0, 0, global_params.scene_width, global_params.scene_height, layer=0)
+#universe_factory = UniverseFactory(global_params.win, 0, 0, global_params.app.level_handler.data["globals"]["width"], global_params.app.level_handler.data["globals"]["height"], layer=0)
 
 
 class Universe:

@@ -137,7 +137,7 @@ class PanZoomPlanetEconomy(Rank):#, SpecialHandler):
         """ calculates population"""
         if self.production["food"] > 0:
             self.population_grow = self.population_grow_factor * self.production[
-                "food"] * global_params.time_factor
+                "food"] * global_params.game_speed
         if self.population < 0:
             self.population = 0
 

@@ -13,9 +13,10 @@ from source.multimedia_library.images import get_image
 PLANET_IMAGE_SIZE = 125
 MIN_OBJECT_SIZE = 2
 MIN_MAP_SIZE = 240
+MAX_MAP_SIZE = 1048
 BUTTON_SIZE = 25
 WARNING_ICON_SIZE = 32
-SCALE_FACTOR = 20
+SCALE_FACTOR = 100
 
 
 class MapPanel:
@@ -354,6 +355,11 @@ class MapPanel:
         if self.world_height < MIN_MAP_SIZE:
             self.world_height = MIN_MAP_SIZE
 
+        if self.world_width > MAX_MAP_SIZE:
+            self.world_width = MAX_MAP_SIZE
+        if self.world_height > MAX_MAP_SIZE:
+            self.world_height = MAX_MAP_SIZE
+
     def update_camera_position(self) -> None:
         # get the mouse position
         mx, my = pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1]
@@ -526,14 +532,14 @@ class MapPanel:
         # generate rect
         self.frame_rect = pygame.Rect(self.world_x, self.world_y, self.world_width, self.world_height)
 
-        # draw the panel
-        self.background_surface = pygame.Surface((self.world_width, self.world_height))
-        self.background_surface.fill((0, 0, 0))
-
+        # draw the panel, dont set aplha to 255 !!! inperformant, replace it is much better !!!
         if self.show_alpha:
+            self.background_surface = pygame.Surface((self.world_width, self.world_height))
+            self.background_surface.fill((0, 0, 0))
             self.background_surface.set_alpha(global_params.ui_panel_alpha)
         else:
-            self.background_surface.set_alpha(255)
+            self.background_surface = pygame.Surface((self.world_width, self.world_height))
+            self.background_surface.fill((0, 0, 0))
 
         # draw the objects
         self.draw_objects(sprite_groups.planets.sprites(), self.background_surface)

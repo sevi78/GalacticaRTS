@@ -12,10 +12,6 @@ STATE_IMAGE_SIZE = 27
 
 
 class PanZoomShipDraw:
-    """
-
-    """
-
     def __init__(self, kwargs):
         self.frame_color = colors.frame_color
 
@@ -92,7 +88,7 @@ class PanZoomShipDraw:
 
         self.win.blit(image, self.rank_image_pos)
 
-    def draw_image(self):
+    def draw_image__(self):
         if inside_screen(self.get_screen_position()):
             self.win.blit(self.image, self.rect)
 
@@ -137,10 +133,7 @@ class PanZoomShipDraw:
         else:
             self.draw_sleep_image()
 
-
-
-        #self.draw_autopilot_image()
-
+        # self.draw_autopilot_image()
 
     def draw_noenergy_image(self):
         if not self._disabled:
@@ -149,7 +142,3 @@ class PanZoomShipDraw:
 
     def draw_autopilot_image(self):
         self.win.blit(self.autopilot_image, self.get_state_image_position())
-
-
-
-

@@ -132,7 +132,6 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
         self.children = None
         self.gif_handler = None
 
-
         if self in global_params.app.explored_planets:
             global_params.app.explored_planets.remove(self)
         self.kill()
@@ -273,7 +272,7 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
         self.draw()
 
     def draw(self):
-        self.draw_image()
+        # self.draw_image()
 
         if self.gif_handler:
             self.gif_handler.draw()

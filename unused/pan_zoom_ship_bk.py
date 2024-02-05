@@ -8,9 +8,8 @@ from source.gui.event_text import event_text
 from source.gui.lod import inside_screen
 from source.gui.widgets.moving_image import MovingImage, SPECIAL_TEXT_COLOR
 from source.handlers.autopilot_handler import AutopilotHandler
-
+from source.handlers.time_handler import time_handler
 from source.handlers.weapon_handler import WeaponHandler
-
 from source.interfaces.interface import InterfaceData
 from source.multimedia_library.images import get_image
 from source.multimedia_library.sounds import sounds
@@ -29,7 +28,7 @@ from source.pan_zoom_sprites.pan_zoom_target_object import PanZoomTargetObject
 from source.handlers.orbit_handler import orbit
 from source.configuration import global_params
 from source.interaction.mouse import Mouse, MouseState
-from source.handlers.position_handler import prevent_object_overlap
+from source.handlers.position_handler import prevent_object_overlap, get_distance
 from source.handlers.file_handler import load_file
 
 
@@ -188,7 +187,7 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         self.orbit_radius = 100 + self.id * 30
 
     def set_target(self):
-        target = Mouse.get_hit_object()
+        target = self.get_hit_object()
         if target == self:
             return
 
@@ -435,8 +434,8 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
                     if self.selected:
                         self.set_target()
                         self.orbit_object = None
-                        if Mouse.get_hit_object():
-                            self.set_energy_reloader(Mouse.get_hit_object())
+                        if self.get_hit_object():
+                            self.set_energy_reloader(self.get_hit_object())
 
     def open_weapon_select(self):
         self.set_info_text()
@@ -531,6 +530,3 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         # set previous position, used for energy consumation calculation
         # make shure this is the last task, otherwise it would work(propbably)
         self.previous_position = (self.world_x, self.world_y)
-
-    def draw(self):
-        print ("drawing(")

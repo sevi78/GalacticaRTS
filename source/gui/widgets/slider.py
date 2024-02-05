@@ -3,7 +3,7 @@ from pygame import gfxdraw
 from pygame_widgets.mouse import Mouse, MouseState
 
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
-from source.handlers.widget_handler import update
+#from source.handlers.widget_handler import update
 from source.configuration import global_params
 
 
@@ -135,8 +135,9 @@ class Slider(WidgetBase):
                 circle = (int(self.screen_x + (self.value - self.min) / (self.max - self.min) * self.screen_width),
                           int(self.screen_y + self.screen_height // 2))
 
-            gfxdraw.filled_circle(self.win, *circle, int(self.handleRadius), self.handleColour)
-            gfxdraw.aacircle(self.win, *circle, int(self.handleRadius), self.handleColour)
+                gfxdraw.filled_circle(self.win, *circle, int(self.handleRadius), self.handleColour)
+                gfxdraw.aacircle(self.win, *circle, int(self.handleRadius), self.handleColour)
+
 
 
 if __name__ == '__main__':

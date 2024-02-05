@@ -49,6 +49,7 @@ class GifHandler(pygame.sprite.Sprite):
         # register
         if self.group:
             getattr(sprite_groups, self.group).add(self)
+            #sprite_groups.updates[self.group].add(self)
 
     def end_object(self):
         # self.parent = None
@@ -154,7 +155,6 @@ class GifHandler(pygame.sprite.Sprite):
         try:
             self.update()
 
-            # only because frame 0 doesn't alpha properly, we set get index 1
             if not self.loop:
                 if self.index > 0:
                     self.parent.win.blit(self.image, self.rect)

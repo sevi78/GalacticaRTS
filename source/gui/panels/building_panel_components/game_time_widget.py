@@ -11,23 +11,24 @@ from source.gui.widgets.slider import Slider
 from source.configuration import global_params
 from source.handlers.color_handler import colors
 from source.configuration.global_params import ui_rounded_corner_small_thickness
+from source.handlers.time_handler import time_handler
 from source.multimedia_library.images import get_image
 
-
+FONT_SIZE = 18
 class GameTime(WidgetBase):
     def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
         super().__init__(win, x, y, width, height, isSubWidget, **kwargs)
+        self.time_warp_text = None
         self.clockslider_height = 7
-        self.time_factor = 1
+        self.game_speed = 1
         self.world_year = int(datetime.timestamp(datetime.now()))
-
         self.bg_color = pygame.colordict.THECOLORS["black"]
         self.frame_color = colors.frame_color
 
         # construct surface
         self.surface = pygame.surface.Surface((width, height))
         self.surface.fill(self.bg_color)
-        self.surface.set_alpha(19)
+        self.surface.set_alpha(global_params.ui_panel_alpha)
         self.surface_rect = self.surface.get_rect()
         self.surface_rect.x = x
         self.surface_rect.y = y
@@ -36,7 +37,7 @@ class GameTime(WidgetBase):
         self.spacing = kwargs.get("spacing")
         self.surface_frame = pygame.draw.rect(self.win, self.frame_color, self.surface_rect, int(ui_rounded_corner_small_thickness), int(global_params.ui_rounded_corner_radius_small))
 
-        self.font_size = 18
+        self.font_size = FONT_SIZE
         self.font = pygame.font.SysFont(global_params.font_name, self.font_size)
         self.create_slider()
         self.create_icons()
@@ -115,8 +116,9 @@ class GameTime(WidgetBase):
                 self.clock_slider.setValue(self.clock_slider.getValue() + value)
 
     def update_time(self):
-        self.world_year += 0.01 * self.time_factor * global_params.game_speed * 10000
-        global_params.time_factor = self.time_factor
+        self.world_year += 0.01 * self.game_speed * 10000
+        global_params.game_speed = self.game_speed
+        time_handler.game_speed = self.game_speed
 
     def reposition(self):
         win = pygame.display.get_surface()
@@ -141,25 +143,23 @@ class GameTime(WidgetBase):
 
         now = datetime.fromtimestamp(self.world_year)
         new_datetime = f"{now.year + 70000}-{now.strftime(str(now.month))}-{now.strftime(str(now.day))}-{now.hour}"
-        #new_datetime = new_datetime_.strftime('%Y, %B %d, %A %H')
+        # new_datetime = new_datetime_.strftime('%Y, %B %d, %A %H')
 
+        # original_datetime = datetime.fromtimestamp(self.world_year)
 
+        # original_year = int(str(datetime.fromtimestamp(self.world_year)).split("-")[0])
+        # faked_year = original_year + 70000
+        # new_datetime = f"{faked_year}-{original_datetime.split('-')[1:]}"
 
-        #original_datetime = datetime.fromtimestamp(self.world_year)
-
-        #original_year = int(str(datetime.fromtimestamp(self.world_year)).split("-")[0])
-        #faked_year = original_year + 70000
-        #new_datetime = f"{faked_year}-{original_datetime.split('-')[1:]}"
-
-        #new_datetime = original_datetime.replace(year=original_datetime.year + 5000)
-        #year_text = new_datetime
-        #year_text = str(round(self.world_year, 2))
-        #year_text = datetime.now()# get_day_month_year_string(offset=0, year= 2000)
+        # new_datetime = original_datetime.replace(year=original_datetime.year + 5000)
+        # year_text = new_datetime
+        # year_text = str(round(self.world_year, 2))
+        # year_text = datetime.now()# get_day_month_year_string(offset=0, year= 2000)
         # print (get_day_month_year_string(offset=0))
         self.year_text = self.font.render(f"year:{new_datetime}", True, self.frame_color)
         self.win.blit(self.year_text, (self.surface_rect.x + self.spacing_x + self.spacing_x, self.clock_icon.screen_y +
                                        self.clock_icon.get_screen_height() - self.year_text.get_height() + 6))
-        self.time_factor = self.clock_slider.getValue()
+        self.game_speed = self.clock_slider.getValue()
 
     def draw_frame(self):
         # frame
@@ -182,6 +182,3 @@ class GameTime(WidgetBase):
 
         # clock
         self.draw_clock()
-
-        if self._hidden:
-            return

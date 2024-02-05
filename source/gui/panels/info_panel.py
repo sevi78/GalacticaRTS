@@ -108,7 +108,8 @@ class InfoPanel(WidgetBase, TextWrap):
         self.bg_color = bg_color
 
     def set_planet_image(self, planet_image, **kwargs):
-
+        if self.planet_image == planet_image:
+            return
         # self.set_size_from_text()
         size = kwargs.get("size", None)
         align = kwargs.get("align", "topright")

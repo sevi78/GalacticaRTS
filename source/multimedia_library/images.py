@@ -4,7 +4,7 @@ from pprint import pprint
 
 import pygame
 
-from source.configuration import global_params
+#from source.configuration import global_params
 
 # remove this if not used elsewhere, only needed to test the scripts that load images or gifs
 # pygame.init()
@@ -22,7 +22,49 @@ gif_frames = {}
 gif_fps = {}
 gif_durations = {}
 MAX_GIF_SIZE = 150
+LOAD_AT_GAME_START = True
 
+
+# @lru_cache(maxsize=None)
+# def load_image(folder, image, sub):
+#     img = pygame.image.load(os.path.join(folder, sub, image))
+#     return img
+#
+# def get_image(image_name):
+#     try:
+#         # Attempt to retrieve the image from the loaded images dictionary
+#         for category, sub_dict in images.items():
+#             for sub_category, items in sub_dict.items():
+#                 if image_name in items:
+#                     return items[image_name]
+#         # If the image is not found, manually load it based on its file extension
+#         file_path = os.path.join(pictures_path, image_name)
+#         if not os.path.exists(file_path):
+#             raise FileNotFoundError(f"No such file: {file_path}")
+#         _, file_extension = os.path.splitext(image_name)
+#         if file_extension.lower() == ".png":
+#             return load_image(os.path.dirname(file_path), os.path.basename(file_path), os.path.basename(os.path.dirname(file_path)))
+#         elif file_extension.lower() == ".gif":
+#             return load_gif(os.path.basename(file_path))
+#         else:
+#             raise ValueError(f"Unsupported file type: {file_extension}")
+#     except KeyError:
+#         # Return a default 'no_icon' image if the specific image is not found
+#         return images[pictures_path]["icons"]["no_icon.png"]
+#     except FileNotFoundError as e:
+#         print(e)
+#         return None
+#
+# @lru_cache(maxsize=None)
+# def load_gif(gif_name):
+#     path = os.path.join(pictures_path + "gifs", gif_name)
+#     gif = Image.open(path)
+#     gifs[gif_name] = gif
+#     gif_frames[gif_name] = get_gif_frames(gif_name)
+#     gif_fps[gif_name] = load_gif_fps(gif)
+#     gif_durations[gif_name] = load_gif_durations(gif)
+#     return gif
+########################################
 
 def load_folders(folder):
     """Objective:
@@ -68,6 +110,7 @@ def load_folders(folder):
 
     return dict_
 
+
 @lru_cache(maxsize=None)
 def load_image(folder, image, sub):
     img = pygame.image.load(os.path.join(folder, sub, image))
@@ -75,14 +118,15 @@ def load_image(folder, image, sub):
 
 
 
-
-def get_image(image_name):
-    no_icon = images[pictures_path]["icons"]["no_icon.png"]
-    for category, sub_dict in images.items():
-        for sub_category, items in sub_dict.items():
-            if image_name in items:
-                return items[image_name]
-    return no_icon
+def load_gif(gif_name):
+    path = os.path.join(pictures_path + "gifs", gif_name)
+    gif = Image.open(path)
+    gifs[gif_name] = gif
+    gif_frames[gif_name] = get_gif_frames(gif_name)
+    gif_fps[gif_name] = load_gif_fps(gif)
+    gif_durations[gif_name] = load_gif_durations(gif)
+    return gif
+    # print(f"gif: {gif_name},frames: {len(gif_frames[gif_name])}, fps: {gif_fps[gif_name]}, duration: {gif_durations[gif_name]}")
 
 
 def load_gif_durations(gif):
@@ -98,20 +142,9 @@ def load_gif_durations(gif):
 
     return avg_duration
 
-
+@lru_cache(maxsize=None)
 def get_gif_duration(gif_name):
     return gif_durations[gif_name]
-
-
-def load_gif(gif_name):
-    path = os.path.join(pictures_path + "gifs", gif_name)
-    gif = Image.open(path)
-    gifs[gif_name] = gif
-    gif_frames[gif_name] = get_gif_frames(gif_name)
-    gif_fps[gif_name] = load_gif_fps(gif)
-    gif_durations[gif_name] = load_gif_durations(gif)
-
-    #print(f"gif: {gif_name},frames: {len(gif_frames[gif_name])}, fps: {gif_fps[gif_name]}, duration: {gif_durations[gif_name]}")
 
 
 def load_gif_fps(gif_file):
@@ -130,15 +163,30 @@ def load_gif_fps(gif_file):
         fps = 20
     return fps
 
+@lru_cache(maxsize=None)
+def get_image(image_name):
+    try:
+        no_icon = images[pictures_path]["icons"]["no_icon.png"]
+    except KeyError:
+        no_icon = pygame.image.load(os.path.join(pictures_path, "icons", "no_icon.png"))
+    for category, sub_dict in images.items():
+        for sub_category, items in sub_dict.items():
+            if image_name in items:
+                return items[image_name]
+    return no_icon
 
+@lru_cache(maxsize=None)
 def get_gif(gif_name):
-    return gifs[gif_name]
+    try:
+        return gifs[gif_name]
+    except KeyError:
+        return load_gif(gif_name)
 
-
+@lru_cache(maxsize=None)
 def get_gif_fps(gif_name):
     return gif_fps[gif_name]
 
-
+@lru_cache(maxsize=None)
 def get_gif_frames(gif_name):
     """ Load explosion GIF and extract frames"""
     frames = []
@@ -170,7 +218,7 @@ def get_gif_frames(gif_name):
         # frames.pop(0)
     return frames
 
-
+@lru_cache(maxsize=None)
 def get_image_names_from_folder(folder, **kwargs):
     startswith_string = kwargs.get("startswith_string", "")
     image_names = os.listdir(pictures_path + folder)
@@ -195,7 +243,6 @@ def resize_image(image, new_size):
 
     return new_image
 
-import os
 
 def find_unused_images_gifs(image_dir, gif_dir, images_dict, gifs_dict):
     unused_files = []
@@ -216,7 +263,7 @@ def find_unused_images_gifs(image_dir, gif_dir, images_dict, gifs_dict):
 
     return unused_files
 
-images = load_folders(os.path.join(pictures_path))
 
-
-
+if LOAD_AT_GAME_START:
+    images = load_folders(os.path.join(pictures_path))
+    pprint (find_unused_images_gifs(pictures_path,os.path.join(pictures_path, "gifs"), images, gifs))

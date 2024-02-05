@@ -15,7 +15,8 @@ SHIP_ROTATE_CORRECTION_ANGLE = 90
 SHIP_TARGET_OBJECT_RESET_DISTANCE = 15
 SHIP_RELOAD_MAX_DISTANCE = 300
 SHIP_RELOAD_MAX_DISTANCE_MAX = 600
-SHIP_ENERGY_USE = 0.001
+SHIP_ENERGY_USE = 1
+SHIP_ENERGY_USE_MAX = 10
 SHIP_ENERGY = 10000
 SHIP_ENERGY_MAX = 10000
 SHIP_ENERGY_RELOAD_RATE = 0.1
@@ -23,7 +24,7 @@ SHIP_ORBIT_SPEED = 0.5
 SHIP_ORBIT_SPEED_MAX = 0.6
 
 
-class PanZoomShipParams():
+class PanZoomShipParams:
     """
 
     """
@@ -40,6 +41,7 @@ class PanZoomShipParams():
         self.hum = sounds.hum1
         self.sound_channel = 1
         self.energy_use = SHIP_ENERGY_USE
+        self.energy_use_max = SHIP_ENERGY_USE_MAX
         self.info_panel_alpha = kwargs.get("info_panel_alpha", 255)
 
         # load_from_db Game variables
@@ -58,7 +60,7 @@ class PanZoomShipParams():
 
         self.resources = {"minerals": self.minerals,
                           "food": self.food,
-                          "energy":self.energy,
+                          "energy": self.energy,
                           "water": self.water,
                           "technology": self.technology
                           }
@@ -75,7 +77,6 @@ class PanZoomShipParams():
         # fog of war
         self.fog_of_war_radius = 100
         self.fog_of_war_radius_max = 300
-        # self.parent.fog_of_war.draw_fog_of_war(self)
 
         # upgrade
         self.upgrade_factor = 1.5
@@ -89,8 +90,6 @@ class PanZoomShipParams():
         self.building_cue = 0
         self.buildings_max = 10
         self.buildings = []
-
-
 
     def __delete__(self, instance):
         # remove all references
@@ -131,8 +130,7 @@ class PanZoomShipParams():
         self.parent.info_panel.set_planet_image(self.image_raw, alpha=self.info_panel_alpha)
 
     def set_tooltip(self):
-        text = "selected: " + str(self.selected)
-        self.tooltip = self.name + ": " + " speed: " + str(self.speed) + "e, scanner range: " + str(self.fog_of_war_radius) + text
+        self.tooltip = f"{self.name}:  speed: {self.speed}"
 
     def submit_tooltip(self):
         if self.tooltip:
@@ -142,7 +140,6 @@ class PanZoomShipParams():
     def reload_ship(self):
         if self.energy_reloader:
             dist = get_distance(self.rect.center, self.energy_reloader.rect.center)
-
             if dist > self.reload_max_distance:
                 return
 
@@ -158,7 +155,7 @@ class PanZoomShipParams():
                                 "energy"] * global_params.game_speed
                             self.flickering()
                         else:
-                            event_text.text = "PanZoomShip reloaded sucessfully!!!"
+                            event_text.text = "PanZoomShip reloaded successfully!!!"
                             sounds.stop_sound(self.sound_channel)
 
                 if self.energy_reloader.type == "sun":
@@ -179,5 +176,3 @@ class PanZoomShipParams():
                             sounds.stop_sound(self.sound_channel)
         else:
             sounds.stop_sound(self.sound_channel)
-
-

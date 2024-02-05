@@ -1,6 +1,7 @@
 from pygame.sprite import LayeredUpdates
 from source.gui.lod import inside_screen
 from source.handlers import widget_handler
+from source.handlers.widget_handler import WidgetHandler
 
 
 class PanZoomLayeredUpdates(LayeredUpdates):
@@ -45,50 +46,64 @@ class PanZoomLayeredUpdates(LayeredUpdates):
 
 class SpriteGroups:
     def __init__(self):
-        self.ufos = PanZoomLayeredUpdates()
-        self.planets = PanZoomLayeredUpdates()
-        self.missiles = PanZoomLayeredUpdates()
-        self.ships = PanZoomLayeredUpdates()
-        self.collectable_items = PanZoomLayeredUpdates()
-        self.explosions = PanZoomLayeredUpdates()
-        self.target_objects = PanZoomLayeredUpdates()
-        self.quadrants = PanZoomLayeredUpdates()
-        self.grids = PanZoomLayeredUpdates()
-        self.celestial_objects = PanZoomLayeredUpdates()
-        self.moving_images = PanZoomLayeredUpdates()
-        self.gif_handlers = PanZoomLayeredUpdates()
-
-    def __str__(self):
-        return (f"ufos: {len(self.ufos)}, missiles: {len(self.missiles)} ships:"
-                f" {len(self.ships)} planets: {len(self.planets)} collectable_items:{len(self.collectable_items)} "
-                f"explosions: {len(self.explosions)} target_objects: {self.target_objects} quadrants: {self.quadrants}")
+        self.planets = PanZoomLayeredUpdates(default_layer=0)
+        self.gif_handlers = PanZoomLayeredUpdates(default_layer=1)
+        self.collectable_items = PanZoomLayeredUpdates(default_layer=2)
+        self.ufos = PanZoomLayeredUpdates(default_layer=3)
+        self.ships = PanZoomLayeredUpdates(default_layer=4)
+        self.missiles = PanZoomLayeredUpdates(default_layer=5)
+        self.explosions = PanZoomLayeredUpdates(default_layer=6)
+        self.target_objects = PanZoomLayeredUpdates(default_layer=7)
+        self.moving_images = PanZoomLayeredUpdates(default_layer=8)
 
     def update(self, *args, **kwargs):
-        self.celestial_objects.update(*args)
-        self.ufos.update(*args)
+
         self.planets.update(*args)
-        self.missiles.update(*args)
-        self.ships.update(*args)
+        self.gif_handlers.update()
         self.collectable_items.update(*args)
+        self.ufos.update(*args)
+
+        self.missiles.update(*args)
         self.explosions.update(*args)
         self.target_objects.update(*args)
-        self.quadrants.update(*args)
         self.moving_images.update()
-        self.gif_handlers.update()
+        #self.ships.update(*args)
+
 
     def draw(self, surface, **kwargs):
+
+
         events = kwargs.get("events")
-        self.ufos.draw(surface)
-        self.missiles.draw(surface)
-        self.ships.draw(surface)
-        self.collectable_items.draw(surface)
-        self.explosions.draw(surface)
-        self.target_objects.draw(surface)
-        self.moving_images.draw(surface)
-        self.gif_handlers.draw(surface)
         widget_handler.update(events)
+        self.planets.draw(surface)
+        WidgetHandler.draw_layer(events, 0)
+        self.gif_handlers.draw(surface)
+        WidgetHandler.draw_layer(events, 1)
+        self.collectable_items.draw(surface)
+        WidgetHandler.draw_layer(events, 2)
+        self.ufos.draw(surface)
+        WidgetHandler.draw_layer(events, 3)
+        self.ships.draw(surface)
+        WidgetHandler.draw_layer(events, 4)
+        self.missiles.draw(surface)
+        WidgetHandler.draw_layer(events, 5)
+        self.explosions.draw(surface)
+        WidgetHandler.draw_layer(events, 6)
+        self.target_objects.draw(surface)
+        WidgetHandler.draw_layer(events, 7)
+        self.moving_images.draw(surface)
+        WidgetHandler.draw_layer(events, 8)
+        WidgetHandler.draw_layer(events, 9)
+        WidgetHandler.draw_layer(events, 10)
+        # ships must be updated here, because they draw also... this is bullshit but... ;)
+        self.ships.update()
+
+
+
+
 
     def listen(self, events):
+
         for i in self.planets:
             i.listen(events)
 

@@ -2,15 +2,7 @@ from enum import Enum
 import pygame
 import time
 
-
-class MouseState__(Enum):
-    HOVER = 0
-    CLICK = 1
-    RIGHT_CLICK = 2
-    DRAG = 3
-    RIGHT_DRAG = 4  # Not sure when this is ever used but added anyway for completeness
-    RELEASE = 5
-    RIGHT_RELEASE = 6
+from source.handlers.pan_zoom_sprite_handler import sprite_groups
 
 
 class MouseState(Enum):
@@ -45,33 +37,6 @@ class Mouse:
             except pygame.error:
                 listening = False
             time.sleep(Mouse._refreshTime)
-
-    @staticmethod
-    def updateMouseState__():
-        leftPressed = pygame.mouse.get_pressed()[0]
-        rightPressed = pygame.mouse.get_pressed()[2]
-
-        if leftPressed:
-            if Mouse._mouseState == MouseState.CLICK or Mouse._mouseState == MouseState.DRAG:
-                Mouse._mouseState = MouseState.DRAG
-            else:
-                Mouse._mouseState = MouseState.CLICK
-
-        elif rightPressed:
-            if Mouse._mouseState == MouseState.RIGHT_CLICK or Mouse._mouseState == MouseState.RIGHT_DRAG:
-                Mouse._mouseState = MouseState.RIGHT_DRAG
-            else:
-                Mouse._mouseState = MouseState.RIGHT_CLICK
-        else:
-            # If previously was held down, call the release
-            if Mouse._mouseState == MouseState.CLICK or Mouse._mouseState == MouseState.DRAG:
-                Mouse._mouseState = MouseState.RELEASE
-
-            elif Mouse._mouseState == MouseState.RIGHT_CLICK or Mouse._mouseState == MouseState.RIGHT_DRAG:
-                Mouse._mouseState = MouseState.RIGHT_RELEASE
-
-            else:
-                Mouse._mouseState = MouseState.HOVER
 
     @staticmethod
     def updateMouseState():
@@ -121,6 +86,37 @@ class Mouse:
     @staticmethod
     def setRefreshRatePerSec(refreshRate):
         Mouse._refreshTime = 1 / refreshRate if refreshRate != 0 else 0
+
+    @staticmethod
+    def get_hit_object(**kwargs: {list}) -> object or None:
+        filter = kwargs.get("filter", [])
+        lists = ["planets", "ships", "ufos", "collectable_items"]
+        if filter:
+            lists -= filter
+
+        for list_name in lists:
+            for obj in getattr(sprite_groups, list_name):
+                if obj.rect.collidepoint(pygame.mouse.get_pos()):
+                    return obj
+        return None
+
+        # for obj in sprite_groups.planets:
+        #     if obj.rect.collidepoint(pygame.mouse.get_pos()):
+        #         return obj
+        #
+        # for obj in sprite_groups.ships:
+        #     if obj.rect.collidepoint(pygame.mouse.get_pos()):
+        #         return obj
+        #
+        # for obj in sprite_groups.ufos:
+        #     if obj.rect.collidepoint(pygame.mouse.get_pos()):
+        #         return obj
+        #
+        # for obj in sprite_groups.collectable_items:
+        #     if obj.rect.collidepoint(pygame.mouse.get_pos()):
+        #         return obj
+        #
+        # return None
 
 
 if __name__ == '__main__':

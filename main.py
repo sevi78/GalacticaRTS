@@ -14,11 +14,12 @@ from source.game_play.game_logic import GameLogic
 from source.game_play.navigation import navigate_to
 from source.gui.event_text import event_text
 from source.gui.panels.map_panel import MapPanel
+
 from source.handlers.economy_handler import economy_handler
 from source.handlers.file_handler import load_file
 from source.handlers.game_event_handler import GameEventHandler
 from source.handlers.level_handler import LevelHandler
-#from source.interaction import copy_agent
+# from source.interaction import copy_agent
 from source.interaction.box_selection import BoxSelection
 from source.configuration import global_params
 from source.configuration.global_params import text_input_active, enable_pan, copy_object
@@ -26,6 +27,7 @@ from source.multimedia_library.images import get_image
 from source.interaction.mouse import Mouse
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
+from source.handlers.time_handler import time_handler
 
 ECONOMY_UPDATE_INTERVAL = 2.0
 
@@ -62,7 +64,7 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
         'missiles', 'gif_handlers', 'build_menu_visible', 'build_menu_widgets', 'build_menu_widgets_buildings',
         'config',
         'frame_color', 'ui_helper', 'level', 'universe', '_ship', 'pan_zoom_handler', 'planet_edit', 'font_edit',
-        'enemy_handler_edit', 'ship_edit', 'clock', 'win', 'box_selection', 'world_width', 'height', 'icons',
+        'enemy_handler_edit', 'ship_edit', 'win', 'box_selection', 'world_width', 'height', 'icons',
         'explored_planets', 'event_text', 'event_display_text', 'player', 'building_panel', 'game_time',
         'settings_panel', 'advanced_settings_panel', 'tooltip_instance', 'info_panel', 'resource_panel', 'build_menu',
         'event_panel', 'border', 'word_height_sum', 'text_surfaces')  # 'selected_planet',
@@ -101,11 +103,11 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
         self._selected_planet = value
         if value:
             self.update_building_button_widgets()
-            #self.planet_edit.selected_planet = value
-            #self.planet_edit.get_selected_planet()
-            #self.planet_edit.selected_planet = value
+            # self.planet_edit.selected_planet = value
+            # self.planet_edit.get_selected_planet()
+            # self.planet_edit.selected_planet = value
 
-        #print (f"main: selected_planet.setter:{value}")
+        # print (f"main: selected_planet.setter:{value}")
 
     def set_selected_planet(self, planet):
         """ planet must be a PanZoomPlanet"""
@@ -170,7 +172,7 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
             # ignore all inputs while any text input is active
             if global_params.text_input_active:
                 return
-            #copy_agent.update(events)
+            # copy_agent.update(events)
 
             if event.type == pygame.KEYDOWN:
 
@@ -179,14 +181,14 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
 
                 if event.key == pygame.K_r:
                     pass
-                    #self.restart_game()
+                    # self.restart_game()
 
                 if event.key == pygame.K_d:
                     pass
-                    #planet_factory.delete_planets()
+                    # planet_factory.delete_planets()
 
         # set fps
-        pygame.display.set_caption("GalacticaRTS" + "   " + str(f"FPS: {self.clock.get_fps()}"))
+        pygame.display.set_caption("GalacticaRTS" + "   " + str(f"FPS: {time_handler.fps}"))
 
         # necessary functions, maybe could put these outside somehow
         self.quit_game(events)
@@ -195,8 +197,6 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
 
         # cheat
         self.cheat(events)
-
-
 
         # store planet positions
         self.save_load(events)
@@ -210,7 +210,8 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
         # game loop
         while self.run == 1:
             self.win.fill((1, 2, 3, 190))
-            self.clock.tick(int(global_params.fps))
+            time_handler.set_fps(int(global_params.fps))
+
             # settings
             events = pygame.event.get()
             Mouse.updateMouseState()
@@ -226,6 +227,13 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
 
                     pan_zoom_handler.listen(events, self.pan_enabled)
 
+            # # update sprites
+            # # dont mess up the order! for some reason it must be drawn first then update
+            #
+            # sprite_groups.update(events=events)
+            # sprite_groups.listen(events)
+            # sprite_groups.draw(self.win, events=events)
+
             # update sprites
             # dont mess up the order! for some reason it must be drawn first then update
 
@@ -233,8 +241,7 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
             sprite_groups.listen(events)
             sprite_groups.draw(self.win, events=events)
 
-            # update pygame_widgets
-            #widget_handler.update(events)# moved to sprite handler
+
 
             # update box selection, might be mived to self.update
             self.box_selection.listen(events)
@@ -249,7 +256,7 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
 
             # update event_text
             event_text.update()
-            
+
             # update map
             self.map_panel.listen(events)
             self.map_panel.draw()
@@ -257,7 +264,7 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
             # pygame update
             pygame.display.update()
 
-            #pprint(f"find_unused_images_gifs: {find_unused_images_gifs(os.path.join(pictures_path), os.path.join(pictures_path + 'gifs'), images, gifs)}")
+            # pprint(f"find_unused_images_gifs: {find_unused_images_gifs(os.path.join(pictures_path), os.path.join(pictures_path + 'gifs'), images, gifs)}")
 
 
 def main():
@@ -273,9 +280,9 @@ def main():
     app.box_selection = BoxSelection(app.win, sprite_groups.ships.sprites() + sprite_groups.planets.sprites())
     app.level_handler = LevelHandler(app)
     app.level_select = LevelSelect(pygame.display.get_surface(),
-            pygame.display.get_surface().get_rect().centerx - EDITOR_WIDTH / 2,
-            pygame.display.get_surface().get_rect().y,
-            EDITOR_WIDTH, EDITOR_WIDTH, parent=app, obj=None)
+        pygame.display.get_surface().get_rect().centerx - EDITOR_WIDTH / 2,
+        pygame.display.get_surface().get_rect().y,
+        EDITOR_WIDTH, EDITOR_WIDTH, parent=app, obj=None)
 
     app.level_edit = LevelEdit(pygame.display.get_surface(),
         pygame.display.get_surface().get_rect().centerx - EDITOR_WIDTH / 2,
@@ -298,4 +305,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

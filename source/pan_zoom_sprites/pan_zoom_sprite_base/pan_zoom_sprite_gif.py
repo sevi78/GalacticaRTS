@@ -17,7 +17,7 @@ HEIGHT = 600
 EXPLOSION_RELATIVE_GIF_SIZE = 0.3
 
 # screen = pygame.display.set_mode((WIDTH, HEIGHT))
-clock = pygame.time.Clock()
+# clock = pygame.time.Clock()
 screen = global_params.win
 
 
@@ -263,6 +263,9 @@ class PanZoomSprite(pygame.sprite.Sprite, PanZoomVisibilityHandler, GameObjectDe
 
     def update(self):
         self.update_pan_zoom_sprite()
+
+
+
 
 # def main():
 #     pan_zoom_handler = PanZoomHandler(screen, WIDTH, HEIGHT)

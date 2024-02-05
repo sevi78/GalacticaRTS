@@ -11,6 +11,7 @@ from source.handlers.color_handler import colors
 from source.handlers.garbage_handler import garbage_handler
 from source.configuration.global_params import ui_rounded_corner_small_thickness
 from source.multimedia_library.images import get_image
+from source.handlers.time_handler import time_handler
 
 
 class ResourcePanel(WidgetBase):
@@ -23,7 +24,7 @@ class ResourcePanel(WidgetBase):
         self.frame_color = colors.frame_color
 
         # remove this later
-        self.clock = pygame.time.Clock()
+
         self.clock_font = pygame.font.SysFont(global_params.font_name, 12)
 
         # construct surface
@@ -246,9 +247,9 @@ class ResourcePanel(WidgetBase):
         self.draw_frame()
 
         # fps, memory usage, this just for debug purposes
-        self.clock.tick(int(global_params.fps))
+        #self.clock.tick(int(global_params.fps))
         # fps = f"fps: {str(self.clock.get_fps())}"  # , {sprite_groups.__str__()} hover:{global_params.hover_object}"
-        fps = f"fps: {str(round(self.clock.get_fps(), 1))}, memory usage: {garbage_handler.get_memory_usage()} MB"
+        fps = f"fps: {str(round(time_handler.fps, 1))}, memory usage: {garbage_handler.get_memory_usage()} MB"
         # fps = f"fps: {str(self.clock.get_fps())}, {sprite_groups.__str__()} hover:{global_params.hover_object}"
         text = self.clock_font.render(fps, 0, self.frame_color)
         self.win.blit(text, (0, 0, 30, 30))

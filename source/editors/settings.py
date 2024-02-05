@@ -48,14 +48,14 @@ def main(test: bool = False, **kwargs) -> None:
         width=WINDOW_SIZE[0] * 0.9,
         onclose=pygame_menu.events.BACK, )  # User press ESC button)
 
-    settings_menu.add.text_input(
-        'TODO: ',
-        default=settings["todo"],
-        maxwidth=0,
-        textinput_id='todo',
-        input_underline='_',
-        align=pygame_menu.locals.ALIGN_RIGHT,
-        textwrap=True)
+    # settings_menu.add.text_input(
+    #     'TODO: ',
+    #     default=settings["todo"],
+    #     maxwidth=0,
+    #     textinput_id='todo',
+    #     input_underline='_',
+    #     align=pygame_menu.locals.ALIGN_RIGHT,
+    #     textwrap=True)
 
     settings_menu.add.text_input(
         'FPS: ',
@@ -99,33 +99,33 @@ def main(test: bool = False, **kwargs) -> None:
         align=pygame_menu.locals.ALIGN_RIGHT)
 
     # scene size
-    settings_menu.add.text_input(
-        'scene width: ',
-        maxchar=5,
-        default=int(settings["scene_width"]),
-        textinput_id='scene_width',
-        input_underline='_',
-        input_type=pygame_menu.locals.INPUT_INT,
-        align=pygame_menu.locals.ALIGN_RIGHT)
+    # settings_menu.add.text_input(
+    #     'scene width: ',
+    #     maxchar=5,
+    #     default=int(settings["scene_width"]),
+    #     textinput_id='scene_width',
+    #     input_underline='_',
+    #     input_type=pygame_menu.locals.INPUT_INT,
+    #     align=pygame_menu.locals.ALIGN_RIGHT)
+    #
+    # settings_menu.add.text_input(
+    #     'scene height: ',
+    #     maxchar=5,
+    #     default=int(settings["scene_height"]),
+    #     textinput_id='scene_height',
+    #     input_underline='_',
+    #     input_type=pygame_menu.locals.INPUT_INT,
+    #     align=pygame_menu.locals.ALIGN_RIGHT)
 
-    settings_menu.add.text_input(
-        'scene height: ',
-        maxchar=5,
-        default=int(settings["scene_height"]),
-        textinput_id='scene_height',
-        input_underline='_',
-        input_type=pygame_menu.locals.INPUT_INT,
-        align=pygame_menu.locals.ALIGN_RIGHT)
+    # settings_menu.add.toggle_switch('universe', settings["draw_universe"],
+    #     toggleswitch_id='draw_universe', align=pygame_menu.locals.ALIGN_RIGHT,
+    #     )
 
-    settings_menu.add.toggle_switch('universe', settings["draw_universe"],
-        toggleswitch_id='draw_universe', align=pygame_menu.locals.ALIGN_RIGHT,
-        )
-
-    settings_menu.add.range_slider('Universe Density:(lower value = less stars)',
-        settings["universe_density"], (1, 100), 10,
-        rangeslider_id='universe_density',
-        value_format=lambda x: str(int(x)),
-        align=pygame_menu.locals.ALIGN_RIGHT)
+    # settings_menu.add.range_slider('Universe Density:(lower value = less stars)',
+    #     settings["universe_density"], (1, 100), 10,
+    #     rangeslider_id='universe_density',
+    #     value_format=lambda x: str(int(x)),
+    #     align=pygame_menu.locals.ALIGN_RIGHT)
 
     settings_menu.add.range_slider('ui_rounded_corner_radius_small',
         settings["ui_rounded_corner_radius_small"], (1, 100), 1,
@@ -179,37 +179,37 @@ def main(test: bool = False, **kwargs) -> None:
     #            ('7',[7]),
     #            ('8', [8]),
     #            ('9',[9])]
-    layers = [("0", 1), ("1", 0)]
-    default = settings["visible_layers"][1]
-    settings_menu.add.dropselect_multiple(
-        title='visible layers: not working yet',
-        items=layers,
-        default=settings["visible_layers"][1],
-        dropselect_multiple_id='visible_layers',
-        max_selected=2,
-        open_middle=True,
-        selection_box_height=2,
-        align=pygame_menu.locals.ALIGN_RIGHT)
+    # layers = [("0", 1), ("1", 0)]
+    # default = settings["visible_layers"][1]
+    # settings_menu.add.dropselect_multiple(
+    #     title='visible layers: not working yet',
+    #     items=layers,
+    #     default=settings["visible_layers"][1],
+    #     dropselect_multiple_id='visible_layers',
+    #     max_selected=2,
+    #     open_middle=True,
+    #     selection_box_height=2,
+    #     align=pygame_menu.locals.ALIGN_RIGHT)
 
     # Create switch
-    settings_menu.add.toggle_switch('draw Background Image: ', settings["draw_background_image"],
-        toggleswitch_id='draw_background_image', align=pygame_menu.locals.ALIGN_RIGHT)
+    # settings_menu.add.toggle_switch('draw Background Image: ', settings["draw_background_image"],
+    #     toggleswitch_id='draw_background_image', align=pygame_menu.locals.ALIGN_RIGHT)
 
     settings_menu.add.toggle_switch('Moveable', settings["moveable"],
         toggleswitch_id='moveable', align=pygame_menu.locals.ALIGN_RIGHT,
         )
 
-    settings_menu.add.toggle_switch('Zoom', settings["enable_zoom"],
-        toggleswitch_id='enable_zoom', align=pygame_menu.locals.ALIGN_RIGHT,
-        )
+    # settings_menu.add.toggle_switch('Zoom', settings["enable_zoom"],
+    #     toggleswitch_id='enable_zoom', align=pygame_menu.locals.ALIGN_RIGHT,
+    #     )
+    #
+    # settings_menu.add.toggle_switch('pan', settings["enable_pan"],
+    #     toggleswitch_id='enable_pan', align=pygame_menu.locals.ALIGN_RIGHT,
+    #     )
 
-    settings_menu.add.toggle_switch('pan', settings["enable_pan"],
-        toggleswitch_id='enable_pan', align=pygame_menu.locals.ALIGN_RIGHT,
-        )
-
-    settings_menu.add.toggle_switch('enable_orbit', settings["enable_orbit"],
-        toggleswitch_id='enable_orbit', align=pygame_menu.locals.ALIGN_RIGHT,
-        )
+    # settings_menu.add.toggle_switch('enable_orbit', settings["enable_orbit"],
+    #     toggleswitch_id='enable_orbit', align=pygame_menu.locals.ALIGN_RIGHT,
+    #     )
 
     settings_menu.add.toggle_switch('enable_game_events', settings["enable_game_events"],
         toggleswitch_id='enable_game_events', align=pygame_menu.locals.ALIGN_RIGHT,
@@ -223,9 +223,7 @@ def main(test: bool = False, **kwargs) -> None:
         rangeslider_id='game_speed',
         value_format=lambda x: str(int(x)), align=pygame_menu.locals.ALIGN_RIGHT)
 
-    settings_menu.add.range_slider('Time Factor:', settings["time_factor"], (1, 10), 1,
-        rangeslider_id='time_factor',
-        value_format=lambda x: str(int(x)), align=pygame_menu.locals.ALIGN_RIGHT)
+
 
     def data_fun() -> None:
         """

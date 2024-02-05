@@ -25,7 +25,7 @@ class CelestialObjectStatic(CelestialObject):
         if not self._hidden:
             if self.gif:
                 self.gif_handler.rect = self.rect
-                self.gif_handler.draw()
+                # self.gif_handler.draw()
 
             else:
                 nsx, nsy = (self.size_x * self.get_zoom(), self.size_y * self.get_zoom())
