@@ -22,26 +22,27 @@ class Checkbox(ImageButton):
         self.key = kwargs.get("key")
         self.color = kwargs.get("color")
         self.image_name = kwargs.get("image_name", None)
+        self.button_size = kwargs.get("button_size", BUTTON_SIZE)
 
         self.image_check = pygame.transform.scale(
-            get_image("check.png"), (BUTTON_SIZE * .7, BUTTON_SIZE * .7))
+            get_image("check.png"), (self.button_size * .7, self.button_size * .7))
         self.image_uncheck = pygame.transform.scale(
-            get_image("uncheck.png"), (BUTTON_SIZE, BUTTON_SIZE))
+            get_image("uncheck.png"), (self.button_size, self.button_size))
 
         if self.image_name:
-            self.image = pygame.transform.scale(get_image(self.image_name), (BUTTON_SIZE, BUTTON_SIZE))
+            self.image = pygame.transform.scale(get_image(self.image_name), (self.button_size, self.button_size))
 
         if not self.image:
             try:
                 self.image = pygame.transform.scale(
-                    images[pictures_path]["resources"][self.key + "_25x25.png"], (BUTTON_SIZE, BUTTON_SIZE))
+                    images[pictures_path]["resources"][self.key + "_25x25.png"], (self.button_size, self.button_size))
             except KeyError:
                 try:
                     self.image = pygame.transform.scale(
-                        get_image(self.key + ".png"), (BUTTON_SIZE, BUTTON_SIZE))
+                        get_image(self.key + ".png"), (self.button_size, self.button_size))
                 except KeyError:
                     self.image = pygame.transform.scale(
-                        get_image("no_icon.png"), (BUTTON_SIZE, BUTTON_SIZE))
+                        get_image("no_icon.png"), (self.button_size, self.button_size))
 
         self.image_raw = self.image
         self.rect = self.image.get_rect()
@@ -55,7 +56,7 @@ class Checkbox(ImageButton):
     def draw_frame(self):
         # Drawing Rectangle
         pygame.draw.rect(self.win, self.color, pygame.Rect(
-            self.world_x, self.world_y, BUTTON_SIZE, BUTTON_SIZE), FRAME_THICKNESS, border_radius=BORDER_RADIUS)
+            self.world_x, self.world_y, self.button_size, self.button_size), FRAME_THICKNESS, border_radius=BORDER_RADIUS)
 
     def draw_image(self):
         if self.checked:

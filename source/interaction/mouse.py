@@ -4,6 +4,7 @@ from enum import Enum
 import pygame
 
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
+from source.handlers.widget_handler import WidgetHandler
 
 
 class MouseState(Enum):
@@ -91,33 +92,22 @@ class Mouse:
     @staticmethod
     def get_hit_object(**kwargs: {list}) -> object or None:
         filter = kwargs.get("filter", [])
-        lists = ["planets", "ships", "ufos", "collectable_items"]
+        # lists = ["planets", "ships", "ufos", "collectable_items", "celestial_objects"]
+        lists = ["planets", "ships", "ufos", "collectable_items", "celestial_objects"]
         if filter:
             lists -= filter
 
         for list_name in lists:
-            for obj in getattr(sprite_groups, list_name):
-                if obj.rect.collidepoint(pygame.mouse.get_pos()):
-                    return obj
+            if hasattr(sprite_groups, list_name):
+                for obj in getattr(sprite_groups, list_name):
+                    if obj.rect.collidepoint(pygame.mouse.get_pos()):
+                        return obj
+            # else:
+            #     hitables = [i for i in [_ for _ in WidgetHandler.get_all_widgets() if hasattr(_, "type")] if i.type == "asteroid"]
+            #     for obj in hitables:
+            #         if obj.rect.collidepoint(pygame.mouse.get_pos()):
+            #             return obj
         return None
-
-        # for obj in sprite_groups.planets:
-        #     if obj.rect.collidepoint(pygame.mouse.get_pos()):
-        #         return obj
-        #
-        # for obj in sprite_groups.ships:
-        #     if obj.rect.collidepoint(pygame.mouse.get_pos()):
-        #         return obj
-        #
-        # for obj in sprite_groups.ufos:
-        #     if obj.rect.collidepoint(pygame.mouse.get_pos()):
-        #         return obj
-        #
-        # for obj in sprite_groups.collectable_items:
-        #     if obj.rect.collidepoint(pygame.mouse.get_pos()):
-        #         return obj
-        #
-        # return None
 
 
 if __name__ == '__main__':

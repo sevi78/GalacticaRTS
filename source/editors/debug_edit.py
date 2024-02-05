@@ -31,10 +31,12 @@ class DebugEdit(EditorBase):
 
         #  widgets
         self.widgets = []
+        self.layer_checkboxes = []
         self.max_height = height
 
         # create widgets
         self.create_checkboxes()
+        self.create_layer_checkboxes()
         self.create_close_button()
         self.create_save_button(lambda: print("no function"), "save , not working yet", name="save_icon")
 
@@ -42,10 +44,8 @@ class DebugEdit(EditorBase):
         self.hide()
 
     def create_checkboxes(self):
-        """"""
-
-        y = self.world_y + TOP_SPACING + self.text_spacing
         x = self.world_width / 2 + BUTTON_SIZE * 2
+        y = self.world_y + TOP_SPACING + self.text_spacing
 
         checkbox_missiles = Checkbox(
             self.win, self.world_x - self.spacing_x + x + BUTTON_SIZE * 3, y, 30, 30, isSubWidget=False,
@@ -106,7 +106,7 @@ class DebugEdit(EditorBase):
 
         layer_checkbox = Checkbox(
             self.win, self.world_x - self.spacing_x + x + BUTTON_SIZE * 3, y, 30, 30, isSubWidget=False,
-            color=self.frame_color,image_name="layer_icon.png",
+            color=self.frame_color, image_name="layer_icon.png",
             key="layer", tooltip="layers", onClick=lambda: print("layer: "), layer=9, parent=self)
         x += BUTTON_SIZE * 1.5
         self.checkboxes.append(layer_checkbox)
@@ -114,6 +114,34 @@ class DebugEdit(EditorBase):
 
         for i in self.checkboxes:
             i.checked = False
+
+    def create_layer_checkboxes(self):
+        button_size = 20
+        x = self.world_width / 2 + BUTTON_SIZE * 2
+        y = self.world_y + TOP_SPACING + button_size * 1.6 + self.text_spacing
+
+        for i in range(len(WidgetHandler.layer_switch.keys())):
+            checkbox = Checkbox(
+                self.win,
+                self.world_x - self.spacing_x + x + BUTTON_SIZE * 3,
+                y,
+                button_size,
+                button_size,
+                isSubWidget=False,
+                color=self.frame_color,
+                key=f"layers:{i}",
+                image_name="layer_icon.png",
+                tooltip=f"show layer:{i}",
+                onClick=lambda: print("not working"),
+                layer=9,
+                parent=self,
+                button_size=button_size
+                )
+
+            x += button_size * 1.625
+            self.checkboxes.append(checkbox)
+            self.layer_checkboxes.append((checkbox))
+            self.widgets.append(checkbox)
 
     def set_debug_to_objects(self, key):
         if key in sprite_groups.__dict__:
@@ -135,6 +163,12 @@ class DebugEdit(EditorBase):
             if i.key == "debug_icon":
                 global_params.debug = i.checked
 
+            # if i.key.startswith("layers"):
+            #     WidgetHandler.show_layer(int(i.key.split(":")[1]))
+
+    def update_checkbox_values(self):
+        for i in self.layer_checkboxes:
+            i.checked = WidgetHandler.layer_switch[str(self.layer_checkboxes.index(i))]
     def draw_texts(self, all_widgets, y):
         self.draw_text(self.world_x + self.text_spacing, y, 200, FONT_SIZE,
             f"pan_zoom.zoom: {pan_zoom_handler.zoom}")
@@ -186,7 +220,6 @@ class DebugEdit(EditorBase):
             self.draw_text(self.world_x + self.text_spacing, y, 200, FONT_SIZE,
                 f"WidgetHandler.buttons: {len(buttons)}")
 
-
         y += self.text_spacing
         self.draw_text(self.world_x + self.text_spacing, y, 200, FONT_SIZE,
             f"pictures_path: {pictures_path}")
@@ -202,8 +235,11 @@ class DebugEdit(EditorBase):
         y += self.text_spacing
         return y
 
+
+
     def draw(self):
         if not self._hidden and not self._disabled:
+            self.update_checkbox_values()
             self.draw_frame()
             y = self.world_y + TOP_SPACING + self.text_spacing
             self.draw_text(self.world_x + self.text_spacing, y, 200, 30, "Debug:")
@@ -217,8 +253,3 @@ class DebugEdit(EditorBase):
 
             save_icon = [i for i in self.widgets if i.name == "save_icon"][0]
             save_icon.screen_y = self.max_height
-
-
-
-
-

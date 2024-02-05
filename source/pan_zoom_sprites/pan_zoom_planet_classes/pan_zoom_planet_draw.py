@@ -96,10 +96,8 @@ class PanZoomPlanetDraw:
         # Blit the pulse surface onto the window
         self.win.blit(pulse_surface, (self.center[0] - current_radius, self.center[1] - current_radius))
 
-
-
     def draw_specials(self):
-        #print ("draw_specials:", self.specials)
+        # print ("draw_specials:", self.specials)
         if not inside_screen(self.get_position()):
             return
         # Load the font once
@@ -112,8 +110,8 @@ class PanZoomPlanetDraw:
                 alien_image = pygame.transform.scale(get_image("alien_face_orange.png"), (25, 25))
             else:
                 alien_image = pygame.transform.scale(get_image("alien_face_green.png"), (25, 25))
-            self.win.blit(alien_image, (self.screen_position[0] - self.screen_width / 2 - 60 * self.get_zoom() , self.rect.centery))
-
+            self.win.blit(alien_image, (
+            self.screen_position[0] - self.screen_width / 2 - 60 * self.get_zoom(), self.rect.centery))
 
         if self.specials:
             count = 0
@@ -129,7 +127,6 @@ class PanZoomPlanetDraw:
                         (x + 25, y, 50, 20), font, "left")
                     count += 1
                     y += 20  # Increment y for the next draw
-
 
     def draw_image(self):
         self.win.blit(self.image, self.rect)

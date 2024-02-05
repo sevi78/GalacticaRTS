@@ -338,13 +338,20 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
     def add_moving_image(self, key, operand, value, velocity, lifetime, width, height, parent, target):
         if operand == "*":
             operand = "x"
+
+        if key == "buildings_max":
+            image_name = "building_icon.png"
+        else:
+            image_name = f"{key}_25x25.png"
+
+        image = get_image(image_name)
         MovingImage(
             self.win,
             self.get_screen_x(),
             self.get_screen_y(),
             width,
             height,
-            get_image(f"{key}_25x25.png"),
+            image,
             lifetime,
             velocity,
             f" {value}{operand}", SPECIAL_TEXT_COLOR,

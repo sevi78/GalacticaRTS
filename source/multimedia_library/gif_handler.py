@@ -64,7 +64,7 @@ class GifHandler(pygame.sprite.Sprite):
         self.sound = kwargs.get("sound", None)
         self.relative_gif_size = kwargs.get("relative_gif_size", None)
 
-        self.frames = self.load_gif_frames(self.gif)
+        self.frames = get_gif_frames(self.gif)#self.load_gif_frames(self.gif)
         self.index = 1
         self.counter = 1
         self.image_raw = self.frames[self.index]

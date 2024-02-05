@@ -7,7 +7,7 @@ from source.text.text_wrap import TextWrap
 pygame.font.init()
 
 EVENT_TEXT_HEIGHT = 20
-EVENT_TEXT_FADE = False
+EVENT_TEXT_FADE = True
 TEXT_DISPLAY_UPDATE = 15000
 TEXT_LINES = 4
 

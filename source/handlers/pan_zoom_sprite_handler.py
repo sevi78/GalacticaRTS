@@ -50,7 +50,7 @@ class SpriteGroups:
         self.planets = PanZoomLayeredUpdates(default_layer=0)
         self.gif_handlers = PanZoomLayeredUpdates(default_layer=1)
         self.collectable_items = PanZoomLayeredUpdates(default_layer=2)
-        self.ufos = PanZoomLayeredUpdates(default_layer=3)
+        self.ufos = PanZoomLayeredUpdates(default_layer=0)
         self.ships = PanZoomLayeredUpdates(default_layer=4)
         self.missiles = PanZoomLayeredUpdates(default_layer=5)
         self.explosions = PanZoomLayeredUpdates(default_layer=6)
@@ -58,7 +58,6 @@ class SpriteGroups:
         self.moving_images = PanZoomLayeredUpdates(default_layer=8)
 
     def update(self, *args, **kwargs):
-
         self.planets.update(*args)
         self.gif_handlers.update()
         self.collectable_items.update(*args)
@@ -68,44 +67,58 @@ class SpriteGroups:
         self.explosions.update(*args)
         self.target_objects.update(*args)
         self.moving_images.update()
-        #self.ships.update(*args)
-
+        # self.ships.update(*args)
 
     def draw(self, surface, **kwargs):
-
-
         events = kwargs.get("events")
         widget_handler.update(events)
-        self.planets.draw(surface)
-        WidgetHandler.draw_layer(events, 0)
-        self.gif_handlers.draw(surface)
-        WidgetHandler.draw_layer(events, 1)
-        self.collectable_items.draw(surface)
-        WidgetHandler.draw_layer(events, 2)
-        self.ufos.draw(surface)
-        WidgetHandler.draw_layer(events, 3)
-        self.ships.draw(surface)
-        WidgetHandler.draw_layer(events, 4)
-        self.missiles.draw(surface)
-        WidgetHandler.draw_layer(events, 5)
-        self.explosions.draw(surface)
-        WidgetHandler.draw_layer(events, 6)
-        self.target_objects.draw(surface)
-        WidgetHandler.draw_layer(events, 7)
-        self.moving_images.draw(surface)
-        WidgetHandler.draw_layer(events, 8)
-        WidgetHandler.draw_layer(events, 9)
-        WidgetHandler.draw_layer(events, 10)
-        # ships must be updated here, because they draw also... this is bullshit but... ;)
 
+        if WidgetHandler.layer_switch["0"]:
+            self.planets.draw(surface)
+            WidgetHandler.draw_layer(events, 0)
+            self.gif_handlers.draw(surface)
+
+        if WidgetHandler.layer_switch["1"]:
+            WidgetHandler.draw_layer(events, 1)
+            self.collectable_items.draw(surface)
+
+        if WidgetHandler.layer_switch["2"]:
+            WidgetHandler.draw_layer(events, 2)
+            self.ufos.draw(surface)
+
+        if WidgetHandler.layer_switch["3"]:
+            WidgetHandler.draw_layer(events, 3)
+            self.ships.draw(surface)
+
+        if WidgetHandler.layer_switch["4"]:
+            WidgetHandler.draw_layer(events, 4)
+            self.missiles.draw(surface)
+
+        if WidgetHandler.layer_switch["5"]:
+            WidgetHandler.draw_layer(events, 5)
+            self.explosions.draw(surface)
+
+        if WidgetHandler.layer_switch["6"]:
+            WidgetHandler.draw_layer(events, 6)
+            self.target_objects.draw(surface)
+
+        if WidgetHandler.layer_switch["7"]:
+            WidgetHandler.draw_layer(events, 7)
+            self.moving_images.draw(surface)
+
+        if WidgetHandler.layer_switch["8"]:
+            WidgetHandler.draw_layer(events, 8)
+
+        if WidgetHandler.layer_switch["9"]:
+            WidgetHandler.draw_layer(events, 9)
+
+        if WidgetHandler.layer_switch["10"]:
+            WidgetHandler.draw_layer(events, 10)
+
+        # ships must be updated here, because they draw also... this is bullshit but... ;)
         self.ships.update()
 
-
-
-
-
     def listen(self, events):
-
         for i in self.planets:
             i.listen(events)
 

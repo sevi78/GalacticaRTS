@@ -9,8 +9,8 @@ DEFAULT_LAYER = 9
 
 
 class WidgetHandler:
-    layers = {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: [], 7: [], 8: [], 9: [], 10: [], 11: [], 12: [], 13: [], 14: []}
-    layer_switch = {"0": 0, "1": 0, "2": 0, "3": 0, "4": 0, "5": 0, "6": 0, "7": 0, "8": 0, "9": 0, "10": 0, "11": 0, "12": 0, "13": 0, "14": 0}
+    layers = {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: [], 7: [], 8: [], 9: [], 10: []}
+    layer_switch = {"0": 0, "1": 0, "2": 0, "3": 0, "4": 0, "5": 0, "6": 0, "7": 0, "8": 0, "9": 0, "10": 0}
     draw_layers = True
     for key, value in layer_switch.items():
         layer_switch[key] = 1
@@ -20,8 +20,8 @@ class WidgetHandler:
             return
 
         for key, widgetlist in WidgetHandler.layers.items():
-            if not WidgetHandler.layer_switch[str(layer)]:
-                return
+            # if not WidgetHandler.layer_switch[str(layer)]:
+            #     return
             if key == layer:
                 for widget in widgetlist:
                     widget.draw()
@@ -51,6 +51,11 @@ class WidgetHandler:
                 if widget == obj:
                     widgetlist.remove(widget)
 
+    def show_layer(layer_):
+        if WidgetHandler.layer_switch[str(layer_)] == 1:
+            WidgetHandler.layer_switch[str(layer_)] = 0
+        else:
+            WidgetHandler.layer_switch[str(layer_)] = 1
     def set_visible(events):
         numbers = [49, 50, 51, 52, 53, 54, 55, 56, 57, 48]
         others = [39]  # ,94]

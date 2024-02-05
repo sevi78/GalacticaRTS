@@ -83,7 +83,7 @@ class PanZoomUfo(PanZoomGameObject, InteractionHandler):
         self.gun_power = 0
         self.emp_attacked = False
         self.gif = "electro_discharge.gif"
-        self.gif_handler = GifHandler(self, self.gif, loop=True, relative_gif_size=1.2, offset_y=5)
+        self.gif_handler = GifHandler(self, self.gif, loop=True, relative_gif_size=1.2, offset_y=5, layer=self.layer+1)
 
         # energy progress bar
         self.progress_bar = ProgressBar(
