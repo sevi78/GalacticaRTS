@@ -40,7 +40,7 @@ class PanZoomPlanetOverviewButtons(PanZoomPlanetEconomy):
             tooltip="indicates whether the production is in plus ",
             image=pygame.transform.flip(pygame.transform.scale(get_image(
                 "thumps_up.png"), self.thumpsup_button_size), True, False),
-            layer=9)
+            layer=7)
 
         self.overview_buttons.append(self.thumpsup_button)
 
@@ -58,7 +58,7 @@ class PanZoomPlanetOverviewButtons(PanZoomPlanetEconomy):
             ui_parent=self,
             tooltip="indicates the satisfaction of the population", image=get_image(
                 "smile.png"),
-            layer=9,
+            layer=7,
             zoomable=False)
 
         self.overview_buttons.append(self.smiley_button)
@@ -76,7 +76,7 @@ class PanZoomPlanetOverviewButtons(PanZoomPlanetEconomy):
             ui_parent=self,
             tooltip="indicates the technology_level of the population", image=get_image(
                 "badge1.png"),
-            layer=9,
+            layer=7,
             zoomable=False)
 
         self.overview_buttons.append(self.technology_level_button)
@@ -94,7 +94,7 @@ class PanZoomPlanetOverviewButtons(PanZoomPlanetEconomy):
             ui_parent=self,
             tooltip="indicates if planetary defence is built", image=get_image(
                 "planet defence.png"),
-            layer=9,
+            layer=7,
             zoomable=False,
             name="planetary_defence_button")
 

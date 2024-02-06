@@ -89,6 +89,15 @@ class BuildingPanelDraw:
 
         drawText(self.win, "buildings:  " + str(len(civil_buildings)) + "/" + str(int(self.parent.selected_planet.buildings_max)), self.frame_color, (
             x + self.spacing_x, self.world_y, self.get_screen_width(), 20), self.font, "left")
+
+
+        image = pygame.transform.scale(get_image("building_icon.png"),self.resource_image_size)
+
+        image_rect = image.get_rect()
+        image_rect.x = x
+        image_rect.y = self.world_y
+        self.win.blit(image, image_rect)
+
         self.world_y += self.spacing * 3
 
         # draw an image for every type of building built, plus a counter text

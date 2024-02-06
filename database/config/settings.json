@@ -25,7 +25,7 @@
     "scene_height": 14000,
     "scene_width": 14000,
     "todo": "respawn celestials. fix reload bug, fix wrong (old) tooltips, adjust energy usage of ships, university += max buildings",
-    "ui_panel_alpha": 185.50000000000009,
+    "ui_panel_alpha": 220,
     "ui_rounded_corner_big_thickness": 5.506666666666659,
     "ui_rounded_corner_radius_big": 29.799999999999994,
     "ui_rounded_corner_radius_small": 8.64,

@@ -91,7 +91,7 @@ class BuildingFactoryJsonDictReader:
                             list_.append(building_name)
         return list_
 
-    def get_resource_categories(self):
+    def get_resource_categories(self) -> list[str]:
         not_resource = ['planetary_defence', 'ship', 'weapons']
         return [_ for _ in self.json_dict.keys() if not _ in not_resource]
 
