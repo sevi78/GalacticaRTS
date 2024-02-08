@@ -14,6 +14,7 @@ from source.game_play.game_logic import GameLogic
 from source.game_play.navigation import navigate_to
 from source.gui.event_text import event_text
 from source.gui.panels.map_panel import MapPanel
+from source.gui.widgets.image_widget import ImageSprite
 
 from source.handlers.economy_handler import economy_handler
 from source.handlers.file_handler import load_file
@@ -93,6 +94,7 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
                 temp.append(key)
 
         self._selected_planet = None
+        self.select_image = ImageSprite(0,0,25,25, get_image("check.png"), "moving_images", parent=self)
 
     @property
     def selected_planet(self):
@@ -163,7 +165,8 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
         :param events:
         :return:
         """
-
+        if self.selected_planet:
+            self.select_image.set_position(self.selected_planet.rect.centerx, self.selected_planet.rect.centery, "center")
         self.game_event_handler.update()
         self.update_economy()
 

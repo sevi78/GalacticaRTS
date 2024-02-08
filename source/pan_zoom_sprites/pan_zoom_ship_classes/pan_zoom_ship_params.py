@@ -1,5 +1,6 @@
 from source.gui.event_text import event_text
 from source.handlers.widget_handler import WidgetHandler
+from source.pan_zoom_sprites.pan_zoom_ship_classes.pan_zoom_ship_state_engine import PanZoomShipStateEngine
 from source.text.info_panel_text_generator import info_panel_text_generator
 from source.configuration import global_params
 from source.multimedia_library.sounds import sounds
@@ -25,10 +26,6 @@ SHIP_ORBIT_SPEED_MAX = 0.6
 
 
 class PanZoomShipParams:
-    """
-
-    """
-
     def __init__(self, **kwargs):
         self.id = len(sprite_groups.ships)
         self.reload_max_distance_raw = SHIP_RELOAD_MAX_DISTANCE
@@ -74,7 +71,7 @@ class PanZoomShipParams:
         self.crew_members = ["john the cook", "jim the board engineer", "stella the nurse", "sam the souvenir dealer",
                              "jean-jaques the artist", "Nguyen thon ma, the captain", "dr. Hoffmann the chemist"]
 
-        # fog of war
+        # fog of war, no needed anymore
         self.fog_of_war_radius = 100
         self.fog_of_war_radius_max = 300
 
@@ -91,11 +88,13 @@ class PanZoomShipParams:
         self.buildings_max = 10
         self.buildings = []
 
+        self.state_engine = PanZoomShipStateEngine(self)
+
     def __delete__(self, instance):
         # remove all references
         # if self in self.parent.ships:
         #     self.parent.ships.remove(self)
-
+        self.state_engine.__del__()
         if self in sprite_groups.ships:
             sprite_groups.ships.remove(self)
 

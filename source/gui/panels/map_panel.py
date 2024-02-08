@@ -7,6 +7,7 @@ from source.configuration.global_params import ui_rounded_corner_small_thickness
 from source.game_play.navigation import navigate_to_position
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.handlers.color_handler import colors
+from source.handlers.image_handler import overblit_button_image
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.multimedia_library.images import get_image
@@ -337,7 +338,7 @@ class MapPanel:
 
     def update_checkboxes(self) -> None:
         for checkbox in self.checkboxes:
-            checkbox.overblit_button_image(checkbox, "uncheck.png", getattr(self, "show_" + checkbox.name))
+            overblit_button_image(checkbox, "uncheck.png", getattr(self, "show_" + checkbox.name))
 
     def show_objects(self, object_category) -> None:
         setattr(self, "show_" + object_category, not getattr(self, "show_" + object_category))

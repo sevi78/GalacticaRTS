@@ -28,6 +28,9 @@ def rot_center(image, angle, x, y):
     """
     rotated_image = pygame.transform.rotate(image, angle)
     new_rect = rotated_image.get_rect(center=image.get_rect(center=(x, y)).center)
+    # new_rect = rotated_image.get_rect(topleft=image.get_rect(topleft=(x, y)).center)
+    # new_rect = rotated_image.get_rect(topleft=image.get_rect(topleft=(x, y)).center)
+
     return rotated_image, new_rect
 
 
@@ -158,7 +161,7 @@ def center_pos(width, height):  # unused
     return pos
 
 
-def smooth_planet_positions__(width, height):# original
+def smooth_planet_positions__(width, height):  # original
 
     for planet in sprite_groups.planets.sprites():
         # check if has an orbit object
@@ -178,7 +181,8 @@ def smooth_planet_positions__(width, height):# original
             if planet.world_x - dist_y < 0:
                 planet.world_x = dist_y
 
-def smooth_planet_positions(width, height):#ki
+
+def smooth_planet_positions(width, height):  # ki
     center_x = width / 2
     center_y = height / 2
     for planet in sprite_groups.planets.sprites():

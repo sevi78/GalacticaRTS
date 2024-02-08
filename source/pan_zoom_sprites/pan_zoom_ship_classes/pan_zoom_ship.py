@@ -96,21 +96,20 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         PanZoomMouseHandler.__init__(self)
         PanZoomShipInteraction.__init__(self)
 
+        # init vars
         self.name = kwargs.get("name", "no_name")
         self.data = kwargs.get("data", {})
-
         self.item_collect_distance = SHIP_ITEM_COLLECT_DISTANCE
         self.orbit_direction = random.choice([-1, 1])
         self.speed = SHIP_SPEED
         self.attack_distance_raw = 200
-
         self.property = "ship"
-        self.autopilot = False
         self.rotate_correction_angle = SHIP_ROTATE_CORRECTION_ANGLE
         self.orbit_object = None
         self.orbit_angle = None
         self.collect_text = ""
 
+        # target object
         self.target_object = PanZoomTargetObject(global_params.win,
             pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1],
             60, 60, pan_zoom_handler, "target.gif", align_image="center", debug=False,
@@ -144,8 +143,12 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
             "energy_use"
             ]
 
+        # weapon handler
         self.weapon_handler = WeaponHandler(self, kwargs.get("current_weapon", "laser"), weapons=kwargs.get("weapons", {}))
+
+        # autopilot
         self.autopilot_handler = AutopilotHandler(self)
+        self.autopilot = False
 
         # register
         sprite_groups.ships.add(self)
@@ -153,8 +156,10 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
             if not self in self.parent.box_selection.selectable_objects:
                 self.parent.box_selection.selectable_objects.append(self)
 
+        # init interface data
         InterfaceData.__init__(self, self.interface_variable_names)
 
+        # setup the ship
         self.setup()
 
     def setup(self):
@@ -239,14 +244,14 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
             direction.normalize()
 
             # Get the speed of the obj
-
             speed = (speed_ + obj.speed)
             if speed > self.set_speed():
                 speed = self.set_speed()
 
             # Calculate the displacement vector for each time step
             displacement = direction * speed * global_params.game_speed / global_params.fps
-            print(f"displacement: {displacement}")
+            # print(f"displacement: {displacement}")
+
             # Move the obj towards the target position with a constant speed
             self.world_x += displacement.x
             self.world_y += displacement.y
@@ -450,6 +455,7 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
             global_params.app.weapon_select.obj = self
 
     def update(self):
+        self.state_engine.update()
         self.update_pan_zoom_game_object()
         self.progress_bar.set_progressbar_position()
         if global_params.game_paused:
@@ -470,10 +476,9 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         else:
             self.target_object.hide()
 
+        # maybe we dont neeed inside screen here, because it is checked in WidgetHandler and pan_zoom_sprite_handler
         if inside_screen(self.rect.center, border=SHIP_INSIDE_SCREEN_BORDER):
             self.progress_bar.show()
-            self.draw_state()
-            self.draw_rank_image()
             prevent_object_overlap(sprite_groups.ships, self.min_dist_to_other_ships)
         else:
             # self.hide_buttons()
@@ -500,7 +505,6 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         if self.energy <= 0:
             self.move_stop = 1
             sounds.stop_sound(self.sound_channel)
-            self.draw_noenergy_image()
 
         if self.target_reached:
             self.moving = False
@@ -536,5 +540,5 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         # make shure this is the last task, otherwise it would work(propbably)
         self.previous_position = (self.world_x, self.world_y)
 
-    def draw(self):
-        print ("drawing(")
+    def draw(self):  # unused
+        print("drawing ---")

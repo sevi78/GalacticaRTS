@@ -1,5 +1,6 @@
 import pygame
 
+from source.configuration import global_params
 from source.factories.building_factory import building_factory
 from source.gui.widgets.buttons.button import Button
 from source.pan_zoom_sprites.pan_zoom_planet_classes.pan_zoom_planet_economy import PanZoomPlanetEconomy
@@ -7,11 +8,9 @@ from source.multimedia_library.images import get_image
 
 
 class PanZoomPlanetOverviewButtons(PanZoomPlanetEconomy):
-    """
-    """
-
     def __init__(self, **kwargs):
         PanZoomPlanetEconomy.__init__(self, kwargs)
+        self.technology_level_button = None
         self.smiley_button = None
         self.thumpsup_button = None
         self.overview_buttons = []
@@ -122,6 +121,8 @@ class PanZoomPlanetOverviewButtons(PanZoomPlanetEconomy):
                     else:
                         i.hide()
                         i.disable()
+                else:
+                    self.hide_overview_button()
             else:
                 i.hide()
                 i.disable()
@@ -152,8 +153,7 @@ class PanZoomPlanetOverviewButtons(PanZoomPlanetEconomy):
             self.smiley_status = False
 
     def set_technology_level_status(self):
-        self.set_rank_from_population(building_factory.get_build_population_minimum_list())
-        # print("get_build_population_minimum_list", self.rank)
+        self.ranking.set_rank_from_population(self, building_factory.get_build_population_minimum_list())
 
     def set_overview_images(self):
         try:
@@ -171,9 +171,9 @@ class PanZoomPlanetOverviewButtons(PanZoomPlanetEconomy):
             else:
                 self.smiley_button.image_raw = get_image("sad.png")
 
-            self.technology_level_button.image_raw = self.rank_images[str(self.rank)]
+            self.technology_level_button.image_raw = self.ranking.rank_images[str(self.rank)]
         except AttributeError as e:
-            print ("set_overview_images: error", e)
+            print("set_overview_images: error", e)
 
     def delete_overview_buttons(self):
         for i in self.overview_buttons:
@@ -190,3 +190,15 @@ class PanZoomPlanetOverviewButtons(PanZoomPlanetEconomy):
         self.thumpsup_button.set_screen_position(offset_x=self.rect.width / 2 - 25, offset_y=-self.min_offset_y_to_text)
         self.technology_level_button.set_screen_position(offset_x=self.rect.width / 2 + 25, offset_y=-self.min_offset_y_to_text)
         self.planetary_defence_button.set_screen_position(offset_x=self.rect.width / 2 + 50, offset_y=-self.min_offset_y_to_text)
+
+    def handle_overview_buttons(self):
+        self.set_overview_buttons_position()
+
+        if not global_params.show_overview_buttons:
+            self.hide_overview_button()
+
+        elif self.explored:
+            self.show_overview_button()
+            self.draw_specials()
+            self.draw_alien_population_icons()
+            self.set_overview_buttons_position()

@@ -4,6 +4,7 @@ from pygame_widgets import Mouse
 
 from source.configuration import global_params
 from source.gui.event_text import event_text
+from source.gui.lod import inside_screen
 
 DEFAULT_LAYER = 9
 
@@ -24,6 +25,8 @@ class WidgetHandler:
             #     return
             if key == layer:
                 for widget in widgetlist:
+                    # need to find the correct coordinates, otherwise not all widgets get drawn, specially celestial obj
+                    # if inside_screen((widget.screen_x, widget.screen_y), border=0):
                     widget.draw()
 
                     if widget.isSubWidget:
@@ -56,6 +59,7 @@ class WidgetHandler:
             WidgetHandler.layer_switch[str(layer_)] = 0
         else:
             WidgetHandler.layer_switch[str(layer_)] = 1
+
     def set_visible(events):
         numbers = [49, 50, 51, 52, 53, 54, 55, 56, 57, 48]
         others = [39]  # ,94]

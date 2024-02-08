@@ -4,21 +4,16 @@ from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.configuration import global_params
 from source.handlers.position_handler import get_distance
 from source.multimedia_library.sounds import sounds
+from source.pan_zoom_sprites.pan_zoom_ship_classes.pan_zoom_ship_state_engine import PanZoomShipStateEngine
 
-
+TRAVEL_EXPERIENCE_FACTOR = 0.1
 class PanZoomShipMoving:
-    """
-
-    """
-
     def __init__(self, kwargs):
         self.desired_orbit_radius_raw = 100
         self.desired_orbit_radius = self.desired_orbit_radius_raw
         self.desired_orbit_radius_max = 200
         self.target = None
         self.enemy = None
-        self._moving = False
-        self._orbiting = False
         self.orbit_speed = SHIP_ORBIT_SPEED
         self.orbit_speed_max = SHIP_ORBIT_SPEED_MAX
         self.zoomable = True
@@ -39,6 +34,8 @@ class PanZoomShipMoving:
             if self.target:
                 self.set_orbit_object_id(self.target.id)
 
+        self.state_engine.set_state()
+
     @property
     def moving(self):
         return self._moving
@@ -48,6 +45,21 @@ class PanZoomShipMoving:
         self._moving = value
         if value == True:
             self.orbiting = False
+
+        self.state_engine.set_state()
+
+    @property
+    def move_stop(self):
+        return self._move_stop
+    @move_stop.setter
+    def move_stop(self, value):
+        self._move_stop = value
+
+        if not hasattr(self, "state_engine"):
+            return
+        self.state_engine.set_state()
+
+
 
     def set_speed(self):
         # adjust speed if no energy
@@ -118,3 +130,4 @@ class PanZoomShipMoving:
         # subtract the traveled distance from the ships energy
         traveled_distance = get_distance((self.world_x, self.world_y), self.previous_position)
         self.energy -= traveled_distance * self.energy_use
+        self.set_experience(traveled_distance * TRAVEL_EXPERIENCE_FACTOR)

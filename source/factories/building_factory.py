@@ -111,15 +111,10 @@ class BuildingFactoryJsonDictReader:
     def get_building_names(self, category) -> list:
         return self.json_dict[category].keys()
 
-
     # def insert_technology_upgrade(self):
     #     for category in self.json_dict.values():
     #         for building in category.values():
     #             building['technology_upgrade'] = {}
-
-
-
-
 
     def get_all_building_names(self) -> list:
         building_names = []
@@ -221,7 +216,7 @@ class BuildingFactory(BuildingFactoryJsonDictReader):
             value=widget_value,
             receiver=receiver,
             tooltip="building widget", layer=4, building_production_time=self.get_progress_time_from_buildings_json(widget_name),
-            is_building= is_building
+            is_building=is_building
             )
 
         # add building widget to building cue to make shure it can be build only if building_cue is < building_slots_amount

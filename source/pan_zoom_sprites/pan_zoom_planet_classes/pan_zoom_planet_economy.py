@@ -3,32 +3,29 @@ import random
 from source.app.app_helper import get_sum_up_to_n
 
 from source.factories.building_factory import building_factory
-from source.game_play.ranking import Rank
 from source.handlers.economy_handler import economy_handler
 from source.configuration import global_params
 
 
-class SpecialHandler:#unused
-    def __init__(self):
-        pass
+# class SpecialHandler:#unused
+#     def __init__(self):
+#         pass
+#
+#     def set_specials_icons(self, key, value):
+#         if hasattr(self, key):
+#             print("set_specials_icons:", key, value)
+#
+#     def get_special_string(self, key):
+#         # Specials
+#         specials = eval(self.specials)
+#
+#         for special in specials:
+#             key, operand, value = special.split(" ")
+#             value = float(value)  # Convert the value to a float for arithmetic operations
 
-    def set_specials_icons(self, key, value):
-        if hasattr(self, key):
-            print("set_specials_icons:", key, value)
 
-    def get_special_string(self, key):
-        # Specials
-        specials = eval(self.specials)
-
-        for special in specials:
-            key, operand, value = special.split(" ")
-            value = float(value)  # Convert the value to a float for arithmetic operations
-
-
-class PanZoomPlanetEconomy(Rank):#, SpecialHandler):
+class PanZoomPlanetEconomy():#, SpecialHandler):
     def __init__(self, kwargs):
-        Rank.__init__(self)
-        #SpecialHandler.__init__(self)
         self.population_special = None
         self.technology_special = None
         self.minerals_special = None

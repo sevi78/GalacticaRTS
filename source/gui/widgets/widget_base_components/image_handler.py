@@ -4,13 +4,16 @@ import pygame
 
 
 class ImageHandler:
-
     def __init__(self, **kwargs):
         self.image = kwargs.get("image", None)
         self.image_raw = kwargs.get("image_raw", copy.copy(self.image))
         self.rect = None
         self._image_name_small = kwargs.get("image_name_small")
         self.image_name_big = kwargs.get("image_name_big")
+        self.image_alpha = kwargs.get("image_alpha", None)
+        if self.image_alpha:
+            self.image.set_alpha(self.image_alpha)
+
 
     def alignImageRect(self):
         self.rect.center = (self.screen_x + self.screen_width // 2, self.screen_y + self.screen_height // 2)
@@ -27,6 +30,8 @@ class ImageHandler:
 
     def setImage(self, image):
         image = pygame.transform.scale(image, (self.get_screen_width(), self.get_screen_height()))
+        if self.image_alpha:
+            image.set_alpha(self.image_alpha)
         self.image = image
         self.alignImageRect()
 

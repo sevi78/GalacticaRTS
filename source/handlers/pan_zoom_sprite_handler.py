@@ -25,7 +25,7 @@ class PanZoomLayeredUpdates(LayeredUpdates):
                 continue
 
             rec = spritedict[spr]
-            if not inside_screen(spr.rect.center, border=50):
+            if not inside_screen(spr.rect.center, border=0):
                 if rec is not init_rect:
                     dirty_append(rec)
                 spritedict[spr] = init_rect
@@ -62,12 +62,12 @@ class SpriteGroups:
         self.gif_handlers.update()
         self.collectable_items.update(*args)
         self.ufos.update(*args)
-
+        #self.ships.update()
         self.missiles.update(*args)
         self.explosions.update(*args)
         self.target_objects.update(*args)
         self.moving_images.update()
-        # self.ships.update(*args)
+        self.ships.update(*args)
 
     def draw(self, surface, **kwargs):
         events = kwargs.get("events")
@@ -116,7 +116,7 @@ class SpriteGroups:
             WidgetHandler.draw_layer(events, 10)
 
         # ships must be updated here, because they draw also... this is bullshit but... ;)
-        self.ships.update()
+        #self.ships.update()
 
     def listen(self, events):
         for i in self.planets:

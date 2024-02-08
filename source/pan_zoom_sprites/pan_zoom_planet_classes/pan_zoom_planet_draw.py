@@ -44,58 +44,6 @@ class PanZoomPlanetDraw:
         pygame.draw.circle(self.win, self.frame_color, self.rect.center,
             (self.rect.height / 2) + 4, int(6 * panzoom.zoom))
 
-    def draw_check_image(self):
-        if not self.parent.selected_planet == self and not self.selected:
-            return
-
-        if not inside_screen(self.get_position()):
-            return
-
-        rect = self.check_image.get_rect()
-        rect.x, rect.y = self.get_screen_x(), self.get_screen_y()
-        self.win.blit(self.check_image, rect)
-
-    def draw_selection_circle(self):
-        if not self.parent.selected_planet == self and not self.selected:
-            return
-
-        if not inside_screen(self.get_position()):
-            return
-
-        ui_circle_size = 15
-        panzoom = pan_zoom_handler
-
-        # Define the maximum size and brightness of the pulse
-        max_radius = int(100 * panzoom.zoom)
-
-        if self.selected:
-            max_brightness = 150
-            pulse_time = 1000
-            select_color = pygame.color.THECOLORS["green"]
-        else:
-            max_brightness = 255
-            pulse_time = 2000
-            select_color = self.frame_color
-
-        # Calculate the current size and brightness based on time
-        time = pygame.time.get_ticks()  # Get the current time in milliseconds
-        pulse_progress = (time % pulse_time) / pulse_time  # Calculate the progress of the pulse (0 to 1)
-        current_radius = int(ui_circle_size + pulse_progress * (max_radius - ui_circle_size))
-        current_brightness = int(pulse_progress * max_brightness)
-
-        # Create a surface for the pulse circle
-        pulse_surface = pygame.Surface((current_radius * 2, current_radius * 2), pygame.SRCALPHA)
-
-        # Draw the pulse circle on the surface
-        color = (select_color[0], select_color[1], select_color[2], current_brightness)
-        pygame.draw.circle(pulse_surface, color,
-            (
-                current_radius, current_radius), current_radius,
-            1)
-
-        # Blit the pulse surface onto the window
-        self.win.blit(pulse_surface, (self.center[0] - current_radius, self.center[1] - current_radius))
-
     def draw_specials(self):
         # print ("draw_specials:", self.specials)
         if not inside_screen(self.get_position()):
@@ -104,14 +52,6 @@ class PanZoomPlanetDraw:
         font = pygame.font.SysFont("georgiaproblack", SPECIAL_FONT_SIZE)
         x = self.screen_position[0] + self.screen_width / 2 + 20
         y = self.rect.centery
-
-        if self.alien_population > 0:
-            if self.alien_attitude < 50:
-                alien_image = pygame.transform.scale(get_image("alien_face_orange.png"), (25, 25))
-            else:
-                alien_image = pygame.transform.scale(get_image("alien_face_green.png"), (25, 25))
-            self.win.blit(alien_image, (
-            self.screen_position[0] - self.screen_width / 2 - 60 * self.get_zoom(), self.rect.centery))
 
         if self.specials:
             count = 0
@@ -127,6 +67,16 @@ class PanZoomPlanetDraw:
                         (x + 25, y, 50, 20), font, "left")
                     count += 1
                     y += 20  # Increment y for the next draw
+
+    def draw_alien_population_icons(self):
+        if self.alien_population > 0:
+            x = self.screen_position[0] - self.screen_width / 2 - 60
+            if self.alien_attitude < 50:
+                alien_image = pygame.transform.scale(get_image("alien_face_orange.png"), (25, 25))
+            else:
+                alien_image = pygame.transform.scale(get_image("alien_face_green.png"), (25, 25))
+            self.win.blit(alien_image, (
+                x, self.rect.centery))
 
     def draw_image(self):
         self.win.blit(self.image, self.rect)

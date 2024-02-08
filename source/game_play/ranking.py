@@ -3,7 +3,7 @@ import pygame
 from source.multimedia_library.images import get_image
 
 
-class Rank:
+class Ranking:
     def __init__(self):
         self.rank = "Cadet"
         self.ranks = {0: "Cadet", 1: "Ensign", 2: "Lieutenant", 3: "Commander", 4: "Commodore", 5: "Captain", 6: "Vice Admiral", 7: "Admiral", 8: "Fleet Admiral"}
@@ -20,16 +20,18 @@ class Rank:
             "Admiral": get_image("badge8_43x30.png"),
             "Fleet Admiral": get_image("badge9_44x30.png")
             }
-
         # resize rank images
         self.resize_rank_images()
-
-    def set_rank_from_population(self, population_list):
-        population_list = sorted(set(population_list))
-        for i in range(len(population_list)):
-            if self.population >= population_list[i]:
-                self.rank = self.ranks[i]
 
     def resize_rank_images(self):
         for key, image in self.rank_images.items():
             self.rank_images[key] = pygame.transform.scale(image, (image.get_width() / 2, image.get_height() / 2))
+
+    def set_rank_from_population(self, obj, population_list):
+        # get a list of all possible population ranges: [0, 1000, 2500, 5000, 10000]
+        population_list = sorted(set(population_list))
+
+        # check if objs population bigger than any item in population ranges and set its image based on the index
+        for i in range(len(population_list)):
+            if obj.population >= population_list[i]:
+                obj.rank = self.ranks[i]

@@ -117,7 +117,8 @@ class BoxSelection:
         """
         # select or deselect
         [selected.select(True) for selected in self.selected_objects]
-        [other.select(False) for other in self.selectable_objects if other not in self.selected_objects and other != global_params.app.ship]
+        [other.select(False) for other in self.selectable_objects if
+         other not in self.selected_objects and other != global_params.app.ship]
 
         # set selected planet
         selected_planets = [i for i in self.selected_objects if i.property == "planet"]
@@ -160,7 +161,7 @@ class BoxSelection:
                 return
 
         self.draw()
-        #event_text.text = f"global_params.hover_object: {global_params.hover_object}"
+        # event_text.text = f"global_params.hover_object: {global_params.hover_object}"
         for event in events:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == pygame.BUTTON_LEFT and not pygame.key.get_mods() & pygame.KMOD_CTRL:

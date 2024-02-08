@@ -7,9 +7,19 @@ from source.configuration import global_params
 class PanZoomShipInteraction:
     def __init__(self):
         # functionality
-        self.orbiting = False
+        #self.orbiting = False
         self._selected = False
+
         self.target = None
+
+    # @property
+    # def autopilot(self):
+    #     return self._autopilot
+    #
+    # @autopilot.setter
+    # def autopilot(self, value):
+    #     self._autopilot = value
+    #     self.state_engine.set_state()
 
     @property
     def selected(self):

@@ -186,7 +186,7 @@ class InfoPanelTextGenerator:
 
     def create_info_panel_ship_text(self, ship):
         text = ship.name + ":\n\n"
-        text += "experience: " + str(ship.experience) + "\n"
+        text += f"experience: {int(ship.experience)}\n"
         text += "rank: " + ship.rank + "\n"
         text += "speed: " + str(ship.speed) + "\n\n"
         text += "resources loaded: " + "\n\n"

@@ -306,10 +306,11 @@ class LevelDictGenerator:
                 return f"{planet_name}, {moon_letter}"
 
         except KeyError as e:
-            print ("generate_name error: ", e)
+            print("generate_name error: ", e)
             return "no name generated"
 
-    def create_celestial_object(self, i: int, body_type: str, images: list, orbit_object_id: int, world_x: int, world_y: int):
+    def create_celestial_object(self, i: int, body_type: str, images: list, orbit_object_id: int, world_x: int,
+                                world_y: int):
         name = self.generate_name(i, body_type, orbit_object_id)
         gifs = get_image_names_from_folder("gifs")
         atmospheres = []
@@ -508,11 +509,10 @@ class LevelHandler:
         self.app.calculate_global_production()
 
         # setup pan_zoom_handler
-        #pan_zoom_handler.setup(self.data["globals"]["width"], self.data["globals"]["height"])
+        # pan_zoom_handler.setup(self.data["globals"]["width"], self.data["globals"]["height"])
 
-        #navigate_to([_ for _ in sprite_groups.planets.sprites() if _.id == 0][0])
-        navigate_to_position(self.data["globals"]["width"]/2, self.data["globals"]["height"]/2)
-
+        # navigate_to([_ for _ in sprite_groups.planets.sprites() if _.id == 0][0])
+        navigate_to_position(self.data["globals"]["width"] / 2, self.data["globals"]["height"] / 2)
 
     def save_level(self, filename, folder):
         data = self.generate_level_dict_from_scene()

@@ -1,5 +1,6 @@
 import pygame
 
+from source.game_play.ranking import Ranking
 from source.gui.event_text import event_text
 from source.multimedia_library.images import get_image
 from source.multimedia_library.sounds import sounds
@@ -16,9 +17,12 @@ class PanZoomPlanetParams:
         self.orbit_radius = 0
         self.font_size = kwargs.get('font_size', 20)
         self.font = kwargs.get('font', pygame.font.SysFont(global_params.font_name, self.font_size))
-        self.check_image = get_image("check.png")
         self.show_text = True
         self.under_attack = False
+
+        # rank
+        self.ranking = Ranking()
+        self.rank = "Cadet"
 
     @property
     def image_name_small(self):
@@ -29,9 +33,6 @@ class PanZoomPlanetParams:
         self._image_name_small = value
         # dirty hack to make shure image_raw gets updated
         self.image_raw = get_image(value)
-
-    def set_image_name_small__(self, value):
-        self._image_name_small = value
 
     @property
     def atmosphere_name(self):
@@ -90,6 +91,7 @@ class PanZoomPlanetParams:
             self.explored = True
             self.just_explored = True
             self.string = self.name
+            self.hide_overview_button()
             return
 
         sounds.play_sound(sounds.happy, channel=4)

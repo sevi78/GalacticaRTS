@@ -1,9 +1,9 @@
-from source.game_play.ranking import Rank
+from source.game_play.ranking import Ranking
 from source.gui.event_text import event_text
 from source.multimedia_library.sounds import sounds
 
 
-class PanZoomShipRanking(Rank):
+class PanZoomShipRanking:
     """
     Main functionalities:
     The PanZoomShipRanking class is responsible for ranking the ship based on the experience gained by the player.
@@ -38,25 +38,37 @@ class PanZoomShipRanking(Rank):
     """
 
     def __init__(self):
-        Rank.__init__(self)
-        # ranking
+        # experience
         self.experience = 0
         self.experience_factor = 3000
+
+        # ranking
+        self.ranking = Ranking()
+        self.rank = "Cadet"
 
     def set_experience(self, value):
         self.experience += value
         self.set_rank()
 
     def set_rank(self):
+        # check if experience is big enough to upgrade
         rank_value = int(self.experience / self.experience_factor)
+
+        # limit experience to int >0<8
         if rank_value < 0:
             rank_value = 0
         elif rank_value > 8:
             rank_value = 8
+
+        # get previous rank fot text generation
         prev_rank = self.rank
-        self.rank = self.ranks[rank_value]
-        prev_key = next((key for key, value in self.ranks.items() if value == prev_rank), None)
-        curr_key = next((key for key, value in self.ranks.items() if value == self.rank), None)
+        self.rank = self.ranking.ranks[rank_value]
+
+        # set rank
+        prev_key = next((key for key, value in self.ranking.ranks.items() if value == prev_rank), None)
+        curr_key = next((key for key, value in self.ranking.ranks.items() if value == self.rank), None)
+
+        # generate feedback for player, set event_text and play sound
         if curr_key > prev_key:
             event_text.text = "Congratulations !!! Rank increased from {} to {} !!!".format(prev_rank, self.rank)
             sounds.play_sound(sounds.rank_up)

@@ -7,6 +7,7 @@ from source.gui.panels.toggle_switch import ToggleSwitch
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.handlers.color_handler import colors
+from source.handlers.image_handler import overblit_button_image
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.multimedia_library.images import get_image
 from source.text.info_panel_text_generator import info_panel_text_generator
@@ -225,7 +226,7 @@ class SettingsPanel(WidgetBase):
             i.show_text = not i.show_text
             value = i.show_text
 
-        self.overblit_button_image(button, "uncheck.png", value)
+        overblit_button_image(button, "uncheck.png", value)
     def set_info_text(self):
         global_params.app.info_panel.set_text(info_panel_text_generator.info_text)
         global_params.app.info_panel.set_planet_image(get_image("info_30x30.png"), size=(
@@ -271,4 +272,4 @@ class SettingsPanel(WidgetBase):
 
     def show_tooltip(self, button):
         global_params.app.tooltip_instance.active = not global_params.app.tooltip_instance.active
-        self.overblit_button_image(button, "uncheck.png", global_params.app.tooltip_instance.active)
+        overblit_button_image(button, "uncheck.png", global_params.app.tooltip_instance.active)

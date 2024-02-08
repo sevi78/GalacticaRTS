@@ -82,7 +82,8 @@ class UniverseFactory:  # original for WidgedBase Widgets
         return random.choice(images)
 
     def create_artefacts(self, x, y, width, height, amount):  # orig
-        all_specials = ["food * 1.5", "energy * 1.5", "minerals * 1.5", "water * 1.5", "technology * 1.5", "buildings_max + 1"]
+        all_specials = ["food * 1.5", "energy * 1.5", "minerals * 1.5", "water * 1.5", "technology * 1.5",
+                        "buildings_max + 1"]
 
         def select_resources():
             resources = ["water", "food", "energy", "technology", "minerals"]
@@ -189,8 +190,6 @@ class UniverseFactory:  # original for WidgedBase Widgets
 
     def create_galaxys(self):
         for i in range(max(1, int(self.amount / GALAXY_DIVIDE_FACTOR))):
-            # loop body
-
             image = random.choice(self.galaxy_images)
             w = image.get_rect().width
             h = image.get_rect().height
@@ -233,7 +232,6 @@ class UniverseFactory:  # original for WidgedBase Widgets
 
             comet = Comet(self.win, x, y, w, h, image=image, layer=self.layer, parent=self, type="comet")
 
-
     def create_universe(self, x, y, width, height):
         self.left_end = x
         self.top_end = y
@@ -271,7 +269,9 @@ class UniverseFactory:  # original for WidgedBase Widgets
 
 
 universe_factory = UniverseFactory(global_params.win, 0, 0, global_params.scene_width, global_params.scene_height, layer=0)
-#universe_factory = UniverseFactory(global_params.win, 0, 0, global_params.app.level_handler.data["globals"]["width"], global_params.app.level_handler.data["globals"]["height"], layer=0)
+
+
+# universe_factory = UniverseFactory(global_params.win, 0, 0, global_params.app.level_handler.data["globals"]["width"], global_params.app.level_handler.data["globals"]["height"], layer=0)
 
 
 class Universe:
