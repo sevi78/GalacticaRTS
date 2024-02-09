@@ -525,8 +525,13 @@ class MapPanel:
             # on hover
             if self.frame_rect.collidepoint(pygame.mouse.get_pos()):
                 self.on_hover = True
+                # scale map
                 if event.type == pygame.MOUSEWHEEL and not self.ctrl_pressed:
                     self.scale_map(event)
+
+                # set zoom
+                if event.type == pygame.MOUSEWHEEL and self.ctrl_pressed:
+                    self.update_camera_position()
 
                 # navigate
                 elif event.type == pygame.MOUSEBUTTONDOWN and not self.ctrl_pressed:
