@@ -1,14 +1,8 @@
 import pygame as pg
 import pygame.transform
-
 from source.configuration import global_params
 from source.configuration.global_params import win, WIDTH, HEIGHT
-from source.handlers.file_handler import load_file
 
-settings = load_file("settings.json", "config")
-
-
-# Zoom with mousewheel, pan with left mouse button
 
 class PanZoomHandler:
     """Main functionalities:
@@ -81,10 +75,8 @@ class PanZoomHandler:
 
         self.tab = 1
         self.zoom = 1
-        self.zoom_max = 2.0  # settings["zoom_max"]
-
-        # set tha zoom min based on the level size: width: 1'000'000 results to 0.0009 : 1000/ 1000000 : 1000/ width
-        self.zoom_min = 0.001  # settings["zoom_min"]"zoom_max": 2.0,"zoom_min": 0.005 0.0009
+        self.zoom_max = 2.0
+        self.zoom_min = 0.001
 
         self.update_screen = True
         self.panning = False
@@ -94,26 +86,18 @@ class PanZoomHandler:
         return f"world_offset_x: {self.world_offset_x}, world_offset_y: {self.world_offset_y}, zoom: {self.zoom}"
 
     def listen(self, events, pan_enabled):
-        # print (f"pan_zoom_handler: offset(x,y): {self.world_offset_y}, {self.world_offset_y}, {self.zoom}")
-
         # Mouse screen coords, or map coordinates if mouse on map
         if hasattr(global_params.hover_object, "relative_mouse_x"):
             # Use relative position from the map
             screen_width, screen_height = global_params.win.get_width(), global_params.win.get_height()
             world_width = global_params.app.level_handler.data["globals"]["width"]
             world_height = global_params.app.level_handler.data["globals"]["height"]
-
             mouse_x = screen_width / world_width * global_params.app.map_panel.relative_mouse_x
             mouse_y = screen_height / world_height * global_params.app.map_panel.relative_mouse_y
         else:
             # Use real mouse position
             mouse_x, mouse_y = pg.mouse.get_pos()
 
-
-        # mouse_x, mouse_y = pg.mouse.get_pos()
-        print(f"mouse x,y :{mouse_x}, {mouse_y}, global_parems.hover_object: {global_params.hover_object}"
-              f", app.map.coordinates, x,y : {global_params.app.map_panel.relative_mouse_x},{global_params.app.map_panel.relative_mouse_y}")
-        #mouse_x, mouse_y = pg.mouse.get_pos()
         # event handler
         for event in events:
             # ctrl_pressed
@@ -185,11 +169,9 @@ class PanZoomHandler:
     def get_mouse_world_position(self):
         x, y = pygame.mouse.get_pos()
         mx, my = self.screen_2_world(x, y)
-        # pygame.draw.circle(win, pygame.color.THECOLORS["white"], (mx,my ), 10)
         return mx, my
 
     def set_offset(self, x, y):
-        # self.world_offset_x, self.world_offset_y = self.world_2_screen(x,y)
         self.world_offset_x, self.world_offset_y = self.screen_2_world(x, y)
 
     def set_zoom(self, zoom):
