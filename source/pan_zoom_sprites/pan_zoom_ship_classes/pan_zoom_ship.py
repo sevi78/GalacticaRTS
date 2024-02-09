@@ -10,11 +10,12 @@ from source.gui.lod import inside_screen
 from source.gui.widgets.moving_image import MovingImage, SPECIAL_TEXT_COLOR
 from source.handlers.autopilot_handler import AutopilotHandler
 from source.handlers.file_handler import load_file
-from source.handlers.orbit_handler import orbit
+from source.handlers.orbit_handler import orbit, orbit_ship
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.handlers.position_handler import prevent_object_overlap
 from source.handlers.weapon_handler import WeaponHandler
+from source.handlers.widget_handler import WidgetHandler
 from source.interaction.mouse import Mouse, MouseState
 from source.interfaces.interface import InterfaceData
 from source.multimedia_library.images import get_image
@@ -161,6 +162,30 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
 
         # setup the ship
         self.setup()
+
+    def __delete__(self, instance):
+        # remove all references
+        # if self in self.parent.ships:
+        #     self.parent.ships.remove(self)
+        self.state_engine.__del__()
+        if self in sprite_groups.ships:
+            sprite_groups.ships.remove(self)
+
+        if self.target_object in sprite_groups.ships:
+            sprite_groups.ships.remove(self.target_object)
+
+        self.target_object.kill()
+
+        try:
+            if self in self.parent.box_selection.selectable_objects:
+                self.parent.box_selection.selectable_objects.remove(self)
+        except:
+            pass
+
+        WidgetHandler.remove_widget(self.progress_bar)
+
+        self.progress_bar = None
+        self.kill()
 
     def setup(self):
         data = self.data
@@ -510,7 +535,7 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
             self.moving = False
 
         if self.enemy:
-            orbit(self, self.enemy, self.orbit_speed, self.orbit_direction)
+            orbit_ship(self, self.enemy, self.orbit_speed, self.orbit_direction)
             self.follow_target(self.enemy)
 
             if self.enemy.attitude < 50:
@@ -524,7 +549,7 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
                 print("here to setup trader")
 
         if self.orbit_object:
-            orbit(self, self.orbit_object, self.orbit_speed, self.orbit_direction)
+            orbit_ship(self, self.orbit_object, self.orbit_speed, self.orbit_direction)
 
         if self.energy_reloader:
             # reload ship

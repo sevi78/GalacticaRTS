@@ -90,7 +90,7 @@ class PanZoomSprite(pygame.sprite.Sprite, PanZoomVisibilityHandler, GameObjectDe
             self.gif = get_gif(self.image_name)
             self.gif_frames = get_gif_frames(self.image_name)
             self.gif_fps = get_gif_fps(self.image_name)
-            self.gif_animation_time = kwargs.get("gif_animation_time", get_gif_duration(self.image_name)/1000)
+            self.gif_animation_time = kwargs.get("gif_animation_time", get_gif_duration(self.image_name) / 1000)
             self.image_raw = self.gif_frames[1]
             self.image = copy.copy(self.image_raw)
             self.average_color = get_average_color(self.image_raw)
@@ -204,30 +204,6 @@ class PanZoomSprite(pygame.sprite.Sprite, PanZoomVisibilityHandler, GameObjectDe
         elif self.align_image == "bottomright":
             self.rect.bottomright = self.screen_position
 
-    def update_gif_index__(self):
-        if not self.gif:
-            return
-
-        if not self.gif_frames:
-            return
-
-        if self.gif_start + self.gif_animation_time > time.time():
-            if self.gif_index == 1:
-                if self.sound:
-                    sounds.play_sound(self.sound)
-            # print (f"pan_zoom_sprite_gif: update_gif_index: self.gif_index: {self.gif_index}, len(self.gif_frames): {len(self.gif_frames)}")
-            if self.gif_index == len(self.gif_frames) - 1:
-                if self.loop_gif:
-                    self.gif_index = 1
-                if self.kill_after_gif_loop:
-                    self.kill()
-                    return
-            else:
-                self.image_raw = self.gif_frames[self.gif_index]
-                self.gif_index += 1
-
-            self.gif_start += self.gif_animation_time
-
     def update_gif_index(self):
         if not self.gif:
             return
@@ -263,9 +239,6 @@ class PanZoomSprite(pygame.sprite.Sprite, PanZoomVisibilityHandler, GameObjectDe
 
     def update(self):
         self.update_pan_zoom_sprite()
-
-
-
 
 # def main():
 #     pan_zoom_handler = PanZoomHandler(screen, WIDTH, HEIGHT)

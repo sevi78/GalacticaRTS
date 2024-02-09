@@ -4,6 +4,7 @@ import pygame
 
 from source.configuration import global_params
 from source.configuration.global_params import ui_rounded_corner_small_thickness
+from source.draw.dashed_rectangle import draw_dashed_rounded_rectangle
 from source.game_play.navigation import navigate_to_position
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.handlers.color_handler import colors
@@ -473,7 +474,8 @@ class MapPanel:
         height = global_params.HEIGHT / self.factor / pan_zoom_handler.zoom
 
         # draw the rect onto background_surface
-        pygame.draw.rect(self.background_surface, colors.ui_dark, pygame.Rect(x, y, width, height), 1, 3)
+        pygame.draw.rect(self.background_surface, pygame.color.THECOLORS["lightgreen"], pygame.Rect(x, y, width, height), 1, 3)
+        #draw_dashed_rounded_rectangle(self.background_surface, colors.ui_darker, pygame.Rect(x, y, width, height), 1, 15, 10)
 
     def reposition(self) -> None:
         self.world_y = self.win.get_size()[1] - self.world_height

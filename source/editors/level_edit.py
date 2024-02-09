@@ -37,17 +37,17 @@ class LevelEdit(EditorBase):
         self.inputbox.disable()
 
         # lists
-        self.central_compression_list = [_ for _ in range(100)]
+        self.central_compression_list = [_ for _ in range(101)]
         self.level_list = [_ for _ in range(12)]
-        self.planets_list = [_ for _ in range(1, 25)]
-        self.suns_list = [_ for _ in range(1, 35)]
-        self.moons_list = [_ for _ in range(1, 50)]
-        self.spaceship_list = [_ for _ in range(0, 5)]
-        self.spacehunter_list = [_ for _ in range(0, 5)]
-        self.cargoloader_list = [_ for _ in range(0, 5)]
-        self.width_list = [_ for _ in range(5000, 1000000, 1000)]
-        self.height_list = [_ for _ in range(5000, 1000000, 1000)]
-        self.collectable_item_amount_list = [_ for _ in range(0, 50, 1)]
+        self.planets_list = [_ for _ in range(1, 51)]
+        self.suns_list = [_ for _ in range(1, 31)]
+        self.moons_list = [_ for _ in range(1, 151)]
+        self.spaceship_list = [_ for _ in range(0, 11)]
+        self.spacehunter_list = [_ for _ in range(0, 11)]
+        self.cargoloader_list = [_ for _ in range(0, 11)]
+        self.width_list = [_ for _ in range(5000, 1001000, 1000)]
+        self.height_list = [_ for _ in range(5000, 1001000, 1000)]
+        self.collectable_item_amount_list = [_ for _ in range(0, 101, 1)]
         self.universe_density_list = [_ for _ in range(0, 110, 10)]
         self.lists = ["level_list", "planets_list", "suns_list", "moons_list", "width_list", "height_list",
                       "collectable_item_amount_list", "universe_density_list", "central_compression_list"]

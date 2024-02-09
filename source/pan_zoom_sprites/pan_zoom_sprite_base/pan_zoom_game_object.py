@@ -116,7 +116,7 @@ class PanZoomGameObject(PanZoomSprite):
                 angle = self.prev_angle + 5 * (diff / abs(diff))
 
         self.prev_angle = angle
-        new_image, new_rect = rot_center(self.image, angle, self.rect.x, self.rect.y)
+        new_image, new_rect = rot_center(self.image, angle, self.rect.x, self.rect.y, align= "shipalign")
         self.image = new_image
         self.rect = new_rect
 

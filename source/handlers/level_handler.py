@@ -473,6 +473,16 @@ class LevelHandler:
         # print(f"not in keys(): {[i for i in self.data['celestial_objects']['0'].keys() if i not in self.data_default['celestial_objects']['0'].keys()]}")
         # pprint(self.data['celestial_objects'])
 
+    def setup_pan_zoom_handler(self) -> None:
+        # calculate the min zoom factor
+        pan_zoom_handler.zoom_min = 1000 / self.data["globals"]["width"]
+
+        # set zoom
+        pan_zoom_handler.zoom = pan_zoom_handler.zoom_min
+
+        # navigate zo center of the level
+        navigate_to_position(self.data["globals"]["width"] / 2, self.data["globals"]["height"] / 2)
+
     def load_level(self, filename, folder):
         self.current_game = filename
         self.data = load_file(filename, folder=folder)
@@ -509,10 +519,8 @@ class LevelHandler:
         self.app.calculate_global_production()
 
         # setup pan_zoom_handler
-        # pan_zoom_handler.setup(self.data["globals"]["width"], self.data["globals"]["height"])
+        self.setup_pan_zoom_handler()
 
-        # navigate_to([_ for _ in sprite_groups.planets.sprites() if _.id == 0][0])
-        navigate_to_position(self.data["globals"]["width"] / 2, self.data["globals"]["height"] / 2)
 
     def save_level(self, filename, folder):
         data = self.generate_level_dict_from_scene()

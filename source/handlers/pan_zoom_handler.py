@@ -9,7 +9,6 @@ settings = load_file("settings.json", "config")
 
 # Zoom with mousewheel, pan with left mouse button
 
-
 class PanZoomHandler:
     """Main functionalities:
     The PanZoomHandler class is responsible for handling panning and zooming of the screen in a Pygame application.
@@ -81,8 +80,10 @@ class PanZoomHandler:
 
         self.tab = 1
         self.zoom = 1
-        self.zoom_max = settings["zoom_max"]
-        self.zoom_min = settings["zoom_min"]
+        self.zoom_max = 2.0  # settings["zoom_max"]
+
+        # set tha zoom min based on the level size: width: 1'000'000 results to 0.0009 : 1000/ 1000000 : 1000/ width
+        self.zoom_min = 0.001  # settings["zoom_min"]"zoom_max": 2.0,"zoom_min": 0.005 0.0009
 
         self.update_screen = True
         self.panning = False
@@ -115,7 +116,7 @@ class PanZoomHandler:
         # Set the zoom level to the smaller of the two to ensure the entire level fits on the screen
         self.zoom = min(zoom_x, zoom_y)
 
-    def setup(self, level_width, level_height):
+    def setup__(self, level_width, level_height):
         # Calculate the zoom level needed to fit the entire level on the screen
         zoom_x = self.screen_width / (level_width * 2)
         zoom_y = self.screen_height / (level_height * 2)
@@ -128,7 +129,7 @@ class PanZoomHandler:
         self.world_offset_y = (self.screen_height / 2) / self.zoom - (level_height / 2)
 
     def listen(self, events, pan_enabled):
-        #print (f"pan_zoom_handler: offset(x,y): {self.world_offset_y}, {self.world_offset_y}, {self.zoom}")
+        # print (f"pan_zoom_handler: offset(x,y): {self.world_offset_y}, {self.world_offset_y}, {self.zoom}")
         # Mouse screen coords
         mouse_x, mouse_y = pg.mouse.get_pos()
         # event handler
@@ -206,11 +207,12 @@ class PanZoomHandler:
         return mx, my
 
     def set_offset(self, x, y):
-        #self.world_offset_x, self.world_offset_y = self.world_2_screen(x,y)
+        # self.world_offset_x, self.world_offset_y = self.world_2_screen(x,y)
         self.world_offset_x, self.world_offset_y = self.screen_2_world(x, y)
 
     def set_zoom(self, zoom):
         self.zoom = zoom
+
 
 pan_zoom_handler = PanZoomHandler(
     win, WIDTH, HEIGHT)

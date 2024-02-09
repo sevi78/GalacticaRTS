@@ -11,12 +11,10 @@ class ImageSprite(pygame.sprite.Sprite):
     def __init__(self, x, y, width, height, image, group, **kwargs):
         pygame.sprite.Sprite.__init__(self)
         # define image_raw, to ensure scaling does not pixelize the image
-        #self.image_raw = image
+        self.image_raw = image
 
         # scale image
-        #self.image = pygame.transform.scale(copy.copy(self.image_raw), (width, height))
-        #self.image = pygame.transform.scale(copy.copy(self.image_raw), (width, height))
-        self.image = pygame.transform.scale(image, (width, height))
+        self.image = pygame.transform.scale(copy.copy(self.image_raw), (width, height))
         self.rect = self.image.get_rect()
 
         # set initial position
@@ -31,7 +29,6 @@ class ImageSprite(pygame.sprite.Sprite):
         self._hidden = False
 
         # register at sprite group
-
         getattr(sprite_groups, group).add(self)
 
     def show(self):

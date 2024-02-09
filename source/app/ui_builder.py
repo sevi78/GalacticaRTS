@@ -22,6 +22,7 @@ from source.gui.panels.info_panel import InfoPanel
 from source.gui.panels.resource_panel import ResourcePanel
 from source.gui.panels.settings_panel import SettingsPanel
 from source.gui.tool_tip import ToolTip
+from source.gui.widgets.background_image import BackgroundGradient
 from source.handlers.debug_handler import debugger
 from source.handlers.file_handler import load_file
 from source.handlers.pan_zoom_handler import PanZoomHandler
@@ -31,6 +32,9 @@ EDITOR_HEIGHT = 600
 
 EDITOR_WIDTH = 700
 TOP_SPACING = 5
+
+BACKGROUND_GRADIENT_DRAW = False
+BACKGROUND_GRADIENT_FADE_RANGE = 80
 
 
 class UIBuilder(SceneBuilder):
@@ -59,8 +63,7 @@ class UIBuilder(SceneBuilder):
         self.planet_edit = None
         self.create_editors()
 
-
-
+        # box selection
         self.box_selection = None
 
         # set args
@@ -85,12 +88,12 @@ class UIBuilder(SceneBuilder):
         self.create_resource_panel()
 
         # Info_panel
-        self.info_panel = InfoPanel(self.win, x=0, y=self.settings_panel.surface_rect.bottom, width=240, height=300, isSubWidget=False, parent=self.resource_panel, layer=9)
+        self.info_panel = InfoPanel(self.win, x=0, y=self.settings_panel.surface_rect.bottom, width=240, height=300,
+            isSubWidget=False, parent=self.resource_panel, layer=9)
 
-        # build menu
-        # self.build_menu = None
-        # self.create_build_menu()
-        # self.close_build_menu()
+        # background image (gradient)
+        self.background_gradient = BackgroundGradient(self.win, 0, 0, 1920, 1080, isSubWidget=False,
+            layer=8, draw_gradient=BACKGROUND_GRADIENT_DRAW, fade_range=BACKGROUND_GRADIENT_FADE_RANGE)
 
     def create_editors(self):
         width = EDITOR_WIDTH
@@ -99,9 +102,9 @@ class UIBuilder(SceneBuilder):
         # editors
 
         self.weapon_select = WeaponSelect(pygame.display.get_surface(),
-            pygame.display.get_surface().get_rect().centerx - width*1.5 / 2,
+            pygame.display.get_surface().get_rect().centerx - width * 1.5 / 2,
             pygame.display.get_surface().get_rect().y,
-            width*1.5, height*1.5, parent=self)
+            width * 1.5, height * 1.5, parent=self)
 
         # self.level_select = LevelSelect(pygame.display.get_surface(),
         #     pygame.display.get_surface().get_rect().centerx - width / 2,
@@ -117,7 +120,6 @@ class UIBuilder(SceneBuilder):
             pygame.display.get_surface().get_rect().centerx - width / 2,
             pygame.display.get_surface().get_rect().y,
             800, height, parent=self, obj=None)
-
 
         self.building_edit = BuildingEdit(pygame.display.get_surface(),
             pygame.display.get_surface().get_rect().centerx - width / 2,
@@ -152,7 +154,7 @@ class UIBuilder(SceneBuilder):
         self.trade_edit = TradeEdit(pygame.display.get_surface(),
             pygame.display.get_surface().get_rect().centerx - width / 2,
             pygame.display.get_surface().get_rect().y,
-            width, height, parent=self, obj=None, layer=9)#, game_paused=True)
+            width, height, parent=self, obj=None, layer=9)  # , game_paused=True)
 
         self.economy_overview = EconomyOverview(pygame.display.get_surface(),
             pygame.display.get_surface().get_rect().centerx - width / 2,
@@ -162,13 +164,14 @@ class UIBuilder(SceneBuilder):
     def create_player(self):
         self.player = Player(name="zork",
             color=pygame.Color('red'),
-            stock= {
-            "energy": 1000,
-            "food": 1000,
-            "minerals": 1000,
-            "water": 1000,
-            "technology": 1000,
-            "population": 0},
+            stock={
+                "energy": 1000,
+                "food": 1000,
+                "minerals": 1000,
+                "water": 1000,
+                "technology": 1000,
+                "population": 0
+                },
             clock=0
             )
 

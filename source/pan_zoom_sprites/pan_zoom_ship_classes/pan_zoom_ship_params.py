@@ -90,27 +90,7 @@ class PanZoomShipParams:
 
         self.state_engine = PanZoomShipStateEngine(self)
 
-    def __delete__(self, instance):
-        # remove all references
-        # if self in self.parent.ships:
-        #     self.parent.ships.remove(self)
-        self.state_engine.__del__()
-        if self in sprite_groups.ships:
-            sprite_groups.ships.remove(self)
 
-        if self.target_object in sprite_groups.ships:
-            sprite_groups.ships.remove(self.target_object)
-
-        try:
-            if self in self.parent.box_selection.selectable_objects:
-                self.parent.box_selection.selectable_objects.remove(self)
-        except:
-            pass
-
-        WidgetHandler.remove_widget(self.progress_bar)
-
-        self.progress_bar = None
-        self.kill()
 
     def set_resources(self):
         self.resources = {"minerals": self.minerals,

@@ -22,14 +22,30 @@ def smooth_position(prev_x, prev_y, x, y, smooth):
     return new_x, new_y
 
 
-def rot_center(image, angle, x, y):
+def rot_center(image, angle, x, y, **kwargs):
     """
     rotates the image around its center
     """
+    align = kwargs.get("align", "center")
     rotated_image = pygame.transform.rotate(image, angle)
-    new_rect = rotated_image.get_rect(center=image.get_rect(center=(x, y)).center)
-    # new_rect = rotated_image.get_rect(topleft=image.get_rect(topleft=(x, y)).center)
-    # new_rect = rotated_image.get_rect(topleft=image.get_rect(topleft=(x, y)).center)
+    if align == "center":
+        new_rect = rotated_image.get_rect(center=image.get_rect(center=(x, y)).center)
+
+    if align == "topleft":
+        new_rect = rotated_image.get_rect(topleft=image.get_rect(topleft=(x, y)).center)
+
+    if align == "bottomleft":
+        new_rect = rotated_image.get_rect(bottomleft=image.get_rect(bottomleft=(x, y)).center)
+
+    if align == "topright":
+        new_rect = rotated_image.get_rect(topright=image.get_rect(topright=(x, y)).center)
+
+    if align == "bottomright":
+        new_rect = rotated_image.get_rect(bottomright=image.get_rect(bottomright=(x, y)).center)
+
+    # special hacky align for ships
+    if align == "shipalign":
+        new_rect = rotated_image.get_rect(topleft=image.get_rect(center=(x, y)).center)
 
     return rotated_image, new_rect
 
@@ -47,7 +63,7 @@ def get_distance(pos_a, pos_b):
     return distance
 
 
-def limit_positions(obj, screen_size):
+def limit_positions(obj, screen_size):# unused
     """
     this hides the obj if it is outside the screen
     """

@@ -84,6 +84,7 @@ quadrant_amount = 1
 # global draw_background_image
 # draw_background_image = settings["draw_background_image"]
 
+
 global building_editor_draw
 building_editor_draw = False
 

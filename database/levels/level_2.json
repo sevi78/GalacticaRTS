@@ -14,7 +14,7 @@
             "image_name_small": "sonnecorona_110x110.png",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Herculia",
-            "orbit_angle": 444.6132984632681,
+            "orbit_angle": 517.3482034597312,
             "orbit_distance": 0,
             "orbit_object_id": 0,
             "orbit_speed": 0.0036043064914043684,
@@ -42,7 +42,7 @@
             "image_name_small": "sonnecomic_110x110.png",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Ecliptor",
-            "orbit_angle": 232.3525949364162,
+            "orbit_angle": 261.55060446841975,
             "orbit_distance": 0,
             "orbit_object_id": 1,
             "orbit_speed": 0.0014468785694753863,
@@ -70,7 +70,7 @@
             "image_name_small": "moon1.gif",
             "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
             "name": "Herculia III, c",
-            "orbit_angle": 863.7451629512306,
+            "orbit_angle": 1027.9787394568907,
             "orbit_distance": 0,
             "orbit_object_id": 5,
             "orbit_speed": 0.008138432928922638,
@@ -88,8 +88,8 @@
             "type": "moon",
             "world_height": 34,
             "world_width": 34,
-            "world_x": 4949.569835650952,
-            "world_y": 8566.241775961464
+            "world_x": 4683.485271567423,
+            "world_y": 7333.805740410414
         },
         "11": {
             "alien_attitude": 21,
@@ -105,7 +105,7 @@
             "image_name_small": "moon.gif",
             "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
             "name": "Nebulon IV, d",
-            "orbit_angle": 2040.6253276381794,
+            "orbit_angle": 2454.954109460694,
             "orbit_distance": 0,
             "orbit_object_id": 6,
             "orbit_speed": 0.020531654203286676,
@@ -121,8 +121,8 @@
             "type": "moon",
             "world_height": 47,
             "world_width": 47,
-            "world_x": 6389.561553786047,
-            "world_y": 4206.877087892102
+            "world_x": 7035.210042454215,
+            "world_y": 3524.9673762534494
         },
         "12": {
             "alien_attitude": 81,
@@ -138,7 +138,7 @@
             "image_name_small": "moon.gif",
             "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
             "name": "Astroisle I, e",
-            "orbit_angle": 1261.8910007218647,
+            "orbit_angle": 1469.3414193785356,
             "orbit_distance": 0,
             "orbit_object_id": 2,
             "orbit_speed": 0.010280000924492994,
@@ -156,8 +156,8 @@
             "type": "moon",
             "world_height": 38,
             "world_width": 38,
-            "world_x": 6844.474172668335,
-            "world_y": 3561.741602027096
+            "world_x": 8448.33475467096,
+            "world_y": 3170.014845442873
         },
         "13": {
             "alien_attitude": 71,
@@ -173,7 +173,7 @@
             "image_name_small": "moon1.gif",
             "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
             "name": "Herculia II, f",
-            "orbit_angle": 1410.6574570059745,
+            "orbit_angle": 1688.1251269619622,
             "orbit_distance": 0,
             "orbit_object_id": 4,
             "orbit_speed": 0.013749636766875604,
@@ -189,8 +189,8 @@
             "type": "moon",
             "world_height": 41,
             "world_width": 41,
-            "world_x": 4732.8732507812665,
-            "world_y": 7026.65967846221
+            "world_x": 1938.1947087101917,
+            "world_y": 10214.722753224563
         },
         "14": {
             "alien_attitude": 70,
@@ -206,7 +206,7 @@
             "image_name_small": "moon.gif",
             "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
             "name": "Herculia II, g",
-            "orbit_angle": 2178.053158169972,
+            "orbit_angle": 2613.241155239993,
             "orbit_distance": 0,
             "orbit_object_id": 4,
             "orbit_speed": 0.021565312045090775,
@@ -221,8 +221,8 @@
             "type": "moon",
             "world_height": 41,
             "world_width": 41,
-            "world_x": 4610.989786040385,
-            "world_y": 9190.657137203074
+            "world_x": 2451.1888787977164,
+            "world_y": 7415.346002942386
         },
         "2": {
             "alien_attitude": 50,
@@ -238,7 +238,7 @@
             "image_name_small": "sonnecorona_110x110.png",
             "info_text": "unknown sun:\n\nresources: ???\nenergy: ???\n",
             "name": "Nebulon",
-            "orbit_angle": 418.7589790619593,
+            "orbit_angle": 486.19089211333085,
             "orbit_distance": 0,
             "orbit_object_id": 2,
             "orbit_speed": 0.003341521954972923,
@@ -266,7 +266,7 @@
             "image_name_small": "P0101_40x40.png",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Nebulon I",
-            "orbit_angle": 384.13378166169315,
+            "orbit_angle": 440.71894485194827,
             "orbit_distance": 0,
             "orbit_object_id": 2,
             "orbit_speed": 0.0028040219618511147,
@@ -281,8 +281,8 @@
             "type": "planet",
             "world_height": 69,
             "world_width": 69,
-            "world_x": 9526.336772298222,
-            "world_y": 4407.762966188731
+            "world_x": 8023.7052561911405,
+            "world_y": 1616.2075776008162
         },
         "4": {
             "alien_attitude": 13,
@@ -298,7 +298,7 @@
             "image_name_small": "XKGPRZ 7931_50x50.png",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Herculia II",
-            "orbit_angle": 173.98798678990315,
+            "orbit_angle": 204.0969661365036,
             "orbit_distance": 0,
             "orbit_object_id": 0,
             "orbit_speed": 0.0014920207803095784,
@@ -316,8 +316,8 @@
             "type": "planet",
             "world_height": 65,
             "world_width": 65,
-            "world_x": 2251.4521838667315,
-            "world_y": 8421.410166434729
+            "world_x": 2526.767523623272,
+            "world_y": 8749.031543415193
         },
         "5": {
             "alien_attitude": 93,
@@ -333,7 +333,7 @@
             "image_name_small": "zork_50x50.png",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Herculia III",
-            "orbit_angle": 365.13428492557534,
+            "orbit_angle": 420.351795880213,
             "orbit_distance": 0,
             "orbit_object_id": 0,
             "orbit_speed": 0.0027362493039998197,
@@ -350,8 +350,8 @@
             "type": "planet",
             "world_height": 69,
             "world_width": 69,
-            "world_x": 5143.967150032648,
-            "world_y": 8424.02971033559
+            "world_x": 4351.576554560295,
+            "world_y": 6908.8902622559
         },
         "6": {
             "alien_attitude": 38,
@@ -367,7 +367,7 @@
             "image_name_small": "P0101_150x150.png",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Nebulon IV",
-            "orbit_angle": 106.91494617277179,
+            "orbit_angle": 131.70821336707013,
             "orbit_distance": 0,
             "orbit_object_id": 2,
             "orbit_speed": 0.0012286059065560778,
@@ -383,8 +383,8 @@
             "type": "planet",
             "world_height": 75,
             "world_width": 75,
-            "world_x": 7119.246683360749,
-            "world_y": 5503.501209043547
+            "world_x": 6370.475482160413,
+            "world_y": 2096.940143851534
         },
         "7": {
             "alien_attitude": 10,
@@ -400,7 +400,7 @@
             "image_name_small": "zork_150x150.png",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Herculia V",
-            "orbit_angle": 298.1734680030878,
+            "orbit_angle": 326.7424575689305,
             "orbit_distance": 0,
             "orbit_object_id": 0,
             "orbit_speed": 0.001415708105344479,
@@ -417,8 +417,8 @@
             "type": "planet",
             "world_height": 78,
             "world_width": 78,
-            "world_x": 4647.475527736264,
-            "world_y": 6270.268075327878
+            "world_x": 5478.5661227696055,
+            "world_y": 9534.456783097387
         },
         "8": {
             "alien_attitude": 89,
@@ -434,7 +434,7 @@
             "image_name_small": "moon1.gif",
             "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
             "name": "Herculia V, a",
-            "orbit_angle": 1199.6483538914495,
+            "orbit_angle": 1398.6688490135734,
             "orbit_distance": 0,
             "orbit_object_id": 7,
             "orbit_speed": 0.009862264376727539,
@@ -449,8 +449,8 @@
             "type": "moon",
             "world_height": 46,
             "world_width": 46,
-            "world_x": 3580.404123987835,
-            "world_y": 8144.967862287053
+            "world_x": 7212.312266863958,
+            "world_y": 11059.260912148533
         },
         "9": {
             "alien_attitude": 9,
@@ -466,7 +466,7 @@
             "image_name_small": "moon1.gif",
             "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
             "name": "Lupus I, b",
-            "orbit_angle": 2302.486066233384,
+            "orbit_angle": 2770.444288579004,
             "orbit_distance": 0,
             "orbit_object_id": 1,
             "orbit_speed": 0.023189208243049084,
@@ -484,8 +484,8 @@
             "type": "moon",
             "world_height": 48,
             "world_width": 48,
-            "world_x": 4320.283773907315,
-            "world_y": 6644.652243002789
+            "world_x": 5176.346654342933,
+            "world_y": 7267.095308665702
         }
     },
     "globals": {
@@ -562,10 +562,11 @@
             "crew": 7,
             "crew_max": 12,
             "desired_orbit_radius_raw": 100,
-            "energy": 9306,
+            "energy": 9305.282064314102,
             "energy_max": 10000,
             "energy_reload_rate": 0.1,
             "energy_use": 1.0,
+            "energy_use_max": 10,
             "fog_of_war_radius": 100,
             "fog_of_war_radius_max": 300,
             "food": 0,
@@ -592,18 +593,56 @@
             "water": 0,
             "water_max": 400,
             "weapons": {},
-            "world_x": 8070.8979287751545,
-            "world_y": 6906.468811023583
+            "world_x": 8042.613657527738,
+            "world_y": 6878.184539776166
         },
         "2": {
             "attack_distance_raw": 200,
             "crew": 7,
             "crew_max": 12,
             "desired_orbit_radius_raw": 100,
-            "energy": 10000,
+            "energy": 9265.007610991941,
             "energy_max": 10000,
             "energy_reload_rate": 0.1,
             "energy_use": 1.0,
+            "energy_use_max": 10,
+            "fog_of_war_radius": 100,
+            "fog_of_war_radius_max": 300,
+            "food": 0,
+            "food_max": 500,
+            "min_dist_to_other_ships": 80,
+            "min_dist_to_other_ships_max": 200,
+            "minerals": 0,
+            "minerals_max": 300,
+            "name": "spaceship",
+            "orbit_radius": 160,
+            "orbit_radius_max": 300,
+            "orbit_speed": 0.5,
+            "orbit_speed_max": 0.6,
+            "reload_max_distance_raw": 300,
+            "specials": [],
+            "speed": 1.5,
+            "speed_max": 2.5,
+            "technology": 0,
+            "technology_max": 500,
+            "upgrade_factor": 1.5,
+            "upgrade_factor_max": 3.0,
+            "water": 0,
+            "water_max": 400,
+            "weapons": {},
+            "world_x": 8099.182200022571,
+            "world_y": 6934.753082271
+        },
+        "3": {
+            "attack_distance_raw": 200,
+            "crew": 7,
+            "crew_max": 12,
+            "desired_orbit_radius_raw": 100,
+            "energy": 9960.674894969481,
+            "energy_max": 10000,
+            "energy_reload_rate": 0.1,
+            "energy_use": 1.0,
+            "energy_use_max": 10,
             "fog_of_war_radius": 100,
             "fog_of_war_radius_max": 300,
             "food": 100,
@@ -613,7 +652,7 @@
             "minerals": 100,
             "minerals_max": 200,
             "name": "spaceship",
-            "orbit_radius": 160,
+            "orbit_radius": 190,
             "orbit_radius_max": 300,
             "orbit_speed": 0.5,
             "orbit_speed_max": 0.6,
@@ -628,18 +667,19 @@
             "water": 100,
             "water_max": 200,
             "weapons": {},
-            "world_x": 8014.329386280321,
-            "world_y": 6849.90026852875
+            "world_x": 7986.0451150329045,
+            "world_y": 6821.615997281333
         },
-        "3": {
+        "4": {
             "attack_distance_raw": 200,
             "crew": 7,
             "crew_max": 12,
             "desired_orbit_radius_raw": 100,
-            "energy": 10000,
+            "energy": 9996.486264838488,
             "energy_max": 10000,
             "energy_reload_rate": 0.1,
             "energy_use": 3.0,
+            "energy_use_max": 10,
             "fog_of_war_radius": 100,
             "fog_of_war_radius_max": 300,
             "food": 100,
@@ -649,7 +689,7 @@
             "minerals": 100,
             "minerals_max": 200,
             "name": "cargoloader",
-            "orbit_radius": 190,
+            "orbit_radius": 220,
             "orbit_radius_max": 300,
             "orbit_speed": 0.5,
             "orbit_speed_max": 0.6,
