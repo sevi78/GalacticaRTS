@@ -237,6 +237,9 @@ class PanZoomSprite(pygame.sprite.Sprite, PanZoomVisibilityHandler, GameObjectDe
         if self.debug:
             self.debug_object()
 
+        if global_params.debug:
+            self.debug_object()
+
     def update(self):
         self.update_pan_zoom_sprite()
 

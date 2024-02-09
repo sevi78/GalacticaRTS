@@ -94,7 +94,7 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
                 temp.append(key)
 
         self._selected_planet = None
-        self.select_image = ImageSprite(0,0,25,25, get_image("check.png"), "moving_images", parent=self)
+        self.select_image = ImageSprite(0, 0, 25, 25, get_image("check.png"), "moving_images", parent=self)
 
     @property
     def selected_planet(self):
@@ -244,8 +244,6 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
             sprite_groups.listen(events)
             sprite_groups.draw(self.win, events=events)
 
-
-
             # update box selection, might be mived to self.update
             self.box_selection.listen(events)
 
@@ -301,6 +299,9 @@ def main():
     # create map
     width, height = app.info_panel.world_width, app.info_panel.world_width
     app.map_panel = MapPanel(app.win, app.info_panel.world_x, app.win.get_size()[1] - width, width, height)
+
+
+    # testing
 
     # start game loop
     app.loop()

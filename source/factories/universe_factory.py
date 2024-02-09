@@ -195,7 +195,7 @@ class UniverseFactory:  # original for WidgedBase Widgets
             h = image.get_rect().height
             x, y = get_random_pos(self.left_end, self.right_end, self.top_end, self.bottom_end, self.central_compression)
 
-            galaxy = CelestialObjectStatic(self.win, x, y, w, h, image=image, layer=self.layer, parent=self, type="galaxy")
+            galaxy = CelestialObject(self.win, x, y, w, h, image=image, layer=self.layer, parent=self, type="galaxy")
 
     def create_nebulaes(self):
         for i in range(max(1, int(self.amount / NEBULAE_DIVIDE_FACTOR))):
@@ -204,7 +204,7 @@ class UniverseFactory:  # original for WidgedBase Widgets
             h = image.get_rect().height
             x, y = get_random_pos(self.left_end, self.right_end, self.top_end, self.bottom_end, self.central_compression)
 
-            nebulae = CelestialObjectStatic(self.win, x, y, w, h, image=image, layer=self.layer, parent=self, type="nebulae")
+            nebulae = CelestialObject(self.win, x, y, w, h, image=image, layer=self.layer, parent=self, type="nebulae")
 
     def create_asteroids(self):
         for i in range(max(1, int(self.amount / ASTEROID_DIVIDE_FACTOR))):

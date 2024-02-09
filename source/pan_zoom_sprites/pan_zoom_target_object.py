@@ -12,6 +12,7 @@ class PanZoomTargetObject(PanZoomSprite):
         self.world_height = height
         self.name = "target_object"
         self.property = "target_object"
+        self.type = "target object"
         self.parent = kwargs.get("parent")
         self.hide()
 

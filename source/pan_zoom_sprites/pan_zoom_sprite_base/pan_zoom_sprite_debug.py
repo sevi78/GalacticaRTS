@@ -1,4 +1,5 @@
 import pygame
+from pygame_widgets.util import drawText
 
 from source.configuration import global_params
 from source.handlers.color_handler import colors
@@ -44,3 +45,10 @@ class GameObjectDebug:
                     pos = self.center
                     pygame.draw.line(global_params.win,
                         pygame.color.THECOLORS["blue"], self.rect.center, pos, 1)
+
+
+        # text
+        font = pygame.font.SysFont(global_params.font_name, 18)
+        text = self.type
+        drawText(global_params.app.win, text, self.frame_color, (
+            self.rect.x, self.rect.y, 400, 30), font, "left")

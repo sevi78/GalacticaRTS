@@ -21,6 +21,7 @@ class PanZoomCollectableItem(PanZoomSprite, PanZoomMouseHandler):
         PanZoomSprite.__init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs)
         PanZoomMouseHandler.__init__(self)
         self.property = "item"
+        self.type = "collectable item"
         self.info_text = kwargs.get("infotext")
         self.tooltip = kwargs.get("tooltip", None)
         self.energy = kwargs.get("energy", 0)
@@ -63,5 +64,4 @@ class PanZoomCollectableItem(PanZoomSprite, PanZoomMouseHandler):
         self.listen()
 
         global_params.app.tooltip_instance.reset_tooltip(self)
-        # if global_params.debug:
-        #     self.debug_object()
+

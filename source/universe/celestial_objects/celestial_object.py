@@ -90,9 +90,7 @@ class CelestialObject(WidgetBase):
 
     def draw(self):
         self.set_screen_position()
-        # x, y = self.center
-        #
-        if not inside_screen(self.center, border=0):
+        if not inside_screen(self.center, border=-self.image.get_size()[0]):
             return
         #
         if not self._hidden:
@@ -103,7 +101,9 @@ class CelestialObject(WidgetBase):
 
                 self.rect.x = self.get_screen_x() + self.image.get_size()[0] / 2 * self.get_zoom()
                 self.rect.y = self.get_screen_y() + self.image.get_size()[1] / 2 * self.get_zoom()
+                self.win.blit(self.image, self.rect)
 
+        if global_params.debug:
             self.debug_object()
 
     def debug_object(self):

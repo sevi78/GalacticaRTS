@@ -20,6 +20,8 @@ MAX_MAP_SIZE = 1048
 BUTTON_SIZE = 25
 WARNING_ICON_SIZE = 32
 SCALE_FACTOR = 100
+MIN_CAMERA_FOCUS_DASHED_DRAW = 300
+MIN_CAMERA_FOCUS_DRAW = 100
 
 
 class MapPanel:
@@ -109,6 +111,8 @@ class MapPanel:
         self.name = "map panel"
         self.frame_color = colors.frame_color
         self.factor = self.app.level_handler.data["globals"]["width"] / self.world_width
+        self.relative_mouse_x = 0
+        self.relative_mouse_y = 0
 
         # surfaces, rect
         self.background_surface = pygame.Surface((self.world_width, self.world_height))
@@ -372,6 +376,7 @@ class MapPanel:
 
         # multiply with factor to make sure world position is correct
         x, y = dist_x * self.factor, dist_y * self.factor
+        self.relative_mouse_x, self.relative_mouse_y = x, x
 
         # navigate to position
         navigate_to_position(x, y)
@@ -473,9 +478,20 @@ class MapPanel:
         width = global_params.WIDTH / self.factor / pan_zoom_handler.zoom
         height = global_params.HEIGHT / self.factor / pan_zoom_handler.zoom
 
-        # draw the rect onto background_surface
-        pygame.draw.rect(self.background_surface, pygame.color.THECOLORS["lightgreen"], pygame.Rect(x, y, width, height), 1, 3)
-        #draw_dashed_rounded_rectangle(self.background_surface, colors.ui_darker, pygame.Rect(x, y, width, height), 1, 15, 10)
+        # # draw the rect onto background_surface
+        # if width < MIN_CAMERA_FOCUS_DRAW:
+        #     width, height = 19, 10
+        #     pygame.draw.rect(self.background_surface,
+        #         pygame.color.THECOLORS["orange"], pygame.Rect(x, y, width, height), 1, 3)
+        #
+        # if width in range(MIN_CAMERA_FOCUS_DRAW, MIN_CAMERA_FOCUS_DASHED_DRAW):
+        #     pygame.draw.rect(self.background_surface,
+        #         pygame.color.THECOLORS["lightgreen"], pygame.Rect(x, y, width, height), 1, 3)
+        # else:
+        #     draw_dashed_rounded_rectangle(self.background_surface, colors.ui_darker, pygame.Rect(x, y, width, height), 1, 15, 10)
+
+
+        draw_dashed_rounded_rectangle(self.background_surface, pygame.color.THECOLORS["lightgreen"], pygame.Rect(x, y, width, height), 1, 15, 10)
 
     def reposition(self) -> None:
         self.world_y = self.win.get_size()[1] - self.world_height
