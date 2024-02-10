@@ -1,4 +1,7 @@
+import functools
+
 import pygame
+from functools import lru_cache
 
 from source.handlers.file_handler import soundpath
 
@@ -35,6 +38,7 @@ class Sounds:
     - unload_ship: A sound effect for unloading a ship.
     - rank_up, rank_down: Sound effects for ranking up and down."""
 
+    @lru_cache(maxsize=None)
     def __init__(self):
         """
         use channels for:
@@ -75,8 +79,10 @@ class Sounds:
         self.laser = pygame.mixer.Sound(soundpath + "mixkit-short-laser-gun-shot-1670.wav")
         self.explosion = pygame.mixer.Sound(soundpath + "mixkit-multiple-fireworks-explosions-1689.wav")
 
+    @lru_cache(maxsize=None)
     def get_sound(self, sound):
         return getattr(self, sound)
+
 
     def play_sound(self, sound, **kwargs):
         channel = kwargs.get("channel", 7)

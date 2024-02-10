@@ -131,3 +131,6 @@ class PanZoomShipMoving:
         traveled_distance = get_distance((self.world_x, self.world_y), self.previous_position)
         self.energy -= traveled_distance * self.energy_use
         self.set_experience(traveled_distance * TRAVEL_EXPERIENCE_FACTOR)
+
+    def get_max_travel_range(self):
+        return self.energy / self.energy_use

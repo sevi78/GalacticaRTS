@@ -268,4 +268,5 @@ def find_unused_images_gifs(image_dir, gif_dir, images_dict, gifs_dict):
 
 if LOAD_AT_GAME_START:
     images = load_folders(os.path.join(pictures_path))
+
     #pprint(find_unused_images_gifs(pictures_path, os.path.join(pictures_path, "gifs"), images, gifs))

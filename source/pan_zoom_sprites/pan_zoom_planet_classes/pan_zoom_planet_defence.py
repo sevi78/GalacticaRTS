@@ -3,12 +3,14 @@ import time
 
 import pygame
 
-from source.draw import scope
+
 from source.draw.circles import draw_electromagnetic_impulse
+from source.draw.scope import scope
 from source.draw.zigzag_line import draw_zigzag_line
 from source.factories.building_factory import building_factory
 from source.gui.widgets.progress_bar import ProgressBar
 from source.handlers.color_handler import colors
+from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.interaction.mouse import Mouse
 
 from source.multimedia_library.sounds import sounds
@@ -91,8 +93,7 @@ class PanZoomPlanetDefence:
         elapsed_time_percentage = ((time.time() - self.last_emp) / self.emp_pulse_interval)
 
         # Interpolate the color from green to red based on the elapsed time percentage
-        green_to_red = (
-                               1 - elapsed_time_percentage) * pygame.color.THECOLORS.get("green") + elapsed_time_percentage * pygame.color.THECOLORS.get("red")
+        green_to_red = (1 - elapsed_time_percentage) * pygame.color.THECOLORS.get("green") + elapsed_time_percentage * pygame.color.THECOLORS.get("red")
 
         # Update the progress bar color
         self.emp_progress_display.completedColour = green_to_red
@@ -101,7 +102,7 @@ class PanZoomPlanetDefence:
         self.emp_progress_display.progress = lambda: elapsed_time_percentage * 100
 
     def activate_energy_blast(self):
-        scope.draw_scope(self.parent)
+        scope.draw_scope(self.parent.rect.center, self.attack_distance / pan_zoom_handler.zoom, {})
         if pygame.mouse.get_pressed()[2]:
             hit_obj = Mouse.get_hit_object()
             if hit_obj:

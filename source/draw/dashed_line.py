@@ -2,7 +2,6 @@ import math
 
 import pygame
 
-
 def draw_dashed_line(surf, color, start_pos, end_pos, width=1, dash_length=10):
     x1, y1 = start_pos
     x2, y2 = end_pos

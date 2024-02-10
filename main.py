@@ -1,6 +1,7 @@
+import functools
 import time
 import traceback
-
+from functools import lru_cache
 import pygame
 
 from source.app.app_helper import AppHelper, select_next_item_in_list
@@ -29,6 +30,7 @@ from source.interaction.mouse import Mouse
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.handlers.time_handler import time_handler
+from source.multimedia_library.sounds import sounds
 
 ECONOMY_UPDATE_INTERVAL = 2.0
 
@@ -267,6 +269,10 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
 
             # pprint(f"find_unused_images_gifs: {find_unused_images_gifs(os.path.join(pictures_path), os.path.join(pictures_path + 'gifs'), images, gifs)}")
 
+            # testing
+            # print(f"get_image.cache_info(): {get_image.cache_info()}")
+            # print(f"sounds.get_sound.cache_info(): {sounds.get_sound.cache_info()}")
+
 
 def main():
     EDITOR_WIDTH = 700
@@ -301,7 +307,7 @@ def main():
     app.map_panel = MapPanel(app.win, app.info_panel.world_x, app.win.get_size()[1] - width, width, height)
 
 
-    # testing
+
 
     # start game loop
     app.loop()

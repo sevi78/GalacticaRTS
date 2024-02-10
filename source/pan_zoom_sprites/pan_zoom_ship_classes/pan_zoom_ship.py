@@ -4,16 +4,16 @@ import pygame
 from pygame import Vector2
 
 from source.configuration import global_params
-from source.draw import scope
+from source.draw.scope import scope
 from source.gui.event_text import event_text
 from source.gui.lod import inside_screen
 from source.gui.widgets.moving_image import MovingImage, SPECIAL_TEXT_COLOR
 from source.handlers.autopilot_handler import AutopilotHandler
 from source.handlers.file_handler import load_file
-from source.handlers.orbit_handler import orbit, orbit_ship
+from source.handlers.orbit_handler import orbit_ship
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
-from source.handlers.position_handler import prevent_object_overlap
+from source.handlers.position_handler import prevent_object_overlap, get_distance
 from source.handlers.weapon_handler import WeaponHandler
 from source.handlers.widget_handler import WidgetHandler
 from source.interaction.mouse import Mouse, MouseState
@@ -30,6 +30,7 @@ from source.pan_zoom_sprites.pan_zoom_ship_classes.pan_zoom_ship_ranking import 
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_game_object import PanZoomGameObject
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_mouse_handler import PanZoomMouseHandler
 from source.pan_zoom_sprites.pan_zoom_target_object import PanZoomTargetObject
+from source.text.text_formatter import format_number
 
 
 class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZoomShipRanking, PanZoomShipDraw, PanZoomMouseHandler, PanZoomShipInteraction, InterfaceData):
@@ -489,7 +490,9 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         # why setting th tooltip every frame ?? makes no sense ---
         self.set_tooltip()
         self.listen()
-        scope.draw_scope(self)
+        if self.selected:
+            pre_calculated_energy_use = self.energy_use * get_distance(self.rect.center, pygame.mouse.get_pos()) / pan_zoom_handler.zoom
+            scope.draw_scope(self.rect.center, self.get_max_travel_range(), {"energy use": format_number(pre_calculated_energy_use, 1)})
         self.set_distances()
 
         # also setting the info text is questionable every frame
