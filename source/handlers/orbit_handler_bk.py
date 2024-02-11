@@ -6,7 +6,7 @@ from pygame import Vector2
 from source.configuration import global_params
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
-from source.handlers.position_handler import get_distance
+
 
 
 def get_orbit_pos(self):
@@ -64,7 +64,7 @@ def set_orbit_distance(self, obj):
     """ sets orbit distance, used for displaying the orbit
     """
     if obj:
-        self.orbit_distance = get_distance(self.center, obj.center)
+        self.orbit_distance = math.dist(self.center, obj.center)
     else:
         print("set_orbit_distance: no obj:", self.name, obj.name)
 
@@ -241,7 +241,7 @@ def orbit_ship_(obj, orbit_obj, orbit_speed, direction):
 
 
     # get distance to orbit position
-    if get_distance((obj.world_x,obj.world_y), pos) > 10:
+    if math.dist((obj.world_x,obj.world_y), pos) > 10:
         gradually_move_towards(obj,(obj.world_x,obj.world_y), pos)
     else:
 
@@ -384,7 +384,7 @@ def orbit_ship(obj, orbit_obj, orbit_speed, direction):
     pos = pygame.math.Vector2(obj.orbit_radius, 0).rotate(-obj.orbit_angle)
 
     # Gradually move the object towards the desired initial orbit position
-    if get_distance((obj.world_x, obj.world_y), (orbit_obj.world_x + pos.x, orbit_obj.world_y + pos.y)) > 10:
+    if math.dist((obj.world_x, obj.world_y), (orbit_obj.world_x + pos.x, orbit_obj.world_y + pos.y)) > 10:
         gradually_move_towards(obj, (obj.world_x, obj.world_y), (orbit_obj.world_x + pos.x, orbit_obj.world_y + pos.y))
     else:
         # Update the object's world position

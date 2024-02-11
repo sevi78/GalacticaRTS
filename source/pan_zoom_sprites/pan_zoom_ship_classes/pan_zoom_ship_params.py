@@ -1,11 +1,11 @@
+import math
+
 from source.gui.event_text import event_text
-from source.handlers.widget_handler import WidgetHandler
 from source.pan_zoom_sprites.pan_zoom_ship_classes.pan_zoom_ship_state_engine import PanZoomShipStateEngine
 from source.text.info_panel_text_generator import info_panel_text_generator
 from source.configuration import global_params
 from source.multimedia_library.sounds import sounds
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
-from source.handlers.position_handler import get_distance
 
 SHIP_SPEED = 1.5
 SHIP_GUN_POWER = 30
@@ -91,8 +91,6 @@ class PanZoomShipParams:
 
         self.state_engine = PanZoomShipStateEngine(self)
 
-
-
     def set_resources(self):
         self.resources = {"minerals": self.minerals,
                           "food": self.food,
@@ -119,7 +117,7 @@ class PanZoomShipParams:
 
     def reload_ship(self):
         if self.energy_reloader:
-            dist = get_distance(self.rect.center, self.energy_reloader.rect.center)
+            dist = math.dist(self.rect.center, self.energy_reloader.rect.center)
             if dist > self.reload_max_distance:
                 return
 

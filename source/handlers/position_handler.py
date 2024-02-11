@@ -50,20 +50,7 @@ def rot_center(image, angle, x, y, **kwargs):
     return rotated_image, new_rect
 
 
-def get_distance(pos_a, pos_b):
-    if not pos_a:
-        return 0
-
-    x = pos_a[0]
-    y = pos_a[1]
-    x1 = pos_b[0]
-    y1 = pos_b[1]
-    distance = math.dist((x, y), (x1, y1))
-
-    return distance
-
-
-def limit_positions(obj, screen_size):# unused
+def limit_positions(obj, screen_size):  # unused
     """
     this hides the obj if it is outside the screen
     """
@@ -84,16 +71,12 @@ def limit_positions(obj, screen_size):# unused
         hide_obj_outside_view()
 
 
-def distance_between_points(x1, y1, x2, y2):
-    return math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2)
-
-
-def prevent_object_overlap(objects, min_dist):
+def prevent_object_overlap(objects, min_dist):  # this should be replaced with math.dist
     smoothing = 100
     for obj1 in objects:
         for obj2 in objects:
             if obj1 != obj2:
-                distance = distance_between_points(obj1.world_x, obj1.world_y, obj2.world_x, obj2.world_y)
+                distance = math.dist((obj1.world_x, obj1.world_y), (obj2.world_x, obj2.world_y))
                 if distance < min_dist:
 
                     # Calculate the direction vector
@@ -158,44 +141,6 @@ def align_vertical(rect, v_align):
         return rect.y - rect.height * .3
 
     return rect.y
-
-
-def center_pos(width, height):  # unused
-    """
-    gets center of the screen
-    :param width:
-    :param height:
-    :return: center of the screen
-    """
-    win = pygame.display.get_surface()
-    win_width = win.get_width()
-    win_height = win.get_height()
-
-    x = win_width / 2 - width / 2
-    y = win_height / 2 - height / 2
-    pos = (x, y)
-    return pos
-
-
-def smooth_planet_positions__(width, height):  # original
-
-    for planet in sprite_groups.planets.sprites():
-        # check if has an orbit object
-        if planet.orbit_object:
-            dist_x = abs(planet.world_x - planet.orbit_object.world_x)
-            dist_y = abs(planet.world_x - planet.orbit_object.world_x)
-
-            if planet.world_x + dist_x > width:
-                planet.world_x = width - dist_x
-
-            if planet.world_x - dist_x < 0:
-                planet.world_x = dist_x
-
-            if planet.world_y + dist_y > height:
-                planet.world_y = height - dist_y
-
-            if planet.world_x - dist_y < 0:
-                planet.world_x = dist_y
 
 
 def smooth_planet_positions(width, height):  # ki

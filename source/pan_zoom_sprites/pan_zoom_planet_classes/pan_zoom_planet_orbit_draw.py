@@ -7,7 +7,7 @@ from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.orbit_handler import get_orbit_pos
 from source.configuration import global_params
 from source.handlers.color_handler import colors
-from source.handlers.position_handler import get_distance
+
 
 ORBIT_COLOR = colors.ui_dark
 
@@ -78,12 +78,12 @@ def draw_orbit(self):
             x = pos[0] + radius * math.cos(angle)  # x-coordinate of the current point
             y = pos[1] + radius * math.sin(angle)  # y-coordinate of the current point
             if inside_screen((x, y), border=0):
-                if get_distance(self.center, (x, y)) * self.get_zoom() > min_dist_to_draw / self.get_zoom():
+                if math.dist(self.center, (x, y)) * self.get_zoom() > min_dist_to_draw / self.get_zoom():
                     points.append((int(x), int(y)))
 
         if len(points) > 1:
             for i in points:
-                dist = get_distance(self.center, (i[0], i[1]))
+                dist = math.dist(self.center, (i[0], i[1]))
                 if dist < min_dist:
                     dist = min_dist
                 if dist > max_dist:

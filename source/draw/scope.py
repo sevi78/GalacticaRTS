@@ -1,10 +1,11 @@
+import math
 import pygame
 
 from source.configuration import global_params
 from source.draw.dashed_line import draw_dashed_line
 from source.handlers.color_handler import colors
 from source.handlers.pan_zoom_handler import pan_zoom_handler
-from source.handlers.position_handler import get_distance
+
 from source.multimedia_library.images import get_image
 from source.text.text_formatter import format_number
 
@@ -30,17 +31,17 @@ class Scope:
     def draw_warning_image(self, x, y):
         self.win.blit(self.warn_image, (x, y))
 
-    def draw_scope(self, start_pos: tuple, range_: float, info: dict):
+    def draw_scope(self, start_pos: tuple, range_: float, info: dict) -> bool:
         """
-        draws line to mouse position and draws the scope
+        draws line to mouse position and draws the scope and some info text
         """
-        # if not obj.selected:
-        #     return
-
+        
         # handle different colors depending on distance and hover object
         mouse_x, mouse_y = pygame.mouse.get_pos()
-        distance = get_distance(start_pos, (mouse_x, mouse_y)) / pan_zoom_handler.zoom
+        distance = math.dist(start_pos, (mouse_x, mouse_y)) / pan_zoom_handler.zoom
 
+        # handle range
+        is_inside_range = distance <= range_
         # if hover over a possible target -> green
         if global_params.hover_object:
             color = self.hover_color
@@ -49,9 +50,10 @@ class Scope:
             color = self.base_color
 
         # if distance outside range_
-        if distance > range_:
+        if not is_inside_range:
             color = self.warn_color
-            self.draw_warning_image(mouse_x, mouse_y - SCOPE_SIZE*2 )
+            self.draw_warning_image(mouse_x, mouse_y - SCOPE_SIZE * 2)
+
 
         # draw line from selected object to mouse cursor
         # pygame.draw.line(surface=self.win, start_pos=start_pos, end_pos=(mouse_x, mouse_y), color=color)
@@ -87,50 +89,5 @@ class Scope:
             self.draw_text(mouse_x + SCOPE_SIZE, mouse_y - y - SCOPE_SIZE, color, f"{key}: {value}")
             y += SCOPE_SIZE
 
-        # self.draw_text(mouse_x, mouse_y - SCOPE_SIZE - self.font_size, f"energy use: {distance}")
-
-
-def draw_scope(self):  # original
-    """
-    draws line to mouse position and draws the scope
-    """
-
-    if global_params.hover_object != None:
-        color = colors.hover_color
-        # print("draw_scope", global_params.hover_object,global_params.hover_object.name )
-    else:
-        color = self.frame_color
-
-    # draw line from selected object to mouse cursor
-    if self.selected:
-        pygame.draw.line(surface=self.win, start_pos=self.rect.center, end_pos=pygame.mouse.get_pos(), color=color)
-
-        # scope
-        pos = pygame.mouse.get_pos()
-        size_x = 30
-        size_y = 30
-        arrow = pygame.draw.arc(self.win, color, (
-            (pos[0] - size_x / 2, pos[1] - size_y / 2), (size_x, size_y)), 2, 10, 2)
-
-        arrow = pygame.draw.arc(self.win, color, (
-            (pos[0] - size_x, pos[1] - size_y), (size_x * 2, size_y * 2)), 2, 10, 2)
-
-        # horizontal line
-        factor = size_x / 12
-        x = pos[0] - size_x * factor / 2
-        y = pos[1]
-        x1 = x + size_x * factor
-        y1 = y
-        pygame.draw.line(surface=self.win, start_pos=(x, y), end_pos=(
-            x1, y1), color=color)
-
-        # vertical line
-        x = pos[0]
-        y = pos[1] - size_x * factor / 2
-        x1 = x
-        y1 = y + size_x * factor
-        pygame.draw.line(surface=self.win, start_pos=(x, y), end_pos=(
-            x1, y1), color=color)
-
-
+        return is_inside_range
 scope = Scope(global_params.win)

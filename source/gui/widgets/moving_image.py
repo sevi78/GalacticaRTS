@@ -4,7 +4,7 @@ import time
 import pygame
 
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
-from source.handlers.position_handler import get_distance
+
 from source.text.text_wrap import TextWrap
 
 # Initialize Pygame
@@ -166,7 +166,7 @@ class MovingImage(pygame.sprite.Sprite):
                 return
 
         if self.target:
-            dist = get_distance(self.rect.center, self.target)
+            dist = math.dist(self.rect.center, self.target)
             if dist < 20:
                 if self in sprite_groups.moving_images.sprites():
                     sprite_groups.moving_images.sprites().remove(self)

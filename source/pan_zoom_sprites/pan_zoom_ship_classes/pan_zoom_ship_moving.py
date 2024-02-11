@@ -1,10 +1,10 @@
-from source.handlers.time_handler import time_handler
+import math
+
+
 from source.pan_zoom_sprites.pan_zoom_ship_classes.pan_zoom_ship_params import SHIP_ORBIT_SPEED, SHIP_ORBIT_SPEED_MAX
-from source.handlers.pan_zoom_handler import pan_zoom_handler
-from source.configuration import global_params
-from source.handlers.position_handler import get_distance
+
 from source.multimedia_library.sounds import sounds
-from source.pan_zoom_sprites.pan_zoom_ship_classes.pan_zoom_ship_state_engine import PanZoomShipStateEngine
+
 
 TRAVEL_EXPERIENCE_FACTOR = 0.1
 class PanZoomShipMoving:
@@ -128,7 +128,7 @@ class PanZoomShipMoving:
             return
 
         # subtract the traveled distance from the ships energy
-        traveled_distance = get_distance((self.world_x, self.world_y), self.previous_position)
+        traveled_distance = math.dist((self.world_x, self.world_y), self.previous_position)
         self.energy -= traveled_distance * self.energy_use
         self.set_experience(traveled_distance * TRAVEL_EXPERIENCE_FACTOR)
 

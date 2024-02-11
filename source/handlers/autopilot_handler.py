@@ -4,7 +4,7 @@ import time
 from source.configuration import global_params
 from source.factories.building_factory import building_factory
 from source.handlers.pan_zoom_sprite_handler import sprite_groups, PanZoomLayeredUpdates
-from source.handlers.position_handler import get_distance
+
 
 
 class AutopilotHandler:
@@ -24,7 +24,7 @@ class AutopilotHandler:
         nearest_distance = float('inf')  # Initialize with infinity
 
         for target in targets:
-            distance = get_distance(self.parent.rect.center, target.rect.center)  # Replace with actual positions
+            distance = math.dist(self.parent.rect.center, target.rect.center)  # Replace with actual positions
             if distance < nearest_distance:
                 nearest_distance = distance
                 nearest_target = target

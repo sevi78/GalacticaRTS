@@ -1,9 +1,10 @@
+import math
 from collections import Counter
 
 from source.configuration import global_params
 from source.factories.building_factory import building_factory
 from source.handlers.file_handler import load_file
-from source.handlers.position_handler import distance_between_points, get_distance
+
 from source.text.text_formatter import format_number
 
 
@@ -178,7 +179,7 @@ class InfoPanelTextGenerator:
             text += f"- {resource}\n"
 
         if obj.orbit_object:
-            distance = distance_between_points(obj.world_x, obj.world_y, obj.orbit_object.world_x, obj.orbit_object.world_y)
+            distance = math.dist((obj.world_x, obj.world_y), (obj.orbit_object.world_x, obj.orbit_object.world_y))
             text += (f"\nThe planet's orbits around its sun at a distance of {format_number(distance * 1000, 1)}"
                      f" km with a speed of {format_number(obj.orbit_speed * 1000, 1)}km/s.\n")
 
@@ -250,7 +251,7 @@ class InfoPanelTextGenerator:
             text += f"orbit_radius:{ship.orbit_radius}\n"
             if ship.enemy:
                 text += f"enemy:{ship.enemy}\n"
-                text += f"distance:{get_distance(ship.rect.center, ship.enemy.rect.center)}\n"
+                text += f"distance:{math.dist(ship.rect.center, ship.enemy.rect.center)}\n"
 
             else:
                 text += f"enemy:{None}\n"

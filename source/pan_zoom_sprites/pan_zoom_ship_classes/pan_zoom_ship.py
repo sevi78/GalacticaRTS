@@ -1,3 +1,4 @@
+import math
 import random
 
 import pygame
@@ -13,7 +14,7 @@ from source.handlers.file_handler import load_file
 from source.handlers.orbit_handler import orbit_ship
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
-from source.handlers.position_handler import prevent_object_overlap, get_distance
+from source.handlers.position_handler import prevent_object_overlap
 from source.handlers.weapon_handler import WeaponHandler
 from source.handlers.widget_handler import WidgetHandler
 from source.interaction.mouse import Mouse, MouseState
@@ -491,7 +492,7 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         self.set_tooltip()
         self.listen()
         if self.selected:
-            pre_calculated_energy_use = self.energy_use * get_distance(self.rect.center, pygame.mouse.get_pos()) / pan_zoom_handler.zoom
+            pre_calculated_energy_use = self.energy_use * math.dist(self.rect.center, pygame.mouse.get_pos()) / pan_zoom_handler.zoom
             scope.draw_scope(self.rect.center, self.get_max_travel_range(), {"energy use": format_number(pre_calculated_energy_use, 1)})
         self.set_distances()
 

@@ -1,23 +1,26 @@
+import math
 import random
 import time
 
 import pygame
 
 
-from source.draw.circles import draw_electromagnetic_impulse
+from source.draw.circles import draw_electromagnetic_impulse, draw_dashed_circle
 from source.draw.scope import scope
 from source.draw.zigzag_line import draw_zigzag_line
 from source.factories.building_factory import building_factory
+from source.gui.widgets.moving_image import MovingImage
 from source.gui.widgets.progress_bar import ProgressBar
 from source.handlers.color_handler import colors
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.interaction.mouse import Mouse
+from source.multimedia_library.images import get_image
 
 from source.multimedia_library.sounds import sounds
 from source.handlers.weapon_handler import attack, launch_missile
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.configuration import global_params
-from source.handlers.position_handler import get_distance
+
 
 MISSILE_LAUNCH_INTERVAL = 2
 EMP_PULSE_INTERVAL = 7
@@ -101,22 +104,33 @@ class PanZoomPlanetDefence:
         # Update the progress bar progress
         self.emp_progress_display.progress = lambda: elapsed_time_percentage * 100
 
+    def draw_moving_image(self, defender: object, power: int, velocity: tuple):
+        MovingImage(
+            self.parent.win,
+            defender.rect.top,
+            defender.rect.right,
+            18,
+            18,
+            get_image("energy_25x25.png"),
+            1,
+            velocity,
+            f"-{power}", pygame.color.THECOLORS["red"],
+            "georgiaproblack", 1, defender, target=None)
+
     def activate_energy_blast(self):
-        scope.draw_scope(self.parent.rect.center, self.attack_distance / pan_zoom_handler.zoom, {})
+        if not scope.draw_scope(self.parent.rect.center, self.attack_distance / pan_zoom_handler.zoom, {}):
+            return
+
+        draw_dashed_circle(self.parent.win, colors.ui_darker, self.parent.rect.center, self.attack_distance, 10,1)
         if pygame.mouse.get_pressed()[2]:
             hit_obj = Mouse.get_hit_object()
             if hit_obj:
                 if hit_obj in sprite_groups.ufos.sprites():
                     hit_obj.energy -= ENERGY_BLAST_POWER
+                    self.draw_moving_image(hit_obj, ENERGY_BLAST_POWER, (0,0))
                     global_params.app.player.energy -= ENERGY_BLAST_POWER
                     color = random.choice(list(pygame.color.THECOLORS.keys()))
-                    # draw_zigzag_line(
-                    #     surface=self.parent.win,
-                    #     color=color,
-                    #     start_pos=self.parent.rect.center,
-                    #     end_pos=hit_obj.rect.center,
-                    #     num_segments=24,
-                    #     pan_zoom_handler=pan_zoom_handler)
+
 
                     draw_zigzag_line(
                         surface=self.parent.win,
@@ -145,7 +159,7 @@ class PanZoomPlanetDefence:
         # ckeck for ufos in range self.attack_distance and then activate defence
 
         for ufo in sprite_groups.ufos:
-            dist = get_distance(self.parent.rect.center, ufo.rect.center)
+            dist = math.dist(self.parent.rect.center, ufo.rect.center)
             if dist < self.attack_distance:
                 if "cannon" in defence_units:
                     attack(self.parent, ufo)
