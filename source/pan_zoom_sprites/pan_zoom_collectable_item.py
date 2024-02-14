@@ -1,7 +1,7 @@
-import pygame.draw
-from pygame_widgets import Mouse
-from pygame_widgets.mouse import MouseState
+
+
 from source.gui.lod import inside_screen
+from source.handlers.mouse_handler import mouse_handler, MouseState
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_mouse_handler import PanZoomMouseHandler
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_gif import PanZoomSprite
@@ -47,9 +47,10 @@ class PanZoomCollectableItem(PanZoomSprite, PanZoomMouseHandler):
             return
 
         if not self._hidden and not self._disabled:
-            mouseState = Mouse.getMouseState()
-            if self.rect.collidepoint(pygame.mouse.get_pos()):  # self.contains(x, y):
-                if mouseState == MouseState.HOVER or mouseState == MouseState.DRAG:
+            mouse_state = mouse_handler.get_mouse_state()
+
+            if self.rect.collidepoint(mouse_handler.get_mouse_pos()):  # self.contains(x, y):
+                if mouse_state == MouseState.HOVER or mouse_state == MouseState.LEFT_DRAG:
                     # set tooltip
                     if self.tooltip:
                         if self.tooltip != "":

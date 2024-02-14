@@ -11,13 +11,14 @@ from source.gui.lod import inside_screen
 from source.gui.widgets.moving_image import MovingImage, SPECIAL_TEXT_COLOR
 from source.handlers.autopilot_handler import AutopilotHandler
 from source.handlers.file_handler import load_file
+from source.handlers.mouse_handler import MouseState, mouse_handler
 from source.handlers.orbit_handler import orbit_ship
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.handlers.position_handler import prevent_object_overlap
 from source.handlers.weapon_handler import WeaponHandler
 from source.handlers.widget_handler import WidgetHandler
-from source.interaction.mouse import Mouse, MouseState
+
 from source.interfaces.interface import InterfaceData
 from source.multimedia_library.images import get_image
 from source.multimedia_library.sounds import sounds
@@ -217,7 +218,7 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         self.orbit_radius = 100 + self.id * 30
 
     def set_target(self):
-        target = Mouse.get_hit_object()
+        target = mouse_handler.get_hit_object()
         if target == self:
             return
 
@@ -418,20 +419,80 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         event_text.text = "unloading ship: " + text[:-2]
         sounds.play_sound(sounds.unload_ship)
 
+    # def listen__(self):
+    #     global_params.app.tooltip_instance.reset_tooltip(self)
+    #     if not global_params.app.weapon_select._hidden:
+    #         return
+    #
+    #     if not self._hidden and not self._disabled:
+    #         mouseState = Mouse.getMouseState()
+    #         x, y = Mouse.getMousePos()
+    #
+    #         if self.rect.collidepoint(x, y):
+    #             # if mouseState == MouseState.MIDDLE_RELEASE:
+    #             if global_params.app.mouse_handler.double_clicks == 1:
+    #                 self.open_weapon_select()
+    #
+    #             if mouseState == MouseState.RIGHT_CLICK:
+    #                 if global_params.app.ship == self:
+    #                     if self.selected:
+    #                         pass
+    #                         # self.select(False)
+    #                     else:
+    #                         self.select(True)
+    #
+    #             if mouseState == MouseState.RELEASE and self.clicked:
+    #                 self.clicked = False
+    #
+    #             elif mouseState == MouseState.CLICK:
+    #                 self.clicked = True
+    #                 self.select(True)
+    #                 global_params.app.ship = self
+    #
+    #             elif mouseState == MouseState.DRAG and self.clicked:
+    #                 pass
+    #
+    #             elif mouseState == MouseState.HOVER or mouseState == MouseState.DRAG:
+    #                 self.submit_tooltip()
+    #                 self.draw_hover_circle()
+    #                 self.weapon_handler.draw_attack_distance()
+    #         else:
+    #             self.clicked = False
+    #
+    #             if mouseState == MouseState.CLICK:
+    #                 # if self.selected:
+    #                 #     self.select(False)
+    #                 if not hasattr(self.target, "property"):
+    #                     if not self.moving:
+    #                         self.target = None
+    #
+    #                 if global_params.app.ship == self:
+    #                     global_params.app.ship = None
+    #
+    #             if mouseState == MouseState.RIGHT_CLICK:
+    #                 if self.selected:
+    #                     self.set_target()
+    #                     self.orbit_object = None
+    #                     if Mouse.get_hit_object():
+    #                         self.set_energy_reloader(Mouse.get_hit_object())
+
     def listen(self):
         global_params.app.tooltip_instance.reset_tooltip(self)
         if not global_params.app.weapon_select._hidden:
             return
 
         if not self._hidden and not self._disabled:
-            mouseState = Mouse.getMouseState()
-            x, y = Mouse.getMousePos()
+
+            mouse_state = mouse_handler.get_mouse_state()
+
+            x, y = mouse_handler.get_mouse_pos()
 
             if self.rect.collidepoint(x, y):
-                if mouseState == MouseState.MIDDLE_RELEASE:
+                # if mouse_state == MouseState.MIDDLE_RELEASE:
+                if mouse_handler.double_clicks == 1:
                     self.open_weapon_select()
 
-                if mouseState == MouseState.RIGHT_CLICK:
+                if mouse_state == MouseState.RIGHT_CLICK:
                     if global_params.app.ship == self:
                         if self.selected:
                             pass
@@ -439,25 +500,25 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
                         else:
                             self.select(True)
 
-                if mouseState == MouseState.RELEASE and self.clicked:
+                if mouse_state == MouseState.LEFT_RELEASE and self.clicked:
                     self.clicked = False
 
-                elif mouseState == MouseState.CLICK:
+                elif mouse_state == MouseState.LEFT_CLICK:
                     self.clicked = True
                     self.select(True)
                     global_params.app.ship = self
 
-                elif mouseState == MouseState.DRAG and self.clicked:
+                elif mouse_state == MouseState.LEFT_DRAG and self.clicked:
                     pass
 
-                elif mouseState == MouseState.HOVER or mouseState == MouseState.DRAG:
+                elif mouse_state == MouseState.HOVER or mouse_state == MouseState.LEFT_DRAG:
                     self.submit_tooltip()
                     self.draw_hover_circle()
                     self.weapon_handler.draw_attack_distance()
             else:
                 self.clicked = False
 
-                if mouseState == MouseState.CLICK:
+                if mouse_state == MouseState.LEFT_CLICK:
                     # if self.selected:
                     #     self.select(False)
                     if not hasattr(self.target, "property"):
@@ -467,13 +528,12 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
                     if global_params.app.ship == self:
                         global_params.app.ship = None
 
-                if mouseState == MouseState.RIGHT_CLICK:
+                if mouse_state == MouseState.RIGHT_CLICK:
                     if self.selected:
                         self.set_target()
                         self.orbit_object = None
-                        if Mouse.get_hit_object():
-                            self.set_energy_reloader(Mouse.get_hit_object())
-
+                        if mouse_handler.get_hit_object():
+                            self.set_energy_reloader(mouse_handler.get_hit_object())
     def open_weapon_select(self):
         self.set_info_text()
         if global_params.app.weapon_select.obj == self:

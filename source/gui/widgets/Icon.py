@@ -1,9 +1,10 @@
 import pygame
 from pygame.locals import MOUSEBUTTONDOWN, MOUSEBUTTONUP, MOUSEMOTION
-from pygame_widgets.mouse import Mouse, MouseState
+
 
 from source.configuration import global_params
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
+from source.handlers.mouse_handler import mouse_handler, MouseState
 from source.text.text_formatter import format_number
 
 
@@ -89,11 +90,11 @@ class Icon(WidgetBase):
 
     def listen(self, events):
         self.update(events)
-        mouseState = Mouse.getMouseState()
-        x, y = Mouse.getMousePos()
+        mouse_state = mouse_handler.get_mouse_state()
+        x, y = mouse_handler.get_mouse_pos()
         global_params.app.tooltip_instance.reset_tooltip(self)
         if self.rect.collidepoint(x, y):
-            if mouseState == MouseState.HOVER or mouseState == MouseState.DRAG:
+            if mouse_state == MouseState.HOVER or mouse_state == MouseState.LEFT_DRAG:
                 self.draw_hover_rect()
                 if self.tooltip != "":
                     global_params.tooltip_text = self.tooltip

@@ -2,6 +2,7 @@ import math
 
 import pygame
 
+from source.draw.circles import draw_dashed_circle
 from source.gui.lod import inside_screen
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.orbit_handler import get_orbit_pos
@@ -14,7 +15,7 @@ ORBIT_COLOR = colors.ui_dark
 
 def draw_orbit_simple(self):
     """
-    draws the orbit
+    draws the orbit with points
     """
     if not self.orbit_object:
         return
@@ -38,7 +39,15 @@ def draw_orbit_simple(self):
             for i in points:
                 pygame.draw.rect(global_params.win, ORBIT_COLOR, (i[0], i[1], width, width))
 
+def draw_orbit_simple(self):
+    if not self.orbit_object:
+        return
 
+    if self.orbit_object and global_params.show_orbit:
+        pos = get_orbit_pos(self)
+        radius = self.orbit_radius * pan_zoom_handler.zoom
+
+        draw_dashed_circle(global_params.win, colors.ui_darker, pos, radius, 10,1 )
 def draw_orbit_circle(self):
     """
     draws the orbit
@@ -54,7 +63,7 @@ def draw_orbit_circle(self):
 
 def draw_orbit(self):
     """
-    Draws the orbit
+    Draws the orbit with fancy circles
     """
     if not self.orbit_object or not self.orbit_radius:
         return

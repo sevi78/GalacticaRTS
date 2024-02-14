@@ -36,7 +36,7 @@ class SceneBuilder(EconomyParams, GameObjectStorage):
         self.ui_helper = UIHelper(self)
 
         # planets
-        planet_factory.create_planets_from_data(load_file(f"level_{0}.json", folder="levels"))
+        #planet_factory.create_planets_from_data(load_file(f"level_{0}.json", folder="levels"))
 
         # ship
         win = pygame.display.get_surface()

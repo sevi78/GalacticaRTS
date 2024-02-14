@@ -21,16 +21,16 @@ from source.handlers.economy_handler import economy_handler
 from source.handlers.file_handler import load_file
 from source.handlers.game_event_handler import GameEventHandler
 from source.handlers.level_handler import LevelHandler
-# from source.interaction import copy_agent
+from source.handlers.mouse_handler import mouse_handler
+
 from source.interaction.box_selection import BoxSelection
 from source.configuration import global_params
 from source.configuration.global_params import text_input_active, enable_pan, copy_object
 from source.multimedia_library.images import get_image
-from source.interaction.mouse import Mouse
+
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.handlers.time_handler import time_handler
-from source.multimedia_library.sounds import sounds
 
 ECONOMY_UPDATE_INTERVAL = 2.0
 
@@ -219,7 +219,8 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
 
             # settings
             events = pygame.event.get()
-            Mouse.updateMouseState()
+            # mouse handler
+            mouse_handler.handle_mouse_inputs(events)
 
             # update pan_zoom_handler
             if global_params.enable_zoom:
@@ -230,14 +231,7 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
                         else:
                             self.pan_enabled = True
 
-                    pan_zoom_handler.listen(events, self.pan_enabled)
-
-            # # update sprites
-            # # dont mess up the order! for some reason it must be drawn first then update
-            #
-            # sprite_groups.update(events=events)
-            # sprite_groups.listen(events)
-            # sprite_groups.draw(self.win, events=events)
+                    pan_zoom_handler.listen(events)
 
             # update sprites
             # dont mess up the order! for some reason it must be drawn first then update
@@ -265,7 +259,8 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
             self.map_panel.draw()
 
             # pygame update
-            pygame.display.update()
+            #pygame.display.update()
+            pygame.display.flip()
 
             # pprint(f"find_unused_images_gifs: {find_unused_images_gifs(os.path.join(pictures_path), os.path.join(pictures_path + 'gifs'), images, gifs)}")
 
@@ -282,6 +277,9 @@ def main():
 
     # initialize app
     app = App(global_params.WIDTH, global_params.HEIGHT)
+
+    # initialize value_handler
+    # app.value_handler = ValueHandler()
 
     # initialize editors
     app.box_selection = BoxSelection(app.win, sprite_groups.ships.sprites() + sprite_groups.planets.sprites())
@@ -305,9 +303,6 @@ def main():
     # create map
     width, height = app.info_panel.world_width, app.info_panel.world_width
     app.map_panel = MapPanel(app.win, app.info_panel.world_x, app.win.get_size()[1] - width, width, height)
-
-
-
 
     # start game loop
     app.loop()

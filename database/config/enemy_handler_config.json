@@ -1,8 +1,8 @@
 {
   "enemy handler": {
-    "width": 74,
+    "width": 60,
     "width_max": 90,
-    "height": 30,
+    "height": 21,
     "height_max": 60,
     "speed": 0.62,
     "speed_max": 1.2,

@@ -4,7 +4,7 @@ BORDER = 10
 DEBUG_BORDER = 200
 
 
-def inside_screen(pos, **kwargs):
+def inside_screen(pos: tuple, **kwargs):
     BORDER_ = kwargs.get("border", BORDER)
     win = kwargs.get("win", global_params.win)
 

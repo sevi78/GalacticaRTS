@@ -114,11 +114,17 @@ class UniverseFactory:  # original for WidgedBase Widgets
                        "meteor1_50x50.png"
                        ]
 
+        artefact_sizes = {"artefact1_60x31.png":(60,31),
+                          "meteor_50x50.png":(50,50),
+                          "meteor_60x83.png":(int(60) * .5,int(83) * .5),
+                          "meteor1_50x50.png":(50,50)}
         for i in range(int(amount / 2)):
             x, y = get_random_pos(self.left_end, self.right_end, self.top_end, self.bottom_end, self.central_compression)
             image_name = random.choice(image_names)
-            size = image_name.split("_")[1].split(".png")[0]
-            width, height = int(size.split("x")[0]), int(size.split("x")[1])
+            #size = image_name.split("_")[1].split(".png")[0]
+            size = artefact_sizes[image_name]
+            #width, height = int(size.split("x")[0]), int(size.split("x")[1])
+            width, height =  size
             selected_resources = select_resources()
             specials = [random.choice(all_specials)]
 
@@ -145,7 +151,7 @@ class UniverseFactory:  # original for WidgedBase Widgets
             selected_resources = select_resources()
             specials = [random.choice(all_specials)]
             artefact = PanZoomCollectableItem(global_params.win,
-                x=x, y=y, width=50, height=50,
+                x=x, y=y, width=60, height=60,
                 pan_zoom=pan_zoom_handler,
                 image_name="sphere.gif",
                 isSubWidget=False,

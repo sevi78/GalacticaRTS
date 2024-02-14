@@ -12,7 +12,7 @@ class InfoPanelTextGenerator:
     def __init__(self):
         self.json_dict = load_file("buildings.json", "config")
         self.info_text = (f"Ships:\n\nright click to move to a planet, or reload the ship."
-                          f"\n\nctrl and mouse click to navigate\n\nmouse wheel click to open upgrade menu\n\n"
+                          f"\n\nmouse wheel click to navigate\n\ndouble click on ship to open upgrade menu\n\n"
                           f"press SPACE to pause game.\n\n\n\nproduce enough food to make you population grow! ")
 
     def get_building(self, building):

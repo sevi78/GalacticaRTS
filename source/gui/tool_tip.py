@@ -1,9 +1,10 @@
 import pygame
 from pygame.locals import MOUSEMOTION
-from pygame_widgets import Mouse
+
 
 from source.configuration import global_params
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
+from source.handlers.mouse_handler import mouse_handler
 
 INVISIBLE_X = -1000
 INVISIBLE_Y = -1000
@@ -117,7 +118,7 @@ class ToolTip(WidgetBase):
             self.visible = False
 
     def reset_tooltip(self, obj):
-        x, y = Mouse.getMousePos()
+        x, y = mouse_handler.get_mouse_pos()
         if obj.on_hover_release_callback(x, y, obj.rect):
             global_params.tooltip_text = ""
 

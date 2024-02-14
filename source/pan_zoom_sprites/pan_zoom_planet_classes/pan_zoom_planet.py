@@ -2,10 +2,11 @@ import time
 
 import pygame
 from pygame import MOUSEBUTTONDOWN, MOUSEBUTTONUP, MOUSEMOTION
-from pygame_widgets.mouse import Mouse, MouseState
+
 
 from source.draw.circles import draw_transparent_circle
 from source.gui.lod import inside_screen
+from source.handlers.mouse_handler import mouse_handler, MouseState
 from source.handlers.widget_handler import WidgetHandler
 from source.pan_zoom_sprites.pan_zoom_planet_classes.pan_zoom_planet_orbit_draw import draw_orbits
 from source.pan_zoom_sprites.pan_zoom_planet_classes.pan_zoom_planet_position_handler import \
@@ -196,6 +197,8 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
             if self.gif:
                 pygame.draw.rect(self.win, pygame.color.THECOLORS["red"], self.gif_handler.rect, 1)
 
+
+
     def listen(self, events):
         """ Wait for inputs
 
@@ -205,24 +208,24 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
         self.move(events, None)
 
         if not self._hidden and not self._disabled:
-            mouseState = Mouse.getMouseState()
-            x, y = Mouse.getMousePos()
+            mouse_state = mouse_handler.get_mouse_state()
+            x, y = mouse_handler.get_mouse_pos()
 
             if self.rect.collidepoint(x, y):
-                if mouseState == MouseState.RIGHT_CLICK:
+                if mouse_state == MouseState.RIGHT_CLICK:
                     self.parent.set_selected_planet(self)
 
-                if mouseState == MouseState.RELEASE and self.clicked:
+                if mouse_state == MouseState.LEFT_RELEASE and self.clicked:
                     self.clicked = False
 
-                elif mouseState == MouseState.CLICK:
+                elif mouse_state == MouseState.LEFT_CLICK:
                     self.clicked = True
                     self.parent.set_selected_planet(self)
 
-                elif mouseState == MouseState.DRAG and self.clicked:
+                elif mouse_state == MouseState.LEFT_DRAG and self.clicked:
                     pass
 
-                elif mouseState == MouseState.HOVER or mouseState == MouseState.DRAG:
+                elif mouse_state == MouseState.HOVER or mouse_state == MouseState.LEFT_DRAG:
                     self.draw_hover_circle()
                     if self.tooltip != "":
                         global_params.tooltip_text = self.tooltip
@@ -233,7 +236,6 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
                     self.show_overview_button()
             else:
                 self.clicked = False
-
     def update(self):
         self.set_screen_position()
         self.update_pan_zoom_sprite()

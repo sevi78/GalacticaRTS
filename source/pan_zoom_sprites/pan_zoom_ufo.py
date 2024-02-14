@@ -11,10 +11,11 @@ from source.gui.widgets.widget_base_components.interaction_handler import Intera
 from source.handlers.color_handler import colors
 from source.handlers.file_handler import load_file
 from source.handlers.garbage_handler import garbage_handler
+from source.handlers.mouse_handler import mouse_handler, MouseState
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.handlers.weapon_handler import WeaponHandler
 from source.handlers.widget_handler import WidgetHandler
-from source.interaction.mouse import Mouse, MouseState
+
 from source.multimedia_library.gif_handler import GifHandler
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_game_object import PanZoomGameObject
 from source.text.info_panel_text_generator import info_panel_text_generator
@@ -80,7 +81,7 @@ class PanZoomUfo(PanZoomGameObject, InteractionHandler):
         self.tooltip = "this is a u.f.o,   might be dangerous!"
         self.attack_distance_raw = pan_zoom_ufo_config["attack_distance"]
         self.attack_distance = self.attack_distance_raw
-        self.gun_power = 0
+        self.gun_power = 10
         self.emp_attacked = False
         self.gif = "electro_discharge.gif"
         self.gif_handler = GifHandler(self, self.gif, loop=True, relative_gif_size=1.2, offset_y=5, layer=self.layer+1)
@@ -100,7 +101,6 @@ class PanZoomUfo(PanZoomGameObject, InteractionHandler):
             )
 
         # gun
-
         self.weapon_handler = WeaponHandler(self, kwargs.get("current_weapon", "laser"))
         self.weapon_handler.gun_power = pan_zoom_ufo_config["gun_power"]
 
@@ -108,7 +108,7 @@ class PanZoomUfo(PanZoomGameObject, InteractionHandler):
         sprite_groups.ufos.add(self)
 
     def setup(self):
-        data = load_file("enemy_handler_config.json")
+        data = pan_zoom_ufo_config
         for name, dict in data.items():
             for key, value in dict.items():
                 if key in self.__dict__ or key in self.__slots__:
@@ -153,25 +153,26 @@ class PanZoomUfo(PanZoomGameObject, InteractionHandler):
             return
 
         if self.target.property == "ship":
-            self.target.energy -= self.gun_power
+            self.target.energy -= self.weapon_handler.gun_power
             if self.target.energy < 0:
                 self.target.explode()
                 self.set_random_target(immediately=True)
 
-        if self.target.population - self.gun_power / 100 > 0:
+        if self.target.population - self.weapon_handler.gun_power / 100 > 0:
             self.target.under_attack = True
-            self.target.population -= self.gun_power / 100
+            self.target.population -= self.weapon_handler.gun_power / 100
             event_text.text = f"ufo attack !!!!, people are getting killed at {self.target.name}! {int(self.target.population)}"
+
 
 
     def listen(self):
         if not self._hidden and not self._disabled:
-            mouseState = Mouse.getMouseState()
-            x, y = Mouse.getMousePos()
+            mouse_state = mouse_handler.get_mouse_state()
+            x, y = mouse_handler.get_mouse_pos()
             global_params.app.tooltip_instance.reset_tooltip(self)
 
             if self.rect.collidepoint(x, y):
-                if mouseState == MouseState.HOVER or mouseState == MouseState.DRAG:
+                if mouse_state == MouseState.HOVER or mouse_state == MouseState.LEFT_DRAG:
 
                     # set tooltip
                     if self.tooltip:
@@ -185,6 +186,8 @@ class PanZoomUfo(PanZoomGameObject, InteractionHandler):
                             global_params.app.info_panel.set_text(self.info_text)
                             global_params.app.info_panel.set_planet_image(self.image_raw, size=(
                                 self.image_raw.get_width(), self.image_raw.get_height()), align="topright")
+
+
 
     def appear(self):
         if self.shrink >= 1.0:

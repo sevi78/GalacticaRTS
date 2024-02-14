@@ -5,7 +5,7 @@ from source.configuration.global_params import win, WIDTH, HEIGHT
 from source.handlers.value_handler import ValueHandler, ValueSmoother
 
 
-class PanZoomHandler:  # original
+class PanZoomHandler:
     """Main functionalities:
     The PanZoomHandler class is responsible for handling panning and zooming of the screen in a Pygame application.
     It allows the user to zoom in and out using the mouse wheel while holding down the control key, and to pan the
@@ -54,6 +54,9 @@ class PanZoomHandler:  # original
     - pan_start_pos: starting position of the mouse during a pan event"""
 
     def __init__(self, screen, screen_width, screen_height):
+        self.key_pressed = False
+        self.ctrl_pressed = False
+        self.zoomable = False
         self.zoomable_widgets = []
         self.screen_width = screen_width
         self.screen_height = screen_height
@@ -109,57 +112,9 @@ class PanZoomHandler:  # original
         self.zoom = zoom
 
     def listen(self, events):
+        # self.value_handler.update()
+
         # Mouse screen coords, or map coordinates if mouse on map
-        mouse_x, mouse_y = self.get_relative_mouse_position()
-
-        # event handler
-        for event in events:
-            # mouse
-            if event.type == pg.MOUSEBUTTONDOWN:  # and self.ctrl_pressed:
-                if event.button in [4, 5]:
-                    # X and Y before the zoom
-                    self._set_mouse_world_before(mouse_x, mouse_y)
-
-                    # ZOOM IN/OUT
-                    self._zoom_in_out(event)
-
-                    # X and Y after the zoom
-                    self._set_mouse_world_after(mouse_x, mouse_y)
-
-                    # Do the difference between before and after, and add it to the offset
-                    self._set_world_offset()
-
-                elif event.button == 2:
-                    # PAN START
-                    self.panning = True
-                    self.pan_start_pos = mouse_x, mouse_y
-
-
-            elif event.type == pg.MOUSEBUTTONUP:
-                if event.button == 2 and self.panning:
-                    # PAN STOP
-                    self.panning = False
-
-            if self.panning:
-                self.pan(mouse_x, mouse_y)
-
-    def _zoom_in_out(self, event):
-        if event.button == 4 and self.zoom < self.zoom_max:
-            self.set_zoom(self.zoom * self.scale_up)
-        elif event.button == 5 and self.zoom > self.zoom_min:
-            self.set_zoom(self.zoom * self.scale_down)
-
-    def _set_world_offset(self):
-        self.world_offset_x += self.mouseworld_x_before - self.mouseworld_x_after
-        self.world_offset_y += self.mouseworld_y_before - self.mouseworld_y_after
-
-    def _set_mouse_world_after(self, mouse_x, mouse_y):
-        self.mouseworld_x_after, self.mouseworld_y_after = self.screen_2_world(mouse_x, mouse_y)
-
-    def _set_mouse_world_before(self, mouse_x, mouse_y):
-        self.mouseworld_x_before, self.mouseworld_y_before = self.screen_2_world(mouse_x, mouse_y)
-
-    def get_relative_mouse_position(self) -> (int, int):
         if hasattr(global_params.hover_object, "relative_mouse_x"):
             # Use relative position from the map
             screen_width, screen_height = global_params.win.get_width(), global_params.win.get_height()
@@ -169,13 +124,68 @@ class PanZoomHandler:  # original
             mouse_y = screen_height / world_height * global_params.app.map_panel.relative_mouse_y
         else:
             # Use real mouse position
-            mouse_x, mouse_y = self.get_mouse_position()
+            mouse_x, mouse_y = pg.mouse.get_pos()
 
-        return mouse_x, mouse_y
+        # event handler
+        for event in events:
+            # ctrl_pressed
+            if event.type == pygame.KEYDOWN:
+                if pygame.key.get_mods() & pygame.KMOD_CTRL:
+                    self.ctrl_pressed = True
+            elif event.type == pygame.KEYUP:
+                self.ctrl_pressed = False
 
-    def get_mouse_position(self):
-        mouse_x, mouse_y = pg.mouse.get_pos()
-        return mouse_x, mouse_y
+            # mouse
+            if event.type == pg.MOUSEBUTTONDOWN and pygame.key.get_mods() & pygame.KMOD_CTRL:
+                if event.button == pg.BUTTON_WHEELUP:
+                    # X and Y before the zoom
+                    self.mouseworld_x_before, self.mouseworld_y_before = self.screen_2_world(mouse_x, mouse_y)
+
+                    # ZOOM IN
+                    if self.zoom < self.zoom_max:
+                        self.zoom *= self.scale_up
+                    # ZOOM OUT
+                    elif self.zoom > self.zoom_min:
+                        self.zoom *= self.scale_down
+
+                    # X and Y after the zoom
+                    self.mouseworld_x_after, self.mouseworld_y_after = self.screen_2_world(mouse_x, mouse_y)
+
+                    # Do the difference between before and after, and add it to the offset
+                    self.world_offset_x += self.mouseworld_x_before - self.mouseworld_x_after
+                    self.world_offset_y += self.mouseworld_y_before - self.mouseworld_y_after
+
+                elif event.button == pg.BUTTON_WHEELDOWN:
+                    # X and Y before the zoom
+                    self.mouseworld_x_before, self.mouseworld_y_before = self.screen_2_world(mouse_x, mouse_y)
+
+                    # ZOOM OUT
+                    if self.zoom > self.zoom_min:
+                        self.zoom *= self.scale_down
+                    # ZOOM IN
+                    elif self.zoom < self.zoom_max:
+                        self.zoom *= self.scale_up
+
+                    # X and Y after the zoom
+                    self.mouseworld_x_after, self.mouseworld_y_after = self.screen_2_world(mouse_x, mouse_y)
+
+                    # Do the difference between before and after, and add it to the offset
+                    self.world_offset_x += self.mouseworld_x_before - self.mouseworld_x_after
+                    self.world_offset_y += self.mouseworld_y_before - self.mouseworld_y_after
+
+            elif event.type == pg.MOUSEBUTTONDOWN:
+                if event.button == pg.BUTTON_LEFT:
+                    # PAN START
+                    self.panning = True
+                    self.pan_start_pos = mouse_x, mouse_y
+
+            elif event.type == pg.MOUSEBUTTONUP:
+                if event.button == pg.BUTTON_LEFT and self.panning:
+                    # PAN STOP
+                    self.panning = False
+
+        if self.panning:
+            self.pan(mouse_x, mouse_y)
 
 
 pan_zoom_handler = PanZoomHandler(

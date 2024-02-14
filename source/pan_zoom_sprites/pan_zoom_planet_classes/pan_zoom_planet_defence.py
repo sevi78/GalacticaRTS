@@ -12,8 +12,8 @@ from source.factories.building_factory import building_factory
 from source.gui.widgets.moving_image import MovingImage
 from source.gui.widgets.progress_bar import ProgressBar
 from source.handlers.color_handler import colors
+from source.handlers.mouse_handler import mouse_handler
 from source.handlers.pan_zoom_handler import pan_zoom_handler
-from source.interaction.mouse import Mouse
 from source.multimedia_library.images import get_image
 
 from source.multimedia_library.sounds import sounds
@@ -123,7 +123,7 @@ class PanZoomPlanetDefence:
 
         draw_dashed_circle(self.parent.win, colors.ui_darker, self.parent.rect.center, self.attack_distance, 10,1)
         if pygame.mouse.get_pressed()[2]:
-            hit_obj = Mouse.get_hit_object()
+            hit_obj = mouse_handler.get_hit_object()
             if hit_obj:
                 if hit_obj in sprite_groups.ufos.sprites():
                     hit_obj.energy -= ENERGY_BLAST_POWER

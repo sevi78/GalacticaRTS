@@ -1,11 +1,11 @@
 import pygame
-from pygame_widgets import Mouse
-from pygame_widgets.mouse import MouseState
+
 
 from source.configuration import global_params
 from source.factories.building_factory import building_factory
 from source.gui.lod import inside_screen
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
+from source.handlers.mouse_handler import mouse_handler, MouseState
 
 
 class ImageButton(WidgetBase):
@@ -81,15 +81,15 @@ class ImageButton(WidgetBase):
         if global_params.app:
             global_params.app.tooltip_instance.reset_tooltip(self)
         if not self._hidden and not self._disabled:
-            mouseState = Mouse.getMouseState()
-            x, y = Mouse.getMousePos()
+            mouse_state = mouse_handler.get_mouse_state()
+            x, y = mouse_handler.get_mouse_pos()
 
             if self.rect.collidepoint(x, y):
-                if mouseState == MouseState.RELEASE and self.clicked:
+                if mouse_state == MouseState.LEFT_RELEASE and self.clicked:
                     self.clicked = False
                     self.onRelease(*self.onReleaseParams)
 
-                elif mouseState == MouseState.CLICK:
+                elif mouse_state == MouseState.LEFT_CLICK:
                     self.clicked = True
                     self.onClick(*self.onClickParams)
 
@@ -101,10 +101,10 @@ class ImageButton(WidgetBase):
                     if hasattr(self.parent, "on_resource_click"):
                         self.parent.on_resource_click(self)
 
-                elif mouseState == MouseState.DRAG and self.clicked:
+                elif mouse_state == MouseState.LEFT_DRAG and self.clicked:
                     pass
 
-                elif mouseState == MouseState.HOVER or mouseState == MouseState.DRAG:
+                elif mouse_state == MouseState.HOVER or mouse_state == MouseState.LEFT_DRAG:
                     self.draw_hover_rect()
 
                     # set info_panel

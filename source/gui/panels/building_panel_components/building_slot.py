@@ -33,7 +33,7 @@ class BuildingSlot:
         self.plus_just_hovered = False
         self.minus_just_hovered = False
 
-    def set_building_slot_tooltip_plus(self, events):
+    def set_building_slot_tooltip_plus(self):
         # if not planet selected, do nothing
         if not self.parent.selected_planet:
             return
@@ -69,7 +69,7 @@ class BuildingSlot:
 
         self.submit_tooltip()
 
-    def set_building_slot_tooltip_minus(self, events):
+    def set_building_slot_tooltip_minus(self):
         # if not planet selected, do nothing
         if not self.parent.selected_planet:
             return

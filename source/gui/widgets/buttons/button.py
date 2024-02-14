@@ -1,10 +1,11 @@
 import pygame
-from pygame_widgets.mouse import MouseState, Mouse
+
 
 from source.configuration import global_params
 from source.gui.lod import inside_screen
 from source.gui.widgets.buttons.moveable import Moveable
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
+from source.handlers.mouse_handler import mouse_handler, MouseState
 
 REPEAT_CLICK_EVENT = pygame.USEREVENT + 1
 INITIAL_DELAY_EVENT = pygame.USEREVENT + 2
@@ -125,13 +126,13 @@ class Button(WidgetBase, Moveable):
         global_params.app.tooltip_instance.reset_tooltip(self)
 
         if not self._hidden and not self._disabled:
-            mouseState = Mouse.getMouseState()
-            x, y = Mouse.getMousePos()
+            mouse_state = mouse_handler.get_mouse_state()
+            x, y = mouse_handler.get_mouse_pos()
 
             if self.rect.collidepoint(x, y):
                 for event in events:
                     if event.type == pygame.MOUSEBUTTONDOWN:
-                        if mouseState == MouseState.CLICK:
+                        if mouse_state == MouseState.LEFT_CLICK:
                             self.clicked = True
                             self.onClick(*self.onClickParams)
                             self.colour = self.pressedColour
@@ -174,7 +175,7 @@ class Button(WidgetBase, Moveable):
 
 
                     elif event.type == pygame.MOUSEBUTTONUP:
-                        if mouseState == MouseState.RELEASE and self.clicked:
+                        if mouse_state == MouseState.LEFT_RELEASE and self.clicked:
                             self.clicked = False
                             self.onRelease(*self.onReleaseParams)
 
@@ -182,12 +183,12 @@ class Button(WidgetBase, Moveable):
                             if self.repeat_clicks:
                                 pygame.time.set_timer(REPEAT_CLICK_EVENT, 0)  # Setting delay to 0 stops the timer
 
-                    elif mouseState == MouseState.DRAG and self.clicked:
+                    elif mouse_state == MouseState.LEFT_DRAG and self.clicked:
                         self.colour = self.pressedColour
                         self.borderColour = self.pressedBorderColour
                         self.drawCircle(self.pressedColour, 128)
 
-                    elif mouseState == MouseState.HOVER or mouseState == MouseState.DRAG:
+                    elif mouse_state == MouseState.HOVER or mouse_state == MouseState.LEFT_DRAG:
                         self.colour = self.hoverColour
                         self.borderColour = self.hoverBorderColour
                         self.drawCircle(self.hoverColour, 128)
@@ -212,7 +213,7 @@ class Button(WidgetBase, Moveable):
 
 
     def draw(self):
-        """ Display to surface """
+        # """ Display to surface """
         self.update_position()
         if not inside_screen(self.get_position(), border=0):
             return

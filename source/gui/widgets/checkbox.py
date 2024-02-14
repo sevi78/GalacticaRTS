@@ -1,9 +1,9 @@
 import pygame
-from pygame_widgets import Mouse
-from pygame_widgets.mouse import MouseState
+
 
 from source.configuration import global_params
 from source.gui.widgets.buttons.image_button import ImageButton
+from source.handlers.mouse_handler import mouse_handler, MouseState
 from source.multimedia_library.images import images, pictures_path, get_image
 
 BUTTON_SIZE = 30
@@ -75,11 +75,11 @@ class Checkbox(ImageButton):
             self.draw_image()
             global_params.app.tooltip_instance.reset_tooltip(self)
 
-            mouseState = Mouse.getMouseState()
-            x, y = Mouse.getMousePos()
+            mouse_state = mouse_handler.get_mouse_state()
+            x, y = mouse_handler.get_mouse_pos()
 
             if self.rect.collidepoint(x, y):  # checks if mouse over ??
-                if mouseState == MouseState.CLICK:
+                if mouse_state == MouseState.LEFT_CLICK:
                     if self.checked:
                         self.checked = False
                     else:
@@ -88,7 +88,7 @@ class Checkbox(ImageButton):
                     # selector_callback to parent
                     self.parent.get_checkbox_values()
 
-                elif mouseState == MouseState.HOVER or mouseState == MouseState.DRAG:
+                elif mouse_state == MouseState.HOVER or mouse_state == MouseState.LEFT_DRAG:
                     if self.tooltip != "":
                         global_params.tooltip_text = self.tooltip
 

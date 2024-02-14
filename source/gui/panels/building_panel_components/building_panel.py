@@ -1,3 +1,5 @@
+
+
 import pygame
 from pygame_widgets.util import drawText
 
@@ -28,6 +30,7 @@ class BuildingPanel(WidgetBase, BuildingPanelConstructor, BuildingSlot, EconomyP
         super().__init__(win, x, y, width, height, isSubWidget, **kwargs)
         EconomyParams.__init__(self)
         BuildingSlot.__init__(self)
+        BuildingPanelDraw.__init__(self)
 
         self.name = "building panel"
         self.zero_y = self.world_y
@@ -40,7 +43,7 @@ class BuildingPanel(WidgetBase, BuildingPanelConstructor, BuildingSlot, EconomyP
         self.font_size = 16
         self.font = pygame.font.SysFont(global_params.font_name, self.font_size)
         self.special_font = pygame.font.SysFont("georgiaproblack", SPECIAL_FONT_SIZE)  # georgiaproblack
-        self.resource_image_size = (15, 15)
+
         self.world_x = 0
         self.world_y = 0
 
@@ -97,6 +100,8 @@ class BuildingPanel(WidgetBase, BuildingPanelConstructor, BuildingSlot, EconomyP
         # toggle switch to pop in or out
         self.toggle_switch = ToggleSwitch(self, 15, zero_y=self.surface_rect.y)
         self.reposition()
+
+
 
     def set_info_text(self):
         global_params.app.info_panel.set_text(info_panel_text_generator.info_text)
@@ -165,8 +170,8 @@ class BuildingPanel(WidgetBase, BuildingPanelConstructor, BuildingSlot, EconomyP
 
         # building slot upgrade and tooltip
         if self.parent.selected_planet:
-            self.set_building_slot_tooltip_plus(events)
-            self.set_building_slot_tooltip_minus(events)
+            self.set_building_slot_tooltip_plus()
+            self.set_building_slot_tooltip_minus()
             self.upgrade_building_slots(events)
             self.downgrade_building_slots(events)
 

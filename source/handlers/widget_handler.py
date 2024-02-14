@@ -1,10 +1,10 @@
 import pygame
 from pygame.event import Event
-from pygame_widgets import Mouse
+
 
 from source.configuration import global_params
 from source.gui.event_text import event_text
-from source.gui.lod import inside_screen
+
 
 DEFAULT_LAYER = 9
 
@@ -89,5 +89,5 @@ class WidgetHandler:
 
 
 def update(events: [Event]):
-    Mouse.updateMouseState()
+
     WidgetHandler.set_visible(events)

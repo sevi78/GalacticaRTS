@@ -1,10 +1,11 @@
 import pygame
-from pygame_widgets.mouse import Mouse, MouseState
+
 
 from source.configuration import global_params
 from source.editors.editor_base.editor_base import EditorBase
 from source.gui.widgets.buttons.button import Button
 from source.handlers.color_handler import colors
+from source.handlers.mouse_handler import mouse_handler, MouseState
 from source.multimedia_library.images import get_image
 from source.multimedia_library.sounds import sounds
 from source.text.text_wrap import TextWrap
@@ -114,15 +115,16 @@ class EventPanel(TextWrap, EditorBase):
         #global_params.app.pause_game()
         global_params.game_paused = True
 
-    def listen(self, events):
-        mouseState = Mouse.getMouseState()
-        for event in events:
-            if mouseState == MouseState.CLICK:
-                if not self.functions:
-                    if not self._hidden:
-                        global_params.game_paused = False
 
-                    self.hide()
+
+    def listen(self, events):
+        mouse_state = mouse_handler.get_mouse_state()
+        if mouse_state == MouseState.LEFT_CLICK:
+            if not self.functions:
+                if not self._hidden:
+                    global_params.game_paused = False
+
+                self.hide()
 
     def draw(self):
         if not self._hidden:

@@ -13,6 +13,19 @@ SPECIAL_TEXT_COLOR = "palegreen4"  # "chartreuse3"
 
 
 class BuildingPanelDraw:
+    def __init__(self):
+        self.resource_image_size = (15, 15)
+        self.population_image = pygame.transform.scale(get_image("population_25x25.png"), (25,25))
+        self.plus_image = pygame.transform.scale(
+            get_image("plus_icon.png"), self.resource_image_size)
+        self.plus_image_rect = self.plus_image.get_rect()
+
+        self.minus_image = pygame.transform.scale(
+            get_image("minus_icon.png"), self.resource_image_size)
+        self.minus_image_rect = self.minus_image.get_rect()
+
+        self.building_image = pygame.transform.scale(get_image("building_icon.png"), self.resource_image_size)
+        self.building_image_rect = self.building_image.get_rect()
 
     def draw_planet_params(self, x):
         selected_planet = self.parent.selected_planet
@@ -33,8 +46,8 @@ class BuildingPanelDraw:
                 x + self.screen_width - SPECIAL_RIGHT_OFFSET, self.world_y - SPECIAL_Y_OFFSET, self.get_screen_width(),
                 20), self.special_font, "left")
 
-        image = pygame.transform.scale(get_image("population_25x25.png"), (25,25))
-        self.win.blit(image, (x-4, self.world_y))
+        #image = pygame.transform.scale(get_image("population_25x25.png"), (25,25))
+        self.win.blit(self.population_image, (x-4, self.world_y))
 
         self.world_y += self.spacing * 3
 
@@ -52,6 +65,7 @@ class BuildingPanelDraw:
             self.planet_image = get_image(pic)
         else:
             self.planet_image = pygame.transform.scale(self.parent.selected_planet.image_raw.copy(), (150, 150))
+
         self.planet_image.set_alpha(128)
         self.win.blit(self.planet_image, self.surface_rect.midtop)
         self.world_y += self.spacing * 3
@@ -60,27 +74,27 @@ class BuildingPanelDraw:
         drawText(self.win, "building slots:  " + str(self.parent.selected_planet.building_slot_amount) + "/" + str(self.parent.selected_planet.building_slot_max_amount - 1), self.frame_color, (
             x + self.spacing_x, self.world_y, self.get_screen_width(), 20), self.font, "left")
         # plus icon
-        plus_image = pygame.transform.scale(
-            get_image("plus_icon.png"), self.resource_image_size)
+        # plus_image = pygame.transform.scale(
+        #     get_image("plus_icon.png"), self.resource_image_size)
 
         # get rect for storage
-        plus_image_rect = plus_image.get_rect()
-        plus_image_rect.x = x
-        plus_image_rect.y = self.world_y
-        self.plus_button_image["plus_icon"] = plus_image_rect
-        self.win.blit(plus_image, (x, self.world_y))
+        #plus_image_rect = plus_image.get_rect()
+        self.plus_image_rect.x = x
+        self.plus_image_rect.y = self.world_y
+        self.plus_button_image["plus_icon"] = self.plus_image_rect
+        self.win.blit(self.plus_image, (x, self.world_y))
         self.world_y += self.spacing * 2
 
         # minus icon
-        minus_image = pygame.transform.scale(
-            get_image("minus_icon.png"), self.resource_image_size)
+        # minus_image = pygame.transform.scale(
+        #     get_image("minus_icon.png"), self.resource_image_size)
 
         # get rect for storage
-        minus_image_rect = minus_image.get_rect()
-        minus_image_rect.x = x
-        minus_image_rect.y = self.world_y
-        self.minus_button_image["minus_icon"] = minus_image_rect
-        self.win.blit(minus_image, (x, self.world_y))
+        #minus_image_rect = minus_image.get_rect()
+        self.minus_image_rect.x = x
+        self.minus_image_rect.y = self.world_y
+        self.minus_button_image["minus_icon"] = self.minus_image_rect
+        self.win.blit(self.minus_image, (x, self.world_y))
         self.world_y += self.spacing * 3
 
         # buildings:_______________________________________________________________________________________________
@@ -91,12 +105,12 @@ class BuildingPanelDraw:
             x + self.spacing_x, self.world_y, self.get_screen_width(), 20), self.font, "left")
 
 
-        image = pygame.transform.scale(get_image("building_icon.png"),self.resource_image_size)
-
-        image_rect = image.get_rect()
-        image_rect.x = x
-        image_rect.y = self.world_y
-        self.win.blit(image, image_rect)
+        # image = pygame.transform.scale(get_image("building_icon.png"),self.resource_image_size)
+        #
+        # image_rect = image.get_rect()
+        self.building_image_rect.x = x
+        self.building_image_rect.y = self.world_y
+        self.win.blit(self.building_image, self.building_image_rect)
 
         self.world_y += self.spacing * 3
 

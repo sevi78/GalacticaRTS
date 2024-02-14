@@ -478,7 +478,7 @@ class LevelHandler:
         pan_zoom_handler.zoom_min = 1000 / self.data["globals"]["width"]
 
         # set zoom
-        pan_zoom_handler.zoom = pan_zoom_handler.zoom_min
+        pan_zoom_handler.set_zoom(pan_zoom_handler.zoom_min)
 
         # navigate zo center of the level
         navigate_to_position(self.data["globals"]["width"] / 2, self.data["globals"]["height"] / 2)

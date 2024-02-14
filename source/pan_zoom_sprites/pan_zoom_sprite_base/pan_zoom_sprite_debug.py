@@ -2,6 +2,7 @@ import pygame
 from pygame_widgets.util import drawText
 
 from source.configuration import global_params
+from source.gui.lod import inside_screen
 from source.handlers.color_handler import colors
 
 
@@ -10,14 +11,18 @@ class GameObjectDebug:
         pass
 
     def debug_object(self):
+        color = colors.frame_color
+        if not inside_screen(self.rect.center):
+            color = colors.outside_screen_color
+
         # center
         pygame.draw.circle(global_params.win, pygame.color.THECOLORS["white"], self.rect.center, 5, 1)
         # rect
-        pygame.draw.rect(global_params.win, colors.frame_color, self.rect, 1)
+        pygame.draw.rect(global_params.win, color, self.rect, 1)
 
         # attack_distance
         if hasattr(self, "attack_distance"):
-            pygame.draw.circle(global_params.win, colors.select_color, self.rect.center, self.attack_distance, 1)
+            pygame.draw.circle(global_params.win, color, self.rect.center, self.attack_distance, 1)
 
         # target
         if hasattr(self, "target"):
@@ -50,5 +55,5 @@ class GameObjectDebug:
         # text
         font = pygame.font.SysFont(global_params.font_name, 18)
         text = self.type
-        drawText(global_params.app.win, text, self.frame_color, (
+        drawText(global_params.app.win, text, color, (
             self.rect.x, self.rect.y, 400, 30), font, "left")

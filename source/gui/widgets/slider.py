@@ -1,10 +1,8 @@
 import pygame
 from pygame import gfxdraw
-from pygame_widgets.mouse import Mouse, MouseState
-
-# from source.handlers.widget_handler import update
 from source.configuration import global_params
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
+from source.handlers.mouse_handler import mouse_handler, MouseState
 
 
 class Slider(WidgetBase):
@@ -73,15 +71,15 @@ class Slider(WidgetBase):
 
     def listen(self, events):
         if not self._hidden and not self._disabled:
-            mouseState = Mouse.getMouseState()
-            x, y = Mouse.getMousePos()
+            mouse_state = mouse_handler.get_mouse_state()
+            x, y = mouse_handler.get_mouse_pos()
 
             if self.contains(x, y):
-                if mouseState == MouseState.CLICK:
+                if mouse_state == MouseState.LEFT_CLICK:
                     self.selected = True
                     global_params.enable_pan = not self.selected
 
-            if mouseState == MouseState.RELEASE:
+            if mouse_state == MouseState.LEFT_RELEASE:
                 self.selected = False
                 global_params.enable_pan = not self.selected
 

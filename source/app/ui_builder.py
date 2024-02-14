@@ -47,10 +47,6 @@ class UIBuilder(SceneBuilder):
         SceneBuilder.__init__(self, width, height)
         self.win = global_params.win
 
-        # panzoom
-        self.pan_zoom_handler = PanZoomHandler(
-            global_params.win, global_params.WIDTH, global_params.HEIGHT, parent=self)
-
         # event panel
         self.create_event_panel()
 
@@ -114,7 +110,7 @@ class UIBuilder(SceneBuilder):
         self.planet_edit = PlanetEdit(pygame.display.get_surface(),
             pygame.display.get_surface().get_rect().centerx - width / 2,
             pygame.display.get_surface().get_rect().y,
-            width, height, parent=self, obj=sprite_groups.planets.sprites()[0])
+            width, height, parent=self, obj=None)
 
         self.save_game_edit = SaveGameEdit(pygame.display.get_surface(),
             pygame.display.get_surface().get_rect().centerx - width / 2,

@@ -123,6 +123,7 @@ class MapPanel:
         # interaction stuff
         self.ctrl_pressed = False
         self.left_mouse_button_pressed = False
+        self.middle_button_pressed = False
         self.visible = True
 
         # init checkboxes
@@ -490,8 +491,8 @@ class MapPanel:
         # else:
         #     draw_dashed_rounded_rectangle(self.background_surface, colors.ui_darker, pygame.Rect(x, y, width, height), 1, 15, 10)
 
-
-        draw_dashed_rounded_rectangle(self.background_surface, pygame.color.THECOLORS["lightgreen"], pygame.Rect(x, y, width, height), 1, 15, 10)
+        draw_dashed_rounded_rectangle(self.background_surface,
+            pygame.color.THECOLORS["lightgreen"], pygame.Rect(x, y, width, height), 1, 15, 10)
 
     def reposition(self) -> None:
         self.world_y = self.win.get_size()[1] - self.world_height
@@ -526,11 +527,11 @@ class MapPanel:
             if self.frame_rect.collidepoint(pygame.mouse.get_pos()):
                 self.on_hover = True
                 # scale map
-                if event.type == pygame.MOUSEWHEEL and not self.ctrl_pressed:
+                if event.type == pygame.MOUSEWHEEL and self.ctrl_pressed:
                     self.scale_map(event)
 
                 # set zoom
-                if event.type == pygame.MOUSEWHEEL and self.ctrl_pressed:
+                if event.type == pygame.MOUSEWHEEL and not self.ctrl_pressed:
                     self.update_camera_position()
 
                 # navigate
@@ -538,12 +539,16 @@ class MapPanel:
                     # left button
                     if pygame.mouse.get_pressed()[0]:
                         self.left_mouse_button_pressed = True
+                    if pygame.mouse.get_pressed()[1]:
+                        self.middle_button_pressed = True
+
                 elif event.type == pygame.MOUSEBUTTONUP:
                     self.left_mouse_button_pressed = False
+                    self.middle_button_pressed = False
             else:
                 self.on_hover = False
 
-        if self.left_mouse_button_pressed:
+        if self.left_mouse_button_pressed or self.middle_button_pressed:
             self.update_camera_position()
 
     def draw(self) -> None:

@@ -20,6 +20,7 @@ class Colors:
         self.ui_dark = (55, 130, 157)  # "#37829d"
         self.ui_darker = (8, 51, 54)
         self.select_color = pygame.color.THECOLORS["cyan"]
+        self.outside_screen_color = pygame.color.THECOLORS.get("red")
         self.pygame_color_names = list(pygame.color.THECOLORS.keys())
 
 
