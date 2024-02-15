@@ -144,7 +144,7 @@
         }
     },
     "globals": {
-        "cargoloader": 1,
+        "cargoloader": 0,
         "central_compression": 1,
         "collectable_item_amount": 15,
         "goal": {
@@ -156,7 +156,7 @@
         "level_success": true,
         "moons": 2,
         "planets": 1,
-        "spacehunter": 1,
+        "spacehunter": 0,
         "spaceship": 1,
         "suns": 1,
         "universe_density": 20.0,

@@ -5,6 +5,7 @@ import pygame
 from source.configuration import global_params
 from source.configuration.global_params import ui_rounded_corner_small_thickness
 from source.draw.dashed_rectangle import draw_dashed_rounded_rectangle
+from source.draw.rect import draw_transparent_rounded_rect
 from source.game_play.navigation import navigate_to_position
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.handlers.color_handler import colors
@@ -116,6 +117,7 @@ class MapPanel:
 
         # surfaces, rect
         self.background_surface = pygame.Surface((self.world_width, self.world_height))
+        self.background_surface_rect = None
         self.frame_rect = pygame.Rect(self.world_x, self.world_y, self.world_width, self.world_height)
         self.images = {}
         self.warning_image = pygame.transform.scale(get_image("warning.png"), (WARNING_ICON_SIZE, WARNING_ICON_SIZE))
@@ -551,7 +553,7 @@ class MapPanel:
         if self.left_mouse_button_pressed or self.middle_button_pressed:
             self.update_camera_position()
 
-    def draw(self) -> None:
+    def draw__(self) -> None:  # original, unfancy because of edges outside rouded rect-
         self.set_visible()
         if not self.visible:
             return
@@ -588,4 +590,61 @@ class MapPanel:
             self.world_height), int(ui_rounded_corner_small_thickness), int(global_params.ui_rounded_corner_radius_small))
 
         # draw button frame
+        pygame.draw.rect(self.win, self.frame_color, self.checkbox_frame, int(ui_rounded_corner_small_thickness), int(global_params.ui_rounded_corner_radius_small))
+
+    def draw_frame(self):
+        draw_transparent_rounded_rect(self.win, (0, 0, 0), self.frame_rect,
+            int(global_params.ui_rounded_corner_radius_small), global_params.ui_panel_alpha)
+        pygame.draw.rect(self.win, self.frame_color, self.frame_rect,
+            int(ui_rounded_corner_small_thickness), int(global_params.ui_rounded_corner_radius_small))
+
+    def draw(self) -> None:
+        self.set_visible()
+        if not self.visible:
+            return
+
+        self.reposition()
+        self.update_checkboxes()
+
+        # generate rect
+        self.frame_rect = pygame.Rect(self.world_x, self.world_y, self.world_width, self.world_height)
+        self.background_surface_rect = pygame.Rect(
+            self.world_x + global_params.ui_rounded_corner_radius_small,
+            self.world_y + global_params.ui_rounded_corner_radius_small,
+            self.world_width - (global_params.ui_rounded_corner_radius_small * 2),
+            self.world_height - (global_params.ui_rounded_corner_radius_small * 2))
+
+        # draw the panel, dont set aplha to 255 !!! inperformant, replace it is much better !!!
+        if self.show_alpha:
+            self.background_surface = pygame.Surface((
+                self.world_width - (global_params.ui_rounded_corner_radius_small * 2),
+                self.world_height - (global_params.ui_rounded_corner_radius_small * 2)))
+            self.background_surface.set_alpha(global_params.ui_panel_alpha)
+        else:
+            self.background_surface = pygame.Surface((
+                self.world_width - (global_params.ui_rounded_corner_radius_small * 2),
+                self.world_height - (global_params.ui_rounded_corner_radius_small * 2)))
+
+        # draw the frame
+        self.draw_frame()
+
+        # draw the objects
+        self.draw_objects(sprite_groups.planets.sprites(), self.background_surface)
+        self.draw_objects(sprite_groups.ships.sprites(), self.background_surface)
+        self.draw_objects(sprite_groups.collectable_items.sprites(), self.background_surface)
+        self.draw_objects(sprite_groups.ufos.sprites(), self.background_surface)
+
+        # draw camera focus
+        self.draw_camera_focus(pan_zoom_handler)
+
+        # draw the map_image
+        if self.show_alpha:
+            self.win.blit(self.background_surface, self.background_surface_rect, special_flags=pygame.BLEND_RGBA_MAX)
+        else:
+            self.win.blit(self.background_surface, self.background_surface_rect)
+
+        # draw button frame
+        draw_transparent_rounded_rect(self.win, (0, 0, 0), self.checkbox_frame,
+            int(global_params.ui_rounded_corner_radius_small), global_params.ui_panel_alpha)
+
         pygame.draw.rect(self.win, self.frame_color, self.checkbox_frame, int(ui_rounded_corner_small_thickness), int(global_params.ui_rounded_corner_radius_small))

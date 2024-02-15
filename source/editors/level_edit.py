@@ -24,6 +24,7 @@ PLANET_MAX_SIZE = 200.0
 PLANET_MIN_SIZE = 10.0
 BUTTON_SIZE = 25
 
+
 class LevelEdit(EditorBase):
     """Main functionalities:
     """
@@ -412,9 +413,6 @@ class LevelEdit(EditorBase):
                     if self.isVisible():
                         self.delete_object()
 
-
-
-
     def draw_level_borders(self):
         draw_zoomable_rect(self.win, colors.ui_darker, 0, 0,
             self.level_handler.data["globals"]["width"],
@@ -426,6 +424,6 @@ class LevelEdit(EditorBase):
     def draw(self):
         """"""
         if not self._hidden or self._disabled:
-            self.draw_frame()
             self.inputbox.update()
             self.draw_level_borders()
+            self.draw_frame()

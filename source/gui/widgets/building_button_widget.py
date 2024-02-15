@@ -2,6 +2,7 @@ import pygame.display
 
 from source.configuration import global_params
 from source.configuration.global_params import ui_rounded_corner_small_thickness, ui_rounded_corner_radius_small
+from source.draw.rect import draw_transparent_rounded_rect
 from source.factories.building_factory import building_factory
 from source.gui.lod import inside_screen
 from source.gui.widgets.buttons.image_button import ImageButton
@@ -311,13 +312,13 @@ class BuildingButtonWidget(WidgetBase):
     def draw_frame(self):
         self.rect.width = self.max_width
         self.rect.height = self.max_height
-        self.surface = pygame.Surface((self.rect.width, self.rect.height), pygame.SRCALPHA)
-        self.surface.fill((0, 0, 0, global_params.ui_panel_alpha))
-        pygame.draw.rect(self.surface, self.frame_color, self.surface.get_rect(), int(ui_rounded_corner_small_thickness), self.corner_radius)
 
-        # print (len(self.active_resource_buttons))
+        draw_transparent_rounded_rect(self.win, (0, 0, 0), self.rect,
+            int(global_params.ui_rounded_corner_radius_small), global_params.ui_panel_alpha)
+        pygame.draw.rect(self.win, self.frame_color, self.rect,
+            int(ui_rounded_corner_small_thickness), int(global_params.ui_rounded_corner_radius_small))
+
         if len(self.active_resource_buttons) > 0:
-            self.win.blit(self.surface, self.rect)
             self.set_frame_height()
         else:
             self.max_height = 0

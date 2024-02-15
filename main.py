@@ -6,6 +6,7 @@ import pygame
 
 from source.app.app_helper import AppHelper, select_next_item_in_list
 from source.app.ui_builder import UIBuilder
+from source.draw.rect import draw_transparent_rounded_rect
 from source.editors.level_edit import LevelEdit
 from source.editors.level_select import LevelSelect
 from source.factories.ship_factory import ShipFactory
@@ -213,7 +214,7 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
         # game loop
         while self.run == 1:
             # fill background
-            self.win.fill((1, 2, 3, 190))
+            self.win.fill((0, 0, 25))
 
             # set fps
             time_handler.set_fps(int(global_params.fps))
@@ -237,6 +238,7 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
 
             # update sprites
             # dont mess up the order! for some reason it must be drawn first then update
+
             sprite_groups.update(events=events)
             sprite_groups.listen(events)
             sprite_groups.draw(self.win, events=events)
@@ -256,14 +258,11 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
             # update event_text
             event_text.update()
 
-            # update map
-            self.map_panel.listen(events)
-            self.map_panel.draw()
-
             # pygame update
             # pygame.display.update()
-            pygame.display.flip()
+            # pygame.draw.rect(self.win, self.frame_color, (300,300,300,300), 0, 30)
 
+            pygame.display.flip()
 
             # testing
             # pprint(f"find_unused_images_gifs: {find_unused_images_gifs(os.path.join(pictures_path), os.path.join(pictures_path + 'gifs'), images, gifs)}")
@@ -291,7 +290,7 @@ def main():
         pygame.display.get_surface().get_rect().y,
         EDITOR_WIDTH, EDITOR_WIDTH, parent=app, obj=None)
 
-    level_edit_width = EDITOR_WIDTH/1.6
+    level_edit_width = EDITOR_WIDTH / 1.6
     app.level_edit = LevelEdit(pygame.display.get_surface(),
         pygame.display.get_surface().get_rect().right - level_edit_width,
         pygame.display.get_surface().get_rect().y,

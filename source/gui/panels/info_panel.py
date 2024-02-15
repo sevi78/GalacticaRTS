@@ -89,7 +89,8 @@ class InfoPanel(WidgetBase, TextWrap):
     def update_text(self):
         # Wrap text before rendering onto surface
         self.wrap_text(self.win, self.text, self.pos, self.size, self.font, self.color,
-            iconize =["water", "energy", "food", "minerals", "technology", "population", "phaser", "laser", "rocket", "\u2713"])
+            iconize=["water", "energy", "food", "minerals", "technology", "population", "phaser", "laser", "rocket",
+                     "\u2713"])
         self.set_size_from_text()
         if self.planet_image:
             self.set_planet_image(self.planet_image, size=self.planet_image.get_size(), align="topright")
@@ -157,7 +158,6 @@ class InfoPanel(WidgetBase, TextWrap):
         else:
             self.planet_image = pygame.transform.scale(planet_image, self.planet_image_size)
 
-
         self.planet_rect = self.planet_image.get_rect()
 
         if align == "topright":
@@ -189,15 +189,9 @@ class InfoPanel(WidgetBase, TextWrap):
         if not self._hidden:
             self.text_surfaces = {}
 
-            # draw the panel
-            self.rect_filled = pygame.Surface(self.size)
-            self.rect_filled.fill((0, 0, 0))
-            self.rect_filled.set_alpha(global_params.ui_panel_alpha)
-            self.win.blit(self.rect_filled, self.surface_rect)
-
-            # draw the frame
-            self.surface_rect = pygame.draw.rect(self.win, self.frame_color, pygame.Rect(self.world_x, self.world_y, self.world_width,
-                self.world_height), int(ui_rounded_corner_small_thickness), int(global_params.ui_rounded_corner_radius_small))
+            # create surface rect to make sure the frame is correct
+            self.surface_rect = pygame.Rect(self.world_x, self.world_y, self.world_width, self.world_height)
+            self.draw_frame()
 
             # draw the planet icon
             if hasattr(self, 'planet_image') and self.planet_image:

@@ -1,5 +1,6 @@
 from pygame.sprite import LayeredUpdates
 
+from source.configuration import global_params
 from source.gui.lod import inside_screen
 from source.handlers import widget_handler
 from source.handlers.widget_handler import WidgetHandler
@@ -116,6 +117,9 @@ class SpriteGroups:# original
 
         if WidgetHandler.layer_switch["9"]:
             WidgetHandler.draw_layer(events, 9)
+            # update map
+            global_params.app.map_panel.listen(events)
+            global_params.app.map_panel.draw()
 
         if WidgetHandler.layer_switch["10"]:
             WidgetHandler.draw_layer(events, 10)

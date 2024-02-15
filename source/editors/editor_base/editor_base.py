@@ -2,6 +2,7 @@ import pygame
 
 from source.configuration import global_params
 from source.configuration.global_params import ui_rounded_corner_big_thickness
+from source.draw.rect import draw_transparent_rounded_rect
 from source.editors.editor_base.editor_config import ARROW_SIZE, SPACING_Y, FONT_SIZE, TOP_SPACING
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
@@ -85,7 +86,7 @@ class EditorBase(WidgetBase):
         self.text_spacing = 20
         self.frame_color = colors.ui_dark
         self.frame = pygame.surface.Surface((self.world_width, self.world_height))
-        self.frame.set_alpha(global_params.ui_panel_alpha)
+        # self.frame.set_alpha(0)
         self.rect = self.frame.get_rect()
         self.rect.x, self.rect.y = self.world_x, self.world_y
 
@@ -130,21 +131,6 @@ class EditorBase(WidgetBase):
     def set_edit_mode(self):
         global_params.edit_mode = not self._hidden
         global_params.enable_orbit = self._hidden
-
-    def draw_text(self, x, y, width, height, text):
-        font = pygame.font.SysFont(global_params.font_name, height - 1)
-        text = font.render(text, 1, self.frame_color)
-        self.win.blit(text, (x, y))
-
-    def draw_frame(self):
-        height = self.max_height
-        self.frame = pygame.transform.scale(self.frame, (self.get_screen_width(), height))
-        self.frame.fill((0, 0, 0))
-        rect = pygame.draw.rect(self.frame, self.frame_color, self.frame.get_rect(), int(ui_rounded_corner_big_thickness), int(global_params.ui_rounded_corner_radius_big))
-        rect.x = self.world_x
-        rect.y = self.world_y + 60
-
-        self.win.blit(self.frame, rect)
 
     def hide_other_editors(self):
         for i in self.parent.editors:
@@ -288,3 +274,17 @@ class EditorBase(WidgetBase):
             widget.screen_y += diff_y
             if hasattr(widget, "reposition"):
                 widget.reposition()
+
+    def draw_text(self, x, y, width, height, text):
+        font = pygame.font.SysFont(global_params.font_name, height - 1)
+        text = font.render(text, 1, self.frame_color)
+        self.win.blit(text, (x, y))
+
+    def draw_frame(self):
+        height = self.max_height
+        self.frame = pygame.transform.scale(self.frame, (self.get_screen_width(), height))
+        rect = (self.world_x, self.world_y + 60, self.frame.get_rect().width, self.frame.get_rect().height)
+        draw_transparent_rounded_rect(self.win, (0, 0, 0), rect,
+            int(global_params.ui_rounded_corner_radius_big), global_params.ui_panel_alpha)
+        pygame.draw.rect(self.win, self.frame_color, rect,
+            int(ui_rounded_corner_big_thickness / 2), int(global_params.ui_rounded_corner_radius_big))

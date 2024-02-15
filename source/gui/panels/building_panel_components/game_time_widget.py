@@ -13,6 +13,8 @@ from source.handlers.time_handler import time_handler
 from source.multimedia_library.images import get_image
 
 FONT_SIZE = 18
+
+
 class GameTime(WidgetBase):
     def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
         super().__init__(win, x, y, width, height, isSubWidget, **kwargs)
@@ -158,15 +160,6 @@ class GameTime(WidgetBase):
         self.win.blit(self.year_text, (self.surface_rect.x + self.spacing_x + self.spacing_x, self.clock_icon.screen_y +
                                        self.clock_icon.get_screen_height() - self.year_text.get_height() + 6))
         self.game_speed = self.clock_slider.getValue()
-
-    def draw_frame(self):
-        # frame
-        self.surface = pygame.surface.Surface((self.surface_rect.width, self.surface_rect.height))
-        self.surface.fill(self.bg_color)
-        self.surface.set_alpha(global_params.ui_panel_alpha)
-
-        self.win.blit(self.surface, self.surface_frame)
-        self.surface_frame = pygame.draw.rect(self.win, self.frame_color, self.surface_rect, int(ui_rounded_corner_small_thickness), int(global_params.ui_rounded_corner_radius_small))
 
     def draw(self):
         """
