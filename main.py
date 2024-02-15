@@ -90,13 +90,14 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
         self.game_speed = 0
         self.run = 1
 
-        temp = []
-        for key, value in self.__dict__.items():
-            if not key in self.__slots__:
-                temp.append(key)
+        # whats this ????
+        # temp = []
+        # for key, value in self.__dict__.items():
+        #     if not key in self.__slots__:
+        #         temp.append(key)
 
         self._selected_planet = None
-        self.select_image = ImageSprite(0, 0, 25, 25, get_image("check.png"), "moving_images", parent=self)
+        self.select_image = ImageSprite(0, 0, 25, 25, get_image("check.png"), "state_images", parent=self)
 
     @property
     def selected_planet(self):
@@ -167,30 +168,25 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
         :param events:
         :return:
         """
+        # update select image
         if self.selected_planet:
             self.select_image.set_position(self.selected_planet.rect.centerx, self.selected_planet.rect.centery, "center")
+
+        # update game_events
         self.game_event_handler.update()
+
+        # update economy
         self.update_economy()
 
-        self.events = events
+        # game pause
         for event in events:
             # ignore all inputs while any text input is active
             if global_params.text_input_active:
                 return
-            # copy_agent.update(events)
 
             if event.type == pygame.KEYDOWN:
-
                 if event.key == pygame.K_SPACE:
                     self.pause_game()
-
-                if event.key == pygame.K_r:
-                    pass
-                    # self.restart_game()
-
-                if event.key == pygame.K_d:
-                    pass
-                    # planet_factory.delete_planets()
 
         # set fps
         pygame.display.set_caption("GalacticaRTS" + "   " + str(f"FPS: {time_handler.fps}"))
@@ -198,13 +194,15 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
         # necessary functions, maybe could put these outside somehow
         self.quit_game(events)
         self.ui_helper.update()
+
+        # update player
         self.player.update()
 
         # cheat
         self.cheat(events)
 
-        # store planet positions
-        self.save_load(events)
+        # # store planet positions
+        # self.save_load(events)
 
     def loop(self):
         """
@@ -214,12 +212,16 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
         """
         # game loop
         while self.run == 1:
+            # fill background
             self.win.fill((1, 2, 3, 190))
+
+            # set fps
             time_handler.set_fps(int(global_params.fps))
 
-            # settings
+            # get events
             events = pygame.event.get()
-            # mouse handler
+
+            # update mouse handler
             mouse_handler.handle_mouse_inputs(events)
 
             # update pan_zoom_handler
@@ -235,7 +237,6 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
 
             # update sprites
             # dont mess up the order! for some reason it must be drawn first then update
-
             sprite_groups.update(events=events)
             sprite_groups.listen(events)
             sprite_groups.draw(self.win, events=events)
@@ -249,6 +250,7 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
             # handle screensize using [>]
             self.set_screen_size((global_params.WIDTH_MINIMIZED, global_params.HEIGHT_MINIMIZED), events)
 
+            # update enemy handler
             enemy_handler.update()
 
             # update event_text
@@ -259,12 +261,12 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
             self.map_panel.draw()
 
             # pygame update
-            #pygame.display.update()
+            # pygame.display.update()
             pygame.display.flip()
 
-            # pprint(f"find_unused_images_gifs: {find_unused_images_gifs(os.path.join(pictures_path), os.path.join(pictures_path + 'gifs'), images, gifs)}")
 
             # testing
+            # pprint(f"find_unused_images_gifs: {find_unused_images_gifs(os.path.join(pictures_path), os.path.join(pictures_path + 'gifs'), images, gifs)}")
             # print(f"get_image.cache_info(): {get_image.cache_info()}")
             # print(f"sounds.get_sound.cache_info(): {sounds.get_sound.cache_info()}")
 
@@ -289,14 +291,17 @@ def main():
         pygame.display.get_surface().get_rect().y,
         EDITOR_WIDTH, EDITOR_WIDTH, parent=app, obj=None)
 
+    level_edit_width = EDITOR_WIDTH/1.6
     app.level_edit = LevelEdit(pygame.display.get_surface(),
-        pygame.display.get_surface().get_rect().centerx - EDITOR_WIDTH / 2,
+        pygame.display.get_surface().get_rect().right - level_edit_width,
         pygame.display.get_surface().get_rect().y,
-        EDITOR_WIDTH, EDITOR_HEIGHT, parent=app)
+        level_edit_width, EDITOR_HEIGHT, parent=app)
+
     app.game_event_handler = GameEventHandler(data=load_file("game_event_handler.json", "config"), app=app)
 
     # load first level
     app.level_handler.load_level("level_0.json", "levels")
+
     # update level_successes
     app.level_handler.update_level_successes()
 
