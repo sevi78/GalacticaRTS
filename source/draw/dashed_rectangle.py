@@ -23,6 +23,34 @@ def draw_dashed_rounded_rectangle(surf, color, rect, width,  border_radius, dash
     draw_arc_with_dashes(surf, color, (
         x + w - 2 * border_radius, y + h - 2 * border_radius), 0, 90, border_radius, dash_length, width)  # Bottom-right
 
+def draw_dashed_rounded_rectangle_optimized_but_wrong(surf, color, rect, width,  border_radius, dash_length):
+    x, y, w, h = rect
+    x_w = x + w - 2 * border_radius
+    y_h = y + h - 2 * border_radius
+
+    # Define the parameters for the draw_dashed_line and draw_arc_with_dashes functions
+    dashed_lines = [
+        ((x + border_radius, y), (x_w, y)),  # Top
+        ((x + border_radius, y + h), (x_w, y + h)),  # Bottom
+        ((x, y + border_radius), (x, y_h)),  # Left
+        ((x + w, y + border_radius), (x + w, y_h))  # Right
+    ]
+
+    arcs = [
+        ((x, y), 180, 270),  # Top-left
+        ((x_w, y), 270, 360),  # Top-right
+        ((x, y_h), 90, 180),  # Bottom-left
+        ((x_w, y_h), 0, 90)  # Bottom-right
+    ]
+
+    # Draw the straight dashed edges
+    for start, end in dashed_lines:
+        draw_dashed_line(surf, color, start, end, width, dash_length)
+
+    # Draw the dashed rounded corners
+    for rect, start_angle, stop_angle in arcs:
+        draw_arc_with_dashes(surf, color, rect, start_angle, stop_angle, border_radius, dash_length, width)
+
 
 def main():
     pygame.init()

@@ -62,8 +62,9 @@ class FontEdit(EditorBase):
         write_file("settings.json", "config", data)
 
     def listen(self, events):
-        self.handle_hovering()
-        self.drag(events)
+        if not self._hidden and not self._disabled:
+            self.handle_hovering()
+            self.drag(events)
 
     def draw(self):
         if not self._hidden and not self._disabled:

@@ -324,8 +324,11 @@ class BuildingButtonWidget(WidgetBase):
             self.max_height = 0
 
     def draw(self):
-        if not inside_screen(self.rect.center):
-            self.hide()
+        # if not inside_screen(self.rect.center):
+        #     self.hide()
+
+        if self._hidden or self._disabled:
+            return
 
         self.active_resource_buttons = [_ for _ in self.resource_buttons if not _._hidden]
 

@@ -26,5 +26,6 @@ class ShipEdit(Interface):
             self.parent.ship = value
 
     def listen(self, events):
-        self.handle_hovering()
-        self.drag(events)
+        if not self._hidden and not self._disabled:
+            self.handle_hovering()
+            self.drag(events)

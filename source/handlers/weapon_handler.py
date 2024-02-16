@@ -140,7 +140,7 @@ class WeaponHandler:
             self.parent.enemy = None
 
     def draw_attack_distance(self):
-        draw_transparent_circle(self.parent.win, self.parent.frame_color, self.parent.rect.center, self.get_current_value("range"), 20)
+        draw_transparent_circle(self.parent.win, self.parent.frame_color, self.parent.rect.center, self.get_current_value("range") * pan_zoom_handler.zoom, 20)
 
 
 def launch_missile(attacker, defender):

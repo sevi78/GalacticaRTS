@@ -13,6 +13,7 @@ from source.handlers.image_handler import overblit_button_image
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.multimedia_library.images import get_image
+from source.handlers.widget_handler import WidgetHandler
 
 PLANET_IMAGE_SIZE = 125
 MIN_OBJECT_SIZE = 2
@@ -155,6 +156,13 @@ class MapPanel:
         self.checkbox_frame = None
         self.create_checkboxes()
         self._on_hover = False
+
+        # register
+        # needed for WidgetHandler
+        self.layer = 9
+        self._hidden = False
+        self.isSubWidget = True
+        WidgetHandler.addWidget(self)
 
     @property
     def on_hover(self):
@@ -494,7 +502,7 @@ class MapPanel:
         #     draw_dashed_rounded_rectangle(self.background_surface, colors.ui_darker, pygame.Rect(x, y, width, height), 1, 15, 10)
 
         draw_dashed_rounded_rectangle(self.background_surface,
-            pygame.color.THECOLORS["lightgreen"], pygame.Rect(x, y, width, height), 1, 15, 10)
+            pygame.color.THECOLORS["gray31"], pygame.Rect(x, y, width, height), 1, 15, 10)
 
     def reposition(self) -> None:
         self.world_y = self.win.get_size()[1] - self.world_height

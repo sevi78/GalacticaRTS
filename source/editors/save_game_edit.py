@@ -138,8 +138,9 @@ class SaveGameEdit(EditorBase):
                 i.screen_y = self.max_height + button_size / 2
 
     def listen(self, events):
-        self.handle_hovering()
-        self.drag(events)
+        if not self._hidden and not self._disabled:
+            self.handle_hovering()
+            self.drag(events)
 
     def draw(self):
         if not self._hidden and not self._disabled:

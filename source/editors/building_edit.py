@@ -181,12 +181,13 @@ class BuildingEdit(EditorBase):
                     i.active = True
 
     def listen(self, events):
-        self.update_input_boxes(events)
-        self.handle_hovering()
-        self.drag(events)
-        for event in events:
-            if event.type == pygame.KEYDOWN:
-                self.select_next_input_box(event)
+        if not self._hidden and not self._disabled:
+            self.update_input_boxes(events)
+            self.handle_hovering()
+            self.drag(events)
+            for event in events:
+                if event.type == pygame.KEYDOWN:
+                    self.select_next_input_box(event)
 
     def draw(self):
         if not self._hidden and not self._disabled:

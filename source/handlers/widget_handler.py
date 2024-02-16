@@ -17,8 +17,8 @@ class WidgetHandler:
         layer_switch[key] = 1
 
     def draw_layer(events, layer: int) -> None:
-        if not WidgetHandler.draw_layers:
-            return
+        # if not WidgetHandler.draw_layers:
+        #     return
 
         for key, widgetlist in WidgetHandler.layers.items():
             # if not WidgetHandler.layer_switch[str(layer)]:

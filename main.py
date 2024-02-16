@@ -214,7 +214,7 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
         # game loop
         while self.run == 1:
             # fill background
-            self.win.fill((0, 0, 25))
+            self.win.fill((0, 0, 15))
 
             # set fps
             time_handler.set_fps(int(global_params.fps))

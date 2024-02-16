@@ -46,7 +46,7 @@ class PanZoomLayeredUpdates(LayeredUpdates):
         return dirty
 
 
-class SpriteGroups:# original
+class SpriteGroups:  # original
     def __init__(self):
         self.planets = PanZoomLayeredUpdates(default_layer=0)
         self.gif_handlers = PanZoomLayeredUpdates(default_layer=1)
@@ -64,7 +64,7 @@ class SpriteGroups:# original
         self.gif_handlers.update()
         self.collectable_items.update(*args)
         self.ufos.update(*args)
-        #self.ships.update()
+        # self.ships.update()
         self.missiles.update(*args)
         self.explosions.update(*args)
         self.target_objects.update(*args)
@@ -104,11 +104,9 @@ class SpriteGroups:# original
         if WidgetHandler.layer_switch["6"]:
             WidgetHandler.draw_layer(events, 6)
 
-
         if WidgetHandler.layer_switch["7"]:
             WidgetHandler.draw_layer(events, 7)
             self.target_objects.draw(surface)
-
 
         if WidgetHandler.layer_switch["8"]:
             self.moving_images.draw(surface)
@@ -117,21 +115,19 @@ class SpriteGroups:# original
 
         if WidgetHandler.layer_switch["9"]:
             WidgetHandler.draw_layer(events, 9)
-            # update map
-            global_params.app.map_panel.listen(events)
-            global_params.app.map_panel.draw()
 
         if WidgetHandler.layer_switch["10"]:
             WidgetHandler.draw_layer(events, 10)
 
         # ships must be updated here, because they draw also... this is bullshit but... ;)
-        #self.ships.update()
+        # self.ships.update()
 
     def listen(self, events):
         for i in self.planets:
             i.listen(events)
 
-class SpriteGroups__:# doesn work yet, needs to refactor all registration to it
+
+class SpriteGroups__:  # doesn work yet, needs to refactor all registration to it
     def __init__(self):
         self.sprite_groups = {
             'planets': PanZoomLayeredUpdates(default_layer=0),
@@ -143,7 +139,7 @@ class SpriteGroups__:# doesn work yet, needs to refactor all registration to it
             'explosions': PanZoomLayeredUpdates(default_layer=6),
             'target_objects': PanZoomLayeredUpdates(default_layer=7),
             'moving_images': PanZoomLayeredUpdates(default_layer=8)
-        }
+            }
 
     def update(self, *args, **kwargs):
         for group in self.sprite_groups.values():
@@ -157,5 +153,6 @@ class SpriteGroups__:# doesn work yet, needs to refactor all registration to it
             if WidgetHandler.layer_switch[str(layer)]:
                 WidgetHandler.draw_layer(events, layer)
                 group.draw(surface)
+
 
 sprite_groups = SpriteGroups()

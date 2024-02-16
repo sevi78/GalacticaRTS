@@ -12,6 +12,12 @@ from source.gui.widgets.checkbox import Checkbox
 from source.multimedia_library.images import get_image
 
 
+
+OBJECT_FONT_SIZE = 40
+BUTTON_SIZE = 60
+BUTTON_FONT_SIZE = 20
+INFO_FONT_SIZE = 18
+
 class WeaponSelect(EditorBase):
     def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
         EditorBase.__init__(self, win, x, y, width, height, isSubWidget=False, **kwargs)
@@ -24,7 +30,6 @@ class WeaponSelect(EditorBase):
         self.current_weapon_select = "laser"
 
         #  widgets
-        BUTTON_SIZE = 40
         self.auto_pilot_checkbox = None
 
         self.widgets = []
@@ -33,7 +38,7 @@ class WeaponSelect(EditorBase):
         self.create_close_button()
 
         self.max_height = height
-        self.image_zoom = 6
+        self.image_zoom = 3
 
         self.create_buttons()
 
@@ -44,10 +49,10 @@ class WeaponSelect(EditorBase):
         x = 0
         y = 0
         for key in self.all_weapons.keys():
-            button_size = 120
+            button_size = BUTTON_SIZE
             icon = ImageButton(win=self.win,
                 x=self.get_screen_x() + x + TOP_SPACING,
-                y=self.get_screen_y() + y + TOP_SPACING * 4,
+                y=self.get_screen_y() + y + TOP_SPACING * 3,
                 width=button_size,
                 height=button_size,
                 isSubWidget=False,
@@ -62,9 +67,11 @@ class WeaponSelect(EditorBase):
                 name=key,
                 text=key + ":",
                 textColour=self.frame_color,
-                font_size=23,
+                font_size=BUTTON_FONT_SIZE,
                 info_text="",  # info_panel_text_generator.create_info_panel_weapon_text(key),
-                textHAlign="right_outside"
+                textHAlign="right_outside",
+                outline_thickness=0,
+                outline_threshold=1
                 )
 
             self.buttons.append(icon)
@@ -88,7 +95,7 @@ class WeaponSelect(EditorBase):
             name=key + ":",
             text="current weapon:",
             textColour=self.frame_color,
-            font_size=23,
+            font_size=BUTTON_FONT_SIZE,
             info_text="not set yet",
             textVAlign="over_the_top"
             )
@@ -97,7 +104,7 @@ class WeaponSelect(EditorBase):
         self.widgets.append(self.current_weapon_icon)
         y += button_size
 
-        button_size = 120
+        button_size = BUTTON_SIZE
         self.upgrade_button = ImageButton(win=self.win,
             x=self.get_screen_x() + self.get_screen_width() / 2 - button_size / 2,
             y=self.get_screen_y() + y + TOP_SPACING * 5,
@@ -116,7 +123,7 @@ class WeaponSelect(EditorBase):
             name="upgrade_button",
             text="upgrade",
             textColour=self.frame_color,
-            font_size=23,
+            font_size=BUTTON_FONT_SIZE,
             info_text="",
             textVAlign="below_the_bottom"
             )
@@ -135,54 +142,6 @@ class WeaponSelect(EditorBase):
     def get_checkbox_values(self):
         """ gets the values from the checkboxes """
         self.obj.autopilot = self.auto_pilot_checkbox.checked
-
-    def draw_image(self):
-        self.win.blit(self.image, (
-            (self.world_x + self.world_width / 2) - self.image.get_width() / 2, self.world_y + self.world_height / 4))
-
-    def draw_weapon_info(self):
-        if not self.current_weapon:
-            return
-        c = 0
-        for key, value in self.current_weapon["upgrade values"][f"level_{self.current_weapon['level']}"].items():
-            self.draw_text(self.current_weapon_icon.screen_x + self.current_weapon_icon.screen_width + self.text_spacing, self.current_weapon_icon.screen_y + self.text_spacing * (
-                c), 200, 25, f"{key}: {value}")
-            c += 1
-
-    def draw_weapon_prices(self):
-        c = 0
-        level = self.current_weapon['level']
-        already_bought = False
-        price_text = "prices "
-        x = self.world_x + self.screen_width - self.screen_width / 3.3
-        y = self.world_y + TOP_SPACING + self.text_spacing * 4
-
-        if level == 0 and not self.current_weapon["name"] in self.obj.weapon_handler.weapons.keys():
-            price_text += "to buy:"
-        else:
-            price_text += f"for upgrade to level {level + 1}:"
-            already_bought = True
-
-        if level + 1 > self.max_weapons_upgrade_level:
-            price_text = f"maximum level {level} reached!"
-
-        self.draw_text(x, y, 200, 25, price_text)
-
-        if not price_text.startswith("maximum"):
-            for key, value in self.current_weapon["upgrade cost"][f"level_{self.current_weapon['level']}"].items():
-                self.draw_text(x, y + 40 + self.text_spacing * (
-                    c), 200, 25, f"{key.split('price_')[1]}: {value}")
-                c += 1
-            c += 2
-            if already_bought:
-                self.draw_text(x, y + 40 + self.text_spacing * (
-                    c), 200, 25, "next level values:")
-                c += 2
-                for key, value in self.current_weapon["upgrade values"][
-                    f"level_{self.current_weapon['level'] + 1}"].items():
-                    self.draw_text(x, y + 40 + self.text_spacing * (
-                        c), 200, 25, f"{key}: {value}")
-                    c += 1
 
     @property
     def obj(self):
@@ -238,9 +197,58 @@ class WeaponSelect(EditorBase):
         self.current_weapon_icon.tooltip = (f"{self.current_weapon_select}:")
         self.current_weapon_icon.setImage(get_image(f"{self.current_weapon_select}.png"))
 
+    def draw_image(self):
+        self.win.blit(self.image, (
+            (self.world_x + self.world_width / 2) - self.image.get_width() / 2, self.world_y + self.world_height / 4))
+
+    def draw_weapon_info(self):
+        if not self.current_weapon:
+            return
+        c = 0
+        for key, value in self.current_weapon["upgrade values"][f"level_{self.current_weapon['level']}"].items():
+            self.draw_text(self.current_weapon_icon.screen_x + self.current_weapon_icon.screen_width + self.text_spacing, self.current_weapon_icon.screen_y + self.text_spacing * (
+                c), 200, INFO_FONT_SIZE, f"{key}: {value}")
+            c += 1
+
+    def draw_weapon_prices(self):
+        c = 0
+        level = self.current_weapon['level']
+        already_bought = False
+        price_text = "prices "
+        x = self.world_x + self.screen_width - self.screen_width / 3.3
+        y = self.world_y + TOP_SPACING + self.text_spacing * 4
+
+        if level == 0 and not self.current_weapon["name"] in self.obj.weapon_handler.weapons.keys():
+            price_text += "to buy:"
+        else:
+            price_text += f"for upgrade to level {level + 1}:"
+            already_bought = True
+
+        if level + 1 > self.max_weapons_upgrade_level:
+            price_text = f"maximum level {level} reached!"
+
+        self.draw_text(x, y, 200, INFO_FONT_SIZE, price_text)
+
+        if not price_text.startswith("maximum"):
+            for key, value in self.current_weapon["upgrade cost"][f"level_{self.current_weapon['level']}"].items():
+                self.draw_text(x, y + 40 + self.text_spacing * (
+                    c), 200, INFO_FONT_SIZE, f"{key.split('price_')[1]}: {value}")
+                c += 1
+            c += 2
+            if already_bought:
+                self.draw_text(x, y + 40 + self.text_spacing * (
+                    c), 200, INFO_FONT_SIZE, "next level values:")
+                c += 2
+                for key, value in self.current_weapon["upgrade values"][
+                    f"level_{self.current_weapon['level'] + 1}"].items():
+                    self.draw_text(x, y + 40 + self.text_spacing * (
+                        c), 200, INFO_FONT_SIZE, f"{key}: {value}")
+                    c += 1
+
     def listen(self, events):
-        self.handle_hovering()
-        self.drag(events)
+        if not self._hidden and not self._disabled:
+            self.handle_hovering()
+            self.drag(events)
 
     def draw(self):
         if not self._hidden and not self._disabled:
@@ -250,10 +258,14 @@ class WeaponSelect(EditorBase):
             self.draw_frame()
 
             if self.obj:
+                # draw ship name
                 text = f"{self.obj.name}:"
                 x = (self.world_x + self.world_width / 2) - self.image.get_width() / 2
                 y = self.world_y + TOP_SPACING + self.text_spacing * 2
-                self.draw_text(x, y, 200, 40, text)
-                self.draw_text(self.world_x + self.text_spacing * 3, self.world_y + TOP_SPACING + self.text_spacing * 4, 200, 30, f"weapons:")
+                self.draw_text(x, y, 200, OBJECT_FONT_SIZE, text)
+
+                # draw title
+                self.draw_text(self.world_x + self.text_spacing * 3, self.world_y + TOP_SPACING + self.text_spacing * 4, 200, BUTTON_FONT_SIZE, f"weapons:")
+
                 self.draw_weapon_info()
                 self.draw_weapon_prices()

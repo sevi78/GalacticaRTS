@@ -19,5 +19,6 @@ class EnemyHandlerEdit(Interface):
                 self.update_enemies(key, value)
 
     def listen(self, events):
-        self.handle_hovering()
-        self.drag(events)
+        if not self._hidden and not self._disabled:
+            self.handle_hovering()
+            self.drag(events)

@@ -1,5 +1,8 @@
 import pygame
 
+from source.configuration import global_params
+from source.configuration.global_params import ui_rounded_corner_big_thickness, ui_rounded_corner_small_thickness
+from source.draw.rect import draw_transparent_rounded_rect
 from source.gui.widgets.widget_base_components.image_handler import ImageHandler
 from source.gui.widgets.widget_base_components.interaction_handler import InteractionHandler
 from source.gui.widgets.widget_base_components.position_handler import PositionHandler
@@ -100,22 +103,18 @@ class WidgetBase(WidgetBaseMethods, ImageHandler, TextHandler, PositionHandler, 
         :type height: int
         """
 
-
         WidgetBaseMethods.__init__(self, win, x, y, width, height, isSubWidget=False, **kwargs)
         ImageHandler.__init__(self, **kwargs)
         PositionHandler.__init__(self, x, y, width, height, **kwargs)
         TextHandler.__init__(self, **kwargs)
         InteractionHandler.__init__(self)
         VisibilityHandler.__init__(self, **kwargs)
-        #pygame.sprite.Sprite.__init__(self)
 
         # # register
-        # if self.group:
-        #     getattr(sprite_groups, self.group).add(self)
         WidgetHandler.addWidget(self)
 
-
-
-
-
-        # print (self,self.__dict__, self.__slots__)
+    def draw_frame(self):
+        draw_transparent_rounded_rect(self.win, (0, 0, 0), self.surface_rect,
+            int(global_params.ui_rounded_corner_radius_small), global_params.ui_panel_alpha)
+        pygame.draw.rect(self.win, self.frame_color, self.surface_rect,
+            int(ui_rounded_corner_small_thickness), int(global_params.ui_rounded_corner_radius_small))

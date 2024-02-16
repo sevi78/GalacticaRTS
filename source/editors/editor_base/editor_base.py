@@ -275,6 +275,9 @@ class EditorBase(WidgetBase):
             if hasattr(widget, "reposition"):
                 widget.reposition()
 
+            if hasattr(widget, "set_center"):
+                widget.set_center()
+
     def draw_text(self, x, y, width, height, text):
         font = pygame.font.SysFont(global_params.font_name, height - 1)
         text = font.render(text, 1, self.frame_color)

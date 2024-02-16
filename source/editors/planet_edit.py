@@ -320,21 +320,22 @@ class PlanetEdit(EditorBase, PlanetEditBuilder):
 
     def listen(self, events):
         """show or hide, navigate to planet on selection"""
-        self.handle_hovering()
-        self.drag(events)
-        self.inputbox.handle_events(events)
-        self.scale_planet(events)
-        for event in events:
-            # ignore all inputs while any text input is active
-            if global_params.text_input_active:
-                return
+        if not self._hidden and not self._disabled:
+            self.handle_hovering()
+            self.drag(events)
+            self.inputbox.handle_events(events)
+            self.scale_planet(events)
+            for event in events:
+                # ignore all inputs while any text input is active
+                if global_params.text_input_active:
+                    return
 
-        if not self.parent.selected_planet:
-            if len(sprite_groups.planets.sprites()) > 0:
-                self.parent.set_selected_planet(sprite_groups.planets.sprites()[0])
+            if not self.parent.selected_planet:
+                if len(sprite_groups.planets.sprites()) > 0:
+                    self.parent.set_selected_planet(sprite_groups.planets.sprites()[0])
 
-        if not self._hidden or self._disabled:
-            self.orbit_object_id_list = [_ for _ in range(len(sprite_groups.planets.sprites()))]
+            if not self._hidden or self._disabled:
+                self.orbit_object_id_list = [_ for _ in range(len(sprite_groups.planets.sprites()))]
 
     def draw(self):
         if not self._hidden or self._disabled:

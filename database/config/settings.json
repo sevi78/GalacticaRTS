@@ -19,7 +19,7 @@
     "enable_pan": true,
     "enable_zoom": true,
     "font_name": "segoeuiemoji",
-    "fps": "600",
+    "fps": "60",
     "game_speed": 1,
     "moveable": true,
     "scene_height": 14000,

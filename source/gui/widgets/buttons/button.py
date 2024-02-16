@@ -219,7 +219,7 @@ class Button(WidgetBase, Moveable):
         self.update_position()
         if not inside_screen(self.get_position(), border=0):
             return
-        if not self._hidden:
+        if not self._hidden and not self._disabled:
             if not self.transparent:
                 pygame.draw.rect(
                     self.win, self.shadowColour,

@@ -399,19 +399,20 @@ class LevelEdit(EditorBase):
 
     def listen(self, events):
         """show or hide, navigate to planet on selection"""
-        self.inputbox.handle_events(events)
-        self.handle_hovering()
-        self.drag(events)
+        if not self._hidden and not self._disabled:
+            self.inputbox.handle_events(events)
+            self.handle_hovering()
+            self.drag(events)
 
-        for event in events:
-            # ignore all inputs while any text input is active
-            if global_params.text_input_active:
-                return
+            for event in events:
+                # ignore all inputs while any text input is active
+                if global_params.text_input_active:
+                    return
 
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_BACKSPACE:
-                    if self.isVisible():
-                        self.delete_object()
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_BACKSPACE:
+                        if self.isVisible():
+                            self.delete_object()
 
     def draw_level_borders(self):
         draw_zoomable_rect(self.win, colors.ui_darker, 0, 0,

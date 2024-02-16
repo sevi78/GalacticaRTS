@@ -482,9 +482,7 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
             return
 
         if not self._hidden and not self._disabled:
-
             mouse_state = mouse_handler.get_mouse_state()
-
             x, y = mouse_handler.get_mouse_pos()
 
             if self.rect.collidepoint(x, y):
@@ -556,7 +554,9 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         self.listen()
         if self.selected:
             pre_calculated_energy_use = self.energy_use * math.dist(self.rect.center, pygame.mouse.get_pos()) / pan_zoom_handler.zoom
-            scope.draw_scope(self.rect.center, self.get_max_travel_range(), {"energy use": format_number(pre_calculated_energy_use, 1)})
+            if global_params.app.weapon_select._hidden:
+                scope.draw_scope(self.rect.center, self.get_max_travel_range(), {"energy use": format_number(pre_calculated_energy_use, 1)})
+
         self.set_distances()
 
         # also setting the info text is questionable every frame

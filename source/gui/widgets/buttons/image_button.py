@@ -104,9 +104,11 @@ class ImageButton(WidgetBase):
                     pass
 
                 elif mouse_state == MouseState.HOVER or mouse_state == MouseState.LEFT_DRAG:
-                    self.draw_hover_rect()
-                    # self.image = self.image_outline
-
+                    #self.draw_hover_rect()
+                    #self.image = self.image_outline
+                    #self.image = pygame.transform.scale(self.image_outline, self.rect.size)
+                    #self.win.blit(self.image_outline, self.image.get_rect())
+                    self.win.blit(pygame.transform.scale(self.image_outline, self.rect.size), self.rect)
                     # set info_panel
                     if self.info_text:
                         if self.info_text != "":
@@ -120,7 +122,7 @@ class ImageButton(WidgetBase):
                 # else:
                 #     self.image = self.image_raw
             else:
-
+                #self.image = self.image_raw
                 self.clicked = False
 
     def draw(self):
@@ -129,16 +131,16 @@ class ImageButton(WidgetBase):
 
         if not inside_screen(self.get_position(), border=0):
             return
+        if not self._hidden and not self._disabled:
+            if not self._hidden:
+                if self.image:
+                    self.rect = self.image.get_rect()
+                    self.alignImageRect()
+                    self.win.blit(self.image, self.rect)
 
-        if not self._hidden:
-            if self.image:
-                self.rect = self.image.get_rect()
-                self.alignImageRect()
-                self.win.blit(self.image, self.rect)
-
-            self.textRect = self.text.get_rect()
-            self.alignTextRect()
-            self.win.blit(self.text, self.textRect)
+                self.textRect = self.text.get_rect()
+                self.alignTextRect()
+                self.win.blit(self.text, self.textRect)
 
     def setOnClick(self, onClick, params=()):
         self.onClick = onClick
