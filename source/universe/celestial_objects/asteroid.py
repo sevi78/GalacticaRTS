@@ -1,6 +1,5 @@
 from source.configuration import global_params
-from source.gui.lod import inside_screen
-from source.gui.widgets.widget_base_components.interaction_handler import InteractionHandler
+from source.gui.lod import level_of_detail
 from source.handlers.position_handler import rot_center
 from source.universe.celestial_objects.celestial_object import CelestialObject
 
@@ -14,7 +13,7 @@ class Asteroid(CelestialObject):#, InteractionHandler):
         self.move(self.direction)
         self.set_screen_position()
 
-        if not inside_screen(self.center):
+        if not level_of_detail.inside_screen(self.center):
             if self.gif_handler:
                 self.gif_handler._hidden = True
             return

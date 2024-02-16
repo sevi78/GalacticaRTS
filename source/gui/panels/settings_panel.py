@@ -1,6 +1,7 @@
 import pygame
 
 from source.configuration import global_params
+from source.configuration.game_config import config
 from source.configuration.global_params import ui_rounded_corner_small_thickness
 from source.game_play.navigation import navigate_to
 from source.gui.panels.toggle_switch import ToggleSwitch
@@ -145,7 +146,7 @@ class SettingsPanel(WidgetBase):
             frame_color=self.frame_color,
             moveable=False,
             include_text=True, layer=self.layer,
-            onClick=lambda: self.set_global_variable("show_orbit", True, button=self.orbit_icon))
+            onClick=lambda: config.set_global_variable("show_orbit", True, button=self.orbit_icon))
         self.widgets.append(self.orbit_icon)
         self.max_width += self.icon_size + self.spacing
 
@@ -198,7 +199,7 @@ class SettingsPanel(WidgetBase):
             frame_color=self.frame_color,
             moveable=False,
             include_text=True, layer=self.layer,
-            onClick=lambda: self.set_global_variable("show_overview_buttons", True, button=self.buttons_icon))
+            onClick=lambda: config.set_global_variable("show_overview_buttons", True, button=self.buttons_icon))
         self.widgets.append(self.buttons_icon)
         self.max_width += self.icon_size + self.spacing + self.spacing
 
@@ -215,7 +216,7 @@ class SettingsPanel(WidgetBase):
             frame_color=self.frame_color,
             moveable=False,
             include_text=True, layer=self.layer,
-            onClick=lambda: self.set_global_variable("show_map_panel", True, button=self.map_icon))
+            onClick=lambda: config.set_global_variable("show_map_panel", True, button=self.map_icon))
         self.widgets.append(self.map_icon)
         self.max_width += self.icon_size + self.spacing + self.spacing
 

@@ -1,10 +1,10 @@
 import pygame
 
 from source.configuration import global_params
-from source.configuration.global_params import ui_rounded_corner_big_thickness, ui_rounded_corner_small_thickness
+from source.configuration.global_params import ui_rounded_corner_small_thickness
 from source.draw.rect import draw_transparent_rounded_rect
 from source.gui.widgets.widget_base_components.image_handler import ImageHandler
-from source.gui.widgets.widget_base_components.interaction_handler import InteractionHandler
+from source.interaction.interaction_handler import InteractionHandler
 from source.gui.widgets.widget_base_components.position_handler import PositionHandler
 from source.gui.widgets.widget_base_components.text_handler import TextHandler
 from source.gui.widgets.widget_base_components.visibilty_handler import VisibilityHandler

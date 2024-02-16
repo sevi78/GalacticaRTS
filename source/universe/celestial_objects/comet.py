@@ -1,5 +1,5 @@
 from source.configuration import global_params
-from source.gui.lod import inside_screen
+from source.gui.lod import level_of_detail
 from source.universe.celestial_objects.celestial_object import CelestialObject
 
 
@@ -11,7 +11,7 @@ class Comet(CelestialObject):
         self.set_screen_position()
 
         x, y = self.center
-        if not inside_screen(self.center):
+        if not level_of_detail.inside_screen(self.center):
             return
 
         if not self._hidden:

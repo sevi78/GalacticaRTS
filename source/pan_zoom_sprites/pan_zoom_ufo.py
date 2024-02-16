@@ -5,9 +5,8 @@ import pygame
 
 from source.configuration import global_params
 from source.gui.event_text import event_text
-from source.gui.lod import inside_screen
+from source.gui.lod import level_of_detail
 from source.gui.widgets.progress_bar import ProgressBar
-from source.gui.widgets.widget_base_components.interaction_handler import InteractionHandler
 from source.handlers.color_handler import colors
 from source.handlers.file_handler import load_file
 from source.handlers.garbage_handler import garbage_handler
@@ -28,7 +27,7 @@ pan_zoom_ufo_config = load_file("enemy_handler_config.json", "config")["enemy ha
 SHRINK_FACTOR = 0.005
 
 
-class PanZoomUfo(PanZoomGameObject, InteractionHandler):
+class PanZoomUfo(PanZoomGameObject):#, InteractionHandler):
     __slots__ = PanZoomGameObject.__slots__ + (
         'random_target_interval', 'frame_color', '_disabled', '_hidden', 'move_to_target', 'rotate_to_target',
         'speed', 'orbit_speed', 'exploded', 'energy', 'energy_max', 'name', 'property', 'target', 'tooltip',
@@ -36,7 +35,7 @@ class PanZoomUfo(PanZoomGameObject, InteractionHandler):
 
     def __init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs):
         PanZoomGameObject.__init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs)
-        InteractionHandler.__init__(self)
+        #InteractionHandler.__init__(self)
         self.id = kwargs.get("id", 0)
         self.lifetime = kwargs.get("lifetime", LIFETIME)
         self.shrink = 0.0
@@ -131,7 +130,7 @@ class PanZoomUfo(PanZoomGameObject, InteractionHandler):
         if self.emp_attacked:
             return
 
-        if not inside_screen(self.get_screen_position()):
+        if not level_of_detail.inside_screen(self.get_screen_position()):
             return
         r = random.randint(-3, 4)
         r2 = random.randint(0, 6)
@@ -171,7 +170,8 @@ class PanZoomUfo(PanZoomGameObject, InteractionHandler):
 
             if self.rect.collidepoint(x, y):
                 if mouse_state == MouseState.HOVER or mouse_state == MouseState.LEFT_DRAG:
-
+                    #self.win.blit(self.image_outline, self.rect)
+                    self.win.blit(pygame.transform.scale(self.image_outline, self.rect.size), self.rect)
                     # set tooltip
                     if self.tooltip:
                         if self.tooltip != "":

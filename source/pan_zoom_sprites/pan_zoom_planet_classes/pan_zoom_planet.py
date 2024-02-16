@@ -5,15 +5,15 @@ from pygame import MOUSEBUTTONDOWN, MOUSEBUTTONUP, MOUSEMOTION
 
 
 from source.draw.circles import draw_transparent_circle
-from source.gui.lod import inside_screen
+from source.gui.lod import level_of_detail
 from source.handlers.mouse_handler import mouse_handler, MouseState
 from source.handlers.widget_handler import WidgetHandler
+from source.interaction.interaction_handler import InteractionHandler
 from source.pan_zoom_sprites.pan_zoom_planet_classes.pan_zoom_planet_orbit_draw import draw_orbits
 from source.pan_zoom_sprites.pan_zoom_planet_classes.pan_zoom_planet_position_handler import \
     PanZoomPlanetPositionHandler
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_visibility_handler import PanZoomVisibilityHandler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
-from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_mouse_handler import PanZoomMouseHandler
 from source.pan_zoom_sprites.pan_zoom_planet_classes.pan_zoom_planet_overview_buttons import \
     PanZoomPlanetOverviewButtons
 from source.pan_zoom_sprites.pan_zoom_planet_classes.pan_zoom_planet_defence import PanZoomPlanetDefence
@@ -28,7 +28,7 @@ from source.handlers.garbage_handler import garbage_handler
 
 
 class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOverviewButtons, PanZoomPlanetDraw,
-    PanZoomPlanetParams, PanZoomPlanetPositionHandler, PanZoomMouseHandler):
+    PanZoomPlanetParams, PanZoomPlanetPositionHandler, InteractionHandler):
     """ Main functionalities: """
     __slots__ = PanZoomSprite.__slots__ + (
         'orbit_radius', 'font_size', 'font', '_on_hover', 'on_hover_release', 'size_x',
@@ -50,7 +50,7 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
         PanZoomPlanetParams.__init__(self, kwargs)
         PanZoomVisibilityHandler.__init__(self, **kwargs)
         PanZoomSprite.__init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs)
-        PanZoomMouseHandler.__init__(self)
+        InteractionHandler.__init__(self)
         PanZoomPlanetPositionHandler.__init__(self, x, y, width, height, **kwargs)
         PanZoomPlanetOverviewButtons.__init__(self, **kwargs)
         PanZoomPlanetDraw.__init__(self, **kwargs)
@@ -255,7 +255,7 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
         if not global_params.game_paused:
             orbit(self, self.orbit_object, self.orbit_speed, 1)
 
-        if not inside_screen(self.rect.center):
+        if not level_of_detail.inside_screen(self.rect.center):
             return
 
         self.draw()

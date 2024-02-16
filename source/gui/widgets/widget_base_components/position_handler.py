@@ -2,7 +2,7 @@ import pygame
 from pygame import Vector2
 
 from source.configuration import global_params
-from source.gui.lod import inside_screen
+from source.gui.lod import level_of_detail
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 
 
@@ -68,7 +68,7 @@ class PositionHandler:
 
     def set_objects_screen_size(self):
         if not self.property == "ship":
-            if not inside_screen(self.get_position(), border=0):
+            if not level_of_detail.inside_screen(self.get_position()):
                 return
 
         panzoom = pan_zoom_handler

@@ -8,7 +8,7 @@ from source.configuration import global_params
 from source.draw.circles import draw_transparent_circle
 from source.draw.zigzag_line import draw_zigzag_line
 from source.factories.weapon_factory import weapon_factory
-from source.gui.lod import inside_screen
+from source.gui.lod import level_of_detail
 from source.gui.widgets.moving_image import MovingImage
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.multimedia_library.images import get_image
@@ -120,7 +120,7 @@ class WeaponHandler:
         return value
 
     def attack(self, defender):
-        if not inside_screen(self.parent.get_screen_position()):
+        if not level_of_detail.inside_screen(self.parent.get_screen_position()):
             return
 
         # activate weapon
@@ -174,8 +174,8 @@ def launch_missile(attacker, defender):
 
 def attack(attacker, defender):
     # this might be deleted: should not attacker attack defender even if not on screen ???
-    if not inside_screen(attacker.get_screen_position()):
-        return
+    # if not level_of_detail.inside_screen(attacker.get_screen_position()):
+    #     return
 
     # if attacker is planet
     if attacker.property == "planet":

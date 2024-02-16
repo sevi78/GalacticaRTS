@@ -26,7 +26,7 @@ class WidgetHandler:
             if key == layer:
                 for widget in widgetlist:
                     # need to find the correct coordinates, otherwise not all widgets get drawn, specially celestial obj
-                    # if inside_screen((widget.screen_x, widget.screen_y), border=0):
+                    # if level_of_detail.inside_screen((widget.screen_x, widget.screen_y), border=0):
                     widget.draw()
 
                     if widget.isSubWidget:

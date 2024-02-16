@@ -116,10 +116,32 @@ class ToolTip(WidgetBase):
             self.visible = True
         else:
             self.visible = False
+    def on_hover_release_callback(self, x, y, obj):
+        # if self._hidden or self._disabled:
+        #     return
+        # if not obj.rect:
+        #     return
+
+        if obj.rect.collidepoint(x, y):
+            obj.on_hover = True
+            obj.on_hover_release = False
+        else:
+            obj.on_hover_release = True
+
+        if obj.on_hover and obj.on_hover_release:
+            obj.on_hover = False
+            return True
+
+        return False
+
+    def reset_tooltip__(self, obj):
+        x, y = mouse_handler.get_mouse_pos()
+        if obj.on_hover_release_callback(x, y, obj.rect):
+            global_params.tooltip_text = ""
 
     def reset_tooltip(self, obj):
         x, y = mouse_handler.get_mouse_pos()
-        if obj.on_hover_release_callback(x, y, obj.rect):
+        if self.on_hover_release_callback(x, y, obj):
             global_params.tooltip_text = ""
 
     def listen(self, events):

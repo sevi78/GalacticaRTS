@@ -1,7 +1,11 @@
 import ctypes
 import os
 import pygame
+
+from source.configuration import global_params
 from source.handlers.file_handler import load_file
+from source.handlers.image_handler import overblit_button_image
+
 
 class GameConfig:
     def __init__(self):
@@ -10,8 +14,8 @@ class GameConfig:
 
         # Initialize configuration variables
         self.font_name = self.settings["font_name"]
-        self.WIDTH = int(self.settings["WIDTH"])
-        self.HEIGHT = int(self.settings["HEIGHT"])
+        self.WIDTH = int(self.settings["WIDTH"][0][0])
+        self.HEIGHT = int(self.settings["HEIGHT"][0][0])
         self.WIDTH_MINIMIZED = 1920
         self.HEIGHT_MINIMIZED = 800
         self.WIDTH_CURRENT = self.WIDTH
@@ -64,5 +68,26 @@ class GameConfig:
         # Set the display mode to full screen on the second monitor
         self.win = pygame.display.set_mode((self.WIDTH, self.HEIGHT), pygame.FULLSCREEN)
 
+    def set_global_variable(self, key, value, **kwargs):
+        var = kwargs.get("var", None)
+        button = kwargs.get("button", None)
+
+        if var:
+            if getattr(global_params, var):
+                setattr(global_params, var, False)
+            else:
+                setattr(global_params, var, True)
+
+        if getattr(global_params, key):
+            setattr(global_params, key, False)
+
+        else:
+            setattr(global_params, key, True)
+
+        overblit_button_image(button, "uncheck.png", getattr(global_params, key))
+
 # Usage
 config = GameConfig()
+
+
+

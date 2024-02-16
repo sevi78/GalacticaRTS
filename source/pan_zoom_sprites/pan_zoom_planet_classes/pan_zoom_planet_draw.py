@@ -1,7 +1,7 @@
 import pygame
 from pygame_widgets.util import drawText
 
-from source.gui.lod import inside_screen
+from source.gui.lod import level_of_detail
 from source.gui.panels.building_panel_components.building_panel import SPECIAL_FONT_SIZE
 from source.gui.panels.building_panel_components.building_panel_draw import SPECIAL_TEXT_COLOR
 from source.multimedia_library.gif_handler import GifHandler
@@ -46,7 +46,7 @@ class PanZoomPlanetDraw:
 
     def draw_specials(self):
         # print ("draw_specials:", self.specials)
-        if not inside_screen(self.get_position()):
+        if not level_of_detail.inside_screen(self.get_position()):
             return
         # Load the font once
         font = pygame.font.SysFont("georgiaproblack", SPECIAL_FONT_SIZE)

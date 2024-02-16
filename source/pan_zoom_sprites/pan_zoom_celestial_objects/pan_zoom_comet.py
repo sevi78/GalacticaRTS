@@ -1,4 +1,4 @@
-from source.gui.lod import inside_screen
+from source.gui.lod import level_of_detail
 from source.pan_zoom_sprites.pan_zoom_celestial_objects.pan_zoom_celestial_object import PanZoomCelestialObject
 
 
@@ -9,7 +9,7 @@ class PanZoomComet(PanZoomCelestialObject):
     def update(self):
         self.update_pan_zoom_sprite()
         self.move(direction=None)
-        if not inside_screen(self.rect.center):
+        if not level_of_detail.inside_screen(self.rect.center):
             return
 
         self.draw()

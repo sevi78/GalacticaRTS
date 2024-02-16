@@ -3,7 +3,7 @@ import math
 import pygame
 from pygame import gfxdraw
 
-from source.gui.lod import inside_screen
+from source.gui.lod import level_of_detail
 from source.universe.celestial_objects.celestial_object import CelestialObject
 
 
@@ -14,7 +14,7 @@ class FlickeringStar(CelestialObject):
     def draw(self):
         self.set_screen_position()
         x, y = self.center
-        if not inside_screen(self.center):
+        if not level_of_detail.inside_screen(self.center):
             return
 
         if not self._hidden:
@@ -39,7 +39,7 @@ class PulsatingStar(CelestialObject):
     def draw(self):
         self.set_screen_position()
         x, y = self.center
-        if not inside_screen(self.center):
+        if not level_of_detail.inside_screen(self.center):
             return
 
         if not self._hidden:

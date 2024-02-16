@@ -2,7 +2,7 @@ import pygame
 
 from source.configuration import global_params
 from source.factories.building_factory import building_factory
-from source.gui.lod import inside_screen
+from source.gui.lod import level_of_detail
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.handlers.mouse_handler import mouse_handler, MouseState
 
@@ -108,6 +108,8 @@ class ImageButton(WidgetBase):
                     #self.image = self.image_outline
                     #self.image = pygame.transform.scale(self.image_outline, self.rect.size)
                     #self.win.blit(self.image_outline, self.image.get_rect())
+                    #self.win.blit(pygame.transform.scale(self.image_outline, self.rect.size), self.rect)
+                    #self.win.blit(self.image_outline, self.rect)
                     self.win.blit(pygame.transform.scale(self.image_outline, self.rect.size), self.rect)
                     # set info_panel
                     if self.info_text:
@@ -129,18 +131,18 @@ class ImageButton(WidgetBase):
         """ Display to surface """
         # self.update_position()
 
-        if not inside_screen(self.get_position(), border=0):
+        if not level_of_detail.inside_screen(self.get_position()):
             return
-        if not self._hidden and not self._disabled:
-            if not self._hidden:
-                if self.image:
-                    self.rect = self.image.get_rect()
-                    self.alignImageRect()
-                    self.win.blit(self.image, self.rect)
 
-                self.textRect = self.text.get_rect()
-                self.alignTextRect()
-                self.win.blit(self.text, self.textRect)
+        if not self._hidden:
+            if self.image:
+                self.rect = self.image.get_rect()
+                self.alignImageRect()
+                self.win.blit(self.image, self.rect)
+
+            self.textRect = self.text.get_rect()
+            self.alignTextRect()
+            self.win.blit(self.text, self.textRect)
 
     def setOnClick(self, onClick, params=()):
         self.onClick = onClick

@@ -2,6 +2,7 @@ from source.configuration import global_params
 from source.editors.editor_base.editor_base import EditorBase
 from source.editors.editor_base.editor_config import TOP_SPACING, BUTTON_SIZE
 from source.factories.universe_factory import universe_factory
+from source.gui.lod import level_of_detail
 from source.gui.widgets.Icon import Icon
 from source.gui.widgets.buttons.button import Button
 from source.gui.widgets.buttons.image_button import ImageButton
@@ -133,7 +134,7 @@ class DebugEdit(EditorBase):
                 image_name="layer_icon.png",
                 tooltip=f"show layer:{i}",
                 onClick=lambda: print("not working"),
-                layer=9,
+                layer=10,
                 parent=self,
                 button_size=button_size
                 )
@@ -162,13 +163,18 @@ class DebugEdit(EditorBase):
 
             if i.key == "debug_icon":
                 global_params.debug = i.checked
+                level_of_detail.debug = i.checked
 
-            # if i.key.startswith("layers"):
-            #     WidgetHandler.show_layer(int(i.key.split(":")[1]))
+            if i.key.startswith("layers"):
+                # i.kex = layers:0  ect...
+                # layer_switch = {"0": 0, "1": 0, "2": 0, "3": 0, "4": 0, "5": 0, "6": 0, "7": 0, "8": 0, "9": 0, "10": 0}
+                layer_str = i.key.split(":")[1]
+                WidgetHandler.layer_switch[layer_str] = int(i.checked)
 
     def update_checkbox_values(self):
         for i in self.layer_checkboxes:
             i.checked = WidgetHandler.layer_switch[str(self.layer_checkboxes.index(i))]
+
     def draw_texts(self, all_widgets, y):
         self.draw_text(self.world_x + self.text_spacing, y, 200, FONT_SIZE,
             f"pan_zoom.zoom: {pan_zoom_handler.zoom}")

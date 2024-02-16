@@ -1,7 +1,7 @@
 import pygame
 
 from source.configuration import global_params
-from source.gui.lod import inside_screen
+from source.gui.lod import level_of_detail
 from source.gui.widgets.buttons.moveable import Moveable
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.handlers.mouse_handler import mouse_handler, MouseState
@@ -119,7 +119,7 @@ class Button(WidgetBase, Moveable):
         :param events: Use pygame.event.get()
         :type events: list of pygame.event.Event
         """
-        if not inside_screen(self.get_position(), border=0):
+        if not level_of_detail.inside_screen(self.get_position()):
             return
 
         global_params.app.tooltip_instance.reset_tooltip(self)
@@ -217,7 +217,7 @@ class Button(WidgetBase, Moveable):
     def draw(self):
         # """ Display to surface """
         self.update_position()
-        if not inside_screen(self.get_position(), border=0):
+        if not level_of_detail.inside_screen(self.get_position()):
             return
         if not self._hidden and not self._disabled:
             if not self.transparent:

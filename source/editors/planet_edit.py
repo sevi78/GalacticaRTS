@@ -341,6 +341,10 @@ class PlanetEdit(EditorBase, PlanetEditBuilder):
         if not self._hidden or self._disabled:
             self.draw_frame()
             self.selected_planet = self.parent.selected_planet
-            text = self.selected_planet.name
+            if self.selected_planet:
+                text = self.selected_planet.name
+            else:
+                text = "No planet selected"
+
             self.inputbox.set_text(text)
             self.inputbox.update()

@@ -34,7 +34,7 @@ class PanZoomSprite(pygame.sprite.Sprite, PanZoomVisibilityHandler, GameObjectDe
     # PanZoomSprite
     __slots__ = (
         'layer', 'group', 'property', 'zoomable', 'win', 'pan_zoom', 'image_name', 'gif', 'gif_frames',
-        'relative_gif_size', 'loop_gif', 'kill_after_gif_loop', 'gif_index', 'counter', 'image_raw', 'image',
+        'relative_gif_size', 'loop_gif', 'kill_after_gif_loop', 'gif_index', 'counter', 'image_raw',
         'align_image', 'rect', 'screen_x', 'screen_y', 'screen_width', 'screen_height', 'screen_position',
         'previous_world_x', 'previous_world_y', 'world_x', 'world_y', 'world_width', 'world_height',
         'orbit_angle', 'sound', 'debug'
@@ -79,6 +79,9 @@ class PanZoomSprite(pygame.sprite.Sprite, PanZoomVisibilityHandler, GameObjectDe
         self.current_time = 0
         self.counter = 0
 
+        self.outline_thickness = kwargs.get("outline_thickness", 0)
+        self.outline_threshold = kwargs.get("outline_threshold", 0)
+
         if not self.image_name:
             self.image_name = "no_icon.png"
 
@@ -95,8 +98,6 @@ class PanZoomSprite(pygame.sprite.Sprite, PanZoomVisibilityHandler, GameObjectDe
             self.image_raw = self.gif_frames[1]
             self.image = copy.copy(self.image_raw)
 
-        self.outline_thickness = kwargs.get("outline_thickness", 0)
-        self.outline_threshold = kwargs.get("outline_threshold", 0)
         self.image_outline = outline_image(copy.copy(self.image), self.frame_color, self.outline_threshold, self.outline_thickness)
         self.average_color = get_average_color(self.image_raw)
 
@@ -239,10 +240,7 @@ class PanZoomSprite(pygame.sprite.Sprite, PanZoomVisibilityHandler, GameObjectDe
         self.set_world_position((self.world_x, self.world_y))
         self.update_gif_index()
 
-        if self.debug:
-            self.debug_object()
-
-        if global_params.debug:
+        if self.debug or global_params.debug:
             self.debug_object()
 
     def update(self):

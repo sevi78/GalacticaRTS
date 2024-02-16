@@ -7,7 +7,7 @@ from pygame import Vector2
 from source.configuration import global_params
 from source.draw.scope import scope
 from source.gui.event_text import event_text
-from source.gui.lod import inside_screen
+from source.gui.lod import level_of_detail
 from source.gui.widgets.moving_image import MovingImage, SPECIAL_TEXT_COLOR
 from source.handlers.autopilot_handler import AutopilotHandler
 from source.handlers.file_handler import load_file
@@ -18,6 +18,7 @@ from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.handlers.position_handler import prevent_object_overlap
 from source.handlers.weapon_handler import WeaponHandler
 from source.handlers.widget_handler import WidgetHandler
+from source.interaction.interaction_handler import InteractionHandler
 
 from source.interfaces.interface import InterfaceData
 from source.multimedia_library.images import get_image
@@ -30,12 +31,11 @@ from source.pan_zoom_sprites.pan_zoom_ship_classes.pan_zoom_ship_params import P
     SHIP_INSIDE_SCREEN_BORDER
 from source.pan_zoom_sprites.pan_zoom_ship_classes.pan_zoom_ship_ranking import PanZoomShipRanking
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_game_object import PanZoomGameObject
-from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_mouse_handler import PanZoomMouseHandler
 from source.pan_zoom_sprites.pan_zoom_target_object import PanZoomTargetObject
 from source.text.text_formatter import format_number
 
 
-class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZoomShipRanking, PanZoomShipDraw, PanZoomMouseHandler, PanZoomShipInteraction, InterfaceData):
+class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZoomShipRanking, PanZoomShipDraw, InteractionHandler, PanZoomShipInteraction, InterfaceData):
     # __slots__ = PanZoomGameObject.__slots__ + ('item_collect_distance', 'orbit_direction', 'speed', 'id', 'property',
     #                                            'rotate_correction_angle', 'orbit_object', 'orbit_angle', 'collect_text',
     #                                            'target_object', 'target_object_reset_distance_raw',
@@ -97,7 +97,7 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         PanZoomShipRanking.__init__(self)
         # PanZoomShipButtons.__init__(self)
         PanZoomShipDraw.__init__(self, kwargs)
-        PanZoomMouseHandler.__init__(self)
+        InteractionHandler.__init__(self)
         PanZoomShipInteraction.__init__(self)
 
         # init vars
@@ -513,6 +513,7 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
                     self.submit_tooltip()
                     # self.draw_hover_circle()
                     self.win.blit(pygame.transform.scale(self.image_outline, self.rect.size), self.rect)
+                    #self.win.blit(self.image_outline, self.rect)
 
                     self.weapon_handler.draw_attack_distance()
             else:
@@ -569,7 +570,7 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
             self.target_object.hide()
 
         # maybe we dont neeed inside screen here, because it is checked in WidgetHandler and pan_zoom_sprite_handler
-        if inside_screen(self.rect.center, border=SHIP_INSIDE_SCREEN_BORDER):
+        if level_of_detail.inside_screen(self.rect.center):
             self.progress_bar.show()
             prevent_object_overlap(sprite_groups.ships, self.min_dist_to_other_ships)
         else:

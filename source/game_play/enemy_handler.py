@@ -132,7 +132,9 @@ class EnemyHandler(InterfaceData):
             lifetime=random.randint(30, 60),
             explosion_relative_gif_size=5.0,
             id=self.ufo_id,
-            layer=0)
+            layer=0,
+            outline_thickness=1,
+            outline_threshold=0)
 
         ufo.tooltip = tooltip_generator.create_ufo_tooltip(ufo)
         ufo.info_text = info_panel_text_generator.create_info_panel_ufo_text(ufo)

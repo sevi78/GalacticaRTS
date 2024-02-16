@@ -11,12 +11,12 @@ from source.gui.widgets.buttons.image_button import ImageButton
 from source.gui.widgets.checkbox import Checkbox
 from source.multimedia_library.images import get_image
 
-
-
 OBJECT_FONT_SIZE = 40
 BUTTON_SIZE = 60
 BUTTON_FONT_SIZE = 20
-INFO_FONT_SIZE = 18
+INFO_FONT_SIZE = 16
+CHECKBOX_SIZE = 25
+
 
 class WeaponSelect(EditorBase):
     def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
@@ -65,7 +65,7 @@ class WeaponSelect(EditorBase):
                 layer=self.layer,
                 onClick=lambda weapon_=key: self.select_weapon(weapon_),
                 name=key,
-                text=key + ":",
+                text=key + " ",  # dirty hack to ensure its not building something
                 textColour=self.frame_color,
                 font_size=BUTTON_FONT_SIZE,
                 info_text="",  # info_panel_text_generator.create_info_panel_weapon_text(key),
@@ -79,7 +79,7 @@ class WeaponSelect(EditorBase):
             y += button_size
 
         self.current_weapon_icon = ImageButton(win=self.win,
-            x=self.get_screen_x() + self.get_screen_width() / 2 - button_size / 2,
+            x=self.get_screen_x() + self.get_screen_width() / 3 - button_size / 2,
             y=self.get_screen_y() + y + TOP_SPACING * 4,
             width=button_size,
             height=button_size,
@@ -97,7 +97,8 @@ class WeaponSelect(EditorBase):
             textColour=self.frame_color,
             font_size=BUTTON_FONT_SIZE,
             info_text="not set yet",
-            textVAlign="over_the_top"
+            textVAlign="over_the_top",
+            textHAlign="left",
             )
         self.current_weapon_icon.disable()
         self.buttons.append(self.current_weapon_icon)
@@ -131,11 +132,26 @@ class WeaponSelect(EditorBase):
         self.buttons.append(self.upgrade_button)
         self.widgets.append(self.upgrade_button)
 
-        self.auto_pilot_checkbox = Checkbox(self.win, self.upgrade_button.get_screen_x() + button_size * 3,
-            self.upgrade_button.get_screen_y(), button_size, button_size, isSubWidget=False, color=self.frame_color,
-            key="auto_pilot", tooltip="auto_pilot", onClick=lambda: print("OKOKOK"), layer=9, parent=self,
-            image_name="autopilot.png")
 
+        self.auto_pilot_checkbox = Checkbox(
+            self.win,
+            self.upgrade_button.get_screen_x() + button_size * 3,
+            self.upgrade_button.get_screen_y(),
+            CHECKBOX_SIZE,
+            CHECKBOX_SIZE,
+            isSubWidget=False,
+            color=self.frame_color,
+            key="auto_pilot",
+            image_name="autopilot.png",
+            tooltip="auto_pilot",
+            onClick=lambda: print("OKOKOK"),
+            layer=9,
+            parent=self,
+            button_size=CHECKBOX_SIZE,
+            text="auto pilot",
+            textHAlign="left_outside",
+            textColour=self.frame_color)
+        self.auto_pilot_checkbox.checked = False
         self.checkboxes.append(self.auto_pilot_checkbox)
         self.widgets.append(self.auto_pilot_checkbox)
 
@@ -206,8 +222,8 @@ class WeaponSelect(EditorBase):
             return
         c = 0
         for key, value in self.current_weapon["upgrade values"][f"level_{self.current_weapon['level']}"].items():
-            self.draw_text(self.current_weapon_icon.screen_x + self.current_weapon_icon.screen_width + self.text_spacing, self.current_weapon_icon.screen_y + self.text_spacing * (
-                c), 200, INFO_FONT_SIZE, f"{key}: {value}")
+            self.draw_text(self.current_weapon_icon.screen_x + self.current_weapon_icon.screen_width + self.text_spacing,
+                           self.current_weapon_icon.screen_y + self.text_spacing * c, 200, INFO_FONT_SIZE, f"{key}: {value}")
             c += 1
 
     def draw_weapon_prices(self):

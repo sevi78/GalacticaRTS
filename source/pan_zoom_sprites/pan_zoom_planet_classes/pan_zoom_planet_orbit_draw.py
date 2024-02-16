@@ -3,7 +3,7 @@ import math
 import pygame
 
 from source.draw.circles import draw_dashed_circle
-from source.gui.lod import inside_screen
+from source.gui.lod import level_of_detail
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.orbit_handler import get_orbit_pos
 from source.configuration import global_params
@@ -31,7 +31,7 @@ def draw_orbit_simple__(self):  # old
             angle = i * (2 * math.pi / num_points)  # angle of the current point
             x = pos[0] + radius * math.cos(angle)  # x-coordinate of the current point
             y = pos[1] + radius * math.sin(angle)  # y-coordinate of the current point
-            if inside_screen((x, y), border=0):
+            if level_of_detail.inside_screen((x, y)):
                 points.append((int(x), int(y)))
 
         if len(points) > 1:
@@ -87,7 +87,7 @@ def draw_orbit(self):
             angle = i * (2 * math.pi / num_points)  # angle of the current point
             x = pos[0] + radius * math.cos(angle)  # x-coordinate of the current point
             y = pos[1] + radius * math.sin(angle)  # y-coordinate of the current point
-            if inside_screen((x, y), border=0):
+            if level_of_detail.inside_screen((x, y)):
                 if math.dist(self.center, (x, y)) * self.get_zoom() > min_dist_to_draw / self.get_zoom():
                     points.append((int(x), int(y)))
 
@@ -114,7 +114,7 @@ def draw_orbits(self):
     elif self.get_zoom() < 0.8 > 0.1:
         draw_orbit_simple(self)
     elif self.get_zoom() > 0.8:
-        if inside_screen(self.center):
+        if level_of_detail.inside_screen(self.center):
             draw_orbit(self)
 
     # draw_orbit_angle(self)

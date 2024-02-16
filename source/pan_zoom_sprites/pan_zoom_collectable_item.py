@@ -1,14 +1,14 @@
 import pygame
 
-from source.gui.lod import inside_screen
+from source.gui.lod import level_of_detail
 from source.handlers.mouse_handler import mouse_handler, MouseState
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
-from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_mouse_handler import PanZoomMouseHandler
+from source.interaction.interaction_handler import InteractionHandler
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_gif import PanZoomSprite
 from source.configuration import global_params
 
 
-class PanZoomCollectableItem(PanZoomSprite, PanZoomMouseHandler):
+class PanZoomCollectableItem(PanZoomSprite, InteractionHandler):
     """"""
 
     __slots__ = PanZoomSprite.__slots__ + ('property', 'info_text', 'tooltip', 'energy', 'food', 'minerals', 'water',
@@ -19,7 +19,7 @@ class PanZoomCollectableItem(PanZoomSprite, PanZoomMouseHandler):
 
     def __init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs):
         PanZoomSprite.__init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs)
-        PanZoomMouseHandler.__init__(self)
+        InteractionHandler.__init__(self)
         self.property = "item"
         self.type = "collectable item"
         self.info_text = kwargs.get("infotext")
@@ -43,7 +43,7 @@ class PanZoomCollectableItem(PanZoomSprite, PanZoomMouseHandler):
         self.kill()
 
     def listen(self):
-        if not inside_screen(self.get_screen_position(), border=100):
+        if not level_of_detail.inside_screen(self.get_screen_position()):
             return
 
         if not self._hidden and not self._disabled:

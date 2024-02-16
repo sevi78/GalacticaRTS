@@ -1,22 +1,58 @@
-import time
-
 from source.configuration import global_params
 
-BORDER = 10
+BORDER = -10
 DEBUG_BORDER = 200
 
 
-def inside_screen(pos: tuple, **kwargs):
-    BORDER_ = kwargs.get("border", BORDER)
-    win = kwargs.get("win", global_params.win)
-
-    if global_params.debug:
-        BORDER_ = DEBUG_BORDER
-
-    return BORDER_ <= pos[0] <= win.get_width() - BORDER_ and BORDER_ <= pos[1] <= win.get_height() - BORDER_
-
-
 class LevelOfDetail:
+    """
+    Summary
+    The LevelOfDetail class is responsible for managing the level of detail of a screen in a game. It allows setting the screen size, border size, and debug mode. It also provides a method to check if a given position is inside the screen limits.
+    Example Usage
+    # Create an instance of LevelOfDetail
+    lod = LevelOfDetail()
+
+    # Set the screen size
+    lod.set_screen_size((800, 600))
+
+    # Set the border size
+    lod.set_border(20)
+
+    # Enable debug mode
+    lod.debug = True
+
+    # Check if a position is inside the screen limits
+    inside = lod.inside_screen((400, 300))
+    print(inside)  # Output: True
+    Code Analysis
+    Main functionalities
+    Set the screen size
+    Set the border size
+    Enable/disable debug mode
+    Check if a position is inside the screen limits
+
+    Methods
+    __init__(): Initializes the LevelOfDetail instance and sets the initial values for the screen size, border size, and debug mode.
+    debug: Getter and setter for the debug mode. When debug mode is enabled, the border size is set to a higher value.
+    set_limits(): Updates the screen limits based on the current border size.
+    set_border(border: int): Sets the border size and updates the screen limits.
+    set_width(width: int): Sets the screen width and updates the screen limits.
+    set_height(height: int): Sets the screen height and updates the screen limits.
+    set_screen_size(screen_size: tuple): Sets the screen size (width and height) and updates the screen limits.
+    inside_screen(pos: tuple) -> bool: Checks if a given position is inside the screen limits.
+
+    Fields
+    win: The window object representing the game screen.
+    width: The width of the game screen.
+    height: The height of the game screen.
+    border: The size of the border around the screen.
+    left_limit: The left limit of the screen (excluding the border).
+    right_limit: The right limit of the screen (excluding the border).
+    top_limit: The top limit of the screen (excluding the border).
+    bottom_limit: The bottom limit of the screen (excluding the border).
+    debug: A boolean indicating whether debug mode is enabled or not.
+    """
+
     def __init__(self) -> None:
         self.win = global_params.win
         self.width = self.win.get_width()
@@ -26,6 +62,21 @@ class LevelOfDetail:
         self.right_limit = self.width
         self.top_limit = 0
         self.bottom_limit = self.height
+        self.debug = False
+        self.set_limits()
+
+    @property
+    def debug(self) -> bool:
+        return self._debug
+
+    @debug.setter
+    def debug(self, value) -> None:
+        self._debug = value
+        if value:
+            self.border = DEBUG_BORDER
+        else:
+            self.border = BORDER
+        self.set_limits()
 
     def set_limits(self) -> None:
         self.left_limit = self.border
@@ -63,20 +114,3 @@ class LevelOfDetail:
 
 
 level_of_detail = LevelOfDetail()
-
-if __name__ == '__main__':
-    level_of_detail = LevelOfDetail()
-    level_of_detail.set_screen_size((1000, 1000))
-
-    old_start = time.time()
-    loops = 10000000
-    for _ in range(loops):
-        inside_screen_old((_, _))
-    old_end = time.time()
-    print(f'old took {old_end - old_start} seconds for {loops}')
-
-    new_start = time.time()
-    for _ in range(loops):
-        level_of_detail.inside_screen((_, _))
-    new_end = time.time()
-    print(f'new took {new_end - new_start} seconds for {loops}')

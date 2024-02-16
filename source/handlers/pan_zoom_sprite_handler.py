@@ -1,7 +1,7 @@
 from pygame.sprite import LayeredUpdates
 
 from source.configuration import global_params
-from source.gui.lod import inside_screen
+from source.gui.lod import level_of_detail
 from source.handlers import widget_handler
 from source.handlers.widget_handler import WidgetHandler
 
@@ -26,7 +26,7 @@ class PanZoomLayeredUpdates(LayeredUpdates):
                 continue
 
             rec = spritedict[spr]
-            if not inside_screen(spr.rect.center, border=0):
+            if not level_of_detail.inside_screen(spr.rect.center):
                 if rec is not init_rect:
                     dirty_append(rec)
                 spritedict[spr] = init_rect
@@ -64,13 +64,13 @@ class SpriteGroups:  # original
         self.gif_handlers.update()
         self.collectable_items.update(*args)
         self.ufos.update(*args)
-        # self.ships.update()
+        self.ships.update(*args)
         self.missiles.update(*args)
         self.explosions.update(*args)
         self.target_objects.update(*args)
         self.moving_images.update()
         self.state_images.update()
-        self.ships.update(*args)
+        #self.ships.update(*args)
 
     def draw(self, surface, **kwargs):
         events = kwargs.get("events")

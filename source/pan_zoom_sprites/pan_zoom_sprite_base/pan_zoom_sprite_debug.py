@@ -2,7 +2,7 @@ import pygame
 from pygame_widgets.util import drawText
 
 from source.configuration import global_params
-from source.gui.lod import inside_screen
+from source.gui.lod import level_of_detail
 from source.handlers.color_handler import colors
 
 
@@ -12,7 +12,7 @@ class GameObjectDebug:
 
     def debug_object(self):
         color = colors.frame_color
-        if not inside_screen(self.rect.center):
+        if not level_of_detail.inside_screen(self.rect.center):
             color = colors.outside_screen_color
 
         # center

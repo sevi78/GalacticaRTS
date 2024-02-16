@@ -1,9 +1,12 @@
+import copy
 import math
 
 from pygame import Vector2
 
 from source.configuration import global_params
+from source.handlers.image_handler import outline_image
 from source.handlers.position_handler import rot_center
+from source.interaction.interaction_handler import InteractionHandler
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_gif import PanZoomSprite
 
 GAME_OBJECT_SPEED = 2.0
@@ -11,7 +14,7 @@ screen = global_params.win
 
 
 
-class PanZoomGameObject(PanZoomSprite):
+class PanZoomGameObject(PanZoomSprite, InteractionHandler):
     __slots__ = PanZoomSprite.__slots__ + ('moving', 'rotation_smoothing', 'explode_if_target_reached',
                                            'explosion_relative_gif_size', 'exploded',
                                            'attack_distance_raw', 'attack_distance', 'target', 'rotate_to_target',
@@ -20,6 +23,7 @@ class PanZoomGameObject(PanZoomSprite):
 
     def __init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs):
         PanZoomSprite.__init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs)
+        InteractionHandler.__init__(self)
 
         self.initial_rotation = kwargs.get("initial_rotation", 0)
         self.moving = False
@@ -38,8 +42,20 @@ class PanZoomGameObject(PanZoomSprite):
         self.target_position = Vector2(0, 0)
         self.target_reached = False
 
+
         # speed
         self.speed = GAME_OBJECT_SPEED
+
+    @property
+    def image(self):
+        return self._image
+
+    @image.setter
+    def image(self, value):
+        self._image = value
+        if hasattr(self, "on_hover"):
+            if self.on_hover:
+                self.image_outline = outline_image(copy.copy(self.image), self.frame_color, self.outline_threshold, self.outline_thickness)
 
     def set_attack_distance(self):
         self.attack_distance = self.attack_distance_raw * self.pan_zoom.zoom

@@ -1,6 +1,6 @@
 import random
 
-from source.gui.lod import inside_screen
+from source.gui.lod import level_of_detail
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_gif import PanZoomSprite
 from source.configuration import global_params
 
@@ -61,10 +61,9 @@ class PanZoomCelestialObject(PanZoomSprite):
 
     def update(self):
         self.update_pan_zoom_sprite()
-        if not inside_screen(self.rect.center):
+        if not level_of_detail.inside_screen(self.rect.center):
             return
 
-        # if inside_screen(self.rect.center):
         self.draw()
 
     def draw(self):

@@ -1,5 +1,6 @@
-import pygame
+import copy
 
+import pygame
 
 from source.configuration import global_params
 from source.gui.widgets.buttons.image_button import ImageButton
@@ -44,11 +45,9 @@ class Checkbox(ImageButton):
                     self.image = pygame.transform.scale(
                         get_image("no_icon.png"), (self.button_size, self.button_size))
 
-        self.image_raw = self.image
+        self.image_raw = copy.copy(self.image)
         self.rect = self.image.get_rect()
-
         self.tooltip = kwargs.get("tooltip")
-
         self.checked = True
 
         self.hide()
@@ -59,13 +58,11 @@ class Checkbox(ImageButton):
             self.world_x, self.world_y, self.button_size, self.button_size), FRAME_THICKNESS, border_radius=BORDER_RADIUS)
 
     def draw_image(self):
+        rect = self.image_check.get_rect()
         if self.checked:
-            rect = self.image_check.get_rect()
             rect.x, rect.y = self.world_x + self.image.get_rect().width / 5, self.world_y
             self.win.blit(self.image_check, rect)
-
         else:
-            rect = self.image_check.get_rect()
             rect.x, rect.y = self.world_x, self.world_y
             self.win.blit(self.image_uncheck, rect)
 

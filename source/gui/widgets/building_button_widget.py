@@ -4,7 +4,7 @@ from source.configuration import global_params
 from source.configuration.global_params import ui_rounded_corner_small_thickness, ui_rounded_corner_radius_small
 from source.draw.rect import draw_transparent_rounded_rect
 from source.factories.building_factory import building_factory
-from source.gui.lod import inside_screen
+from source.gui.lod import level_of_detail
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.handlers.color_handler import colors

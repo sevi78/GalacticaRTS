@@ -1,6 +1,7 @@
 import pygame
 
 from source.configuration import global_params
+from source.configuration.game_config import config
 from source.configuration.global_params import ui_rounded_corner_big_thickness
 from source.draw.rect import draw_transparent_rounded_rect
 from source.editors.editor_base.editor_config import ARROW_SIZE, SPACING_Y, FONT_SIZE, TOP_SPACING
@@ -223,7 +224,7 @@ class EditorBase(WidgetBase):
         self.widgets.append(close_icon)
 
     def close(self):
-        self.set_global_variable("edit_mode", True)
+        config.set_global_variable("edit_mode", True)
         # if self.game_paused:
         #     global_params.game_paused = False
 

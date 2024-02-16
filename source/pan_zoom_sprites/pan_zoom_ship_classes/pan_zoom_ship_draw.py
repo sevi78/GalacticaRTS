@@ -3,7 +3,7 @@ import random
 import pygame
 
 from source.gui.event_text import event_text
-from source.gui.lod import inside_screen
+from source.gui.lod import level_of_detail
 from source.gui.widgets.progress_bar import ProgressBar
 from source.handlers.color_handler import colors
 
@@ -28,7 +28,7 @@ class PanZoomShipDraw:
             )
 
     def flickering(self):
-        if not inside_screen(self.get_screen_position()):
+        if not level_of_detail.inside_screen(self.get_screen_position()):
             return
         # make flickering relaod stream :))
         r0 = random.randint(-4, 5)
