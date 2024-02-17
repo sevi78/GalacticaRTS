@@ -1,6 +1,6 @@
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_gif import PanZoomSprite
 
-from source.configuration import global_params
+from source.configuration.game_config import config
 
 
 class PanZoomTargetObject(PanZoomSprite):
@@ -17,7 +17,7 @@ class PanZoomTargetObject(PanZoomSprite):
         self.hide()
 
     def update(self):
-        if global_params.game_paused:
+        if config.game_paused:
             return
 
         self.update_pan_zoom_sprite()

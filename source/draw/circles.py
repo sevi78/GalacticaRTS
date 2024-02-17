@@ -1,5 +1,3 @@
-
-
 import pygame
 
 from source.draw.arc_with_dashes import draw_arc_with_dashes

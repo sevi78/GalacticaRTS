@@ -92,7 +92,6 @@ class AppHelper:
         self.production_technology = self.production["technology"]
 
 
-
 def select_next_item_in_list(my_list: list, current_item: any, value: int):
     """Selects the next item in a list based on the current item and a value.
 

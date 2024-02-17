@@ -1,8 +1,9 @@
 import math
-import pygame
-from source.configuration import global_params
-from source.handlers.pan_zoom_sprite_handler import sprite_groups
 
+import pygame
+
+from source.configuration.game_config import config
+from source.handlers.pan_zoom_sprite_handler import sprite_groups
 
 
 def get_orbit_pos(self):
@@ -83,7 +84,7 @@ def orbit__(obj, orbit_obj, orbit_speed, direction):  # original
         obj.orbit_angle = pos_diff.angle_to(pygame.math.Vector2(1, 0)) if direction > 0 else pos_diff.angle_to(pygame.math.Vector2(-1, 0))
 
     # Update the orbit angle based on the orbit speed and game speed
-    obj.orbit_angle += orbit_speed * direction * global_params.game_speed
+    obj.orbit_angle += orbit_speed * direction * config.game_speed
 
     # Calculate the new position based on the orbit radius and angle
     pos = pygame.math.Vector2(obj.orbit_radius, 0).rotate(-obj.orbit_angle)
@@ -116,7 +117,7 @@ def orbit(obj, orbit_obj, orbit_speed, direction):
         obj.orbit_angle %= 360
 
     # Update the orbit angle based on the orbit speed and game speed
-    obj.orbit_angle += orbit_speed * direction * global_params.game_speed
+    obj.orbit_angle += orbit_speed * direction * config.game_speed
     obj.orbit_angle %= 360  # Ensure the angle stays within 0-359 degrees
 
     # Calculate the new position based on the orbit radius and angle
@@ -162,7 +163,7 @@ def orbit_ship(obj, orbit_obj, orbit_speed, direction):
         obj.orbit_angle %= 360
 
     # Update the orbit angle based on the orbit speed and game speed
-    obj.orbit_angle += orbit_speed * direction * global_params.game_speed
+    obj.orbit_angle += orbit_speed * direction * config.game_speed
     obj.orbit_angle %= 360  # Ensure the angle stays within 0-359 degrees
 
     # Calculate the new position based on the orbit radius and angle
@@ -190,14 +191,14 @@ def gradually_move_towards(obj, current_pos, target_pos):
 
     # Calculate the displacement vector for each time step
     displacement = (
-        direction[0] * obj.speed * global_params.game_speed, direction[1] * obj.speed * global_params.game_speed)
+        direction[0] * obj.speed * config.game_speed, direction[1] * obj.speed * config.game_speed)
 
     # Move the object towards the target position with a constant speed
     obj.world_x += displacement[0]
     obj.world_y += displacement[1]
 
     # Check if the object has reached the target position
-    if distance <= obj.speed * global_params.game_speed:
+    if distance <= obj.speed * config.game_speed:
         return True  # Object has reached the target position
     else:
         return False  # Object is still moving towards the target position

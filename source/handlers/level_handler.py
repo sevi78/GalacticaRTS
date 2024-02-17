@@ -2,7 +2,7 @@ import copy
 import math
 import random
 
-from source.configuration import global_params
+from source.configuration.game_config import config
 from source.factories.planet_factory import planet_factory
 from source.factories.universe_factory import universe_factory
 from source.game_play.navigation import navigate_to_position
@@ -407,10 +407,10 @@ class LevelHandler:
             i.end_object()
 
         # building widgets
-        for i in global_params.app.building_widget_list:
+        for i in config.app.building_widget_list:
             i.delete()
 
-        global_params.app.building_widget_list = []
+        config.app.building_widget_list = []
 
     def create_universe(self):
         universe_factory.amount = int(math.sqrt(math.sqrt(self.data["globals"]["width"])) * self.data["globals"][
@@ -422,7 +422,7 @@ class LevelHandler:
     def generate_level_dict_from_scene(self):
         data = self.data
         # get player
-        player = global_params.app.player
+        player = config.app.player
         data["player"]["stock"] = player.get_stock()
         data["player"]["population"] = player.population
 
@@ -494,7 +494,7 @@ class LevelHandler:
     def load_level(self, filename, folder):
         self.current_game = filename
         self.data = load_file(filename, folder=folder)
-        global_params.app.level_edit.set_selector_current_value()
+        config.app.level_edit.set_selector_current_value()
 
         # delete level
         self.delete_level()
@@ -502,33 +502,33 @@ class LevelHandler:
         # reset player
         self.app.player.reset(self.data["player"])
 
-        # create planets
+        # create planets, AND SELECT ONE ! to make ensure no errors are generated!!!
         planet_factory.create_planets_from_data(self.data)
+        self.app.selected_planet = sprite_groups.planets.sprites()[0]
 
         # create ships
         ships = self.data.get("ships")
         for key in ships.keys():
             self.app.ship_factory.create_ship(f"{ships[key]['name']}_30x30.png", int(
                 ships[key]["world_x"]), int(
-                ships[key]["world_y"]), global_params.app, ships[key]["weapons"], data=ships[key])
+                ships[key]["world_y"]), config.app, ships[key]["weapons"], data=ships[key])
 
         # create universe
-        if global_params.draw_universe:
+        if config.draw_universe:
             self.create_universe()
 
         # setup game_event_handler
-        self.app.game_event_handler.level = global_params.app.level_handler.data.get("globals").get("level")
-        self.app.game_event_handler.set_goal(global_params.app.level_handler.data.get("globals").get("goal"))
+        self.app.game_event_handler.level = config.app.level_handler.data.get("globals").get("level")
+        self.app.game_event_handler.set_goal(config.app.level_handler.data.get("globals").get("goal"))
 
         # setup mission
         self.app.resource_panel.mission_icon.info_text = info_panel_text_generator.create_info_panel_mission_text()
-        global_params.edit_mode = False
+        config.edit_mode = False
 
         self.app.calculate_global_production()
 
         # setup pan_zoom_handler
         self.setup_pan_zoom_handler()
-
 
     def save_level(self, filename, folder):
         data = self.generate_level_dict_from_scene()
@@ -543,7 +543,6 @@ class LevelHandler:
              self.data["globals"]["height"] * pan_zoom_handler.zoom),
             (360, 360),
             event_text=event_text)
-
 
         # file_handler.get_level_list()
         self.app.level_select.update_icons()

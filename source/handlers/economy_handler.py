@@ -44,7 +44,7 @@ class EconomyHandler:
             planet.specials_dict[special_key]["operator"] = operator
             planet.specials_dict[special_key]["value"] += special_value
 
-        #pprint (f"setup_planet_specials_dict:{planet}: {planet.specials_dict}")
+        # pprint (f"setup_planet_specials_dict:{planet}: {planet.specials_dict}")
         return planet.specials_dict
 
     def calculate_planet_production(self, planet):
@@ -85,7 +85,6 @@ class EconomyHandler:
                         planet.specials.pop(index)
                     else:
                         pass
-
 
         return planet.production
 

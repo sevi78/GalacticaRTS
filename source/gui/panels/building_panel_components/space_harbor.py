@@ -1,8 +1,7 @@
 import pygame
 from pygame_widgets.util import drawText
 
-from source.configuration import global_params
-from source.configuration.global_params import ui_rounded_corner_small_thickness
+from source.configuration.game_config import config
 from source.factories.building_factory import building_factory
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
@@ -51,7 +50,7 @@ class SpaceHarbor(WidgetBase):
 
         # construct surface
         self.surface = pygame.surface.Surface((width, height))
-        self.surface.set_alpha(global_params.ui_panel_alpha)
+        self.surface.set_alpha(config.ui_panel_alpha)
         self.surface_rect = self.surface.get_rect()
         self.surface_rect.x = self.parent.surface_rect.x + self.parent.spacing
         self.surface_rect.y = self.parent.world_y
@@ -59,7 +58,7 @@ class SpaceHarbor(WidgetBase):
 
         # text
         self.font_size = kwargs.get("font_size", 12)
-        self.font = pygame.font.SysFont(global_params.font_name, self.font_size)
+        self.font = pygame.font.SysFont(config.font_name, self.font_size)
         self.info_text = kwargs.get("infotext")
 
         # buttons
@@ -73,12 +72,12 @@ class SpaceHarbor(WidgetBase):
             image=pygame.transform.scale(
                 get_image("spacehunter_30x30.png"), (25, 25)),
             tooltip="build spacehunter",
-            info_text="", #info_panel_text_generator.create_info_panel_ship_text("spacehunter"),
+            info_text="",  # info_panel_text_generator.create_info_panel_ship_text("spacehunter"),
             frame_color=self.frame_color,
             moveable=False,
             include_text=True,
             layer=self.layer,
-            onClick=lambda: building_factory.build("spacehunter", global_params.app.selected_planet),
+            onClick=lambda: building_factory.build("spacehunter", config.app.selected_planet),
             )
 
         self.cargoloader_button = ImageButton(win=self.win,
@@ -91,12 +90,12 @@ class SpaceHarbor(WidgetBase):
             image=pygame.transform.scale(
                 get_image("cargoloader_30x30.png"), (25, 25)),
             tooltip="build cargoloader",
-            info_text="", #info_panel_text_generator.create_info_panel_ship_text("cargoloader"),
+            info_text="",  # info_panel_text_generator.create_info_panel_ship_text("cargoloader"),
             frame_color=self.frame_color,
             moveable=False,
             include_text=True,
             layer=self.layer,
-            onClick=lambda: building_factory.build("cargoloader", global_params.app.selected_planet),
+            onClick=lambda: building_factory.build("cargoloader", config.app.selected_planet),
             )
 
         self.spaceship_button = ImageButton(win=self.win,
@@ -109,12 +108,12 @@ class SpaceHarbor(WidgetBase):
             image=pygame.transform.scale(
                 get_image("spaceship_30x30.png"), (25, 25)),
             tooltip="build spaceship",
-            info_text="", #info_panel_text_generator.create_info_panel_ship_text("spaceship"),
+            info_text="",  # info_panel_text_generator.create_info_panel_ship_text("spaceship"),
             frame_color=self.frame_color,
             moveable=False,
             include_text=True,
             layer=self.layer,
-            onClick=lambda: building_factory.build("spaceship", global_params.app.selected_planet),
+            onClick=lambda: building_factory.build("spaceship", config.app.selected_planet),
             )
 
         # initial hide the buttons
@@ -160,7 +159,7 @@ class SpaceHarbor(WidgetBase):
         self.surface_rect.x = self.parent.surface_rect.x
         self.surface_rect.y = self.parent.world_y + self.spacing + 5
         self.win.blit(self.surface, self.surface_rect)
-        pygame.draw.rect(self.win, self.frame_color, self.surface_rect, int(ui_rounded_corner_small_thickness), int(global_params.ui_rounded_corner_radius_small))
+        pygame.draw.rect(self.win, self.frame_color, self.surface_rect, config.ui_rounded_corner_small_thickness, config.ui_rounded_corner_radius_small)
 
         # label
         drawText(self.win, "Space Harbor", self.frame_color,

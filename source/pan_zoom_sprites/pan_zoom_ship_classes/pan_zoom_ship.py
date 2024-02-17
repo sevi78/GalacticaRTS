@@ -4,7 +4,7 @@ import random
 import pygame
 from pygame import Vector2
 
-from source.configuration import global_params
+from source.configuration.game_config import config
 from source.draw.scope import scope
 from source.gui.event_text import event_text
 from source.gui.lod import level_of_detail
@@ -19,7 +19,6 @@ from source.handlers.position_handler import prevent_object_overlap
 from source.handlers.weapon_handler import WeaponHandler
 from source.handlers.widget_handler import WidgetHandler
 from source.interaction.interaction_handler import InteractionHandler
-
 from source.interfaces.interface import InterfaceData
 from source.multimedia_library.images import get_image
 from source.multimedia_library.sounds import sounds
@@ -27,8 +26,7 @@ from source.pan_zoom_sprites.pan_zoom_ship_classes.pan_zoom_ship_draw import Pan
 from source.pan_zoom_sprites.pan_zoom_ship_classes.pan_zoom_ship_interaction import PanZoomShipInteraction
 from source.pan_zoom_sprites.pan_zoom_ship_classes.pan_zoom_ship_moving import PanZoomShipMoving
 from source.pan_zoom_sprites.pan_zoom_ship_classes.pan_zoom_ship_params import PanZoomShipParams, \
-    SHIP_ITEM_COLLECT_DISTANCE, SHIP_SPEED, SHIP_ROTATE_CORRECTION_ANGLE, SHIP_TARGET_OBJECT_RESET_DISTANCE, \
-    SHIP_INSIDE_SCREEN_BORDER
+    SHIP_ITEM_COLLECT_DISTANCE, SHIP_SPEED, SHIP_ROTATE_CORRECTION_ANGLE, SHIP_TARGET_OBJECT_RESET_DISTANCE
 from source.pan_zoom_sprites.pan_zoom_ship_classes.pan_zoom_ship_ranking import PanZoomShipRanking
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_game_object import PanZoomGameObject
 from source.pan_zoom_sprites.pan_zoom_target_object import PanZoomTargetObject
@@ -114,7 +112,7 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         self.collect_text = ""
 
         # target object
-        self.target_object = PanZoomTargetObject(global_params.win,
+        self.target_object = PanZoomTargetObject(config.win,
             pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1],
             60, 60, pan_zoom_handler, "target.gif", align_image="center", debug=False,
             group="target_objects", parent=self, zoomable=False, relative_gif_size=2.0)
@@ -248,7 +246,7 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
                 print("move_towards_target: exc:", e)
 
         # Calculate the displacement vector for each time step
-        displacement = direction * speed * global_params.game_speed
+        displacement = direction * speed * config.game_speed
 
         # Calculate the number of time steps needed to reach the target position
         time_steps = int(distance / speed) / self.get_zoom()
@@ -277,7 +275,7 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
                 speed = self.set_speed()
 
             # Calculate the displacement vector for each time step
-            displacement = direction * speed * global_params.game_speed / global_params.fps
+            displacement = direction * speed * config.game_speed / config.fps
             # print(f"displacement: {displacement}")
 
             # Move the obj towards the target position with a constant speed
@@ -399,8 +397,8 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
                     setattr(self.parent.player, key, getattr(self.parent.player, key) + value)
                     self.resources[key] = 0
                     setattr(self, key, 0)
-                    if hasattr(global_params.app.resource_panel, key + "_icon"):
-                        target_icon = getattr(global_params.app.resource_panel, key + "_icon").rect.center
+                    if hasattr(config.app.resource_panel, key + "_icon"):
+                        target_icon = getattr(config.app.resource_panel, key + "_icon").rect.center
                         self.add_moving_image(key, "", value, (random.uniform(-10.8, 10.8), random.uniform(-1.0, -1.9)),
                             4, 30, 30, self.target, target_icon)
 
@@ -420,8 +418,8 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         sounds.play_sound(sounds.unload_ship)
 
     # def listen__(self):
-    #     global_params.app.tooltip_instance.reset_tooltip(self)
-    #     if not global_params.app.weapon_select._hidden:
+    #     config.app.tooltip_instance.reset_tooltip(self)
+    #     if not config.app.weapon_select._hidden:
     #         return
     #
     #     if not self._hidden and not self._disabled:
@@ -430,11 +428,11 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
     #
     #         if self.rect.collidepoint(x, y):
     #             # if mouseState == MouseState.MIDDLE_RELEASE:
-    #             if global_params.app.mouse_handler.double_clicks == 1:
+    #             if config.app.mouse_handler.double_clicks == 1:
     #                 self.open_weapon_select()
     #
     #             if mouseState == MouseState.RIGHT_CLICK:
-    #                 if global_params.app.ship == self:
+    #                 if config.app.ship == self:
     #                     if self.selected:
     #                         pass
     #                         # self.select(False)
@@ -447,7 +445,7 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
     #             elif mouseState == MouseState.CLICK:
     #                 self.clicked = True
     #                 self.select(True)
-    #                 global_params.app.ship = self
+    #                 config.app.ship = self
     #
     #             elif mouseState == MouseState.DRAG and self.clicked:
     #                 pass
@@ -466,8 +464,8 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
     #                     if not self.moving:
     #                         self.target = None
     #
-    #                 if global_params.app.ship == self:
-    #                     global_params.app.ship = None
+    #                 if config.app.ship == self:
+    #                     config.app.ship = None
     #
     #             if mouseState == MouseState.RIGHT_CLICK:
     #                 if self.selected:
@@ -477,8 +475,8 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
     #                         self.set_energy_reloader(Mouse.get_hit_object())
 
     def listen(self):
-        global_params.app.tooltip_instance.reset_tooltip(self)
-        if not global_params.app.weapon_select._hidden:
+        config.app.tooltip_instance.reset_tooltip(self)
+        if not config.app.weapon_select._hidden:
             return
 
         if not self._hidden and not self._disabled:
@@ -491,7 +489,7 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
                     self.open_weapon_select()
 
                 if mouse_state == MouseState.RIGHT_CLICK:
-                    if global_params.app.ship == self:
+                    if config.app.ship == self:
                         if self.selected:
                             pass
                             # self.select(False)
@@ -504,7 +502,7 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
                 elif mouse_state == MouseState.LEFT_CLICK:
                     self.clicked = True
                     self.select(True)
-                    global_params.app.ship = self
+                    config.app.ship = self
 
                 elif mouse_state == MouseState.LEFT_DRAG and self.clicked:
                     pass
@@ -513,7 +511,7 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
                     self.submit_tooltip()
                     # self.draw_hover_circle()
                     self.win.blit(pygame.transform.scale(self.image_outline, self.rect.size), self.rect)
-                    #self.win.blit(self.image_outline, self.rect)
+                    # self.win.blit(self.image_outline, self.rect)
 
                     self.weapon_handler.draw_attack_distance()
             else:
@@ -526,8 +524,8 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
                         if not self.moving:
                             self.target = None
 
-                    if global_params.app.ship == self:
-                        global_params.app.ship = None
+                    if config.app.ship == self:
+                        config.app.ship = None
 
                 if mouse_state == MouseState.RIGHT_CLICK:
                     if self.selected:
@@ -538,16 +536,16 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
 
     def open_weapon_select(self):
         self.set_info_text()
-        if global_params.app.weapon_select.obj == self:
-            global_params.app.weapon_select.set_visible()
+        if config.app.weapon_select.obj == self:
+            config.app.weapon_select.set_visible()
         else:
-            global_params.app.weapon_select.obj = self
+            config.app.weapon_select.obj = self
 
     def update(self):
         self.state_engine.update()
         self.update_pan_zoom_game_object()
         self.progress_bar.set_progressbar_position()
-        if global_params.game_paused:
+        if config.game_paused:
             return
 
         # why setting th tooltip every frame ?? makes no sense ---
@@ -555,7 +553,7 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         self.listen()
         if self.selected:
             pre_calculated_energy_use = self.energy_use * math.dist(self.rect.center, pygame.mouse.get_pos()) / pan_zoom_handler.zoom
-            if global_params.app.weapon_select._hidden:
+            if config.app.weapon_select._hidden:
                 scope.draw_scope(self.rect.center, self.get_max_travel_range(), {"energy use": format_number(pre_calculated_energy_use, 1)})
 
         self.set_distances()
@@ -609,8 +607,8 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
             if self.enemy.attitude < 50:
                 self.weapon_handler.attack(self.enemy)
             else:
-                global_params.app.trade_edit.setup_trader(self, self.enemy)
-                global_params.app.trade_edit.set_visible()
+                config.app.trade_edit.setup_trader(self, self.enemy)
+                config.app.trade_edit.set_visible()
                 self.enemy = None
                 # self.target = None
                 # self.moving = False

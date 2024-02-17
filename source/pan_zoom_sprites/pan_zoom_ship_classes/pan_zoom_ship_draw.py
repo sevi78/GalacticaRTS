@@ -2,6 +2,7 @@ import random
 
 import pygame
 
+from source.draw.dashed_line import draw_dashed_line
 from source.gui.event_text import event_text
 from source.gui.lod import level_of_detail
 from source.gui.widgets.progress_bar import ProgressBar
@@ -58,12 +59,10 @@ class PanZoomShipDraw:
         # sounds.play_sound(sounds.electricity2, channel=self.sound_channel)
         event_text.text = "reloading spaceship: --- needs a lot of energy!"
 
-
-
     def draw_selection(self):
         pygame.draw.circle(self.win, self.frame_color, self.rect.center, self.get_screen_width(), int(6 * self.get_zoom()))
 
-    def draw_connections(self):
+    def draw_connections_(self):
         if self.target:
             if hasattr(self.target, "x"):
                 if not self.target.property == "ufo":
@@ -72,3 +71,7 @@ class PanZoomShipDraw:
                         end_pos=self.target.center,
                         color=self.frame_color,
                         width=5)
+
+    def draw_connections(self):
+        if self.target:
+            draw_dashed_line(self.win, self.frame_color, self.rect.center, self.target.rect.center,  5)

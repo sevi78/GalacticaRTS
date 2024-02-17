@@ -1,4 +1,4 @@
-from source.configuration import global_params
+from source.configuration.game_config import config
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 
@@ -25,7 +25,7 @@ def navigate_to(obj, **kwargs):
         first_item = sprite_groups.ships.sprites()[0]
         sprite_groups.ships.add(first_item)
         sprite_groups.ships.change_layer(first_item, len(sprite_groups.ships) - 1)
-        global_params.app.ship = obj
+        config.app.ship = obj
         obj.set_info_text()
 
         # set the new position

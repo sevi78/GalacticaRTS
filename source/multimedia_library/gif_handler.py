@@ -32,7 +32,7 @@ class GifHandler(pygame.sprite.Sprite):
         self.frames = get_gif_frames(self.gif)
         self.gif_start = time.time()
         self.gif_fps = get_gif_fps(self.gif)
-        self.gif_animation_time = kwargs.get("gif_animation_time", get_gif_duration(self.gif)/1000)
+        self.gif_animation_time = kwargs.get("gif_animation_time", get_gif_duration(self.gif) / 1000)
         self.index = 1
         self.counter = 0
         self.image_raw = self.frames[self.index]
@@ -49,7 +49,7 @@ class GifHandler(pygame.sprite.Sprite):
         # register
         if self.group:
             getattr(sprite_groups, self.group).add(self)
-            #sprite_groups.updates[self.group].add(self)
+            # sprite_groups.updates[self.group].add(self)
 
     def end_object(self):
         # self.parent = None
@@ -64,7 +64,7 @@ class GifHandler(pygame.sprite.Sprite):
         self.sound = kwargs.get("sound", None)
         self.relative_gif_size = kwargs.get("relative_gif_size", None)
 
-        self.frames = get_gif_frames(self.gif)#self.load_gif_frames(self.gif)
+        self.frames = get_gif_frames(self.gif)  # self.load_gif_frames(self.gif)
         self.index = 1
         self.counter = 1
         self.image_raw = self.frames[self.index]
@@ -139,9 +139,9 @@ class GifHandler(pygame.sprite.Sprite):
 
         if self.relative_gif_size:
             self.rect.x = self.parent.rect.x - (self.max_size - self.parent.rect.width) / 2 + (
-                        self.offset_x * pan_zoom_handler.zoom)
+                    self.offset_x * pan_zoom_handler.zoom)
             self.rect.y = self.parent.rect.y - (self.max_size - self.parent.rect.height) / 2 + (
-                        self.offset_y * pan_zoom_handler.zoom)
+                    self.offset_y * pan_zoom_handler.zoom)
         else:
             self.rect.x = self.parent.rect.x + (self.offset_x * pan_zoom_handler.zoom)
             self.rect.y = self.parent.rect.y + (self.offset_y * pan_zoom_handler.zoom)

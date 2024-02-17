@@ -1,8 +1,10 @@
 import pygame as pg
 import pygame.transform
-from source.configuration import global_params
-from source.configuration.global_params import win, WIDTH, HEIGHT
-from source.handlers.value_handler import ValueHandler, ValueSmoother
+
+from source.configuration.game_config import config
+
+
+# from source.handlers.value_handler import ValueHandler, ValueSmoother
 
 
 class PanZoomHandler:  # original
@@ -160,13 +162,13 @@ class PanZoomHandler:  # original
         self.mouseworld_x_before, self.mouseworld_y_before = self.screen_2_world(mouse_x, mouse_y)
 
     def get_relative_mouse_position(self) -> (int, int):
-        if hasattr(global_params.hover_object, "relative_mouse_x"):
+        if hasattr(config.hover_object, "relative_mouse_x"):
             # Use relative position from the map
-            screen_width, screen_height = global_params.win.get_width(), global_params.win.get_height()
-            world_width = global_params.app.level_handler.data["globals"]["width"]
-            world_height = global_params.app.level_handler.data["globals"]["height"]
-            mouse_x = screen_width / world_width * global_params.app.map_panel.relative_mouse_x
-            mouse_y = screen_height / world_height * global_params.app.map_panel.relative_mouse_y
+            screen_width, screen_height = config.win.get_width(), config.win.get_height()
+            world_width = config.app.level_handler.data["globals"]["width"]
+            world_height = config.app.level_handler.data["globals"]["height"]
+            mouse_x = screen_width / world_width * config.app.map_panel.relative_mouse_x
+            mouse_y = screen_height / world_height * config.app.map_panel.relative_mouse_y
         else:
             # Use real mouse position
             mouse_x, mouse_y = self.get_mouse_position()
@@ -178,15 +180,14 @@ class PanZoomHandler:  # original
         return mouse_x, mouse_y
 
 
-pan_zoom_handler = PanZoomHandler(
-    win, WIDTH, HEIGHT)
+pan_zoom_handler = PanZoomHandler(config.win, config.width, config.height)
 #
 #
 #
 # import pygame as pg
 # import pygame.transform
-# from source.configuration import global_params
-# from source.configuration.global_params import win, WIDTH, HEIGHT
+# from source.configuration.global_params import config
+# from source.configuration.config import win, WIDTH, HEIGHT
 # from source.handlers.value_handler import ValueHandler, ValueSmoother
 #
 #
@@ -311,13 +312,13 @@ pan_zoom_handler = PanZoomHandler(
 #
 #     def listen(self, events, pan_enabled):
 #         # Mouse screen coords, or map coordinates if mouse on map
-#         if hasattr(global_params.hover_object, "relative_mouse_x"):
+#         if hasattr(config.hover_object, "relative_mouse_x"):
 #             # Use relative position from the map
-#             screen_width, screen_height = global_params.win.get_width(), global_params.win.get_height()
-#             world_width = global_params.app.level_handler.data["globals"]["width"]
-#             world_height = global_params.app.level_handler.data["globals"]["height"]
-#             mouse_x = screen_width / world_width * global_params.app.map_panel.relative_mouse_x
-#             mouse_y = screen_height / world_height * global_params.app.map_panel.relative_mouse_y
+#             screen_width, screen_height = config.win.get_width(), config.win.get_height()
+#             world_width = config.app.level_handler.data["globals"]["width"]
+#             world_height = config.app.level_handler.data["globals"]["height"]
+#             mouse_x = screen_width / world_width * config.app.map_panel.relative_mouse_x
+#             mouse_y = screen_height / world_height * config.app.map_panel.relative_mouse_y
 #         else:
 #             # Use real mouse position
 #             mouse_x, mouse_y = pg.mouse.get_pos()

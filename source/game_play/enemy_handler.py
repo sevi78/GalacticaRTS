@@ -2,7 +2,7 @@ import random
 
 import pygame.display
 
-from source.configuration import global_params
+from source.configuration.game_config import config
 from source.handlers.file_handler import load_file
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
@@ -90,17 +90,17 @@ class EnemyHandler(InterfaceData):
                         setattr(self, key, value)
 
     def ufo_limit_reached(self):
-        if global_params.app.player.population < 500:
+        if config.app.player.population < 500:
             return True
 
-        if len(sprite_groups.ufos.sprites()) * 1000 > global_params.app.player.population:
+        if len(sprite_groups.ufos.sprites()) * 1000 > config.app.player.population:
             return True
 
         return False
 
     def set_explored_planets_with_aliens(self):
-        if global_params.app:
-            self.explored_planets_with_aliens = [i for i in global_params.app.explored_planets if
+        if config.app:
+            self.explored_planets_with_aliens = [i for i in config.app.explored_planets if
                                                  i.alien_population != 0]
 
     def update(self):

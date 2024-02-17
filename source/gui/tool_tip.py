@@ -1,8 +1,7 @@
 import pygame
 from pygame.locals import MOUSEMOTION
 
-
-from source.configuration import global_params
+from source.configuration.game_config import config
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.handlers.mouse_handler import mouse_handler
 
@@ -15,12 +14,12 @@ TOOLTIP_ALPHA = 200
 
 class ToolTip(WidgetBase):
     """Main functionalities:
-    The ToolTip class is responsible for creating and displaying a tooltip on the screen. It receives a surface, position, size, color, and text color as parameters, and it can be a subwidget. It moves with the mouse and displays the text passed to it through the global_params module. It draws a filled rectangle with a border and the text passed to it.
+    The ToolTip class is responsible for creating and displaying a tooltip on the screen. It receives a surface, position, size, color, and text color as parameters, and it can be a subwidget. It moves with the mouse and displays the text passed to it through the config module. It draws a filled rectangle with a border and the text passed to it.
 
     Methods:
     - __init__: initializes the ToolTip object with the given parameters and sets some default values.
     - move: moves the tooltip with the mouse and limits its position to the screen size.
-    - get_text: gets the text to be displayed from the global_params module and sets the visibility of the tooltip accordingly.
+    - get_text: gets the text to be displayed from the config module and sets the visibility of the tooltip accordingly.
     - draw_bordered_rect: draws a bordered rectangle around the tooltip.
     - draw: renders the tooltip on the screen with a filled rectangle, border, and text.
     - listen: listens to events, but does not do anything.
@@ -61,7 +60,7 @@ class ToolTip(WidgetBase):
         # text
         self._text = ""
         self.font_size = 18
-        self.font = pygame.font.SysFont(global_params.font_name, self.font_size)
+        self.font = pygame.font.SysFont(config.font_name, self.font_size)
         self.text_img = None
         self.txt_rect = None
         self.active = True
@@ -111,11 +110,12 @@ class ToolTip(WidgetBase):
     def get_text(self):
         if not self.active:
             return
-        self._text = global_params.tooltip_text
+        self._text = config.tooltip_text
         if self._text != "":
             self.visible = True
         else:
             self.visible = False
+
     def on_hover_release_callback(self, x, y, obj):
         # if self._hidden or self._disabled:
         #     return
@@ -137,12 +137,12 @@ class ToolTip(WidgetBase):
     def reset_tooltip__(self, obj):
         x, y = mouse_handler.get_mouse_pos()
         if obj.on_hover_release_callback(x, y, obj.rect):
-            global_params.tooltip_text = ""
+            config.tooltip_text = ""
 
     def reset_tooltip(self, obj):
         x, y = mouse_handler.get_mouse_pos()
         if self.on_hover_release_callback(x, y, obj):
-            global_params.tooltip_text = ""
+            config.tooltip_text = ""
 
     def listen(self, events):
         if not self.active:
@@ -156,7 +156,7 @@ class ToolTip(WidgetBase):
             return
         self.get_text()
         self.move(events)
-        #self.draw()
+        # self.draw()
 
     def draw(self):
         if not self.active:
@@ -175,4 +175,4 @@ class ToolTip(WidgetBase):
 
         pygame.draw.rect(self.win, self.frame_color, (
             self.world_x, self.world_y, self.world_width,
-            self.height), 1, int(global_params.ui_rounded_corner_radius_small))
+            self.height), 1, config.ui_rounded_corner_radius_small)

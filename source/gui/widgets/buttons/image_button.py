@@ -1,6 +1,6 @@
 import pygame
 
-from source.configuration import global_params
+from source.configuration.game_config import config
 from source.factories.building_factory import building_factory
 from source.gui.lod import level_of_detail
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
@@ -47,7 +47,7 @@ class ImageButton(WidgetBase):
         self.textColour = kwargs.get('textColour', (255, 255, 25))
         self.font_size = kwargs.get('font_size', 20)
         self.string = kwargs.get('text', '')
-        self.font = kwargs.get('font', pygame.font.SysFont(global_params.font_name, self.font_size))
+        self.font = kwargs.get('font', pygame.font.SysFont(config.font_name, self.font_size))
         self.text = self.font.render(self.string, True, self.textColour)
         self.textHAlign = kwargs.get('textHAlign', 'centre')
         self.textVAlign = kwargs.get('textVAlign', 'centre')
@@ -77,8 +77,8 @@ class ImageButton(WidgetBase):
         :param events: Use pygame.event.get()
         :type events: list of pygame.event.Event
         """
-        if global_params.app:
-            global_params.app.tooltip_instance.reset_tooltip(self)
+        if config.app:
+            config.app.tooltip_instance.reset_tooltip(self)
         if not self._hidden and not self._disabled:
             mouse_state = mouse_handler.get_mouse_state()
             x, y = mouse_handler.get_mouse_pos()
@@ -94,7 +94,7 @@ class ImageButton(WidgetBase):
 
                     # this is used for build .... dirty hack, but leave it !
                     if self.string:
-                        building_factory.build(self.string, global_params.app.selected_planet)
+                        building_factory.build(self.string, config.app.selected_planet)
 
                     # another dirty hack
                     if hasattr(self.parent, "on_resource_click"):
@@ -104,27 +104,27 @@ class ImageButton(WidgetBase):
                     pass
 
                 elif mouse_state == MouseState.HOVER or mouse_state == MouseState.LEFT_DRAG:
-                    #self.draw_hover_rect()
-                    #self.image = self.image_outline
-                    #self.image = pygame.transform.scale(self.image_outline, self.rect.size)
-                    #self.win.blit(self.image_outline, self.image.get_rect())
-                    #self.win.blit(pygame.transform.scale(self.image_outline, self.rect.size), self.rect)
-                    #self.win.blit(self.image_outline, self.rect)
+                    # self.draw_hover_rect()
+                    # self.image = self.image_outline
+                    # self.image = pygame.transform.scale(self.image_outline, self.rect.size)
+                    # self.win.blit(self.image_outline, self.image.get_rect())
+                    # self.win.blit(pygame.transform.scale(self.image_outline, self.rect.size), self.rect)
+                    # self.win.blit(self.image_outline, self.rect)
                     self.win.blit(pygame.transform.scale(self.image_outline, self.rect.size), self.rect)
                     # set info_panel
                     if self.info_text:
                         if self.info_text != "":
-                            global_params.app.info_panel.set_text(self.info_text)
-                            global_params.app.info_panel.set_planet_image(self.image_raw, align="topright", alpha=self.info_panel_alpha)
+                            config.app.info_panel.set_text(self.info_text)
+                            config.app.info_panel.set_planet_image(self.image_raw, align="topright", alpha=self.info_panel_alpha)
 
                     # set tooltip
                     if self.tooltip:
                         if self.tooltip != "":
-                            global_params.tooltip_text = self.tooltip
+                            config.tooltip_text = self.tooltip
                 # else:
                 #     self.image = self.image_raw
             else:
-                #self.image = self.image_raw
+                # self.image = self.image_raw
                 self.clicked = False
 
     def draw(self):

@@ -3,7 +3,7 @@ import time
 
 import pygame
 
-from source.configuration import global_params
+from source.configuration.game_config import config
 from source.gui.event_text import event_text
 from source.gui.lod import level_of_detail
 from source.gui.widgets.progress_bar import ProgressBar
@@ -14,7 +14,6 @@ from source.handlers.mouse_handler import mouse_handler, MouseState
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.handlers.weapon_handler import WeaponHandler
 from source.handlers.widget_handler import WidgetHandler
-
 from source.multimedia_library.gif_handler import GifHandler
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_game_object import PanZoomGameObject
 from source.text.info_panel_text_generator import info_panel_text_generator
@@ -27,7 +26,7 @@ pan_zoom_ufo_config = load_file("enemy_handler_config.json", "config")["enemy ha
 SHRINK_FACTOR = 0.005
 
 
-class PanZoomUfo(PanZoomGameObject):#, InteractionHandler):
+class PanZoomUfo(PanZoomGameObject):  # , InteractionHandler):
     __slots__ = PanZoomGameObject.__slots__ + (
         'random_target_interval', 'frame_color', '_disabled', '_hidden', 'move_to_target', 'rotate_to_target',
         'speed', 'orbit_speed', 'exploded', 'energy', 'energy_max', 'name', 'property', 'target', 'tooltip',
@@ -35,7 +34,7 @@ class PanZoomUfo(PanZoomGameObject):#, InteractionHandler):
 
     def __init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs):
         PanZoomGameObject.__init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs)
-        #InteractionHandler.__init__(self)
+        # InteractionHandler.__init__(self)
         self.id = kwargs.get("id", 0)
         self.lifetime = kwargs.get("lifetime", LIFETIME)
         self.shrink = 0.0
@@ -166,23 +165,23 @@ class PanZoomUfo(PanZoomGameObject):#, InteractionHandler):
         if not self._hidden and not self._disabled:
             mouse_state = mouse_handler.get_mouse_state()
             x, y = mouse_handler.get_mouse_pos()
-            global_params.app.tooltip_instance.reset_tooltip(self)
+            config.app.tooltip_instance.reset_tooltip(self)
 
             if self.rect.collidepoint(x, y):
                 if mouse_state == MouseState.HOVER or mouse_state == MouseState.LEFT_DRAG:
-                    #self.win.blit(self.image_outline, self.rect)
+                    # self.win.blit(self.image_outline, self.rect)
                     self.win.blit(pygame.transform.scale(self.image_outline, self.rect.size), self.rect)
                     # set tooltip
                     if self.tooltip:
                         if self.tooltip != "":
-                            global_params.tooltip_text = self.tooltip
+                            config.tooltip_text = self.tooltip
 
                     if self.info_text:
                         if self.info_text != "":
-                            # global_params.app.info_panel.text = self.info_text
+                            # config.app.info_panel.text = self.info_text
                             self.info_text = info_panel_text_generator.create_info_panel_ufo_text(self)
-                            global_params.app.info_panel.set_text(self.info_text)
-                            global_params.app.info_panel.set_planet_image(self.image_raw, size=(
+                            config.app.info_panel.set_text(self.info_text)
+                            config.app.info_panel.set_planet_image(self.image_raw, size=(
                                 self.image_raw.get_width(), self.image_raw.get_height()), align="topright")
 
     def appear(self):
@@ -213,7 +212,7 @@ class PanZoomUfo(PanZoomGameObject):#, InteractionHandler):
 
     def update(self):
         # print (f"ufo.update: explode_calls {self.explode_calls}")
-        if not global_params.game_paused:
+        if not config.game_paused:
             self.update_pan_zoom_game_object()
             self.set_attack_distance()
             self.set_random_target()

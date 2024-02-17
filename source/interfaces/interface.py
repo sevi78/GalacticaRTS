@@ -1,7 +1,7 @@
 import pygame
 from pygame_widgets.util import drawText
 
-from source.configuration import global_params
+from source.configuration.game_config import config
 from source.editors.editor_base.editor_base import EditorBase
 from source.editors.editor_base.editor_config import TOP_SPACING, SLIDER_HEIGHT, ROUND_PRECISION
 from source.gui.widgets.slider import Slider
@@ -177,7 +177,7 @@ class Interface(EditorBase):
         self.sliders = {}
 
         self.slider_text_font_size = 20
-        self.slider_font = pygame.font.SysFont(global_params.font_name, self.slider_text_font_size - 1)
+        self.slider_font = pygame.font.SysFont(config.font_name, self.slider_text_font_size - 1)
 
         # create widgets
         self.create_sliders()

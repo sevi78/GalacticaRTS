@@ -4,6 +4,7 @@ MISSILE_SPEED = 1.0
 MISSILE_POWER = 50
 MISSILE_RANGE = 3000
 
+
 class PanZoomMissile(PanZoomGameObject):
     def __init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs):
         PanZoomGameObject.__init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs)

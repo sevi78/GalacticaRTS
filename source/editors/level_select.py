@@ -1,6 +1,6 @@
 import pygame
 
-from source.configuration import global_params
+from source.configuration.game_config import config
 from source.editors.editor_base.editor_base import EditorBase
 from source.editors.editor_base.editor_config import TOP_SPACING
 from source.gui.event_text import event_text
@@ -115,13 +115,13 @@ class LevelSelect(EditorBase):
             # if success, load level
             self.parent.level_handler.load_level(f"level_{i}.json", "levels")
             self.hide()
-            global_params.tooltip_text = ""
+            config.tooltip_text = ""
         else:
             # complain
             event_text.text = "You must first successfully colonize the previous solar systems!"
 
         # reset tooltip
-        global_params.tooltip_text = ""
+        config.tooltip_text = ""
 
     def listen(self, events):
         if not self._hidden and not self._disabled:

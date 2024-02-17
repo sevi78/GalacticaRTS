@@ -2,8 +2,7 @@ from datetime import datetime
 
 import pygame
 
-from source.configuration import global_params
-from source.configuration.global_params import ui_rounded_corner_small_thickness
+from source.configuration.game_config import config
 from source.gui.widgets.buttons.button import Button
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.gui.widgets.slider import Slider
@@ -28,17 +27,17 @@ class GameTime(WidgetBase):
         # construct surface
         self.surface = pygame.surface.Surface((width, height))
         self.surface.fill(self.bg_color)
-        self.surface.set_alpha(global_params.ui_panel_alpha)
+        self.surface.set_alpha(config.ui_panel_alpha)
         self.surface_rect = self.surface.get_rect()
         self.surface_rect.x = x
         self.surface_rect.y = y
         self.size_x = kwargs.get("size_x")
         self.size_y = kwargs.get("size_y")
         self.spacing = kwargs.get("spacing")
-        self.surface_frame = pygame.draw.rect(self.win, self.frame_color, self.surface_rect, int(ui_rounded_corner_small_thickness), int(global_params.ui_rounded_corner_radius_small))
+        self.surface_frame = pygame.draw.rect(self.win, self.frame_color, self.surface_rect, config.ui_rounded_corner_small_thickness, config.ui_rounded_corner_radius_small)
 
         self.font_size = FONT_SIZE
-        self.font = pygame.font.SysFont(global_params.font_name, self.font_size)
+        self.font = pygame.font.SysFont(config.font_name, self.font_size)
         self.create_slider()
         self.create_icons()
 
@@ -101,11 +100,11 @@ class GameTime(WidgetBase):
             min=1, max=50, step=1, handleColour=colors.ui_darker, layer=self.layer)
 
         self.clock_slider.colour = self.frame_color
-        self.clock_slider.setValue(global_params.game_speed)
+        self.clock_slider.setValue(config.game_speed)
 
         # construct texts
         self.time_warp_text = self.font.render(str(self.clock_slider.getValue()) + "x", True, self.frame_color)
-        self.world_year_text = global_params.app.ui_helper.hms(self.world_year)
+        self.world_year_text = config.app.ui_helper.hms(self.world_year)
 
     def set_clockslider_value(self, value):
         if value < 0:
@@ -117,7 +116,7 @@ class GameTime(WidgetBase):
 
     def update_time(self):
         self.world_year += 0.01 * self.game_speed * 10000
-        global_params.game_speed = self.game_speed
+        config.game_speed = self.game_speed
         time_handler.game_speed = self.game_speed
 
     def reposition(self):
@@ -132,7 +131,7 @@ class GameTime(WidgetBase):
         self.plus_arrow_button.screen_x = self.clock_icon.get_screen_x() + self.spacing * 2 + self.arrow_size + 3
 
     def draw_clock(self):
-        if global_params.game_paused:
+        if config.game_paused:
             self.clock_icon.image = get_image("sleep.png")
         else:
             self.clock_icon.image = self.image

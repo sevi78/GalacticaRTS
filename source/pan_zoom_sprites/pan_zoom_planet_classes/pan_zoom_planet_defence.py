@@ -4,7 +4,6 @@ import time
 
 import pygame
 
-
 from source.draw.circles import draw_electromagnetic_impulse, draw_dashed_circle
 from source.draw.scope import scope
 from source.draw.zigzag_line import draw_zigzag_line
@@ -19,8 +18,7 @@ from source.multimedia_library.images import get_image
 from source.multimedia_library.sounds import sounds
 from source.handlers.weapon_handler import attack, launch_missile
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
-from source.configuration import global_params
-
+from source.configuration.game_config import config
 
 MISSILE_LAUNCH_INTERVAL = 2
 EMP_PULSE_INTERVAL = 7
@@ -69,7 +67,7 @@ class PanZoomPlanetDefence:
         return len([i for i in self.parent.buildings if i == "missile"])
 
     def activate_electro_magnetic_impulse(self, pulse_time, ufo):
-        # if global_params.show_overview_buttons:
+        # if config.show_overview_buttons:
         #     self.emp_progress_display.show()
         if time.time() - pulse_time < self.emp_pulse_time:
 
@@ -96,7 +94,8 @@ class PanZoomPlanetDefence:
         elapsed_time_percentage = ((time.time() - self.last_emp) / self.emp_pulse_interval)
 
         # Interpolate the color from green to red based on the elapsed time percentage
-        green_to_red = (1 - elapsed_time_percentage) * pygame.color.THECOLORS.get("green") + elapsed_time_percentage * pygame.color.THECOLORS.get("red")
+        green_to_red = (
+                                   1 - elapsed_time_percentage) * pygame.color.THECOLORS.get("green") + elapsed_time_percentage * pygame.color.THECOLORS.get("red")
 
         # Update the progress bar color
         self.emp_progress_display.completedColour = green_to_red
@@ -121,16 +120,15 @@ class PanZoomPlanetDefence:
         if not scope.draw_scope(self.parent.rect.center, self.attack_distance / pan_zoom_handler.zoom, {}):
             return
 
-        draw_dashed_circle(self.parent.win, colors.ui_darker, self.parent.rect.center, self.attack_distance, 10,1)
+        draw_dashed_circle(self.parent.win, colors.ui_darker, self.parent.rect.center, self.attack_distance, 10, 1)
         if pygame.mouse.get_pressed()[2]:
             hit_obj = mouse_handler.get_hit_object()
             if hit_obj:
                 if hit_obj in sprite_groups.ufos.sprites():
                     hit_obj.energy -= ENERGY_BLAST_POWER
-                    self.draw_moving_image(hit_obj, ENERGY_BLAST_POWER, (0,0))
-                    global_params.app.player.energy -= ENERGY_BLAST_POWER
+                    self.draw_moving_image(hit_obj, ENERGY_BLAST_POWER, (0, 0))
+                    config.app.player.energy -= ENERGY_BLAST_POWER
                     color = random.choice(list(pygame.color.THECOLORS.keys()))
-
 
                     draw_zigzag_line(
                         surface=self.parent.win,
@@ -146,7 +144,7 @@ class PanZoomPlanetDefence:
         self.attack_distance = self.attack_distance_raw * self.parent.get_zoom()
 
         # handle self.emp_progress_display
-        if "electro magnetic impulse" in defence_units and global_params.show_overview_buttons:
+        if "electro magnetic impulse" in defence_units and config.show_overview_buttons:
             self.emp_progress_display.set_progressbar_position()
             self.emp_progress_display.show()
         else:
@@ -171,7 +169,7 @@ class PanZoomPlanetDefence:
                         self.last_missile_launch = time.time()
 
                 if "energy blast" in defence_units:
-                    if self.parent == global_params.app.selected_planet:
+                    if self.parent == config.app.selected_planet:
                         self.activate_energy_blast()
 
                 if "electro magnetic impulse" in defence_units:

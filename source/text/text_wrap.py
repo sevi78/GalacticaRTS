@@ -12,7 +12,7 @@ class TextWrap:  # original
         self.border = TEXTBORDER
         self.word_height_sum = 0
 
-    def wrap_text(self, win,  text, pos, size, font, color=pygame.Color('white'), **kwargs):
+    def wrap_text(self, win, text, pos, size, font, color=pygame.Color('white'), **kwargs):
         """ text wrapper function """
         if not text: return
         fade_out = kwargs.get("fade_out", False)
@@ -36,7 +36,7 @@ class TextWrap:  # original
 
                 word_surface = font.render(word, True, color)
                 word_width, word_height = word_surface.get_size()
-                #pygame.draw.rect(win, colors.ui_darker,(x,y,word_width, word_height),1 )
+                # pygame.draw.rect(win, colors.ui_darker,(x,y,word_width, word_height),1 )
 
                 if iconize:
                     if word[-1:] == ":":
@@ -52,7 +52,6 @@ class TextWrap:  # original
 
                             # if image_name == "✓.png":
                             #     image_name = "check.png"
-
 
                         img = pygame.transform.scale(get_image(image_name), (word_height, word_height))
                         win.blit(img, (x, y))

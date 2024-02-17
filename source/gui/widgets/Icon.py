@@ -1,7 +1,7 @@
 import pygame
 from pygame.locals import MOUSEBUTTONDOWN, MOUSEBUTTONUP, MOUSEMOTION
 
-from source.configuration import global_params
+from source.configuration.game_config import config
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.handlers.mouse_handler import mouse_handler, MouseState
 from source.text.text_formatter import format_number
@@ -33,7 +33,7 @@ class Icon(WidgetBase):
         self.display_value_only = False
         self.text_spacing = 8
         self.text = self.key
-        self.font = pygame.font.SysFont(global_params.font_name, 18)
+        self.font = pygame.font.SysFont(config.font_name, 18)
         self.text_img = self.font.render(self.text, True, self.frame_color)
 
         self.width_all = 0
@@ -91,13 +91,13 @@ class Icon(WidgetBase):
         self.update(events)
         mouse_state = mouse_handler.get_mouse_state()
         x, y = mouse_handler.get_mouse_pos()
-        global_params.app.tooltip_instance.reset_tooltip(self)
+        config.app.tooltip_instance.reset_tooltip(self)
         if self.rect.collidepoint(x, y):
             if mouse_state == MouseState.HOVER or mouse_state == MouseState.LEFT_DRAG:
                 # self.draw_hover_rect()
                 self.image = self.image_outline
                 if self.tooltip != "":
-                    global_params.tooltip_text = self.tooltip
+                    config.tooltip_text = self.tooltip
         else:
             self.image = self.image_raw
 

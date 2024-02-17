@@ -2,8 +2,7 @@ import copy
 
 import pygame
 
-from source.configuration import global_params
-from source.configuration.global_params import ui_rounded_corner_small_thickness
+from source.configuration.game_config import config
 from source.draw.dashed_rectangle import draw_dashed_rounded_rectangle
 from source.draw.rect import draw_transparent_rounded_rect
 from source.game_play.navigation import navigate_to_position
@@ -12,8 +11,8 @@ from source.handlers.color_handler import colors
 from source.handlers.image_handler import overblit_button_image
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
-from source.multimedia_library.images import get_image
 from source.handlers.widget_handler import WidgetHandler
+from source.multimedia_library.images import get_image
 
 PLANET_IMAGE_SIZE = 125
 MIN_OBJECT_SIZE = 2
@@ -71,7 +70,7 @@ class MapPanel:
     world_y: int: The y-coordinate of the top left corner of the map panel in world coordinates.
     world_width: int: The width of the map panel in world coordinates.
     world_height: int: The height of the map panel in world coordinates.
-    app: global_params.app: The global app object.
+    app: config.app: The global app object.
     scale: int: The scale factor for zooming in/out on the map.
     scale_factor: int: The factor by which to scale the map when zooming.
     name: str: The name of the map panel.
@@ -107,7 +106,7 @@ class MapPanel:
         self.world_height = height
 
         # vars
-        self.app = global_params.app
+        self.app = config.app
         self.scale = 1
         self.scale_factor = SCALE_FACTOR
         self.name = "map panel"
@@ -172,10 +171,10 @@ class MapPanel:
     def on_hover(self, value):
         self._on_hover = value
         if value:
-            global_params.hover_object = self
+            config.hover_object = self
         else:
-            if global_params.hover_object == self:
-                global_params.hover_object = None
+            if config.hover_object == self:
+                config.hover_object = None
 
     def create_checkboxes(self) -> None:
         y = self.world_y
@@ -486,8 +485,8 @@ class MapPanel:
         x, y = (pan_zoom_handler.world_offset_x / self.factor), (pan_zoom_handler.world_offset_y / self.factor)
 
         # Calculate the width and height of the rectangle
-        width = global_params.WIDTH / self.factor / pan_zoom_handler.zoom
-        height = global_params.HEIGHT / self.factor / pan_zoom_handler.zoom
+        width = config.width / self.factor / pan_zoom_handler.zoom
+        height = config.height / self.factor / pan_zoom_handler.zoom
 
         # # draw the rect onto background_surface
         # if width < MIN_CAMERA_FOCUS_DRAW:
@@ -516,7 +515,7 @@ class MapPanel:
                 buffer_y * 2))
 
     def set_visible(self) -> None:
-        self.visible = global_params.show_map_panel
+        self.visible = config.show_map_panel
         for i in self.checkboxes:
             i._hidden = not self.visible
 
@@ -576,7 +575,7 @@ class MapPanel:
         if self.show_alpha:
             self.background_surface = pygame.Surface((self.world_width, self.world_height))
             self.background_surface.fill((0, 0, 0))
-            self.background_surface.set_alpha(global_params.ui_panel_alpha)
+            self.background_surface.set_alpha(config.ui_panel_alpha)
         else:
             self.background_surface = pygame.Surface((self.world_width, self.world_height))
             self.background_surface.fill((0, 0, 0))
@@ -595,16 +594,16 @@ class MapPanel:
 
         # draw the frame
         pygame.draw.rect(self.win, self.frame_color, pygame.Rect(self.world_x, self.world_y, self.world_width,
-            self.world_height), int(ui_rounded_corner_small_thickness), int(global_params.ui_rounded_corner_radius_small))
+            self.world_height), config.ui_rounded_corner_small_thickness, config.ui_rounded_corner_radius_small)
 
         # draw button frame
-        pygame.draw.rect(self.win, self.frame_color, self.checkbox_frame, int(ui_rounded_corner_small_thickness), int(global_params.ui_rounded_corner_radius_small))
+        pygame.draw.rect(self.win, self.frame_color, self.checkbox_frame, config.ui_rounded_corner_small_thickness, config.ui_rounded_corner_radius_small)
 
     def draw_frame(self):
         draw_transparent_rounded_rect(self.win, (0, 0, 0), self.frame_rect,
-            int(global_params.ui_rounded_corner_radius_small), global_params.ui_panel_alpha)
+            config.ui_rounded_corner_radius_small, config.ui_panel_alpha)
         pygame.draw.rect(self.win, self.frame_color, self.frame_rect,
-            int(ui_rounded_corner_small_thickness), int(global_params.ui_rounded_corner_radius_small))
+            config.ui_rounded_corner_small_thickness, config.ui_rounded_corner_radius_small)
 
     def draw(self) -> None:
         self.set_visible()
@@ -617,21 +616,21 @@ class MapPanel:
         # generate rect
         self.frame_rect = pygame.Rect(self.world_x, self.world_y, self.world_width, self.world_height)
         self.background_surface_rect = pygame.Rect(
-            self.world_x + global_params.ui_rounded_corner_radius_small,
-            self.world_y + global_params.ui_rounded_corner_radius_small,
-            self.world_width - (global_params.ui_rounded_corner_radius_small * 2),
-            self.world_height - (global_params.ui_rounded_corner_radius_small * 2))
+            self.world_x + config.ui_rounded_corner_radius_small,
+            self.world_y + config.ui_rounded_corner_radius_small,
+            self.world_width - (config.ui_rounded_corner_radius_small * 2),
+            self.world_height - (config.ui_rounded_corner_radius_small * 2))
 
         # draw the panel, dont set aplha to 255 !!! inperformant, replace it is much better !!!
         if self.show_alpha:
             self.background_surface = pygame.Surface((
-                self.world_width - (global_params.ui_rounded_corner_radius_small * 2),
-                self.world_height - (global_params.ui_rounded_corner_radius_small * 2)))
-            self.background_surface.set_alpha(global_params.ui_panel_alpha)
+                self.world_width - (config.ui_rounded_corner_radius_small * 2),
+                self.world_height - (config.ui_rounded_corner_radius_small * 2)))
+            self.background_surface.set_alpha(config.ui_panel_alpha)
         else:
             self.background_surface = pygame.Surface((
-                self.world_width - (global_params.ui_rounded_corner_radius_small * 2),
-                self.world_height - (global_params.ui_rounded_corner_radius_small * 2)))
+                self.world_width - (config.ui_rounded_corner_radius_small * 2),
+                self.world_height - (config.ui_rounded_corner_radius_small * 2)))
 
         # draw the frame
         self.draw_frame()
@@ -653,6 +652,7 @@ class MapPanel:
 
         # draw button frame
         draw_transparent_rounded_rect(self.win, (0, 0, 0), self.checkbox_frame,
-            int(global_params.ui_rounded_corner_radius_small), global_params.ui_panel_alpha)
+            config.ui_rounded_corner_radius_small, config.ui_panel_alpha)
 
-        pygame.draw.rect(self.win, self.frame_color, self.checkbox_frame, int(ui_rounded_corner_small_thickness), int(global_params.ui_rounded_corner_radius_small))
+        pygame.draw.rect(self.win, self.frame_color, self.checkbox_frame, config.ui_rounded_corner_small_thickness,
+            config.ui_rounded_corner_radius_small)

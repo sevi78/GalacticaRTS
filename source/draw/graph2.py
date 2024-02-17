@@ -62,11 +62,13 @@ for category, buildings in data.items():
 # Add edges based on dependencies
 for category, buildings in data.items():
     for building, attributes in buildings.items():
-        for resource in ['production_energy', 'production_food', 'production_minerals', 'production_water', 'production_technology', 'production_population']:
+        for resource in ['production_energy', 'production_food', 'production_minerals', 'production_water',
+                         'production_technology', 'production_population']:
             if attributes[resource] > 0:  # If a building produces a resource
                 for other_category, other_buildings in data.items():
                     for other_building, other_attributes in other_buildings.items():
-                        if building != other_building and other_attributes[resource] < 0:  # If another building consumes that resource
+                        if building != other_building and other_attributes[
+                            resource] < 0:  # If another building consumes that resource
                             G.add_edge(building, other_building, category=category)
 
 # Step 3: Plot the Dependency Graph
@@ -84,4 +86,3 @@ for edge in G.edges(data=True):
 nx.draw_networkx_labels(G, pos)
 
 plt.show()
-

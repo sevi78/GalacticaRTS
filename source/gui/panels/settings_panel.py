@@ -1,8 +1,6 @@
 import pygame
 
-from source.configuration import global_params
 from source.configuration.game_config import config
-from source.configuration.global_params import ui_rounded_corner_small_thickness
 from source.game_play.navigation import navigate_to
 from source.gui.panels.toggle_switch import ToggleSwitch
 from source.gui.widgets.buttons.image_button import ImageButton
@@ -36,9 +34,9 @@ class SettingsPanel(WidgetBase):
         self.size_x = kwargs.get("size_x")
         self.size_y = kwargs.get("size_y")
         self.spacing = kwargs.get("spacing")
-        self.surface_frame = pygame.draw.rect(self.win, self.frame_color, self.surface_rect, int(ui_rounded_corner_small_thickness), int(global_params.ui_rounded_corner_radius_small))
+        self.surface_frame = pygame.draw.rect(self.win, self.frame_color, self.surface_rect, config.ui_rounded_corner_small_thickness, config.ui_rounded_corner_radius_small)
         self.font_size = 18
-        self.font = pygame.font.SysFont(global_params.font_name, self.font_size)
+        self.font = pygame.font.SysFont(config.font_name, self.font_size)
         self.max_height = self.get_screen_y() + self.surface_rect.height
 
         self.create_icons()
@@ -61,7 +59,7 @@ class SettingsPanel(WidgetBase):
             frame_color=self.frame_color,
             moveable=False,
             include_text=True, layer=self.layer,
-            onClick=lambda: global_params.app.economy_overview.set_visible())
+            onClick=lambda: config.app.economy_overview.set_visible())
         self.widgets.append(self.economy_overview_icon)
         self.max_width += self.icon_size + self.spacing
 
@@ -229,8 +227,8 @@ class SettingsPanel(WidgetBase):
         overblit_button_image(button, "uncheck.png", value)
 
     def set_info_text(self):
-        global_params.app.info_panel.set_text(info_panel_text_generator.info_text)
-        global_params.app.info_panel.set_planet_image(get_image("info_30x30.png"), size=(
+        config.app.info_panel.set_text(info_panel_text_generator.info_text)
+        config.app.info_panel.set_planet_image(get_image("info_30x30.png"), size=(
             50, 50), alpha=78, align="center")
 
     def reposition(self):
@@ -240,7 +238,7 @@ class SettingsPanel(WidgetBase):
 
         # reposition
         self.surface_rect.width = self.max_width
-        self.surface_rect.x = width - global_params.app.building_panel.surface.get_width() - self.max_width
+        self.surface_rect.x = width - config.app.building_panel.surface.get_width() - self.max_width
         self.reposition_widgets()
         self.toggle_switch.reposition()
 
@@ -263,5 +261,5 @@ class SettingsPanel(WidgetBase):
         self.draw_frame()
 
     def show_tooltip(self, button):
-        global_params.app.tooltip_instance.active = not global_params.app.tooltip_instance.active
-        overblit_button_image(button, "uncheck.png", global_params.app.tooltip_instance.active)
+        config.app.tooltip_instance.active = not config.app.tooltip_instance.active
+        overblit_button_image(button, "uncheck.png", config.app.tooltip_instance.active)

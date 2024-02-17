@@ -68,7 +68,8 @@ class PanZoomShipStateEngine:
 
     def draw_state_image(self) -> None:
         state_image_position = self.rank_image.rect.x + STATE_IMAGE_SPACING, self.rank_image.rect.y
-        self.state_image.set_position(state_image_position[0], state_image_position[1] - STATE_IMAGE_SIZE / 2, "topright")
+        self.state_image.set_position(
+            state_image_position[0], state_image_position[1] - STATE_IMAGE_SIZE / 2, "topright")
 
     def update(self) -> None:
         self.draw_rank_image()

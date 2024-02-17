@@ -1,7 +1,7 @@
 import pygame
 from pygame import Vector2
 
-from source.configuration import global_params
+from source.configuration.game_config import config
 from source.gui.lod import level_of_detail
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 
@@ -93,7 +93,7 @@ class PositionHandler:
         self.setHeight(new_size[1] * panzoom.zoom)
 
     def get_zoom(self):
-        if global_params.app:
+        if config.app:
             return pan_zoom_handler.zoom
         else:
             return 1

@@ -1,11 +1,11 @@
 import math
+
 import pygame
 
-from source.configuration import global_params
+from source.configuration.game_config import config
 from source.draw.dashed_line import draw_dashed_line
 from source.handlers.color_handler import colors
 from source.handlers.pan_zoom_handler import pan_zoom_handler
-
 from source.multimedia_library.images import get_image
 from source.text.text_formatter import format_number
 
@@ -17,7 +17,7 @@ class Scope:
     def __init__(self, win: pygame.surface.Surface):
         self.win = win
         self.font_size = SCOPE_TEXT_SIZE
-        self.font = pygame.font.SysFont(global_params.font_name, self.font_size)
+        self.font = pygame.font.SysFont(config.font_name, self.font_size)
         self.text = ""
         self.base_color = colors.frame_color
         self.hover_color = colors.hover_color
@@ -35,7 +35,7 @@ class Scope:
         """
         draws line to mouse position and draws the scope and some info text
         """
-        
+
         # handle different colors depending on distance and hover object
         mouse_x, mouse_y = pygame.mouse.get_pos()
         distance = math.dist(start_pos, (mouse_x, mouse_y)) / pan_zoom_handler.zoom
@@ -43,7 +43,7 @@ class Scope:
         # handle range
         is_inside_range = distance <= range_
         # if hover over a possible target -> green
-        if global_params.hover_object:
+        if config.hover_object:
             color = self.hover_color
         # if hover anywhere else -> blue
         else:
@@ -53,7 +53,6 @@ class Scope:
         if not is_inside_range:
             color = self.warn_color
             self.draw_warning_image(mouse_x, mouse_y - SCOPE_SIZE * 2)
-
 
         # draw line from selected object to mouse cursor
         # pygame.draw.line(surface=self.win, start_pos=start_pos, end_pos=(mouse_x, mouse_y), color=color)
@@ -90,4 +89,6 @@ class Scope:
             y += SCOPE_SIZE
 
         return is_inside_range
-scope = Scope(global_params.win)
+
+
+scope = Scope(config.win)

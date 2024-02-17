@@ -5,7 +5,7 @@ from source.gui.event_text import event_text
 from source.multimedia_library.images import get_image
 from source.multimedia_library.sounds import sounds
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
-from source.configuration import global_params
+from source.configuration.game_config import config
 from source.text.info_panel_text_generator import info_panel_text_generator
 
 
@@ -16,7 +16,7 @@ class PanZoomPlanetParams:
         self.image_name_big = kwargs.get("image_name_big")
         self.orbit_radius = 0
         self.font_size = kwargs.get('font_size', 20)
-        self.font = kwargs.get('font', pygame.font.SysFont(global_params.font_name, self.font_size))
+        self.font = kwargs.get('font', pygame.font.SysFont(config.font_name, self.font_size))
         self.show_text = True
         self.under_attack = False
 

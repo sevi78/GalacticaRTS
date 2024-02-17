@@ -1,10 +1,8 @@
 import pygame
 from pygame.event import Event
 
-
-from source.configuration import global_params
+from source.configuration.game_config import config
 from source.gui.event_text import event_text
-
 
 DEFAULT_LAYER = 9
 
@@ -65,7 +63,7 @@ class WidgetHandler:
         others = [39]  # ,94]
         key = None
         # ignore all inputs while any text input is active
-        if global_params.text_input_active:
+        if config.text_input_active:
             return
 
         for event in events:
@@ -89,5 +87,4 @@ class WidgetHandler:
 
 
 def update(events: [Event]):
-
     WidgetHandler.set_visible(events)

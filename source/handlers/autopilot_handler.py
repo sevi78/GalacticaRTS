@@ -1,10 +1,9 @@
 import random
 import time
 
-from source.configuration import global_params
+from source.configuration.game_config import config
 from source.factories.building_factory import building_factory
 from source.handlers.pan_zoom_sprite_handler import sprite_groups, PanZoomLayeredUpdates
-
 
 
 class AutopilotHandler:
@@ -36,9 +35,9 @@ class AutopilotHandler:
         self.parent.orbit_object = None
 
     def create_economy(self, strategy):
-        player = global_params.app.player
+        player = config.app.player
 
-        for i in global_params.app.explored_planets:
+        for i in config.app.explored_planets:
             if strategy == "random":
                 building_factory.build(random.choice(building_factory.get_all_building_names()), i)
 
@@ -65,6 +64,6 @@ class AutopilotHandler:
                 # set reloader target
                 self.set_random_target(sprite_groups.ships.sprites())
 
-            #self.create_economy("random")
+            # self.create_economy("random")
             self.create_economy("clever")
             print("autopilot.update:")

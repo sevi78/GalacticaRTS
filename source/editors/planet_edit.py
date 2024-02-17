@@ -2,7 +2,7 @@ import random
 
 import pygame
 
-from source.configuration import global_params
+from source.configuration.game_config import config
 from source.editors.editor_base.editor_base import EditorBase
 from source.editors.editor_base.editor_config import ARROW_SIZE, FONT_SIZE, BUTTON_SIZE, TOP_SPACING
 from source.factories.building_factory import building_factory
@@ -197,8 +197,8 @@ class PlanetEdit(EditorBase, PlanetEditBuilder):
         self.create_selectors()
         self.create_inputboxes()
         self.create_save_button(lambda:
-        global_params.app.level_handler.save_level(global_params.app.level_handler.current_game,
-            "levels" if global_params.app.level_handler.current_game.startswith("level_") else "games"), "save level")
+        config.app.level_handler.save_level(config.app.level_handler.current_game,
+            "levels" if config.app.level_handler.current_game.startswith("level_") else "games"), "save level")
         self.create_close_button()
         self.create_randomize_button()
 
@@ -327,7 +327,7 @@ class PlanetEdit(EditorBase, PlanetEditBuilder):
             self.scale_planet(events)
             for event in events:
                 # ignore all inputs while any text input is active
-                if global_params.text_input_active:
+                if config.text_input_active:
                     return
 
             if not self.parent.selected_planet:

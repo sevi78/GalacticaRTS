@@ -2,7 +2,7 @@ import copy
 
 import pygame
 
-from source.configuration import global_params
+from source.configuration.game_config import config
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.handlers.mouse_handler import mouse_handler, MouseState
 from source.multimedia_library.images import images, pictures_path, get_image
@@ -70,7 +70,7 @@ class Checkbox(ImageButton):
         if not self._hidden and not self._disabled:
             self.draw_frame()
             self.draw_image()
-            global_params.app.tooltip_instance.reset_tooltip(self)
+            config.app.tooltip_instance.reset_tooltip(self)
 
             mouse_state = mouse_handler.get_mouse_state()
             x, y = mouse_handler.get_mouse_pos()
@@ -87,7 +87,7 @@ class Checkbox(ImageButton):
 
                 elif mouse_state == MouseState.HOVER or mouse_state == MouseState.LEFT_DRAG:
                     if self.tooltip != "":
-                        global_params.tooltip_text = self.tooltip
+                        config.tooltip_text = self.tooltip
 
     def update(self, value):
         self.checked = value

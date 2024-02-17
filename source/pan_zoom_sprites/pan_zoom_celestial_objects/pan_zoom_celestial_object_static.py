@@ -3,7 +3,7 @@ import random
 from source.gui.lod import level_of_detail
 from source.pan_zoom_sprites.pan_zoom_celestial_objects.pan_zoom_celestial_object import PanZoomCelestialObject
 
-from source.configuration import global_params
+from source.configuration.game_config import config
 
 
 class PanZoomCelestialObjectStatic(PanZoomCelestialObject):
@@ -28,7 +28,7 @@ class PanZoomCelestialObjectStatic(PanZoomCelestialObject):
 
                 self.win.blit(self.image, self.rect)
 
-            if global_params.debug:
+            if config.debug:
                 self.debug_object()
 
     def draw_(self):
@@ -52,7 +52,7 @@ class PanZoomCelestialObjectStatic(PanZoomCelestialObject):
                 self.rect.y = self.get_screen_y() + self.image.get_size()[1] / 2 * self.get_zoom()
                 self.win.blit(self.image, self.rect)
 
-            if global_params.debug:
+            if config.debug:
                 self.debug_object()
 
     def update(self):

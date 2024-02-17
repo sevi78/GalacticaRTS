@@ -2,7 +2,7 @@ import random
 
 from source.gui.lod import level_of_detail
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_gif import PanZoomSprite
-from source.configuration import global_params
+from source.configuration.game_config import config
 
 
 class PanZoomCelestialObject(PanZoomSprite):
@@ -41,21 +41,21 @@ class PanZoomCelestialObject(PanZoomSprite):
 
     def move(self, direction):
         if direction:
-            self.world_x += direction[0] * global_params.game_speed
-            self.world_y += direction[1] * global_params.game_speed
+            self.world_x += direction[0] * config.game_speed
+            self.world_y += direction[1] * config.game_speed
         else:
-            self.world_x -= self.speed * global_params.game_speed
-            self.world_y += self.speed * global_params.game_speed / 2
+            self.world_x -= self.speed * config.game_speed
+            self.world_y += self.speed * config.game_speed / 2
 
-        if self.world_x > global_params.scene_width * global_params.quadrant_amount:
+        if self.world_x > config.scene_width * config.quadrant_amount:
             self.world_x = 0
         if self.world_x < 0:
-            self.world_x = global_params.scene_width * global_params.quadrant_amount
+            self.world_x = config.scene_width * config.quadrant_amount
 
-        if self.world_y > global_params.scene_height * global_params.quadrant_amount:
+        if self.world_y > config.scene_height * config.quadrant_amount:
             self.world_y = 0
         if self.world_y < 0:
-            self.world_y = global_params.scene_height * global_params.quadrant_amount
+            self.world_y = config.scene_height * config.quadrant_amount
 
         self.set_world_position((self.world_x, self.world_y))
 

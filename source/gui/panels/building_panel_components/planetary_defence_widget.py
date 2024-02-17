@@ -1,8 +1,7 @@
 import pygame
 from pygame_widgets.util import drawText
 
-from source.configuration import global_params
-from source.configuration.global_params import ui_rounded_corner_small_thickness
+from source.configuration.game_config import config
 from source.factories.building_factory import building_factory
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
@@ -34,7 +33,7 @@ class PlanetaryDefenceWidget(WidgetBase):
 
     def _initialize_surface(self):
         self.surface = pygame.surface.Surface((self.width, self.height))
-        self.surface.set_alpha(global_params.ui_panel_alpha)
+        self.surface.set_alpha(config.ui_panel_alpha)
         self.surface_rect = self.surface.get_rect()
         self.surface_rect.x = self.parent.surface_rect.x + self.parent.spacing
         self.surface_rect.y = self.parent.world_y
@@ -42,7 +41,7 @@ class PlanetaryDefenceWidget(WidgetBase):
 
     def _initialize_text(self, kwargs):
         self.font_size = kwargs.get("font_size", FONT_SIZE)
-        self.font = pygame.font.SysFont(global_params.font_name, self.font_size)
+        self.font = pygame.font.SysFont(config.font_name, self.font_size)
         self.info_text = kwargs.get("infotext")
 
     def _initialize_buttons(self):
@@ -60,7 +59,7 @@ class PlanetaryDefenceWidget(WidgetBase):
             frame_color=self.frame_color,
             moveable=False,
             include_text=True, layer=self.layer,
-            onClick=lambda: building_factory.build("cannon", global_params.app.selected_planet))
+            onClick=lambda: building_factory.build("cannon", config.app.selected_planet))
 
         self.missile_launcher_icon = ImageButton(win=self.win,
             x=self.get_screen_x() + BUTTON_SIZE + 10,
@@ -75,7 +74,7 @@ class PlanetaryDefenceWidget(WidgetBase):
             frame_color=self.frame_color,
             moveable=False,
             include_text=True, layer=self.layer,
-            onClick=lambda: building_factory.build("missile", global_params.app.selected_planet))
+            onClick=lambda: building_factory.build("missile", config.app.selected_planet))
 
         self.energy_blast_icon = ImageButton(win=self.win,
             x=self.get_screen_x() + BUTTON_SIZE * 2 + 10,
@@ -90,7 +89,7 @@ class PlanetaryDefenceWidget(WidgetBase):
             frame_color=self.frame_color,
             moveable=False,
             include_text=True, layer=self.layer,
-            onClick=lambda: building_factory.build("energy blast", global_params.app.selected_planet))
+            onClick=lambda: building_factory.build("energy blast", config.app.selected_planet))
 
         self.electro_magnetic_impulse_icon = ImageButton(win=self.win,
             x=self.get_screen_x() + BUTTON_SIZE * 3 + 10,
@@ -105,7 +104,7 @@ class PlanetaryDefenceWidget(WidgetBase):
             frame_color=self.frame_color,
             moveable=False,
             include_text=True, layer=self.layer,
-            onClick=lambda: building_factory.build("electro magnetic impulse", global_params.app.selected_planet))
+            onClick=lambda: building_factory.build("electro magnetic impulse", config.app.selected_planet))
 
         self.parent.widgets.append(self)
         self.buttons.append(self.cannon_icon)
@@ -158,7 +157,7 @@ class PlanetaryDefenceWidget(WidgetBase):
             self.surface_rect.y = self.parent.world_y + self.parent.sub_widget_height + self.spacing + 5
 
         self.win.blit(self.surface, self.surface_rect)
-        pygame.draw.rect(self.win, self.frame_color, self.surface_rect, int(ui_rounded_corner_small_thickness), int(global_params.ui_rounded_corner_radius_small))
+        pygame.draw.rect(self.win, self.frame_color, self.surface_rect, config.ui_rounded_corner_small_thickness, config.ui_rounded_corner_radius_small)
 
     def _draw_label(self):
         drawText(self.win, self.name, self.frame_color,
@@ -170,7 +169,6 @@ class PlanetaryDefenceWidget(WidgetBase):
         for i in self.buttons:
             i.set_position((self.surface_rect.x + BUTTON_SIZE * self.buttons.index(i) + self.spacing * 3,
                             self.surface_rect.y + self.spacing + 20))
-
 
 # # Logging
 # logger = logging.getLogger(__name__)

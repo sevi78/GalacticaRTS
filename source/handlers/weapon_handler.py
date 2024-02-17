@@ -4,7 +4,7 @@ import time
 
 import pygame
 
-from source.configuration import global_params
+from source.configuration.game_config import config
 from source.draw.circles import draw_transparent_circle
 from source.draw.zigzag_line import draw_zigzag_line
 from source.factories.weapon_factory import weapon_factory
@@ -55,7 +55,7 @@ class WeaponHandler:
         if actual_time - self.phaser_last_shoot > 1 / shoot_interval:
             self.phaser_last_shoot = actual_time
             self.draw_moving_image(defender, power)
-            global_params.app.player.energy -= self.current_weapon.get("energy_consumtion", 1)
+            config.app.player.energy -= self.current_weapon.get("energy_consumtion", 1)
             color = random.choice(list(pygame.color.THECOLORS.keys()))
             draw_zigzag_line(
                 surface=self.parent.win,
@@ -71,7 +71,7 @@ class WeaponHandler:
         actual_time = time.time()
         if actual_time - self.phaser_last_shoot > 1 / shoot_interval:
             self.phaser_last_shoot = actual_time
-            app = global_params.app
+            app = config.app
             screen = app.win
             x, y = pan_zoom_handler.screen_2_world(self.parent.rect.centerx, self.parent.rect.centery)
             rx = int(self.parent.rect.width / 4)
@@ -144,7 +144,7 @@ class WeaponHandler:
 
 
 def launch_missile(attacker, defender):
-    app = global_params.app
+    app = config.app
     screen = app.win
     x, y = pan_zoom_handler.screen_2_world(attacker.rect.centerx, attacker.rect.centery)
     rx = int(attacker.rect.width / 4)

@@ -37,7 +37,6 @@ class ValueSmoother:
         self.target_value = new_value
 
 
-
 class ValueHandler:
     def __init__(self) -> None:
         self.values = {}
@@ -52,7 +51,6 @@ class ValueHandler:
         if key not in self.values:
             self.add_value(key, ValueSmoother(VALUE_SMOOTHING_FACTOR, VALUE_DECIMAL_PLACES))
         return self.values[key].get_smooth_value(value)
-
 
     def update(self):
         for _, value_smoother in self.values.items():

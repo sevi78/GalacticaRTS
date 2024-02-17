@@ -1,7 +1,6 @@
 import pygame
 
-
-from source.configuration import global_params
+from source.configuration.game_config import config
 from source.editors.editor_base.editor_base import EditorBase
 from source.gui.widgets.buttons.button import Button
 from source.handlers.color_handler import colors
@@ -23,8 +22,8 @@ class EventPanel(TextWrap, EditorBase):
         self.frame_color = colors.frame_color
         self.bg_color = pygame.colordict.THECOLORS["black"]
         self.font_size = 32
-        self.font = pygame.font.SysFont(global_params.font_name, self.font_size)
-        self.title_font = pygame.font.SysFont(global_params.font_name, 50)
+        self.font = pygame.font.SysFont(config.font_name, self.font_size)
+        self.title_font = pygame.font.SysFont(config.font_name, 50)
         self.center = kwargs.get("center", True)
 
         # surface
@@ -70,10 +69,10 @@ class EventPanel(TextWrap, EditorBase):
                 #     self.game_event.deal.make_deal()
                 #
                 # else:
-                getattr(global_params.app.game_event_handler, self.functions["yes"])()
+                getattr(config.app.game_event_handler, self.functions["yes"])()
 
             self.hide()
-            global_params.game_paused = False
+            config.game_paused = False
 
     def decline(self):
         if not self._hidden:
@@ -82,13 +81,13 @@ class EventPanel(TextWrap, EditorBase):
                 #     self.game_event.deal.make_deal()
                 #
                 # else:
-                if hasattr(global_params.app.game_event_handler, self.functions["no"]):
-                    getattr(global_params.app.game_event_handler, self.functions["no"])()
+                if hasattr(config.app.game_event_handler, self.functions["no"]):
+                    getattr(config.app.game_event_handler, self.functions["no"])()
                 else:
-                    print (f"event_panel. error: cannot call: {self.functions['no']}")
+                    print(f"event_panel. error: cannot call: {self.functions['no']}")
 
             self.hide()
-            global_params.game_paused = False
+            config.game_paused = False
 
     def set_text(self, event):
         self.title = event.title
@@ -112,17 +111,15 @@ class EventPanel(TextWrap, EditorBase):
         self.image_raw = event.image
         event.set_body()
         self.set_text(event)
-        #global_params.app.pause_game()
-        global_params.game_paused = True
-
-
+        # config.app.pause_game()
+        config.game_paused = True
 
     def listen(self, events):
         mouse_state = mouse_handler.get_mouse_state()
         if mouse_state == MouseState.LEFT_CLICK:
             if not self.functions:
                 if not self._hidden:
-                    global_params.game_paused = False
+                    config.game_paused = False
 
                 self.hide()
 

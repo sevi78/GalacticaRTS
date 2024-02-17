@@ -1,6 +1,6 @@
 import pygame
 
-from source.configuration import global_params
+from source.configuration.game_config import config
 from source.gui.event_text import event_text
 from source.gui.widgets.building_widget import BuildingWidget
 from source.handlers.file_handler import load_file
@@ -190,22 +190,22 @@ class BuildingFactory(BuildingFactoryJsonDictReader):
             self.create_building_widget(receiver, widget_key, widget_name, widget_value)
 
     def create_building_widget(self, receiver, widget_key, widget_name, widget_value):
-        widget_width = global_params.app.building_panel.get_screen_width()
+        widget_width = config.app.building_panel.get_screen_width()
         widget_height = 35
         spacing = 5
 
         # get the position and size
         win = pygame.display.get_surface()
         height = win.get_height()
-        y = height - spacing - widget_height - widget_height * len(global_params.app.building_widget_list)
+        y = height - spacing - widget_height - widget_height * len(config.app.building_widget_list)
         sounds.play_sound(sounds.bleep2, channel=7)
 
         is_building = True
         if widget_name in self.json_dict["weapons"].keys():
             is_building = False
 
-        building_widget = BuildingWidget(win=global_params.app.win,
-            x=global_params.app.building_panel.screen_x,
+        building_widget = BuildingWidget(win=config.app.win,
+            x=config.app.building_panel.screen_x,
             y=y,
             width=widget_width,
             height=widget_height,
@@ -228,8 +228,8 @@ class BuildingFactory(BuildingFactoryJsonDictReader):
 
         # check for prices
         for key, value in prices.items():
-            if not getattr(global_params.app.player, key) - value >= 0:
-                text += f"{getattr(global_params.app.player, key) - value} {key}, "
+            if not getattr(config.app.player, key) - value >= 0:
+                text += f"{getattr(config.app.player, key) - value} {key}, "
                 check = False
 
         if not check:
@@ -244,13 +244,13 @@ class BuildingFactory(BuildingFactoryJsonDictReader):
         :param building: str
         """
         # only build if has selected planet
-        if not global_params.app.selected_planet: return
+        if not config.app.selected_planet: return
 
         # check for prices, if enough to build
         check = self.check_if_enough_resources_to_build(building, prices)
         if check:
             for key, value in prices.items():
-                setattr(global_params.app.player, key, getattr(global_params.app.player, key) - value)
+                setattr(config.app.player, key, getattr(config.app.player, key) - value)
 
         return check
 

@@ -4,12 +4,9 @@ from pprint import pprint
 
 import pygame
 
-# from source.configuration import global_params
-
-# remove this if not used elsewhere, only needed to test the scripts that load images or gifs
-# pygame.init()
-# pygame.display.set_mode((global_params.WIDTH, global_params.HEIGHT), pygame.RESIZABLE, pygame.DOUBLEBUF)
-#
+# remove this if posible, so far still neded to initialize pygame before loading images
+pygame.init()
+pygame.display.set_mode((1920, 1080), pygame.RESIZABLE, pygame.DOUBLEBUF)
 
 from PIL import Image
 from source.handlers.file_handler import pictures_path

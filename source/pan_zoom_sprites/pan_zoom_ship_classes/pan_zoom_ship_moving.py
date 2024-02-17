@@ -1,12 +1,11 @@
 import math
 
-
+from source.multimedia_library.sounds import sounds
 from source.pan_zoom_sprites.pan_zoom_ship_classes.pan_zoom_ship_params import SHIP_ORBIT_SPEED, SHIP_ORBIT_SPEED_MAX
 
-from source.multimedia_library.sounds import sounds
-
-
 TRAVEL_EXPERIENCE_FACTOR = 0.1
+
+
 class PanZoomShipMoving:
     def __init__(self, kwargs):
         self.desired_orbit_radius_raw = 100
@@ -51,6 +50,7 @@ class PanZoomShipMoving:
     @property
     def move_stop(self):
         return self._move_stop
+
     @move_stop.setter
     def move_stop(self, value):
         self._move_stop = value
@@ -58,8 +58,6 @@ class PanZoomShipMoving:
         if not hasattr(self, "state_engine"):
             return
         self.state_engine.set_state()
-
-
 
     def set_speed(self):
         # adjust speed if no energy

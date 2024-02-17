@@ -2,7 +2,7 @@ import copy
 import random
 import string
 
-from source.configuration import global_params
+from source.configuration.game_config import config
 from source.handlers.color_handler import colors
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
@@ -17,7 +17,7 @@ class PlanetFactory:
             sprite_groups.planets.remove(planet)
             planet.__delete__()
             planet.kill()
-        global_params.app.selected_planet = None
+        config.app.selected_planet = None
 
     def create_planets_from_data(self, data, **kwargs):
         # pprint.pprint(data)
@@ -37,7 +37,7 @@ class PlanetFactory:
                 value = eval(value)
 
             pan_zoom_planet_button = PanZoomPlanet(
-                win=global_params.win,
+                win=config.win,
                 x=value["world_x"],
                 y=value["world_y"],
                 width=int(value["world_width"]),
@@ -52,10 +52,10 @@ class PlanetFactory:
                 textColour=colors.frame_color,
                 property="planet",
                 name=value["name"],
-                parent=global_params.app,
+                parent=config.app,
                 tooltip="send your ship to explore the planet!",
                 possible_resources=value["possible_resources"],
-                moveable=global_params.moveable,
+                moveable=config.moveable,
                 hover_image=get_image("selection_150x150.png"),
                 textVAlign="below_the_bottom",
                 layer=4,
@@ -91,7 +91,7 @@ class PlanetFactory:
         return [_ for _ in sprite_groups.planets.sprites() if _.type in keys]
 
     def generate_planet_names(self):
-        solar_system_names = copy.deepcopy(global_params.app.level_handler.level_dict_generator.solar_system_names)
+        solar_system_names = copy.deepcopy(config.app.level_handler.level_dict_generator.solar_system_names)
         suns = [i for i in sprite_groups.planets if i.type == "sun"]
 
         for sun in suns:

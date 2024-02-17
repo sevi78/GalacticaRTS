@@ -1,4 +1,4 @@
-from source.configuration import global_params
+from source.configuration.game_config import config
 from source.editors.editor_base.editor_base import EditorBase
 from source.editors.editor_base.editor_config import TOP_SPACING, BUTTON_SIZE
 from source.factories.universe_factory import universe_factory
@@ -100,7 +100,7 @@ class DebugEdit(EditorBase):
             self.win, self.world_x - self.spacing_x + x + BUTTON_SIZE * 3, y, 30, 30, isSubWidget=False,
             color=self.frame_color,
             key="debug_icon", tooltip="debug", onClick=lambda: print("debug: ",
-                global_params.debug), layer=9, parent=self)
+                config.debug), layer=9, parent=self)
         x += BUTTON_SIZE * 1.5
         self.checkboxes.append(debug_checkbox)
         self.widgets.append(debug_checkbox)
@@ -162,7 +162,7 @@ class DebugEdit(EditorBase):
                 self.set_debug_to_objects(i.key)
 
             if i.key == "debug_icon":
-                global_params.debug = i.checked
+                config.debug = i.checked
                 level_of_detail.debug = i.checked
 
             if i.key.startswith("layers"):
@@ -255,7 +255,7 @@ class DebugEdit(EditorBase):
             all_widgets = WidgetHandler.get_all_widgets()
 
             y += self.text_spacing * 2
-            if not global_params.debug:
+            if not config.debug:
                 y = self.draw_texts(all_widgets, y)
 
             self.max_height = y + self.text_spacing

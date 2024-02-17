@@ -1,4 +1,4 @@
-from source.configuration import global_params
+from source.configuration.game_config import config
 from source.gui.lod import level_of_detail
 from source.universe.celestial_objects.celestial_object import CelestialObject
 
@@ -25,5 +25,5 @@ class Comet(CelestialObject):
                 self.move(direction=None)
                 self.win.blit(self.image, self.rect)
 
-            if global_params.debug:
+            if config.debug:
                 self.debug_object()

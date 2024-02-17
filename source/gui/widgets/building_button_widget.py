@@ -1,10 +1,8 @@
 import pygame.display
 
-from source.configuration import global_params
-from source.configuration.global_params import ui_rounded_corner_small_thickness, ui_rounded_corner_radius_small
+from source.configuration.game_config import config
 from source.draw.rect import draw_transparent_rounded_rect
 from source.factories.building_factory import building_factory
-from source.gui.lod import level_of_detail
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.handlers.color_handler import colors
@@ -93,12 +91,12 @@ class BuildingButtonWidget(WidgetBase):
 
         # construct surface
         self.surface = pygame.surface.Surface((width, height))
-        self.surface.set_alpha(global_params.ui_panel_alpha)
+        self.surface.set_alpha(config.ui_panel_alpha)
         self.rect = self.surface.get_rect()
         self.rect.x = x
         self.rect.y = y
         self.spacing = kwargs.get("spacing", 10)
-        self.corner_radius = ui_rounded_corner_radius_small
+        self.corner_radius = config.ui_rounded_corner_radius_small
 
         # subwidget height of building panel
         self.sub_widget_height = 0
@@ -314,9 +312,9 @@ class BuildingButtonWidget(WidgetBase):
         self.rect.height = self.max_height
 
         draw_transparent_rounded_rect(self.win, (0, 0, 0), self.rect,
-            int(global_params.ui_rounded_corner_radius_small), global_params.ui_panel_alpha)
+            config.ui_rounded_corner_radius_small, config.ui_panel_alpha)
         pygame.draw.rect(self.win, self.frame_color, self.rect,
-            int(ui_rounded_corner_small_thickness), int(global_params.ui_rounded_corner_radius_small))
+            config.ui_rounded_corner_small_thickness, config.ui_rounded_corner_radius_small)
 
         if len(self.active_resource_buttons) > 0:
             self.set_frame_height()
@@ -336,7 +334,7 @@ class BuildingButtonWidget(WidgetBase):
         if not self.parent.name == "building panel":
             self.spacing = 5
             self.corner_radius = 5
-            if global_params.show_overview_buttons:
+            if config.show_overview_buttons:
                 self.hide()
                 return
 

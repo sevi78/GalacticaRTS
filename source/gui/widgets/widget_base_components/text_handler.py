@@ -6,6 +6,7 @@ class TextHandler:
         self.string = text
         self.text = self.font.render(self.string, True, self.textColour)
         self.alignTextRect()
+
     def alignTextRect(self):
 
         self.textRect.center = (self.screen_x + self.screen_width // 2, self.screen_y + self.screen_height // 2)

@@ -22,7 +22,8 @@ for category, buildings in data.items():
             for other_building, other_attributes in other_buildings.items():
                 if building != other_building:  # Avoid self-loops
                     # If a building produces something that another consumes
-                    for resource in ['production_energy', 'production_food', 'production_minerals', 'production_water', 'production_technology', 'production_population']:
+                    for resource in ['production_energy', 'production_food', 'production_minerals', 'production_water',
+                                     'production_technology', 'production_population']:
                         if attributes[resource] > 0 and other_attributes[resource] < 0:
                             G.add_edge(building, other_building)
 

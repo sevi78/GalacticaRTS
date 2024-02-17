@@ -1,7 +1,5 @@
 import pstats
 
-import pygame.display
-
 """
 how to use:
 paste this:
@@ -22,7 +20,7 @@ to show the output file, run this script.
 p = pstats.Stats(r'C:\Users\sever\Documents\Galactica-RTS_zoomable1.107\output_file')
 
 p.calc_callees()
-p.strip_dirs(). sort_stats(2).print_stats()
+p.strip_dirs().sort_stats(2).print_stats()
 # get screen info
 # pygame.init()
 # print (pygame.display.Info())
@@ -30,12 +28,13 @@ p.strip_dirs(). sort_stats(2).print_stats()
 
 # event count to find out wich events are called the most
 event_counts = {}
-def profile_events(events):
 
+
+def profile_events(events):
     for event in events:
         if event.type not in event_counts:
             event_counts[event.type] = 0
         event_counts[event.type] += 1
     return event_counts
 
-#print (f"event count {profile_events(events)}")
+# print (f"event count {profile_events(events)}")

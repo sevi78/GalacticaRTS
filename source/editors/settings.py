@@ -10,7 +10,7 @@ __all__ = ['main']
 
 import pygame_menu
 
-from source.configuration import global_params
+from source.configuration.game_config import config
 from source.handlers.file_handler import load_file, write_file
 
 # Constants and global variables
@@ -25,7 +25,7 @@ def main(test: bool = False, **kwargs) -> None:
     # -------------------------------------------------------------------------
     # Create window
     # -------------------------------------------------------------------------
-    surface = global_params.win  # create_example_window('Galactica - Settings', WINDOW_SIZE,init_pygame=False)#kwargs.get("surface") #
+    surface = config.win  # create_example_window('Galactica - Settings', WINDOW_SIZE,init_pygame=False)#kwargs.get("surface") #
     # clock = pygame.time.Clock()
 
     # -------------------------------------------------------------------------
@@ -47,8 +47,6 @@ def main(test: bool = False, **kwargs) -> None:
         title='Settings',
         width=WINDOW_SIZE[0] * 0.9,
         onclose=pygame_menu.events.BACK, )  # User press ESC button)
-
-
 
     settings_menu.add.text_input(
         'FPS: ',
@@ -216,8 +214,6 @@ def main(test: bool = False, **kwargs) -> None:
         rangeslider_id='game_speed',
         value_format=lambda x: str(int(x)), align=pygame_menu.locals.ALIGN_RIGHT)
 
-
-
     def data_fun() -> None:
         """
         Print data of the menu.
@@ -228,7 +224,7 @@ def main(test: bool = False, **kwargs) -> None:
         for k in data.keys():
             print(f'setting.data_fun: \t{k}\t=>\t{data[k]}')
 
-        global_params.settings = data
+        config.settings = data
         write_file("settings.json", "config", data)
 
         # set new values to game
@@ -239,8 +235,8 @@ def main(test: bool = False, **kwargs) -> None:
             False visible_layers, bad anyway
             """
 
-            if hasattr(global_params, key):
-                setattr(global_params, key, value)
+            if hasattr(config, key):
+                setattr(config, key, value)
 
     # Add final buttons
 

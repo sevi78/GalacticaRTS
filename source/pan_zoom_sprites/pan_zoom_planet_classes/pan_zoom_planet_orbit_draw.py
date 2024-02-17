@@ -6,7 +6,7 @@ from source.draw.circles import draw_dashed_circle
 from source.gui.lod import level_of_detail
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.orbit_handler import get_orbit_pos
-from source.configuration import global_params
+from source.configuration.game_config import config
 from source.handlers.color_handler import colors
 
 ORBIT_COLOR = colors.ui_dark
@@ -19,7 +19,7 @@ def draw_orbit_simple__(self):  # old
     if not self.orbit_object:
         return
 
-    if self.orbit_object and global_params.show_orbit:
+    if self.orbit_object and config.show_orbit:
         pos = get_orbit_pos(self)
         radius = self.orbit_radius * pan_zoom_handler.zoom
         width = 1  # initial width of the circle
@@ -36,17 +36,17 @@ def draw_orbit_simple__(self):  # old
 
         if len(points) > 1:
             for i in points:
-                pygame.draw.rect(global_params.win, ORBIT_COLOR, (i[0], i[1], width, width))
+                pygame.draw.rect(config.win, ORBIT_COLOR, (i[0], i[1], width, width))
 
 
 def draw_orbit_simple(self):
     if not self.orbit_object:
         return
 
-    if self.orbit_object and global_params.show_orbit:
+    if self.orbit_object and config.show_orbit:
         pos = get_orbit_pos(self)
         radius = self.orbit_radius * pan_zoom_handler.zoom
-        draw_dashed_circle(global_params.win, colors.ui_darker, pos, radius, 10, 1)
+        draw_dashed_circle(config.win, colors.ui_darker, pos, radius, 10, 1)
 
 
 def draw_orbit_circle(self):
@@ -56,10 +56,10 @@ def draw_orbit_circle(self):
     if not self.orbit_object:
         return
 
-    if self.orbit_object and global_params.show_orbit:
+    if self.orbit_object and config.show_orbit:
         pos = get_orbit_pos(self)
         radius = self.orbit_radius * self.get_zoom()
-        pygame.draw.circle(global_params.win, colors.ui_darker, (pos[0], pos[1]), radius, 1)
+        pygame.draw.circle(config.win, colors.ui_darker, (pos[0], pos[1]), radius, 1)
 
 
 def draw_orbit(self):
@@ -75,7 +75,7 @@ def draw_orbit(self):
     size_factor = 12
     min_dist_to_draw = self.orbit_object.rect.width / 5
 
-    if global_params.show_orbit:
+    if config.show_orbit:
         pos = get_orbit_pos(self)
         radius = self.orbit_radius * self.get_zoom()
         width = 1  # initial width of the circle
@@ -105,7 +105,7 @@ def draw_orbit(self):
 
                 # color = dim_color(colors.ui_darker, dist, min_color_value)
                 center = (i[0], i[1])
-                pygame.draw.circle(global_params.win, ORBIT_COLOR, center, size, width)
+                pygame.draw.circle(config.win, ORBIT_COLOR, center, size, width)
 
 
 def draw_orbits(self):

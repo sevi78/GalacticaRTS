@@ -15,6 +15,8 @@ fix write_file/load_file for make more consitency:
 write_file(folder, filename, data)
 load_file(folder, filename)
 """
+
+
 def update_dict__(data, default_dict):
     for key, value in default_dict.items():
         if key not in data:
@@ -105,6 +107,7 @@ def compare_json_files(folder, default_file):
                 print(f"Comparing file: {file_name}")
                 compare_json(default_file, data, file_name)
 
+
 def compare_json(default, data, file_name, path=""):
     for key in default:
         if key not in data:
@@ -115,7 +118,9 @@ def compare_json(default, data, file_name, path=""):
             # Check for exact match of nested dictionaries
             elif default[key] != data[key]:
                 pass
-                #print(f"Value of key '{key}' is changed from '{default[key]}' to '{data[key]}' in {file_name} at path {path}")
+                # print(f"Value of key '{key}' is changed from '{default[key]}' to '{data[key]}' in {file_name} at path {path}")
+
+
 def abs_database_path():
     # gets the path to store the files: database at root
     dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -162,10 +167,10 @@ def get_games_list():
     file_list.sort(key=lambda x: os.path.getctime(os.path.join(abs_games_path(), x)), reverse=True)
     return file_list
 
+
 def get_ships_list():
     file = load_file("ship_settings.json", "config")
     return file.keys()
-
 
 
 def generate_json_filename_based_on_datetime(prefix):
@@ -183,8 +188,8 @@ def move_file_to_trash(file_path):
 
 def main():
     pass
-    #update_json_files(load_file("level_0.json", folder="levels"))
-    compare_json_files(abs_level_path(),load_file("level_0.json", folder="levels"))
+    # update_json_files(load_file("level_0.json", folder="levels"))
+    compare_json_files(abs_level_path(), load_file("level_0.json", folder="levels"))
 
 
 if __name__ == "__main__":

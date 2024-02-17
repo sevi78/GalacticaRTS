@@ -1,8 +1,8 @@
 import pygame
 
+from source.configuration.game_config import config
 from source.draw.gradient_background import draw_gradient
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
-from source.configuration import global_params
 from source.handlers.color_handler import colors
 from source.multimedia_library.images import get_image
 
@@ -11,7 +11,7 @@ class BackgroundImage(WidgetBase):
     def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
         WidgetBase.__init__(self, win, x, y, width, height, isSubWidget, **kwargs)
         self.layer = kwargs.get("layer", 0)
-        self.surface = pygame.Surface((global_params.WIDTH, global_params.HEIGHT))
+        self.surface = pygame.Surface((config.width, config.height))
         self.surface.set_colorkey((60, 60, 60))
         self.surface.set_alpha(0)
         self.image = kwargs.get("image", None)
@@ -19,7 +19,7 @@ class BackgroundImage(WidgetBase):
         self.color = colors.background_color
 
     def draw(self):
-        if global_params.draw_background_image:
+        if config.draw_background_image:
             self.win.blit(self.image, (self.world_x, self.world_y))
         else:
             pygame.draw.rect(self.win, self.color, (0, 0, self.screen_width, self.screen_height))
@@ -34,9 +34,12 @@ class BackgroundGradient(WidgetBase):  # bad performance
 
         # set images
         self.image_left = pygame.transform.scale(get_image("gradient_transparent_left.png"), (self.fade_range, height))
-        self.image_right = pygame.transform.scale(get_image("gradient_transparent_right.png"), (self.fade_range, height))
-        self.image_top = pygame.transform.scale(get_image("gradient_transparent_top.png"), (width - (self.fade_range *2), self.fade_range))
-        self.image_bottom = pygame.transform.scale(get_image("gradient_transparent_bottom.png"), (width - (self.fade_range*2), self.fade_range))
+        self.image_right = pygame.transform.scale(get_image("gradient_transparent_right.png"), (
+        self.fade_range, height))
+        self.image_top = pygame.transform.scale(get_image("gradient_transparent_top.png"), (
+        width - (self.fade_range * 2), self.fade_range))
+        self.image_bottom = pygame.transform.scale(get_image("gradient_transparent_bottom.png"), (
+        width - (self.fade_range * 2), self.fade_range))
 
         # set image positions
         self.image_left_pos = (x, y)
@@ -59,8 +62,7 @@ class BackgroundGradient(WidgetBase):  # bad performance
         # pygame.draw.rect(self.win, colors.frame_color, (self.image_bottom_pos[0], self.image_bottom_pos[1], self.image_bottom.get_width(),self.image_bottom.get_height()), 1)
 
 
-
-class BackgroundGradient_ki(WidgetBase):# doesnt work at all
+class BackgroundGradient_ki(WidgetBase):  # doesnt work at all
     def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
         WidgetBase.__init__(self, win, x, y, width, height, isSubWidget, **kwargs)
         self.layer = kwargs.get("layer", 10)

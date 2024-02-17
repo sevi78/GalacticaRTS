@@ -2,7 +2,7 @@ import time
 
 import pygame
 
-from source.configuration import global_params
+from source.configuration.game_config import config
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 
 
@@ -45,7 +45,6 @@ class Player:
         # self.food = kwargs.get("food", 0)
         # self.energy = kwargs.get("energy", 0)
 
-
         for key, value in kwargs.items():
             setattr(self, key, value)
         for key, value in self.stock.items():
@@ -66,9 +65,9 @@ class Player:
             "population": 0
             }
 
-        #self.stock = None
-        #self.get_stock()
-        #self.population = self.stock["population"]
+        # self.stock = None
+        # self.get_stock()
+        # self.population = self.stock["population"]
         self.population_limit = 0
 
     def reset(self, data):
@@ -94,12 +93,12 @@ class Player:
 
     def get_stock(self):
         stock = {"energy": self.energy,
-                      "food": self.food,
-                      "minerals": self.minerals,
-                      "water": self.water,
-                      "technology": self.technology,
-                      "population": self.population
-                      }
+                 "food": self.food,
+                 "minerals": self.minerals,
+                 "water": self.water,
+                 "technology": self.technology,
+                 "population": self.population
+                 }
         return stock
 
     def get_all_buildings(self):
@@ -125,15 +124,15 @@ class Player:
             self.water += self.production["water"]
             self.technology += self.production["technology"]
             self.population += self.production["population"]
-            #print (f"population:{self.population}, population: {self.population}, self.stock: {self.stock}")
+            # print (f"population:{self.population}, population: {self.population}, self.stock: {self.stock}")
 
     def update(self):
-        if global_params.game_speed == 0:
+        if config.game_speed == 0:
             return
 
-        self.clock_ += 0.01 * global_params.game_speed
+        self.clock_ += 0.01 * config.game_speed
         self.clock = "Year: " + str(int(self.clock_))
-        self.wait = self.start_wait / global_params.game_speed
+        self.wait = self.start_wait / config.game_speed
         self.produce()
         # set global population
 

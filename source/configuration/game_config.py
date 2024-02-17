@@ -1,8 +1,9 @@
+# initialize pygame and window
 import ctypes
 import os
+
 import pygame
 
-from source.configuration import global_params
 from source.handlers.file_handler import load_file
 from source.handlers.image_handler import overblit_button_image
 
@@ -14,25 +15,24 @@ class GameConfig:
 
         # Initialize configuration variables
         self.font_name = self.settings["font_name"]
-        self.WIDTH = int(self.settings["WIDTH"][0][0])
-        self.HEIGHT = int(self.settings["HEIGHT"][0][0])
-        self.WIDTH_MINIMIZED = 1920
-        self.HEIGHT_MINIMIZED = 800
-        self.WIDTH_CURRENT = self.WIDTH
-        self.HEIGHT_CURRENT = self.HEIGHT
-        self.moveable = self.settings["moveable"]
+        self.width = 1920
+        self.height = 1080
+        self.width_minimized = 1920
+        self.height_minimized = 800
+        self.width_current = self.width
+        self.height_current = self.height
+        self.moveable = True
         self.app = None
         self.tooltip_text = ""
         self.game_paused = False
-        self.game_speed = int(self.settings["game_speed"])
+        self.game_speed = 1
         self.fps = int(self.settings["fps"])
-        self.scene_width = int(self.settings["scene_width"])
-        self.scene_height = int(self.settings["scene_height"])
+        self.scene_width = 14000
+        self.scene_height = 14000
         self.quadrant_amount = 1
-        self.building_editor_draw = False
         self.enable_zoom = True
         self.enable_pan = True
-        self.debug = self.settings["debug"]
+        self.debug = False
         self.enable_orbit = True
         self.enable_game_events = self.settings["enable_game_events"]
         self.show_orbit = True
@@ -43,15 +43,26 @@ class GameConfig:
         self.hover_object = None
         self.edit_mode = False
         self.show_overview_buttons = True
-        self.ui_rounded_corner_radius_small = int(self.settings["ui_rounded_corner_radius_small"])
+        self.ui_rounded_corner_radius_small = self.settings["ui_rounded_corner_radius_small"]
         self.ui_rounded_corner_radius_big = self.settings["ui_rounded_corner_radius_big"]
         self.ui_rounded_corner_small_thickness = self.settings["ui_rounded_corner_small_thickness"]
         self.ui_rounded_corner_big_thickness = self.settings["ui_rounded_corner_big_thickness"]
         self.ui_panel_alpha = self.settings["ui_panel_alpha"]
         self.draw_universe = True
+        self.universe_density = 25
+
+        # set a list of editable params for setting_editor
+        self.editable_params = {"fps": self.fps,
+                                "enable_game_events": self.enable_game_events,
+                                "draw_universe": self.draw_universe,
+                                "ui_panel_alpha": self.ui_panel_alpha,
+                                "ui_rounded_corner_radius_small": self.ui_rounded_corner_radius_small,
+                                "ui_rounded_corner_radius_big": self.ui_rounded_corner_radius_big,
+                                "ui_rounded_corner_small_thickness": self.ui_rounded_corner_small_thickness,
+                                "ui_rounded_corner_big_thickness": self.ui_rounded_corner_big_thickness
+                                }
 
         # Initialize pygame and window
-        pygame.init()
         self.init_window()
 
     def init_window(self):
@@ -66,28 +77,26 @@ class GameConfig:
         os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (0, -1080)
 
         # Set the display mode to full screen on the second monitor
-        self.win = pygame.display.set_mode((self.WIDTH, self.HEIGHT), pygame.FULLSCREEN)
+        self.win = pygame.display.set_mode((self.width, self.height), pygame.FULLSCREEN, pygame.DOUBLEBUF)
 
     def set_global_variable(self, key, value, **kwargs):
         var = kwargs.get("var", None)
         button = kwargs.get("button", None)
 
         if var:
-            if getattr(global_params, var):
-                setattr(global_params, var, False)
+            if getattr(config, var):
+                setattr(config, var, False)
             else:
-                setattr(global_params, var, True)
+                setattr(config, var, True)
 
-        if getattr(global_params, key):
-            setattr(global_params, key, False)
+        if getattr(config, key):
+            setattr(config, key, False)
 
         else:
-            setattr(global_params, key, True)
+            setattr(config, key, True)
 
-        overblit_button_image(button, "uncheck.png", getattr(global_params, key))
+        overblit_button_image(button, "uncheck.png", getattr(config, key))
+
 
 # Usage
 config = GameConfig()
-
-
-

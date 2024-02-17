@@ -1,6 +1,6 @@
 import pygame as pg
 
-from source.configuration import global_params
+from source.configuration.game_config import config
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.handlers.color_handler import colors
 
@@ -18,7 +18,7 @@ class InputBox(WidgetBase):
         self.color = COLOR_INACTIVE
         self.text = text
         self.font_size = int(h * 0.8)
-        self.font = pg.sysfont.SysFont(global_params.font_name, self.font_size)
+        self.font = pg.sysfont.SysFont(config.font_name, self.font_size)
         self.text_offset_y = int(self.font_size * 0.2)
         self.txt_surface = self.font.render(text, True, self.color)
         self._active = False
@@ -42,7 +42,7 @@ class InputBox(WidgetBase):
 
     def on_active_change(self):
         # Your function to be called every time the active property changes
-        global_params.text_input_active = self._active
+        config.text_input_active = self._active
         self.set_color()
 
         if not self._disabled and not self._hidden:
@@ -110,4 +110,4 @@ class InputBox(WidgetBase):
             if not self.draw_frame:
                 return
 
-            pg.draw.rect(self.win, self.color, self.rect, 2, global_params.ui_rounded_corner_radius_small)
+            pg.draw.rect(self.win, self.color, self.rect, 2, config.ui_rounded_corner_radius_small)

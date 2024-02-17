@@ -1,6 +1,6 @@
 import pygame
 
-from source.configuration import global_params
+from source.configuration.game_config import config
 from source.gui.event_text import event_text
 
 
@@ -116,18 +116,18 @@ class BuildingSlot:
 
         if not self.plus_button_image["plus_icon"].collidepoint(pygame.mouse.get_pos()):
             if self.plus_just_hovered:
-                global_params.tooltip_text = ""
+                config.tooltip_text = ""
                 self.plus_just_hovered = False
 
         if not self.minus_button_image["minus_icon"].collidepoint(pygame.mouse.get_pos()):
             if self.minus_just_hovered:
-                global_params.tooltip_text = ""
+                config.tooltip_text = ""
                 self.minus_just_hovered = False
 
     def submit_tooltip(self):
         if self.tooltip != "":
-            if self.tooltip != global_params.tooltip_text:
-                global_params.tooltip_text = self.tooltip
+            if self.tooltip != config.tooltip_text:
+                config.tooltip_text = self.tooltip
 
     def upgrade_building_slots(self, events):
         planet = self.parent.selected_planet

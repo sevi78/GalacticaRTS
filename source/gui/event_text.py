@@ -1,6 +1,6 @@
 import pygame
 
-from source.configuration import global_params
+from source.configuration.game_config import config
 from source.handlers.color_handler import colors
 from source.text.text_wrap import TextWrap
 
@@ -61,7 +61,7 @@ class EventText(TextWrap):
         self.texts = []
         self._text = None
         self.event_text_font_size = EVENT_TEXT_HEIGHT
-        self.event_text_font = pygame.font.SysFont(global_params.font_name, self.event_text_font_size)
+        self.event_text_font = pygame.font.SysFont(config.font_name, self.event_text_font_size)
         self.text_count = 0
         self.prefix = "GPT-1357: "
         self.text = "hi, i am George Peter Theodor the 1357th, or short: GPT-1357." \
@@ -101,8 +101,8 @@ class EventText(TextWrap):
         self.alpha = 255
 
     def update(self):
-        if global_params.edit_mode:
-            if global_params.app.weapon_select._hidden:
+        if config.edit_mode:
+            if config.app.weapon_select._hidden:
                 return
 
         if pygame.time.get_ticks() > self.last_update_time + TEXT_DISPLAY_UPDATE:
@@ -112,10 +112,10 @@ class EventText(TextWrap):
                 self.last_update_time = pygame.time.get_ticks()
 
         # set x position if the map is visible
-        x = global_params.app.ui_helper.left + global_params.app.map_panel.world_width if global_params.app.map_panel.visible else global_params.app.ui_helper.left
+        x = config.app.ui_helper.left + config.app.map_panel.world_width if config.app.map_panel.visible else config.app.ui_helper.left
         self.wrap_text(self.win, self.event_display_text, (x, self.new_bottom),
-            (global_params.app.ui_helper.world_width, EVENT_TEXT_HEIGHT), self.event_text_font, colors.ui_dark,
+            (config.app.ui_helper.world_width, EVENT_TEXT_HEIGHT), self.event_text_font, colors.ui_dark,
             fade_out=EVENT_TEXT_FADE, alpha=self.alpha)
 
 
-event_text = EventText(global_params.win)
+event_text = EventText(config.win)

@@ -8,7 +8,7 @@ import psutil
 
 
 class GarbageHandler:
-    def delete_all_references(self, obj, obj1):# smooth reference deleter
+    def delete_all_references(self, obj, obj1):  # smooth reference deleter
 
         for key, value in obj.__dict__.items():
             if obj1 == value:
@@ -57,7 +57,7 @@ class GarbageHandler:
         referrers = gc.get_referrers(obj)
         return ref_count, referrers
 
-    def delete_all_references_from(self, obj):# stupid ki function
+    def delete_all_references_from(self, obj):  # stupid ki function
         referrers = gc.get_referrers(obj)
         for referrer in referrers:
             if isinstance(referrer, dict):

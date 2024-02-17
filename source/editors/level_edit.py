@@ -2,7 +2,7 @@ import random
 
 import pygame
 
-from source.configuration import global_params
+from source.configuration.game_config import config
 from source.draw.circles import draw_zoomable_circle
 from source.draw.zoomable_rect import draw_zoomable_rect
 from source.editors.editor_base.editor_base import EditorBase
@@ -31,7 +31,7 @@ class LevelEdit(EditorBase):
 
     def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
         EditorBase.__init__(self, win, x, y, width, height, isSubWidget=False, **kwargs)
-        self.level_handler = global_params.app.level_handler
+        self.level_handler = config.app.level_handler
 
         #  widgets
         self.create_inputboxes()
@@ -375,6 +375,7 @@ class LevelEdit(EditorBase):
         self.level_handler.delete_level()
         self.level_handler.generate_level_dict_from_editor()
         planet_factory.create_planets_from_data(data=self.level_handler.data)
+        self.parent.selected_planet = sprite_groups.planets.sprites()[0]
         self.parent.ship_factory.create_ships_from_data(data=self.level_handler.data)
         self.level_handler.create_universe()
 
@@ -386,7 +387,7 @@ class LevelEdit(EditorBase):
         self.level_handler.setup_pan_zoom_handler()
 
     def delete_object(self):
-        selected_ships = global_params.app.box_selection.selected_objects
+        selected_ships = config.app.box_selection.selected_objects
 
         # used for ships
         if len(selected_ships) > 0:
@@ -394,7 +395,7 @@ class LevelEdit(EditorBase):
                 i.__delete__(i)
 
         # used for planets
-        selected_planet = global_params.app.selected_planet
+        selected_planet = config.app.selected_planet
         self.delete_planet(selected_planet)
 
     def listen(self, events):
@@ -406,7 +407,7 @@ class LevelEdit(EditorBase):
 
             for event in events:
                 # ignore all inputs while any text input is active
-                if global_params.text_input_active:
+                if config.text_input_active:
                     return
 
                 if event.type == pygame.KEYDOWN:

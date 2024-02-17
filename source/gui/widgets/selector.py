@@ -1,7 +1,7 @@
 import pygame
 
 from source.app.app_helper import select_next_item_in_list
-from source.configuration import global_params
+from source.configuration.game_config import config
 from source.gui.widgets.buttons.button import Button
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.multimedia_library.images import get_image
@@ -27,7 +27,7 @@ class Selector(WidgetBase):
         self.minus_arrow = None
         self.buttons = []
         self.font_size = font_size
-        self.font = pygame.font.SysFont(global_params.font_name, self.font_size)
+        self.font = pygame.font.SysFont(config.font_name, self.font_size)
         self.text_adds = ""
 
         #  lists, data
@@ -106,7 +106,8 @@ class Selector(WidgetBase):
     def select(self, value):
         """
         """
-        if (self.current_value == min(self.list) and value == -1) or (self.current_value == max(self.list) and value == 1):
+        if (self.current_value == min(self.list) and value == -1) or (
+                self.current_value == max(self.list) and value == 1):
             if self.restrict_list_jump:
                 return
 

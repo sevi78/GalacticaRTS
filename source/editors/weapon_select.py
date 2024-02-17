@@ -132,7 +132,6 @@ class WeaponSelect(EditorBase):
         self.buttons.append(self.upgrade_button)
         self.widgets.append(self.upgrade_button)
 
-
         self.auto_pilot_checkbox = Checkbox(
             self.win,
             self.upgrade_button.get_screen_x() + button_size * 3,

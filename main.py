@@ -1,12 +1,12 @@
-import functools
+
 import time
 import traceback
-from functools import lru_cache
+
 import pygame
 
 from source.app.app_helper import AppHelper, select_next_item_in_list
 from source.app.ui_builder import UIBuilder
-from source.draw.rect import draw_transparent_rounded_rect
+from source.configuration.game_config import config
 from source.editors.level_edit import LevelEdit
 from source.editors.level_select import LevelSelect
 from source.factories.ship_factory import ShipFactory
@@ -17,21 +17,16 @@ from source.game_play.navigation import navigate_to
 from source.gui.event_text import event_text
 from source.gui.panels.map_panel import MapPanel
 from source.gui.widgets.image_widget import ImageSprite
-
 from source.handlers.economy_handler import economy_handler
 from source.handlers.file_handler import load_file
 from source.handlers.game_event_handler import GameEventHandler
 from source.handlers.level_handler import LevelHandler
 from source.handlers.mouse_handler import mouse_handler
-
-from source.interaction.box_selection import BoxSelection
-from source.configuration import global_params
-from source.configuration.global_params import text_input_active, enable_pan, copy_object
-from source.multimedia_library.images import get_image
-
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.handlers.time_handler import time_handler
+from source.interaction.box_selection import BoxSelection
+from source.multimedia_library.images import get_image
 
 ECONOMY_UPDATE_INTERVAL = 2.0
 
@@ -76,7 +71,8 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
     def __init__(self, width, height):
         # make self global, maybe we need that
         self.map_panel = None
-        global_params.app = self
+        config.app = self
+
         self.ship_factory = ShipFactory()
         AppHelper.__init__(self)
         UIBuilder.__init__(self, width, height)
@@ -154,7 +150,7 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
             building_button_widget.show()
 
     def update_economy(self):
-        if global_params.game_paused:
+        if config.game_paused:
             return
 
         if time.time() > self.start_time + self.wait:
@@ -182,7 +178,7 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
         # game pause
         for event in events:
             # ignore all inputs while any text input is active
-            if global_params.text_input_active:
+            if config.text_input_active:
                 return
 
             if event.type == pygame.KEYDOWN:
@@ -217,7 +213,7 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
             self.win.fill((0, 0, 15))
 
             # set fps
-            time_handler.set_fps(int(global_params.fps))
+            time_handler.set_fps(int(config.fps))
 
             # get events
             events = pygame.event.get()
@@ -226,10 +222,10 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
             mouse_handler.handle_mouse_inputs(events)
 
             # update pan_zoom_handler
-            if global_params.enable_zoom:
-                if not text_input_active:
-                    if enable_pan:
-                        if copy_object:
+            if config.enable_zoom:
+                if not config.text_input_active:
+                    if config.enable_pan:
+                        if config.copy_object:
                             self.pan_enabled = False
                         else:
                             self.pan_enabled = True
@@ -250,7 +246,7 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
             self.update(events)
 
             # handle screensize using [>]
-            self.set_screen_size((global_params.WIDTH_MINIMIZED, global_params.HEIGHT_MINIMIZED), events)
+            self.set_screen_size((config.width_minimized, config.height_minimized), events)
 
             # update enemy handler
             enemy_handler.update()
@@ -277,7 +273,7 @@ def main():
     pygame.init()
 
     # initialize app
-    app = App(global_params.WIDTH, global_params.HEIGHT)
+    app = App(config.width, config.height)
 
     # initialize value_handler
     # app.value_handler = ValueHandler()

@@ -1,6 +1,5 @@
 from pygame.sprite import LayeredUpdates
 
-from source.configuration import global_params
 from source.gui.lod import level_of_detail
 from source.handlers import widget_handler
 from source.handlers.widget_handler import WidgetHandler
@@ -70,7 +69,7 @@ class SpriteGroups:  # original
         self.target_objects.update(*args)
         self.moving_images.update()
         self.state_images.update()
-        #self.ships.update(*args)
+        # self.ships.update(*args)
 
     def draw(self, surface, **kwargs):
         events = kwargs.get("events")

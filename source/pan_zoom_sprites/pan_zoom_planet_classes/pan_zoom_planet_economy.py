@@ -4,7 +4,7 @@ from source.app.app_helper import get_sum_up_to_n
 
 from source.factories.building_factory import building_factory
 from source.handlers.economy_handler import economy_handler
-from source.configuration import global_params
+from source.configuration.game_config import config
 
 
 # class SpecialHandler:#unused
@@ -24,7 +24,7 @@ from source.configuration import global_params
 #             value = float(value)  # Convert the value to a float for arithmetic operations
 
 
-class PanZoomPlanetEconomy():#, SpecialHandler):
+class PanZoomPlanetEconomy():  # , SpecialHandler):
     def __init__(self, kwargs):
         self.population_special = None
         self.technology_special = None
@@ -99,6 +99,7 @@ class PanZoomPlanetEconomy():#, SpecialHandler):
     @property
     def population(self):
         return self._population
+
     @population.setter
     def population(self, value):
         self._population = value
@@ -134,7 +135,7 @@ class PanZoomPlanetEconomy():#, SpecialHandler):
         """ calculates population"""
         if self.production["food"] > 0:
             self.population_grow = self.population_grow_factor * self.production[
-                "food"] * global_params.game_speed
+                "food"] * config.game_speed
         if self.population < 0:
             self.population = 0
 
@@ -155,6 +156,6 @@ class PanZoomPlanetEconomy():#, SpecialHandler):
     def add_population(self):
         # check if it can grow
         if self.population_limit > self.population and self.production_food > 0:
-            self.population += self.population_grow * global_params.game_speed
+            self.population += self.population_grow * config.game_speed
         if self.production_food < 0 and self.population > 0:
             self.population += self.production_food

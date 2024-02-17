@@ -1,7 +1,7 @@
 import pygame
 
 import source.handlers.weapon_handler
-from source.configuration import global_params
+from source.configuration.game_config import config
 from source.factories.planet_factory import planet_factory
 from source.game_play import enemy_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
@@ -19,11 +19,10 @@ class Cheat:
         for i in planet_factory.get_all_planets(["planet", "moon"]):
             i.buildings.append(weapon)
 
-
-
     def cheat_population(self, value):
         for i in sprite_groups.planets:
             i.population += value
+
     def cheat_resources(self, value):
         self.player.energy += value
         self.player.food += value
@@ -57,7 +56,6 @@ class Cheat:
         for i in sprite_groups.planets:
             i.buildings.append("missile")
 
-
     def cheat_ufo(self):
         if not self.selected_planet:
             return
@@ -71,29 +69,26 @@ class Cheat:
 
     def cheat(self, events):
         # ignore all inputs while any text input is active
-        if global_params.text_input_active:
+        if config.text_input_active:
             return
         """cheat you bloody cheater :) """
         for event in events:
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_c and not pygame.key.get_mods() & pygame.KMOD_CTRL:
-                    #self.cheat_resources_and_population(100)
+                    # self.cheat_resources_and_population(100)
                     self.cheat_resources(10000)
                     self.cheat_population(1000)
-                    #self.cheat_planetary_defence("electro magnetic impulse")
+                    # self.cheat_planetary_defence("electro magnetic impulse")
                     self.cheat_ship()
-                    #self.cheat_missile()
+                    # self.cheat_missile()
 
                     # self.cheat_ufo()
 
                     self.explore_all()
                     self.cheat_level_success()
 
-
                     # self.cheat_population()
                     # self.explore_all()
 
                     # print (building_factory.get_a_list_of_building_names_with_build_population_minimum_bigger_than(1000))
-
-

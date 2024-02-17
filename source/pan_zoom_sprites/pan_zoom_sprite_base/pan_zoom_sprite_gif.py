@@ -3,7 +3,7 @@ import time
 
 import pygame
 
-from source.configuration import global_params
+from source.configuration.game_config import config
 from source.handlers.color_handler import colors, get_average_color
 from source.handlers.image_handler import outline_image
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
@@ -19,7 +19,7 @@ EXPLOSION_RELATIVE_GIF_SIZE = 0.3
 
 # screen = pygame.display.set_mode((WIDTH, HEIGHT))
 # clock = pygame.time.Clock()
-screen = global_params.win
+screen = config.win
 
 
 class PanZoomSprite(pygame.sprite.Sprite, PanZoomVisibilityHandler, GameObjectDebug):
@@ -240,7 +240,7 @@ class PanZoomSprite(pygame.sprite.Sprite, PanZoomVisibilityHandler, GameObjectDe
         self.set_world_position((self.world_x, self.world_y))
         self.update_gif_index()
 
-        if self.debug or global_params.debug:
+        if self.debug or config.debug:
             self.debug_object()
 
     def update(self):

@@ -1,10 +1,8 @@
 import pygame
 
-from source.configuration import global_params
 from source.configuration.game_config import config
-from source.configuration.global_params import ui_rounded_corner_big_thickness
 from source.draw.rect import draw_transparent_rounded_rect
-from source.editors.editor_base.editor_config import ARROW_SIZE, SPACING_Y, FONT_SIZE, TOP_SPACING
+from source.editors.editor_base.editor_config import ARROW_SIZE, SPACING_Y, FONT_SIZE, TOP_SPACING, TOP_LIMIT
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.handlers.color_handler import colors
@@ -83,7 +81,7 @@ class EditorBase(WidgetBase):
         self.spacing_y = SPACING_Y
         self.parent = kwargs.get("parent", None)
         self.layer = kwargs.get("layer", 9)
-        self.font = pygame.font.SysFont(global_params.font_name, FONT_SIZE)
+        self.font = pygame.font.SysFont(config.font_name, FONT_SIZE)
         self.text_spacing = 20
         self.frame_color = colors.ui_dark
         self.frame = pygame.surface.Surface((self.world_width, self.world_height))
@@ -111,10 +109,10 @@ class EditorBase(WidgetBase):
     def on_hover(self, value):
         self._on_hover = value
         if value:
-            global_params.hover_object = self
+            config.hover_object = self
         else:
-            if global_params.hover_object == self:
-                global_params.hover_object = None
+            if config.hover_object == self:
+                config.hover_object = None
 
     @property
     def obj(self):
@@ -130,8 +128,8 @@ class EditorBase(WidgetBase):
         self.obj = obj
 
     def set_edit_mode(self):
-        global_params.edit_mode = not self._hidden
-        global_params.enable_orbit = self._hidden
+        config.edit_mode = not self._hidden
+        config.enable_orbit = self._hidden
 
     def hide_other_editors(self):
         for i in self.parent.editors:
@@ -144,8 +142,8 @@ class EditorBase(WidgetBase):
         else:
             self.hide()
 
-        # global_params.game_paused = self.game_paused and not self._hidden
-        global_params.edit_mode = not self._hidden
+        # config.game_paused = self.game_paused and not self._hidden
+        config.edit_mode = not self._hidden
         self.hide_other_editors()
 
     def create_save_button(self, function, tooltip, **kwargs):
@@ -226,9 +224,9 @@ class EditorBase(WidgetBase):
     def close(self):
         config.set_global_variable("edit_mode", True)
         # if self.game_paused:
-        #     global_params.game_paused = False
+        #     config.game_paused = False
 
-        global_params.tooltip_text = ""
+        config.tooltip_text = ""
         self.hide()
 
     def handle_hovering(self):
@@ -258,7 +256,13 @@ class EditorBase(WidgetBase):
 
             elif event.type == pygame.MOUSEMOTION and self.moving:
                 self.world_x = event.pos[0] + self.offset_x  # apply the offset x
-                self.world_y = event.pos[1] + self.offset_y  # apply the offset y
+                self.world_y = event.pos[1] + self.offset_y # apply the offset y
+
+                # limit y to avoid strange behaviour if close button is at the same spot as the editor open button
+
+                if self.world_y < TOP_LIMIT: self.world_y = TOP_LIMIT
+
+                # set rect
                 self.rect.x = self.world_x
                 self.rect.y = self.world_y
 
@@ -280,7 +284,7 @@ class EditorBase(WidgetBase):
                 widget.set_center()
 
     def draw_text(self, x, y, width, height, text):
-        font = pygame.font.SysFont(global_params.font_name, height - 1)
+        font = pygame.font.SysFont(config.font_name, height - 1)
         text = font.render(text, 1, self.frame_color)
         self.win.blit(text, (x, y))
 
@@ -289,6 +293,6 @@ class EditorBase(WidgetBase):
         self.frame = pygame.transform.scale(self.frame, (self.get_screen_width(), height))
         rect = (self.world_x, self.world_y + 60, self.frame.get_rect().width, self.frame.get_rect().height)
         draw_transparent_rounded_rect(self.win, (0, 0, 0), rect,
-            int(global_params.ui_rounded_corner_radius_big), global_params.ui_panel_alpha)
+            config.ui_rounded_corner_radius_big, config.ui_panel_alpha)
         pygame.draw.rect(self.win, self.frame_color, rect,
-            int(ui_rounded_corner_big_thickness / 2), int(global_params.ui_rounded_corner_radius_big))
+            config.ui_rounded_corner_big_thickness, config.ui_rounded_corner_radius_big)

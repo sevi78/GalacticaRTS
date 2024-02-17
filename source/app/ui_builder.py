@@ -1,7 +1,7 @@
 import pygame
 
 from source.app.scene_builder import SceneBuilder
-from source.configuration import global_params
+from source.configuration.game_config import config
 from source.editors.building_edit import BuildingEdit
 from source.editors.debug_edit import DebugEdit
 from source.editors.economy_overview import EconomyOverview
@@ -9,6 +9,7 @@ from source.editors.enemy_handler_edit import EnemyHandlerEdit
 from source.editors.font_edit import FontEdit
 from source.editors.planet_edit import PlanetEdit
 from source.editors.save_game_edit import SaveGameEdit
+from source.editors.settings_edit import SettingsEdit
 from source.editors.ship_edit import ShipEdit
 from source.editors.trade_edit import TradeEdit
 from source.editors.weapon_select import WeaponSelect
@@ -25,8 +26,6 @@ from source.gui.tool_tip import ToolTip
 from source.gui.widgets.background_image import BackgroundGradient
 from source.handlers.debug_handler import debugger
 from source.handlers.file_handler import load_file
-from source.handlers.pan_zoom_handler import PanZoomHandler
-from source.handlers.pan_zoom_sprite_handler import sprite_groups
 
 EDITOR_HEIGHT = 600
 
@@ -45,7 +44,7 @@ class UIBuilder(SceneBuilder):
 
     def __init__(self, width, height):
         SceneBuilder.__init__(self, width, height)
-        self.win = global_params.win
+        self.win = config.win
 
         # event panel
         self.create_event_panel()
@@ -122,10 +121,10 @@ class UIBuilder(SceneBuilder):
             pygame.display.get_surface().get_rect().y,
             width, height, parent=self)
 
-        self.font_edit = FontEdit(pygame.display.get_surface(),
-            pygame.display.get_surface().get_rect().centerx - width / 2,
-            pygame.display.get_surface().get_rect().y,
-            width, height, parent=self)
+        # self.font_edit = FontEdit(pygame.display.get_surface(),
+        #     pygame.display.get_surface().get_rect().centerx - width / 2,
+        #     pygame.display.get_surface().get_rect().y,
+        #     width, height, parent=self)
 
         self.enemy_handler_edit = EnemyHandlerEdit(pygame.display.get_surface(),
             pygame.display.get_surface().get_rect().centerx - width / 2,
@@ -156,6 +155,11 @@ class UIBuilder(SceneBuilder):
             pygame.display.get_surface().get_rect().centerx - width / 2,
             pygame.display.get_surface().get_rect().y,
             width, height, parent=self, obj=None, layer=9)  # , game_paused=True)
+
+        self.settings_edit = SettingsEdit(pygame.display.get_surface(),
+            pygame.display.get_surface().get_rect().centerx - width / 2,
+            pygame.display.get_surface().get_rect().y,
+            int(width/1.5), height, parent=self, obj=None, layer=9)  # , game_paused=True)
 
     def create_player(self):
         self.player = Player(name="zork",

@@ -1,4 +1,4 @@
-from source.configuration import global_params
+from source.configuration.game_config import config
 
 BORDER = -10
 DEBUG_BORDER = 200
@@ -54,7 +54,7 @@ class LevelOfDetail:
     """
 
     def __init__(self) -> None:
-        self.win = global_params.win
+        self.win = config.win
         self.width = self.win.get_width()
         self.height = self.win.get_height()
         self.border = BORDER

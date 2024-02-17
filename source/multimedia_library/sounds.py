@@ -52,7 +52,6 @@ class Sounds:
         7 = Ui
         """
 
-
         self.click = pygame.mixer.Sound(soundpath + "mixkit-interface-device-click-2577.wav")
         self.hum1 = pygame.mixer.Sound(soundpath + "mixkit-underwater-transmitter-hum-2135.wav")
         self.hum2 = pygame.mixer.Sound(soundpath + "mixkit-electricity-reactor-buzz-904.wav")
@@ -82,7 +81,6 @@ class Sounds:
     @lru_cache(maxsize=None)
     def get_sound(self, sound):
         return getattr(self, sound)
-
 
     def play_sound(self, sound, **kwargs):
         channel = kwargs.get("channel", 7)

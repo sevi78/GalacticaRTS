@@ -4,7 +4,7 @@ import sys
 import pygame
 
 # from source.multimedia_library.images import get_image
-from source.configuration import global_params
+from source.configuration.game_config import config
 from source.multimedia_library.images import get_image
 
 resources = ["water", "food", "energy", "technology", "minerals"]
@@ -37,7 +37,7 @@ class Deal:
         self.create_friendly_offer()
 
     def make_deal(self):
-        player = global_params.app.player
+        player = config.app.player
         # add offer
         for key, value in self.offer.items():
             setattr(player, key, getattr(player, key) + value)
@@ -46,14 +46,14 @@ class Deal:
         for key, value in self.request.items():
             setattr(player, key, getattr(player, key) - value)
 
-    def create_friendly_offer__(self):# orig
+    def create_friendly_offer__(self):  # orig
         """
         this should create an offer based on the resources of the player, always what you need
         """
-        if not global_params.app:
+        if not config.app:
             return
 
-        player = global_params.app.player
+        player = config.app.player
 
         # extract "population" from dict
         d_raw = player.get_stock()
@@ -82,9 +82,9 @@ class Deal:
 
     def create_friendly_offer__(self):
         """This should create an offer based on the resources of the player, always what you need"""
-        if not global_params.app:
+        if not config.app:
             return
-        player = global_params.app.player
+        player = config.app.player
         # extract "population" from dict
         d_raw = player.get_stock()
         d = {key: max(0, value) for key, value in d_raw.items() if key != "population"}
@@ -103,9 +103,9 @@ class Deal:
 
     def create_friendly_offer(self):
         """This should create an offer based on the resources of the player, always what you need"""
-        if not global_params.app:
+        if not config.app:
             return
-        player = global_params.app.player
+        player = config.app.player
         # extract "population" from dict
         d_raw = player.get_stock()
         d = {key: max(0, value) for key, value in d_raw.items() if key != "population"}
@@ -148,8 +148,7 @@ class GameEvent:
     - deal: the deal offered by the alien population of a randomly selected planet.
     - event_id: the unique identifier of the event."""
 
-
-    def __init__(self, name, title, body, end_text, functions, condition,id,  **kwargs):
+    def __init__(self, name, title, body, end_text, functions, condition, id, **kwargs):
         self.name = name
         self.title = title
         self.body = body
@@ -161,12 +160,14 @@ class GameEvent:
         self.level = kwargs.get("level", 0)
         self.condition = condition
 
-        #GameEvent.game_events[self.name] = self
+        # GameEvent.game_events[self.name] = self
+
     def __repr__(self):
         return self.name
+
     def set_body(self):
         # check for valid references, otherwise return
-        if not global_params.app:
+        if not config.app:
             return
 
         # check for deal, otherwise don't change the body
@@ -174,7 +175,7 @@ class GameEvent:
             return
 
         # get a random planet from the explored planets
-        explored_planets = global_params.app.explored_planets
+        explored_planets = config.app.explored_planets
         explored_planets_with_aliens = []
 
         # check if has some explored planets
@@ -209,10 +210,7 @@ class GameEvent:
 
     def restart_game__(self):
         print("restart game")
-        global_params.app.restart_game()
-
-
-
+        config.app.restart_game()
 
 # define GameEvents
 # start = GameEvent(
@@ -284,4 +282,3 @@ class GameEvent:
 #     friendly=True
 #     )
 #
-

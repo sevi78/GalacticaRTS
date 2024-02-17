@@ -1,7 +1,6 @@
 import pygame
 
-from source.configuration import global_params
-from source.configuration.global_params import ui_rounded_corner_small_thickness
+from source.configuration.game_config import config
 from source.gui.panels.toggle_switch import ToggleSwitch
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.text.info_panel_text_generator import info_panel_text_generator
@@ -62,7 +61,7 @@ class InfoPanel(WidgetBase, TextWrap):
         self.size = (self.world_width, self.world_height)
         self.win = win
         self.font_size = 18
-        self.font = pygame.font.SysFont(global_params.font_name, self.font_size)
+        self.font = pygame.font.SysFont(config.font_name, self.font_size)
         self.text = info_panel_text_generator.info_text
         self.color = (0, 0, 0)
         self.bg_color = pygame.colordict.THECOLORS["black"]
@@ -71,7 +70,7 @@ class InfoPanel(WidgetBase, TextWrap):
         self.world_y = self.pos[1]
         self.set_colors(self.frame_color, (12, 10, 1))
         self.surface_rect = pygame.draw.rect(self.win, self.frame_color, pygame.Rect(self.world_x, self.world_y, self.world_width,
-            self.world_height + 10), 1, int(global_params.ui_rounded_corner_radius_small))
+            self.world_height + 10), 1, config.ui_rounded_corner_radius_small)
         self.planet_image = None
         self.planet_image_size = [PLANET_IMAGE_SIZE, PLANET_IMAGE_SIZE]
         self.planet_rect = None

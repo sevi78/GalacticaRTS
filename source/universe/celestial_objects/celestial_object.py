@@ -3,7 +3,7 @@ import random
 import pygame
 from pygame_widgets.util import drawText
 
-from source.configuration import global_params
+from source.configuration.game_config import config
 from source.gui.lod import level_of_detail
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.multimedia_library.gif_handler import GifHandler
@@ -72,21 +72,21 @@ class CelestialObject(WidgetBase):
 
     def move(self, direction):
         if direction:
-            self.world_x += direction[0] * global_params.game_speed
-            self.world_y += direction[1] * global_params.game_speed
+            self.world_x += direction[0] * config.game_speed
+            self.world_y += direction[1] * config.game_speed
         else:
-            self.world_x -= self.speed * global_params.game_speed
-            self.world_y += self.speed * global_params.game_speed / 2
+            self.world_x -= self.speed * config.game_speed
+            self.world_y += self.speed * config.game_speed / 2
 
-        if self.world_x > global_params.app.level_handler.data["globals"]["width"] * global_params.quadrant_amount:
+        if self.world_x > config.app.level_handler.data["globals"]["width"] * config.quadrant_amount:
             self.world_x = 0
         if self.world_x < 0:
-            self.world_x = global_params.app.level_handler.data["globals"]["width"] * global_params.quadrant_amount
+            self.world_x = config.app.level_handler.data["globals"]["width"] * config.quadrant_amount
 
-        if self.world_y > global_params.app.level_handler.data["globals"]["height"] * global_params.quadrant_amount:
+        if self.world_y > config.app.level_handler.data["globals"]["height"] * config.quadrant_amount:
             self.world_y = 0
         if self.world_y < 0:
-            self.world_y = global_params.app.level_handler.data["globals"]["height"] * global_params.quadrant_amount
+            self.world_y = config.app.level_handler.data["globals"]["height"] * config.quadrant_amount
 
     def draw(self):
         self.set_screen_position()
@@ -103,7 +103,7 @@ class CelestialObject(WidgetBase):
                 self.rect.y = self.get_screen_y() + self.image.get_size()[1] / 2 * self.get_zoom()
                 self.win.blit(self.image, self.rect)
 
-        if global_params.debug:
+        if config.debug:
             self.debug_object()
 
     def debug_object(self):
@@ -113,7 +113,7 @@ class CelestialObject(WidgetBase):
             pygame.draw.rect(self.win, self.frame_color, (
                 self.get_screen_x(), self.get_screen_y(), self.get_screen_width(), self.get_screen_height()), 1)
 
-        font = pygame.font.SysFont(global_params.font_name, 18)
+        font = pygame.font.SysFont(config.font_name, 18)
         text = self.type
-        drawText(global_params.app.win, text, self.frame_color, (
+        drawText(config.app.win, text, self.frame_color, (
             self.get_screen_x(), self.get_screen_y(), 400, 30), font, "left")

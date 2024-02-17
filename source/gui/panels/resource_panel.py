@@ -1,7 +1,6 @@
 import pygame
 
-from source.configuration import global_params
-from source.configuration.global_params import ui_rounded_corner_small_thickness
+from source.configuration.game_config import config
 from source.gui.panels.toggle_switch import ToggleSwitch
 from source.gui.widgets.Icon import Icon
 from source.gui.widgets.buttons.image_button import ImageButton
@@ -24,7 +23,7 @@ class ResourcePanel(WidgetBase):
 
         # remove this later
 
-        self.clock_font = pygame.font.SysFont(global_params.font_name, 12)
+        self.clock_font = pygame.font.SysFont(config.font_name, 12)
 
         # construct surface
         self.icon_size = kwargs.get("icon_size", 25)
@@ -38,9 +37,10 @@ class ResourcePanel(WidgetBase):
         self.size_x = kwargs.get("size_x")
         self.size_y = kwargs.get("size_y")
         self.spacing = kwargs.get("spacing")
-        self.surface_frame = pygame.draw.rect(self.win, self.frame_color, self.surface_rect, int(ui_rounded_corner_small_thickness), int(global_params.ui_rounded_corner_radius_small))
+        self.surface_frame = pygame.draw.rect(self.win, self.frame_color, self.surface_rect,
+            config.ui_rounded_corner_small_thickness, config.ui_rounded_corner_radius_small)
         self.font_size = 18
-        self.font = pygame.font.SysFont(global_params.font_name, self.font_size)
+        self.font = pygame.font.SysFont(config.font_name, self.font_size)
         self.max_height = self.get_screen_y() + self.surface_rect.height
 
         self.icons = []
@@ -101,7 +101,7 @@ class ResourcePanel(WidgetBase):
             name="save_game_icon",
             textColours=(0, 0, 0),
             font_size=0,
-            onClick=lambda: global_params.app.save_game_edit.set_visible(),
+            onClick=lambda: config.app.save_game_edit.set_visible(),
             outline_thickness=1,
             outline_threshold=127)
 
@@ -259,9 +259,9 @@ class ResourcePanel(WidgetBase):
         self.draw_frame()
 
         # fps, memory usage, this just for debug purposes
-        # self.clock.tick(int(global_params.fps))
-        # fps = f"fps: {str(self.clock.get_fps())}"  # , {sprite_groups.__str__()} hover:{global_params.hover_object}"
+        # self.clock.tick(int(config.fps))
+        # fps = f"fps: {str(self.clock.get_fps())}"  # , {sprite_groups.__str__()} hover:{config.hover_object}"
         fps = f"fps: {str(round(time_handler.fps, 1))}, memory usage: {garbage_handler.get_memory_usage()} MB"
-        # fps = f"fps: {str(self.clock.get_fps())}, {sprite_groups.__str__()} hover:{global_params.hover_object}"
+        # fps = f"fps: {str(self.clock.get_fps())}, {sprite_groups.__str__()} hover:{config.hover_object}"
         text = self.clock_font.render(fps, 0, self.frame_color)
         self.win.blit(text, (0, 0, 30, 30))

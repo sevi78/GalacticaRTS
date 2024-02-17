@@ -7,7 +7,7 @@ from source.text.info_panel_text_generator import info_panel_text_generator
 
 # def create_random_event(self):
 #     if self.event_time > self.random_event_time:
-#         self.random_event_time += random.randint(self.min_intervall, self.intervall) * global_params.game_speed
+#         self.random_event_time += random.randint(self.min_intervall, self.intervall) * config.game_speed
 #         event = GameEvent(
 #             name="alien_deal_random",
 #             title="Deal Offer",
@@ -111,8 +111,6 @@ class GameEventHandler():
         else:
             self.app.level_handler.load_level(self.app.level_handler.current_game, "games")
 
-
-
     def update(self):
         # check the cue and activate first event, then delete it
         if len(self.event_cue) > 0:
@@ -183,7 +181,7 @@ class GameEventHandler():
         # create event if succeeded
         all_values_are_true = all(value for value in self.goal_success.values())
         if all_values_are_true:
-            #print(self.data)
+            # print(self.data)
             if not f"goal{self.level}" in self.obsolete_events.keys():
                 self.game_events[f"goal{self.level}"] = GameEvent(
                     name=f"goal{self.level}",
