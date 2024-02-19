@@ -1,3 +1,5 @@
+import time
+
 from pygame.sprite import LayeredUpdates
 
 from source.gui.lod import level_of_detail
@@ -69,7 +71,6 @@ class SpriteGroups:  # original
         self.target_objects.update(*args)
         self.moving_images.update()
         self.state_images.update()
-        # self.ships.update(*args)
 
     def draw(self, surface, **kwargs):
         events = kwargs.get("events")

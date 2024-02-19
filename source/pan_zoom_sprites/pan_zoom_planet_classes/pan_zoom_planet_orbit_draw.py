@@ -9,8 +9,9 @@ from source.handlers.orbit_handler import get_orbit_pos
 from source.configuration.game_config import config
 from source.handlers.color_handler import colors
 
-ORBIT_COLOR = colors.ui_dark
-
+ORBIT_COLOR = colors.orbit_color
+PLANET_ORBIT_COLOR = colors.orbit_color_planet
+MOON_ORBIT_COLOR = colors.orbit_color_moon
 
 def draw_orbit_simple__(self):  # old
     """
@@ -38,15 +39,25 @@ def draw_orbit_simple__(self):  # old
             for i in points:
                 pygame.draw.rect(config.win, ORBIT_COLOR, (i[0], i[1], width, width))
 
+def get_orbit_color(type_):
+    if type_ == "sun":
+        return ORBIT_COLOR
+    elif type_ == "planet":
+        return PLANET_ORBIT_COLOR
+    elif type_ == "moon":
+        return MOON_ORBIT_COLOR
+    else:
+        return ORBIT_COLOR
 
 def draw_orbit_simple(self):
     if not self.orbit_object:
         return
 
     if self.orbit_object and config.show_orbit:
+        color = get_orbit_color(self.type)
         pos = get_orbit_pos(self)
         radius = self.orbit_radius * pan_zoom_handler.zoom
-        draw_dashed_circle(config.win, colors.ui_darker, pos, radius, 10, 1)
+        draw_dashed_circle(config.win, color, pos, radius, 10, 1)
 
 
 def draw_orbit_circle(self):
@@ -56,10 +67,11 @@ def draw_orbit_circle(self):
     if not self.orbit_object:
         return
 
+    color = get_orbit_color(self.type)
     if self.orbit_object and config.show_orbit:
         pos = get_orbit_pos(self)
         radius = self.orbit_radius * self.get_zoom()
-        pygame.draw.circle(config.win, colors.ui_darker, (pos[0], pos[1]), radius, 1)
+        pygame.draw.circle(config.win, color, (pos[0], pos[1]), radius, 1)
 
 
 def draw_orbit(self):
@@ -68,6 +80,8 @@ def draw_orbit(self):
     """
     if not self.orbit_object or not self.orbit_radius:
         return
+
+    color = get_orbit_color(self.type)
 
     max_points = 25
     min_dist = 1
@@ -105,7 +119,7 @@ def draw_orbit(self):
 
                 # color = dim_color(colors.ui_darker, dist, min_color_value)
                 center = (i[0], i[1])
-                pygame.draw.circle(config.win, ORBIT_COLOR, center, size, width)
+                pygame.draw.circle(config.win, color, center, size, width)
 
 
 def draw_orbits(self):

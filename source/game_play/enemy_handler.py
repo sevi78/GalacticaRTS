@@ -116,19 +116,24 @@ class EnemyHandler(InterfaceData):
 
     def spawn_ufo(self, planet):
         x, y = pan_zoom_handler.screen_2_world(planet.screen_x, planet.screen_y)
+
+        attitude = random.randint(0, 100)
+        attitude_bool = 0 if attitude < 50 else 1
+
+
         ufo = PanZoomUfo(self.win,
             x,
             y,
             pan_zoom_ufo_config["enemy handler"]["width"],
             pan_zoom_ufo_config["enemy handler"]["height"],
             pan_zoom=pan_zoom_handler,
-            image_name=random.choice(self.ufo_images),
+            image_name=self.ufo_images[attitude_bool],
             align_image="center",
             group="ufos",
             explosion_name=random.choice(self.explosion_gifs),
             tooltip="",
             infotext="",
-            attitude=0,
+            attitude=attitude,
             lifetime=random.randint(30, 60),
             explosion_relative_gif_size=5.0,
             id=self.ufo_id,

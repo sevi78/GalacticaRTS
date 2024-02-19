@@ -89,7 +89,6 @@ class PanZoomSprite(pygame.sprite.Sprite, PanZoomVisibilityHandler, GameObjectDe
             self.image_raw = get_image(self.image_name)
             self.image = copy.copy(self.image_raw)
 
-
         elif self.image_name.endswith(".gif"):
             self.gif = get_gif(self.image_name)
             self.gif_frames = get_gif_frames(self.image_name)
@@ -107,6 +106,7 @@ class PanZoomSprite(pygame.sprite.Sprite, PanZoomVisibilityHandler, GameObjectDe
         self.rect.y = y
 
         # screen
+        self.lod = 0
         self.screen_x = x
         self.screen_y = y
         self.screen_width = width
@@ -239,6 +239,7 @@ class PanZoomSprite(pygame.sprite.Sprite, PanZoomVisibilityHandler, GameObjectDe
 
         self.set_world_position((self.world_x, self.world_y))
         self.update_gif_index()
+
 
         if self.debug or config.debug:
             self.debug_object()

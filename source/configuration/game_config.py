@@ -23,6 +23,8 @@ class GameConfig:
         self.height_current = self.height
         self.moveable = True
         self.app = None
+        self.players = 2
+        self.player = None
         self.tooltip_text = ""
         self.game_paused = False
         self.game_speed = 1
@@ -32,6 +34,8 @@ class GameConfig:
         self.quadrant_amount = 1
         self.enable_zoom = True
         self.enable_pan = True
+        self.enable_cross = True
+        self.cross_view_start = 0.2
         self.debug = False
         self.enable_orbit = True
         self.enable_game_events = self.settings["enable_game_events"]
@@ -51,8 +55,11 @@ class GameConfig:
         self.draw_universe = True
         self.universe_density = 25
 
+        self.selected_monitor = 1
+
         # set a list of editable params for setting_editor
-        self.editable_params = {"fps": self.fps,
+        self.editable_params = {"player":0,
+                                "fps": self.fps,
                                 "enable_game_events": self.enable_game_events,
                                 "draw_universe": self.draw_universe,
                                 "ui_panel_alpha": self.ui_panel_alpha,
@@ -65,7 +72,7 @@ class GameConfig:
         # Initialize pygame and window
         self.init_window()
 
-    def init_window(self):
+    def init_window_(self):
         # Call the GetSystemMetrics function with index 80 to get the number of monitors
         number_of_monitors = ctypes.windll.user32.GetSystemMetrics(80)
         if number_of_monitors > 1:
@@ -78,6 +85,25 @@ class GameConfig:
 
         # Set the display mode to full screen on the second monitor
         self.win = pygame.display.set_mode((self.width, self.height), pygame.FULLSCREEN, pygame.DOUBLEBUF)
+
+    def init_window(self):
+        # Call the GetSystemMetrics function with index 80 to get the number of monitors
+        number_of_monitors = ctypes.windll.user32.GetSystemMetrics(80)
+        if number_of_monitors > 1:
+            print("Multiple monitors detected")
+        else:
+            print("Only one monitor detected")
+
+        # Set the position of the window to the selected monitor
+        if self.selected_monitor <= number_of_monitors:
+            os.environ["SDL_VIDEO_WINDOW_POS"] = "%d,%d" % (self.width * self.selected_monitor, 0)
+        else:
+            print("Selected monitor index is out of range")
+
+        # Set the display mode to full screen on the selected monitor
+        #self.win = pygame.display.set_mode((self.width, self.height), pygame.FULLSCREEN, pygame.DOUBLEBUF)
+        self.win = pygame.display.set_mode((self.width, self.height), pygame.HWSURFACE,pygame.DOUBLEBUF)
+
 
     def set_global_variable(self, key, value, **kwargs):
         var = kwargs.get("var", None)

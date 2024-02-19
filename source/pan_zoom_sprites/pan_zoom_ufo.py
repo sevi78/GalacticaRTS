@@ -129,6 +129,9 @@ class PanZoomUfo(PanZoomGameObject):  # , InteractionHandler):
         if self.emp_attacked:
             return
 
+        if self.attitude > 50:
+            return
+
         if not level_of_detail.inside_screen(self.get_screen_position()):
             return
         r = random.randint(-3, 4)

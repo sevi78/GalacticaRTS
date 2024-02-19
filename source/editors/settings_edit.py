@@ -4,6 +4,8 @@ from source.configuration.game_config import config
 from source.editors.editor_base.editor_base import EditorBase
 from source.editors.editor_base.editor_config import ARROW_SIZE, FONT_SIZE, TOP_SPACING
 from source.gui.widgets.selector import Selector
+from source.gui.widgets.slider import Slider
+from source.handlers.color_handler import colors
 from source.handlers.file_handler import write_file, load_file
 from source.handlers.widget_handler import WidgetHandler
 
@@ -17,20 +19,22 @@ class SettingsEdit(EditorBase):
 
         # lists
         self.selectors = []
+        self.sliders = {}
         self.current_font = None
         self.font_name_list = pygame.sysfont.get_fonts()
         self.boolean_list = [True, False]
         self.selector_lists = {}
 
-        self.selector_lists = { "fps": [25,60,90,120,1000],
-                                "enable_game_events": self.boolean_list,
-                                "draw_universe": self.boolean_list,
-                                "ui_panel_alpha": [_ for _ in range(256)],
-                                "ui_rounded_corner_radius_small": [_ for _ in range(11)],
-                                "ui_rounded_corner_radius_big": [_ for _ in range(3, 25)],
-                                "ui_rounded_corner_small_thickness": [_ for _ in range(0, 5)],
-                                "ui_rounded_corner_big_thickness": [_ for _ in range(0, 15)]
-                                }
+        self.selector_lists = {"player":[_ for _ in range(config.players)],
+                               "fps": [25, 60, 90, 120, 1000],
+                               "enable_game_events": self.boolean_list,
+                               "draw_universe": self.boolean_list,
+                               "ui_panel_alpha": [_ for _ in range(256)],
+                               "ui_rounded_corner_radius_small": [_ for _ in range(11)],
+                               "ui_rounded_corner_radius_big": [_ for _ in range(3, 25)],
+                               "ui_rounded_corner_small_thickness": [_ for _ in range(0, 5)],
+                               "ui_rounded_corner_big_thickness": [_ for _ in range(0, 15)]
+                               }
 
         #  widgets
         self.widgets = []
@@ -38,6 +42,7 @@ class SettingsEdit(EditorBase):
 
         # create widgets
         self.create_selectors()
+        #self.create_color_sliders()
         self.create_close_button()
         self.create_save_button(lambda: self.save_settings(), "save settings")
         self.set_selector_current_value()
@@ -76,6 +81,57 @@ class SettingsEdit(EditorBase):
         # set max height to draw the frame dynamical
         self.max_height = y + ARROW_SIZE
 
+    def create_color_sliders(self):
+        width = self.get_screen_width() / 2 - self.text_spacing
+        height = 10
+        x = self.world_x + self.world_width / 2
+        y = self.world_y + self.max_height
+        rgb = {"R": 0, "G": 0, "B": 0}
+        for key, value in rgb.items():
+            if type(value) == int:
+                step = 1
+            if type(value) == float:
+                step = 0.001
+
+            slider = Slider(win=self.win,
+                x=x,
+                y=y,
+                width=width,
+                height=height,
+                min=0,
+                max=255,
+                step=step,
+                initial=value,
+                handleColour=colors.ui_dark,
+                layer=self.layer,
+                parent=self)
+
+
+
+            slider.colour = colors.ui_darker
+
+
+            y += self.spacing_y
+
+            self.sliders[key] = slider
+            self.widgets.append(slider)
+
+        self.max_height += y
+
+    def get_slider_data(self):
+        data = {}
+        for name, slider in self.sliders.items():
+            data[name] = slider.getValue()
+
+        return data
+
+    def set_slider_data(self):
+        if not hasattr(self, "sliders"):
+            return
+
+        for key, value in self.sliders.items():
+            self.sliders[key].setValue(getattr(self.obj, key))
+
     def set_selector_current_value(self):
         """updates the selectors values
         """
@@ -94,8 +150,13 @@ class SettingsEdit(EditorBase):
                     if hasattr(widget, "font_size"):
                         # set the font
                         widget.font = pygame.font.SysFont(value, widget.font_size)
+
+
         else:
             setattr(config, key, value)
+            if key == "player":
+                config.app.player = config.app.players[value]
+
 
 
     def save_settings(self):

@@ -67,8 +67,9 @@ class UIBuilder(SceneBuilder):
         self.icons = []
         self.selected_planet = None
 
-        # player
-        self.create_player()
+        # players
+        self.players = {}
+        self.create_players(2)
 
         # building_panel
         self.create_building_panel()
@@ -154,26 +155,28 @@ class UIBuilder(SceneBuilder):
         self.economy_overview = EconomyOverview(pygame.display.get_surface(),
             pygame.display.get_surface().get_rect().centerx - width / 2,
             pygame.display.get_surface().get_rect().y,
-            width, height, parent=self, obj=None, layer=9)  # , game_paused=True)
+            width, height, parent=self, obj=None, layer=10)  # , game_paused=True)
 
         self.settings_edit = SettingsEdit(pygame.display.get_surface(),
             pygame.display.get_surface().get_rect().centerx - width / 2,
             pygame.display.get_surface().get_rect().y,
             int(width/1.5), height, parent=self, obj=None, layer=9)  # , game_paused=True)
 
-    def create_player(self):
-        self.player = Player(name="zork",
-            color=pygame.Color('red'),
-            stock={
-                "energy": 1000,
-                "food": 1000,
-                "minerals": 1000,
-                "water": 1000,
-                "technology": 1000,
-                "population": 0
-                },
-            clock=0
-            )
+    def create_players(self, amount):
+        for i in range(amount):
+            self.players[i] = Player(name="zork",
+                color=pygame.Color('red'),
+                stock={
+                    "energy": 1000,
+                    "food": 1000,
+                    "minerals": 1000,
+                    "water": 1000,
+                    "technology": 1000,
+                    "population": 0
+                    },
+                clock=0
+                )
+        self.player =  self.players[0]
 
     def create_event_panel(self):
         w, h = 900, 600

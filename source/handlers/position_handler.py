@@ -183,3 +183,98 @@ def smooth_planet_positions(width, height):
                 new_distance = boundary_radius - planet.orbit_radius
                 planet.world_x = center_x + new_distance * math.cos(angle)
                 planet.world_y = center_y + new_distance * math.sin(angle)
+
+                if math.dist((planet.world_x, planet.world_y), (center_x, center_y)) > PLANET_MAX_DISTANCE:
+                    planet.orbit_radius -= PLANET_MAX_DISTANCE / 10
+
+                if math.dist((planet.world_x, planet.world_y), (center_x, center_y)) < -PLANET_MAX_DISTANCE:
+                    planet.orbit_radius -= PLANET_MAX_DISTANCE / 10
+
+
+MOON_MAX_DISTANCE = 100  # Define this value
+PLANET_MAX_DISTANCE = 200  # Define this value
+
+import math
+
+
+def smooth_planet_positions__(width, height):
+    center_x = width / 2
+    center_y = height / 2
+    boundary_radius = min(width, height) / 2
+
+    for planet in sprite_groups.planets.sprites():
+        if planet.orbit_object:
+            dist_x = planet.world_x - center_x
+            dist_y = planet.world_y - center_y
+            distance_from_center = math.hypot(dist_x, dist_y)
+
+            # Check if the planet is too far from the sun
+            if distance_from_center + planet.orbit_radius > PLANET_MAX_DISTANCE:
+                # Adjust the planet's position
+                # Here you should write the code to adjust the planet's position
+                # Calculate the angle from the center to the current position
+                angle = math.atan2(dist_y, dist_x)
+                # Set the position to the edge of the circular boundary minus the planet's radius
+                new_distance = boundary_radius - planet.orbit_radius
+                planet.world_x = center_x + new_distance * math.cos(angle)
+                planet.world_y = center_y + new_distance * math.sin(angle)
+                if planet.orbit_object.orbit_object:
+                    dist_x = planet.world_x - center_x
+                    dist_y = planet.world_y - center_y
+                    distance_from_center = math.hypot(dist_x, dist_y)
+
+                    # Check if the planet is too far from the sun
+                    if distance_from_center + planet.orbit_radius > MOON_MAX_DISTANCE:
+                        # Adjust the planet's position
+                        # Here you should write the code to adjust the planet's position
+                        # Calculate the angle from the center to the current position
+                        angle = math.atan2(dist_y, dist_x)
+                        # Set the position to the edge of the circular boundary minus the planet's radius
+                        new_distance = boundary_radius - planet.orbit_radius
+                        planet.world_x = center_x + new_distance * math.cos(angle)
+                        planet.world_y = center_y + new_distance * math.sin(angle)
+
+
+import pygame
+
+LERP_FACTOR      = 0.05
+minimum_distance = 25
+maximum_distance = 100
+
+def FollowMe(pops, fpos):
+    target_vector       = pygame.math.Vector2(*pops)
+    follower_vector     = pygame.math.Vector2(*fpos)
+    new_follower_vector = pygame.math.Vector2(*fpos)
+
+    distance = follower_vector.distance_to(target_vector)
+    if distance > minimum_distance:
+        direction_vector    = (target_vector - follower_vector) / distance
+        min_step            = max(0, distance - maximum_distance)
+        max_step            = distance - minimum_distance
+        step_distance       = min_step + (max_step - min_step) * LERP_FACTOR
+        new_follower_vector = follower_vector + direction_vector * step_distance
+
+    return (new_follower_vector.x, new_follower_vector.y)
+#
+# pygame.init()
+# window = pygame.display.set_mode((500, 500))
+# clock = pygame.time.Clock()
+#
+# follower = (100, 100)
+# run = True
+# while run:
+#     clock.tick(60)
+#     for event in pygame.event.get():
+#         if event.type == pygame.QUIT:
+#             run = False
+#
+#     player   = pygame.mouse.get_pos()
+#     follower = FollowMe(player, follower)
+#
+#     window.fill(0)
+#     pygame.draw.circle(window, (0, 0, 255), player, 10)
+#     pygame.draw.circle(window, (255, 0, 0), (round(follower[0]), round(follower[1])), 10)
+#     pygame.display.flip()
+#
+# pygame.quit()
+# exit()

@@ -3,6 +3,7 @@ from pygame_widgets.util import drawText
 
 from source.configuration.economy_params import EconomyParams
 from source.configuration.game_config import config
+from source.game_play.navigation import navigate_to
 from source.gui.event_text import event_text
 from source.gui.panels.building_panel_components.building_panel_constructor import BuildingPanelConstructor
 from source.gui.panels.building_panel_components.building_panel_draw import BuildingPanelDraw
@@ -177,6 +178,10 @@ class BuildingPanel(WidgetBase, BuildingPanelConstructor, BuildingSlot, EconomyP
                     config.app.set_planet_selection(1)
                 elif event.key == pygame.K_LEFT:
                     config.app.set_planet_selection(-1)
+
+            if event.type  == pygame.MOUSEBUTTONDOWN:
+                if self.surface_rect.collidepoint(pygame.mouse.get_pos()):
+                    navigate_to(self.parent.selected_planet)
 
     def draw(self):
 

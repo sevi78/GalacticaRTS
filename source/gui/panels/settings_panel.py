@@ -114,22 +114,22 @@ class SettingsPanel(WidgetBase):
         # self.widgets.append(self.planet_editor_icon)
         # self.max_width += self.icon_size + self.spacing
 
-        # self.building_editor_icon = ImageButton(win=self.win,
-        #     x=self.planet_editor_icon.get_screen_x() - 50,
-        #     y=self.surface_rect.y + self.spacing,
-        #     width=self.icon_size,
-        #     height=self.icon_size,
-        #     isSubWidget=False,
-        #     parent=self,
-        #     image=pygame.transform.scale(
-        #         get_image("building_icon.png"), (25, 25)),
-        #     tooltip="open building editor",
-        #     frame_color=self.frame_color,
-        #     moveable=False,
-        #     include_text=True, layer=self.layer,
-        #     onClick=lambda: building_editor.main(surface=self.win))
-        # self.widgets.append(self.building_editor_icon)
-        # self.max_width += self.icon_size + self.spacing
+        self.cross_icon = ImageButton(win=self.win,
+            x=self.info_icon.get_screen_x()  - 50,
+            y=self.surface_rect.y + self.spacing,
+            width=self.icon_size,
+            height=self.icon_size,
+            isSubWidget=False,
+            parent=self,
+            image=pygame.transform.scale(
+                get_image("cross.png"), (25, 25)),
+            tooltip="show cross",
+            frame_color=self.frame_color,
+            moveable=False,
+            include_text=True, layer=self.layer,
+            onClick=lambda: config.set_global_variable("enable_cross", True))
+        self.widgets.append(self.cross_icon)
+        self.max_width += self.icon_size + self.spacing
 
         self.orbit_icon = ImageButton(win=self.win,
             x=self.info_icon.get_screen_x() - 50,

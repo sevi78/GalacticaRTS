@@ -4,6 +4,7 @@ import time
 import pygame
 
 from source.configuration.game_config import config
+
 from source.factories.weapon_factory import weapon_factory
 from source.gui.widgets.buttons.button import Button
 from source.gui.widgets.progress_bar import ProgressBar
@@ -278,9 +279,10 @@ class BuildingWidget(WidgetBase):
 
     def function(self, arg):
         config.tooltip_text = ""
-        self.build_immediately()
-        self.set_building_to_receiver()
-        self.delete()
+        if self.immediately_build_cost < config.app.player.technology:
+            self.build_immediately()
+            self.set_building_to_receiver()
+            self.delete()
 
     def set_tooltip(self):
         self.button.tooltip = f"are you sure to build this {self.name} immediately? this will cost you {self.immediately_build_cost} technology units?{self.receiver}"

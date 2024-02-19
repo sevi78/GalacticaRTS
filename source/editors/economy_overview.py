@@ -28,7 +28,7 @@ class EconomyOverview(EditorBase):
         # self.create_buttons()
         self.max_height = 1000
 
-    def draw_buildings(self):
+    def draw_buildings__(self):
         data = OrderedDict(self.data)
         for building_name, dict_ in data.items():
             pos = (self.world_x + (BUTTON_SIZE * 2 * list(data).index(building_name)), self.world_y + 200)
@@ -41,6 +41,19 @@ class EconomyOverview(EditorBase):
                     data[building_name]).index(key),
                        self.world_y + (BUTTON_SIZE * 2 * list(data[building_name]).index(key)))
                 size = (BUTTON_SIZE, BUTTON_SIZE)
+                self.draw_image(pos, size, image)
+
+    def draw_buildings(self):
+        data = OrderedDict(self.data)
+        for index, (building_name, dict_) in enumerate(data.items()):
+            pos = (self.world_x + (BUTTON_SIZE * 2 * index), self.world_y + 200)
+            size = (BUTTON_SIZE, BUTTON_SIZE)
+            image = get_image(f"{building_name}_25x25.png")
+            self.draw_image(pos, size, image)
+            for key_index, (key, value) in enumerate(dict_.items()):
+                image = get_image(f"{key}_25x25.png")
+                pos = (self.world_x + (BUTTON_SIZE * 2 * key_index) * key_index,
+                       self.world_y + (BUTTON_SIZE * 2 * key_index))
                 self.draw_image(pos, size, image)
 
     # def create_buttons(self):
@@ -84,6 +97,7 @@ class EconomyOverview(EditorBase):
 
     def draw(self):
         if not self._hidden and not self._disabled:
-            self.draw_buildings()
+
             self.draw_frame()
+            self.draw_buildings()
             self.draw_text(self.world_x + self.text_spacing, self.world_y + TOP_SPACING + self.text_spacing, 200, 30, "Economy:")

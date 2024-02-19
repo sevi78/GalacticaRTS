@@ -1,3 +1,4 @@
+import math
 import random
 import time
 
@@ -10,7 +11,7 @@ class AutopilotHandler:
     def __init__(self, parent):
         self.parent = parent
         self.last_task_time = time.time()
-        self.task_change_interval = 5
+        self.task_change_interval = 15
         self.tasks = ["set_random_target"]
         self.task = ""
 
@@ -64,6 +65,7 @@ class AutopilotHandler:
                 # set reloader target
                 self.set_random_target(sprite_groups.ships.sprites())
 
-            # self.create_economy("random")
-            self.create_economy("clever")
-            print("autopilot.update:")
+            self.create_economy("random")
+            #self.create_economy("clever")
+            #self.create_economy("clever")
+            #print("autopilot.update:")

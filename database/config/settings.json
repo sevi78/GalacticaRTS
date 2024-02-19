@@ -1,7 +1,8 @@
 {
+    "draw_universe": true,
     "enable_game_events": true,
     "font_name": "segoeuiemoji",
-    "fps": 60,
+    "fps": 90,
     "ui_panel_alpha": 220,
     "ui_rounded_corner_big_thickness": 3,
     "ui_rounded_corner_radius_big": 30,

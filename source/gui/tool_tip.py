@@ -119,8 +119,10 @@ class ToolTip(WidgetBase):
     def on_hover_release_callback(self, x, y, obj):
         # if self._hidden or self._disabled:
         #     return
-        # if not obj.rect:
-        #     return
+
+        # handle AttributeError: 'NoneType' object has no attribute 'collidepoint'
+        if not obj.rect:
+            return
 
         if obj.rect.collidepoint(x, y):
             obj.on_hover = True
