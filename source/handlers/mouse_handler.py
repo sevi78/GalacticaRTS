@@ -1,9 +1,7 @@
 import time
 from enum import Enum
-
 import pygame
 
-from source.handlers.pan_zoom_sprite_handler import sprite_groups
 
 
 class MouseState(Enum):
@@ -137,24 +135,7 @@ class MouseHandler:
         # update states
         self.update_mouse_state()
 
-    def get_hit_object(self, **kwargs: {list}) -> object or None:
-        filter = kwargs.get("filter", [])
-        # lists = ["planets", "ships", "ufos", "collectable_items", "celestial_objects"]
-        lists = ["planets", "ships", "ufos", "collectable_items", "celestial_objects"]
-        if filter:
-            lists -= filter
 
-        for list_name in lists:
-            if hasattr(sprite_groups, list_name):
-                for obj in getattr(sprite_groups, list_name):
-                    if obj.rect.collidepoint(pygame.mouse.get_pos()):
-                        return obj
-            # else:
-            #     hitables = [i for i in [_ for _ in WidgetHandler.get_all_widgets() if hasattr(_, "type")] if i.type == "asteroid"]
-            #     for obj in hitables:
-            #         if obj.rect.collidepoint(pygame.mouse.get_pos()):
-            #             return obj
-        return None
 
 
 mouse_handler = MouseHandler()

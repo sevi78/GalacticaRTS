@@ -4,6 +4,7 @@ from pygame import gfxdraw
 from source.configuration.game_config import config
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.handlers.mouse_handler import mouse_handler, MouseState
+from source.handlers.widget_handler import update
 
 
 class Slider(WidgetBase):

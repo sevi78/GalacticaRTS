@@ -141,6 +141,7 @@ class BuildingWidget(WidgetBase):
         self.font_size = kwargs.get("fontsize", 15)
         self.font = pygame.font.SysFont(kwargs.get("fontname", config.font_name), kwargs.get("fontsize", 15))
         self.spacing = kwargs.get("spacing", 15)
+
         if self.is_building:
             self.image = pygame.transform.scale(get_image(self.name + "_25x25.png"), (25, 25))
         else:
@@ -217,7 +218,7 @@ class BuildingWidget(WidgetBase):
         and plays some nice sound :)
         :return:
         """
-        ships = ["spaceship", "cargoloader", "spacehunter"]
+        ships = ["spaceship", "cargoloader", "spacehunter", "spacestation"]
         # technology_upgrades = ["university"]
         planet_defence_upgrades = ["cannon", "missile"]
         weapons = None

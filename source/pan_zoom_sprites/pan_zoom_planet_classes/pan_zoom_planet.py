@@ -260,6 +260,6 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
 
     def draw(self):
         draw_orbits(self)
-
+        self.draw_cross()
         if self.show_text:
             self.draw_text()

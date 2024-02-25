@@ -94,12 +94,13 @@ class UIBuilder(SceneBuilder):
     def create_editors(self):
         width = EDITOR_WIDTH
         height = EDITOR_HEIGHT
+        spacing_y = 0
 
         # editors
 
         self.weapon_select = WeaponSelect(pygame.display.get_surface(),
             pygame.display.get_surface().get_rect().centerx - width * 1.5 / 2,
-            pygame.display.get_surface().get_rect().y,
+            pygame.display.get_surface().get_rect().y + spacing_y,
             width, height, parent=self)
 
         # self.level_select = LevelSelect(pygame.display.get_surface(),
@@ -109,12 +110,12 @@ class UIBuilder(SceneBuilder):
 
         self.planet_edit = PlanetEdit(pygame.display.get_surface(),
             pygame.display.get_surface().get_rect().centerx - width / 2,
-            pygame.display.get_surface().get_rect().y,
+            pygame.display.get_surface().get_rect().y + spacing_y,
             width, height, parent=self, obj=None)
 
         self.save_game_edit = SaveGameEdit(pygame.display.get_surface(),
             pygame.display.get_surface().get_rect().centerx - width / 2,
-            pygame.display.get_surface().get_rect().y,
+            pygame.display.get_surface().get_rect().y + spacing_y,
             800, height, parent=self, obj=None)
 
         self.building_edit = BuildingEdit(pygame.display.get_surface(),
@@ -129,17 +130,17 @@ class UIBuilder(SceneBuilder):
 
         self.enemy_handler_edit = EnemyHandlerEdit(pygame.display.get_surface(),
             pygame.display.get_surface().get_rect().centerx - width / 2,
-            pygame.display.get_surface().get_rect().y,
+            pygame.display.get_surface().get_rect().y + spacing_y,
             width, height, parent=self, obj=enemy_handler)
 
         self.ship_edit = ShipEdit(pygame.display.get_surface(),
             pygame.display.get_surface().get_rect().centerx - width / 2,
-            pygame.display.get_surface().get_rect().y,
+            pygame.display.get_surface().get_rect().y + spacing_y,
             width, height, parent=self, obj=self.ship, layer=9)
 
         self.debug_edit = DebugEdit(pygame.display.get_surface(),
             pygame.display.get_surface().get_rect().centerx - width / 2,
-            pygame.display.get_surface().get_rect().y,
+            pygame.display.get_surface().get_rect().y + spacing_y,
             width, height, parent=self, obj=debugger, layer=9)
 
         # self.event_panel_edit = EventPanelEdit(pygame.display.get_surface(),
@@ -149,17 +150,17 @@ class UIBuilder(SceneBuilder):
 
         self.trade_edit = TradeEdit(pygame.display.get_surface(),
             pygame.display.get_surface().get_rect().centerx - width / 2,
-            pygame.display.get_surface().get_rect().y,
+            pygame.display.get_surface().get_rect().y + spacing_y,
             width, height, parent=self, obj=None, layer=9)  # , game_paused=True)
 
         self.economy_overview = EconomyOverview(pygame.display.get_surface(),
-            pygame.display.get_surface().get_rect().centerx - width / 2,
-            pygame.display.get_surface().get_rect().y,
-            width, height, parent=self, obj=None, layer=10)  # , game_paused=True)
+            0,
+            0,
+            1920, 800, parent=self, obj=None, layer=10)  # , game_paused=True)
 
         self.settings_edit = SettingsEdit(pygame.display.get_surface(),
             pygame.display.get_surface().get_rect().centerx - width / 2,
-            pygame.display.get_surface().get_rect().y,
+            pygame.display.get_surface().get_rect().y + spacing_y,
             int(width/1.5), height, parent=self, obj=None, layer=9)  # , game_paused=True)
 
     def create_players(self, amount):

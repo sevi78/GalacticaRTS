@@ -1,10 +1,14 @@
-import time
+import copy
 
+import pygame
 from pygame.sprite import LayeredUpdates
 
+from source.configuration.game_config import config
 from source.gui.lod import level_of_detail
+from source.gui.widgets.container_widget import ContainerWidgetItem, WIDGET_SIZE
 from source.handlers import widget_handler
 from source.handlers.widget_handler import WidgetHandler
+from source.multimedia_library.images import get_image, get_gif, get_gif_frames
 
 
 class PanZoomLayeredUpdates(LayeredUpdates):
@@ -122,9 +126,29 @@ class SpriteGroups:  # original
         # ships must be updated here, because they draw also... this is bullshit but... ;)
         # self.ships.update()
 
+    def convert_sprite_groups_to_image_widget_list(self, sprite_group) -> list:
+        return [ContainerWidgetItem(config.app.win, 0, WIDGET_SIZE * index, WIDGET_SIZE, WIDGET_SIZE,
+            image=get_image(_.image_name) if not _.image_name.endswith(".gif") else get_gif_frames(_.image_name)[0],
+            obj=_) for index, _ in enumerate(sprite_group)]
+
+
     def listen(self, events):
         for i in self.planets:
             i.listen(events)
+
+    def get_hit_object(self, **kwargs: {list}) -> object or None:
+        filter = kwargs.get("filter", [])
+        lists = ["planets", "ships", "ufos", "collectable_items", "celestial_objects"]
+        if filter:
+            lists -= filter
+
+        for list_name in lists:
+            if hasattr(self, list_name):
+                for obj in getattr(self, list_name):
+                    if obj.rect.collidepoint(pygame.mouse.get_pos()):
+                        return obj
+
+        return None
 
 
 class SpriteGroups__:  # doesn work yet, needs to refactor all registration to it

@@ -1,7 +1,16 @@
 import pygame
+from PIL import ImageFilter
+from PIL.Image import Image
 
 from source.multimedia_library.images import get_image
 
+
+def blur_image(surf, radius):
+    pil_string_image = pygame.image.tostring(surf, "RGBA",False)
+    pil_image = Image.frombuffer("RGBA", surf.get_size(), pil_string_image)
+    pil_blurred = pil_image.filter(ImageFilter.GaussianBlur(radius=radius))
+    blurred_image = pygame.image.fromstring(pil_blurred.tobytes(), pil_blurred.size, pil_blurred.mode)
+    return blurred_image.convert_alpha()
 
 def overblit_button_image(button, image_name, value):
     if not button:

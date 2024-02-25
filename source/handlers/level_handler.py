@@ -530,6 +530,15 @@ class LevelHandler:
         # setup pan_zoom_handler
         self.setup_pan_zoom_handler()
 
+        # setup container
+        if hasattr(self.app, "ship_container"):
+            self.app.ship_container.set_widgets(sprite_groups.convert_sprite_groups_to_image_widget_list(sprite_groups.ships.sprites()))
+
+        if hasattr(self.app, "planet_container"):
+            self.app.planet_container.set_widgets(sprite_groups.convert_sprite_groups_to_image_widget_list(sprite_groups.planets.sprites()))
+            # self.app.container.set_widgets([ImageWidget(self.win, 0, WIDGET_SIZE * index, WIDGET_SIZE, WIDGET_SIZE,
+            #     image=copy.copy(_.image_raw), obj=_) for index, _ in enumerate(sprite_groups.ships.sprites())])
+
     def save_level(self, filename, folder):
         data = self.generate_level_dict_from_scene()
         write_file(filename, folder, data)

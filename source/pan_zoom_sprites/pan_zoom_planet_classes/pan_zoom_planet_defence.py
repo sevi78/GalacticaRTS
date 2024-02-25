@@ -122,7 +122,7 @@ class PanZoomPlanetDefence:
 
         draw_dashed_circle(self.parent.win, colors.ui_darker, self.parent.rect.center, self.attack_distance, 10, 1)
         if pygame.mouse.get_pressed()[2]:
-            hit_obj = mouse_handler.get_hit_object()
+            hit_obj = sprite_groups.get_hit_object()
             if hit_obj:
                 if hit_obj in sprite_groups.ufos.sprites():
                     hit_obj.energy -= ENERGY_BLAST_POWER

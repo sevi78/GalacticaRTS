@@ -3,7 +3,7 @@ from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 
 
-def navigate_to(obj, **kwargs):
+def navigate_to(obj, **kwargs): # should not be used !! use navigate_to_position, use for planets
     panzoom = pan_zoom_handler
 
     if not sprite_groups.ships.sprites():
@@ -17,9 +17,14 @@ def navigate_to(obj, **kwargs):
 
     # get ship to navigate to if not object is set
     ship = kwargs.get("ship", None)
+    index_ = kwargs.get("index_", None)
 
     if not obj and ship:
-        obj = sprite_groups.ships.sprites()[0]
+        if index_:
+            obj = sprite_groups.ships.sprites()[index_]
+        else:
+            obj = sprite_groups.ships.sprites()[0]
+
 
         # select ship by reorder the list
         first_item = sprite_groups.ships.sprites()[0]
@@ -35,7 +40,20 @@ def navigate_to(obj, **kwargs):
     panzoom.world_offset_x, panzoom.world_offset_y = panzoom.screen_2_world(obj.get_screen_x() + x_offset - panzoom.screen_width / 2, obj.get_screen_y() + y_offset - panzoom.screen_height / 2)
 
 
-def navigate_to_position(x, y):
+def navigate_to_position(x, y): # use for ships
     panzoom = pan_zoom_handler
     screen_x, screen_y = panzoom.world_2_screen(x, y)
     panzoom.world_offset_x, panzoom.world_offset_y = panzoom.screen_2_world(screen_x - panzoom.screen_width / 2, screen_y - panzoom.screen_height / 2)
+
+def navigate_to_ship_by_offset_index(self):
+    # navigate to ship
+    if self.offset_index < len(self.widgets):
+        if self.widgets[self.offset_index].obj:
+            navigate_to_position(
+                self.widgets[self.offset_index].obj.screen_x, self.widgets[self.offset_index].obj.screen_y)
+
+
+def navigate_to_planet_by_offset_index(self):
+    if self.offset_index < len(self.widgets):
+        if self.widgets[self.offset_index].obj:
+            navigate_to(self.widgets[self.offset_index].obj)

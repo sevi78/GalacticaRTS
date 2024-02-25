@@ -14,7 +14,7 @@
             "image_name_small": "sonnecomic_110x110.png",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Quasaria",
-            "orbit_angle": 41.70258543878258,
+            "orbit_angle": 77.4048260747052,
             "orbit_distance": 0,
             "orbit_object_id": 0,
             "orbit_speed": 0.0032860905363131065,
@@ -42,7 +42,7 @@
             "image_name_small": "sonnecomic_110x110.png",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Cygnara",
-            "orbit_angle": 188.2664931470578,
+            "orbit_angle": 200.95371712809109,
             "orbit_distance": 0,
             "orbit_object_id": 1,
             "orbit_speed": 0.0016205906160845576,
@@ -70,7 +70,7 @@
             "image_name_small": "Kepler-22b_50x50.png",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Serpentis III",
-            "orbit_angle": 296.9101427606058,
+            "orbit_angle": 238.37414477468923,
             "orbit_distance": 0,
             "orbit_object_id": 3,
             "orbit_speed": 0.0028763056138373447,
@@ -88,8 +88,8 @@
             "type": "planet",
             "world_height": 68,
             "world_width": 68,
-            "world_x": 17226.049463432573,
-            "world_y": 16749.05068874952
+            "world_x": 14661.522181200831,
+            "world_y": 16643.454736576077
         },
         "11": {
             "alien_attitude": 92,
@@ -105,7 +105,7 @@
             "image_name_small": "XKGPRZ 7931_40x40.png",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Radiance IV",
-            "orbit_angle": 5.606535177702339,
+            "orbit_angle": 194.19202332265175,
             "orbit_distance": 0,
             "orbit_object_id": 4,
             "orbit_speed": 0.0023854654439483987,
@@ -122,29 +122,37 @@
             "type": "planet",
             "world_height": 68,
             "world_width": 68,
-            "world_x": 21878.695183790383,
-            "world_y": 16113.83269949694
+            "world_x": 16721.368826429527,
+            "world_y": 17013.863386497535
         },
         "12": {
             "alien_attitude": 17,
             "alien_population": 0,
             "atmosphere_name": "",
             "building_slot_amount": 2,
-            "buildings": [],
+            "buildings": [
+                "town",
+                "farm",
+                "mine",
+                "solar panel",
+                "farm",
+                "farm",
+                "spring"
+            ],
             "buildings_max": 7,
-            "explored": false,
+            "explored": true,
             "gif": "moon1.gif",
             "id": 12,
             "image_name_big": "zork_50x50.png",
             "image_name_small": "Helios 12_70x70.png",
-            "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
+            "info_text": "Welcome to Galactica V!\n\nYou are the first to arrive on this planet. It's a blank slate waiting for you to make your mark.\nYou can build up to 7 buildings on this planet.\nThere are no special buildings available on this planet.\nPossible resources on this planet include:\n\n- population\n- water\n- technology\n- energy\n- minerals\n- food\n\nThe planet's orbits around its sun at a distance of 2.5M km with a speed of 2.7km/s.\n",
             "name": "Galactica V",
-            "orbit_angle": 110.45890922813994,
+            "orbit_angle": 3.427535693731639,
             "orbit_distance": 0,
             "orbit_object_id": 6,
             "orbit_speed": 0.002665428649239245,
-            "population": 0,
-            "population_grow": 0.6298836273888923,
+            "population": 1009.9999999999989,
+            "population_grow": 2.8000000000000003,
             "possible_resources": [
                 "population",
                 "water",
@@ -157,8 +165,8 @@
             "type": "planet",
             "world_height": 76,
             "world_width": 76,
-            "world_x": 29025.06462429925,
-            "world_y": 28021.007535812012
+            "world_x": 32653.28971355613,
+            "world_y": 30538.711713218756
         },
         "13": {
             "alien_attitude": 31,
@@ -174,7 +182,7 @@
             "image_name_small": "zork_150x150.png",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Quasaria VI",
-            "orbit_angle": 93.43880353574411,
+            "orbit_angle": 275.00961481623983,
             "orbit_distance": 0,
             "orbit_object_id": 0,
             "orbit_speed": 0.003920384447016933,
@@ -190,8 +198,8 @@
             "type": "planet",
             "world_height": 72,
             "world_width": 72,
-            "world_x": 9935.31486226954,
-            "world_y": 17240.813571056875
+            "world_x": 10159.35975303948,
+            "world_y": 20274.1765464271
         },
         "14": {
             "alien_attitude": 86,
@@ -207,7 +215,7 @@
             "image_name_small": "XKGPRZ 7931_50x50.png",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Serpentis VII",
-            "orbit_angle": 55.73012009225481,
+            "orbit_angle": 328.94872825583343,
             "orbit_distance": 0,
             "orbit_object_id": 3,
             "orbit_speed": 0.002753483533346435,
@@ -223,8 +231,8 @@
             "type": "planet",
             "world_height": 79,
             "world_width": 79,
-            "world_x": 17516.109661924318,
-            "world_y": 12239.007091398185
+            "world_x": 18286.84739545343,
+            "world_y": 15762.280351028614
         },
         "15": {
             "alien_attitude": 75,
@@ -240,7 +248,7 @@
             "image_name_small": "Kepler-22b_150x150.png",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Cygnara VIII",
-            "orbit_angle": 324.94250879623166,
+            "orbit_angle": 88.12089396890472,
             "orbit_distance": 0,
             "orbit_object_id": 1,
             "orbit_speed": 0.0036664712143871475,
@@ -258,8 +266,8 @@
             "type": "planet",
             "world_height": 66,
             "world_width": 66,
-            "world_x": 20612.91089052018,
-            "world_y": 8684.892402846845
+            "world_x": 19876.392230936137,
+            "world_y": 7209.70908126511
         },
         "16": {
             "alien_attitude": 84,
@@ -275,7 +283,7 @@
             "image_name_small": "Kepler-22b_40x40.png",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Galactica IX",
-            "orbit_angle": 296.5508966017788,
+            "orbit_angle": 259.29486026812907,
             "orbit_distance": 0,
             "orbit_object_id": 6,
             "orbit_speed": 0.0014034176791168904,
@@ -290,8 +298,8 @@
             "type": "planet",
             "world_height": 60,
             "world_width": 60,
-            "world_x": 31626.23951933957,
-            "world_y": 33861.605219156525
+            "world_x": 29447.314782899477,
+            "world_y": 34280.302168679125
         },
         "17": {
             "alien_attitude": 88,
@@ -307,7 +315,7 @@
             "image_name_small": "ur-anus_150x150.png",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Ursara X",
-            "orbit_angle": 349.7753273687299,
+            "orbit_angle": 95.74145690580788,
             "orbit_distance": 0,
             "orbit_object_id": 5,
             "orbit_speed": 0.0020262039811149253,
@@ -322,8 +330,8 @@
             "type": "planet",
             "world_height": 73,
             "world_width": 73,
-            "world_x": 31953.740861791528,
-            "world_y": 15302.088054446707
+            "world_x": 29251.141302391112,
+            "world_y": 12379.291293046103
         },
         "18": {
             "alien_attitude": 86,
@@ -339,7 +347,7 @@
             "image_name_small": "Zeta Bentauri_60x60.png",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Serpentis XI",
-            "orbit_angle": 73.81774572831786,
+            "orbit_angle": 80.97679320791677,
             "orbit_distance": 0,
             "orbit_object_id": 3,
             "orbit_speed": 0.0047273950840537125,
@@ -356,8 +364,8 @@
             "type": "planet",
             "world_height": 64,
             "world_width": 64,
-            "world_x": 16769.564842731765,
-            "world_y": 11887.294822906631
+            "world_x": 16449.68452491015,
+            "world_y": 11815.77709420686
         },
         "19": {
             "alien_attitude": 16,
@@ -373,7 +381,7 @@
             "image_name_small": "GIN V.S.X.O._70x70.png",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Serpentis XII",
-            "orbit_angle": 163.7027275507403,
+            "orbit_angle": 215.5381003833337,
             "orbit_distance": 0,
             "orbit_object_id": 3,
             "orbit_speed": 0.004921665316486637,
@@ -389,8 +397,8 @@
             "type": "planet",
             "world_height": 74,
             "world_width": 74,
-            "world_x": 13518.469999782452,
-            "world_y": 13671.662281403183
+            "world_x": 13901.954852640672,
+            "world_y": 15934.058465016427
         },
         "2": {
             "alien_attitude": 77,
@@ -406,7 +414,7 @@
             "image_name_small": "sonnecomic_110x110.png",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Quasaria",
-            "orbit_angle": 288.1328333158221,
+            "orbit_angle": 194.07991849617903,
             "orbit_distance": 0,
             "orbit_object_id": 2,
             "orbit_speed": 0.001156442515024918,
@@ -434,7 +442,7 @@
             "image_name_small": "ur-anus_150x150.png",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Radiance XIII",
-            "orbit_angle": 230.20963319877353,
+            "orbit_angle": 246.6811836739083,
             "orbit_distance": 0,
             "orbit_object_id": 4,
             "orbit_speed": 0.001637046355938447,
@@ -449,8 +457,8 @@
             "type": "planet",
             "world_height": 63,
             "world_width": 63,
-            "world_x": 17586.303632877996,
-            "world_y": 18387.312518690036
+            "world_x": 18227.153841553994,
+            "world_y": 18780.866423122352
         },
         "21": {
             "alien_attitude": 14,
@@ -466,7 +474,7 @@
             "image_name_small": "Helios 12_150x150.png",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Serpentis XIV",
-            "orbit_angle": 263.159301798274,
+            "orbit_angle": 351.0371598099747,
             "orbit_distance": 0,
             "orbit_object_id": 3,
             "orbit_speed": 0.0019475490629755692,
@@ -481,8 +489,8 @@
             "type": "planet",
             "world_height": 71,
             "world_width": 71,
-            "world_x": 15725.332155568996,
-            "world_y": 17014.60547898725
+            "world_x": 18630.941635330324,
+            "world_y": 14817.251323905146
         },
         "22": {
             "alien_attitude": 50,
@@ -498,7 +506,7 @@
             "image_name_small": "P0101_150x150.png",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Cygnara XV",
-            "orbit_angle": 310.6744125266526,
+            "orbit_angle": 173.97885067501636,
             "orbit_distance": 0,
             "orbit_object_id": 1,
             "orbit_speed": 0.0025364370924406904,
@@ -530,7 +538,7 @@
             "image_name_small": "zork_50x50.png",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Quasaria XVI",
-            "orbit_angle": 111.03998618495444,
+            "orbit_angle": 183.1672897672075,
             "orbit_distance": 0,
             "orbit_object_id": 2,
             "orbit_speed": 0.0034444810348392783,
@@ -548,29 +556,43 @@
             "type": "planet",
             "world_height": 80,
             "world_width": 80,
-            "world_x": 5736.870658296451,
-            "world_y": 24133.088980267825
+            "world_x": 4352.272088142216,
+            "world_y": 26273.6505130729
         },
         "24": {
             "alien_attitude": 5,
             "alien_population": 0,
             "atmosphere_name": "",
             "building_slot_amount": 3,
-            "buildings": [],
+            "buildings": [
+                "farm",
+                "farm",
+                "farm",
+                "town",
+                "farm",
+                "farm",
+                "farm",
+                "solar panel",
+                "mine",
+                "farm",
+                "farm",
+                "farm",
+                "farm"
+            ],
             "buildings_max": 13,
-            "explored": false,
+            "explored": true,
             "gif": "moon1.gif",
             "id": 24,
             "image_name_big": "XKGPRZ 7931_50x50.png",
             "image_name_small": "GIN V.S.X.O._70x70.png",
-            "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
+            "info_text": "Welcome to Radiance XVII!\n\nYou are the first to arrive on this planet. It's a blank slate waiting for you to make your mark.\nYou can build up to 13 buildings on this planet.\nThis planet has some special properties:\n\n food is produced 1.5x faster!\n.\nPossible resources on this planet include:\n\n- energy\n- food\n- technology\n- water\n- minerals\n- population\n\nThe planet's orbits around its sun at a distance of 2.6M km with a speed of 3.6km/s.\n",
             "name": "Radiance XVII",
-            "orbit_angle": 236.89380572080947,
+            "orbit_angle": 354.241828494663,
             "orbit_distance": 0,
             "orbit_object_id": 4,
             "orbit_speed": 0.0036411185057811366,
-            "population": 0,
-            "population_grow": 0.18948012241429396,
+            "population": 1231.799999999999,
+            "population_grow": 35.7,
             "possible_resources": [
                 "energy",
                 "food",
@@ -579,12 +601,14 @@
                 "minerals",
                 "population"
             ],
-            "specials": [],
+            "specials": [
+                "food * 1.5"
+            ],
             "type": "planet",
             "world_height": 72,
             "world_width": 72,
-            "world_x": 17832.497117299597,
-            "world_y": 18569.142429080104
+            "world_x": 21878.007318754582,
+            "world_y": 16633.651941235312
         },
         "25": {
             "alien_attitude": 88,
@@ -600,7 +624,7 @@
             "image_name_small": "Kepler-22b_150x150.png",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Radiance XVIII",
-            "orbit_angle": 189.2359378573157,
+            "orbit_angle": 354.5169018764519,
             "orbit_distance": 0,
             "orbit_object_id": 4,
             "orbit_speed": 0.0038495497848387017,
@@ -617,8 +641,8 @@
             "type": "planet",
             "world_height": 76,
             "world_width": 76,
-            "world_x": 16675.283549498676,
-            "world_y": 16791.599133318003
+            "world_x": 21879.24161889427,
+            "world_y": 16621.110085967175
         },
         "26": {
             "alien_attitude": 65,
@@ -634,7 +658,7 @@
             "image_name_small": "GIN V.S.X.O._70x70.png",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Spectron XIX",
-            "orbit_angle": 104.38283908068718,
+            "orbit_angle": 28.80589479706483,
             "orbit_distance": 0,
             "orbit_object_id": 7,
             "orbit_speed": 0.004367626454392299,
@@ -651,8 +675,8 @@
             "type": "planet",
             "world_height": 60,
             "world_width": 60,
-            "world_x": 15366.25883996717,
-            "world_y": 28980.3348055341
+            "world_x": 17794.85547747378,
+            "world_y": 30031.56591014313
         },
         "27": {
             "alien_attitude": 43,
@@ -661,14 +685,14 @@
             "building_slot_amount": 4,
             "buildings": [],
             "buildings_max": 12,
-            "explored": false,
+            "explored": true,
             "gif": "moon1.gif",
             "id": 27,
             "image_name_big": "Kepler-22b_50x50.png",
             "image_name_small": "Zeta Bentauri_150x150.png",
-            "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
+            "info_text": "Welcome to Galactica XX!\n\nYou are the first to arrive on this planet. It's a blank slate waiting for you to make your mark.\nYou can build up to 12 buildings on this planet.\nThere are no special buildings available on this planet.\nPossible resources on this planet include:\n\n- technology\n- energy\n- population\n- food\n- water\n\nThe planet's orbits around its sun at a distance of 2M km with a speed of 2km/s.\n",
             "name": "Galactica XX",
-            "orbit_angle": 101.16241296461794,
+            "orbit_angle": 212.39989060896065,
             "orbit_distance": 0,
             "orbit_object_id": 6,
             "orbit_speed": 0.0020491258757405193,
@@ -685,8 +709,8 @@
             "type": "planet",
             "world_height": 72,
             "world_width": 72,
-            "world_x": 29567.345575327297,
-            "world_y": 28537.24066081775
+            "world_x": 28407.59996098917,
+            "world_y": 31780.620798816337
         },
         "28": {
             "alien_attitude": 41,
@@ -702,7 +726,7 @@
             "image_name_small": "Zeta Bentauri_150x150.png",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Quasaria XXI",
-            "orbit_angle": 25.731579787587815,
+            "orbit_angle": 44.43870443207395,
             "orbit_distance": 0,
             "orbit_object_id": 0,
             "orbit_speed": 0.003212189088335354,
@@ -717,8 +741,8 @@
             "type": "planet",
             "world_height": 74,
             "world_width": 74,
-            "world_x": 10138.738717259177,
-            "world_y": 18704.95960259125
+            "world_x": 10115.469312384723,
+            "world_y": 18671.832331151607
         },
         "29": {
             "alien_attitude": 90,
@@ -727,14 +751,14 @@
             "building_slot_amount": 1,
             "buildings": [],
             "buildings_max": 17,
-            "explored": false,
+            "explored": true,
             "gif": "moon.gif",
             "id": 29,
             "image_name_big": "Kepler-22b_40x40.png",
             "image_name_small": "Kepler-22b_50x50.png",
-            "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
+            "info_text": "Welcome to Galactica XXII!\n\nYou are not alone on this planet. There are 539350056 aliens living here already.\nYou can build up to 17 buildings on this planet.\nThere are no special buildings available on this planet.\nPossible resources on this planet include:\n\n- food\n- energy\n- minerals\n\nThe planet's orbits around its sun at a distance of 947.1k km with a speed of 1.6km/s.\n",
             "name": "Galactica XXII",
-            "orbit_angle": 214.61157747576928,
+            "orbit_angle": 224.92578567027513,
             "orbit_distance": 0,
             "orbit_object_id": 6,
             "orbit_speed": 0.001610271810211699,
@@ -749,8 +773,8 @@
             "type": "planet",
             "world_height": 72,
             "world_width": 72,
-            "world_x": 29069.80256370636,
-            "world_y": 31141.373806409425
+            "world_x": 29455.480329175098,
+            "world_y": 31358.890740587798
         },
         "3": {
             "alien_attitude": 75,
@@ -759,14 +783,14 @@
             "building_slot_amount": 2,
             "buildings": [],
             "buildings_max": 12,
-            "explored": false,
+            "explored": true,
             "gif": "moon1.gif",
             "id": 3,
             "image_name_big": "sonnenature_110x110.png",
             "image_name_small": "sonnecorona_110x110.png",
-            "info_text": "unknown sun:\n\nresources: ???\nenergy: ???\n",
+            "info_text": "Welcome to Serpentis!\n\nYou are the first to arrive on this sun. It's a blank slate waiting for you to make your mark.\nYou can build up to 12 buildings on this planet.\nThere are no special buildings available on this planet.\nPossible resources on this planet include:\n\n\nThe planet's orbits around its sun at a distance of 0 km with a speed of 3.8km/s.\n",
             "name": "Serpentis",
-            "orbit_angle": 317.9931823498309,
+            "orbit_angle": 107.06520636095415,
             "orbit_distance": 0,
             "orbit_object_id": 3,
             "orbit_speed": 0.00377906693921333,
@@ -787,14 +811,14 @@
             "building_slot_amount": 3,
             "buildings": [],
             "buildings_max": 11,
-            "explored": false,
+            "explored": true,
             "gif": "moon.gif",
             "id": 30,
             "image_name_big": "Helios 12_60x60.png",
             "image_name_small": "P0101_50x50.png",
-            "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
+            "info_text": "Welcome to Galactica XXIII!\n\nYou are the first to arrive on this planet. It's a blank slate waiting for you to make your mark.\nYou can build up to 11 buildings on this planet.\nThere are no special buildings available on this planet.\nPossible resources on this planet include:\n\n- population\n- minerals\n- energy\n- technology\n- water\n\nThe planet's orbits around its sun at a distance of 580k km with a speed of 3.1km/s.\n",
             "name": "Galactica XXIII",
-            "orbit_angle": 281.60010568011927,
+            "orbit_angle": 283.3671350099244,
             "orbit_distance": 0,
             "orbit_object_id": 6,
             "orbit_speed": 0.0031385268918966633,
@@ -811,8 +835,8 @@
             "type": "planet",
             "world_height": 68,
             "world_width": 68,
-            "world_x": 29964.57039298335,
-            "world_y": 30549.401088327675
+            "world_x": 30260.11448950646,
+            "world_y": 31254.34793564046
         },
         "31": {
             "alien_attitude": 85,
@@ -828,7 +852,7 @@
             "image_name_small": "GIN V.S.X.O._150x150.png",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Radiance XXIV",
-            "orbit_angle": 81.90753213335351,
+            "orbit_angle": 275.98360802617515,
             "orbit_distance": 0,
             "orbit_object_id": 4,
             "orbit_speed": 0.0024093406787535623,
@@ -846,8 +870,8 @@
             "type": "planet",
             "world_height": 60,
             "world_width": 60,
-            "world_x": 19635.77658241156,
-            "world_y": 13771.425087413758
+            "world_x": 19539.89281534957,
+            "world_y": 18980.984158221014
         },
         "32": {
             "alien_attitude": 33,
@@ -863,7 +887,7 @@
             "image_name_small": "zork_50x50.png",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Quasaria XXV",
-            "orbit_angle": 58.61806221990973,
+            "orbit_angle": 167.2321648854034,
             "orbit_distance": 0,
             "orbit_object_id": 0,
             "orbit_speed": 0.0020377184096427546,
@@ -881,8 +905,8 @@
             "type": "planet",
             "world_height": 63,
             "world_width": 63,
-            "world_x": 11142.323829137336,
-            "world_y": 16929.795890080055
+            "world_x": 7936.849937402135,
+            "world_y": 18285.497089415476
         },
         "33": {
             "alien_attitude": 65,
@@ -898,7 +922,7 @@
             "image_name_small": "Helios 12_60x60.png",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Quasaria XXVI",
-            "orbit_angle": 27.326981913066806,
+            "orbit_angle": 166.06104802928996,
             "orbit_distance": 0,
             "orbit_object_id": 2,
             "orbit_speed": 0.002168691855964104,
@@ -914,8 +938,8 @@
             "type": "planet",
             "world_height": 80,
             "world_width": 80,
-            "world_x": 9012.569420300977,
-            "world_y": 24863.046268748105
+            "world_x": 3784.907667662503,
+            "world_y": 25476.601782650578
         },
         "34": {
             "alien_attitude": 73,
@@ -931,7 +955,7 @@
             "image_name_small": "P0101_150x150.png",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Cygnara XXVII",
-            "orbit_angle": 202.68951485423887,
+            "orbit_angle": 233.2302618288499,
             "orbit_distance": 0,
             "orbit_object_id": 1,
             "orbit_speed": 0.0032636463320198737,
@@ -947,8 +971,8 @@
             "type": "planet",
             "world_height": 63,
             "world_width": 63,
-            "world_x": 18688.03622876416,
-            "world_y": 8630.50213596165
+            "world_x": 19094.57764201875,
+            "world_y": 9151.602966589919
         },
         "35": {
             "alien_attitude": 84,
@@ -957,14 +981,14 @@
             "building_slot_amount": 5,
             "buildings": [],
             "buildings_max": 7,
-            "explored": false,
+            "explored": true,
             "gif": "moon.gif",
             "id": 35,
             "image_name_big": "moon1.gif",
             "image_name_small": "moon.gif",
-            "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
+            "info_text": "Welcome to Galactica XXII, a!\n\nYou are the first to arrive on this moon. It's a blank slate waiting for you to make your mark.\nYou can build up to 7 buildings on this planet.\nThere are no special buildings available on this planet.\nPossible resources on this planet include:\n\n- population\n- energy\n- technology\n- water\n- food\n- minerals\n\nThe planet's orbits around its sun at a distance of 2.5M km with a speed of 20.5km/s.\n",
             "name": "Galactica XXII, a",
-            "orbit_angle": 325.73930869367916,
+            "orbit_angle": 357.2210579623129,
             "orbit_distance": 0,
             "orbit_object_id": 29,
             "orbit_speed": 0.020487375524063385,
@@ -982,8 +1006,8 @@
             "type": "moon",
             "world_height": 38,
             "world_width": 38,
-            "world_x": 31040.165321835313,
-            "world_y": 32483.484238874134
+            "world_x": 31825.20356039659,
+            "world_y": 31473.91652828826
         },
         "36": {
             "alien_attitude": 90,
@@ -999,7 +1023,7 @@
             "image_name_small": "moon.gif",
             "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
             "name": "Cygnara XXVII, b",
-            "orbit_angle": 170.44912215279365,
+            "orbit_angle": 299.85634280864963,
             "orbit_distance": 0,
             "orbit_object_id": 34,
             "orbit_speed": 0.022478615561403476,
@@ -1016,8 +1040,8 @@
             "type": "moon",
             "world_height": 45,
             "world_width": 45,
-            "world_x": 15399.139761900935,
-            "world_y": 8077.126895164237
+            "world_x": 20708.552253853646,
+            "world_y": 11963.34644858519
         },
         "37": {
             "alien_attitude": 61,
@@ -1033,7 +1057,7 @@
             "image_name_small": "moon.gif",
             "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
             "name": "Spectron II, c",
-            "orbit_angle": 210.72270196125436,
+            "orbit_angle": 115.92833844259052,
             "orbit_distance": 0,
             "orbit_object_id": 9,
             "orbit_speed": 0.005849483134675124,
@@ -1051,8 +1075,8 @@
             "type": "moon",
             "world_height": 37,
             "world_width": 37,
-            "world_x": 16346.220444165137,
-            "world_y": 31425.855795766172
+            "world_x": 16504.358650668302,
+            "world_y": 27434.952068924085
         },
         "38": {
             "alien_attitude": 48,
@@ -1068,7 +1092,7 @@
             "image_name_small": "moon.gif",
             "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
             "name": "Galactica IX, d",
-            "orbit_angle": 228.6044303081678,
+            "orbit_angle": 338.69684933522865,
             "orbit_distance": 0,
             "orbit_object_id": 16,
             "orbit_speed": 0.01613294090110466,
@@ -1083,8 +1107,8 @@
             "type": "moon",
             "world_height": 30,
             "world_width": 30,
-            "world_x": 30949.087952887843,
-            "world_y": 34629.80263841898
+            "world_x": 30502.517474829958,
+            "world_y": 34691.77535366518
         },
         "39": {
             "alien_attitude": 12,
@@ -1100,7 +1124,7 @@
             "image_name_small": "moon.gif",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Quasaria XXVI, e",
-            "orbit_angle": 144.55936612096343,
+            "orbit_angle": 249.33894460650393,
             "orbit_distance": 0,
             "orbit_object_id": 33,
             "orbit_speed": 0.019240681734510663,
@@ -1118,8 +1142,8 @@
             "type": "moon",
             "world_height": 43,
             "world_width": 43,
-            "world_x": 8753.930684853747,
-            "world_y": 24678.96508466848
+            "world_x": 3593.561915956312,
+            "world_y": 25984.02643904063
         },
         "4": {
             "alien_attitude": 92,
@@ -1135,7 +1159,7 @@
             "image_name_small": "sonnecorona_110x110.png",
             "info_text": "unknown sun:\n\nresources: ???\nenergy: ???\n",
             "name": "Radiance",
-            "orbit_angle": 201.71506773437036,
+            "orbit_angle": 7.638719143401739,
             "orbit_distance": 0,
             "orbit_object_id": 4,
             "orbit_speed": 0.002286922865631243,
@@ -1163,7 +1187,7 @@
             "image_name_small": "moon.gif",
             "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
             "name": "Serpentis XI, f",
-            "orbit_angle": 317.5131889292024,
+            "orbit_angle": 56.123763399187105,
             "orbit_distance": 0,
             "orbit_object_id": 18,
             "orbit_speed": 0.00825590544188482,
@@ -1179,8 +1203,8 @@
             "type": "moon",
             "world_height": 48,
             "world_width": 48,
-            "world_x": 18398.695067209177,
-            "world_y": 13379.427887878739
+            "world_x": 20342.127285115865,
+            "world_y": 6018.018336659213
         },
         "41": {
             "alien_attitude": 86,
@@ -1196,7 +1220,7 @@
             "image_name_small": "moon.gif",
             "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
             "name": "Galactica IX, g",
-            "orbit_angle": 309.2450387262273,
+            "orbit_angle": 344.9094958519827,
             "orbit_distance": 0,
             "orbit_object_id": 16,
             "orbit_speed": 0.02207098515948214,
@@ -1212,8 +1236,8 @@
             "type": "moon",
             "world_height": 38,
             "world_width": 38,
-            "world_x": 32549.52528138503,
-            "world_y": 34991.85028323515
+            "world_x": 30481.32824261252,
+            "world_y": 34559.116573061954
         },
         "42": {
             "alien_attitude": 24,
@@ -1229,7 +1253,7 @@
             "image_name_small": "moon1.gif",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Quasaria XXVI, h",
-            "orbit_angle": 85.62928570465186,
+            "orbit_angle": 29.50924553048871,
             "orbit_distance": 0,
             "orbit_object_id": 33,
             "orbit_speed": 0.007583075878705597,
@@ -1244,24 +1268,27 @@
             "type": "moon",
             "world_height": 40,
             "world_width": 40,
-            "world_x": 9147.574269072156,
-            "world_y": 23096.69926227112
+            "world_x": 4118.819009927537,
+            "world_y": 25287.612699354337
         },
         "43": {
             "alien_attitude": 82,
             "alien_population": 0,
             "atmosphere_name": "",
             "building_slot_amount": 2,
-            "buildings": [],
+            "buildings": [
+                "spring",
+                "spring"
+            ],
             "buildings_max": 20,
-            "explored": false,
+            "explored": true,
             "gif": "moon.gif",
             "id": 43,
             "image_name_big": "moon.gif",
             "image_name_small": "moon1.gif",
-            "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
+            "info_text": "Welcome to Galactica XXIII, i!\n\nYou are the first to arrive on this moon. It's a blank slate waiting for you to make your mark.\nYou can build up to 20 buildings on this planet.\nThere are no special buildings available on this planet.\nPossible resources on this planet include:\n\n- energy\n- population\n- water\n- minerals\n- food\n- technology\n\nThe planet's orbits around its sun at a distance of 714.5k km with a speed of 19.9km/s.\n",
             "name": "Galactica XXIII, i",
-            "orbit_angle": 339.36618155616463,
+            "orbit_angle": 232.8724165477722,
             "orbit_distance": 0,
             "orbit_object_id": 30,
             "orbit_speed": 0.0198874037265361,
@@ -1279,8 +1306,8 @@
             "type": "moon",
             "world_height": 42,
             "world_width": 42,
-            "world_x": 30393.389600439237,
-            "world_y": 30710.872563170244
+            "world_x": 29872.798727204452,
+            "world_y": 31765.95904232366
         },
         "44": {
             "alien_attitude": 58,
@@ -1296,7 +1323,7 @@
             "image_name_small": "moon1.gif",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Serpentis III, j",
-            "orbit_angle": 259.6273380446772,
+            "orbit_angle": 353.09995062445324,
             "orbit_distance": 0,
             "orbit_object_id": 10,
             "orbit_speed": 0.009798985139713199,
@@ -1313,8 +1340,8 @@
             "type": "moon",
             "world_height": 30,
             "world_width": 30,
-            "world_x": 16737.82623789949,
-            "world_y": 19416.337005904406
+            "world_x": 16045.363706946266,
+            "world_y": 16810.919171818423
         },
         "45": {
             "alien_attitude": 54,
@@ -1330,7 +1357,7 @@
             "image_name_small": "moon1.gif",
             "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
             "name": "Cygnara XV, k",
-            "orbit_angle": 126.77740538417177,
+            "orbit_angle": 277.08215795609783,
             "orbit_distance": 0,
             "orbit_object_id": 22,
             "orbit_speed": 0.005349848904515977,
@@ -1346,8 +1373,8 @@
             "type": "moon",
             "world_height": 32,
             "world_width": 32,
-            "world_x": 17559.886351796533,
-            "world_y": 5088.540984660026
+            "world_x": 20316.36839869217,
+            "world_y": 11935.219826196697
         },
         "46": {
             "alien_attitude": 76,
@@ -1363,7 +1390,7 @@
             "image_name_small": "moon.gif",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Cygnara XXVII, l",
-            "orbit_angle": 57.767761713979006,
+            "orbit_angle": 207.87078037099414,
             "orbit_distance": 0,
             "orbit_object_id": 34,
             "orbit_speed": 0.010045236416302318,
@@ -1381,8 +1408,8 @@
             "type": "moon",
             "world_height": 35,
             "world_width": 35,
-            "world_x": 18799.527163034763,
-            "world_y": 8453.67826021262
+            "world_x": 17983.669085467744,
+            "world_y": 9739.073601146461
         },
         "47": {
             "alien_attitude": 54,
@@ -1398,7 +1425,7 @@
             "image_name_small": "moon.gif",
             "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
             "name": "Serpentis XI, m",
-            "orbit_angle": 220.80154674656634,
+            "orbit_angle": 40.50747800414495,
             "orbit_distance": 0,
             "orbit_object_id": 18,
             "orbit_speed": 0.016435647829096702,
@@ -1413,8 +1440,8 @@
             "type": "moon",
             "world_height": 44,
             "world_width": 44,
-            "world_x": 15831.27759522828,
-            "world_y": 12697.246852594999
+            "world_x": 18689.253190038115,
+            "world_y": 9902.499179428783
         },
         "48": {
             "alien_attitude": 15,
@@ -1430,7 +1457,7 @@
             "image_name_small": "moon.gif",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Serpentis III, n",
-            "orbit_angle": 262.6582675291917,
+            "orbit_angle": 282.24386763464065,
             "orbit_distance": 0,
             "orbit_object_id": 10,
             "orbit_speed": 0.011043116928752386,
@@ -1447,8 +1474,8 @@
             "type": "moon",
             "world_height": 49,
             "world_width": 49,
-            "world_x": 16833.062459813547,
-            "world_y": 19799.16555593745
+            "world_x": 15294.327285907308,
+            "world_y": 19559.483521322727
         },
         "49": {
             "alien_attitude": 96,
@@ -1464,7 +1491,7 @@
             "image_name_small": "moon1.gif",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Perseidus I, o",
-            "orbit_angle": 286.3648320886808,
+            "orbit_angle": 62.622580199470356,
             "orbit_distance": 0,
             "orbit_object_id": 1,
             "orbit_speed": 0.008419610158327748,
@@ -1479,8 +1506,8 @@
             "type": "moon",
             "world_height": 32,
             "world_width": 32,
-            "world_x": 20771.904536967286,
-            "world_y": 11300.772080139237
+            "world_x": 21357.39019093787,
+            "world_y": 5227.264175277833
         },
         "5": {
             "alien_attitude": 29,
@@ -1496,7 +1523,7 @@
             "image_name_small": "sonnecomic_110x110.png",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Ursara",
-            "orbit_angle": 161.16774741489638,
+            "orbit_angle": 310.4536957228669,
             "orbit_distance": 0,
             "orbit_object_id": 5,
             "orbit_speed": 0.002214575589459512,
@@ -1524,7 +1551,7 @@
             "image_name_small": "moon1.gif",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Quasaria XXVI, p",
-            "orbit_angle": 309.0912921298817,
+            "orbit_angle": 123.94931764143612,
             "orbit_distance": 0,
             "orbit_object_id": 33,
             "orbit_speed": 0.019545410381838116,
@@ -1540,8 +1567,8 @@
             "type": "moon",
             "world_height": 49,
             "world_width": 49,
-            "world_x": 9487.1369459899,
-            "world_y": 25447.18284433557
+            "world_x": 3253.7811040144775,
+            "world_y": 24687.6698159501
         },
         "51": {
             "alien_attitude": 39,
@@ -1557,7 +1584,7 @@
             "image_name_small": "moon.gif",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Equuleus I, q",
-            "orbit_angle": 267.5228994655114,
+            "orbit_angle": 335.55459225288513,
             "orbit_distance": 0,
             "orbit_object_id": 7,
             "orbit_speed": 0.023777152205885076,
@@ -1583,16 +1610,20 @@
             "alien_population": 0,
             "atmosphere_name": "",
             "building_slot_amount": 1,
-            "buildings": [],
+            "buildings": [
+                "mine",
+                "mine",
+                "mine"
+            ],
             "buildings_max": 12,
-            "explored": false,
+            "explored": true,
             "gif": "moon.gif",
             "id": 52,
             "image_name_big": "moon.gif",
             "image_name_small": "moon1.gif",
-            "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
+            "info_text": "Welcome to Radiance XVIII, r!\n\nYou are the first to arrive on this moon. It's a blank slate waiting for you to make your mark.\nYou can build up to 12 buildings on this planet.\nThere are no special buildings available on this planet.\nPossible resources on this planet include:\n\n- energy\n- population\n- minerals\n- technology\n\nThe planet's orbits around its sun at a distance of 5.2M km with a speed of 20km/s.\n",
             "name": "Radiance XVIII, r",
-            "orbit_angle": 178.83611468409916,
+            "orbit_angle": 98.23611468405292,
             "orbit_distance": 0,
             "orbit_object_id": 25,
             "orbit_speed": 0.02,
@@ -1608,8 +1639,8 @@
             "type": "moon",
             "world_height": 30,
             "world_width": 30,
-            "world_x": 10403.33982164958,
-            "world_y": 16664.175656232776
+            "world_x": 21089.463890022318,
+            "world_y": 11164.796712893154
         },
         "53": {
             "alien_attitude": 71,
@@ -1625,7 +1656,7 @@
             "image_name_small": "moon1.gif",
             "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
             "name": "Spectron XIX, s",
-            "orbit_angle": 63.48699827279822,
+            "orbit_angle": 16.08830311070544,
             "orbit_distance": 0,
             "orbit_object_id": 26,
             "orbit_speed": 0.024840637060650587,
@@ -1643,8 +1674,8 @@
             "type": "moon",
             "world_height": 45,
             "world_width": 45,
-            "world_x": 16590.527441252943,
-            "world_y": 26526.22664193507
+            "world_x": 20533.745443375403,
+            "world_y": 29241.63163150333
         },
         "54": {
             "alien_attitude": 31,
@@ -1660,7 +1691,7 @@
             "image_name_small": "moon1.gif",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Cygnara XXVII, t",
-            "orbit_angle": 142.03218869363602,
+            "orbit_angle": 201.0740862664661,
             "orbit_distance": 0,
             "orbit_object_id": 34,
             "orbit_speed": 0.012780110003794105,
@@ -1677,24 +1708,28 @@
             "type": "moon",
             "world_height": 35,
             "world_width": 35,
-            "world_x": 17770.730576136164,
-            "world_y": 7914.6539594789065
+            "world_x": 17862.719724501585,
+            "world_y": 9626.297388415147
         },
         "55": {
             "alien_attitude": 83,
             "alien_population": 0,
             "atmosphere_name": "",
             "building_slot_amount": 3,
-            "buildings": [],
+            "buildings": [
+                "solar panel",
+                "solar panel",
+                "solar panel"
+            ],
             "buildings_max": 5,
-            "explored": false,
+            "explored": true,
             "gif": "moon.gif",
             "id": 55,
             "image_name_big": "moon.gif",
             "image_name_small": "moon.gif",
-            "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
+            "info_text": "Welcome to Serpentis III, u!\n\nYou are the first to arrive on this moon. It's a blank slate waiting for you to make your mark.\nYou can build up to 5 buildings on this planet.\nThis planet has some special properties:\n\n food is produced 1.5x faster!\n.\nPossible resources on this planet include:\n\n- food\n- energy\n- technology\n- water\n\nThe planet's orbits around its sun at a distance of 2.2M km with a speed of 5.8km/s.\n",
             "name": "Serpentis III, u",
-            "orbit_angle": 206.53334960485506,
+            "orbit_angle": 105.97952639055899,
             "orbit_distance": 0,
             "orbit_object_id": 10,
             "orbit_speed": 0.005824438738903993,
@@ -1706,12 +1741,15 @@
                 "technology",
                 "water"
             ],
-            "specials": [],
+            "specials": [
+                "technology * 1.5",
+                "food * 1.5"
+            ],
             "type": "moon",
             "world_height": 46,
             "world_width": 46,
-            "world_x": 14737.406811773022,
-            "world_y": 17991.651292877712
+            "world_x": 14363.189690249656,
+            "world_y": 15601.640823371275
         },
         "56": {
             "alien_attitude": 90,
@@ -1727,7 +1765,7 @@
             "image_name_small": "moon1.gif",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Spectron II, v",
-            "orbit_angle": 15.781998818300226,
+            "orbit_angle": 60.565887785779644,
             "orbit_distance": 0,
             "orbit_object_id": 9,
             "orbit_speed": 0.01897979688206145,
@@ -1745,8 +1783,8 @@
             "type": "moon",
             "world_height": 41,
             "world_width": 41,
-            "world_x": 18633.692134474808,
-            "world_y": 30276.475844558314
+            "world_x": 18051.32115686421,
+            "world_y": 29338.0774640302
         },
         "57": {
             "alien_attitude": 13,
@@ -1762,7 +1800,7 @@
             "image_name_small": "moon1.gif",
             "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
             "name": "Spectron II, w",
-            "orbit_angle": 295.550797721464,
+            "orbit_angle": 169.14574560114482,
             "orbit_distance": 0,
             "orbit_object_id": 9,
             "orbit_speed": 0.007277449005868384,
@@ -1777,29 +1815,37 @@
             "type": "moon",
             "world_height": 50,
             "world_width": 50,
-            "world_x": 19132.35150506011,
-            "world_y": 32919.81392195255
+            "world_x": 15588.632470388484,
+            "world_y": 29521.747062031696
         },
         "58": {
             "alien_attitude": 76,
             "alien_population": 0,
             "atmosphere_name": "",
             "building_slot_amount": 4,
-            "buildings": [],
+            "buildings": [
+                "spring",
+                "farm",
+                "solar panel",
+                "mine",
+                "solar panel",
+                "solar panel",
+                "solar panel"
+            ],
             "buildings_max": 15,
-            "explored": false,
+            "explored": true,
             "gif": "moon1.gif",
             "id": 58,
             "image_name_big": "moon.gif",
             "image_name_small": "moon.gif",
-            "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
+            "info_text": "Welcome to Galactica XX, x!\n\nYou are the first to arrive on this moon. It's a blank slate waiting for you to make your mark.\nYou can build up to 15 buildings on this planet.\nThere are no special buildings available on this planet.\nPossible resources on this planet include:\n\n- minerals\n- water\n- technology\n- food\n- energy\n\nThe planet's orbits around its sun at a distance of 1.3M km with a speed of 11.5km/s.\n",
             "name": "Galactica XX, x",
-            "orbit_angle": 319.89164092625634,
+            "orbit_angle": 81.8956896981657,
             "orbit_distance": 0,
             "orbit_object_id": 27,
             "orbit_speed": 0.011488472621524705,
             "population": 0,
-            "population_grow": 0.13529326317106855,
+            "population_grow": 0.1,
             "possible_resources": [
                 "minerals",
                 "water",
@@ -1811,8 +1857,8 @@
             "type": "moon",
             "world_height": 47,
             "world_width": 47,
-            "world_x": 30158.709354509792,
-            "world_y": 29035.36267452379
+            "world_x": 28492.727760458216,
+            "world_y": 31182.804105214258
         },
         "59": {
             "alien_attitude": 99,
@@ -1828,7 +1874,7 @@
             "image_name_small": "moon.gif",
             "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
             "name": "Quasaria XXV, y",
-            "orbit_angle": 334.2454946763644,
+            "orbit_angle": 183.10380432262193,
             "orbit_distance": 0,
             "orbit_object_id": 32,
             "orbit_speed": 0.013431570681594689,
@@ -1845,8 +1891,8 @@
             "type": "moon",
             "world_height": 43,
             "world_width": 43,
-            "world_x": 14548.516254517759,
-            "world_y": 18573.07824479797
+            "world_x": 3828.4493938776213,
+            "world_y": 18508.273699845267
         },
         "6": {
             "alien_attitude": 48,
@@ -1855,14 +1901,14 @@
             "building_slot_amount": 5,
             "buildings": [],
             "buildings_max": 20,
-            "explored": false,
+            "explored": true,
             "gif": "moon1.gif",
             "id": 6,
             "image_name_big": "sonnecorona_110x110.png",
             "image_name_small": "sonnecomic_110x110.png",
-            "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
+            "info_text": "Welcome to Galactica!\n\nYou are not alone on this sun. There are 477795583 aliens living here already.\nYou can build up to 20 buildings on this planet.\nThere are no special buildings available on this planet.\nPossible resources on this planet include:\n\n\nThe planet's orbits around its sun at a distance of 0 km with a speed of 1.1km/s.\n",
             "name": "Galactica",
-            "orbit_angle": 233.82202669054877,
+            "orbit_angle": 117.48386419713823,
             "orbit_distance": 0,
             "orbit_object_id": 6,
             "orbit_speed": 0.0010595374940507098,
@@ -1873,8 +1919,8 @@
             "type": "sun",
             "world_height": 107,
             "world_width": 107,
-            "world_x": 29959.975930637105,
-            "world_y": 30527.01882263773
+            "world_x": 30126.02832372201,
+            "world_y": 30690.077600602483
         },
         "60": {
             "alien_attitude": 16,
@@ -1890,7 +1936,7 @@
             "image_name_small": "moon1.gif",
             "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
             "name": "Galactica XXII, z",
-            "orbit_angle": 86.97691646669398,
+            "orbit_angle": 70.84429419751709,
             "orbit_distance": 0,
             "orbit_object_id": 29,
             "orbit_speed": 0.015584064781191918,
@@ -1908,8 +1954,8 @@
             "type": "moon",
             "world_height": 46,
             "world_width": 46,
-            "world_x": 29260.622045675405,
-            "world_y": 27528.174458942685
+            "world_x": 30633.942383163125,
+            "world_y": 27966.366297312095
         },
         "61": {
             "alien_attitude": 96,
@@ -1925,7 +1971,7 @@
             "image_name_small": "moon1.gif",
             "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
             "name": "Quasaria VI, {",
-            "orbit_angle": 77.1411505956279,
+            "orbit_angle": 116.52464277994527,
             "orbit_distance": 0,
             "orbit_object_id": 13,
             "orbit_speed": 0.014260049102857688,
@@ -1940,8 +1986,8 @@
             "type": "moon",
             "world_height": 47,
             "world_width": 47,
-            "world_x": 10664.634084762709,
-            "world_y": 14045.895923654363
+            "world_x": 9181.2648654009,
+            "world_y": 18314.53284482218
         },
         "62": {
             "alien_attitude": 50,
@@ -1957,7 +2003,7 @@
             "image_name_small": "moon1.gif",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Spectron II, |",
-            "orbit_angle": 201.1330782466788,
+            "orbit_angle": 217.92596202784418,
             "orbit_distance": 0,
             "orbit_object_id": 9,
             "orbit_speed": 0.014161816253341463,
@@ -1973,8 +2019,8 @@
             "type": "moon",
             "world_height": 48,
             "world_width": 48,
-            "world_x": 14831.303649220761,
-            "world_y": 31676.193920613514
+            "world_x": 15070.865795430398,
+            "world_y": 31992.091917975704
         },
         "63": {
             "alien_attitude": 35,
@@ -1990,7 +2036,7 @@
             "image_name_small": "moon1.gif",
             "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
             "name": "Galactica XXIII, }",
-            "orbit_angle": 285.29392457483755,
+            "orbit_angle": 292.0359980132421,
             "orbit_distance": 0,
             "orbit_object_id": 30,
             "orbit_speed": 0.0062910034936652735,
@@ -2008,8 +2054,8 @@
             "type": "moon",
             "world_height": 44,
             "world_width": 44,
-            "world_x": 30429.588588015697,
-            "world_y": 32249.929761787604
+            "world_x": 31317.26827926279,
+            "world_y": 33866.16965748563
         },
         "64": {
             "alien_attitude": 10,
@@ -2025,7 +2071,7 @@
             "image_name_small": "moon.gif",
             "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
             "name": "Ursara X, ~",
-            "orbit_angle": 150.91583315401834,
+            "orbit_angle": 33.90055605751286,
             "orbit_distance": 0,
             "orbit_object_id": 17,
             "orbit_speed": 0.01827623047746852,
@@ -2041,8 +2087,8 @@
             "type": "moon",
             "world_height": 45,
             "world_width": 45,
-            "world_x": 31623.15839287706,
-            "world_y": 15118.207848536307
+            "world_x": 29936.08681419492,
+            "world_y": 11919.017361130207
         },
         "65": {
             "alien_attitude": 10,
@@ -2058,7 +2104,7 @@
             "image_name_small": "moon1.gif",
             "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
             "name": "Spectron II, \u007f",
-            "orbit_angle": 78.33857748490354,
+            "orbit_angle": 165.23476043143899,
             "orbit_distance": 0,
             "orbit_object_id": 9,
             "orbit_speed": 0.022293760851182492,
@@ -2076,8 +2122,8 @@
             "type": "moon",
             "world_height": 47,
             "world_width": 47,
-            "world_x": 18381.99079170403,
-            "world_y": 28420.99983758574
+            "world_x": 15884.968024301408,
+            "world_y": 29446.9623243685
         },
         "66": {
             "alien_attitude": 57,
@@ -2093,7 +2139,7 @@
             "image_name_small": "moon1.gif",
             "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
             "name": "Quasaria VI, \u0080",
-            "orbit_angle": 121.03509632616078,
+            "orbit_angle": 294.93613302066575,
             "orbit_distance": 0,
             "orbit_object_id": 13,
             "orbit_speed": 0.022672092171564535,
@@ -2109,8 +2155,8 @@
             "type": "moon",
             "world_height": 45,
             "world_width": 45,
-            "world_x": 8709.331342106205,
-            "world_y": 15203.262503298147
+            "world_x": 11170.835457590241,
+            "world_y": 22449.62098780464
         },
         "67": {
             "alien_attitude": 89,
@@ -2126,7 +2172,7 @@
             "image_name_small": "moon1.gif",
             "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
             "name": "Spectron XIX, \u0081",
-            "orbit_angle": 32.815562600394195,
+            "orbit_angle": 159.36331578799624,
             "orbit_distance": 0,
             "orbit_object_id": 26,
             "orbit_speed": 0.006811965705038853,
@@ -2141,29 +2187,51 @@
             "type": "moon",
             "world_height": 35,
             "world_width": 35,
-            "world_x": 19714.080284773634,
-            "world_y": 26176.68337090666
+            "world_x": 16425.851718869537,
+            "world_y": 29515.990630704157
         },
         "68": {
             "alien_attitude": 44,
             "alien_population": 0,
             "atmosphere_name": "",
             "building_slot_amount": 5,
-            "buildings": [],
-            "buildings_max": 15,
-            "explored": false,
+            "buildings": [
+                "metropole",
+                "wind mill",
+                "ranch",
+                "ranch",
+                "ranch",
+                "ranch",
+                "ranch",
+                "ranch",
+                "water treatment",
+                "water treatment",
+                "ranch",
+                "ranch",
+                "open pit",
+                "open pit",
+                "university",
+                "wind mill",
+                "ranch",
+                "university",
+                "water treatment",
+                "water treatment",
+                "ranch"
+            ],
+            "buildings_max": 21,
+            "explored": true,
             "gif": "moon.gif",
             "id": 68,
             "image_name_big": "moon.gif",
             "image_name_small": "moon1.gif",
-            "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
+            "info_text": "Welcome to Spectron II, \u0082!\n\nYou are the first to arrive on this moon. It's a blank slate waiting for you to make your mark.\nYou can build up to 15 buildings on this planet.\nThere are no special buildings available on this planet.\nPossible resources on this planet include:\n\n- population\n- water\n- minerals\n- energy\n- technology\n- food\n\nThe planet's orbits around its sun at a distance of 796.8k km with a speed of 20.9km/s.\n",
             "name": "Spectron II, \u0082",
-            "orbit_angle": 33.953718883088435,
+            "orbit_angle": 171.52937167586134,
             "orbit_distance": 0,
             "orbit_object_id": 9,
             "orbit_speed": 0.020948713539994487,
-            "population": 0,
-            "population_grow": 0.9840211543453826,
+            "population": 9636.499999999975,
+            "population_grow": 5.6000000000000005,
             "possible_resources": [
                 "population",
                 "water",
@@ -2176,8 +2244,8 @@
             "type": "moon",
             "world_height": 34,
             "world_width": 34,
-            "world_x": 18613.563150912058,
-            "world_y": 30026.71095192104
+            "world_x": 17242.117847870733,
+            "world_y": 29859.13721000576
         },
         "69": {
             "alien_attitude": 47,
@@ -2193,7 +2261,7 @@
             "image_name_small": "moon1.gif",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Spectron I, \u0083",
-            "orbit_angle": 94.89663548446057,
+            "orbit_angle": 36.69427507620634,
             "orbit_distance": 0,
             "orbit_object_id": 8,
             "orbit_speed": 0.009139442708143132,
@@ -2209,8 +2277,8 @@
             "type": "moon",
             "world_height": 40,
             "world_width": 40,
-            "world_x": 14140.822793034287,
-            "world_y": 33151.97267671732
+            "world_x": 14157.29160567867,
+            "world_y": 28872.160757783047
         },
         "7": {
             "alien_attitude": 78,
@@ -2226,7 +2294,7 @@
             "image_name_small": "sonnenature_110x110.png",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Spectron",
-            "orbit_angle": 260.52821062255646,
+            "orbit_angle": 41.6004646891846,
             "orbit_distance": 0,
             "orbit_object_id": 7,
             "orbit_speed": 0.002178859216708639,
@@ -2247,14 +2315,14 @@
             "building_slot_amount": 4,
             "buildings": [],
             "buildings_max": 17,
-            "explored": false,
+            "explored": true,
             "gif": "moon.gif",
             "id": 70,
             "image_name_big": "moon.gif",
             "image_name_small": "moon1.gif",
-            "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
+            "info_text": "Welcome to Serpentis XII, \u0084!\n\nYou are not alone on this moon. There are 967769823 aliens living here already.\nYou can build up to 17 buildings on this planet.\nThere are no special buildings available on this planet.\nPossible resources on this planet include:\n\n- water\n- energy\n- technology\n- minerals\n- food\n- population\n\nThe planet's orbits around its sun at a distance of 1.3M km with a speed of 20.4km/s.\n",
             "name": "Serpentis XII, \u0084",
-            "orbit_angle": 301.11089142032426,
+            "orbit_angle": 321.663812336281,
             "orbit_distance": 0,
             "orbit_object_id": 19,
             "orbit_speed": 0.020439852680419507,
@@ -2272,8 +2340,8 @@
             "type": "moon",
             "world_height": 49,
             "world_width": 49,
-            "world_x": 14304.360008917047,
-            "world_y": 14973.887292766442
+            "world_x": 15407.187526047777,
+            "world_y": 17124.36402369466
         },
         "71": {
             "alien_attitude": 89,
@@ -2289,7 +2357,7 @@
             "image_name_small": "moon.gif",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Spectron I, \u0085",
-            "orbit_angle": 95.87705438513738,
+            "orbit_angle": 343.15502856203545,
             "orbit_distance": 0,
             "orbit_object_id": 8,
             "orbit_speed": 0.02455658552931677,
@@ -2305,8 +2373,8 @@
             "type": "moon",
             "world_height": 50,
             "world_width": 50,
-            "world_x": 14026.218149180733,
-            "world_y": 32067.610624068773
+            "world_x": 15012.48606408248,
+            "world_y": 29478.78917788962
         },
         "72": {
             "alien_attitude": 43,
@@ -2322,7 +2390,7 @@
             "image_name_small": "moon1.gif",
             "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
             "name": "Serpentis XI, \u0087",
-            "orbit_angle": 277.88512126063256,
+            "orbit_angle": 291.32970539326305,
             "orbit_distance": 0,
             "orbit_object_id": 18,
             "orbit_speed": 0.014147256529689997,
@@ -2337,15 +2405,24 @@
             "type": "moon",
             "world_height": 41,
             "world_width": 41,
-            "world_x": 16852.98953961587,
-            "world_y": 12489.653151400753
+            "world_x": 16702.314394214234,
+            "world_y": 12462.747900026885
         },
         "73": {
             "alien_attitude": 58,
             "alien_population": 0,
             "atmosphere_name": "",
             "building_slot_amount": 4,
-            "buildings": [],
+            "buildings": [
+                "solar panel",
+                "solar panel",
+                "solar panel",
+                "solar panel",
+                "town",
+                "farm",
+                "farm",
+                "farm"
+            ],
             "buildings_max": 8,
             "explored": false,
             "gif": "moon.gif",
@@ -2555,21 +2632,30 @@
             "alien_population": 0,
             "atmosphere_name": "",
             "building_slot_amount": 4,
-            "buildings": [],
+            "buildings": [
+                "town",
+                "farm",
+                "farm",
+                "solar panel",
+                "solar panel",
+                "solar panel",
+                "spring",
+                "spring"
+            ],
             "buildings_max": 8,
-            "explored": false,
+            "explored": true,
             "gif": "moon.gif",
             "id": 79,
             "image_name_big": "moon1.gif",
             "image_name_small": "moon1.gif",
-            "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
+            "info_text": "Welcome to not set!\n\nYou are the first to arrive on this moon. It's a blank slate waiting for you to make your mark.\nYou can build up to 8 buildings on this planet.\nThis planet has some special properties:\n\n minerals is produced 1.5x faster!\n.\nPossible resources on this planet include:\n\n- technology\n- minerals\n- food\n- population\n- energy\n- water\n\nThe planet's orbits around its sun at a distance of 323.3k km with a speed of 15.9km/s.\n",
             "name": "not set",
-            "orbit_angle": 31.983165891475696,
+            "orbit_angle": 86.56122881080154,
             "orbit_distance": 0,
             "orbit_object_id": 9,
             "orbit_speed": 0.015891542648690242,
-            "population": 0,
-            "population_grow": 0.8303441195266007,
+            "population": 356.20000000000005,
+            "population_grow": 1.4000000000000001,
             "possible_resources": [
                 "technology",
                 "minerals",
@@ -2578,12 +2664,14 @@
                 "energy",
                 "water"
             ],
-            "specials": [],
+            "specials": [
+                "minerals * 1.5"
+            ],
             "type": "moon",
             "world_height": 36,
             "world_width": 36,
-            "world_x": 18499.852676394486,
-            "world_y": 30129.67351862383
+            "world_x": 17750.368629911954,
+            "world_y": 29380.814923808684
         },
         "8": {
             "alien_attitude": 34,
@@ -2599,7 +2687,7 @@
             "image_name_small": "Helios 12_60x60.png",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Spectron I",
-            "orbit_angle": 232.2085836053814,
+            "orbit_angle": 136.7853870794978,
             "orbit_distance": 0,
             "orbit_object_id": 7,
             "orbit_speed": 0.0011504839912779353,
@@ -2614,24 +2702,37 @@
             "type": "planet",
             "world_height": 62,
             "world_width": 62,
-            "world_x": 14155.68374004962,
-            "world_y": 33324.94486195824
+            "world_x": 13824.969198503446,
+            "world_y": 29119.98958161555
         },
         "9": {
             "alien_attitude": 45,
             "alien_population": 154269970,
             "atmosphere_name": "atmosphere.gif",
             "building_slot_amount": 2,
-            "buildings": [],
+            "buildings": [
+                "spring",
+                "spring",
+                "spring",
+                "spring",
+                "spring",
+                "spring",
+                "spring",
+                "spring",
+                "spring",
+                "spring",
+                "spring",
+                "spring"
+            ],
             "buildings_max": 12,
-            "explored": false,
+            "explored": true,
             "gif": "moon.gif",
             "id": 9,
             "image_name_big": "Helios 12_60x60.png",
             "image_name_small": "XKGPRZ 7931_40x40.png",
-            "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
+            "info_text": "Welcome to Spectron II!\n\nYou are not alone on this planet. There are 154269970 aliens living here already.\nYou can build up to 12 buildings on this planet.\nThere are no special buildings available on this planet.\nPossible resources on this planet include:\n\n- technology\n- minerals\n- water\n\nThe planet's orbits around its sun at a distance of 2.1M km with a speed of 1.6km/s.\n",
             "name": "Spectron II",
-            "orbit_angle": 16.393325316024384,
+            "orbit_angle": 32.208430087861615,
             "orbit_distance": 0,
             "orbit_object_id": 7,
             "orbit_speed": 0.0016341918718604628,
@@ -2646,8 +2747,8 @@
             "type": "planet",
             "world_height": 80,
             "world_width": 80,
-            "world_x": 17959.712105468087,
-            "world_y": 30466.90073303714
+            "world_x": 17716.91693333211,
+            "world_y": 29929.19099589997
         }
     },
     "globals": {
@@ -2660,7 +2761,7 @@
         },
         "height": 42000,
         "level": 7,
-        "level_success": true,
+        "level_success": false,
         "moons": 46,
         "planets": 27,
         "spacehunter": 0,
@@ -2670,14 +2771,14 @@
         "width": 42000
     },
     "player": {
-        "population": 0,
+        "population": 13236,
         "stock": {
-            "energy": 1000,
-            "food": 1000,
-            "minerals": 1000,
-            "population": 0,
-            "technology": 1000,
-            "water": 1000
+            "energy": 33.299999999992494,
+            "food": 9841.5,
+            "minerals": 4344,
+            "population": 13236,
+            "technology": 5988,
+            "water": 11780
         }
     },
     "ships": {
@@ -2724,7 +2825,7 @@
             "crew": 7,
             "crew_max": 12,
             "desired_orbit_radius_raw": 100,
-            "energy": 9265.477556002561,
+            "energy": 8723.669778133222,
             "energy_max": 10000,
             "energy_reload_rate": 0.1,
             "energy_use": 1,
@@ -2738,7 +2839,7 @@
             "minerals": 0,
             "minerals_max": 300,
             "name": "spaceship",
-            "orbit_radius": 130,
+            "orbit_radius": 84.33467205654998,
             "orbit_radius_max": 300,
             "orbit_speed": 0.5,
             "orbit_speed_max": 0.6,
@@ -2753,15 +2854,15 @@
             "water": 0,
             "water_max": 400,
             "weapons": {},
-            "world_x": 21325.875000756125,
-            "world_y": 24929.37044271613
+            "world_x": 16114.323134130886,
+            "world_y": 14444.156002510139
         },
         "2": {
             "attack_distance_raw": 200,
             "crew": 7,
             "crew_max": 12,
             "desired_orbit_radius_raw": 100,
-            "energy": 9265.754059135483,
+            "energy": 8736.100643105869,
             "energy_max": 10000,
             "energy_reload_rate": 0.1,
             "energy_use": 1,
@@ -2775,7 +2876,7 @@
             "minerals": 0,
             "minerals_max": 300,
             "name": "spaceship",
-            "orbit_radius": 160,
+            "orbit_radius": 7.344546142722005,
             "orbit_radius_max": 300,
             "orbit_speed": 0.5,
             "orbit_speed_max": 0.6,
@@ -2790,15 +2891,15 @@
             "water": 0,
             "water_max": 400,
             "weapons": {},
-            "world_x": 21269.306458266063,
-            "world_y": 24872.801900226066
+            "world_x": 16036.220732483544,
+            "world_y": 14415.4197247071
         },
         "3": {
             "attack_distance_raw": 200,
             "crew": 7,
             "crew_max": 12,
             "desired_orbit_radius_raw": 100,
-            "energy": 9183.891950599955,
+            "energy": 10000.184877657957,
             "energy_max": 10000,
             "energy_reload_rate": 0.1,
             "energy_use": 1,
@@ -2812,7 +2913,7 @@
             "minerals": 0,
             "minerals_max": 300,
             "name": "spaceship",
-            "orbit_radius": 190,
+            "orbit_radius": 9.31640341234836,
             "orbit_radius_max": 300,
             "orbit_speed": 0.5,
             "orbit_speed_max": 0.6,
@@ -2827,44 +2928,83 @@
             "water": 0,
             "water_max": 400,
             "weapons": {},
-            "world_x": 21382.443543247628,
-            "world_y": 24985.93898520763
+            "world_x": 30121.567025998695,
+            "world_y": 30698.256365494908
         },
         "4": {
             "attack_distance_raw": 200,
             "crew": 7,
             "crew_max": 12,
             "desired_orbit_radius_raw": 100,
-            "energy": 9880.70419984192,
+            "energy": -21.06579311108861,
             "energy_max": 10000,
             "energy_reload_rate": 0.1,
             "energy_use": 1,
             "energy_use_max": 10,
             "fog_of_war_radius": 100,
             "fog_of_war_radius_max": 300,
-            "food": 100,
+            "food": 0,
+            "food_max": 500,
+            "min_dist_to_other_ships": 80,
+            "min_dist_to_other_ships_max": 200,
+            "minerals": 300,
+            "minerals_max": 300,
+            "name": "spaceship",
+            "orbit_radius": 187.393598976208,
+            "orbit_radius_max": 300,
+            "orbit_speed": 0.5,
+            "orbit_speed_max": 0.6,
+            "reload_max_distance_raw": 300,
+            "specials": [
+                "energy * 1.5"
+            ],
+            "speed": 1.5,
+            "speed_max": 2.5,
+            "technology": 0,
+            "technology_max": 500,
+            "upgrade_factor": 1.5,
+            "upgrade_factor_max": 3.0,
+            "water": 0,
+            "water_max": 400,
+            "weapons": {},
+            "world_x": 21484.665877713316,
+            "world_y": 17864.595834471464
+        },
+        "5": {
+            "attack_distance_raw": 200,
+            "crew": 7,
+            "crew_max": 12,
+            "desired_orbit_radius_raw": 100,
+            "energy": 8276.610672772336,
+            "energy_max": 10000,
+            "energy_reload_rate": 0.1,
+            "energy_use": 1,
+            "energy_use_max": 10,
+            "fog_of_war_radius": 100,
+            "fog_of_war_radius_max": 300,
+            "food": 0,
             "food_max": 200,
             "min_dist_to_other_ships": 80,
             "min_dist_to_other_ships_max": 200,
-            "minerals": 100,
+            "minerals": 0,
             "minerals_max": 200,
             "name": "spaceship",
-            "orbit_radius": 220,
+            "orbit_radius": 419.290023789681,
             "orbit_radius_max": 300,
             "orbit_speed": 0.5,
             "orbit_speed_max": 0.6,
             "reload_max_distance_raw": 300,
             "specials": [],
             "speed": 1.5,
-            "technology": 100,
+            "technology": 0,
             "technology_max": 200,
             "upgrade_factor": 1.5,
             "upgrade_factor_max": 3.0,
-            "water": 100,
+            "water": 0,
             "water_max": 200,
             "weapons": {},
-            "world_x": 21212.737915774538,
-            "world_y": 24816.23335773454
+            "world_x": 17924.887205995878,
+            "world_y": 28999.57039512507
         }
     }
 }

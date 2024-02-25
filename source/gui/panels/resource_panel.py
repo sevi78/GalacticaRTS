@@ -56,7 +56,7 @@ class ResourcePanel(WidgetBase):
         """
         start_x = 250
         spacing = 150
-        pos_x = self.world_x + self.icon_size * 2
+        pos_x = 160
         pos_y = 15
 
         self.mission_icon = ImageButton(win=self.win,

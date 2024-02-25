@@ -8,6 +8,7 @@ from source.handlers.file_handler import load_file
 from source.handlers.image_handler import overblit_button_image
 
 
+
 class GameConfig:
     def __init__(self):
         # Load settings from a JSON file
@@ -39,6 +40,7 @@ class GameConfig:
         self.debug = False
         self.enable_orbit = True
         self.enable_game_events = self.settings["enable_game_events"]
+        self.enable_autopilot = False
         self.show_orbit = True
         self.show_grid = False
         self.show_map_panel = True
@@ -54,6 +56,8 @@ class GameConfig:
         self.ui_panel_alpha = self.settings["ui_panel_alpha"]
         self.draw_universe = True
         self.universe_density = 25
+
+        self.view_explored_planets = True
 
         self.selected_monitor = 1
 
@@ -71,6 +75,15 @@ class GameConfig:
 
         # Initialize pygame and window
         self.init_window()
+
+    @property
+    def enable_autopilot(self):
+        return self._enable_autopilot
+
+    @enable_autopilot.setter
+    def enable_autopilot(self, value):
+        self._enable_autopilot = value
+
 
     def init_window_(self):
         # Call the GetSystemMetrics function with index 80 to get the number of monitors

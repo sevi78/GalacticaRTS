@@ -1,4 +1,4 @@
-
+import copy
 import time
 import traceback
 
@@ -13,9 +13,12 @@ from source.factories.ship_factory import ShipFactory
 from source.game_play.cheat import Cheat
 from source.game_play.enemy_handler import enemy_handler
 from source.game_play.game_logic import GameLogic
-from source.game_play.navigation import navigate_to
+from source.game_play.navigation import navigate_to, navigate_to_ship_by_offset_index, \
+    navigate_to_planet_by_offset_index
 from source.gui.event_text import event_text
 from source.gui.panels.map_panel import MapPanel
+from source.gui.widgets.buttons.image_button import ImageButton
+from source.gui.widgets.container_widget import ContainerWidget, ContainerWidgetItem, WIDGET_SIZE
 from source.gui.widgets.image_widget import ImageSprite
 from source.handlers.economy_handler import economy_handler
 from source.handlers.file_handler import load_file
@@ -95,6 +98,7 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
 
         self._selected_planet = None
         self.select_image = ImageSprite(0, 0, 25, 25, get_image("check.png"), "state_images", parent=self)
+        self.sprite_groups = sprite_groups
 
     @property
     def selected_planet(self):
@@ -197,6 +201,12 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
 
         # cheat
         self.cheat(events)
+
+        # self.ship_container.listen(events)
+        # self.ship_container.draw()
+        #
+        # self.planet_container.listen(events)
+        # self.planet_container.draw()
 
         # # store planet positions
         # self.save_load(events)
@@ -303,6 +313,17 @@ def main():
     # create map
     width, height = app.info_panel.world_width, app.info_panel.world_width
     app.map_panel = MapPanel(app.win, app.info_panel.world_x, app.win.get_size()[1] - width, width, height)
+
+    # containers
+    app.ship_container = ContainerWidget(
+        app.win, 220, 60, WIDGET_SIZE + 6, 300,
+        sprite_groups.convert_sprite_groups_to_image_widget_list(sprite_groups.ships.sprites()),
+        function=navigate_to_ship_by_offset_index, layer=10, group="containers")
+
+    app.planet_container = ContainerWidget(
+        app.win, 260, 60, WIDGET_SIZE + 6, 300,
+        sprite_groups.convert_sprite_groups_to_image_widget_list(sprite_groups.planets.sprites()),
+        function=navigate_to_planet_by_offset_index, layer=10, group="containers")
 
     # start game loop
     app.loop()

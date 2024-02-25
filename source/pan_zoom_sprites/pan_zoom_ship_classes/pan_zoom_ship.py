@@ -18,7 +18,6 @@ from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.handlers.position_handler import prevent_object_overlap
 from source.handlers.weapon_handler import WeaponHandler
 from source.handlers.widget_handler import WidgetHandler
-from source.interaction.interaction_handler import InteractionHandler
 from source.interfaces.interface import InterfaceData
 from source.multimedia_library.images import get_image
 from source.multimedia_library.sounds import sounds
@@ -33,7 +32,7 @@ from source.pan_zoom_sprites.pan_zoom_target_object import PanZoomTargetObject
 from source.text.text_formatter import format_number
 
 
-class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZoomShipRanking, PanZoomShipDraw, InteractionHandler, PanZoomShipInteraction, InterfaceData):
+class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZoomShipRanking, PanZoomShipDraw, PanZoomShipInteraction,  InterfaceData):
     # __slots__ = PanZoomGameObject.__slots__ + ('item_collect_distance', 'orbit_direction', 'speed', 'id', 'property',
     #                                            'rotate_correction_angle', 'orbit_object', 'orbit_angle', 'collect_text',
     #                                            'target_object', 'target_object_reset_distance_raw',
@@ -95,7 +94,8 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         PanZoomShipRanking.__init__(self)
         # PanZoomShipButtons.__init__(self)
         PanZoomShipDraw.__init__(self, kwargs)
-        InteractionHandler.__init__(self)
+
+        #InteractionHandler.__init__(self)
         PanZoomShipInteraction.__init__(self)
 
         # init vars
@@ -216,7 +216,7 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         self.orbit_radius = 100 + self.id * 30
 
     def set_target(self):
-        target = mouse_handler.get_hit_object()
+        target = sprite_groups.get_hit_object()
         if target == self:
             return
 
@@ -496,6 +496,8 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
                         else:
                             self.select(True)
 
+
+
                 if mouse_state == MouseState.LEFT_RELEASE and self.clicked:
                     self.clicked = False
 
@@ -515,6 +517,7 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
 
                     self.weapon_handler.draw_attack_distance()
             else:
+                # not mouse over object
                 self.clicked = False
 
                 if mouse_state == MouseState.LEFT_CLICK:
@@ -531,8 +534,8 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
                     if self.selected:
                         self.set_target()
                         self.orbit_object = None
-                        if mouse_handler.get_hit_object():
-                            self.set_energy_reloader(mouse_handler.get_hit_object())
+                        if sprite_groups.get_hit_object():
+                            self.set_energy_reloader(sprite_groups.get_hit_object())
 
     def open_weapon_select(self):
         self.set_info_text()
@@ -540,6 +543,9 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
             config.app.weapon_select.set_visible()
         else:
             config.app.weapon_select.obj = self
+
+
+
 
     def update(self):
         self.state_engine.update()
@@ -556,6 +562,7 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
             if config.app.weapon_select._hidden:
                 scope.draw_scope(self.rect.center, self.get_max_travel_range(), {"energy use": format_number(pre_calculated_energy_use, 1)})
 
+                scope.draw_range(self)
         self.set_distances()
 
         # also setting the info text is questionable every frame
@@ -621,8 +628,13 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
             # reload ship
             self.reload_ship()
 
+
         if self.autopilot:
             self.autopilot_handler.update()
+
+        if config.enable_autopilot:
+            if not self.autopilot:
+                self.autopilot = config.enable_autopilot
 
         # consume energy for traveling
         self.consume_energy_if_traveling()
@@ -631,5 +643,8 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         # make shure this is the last task, otherwise it would work(propbably)
         self.previous_position = (self.world_x, self.world_y)
 
+
     def draw(self):  # unused
         print("drawing ---")
+
+

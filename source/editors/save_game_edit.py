@@ -4,7 +4,9 @@ import pygame
 
 from source.editors.editor_base.editor_base import EditorBase
 from source.editors.editor_base.editor_config import TOP_SPACING
+from source.game_play.navigation import navigate_to_ship_by_offset_index
 from source.gui.widgets.buttons.image_button import ImageButton
+from source.gui.widgets.container_widget import ContainerWidget
 from source.handlers.file_handler import write_file, abs_games_path, \
     generate_json_filename_based_on_datetime, get_games_list, move_file_to_trash
 from source.multimedia_library.images import get_image
@@ -19,13 +21,23 @@ class SaveGameEdit(EditorBase):
         self.games_icons = []
         self.current_game = "not set !"
         self.max_height = 700
-        # create widgets
 
+        # create widgets
         self.create_save_button(lambda: self.save_game(), "save game", name="save_button")
         self.create_load_button(lambda: self.load_game(self.current_game), "load game", name="load_button")
         self.create_delete_button(lambda: self.delete_game(self.current_game), "delete game, no undo !!!", name="delete_button")
         self.create_games_icons()
         self.create_close_button()
+
+        # self.container = ContainerWidget(
+        #     win=self.win,
+        #     x=self.get_screen_x(),
+        #     y=self.get_screen_y(),
+        #     width=self.get_screen_width(),
+        #     height=self.get_screen_height(),
+        #     widgets=self.games_icons,
+        #     function=navigate_to_ship_by_offset_index,
+        #     parent=self)
 
         # hide initially
         self.hide()
@@ -61,6 +73,8 @@ class SaveGameEdit(EditorBase):
             self.widgets.remove(i)
             self.buttons.remove(i)
         self.games_icons = []
+        # if hasattr(self, "container"):
+        #     self.container.widgets = self.games_icons  # Add this line
 
     def create_games_icons(self):
         self.delete_games_icons()
@@ -98,6 +112,8 @@ class SaveGameEdit(EditorBase):
             self.widgets.append(icon)
             self.games_icons.append(icon)
             self.reposition_buttons()
+        # if hasattr(self, "container"):
+        #     self.container.widgets = self.games_icons  # Add this line
 
     def set_current_game(self, value):
         self.current_game = value
@@ -141,8 +157,15 @@ class SaveGameEdit(EditorBase):
         if not self._hidden and not self._disabled:
             self.handle_hovering()
             self.drag(events)
+            # self.container.listen(events)
+            # self.container.widgets = self.games_icons
 
     def draw(self):
         if not self._hidden and not self._disabled:
             self.draw_frame()
             self.draw_text(self.world_x + self.text_spacing, self.world_y + TOP_SPACING + self.text_spacing, 200, 25, f"Current Game: {self.current_game}")
+
+
+            # self.container.set_x(self.screen_x)
+            # self.container.set_y(self.screen_y)
+            # self.container.draw()

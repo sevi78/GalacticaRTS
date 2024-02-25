@@ -291,7 +291,7 @@ class EditorBase(WidgetBase):
     def draw_frame(self):
         height = self.max_height
         self.frame = pygame.transform.scale(self.frame, (self.get_screen_width(), height))
-        rect = (self.world_x, self.world_y + 60, self.frame.get_rect().width, self.frame.get_rect().height)
+        rect = (self.world_x, self.world_y + TOP_SPACING, self.frame.get_rect().width, self.frame.get_rect().height)
         draw_transparent_rounded_rect(self.win, (0, 0, 0), rect,
             config.ui_rounded_corner_radius_big, config.ui_panel_alpha)
         pygame.draw.rect(self.win, self.frame_color, rect,

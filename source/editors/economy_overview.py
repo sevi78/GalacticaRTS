@@ -42,19 +42,23 @@ class EconomyOverview(EditorBase):
                        self.world_y + (BUTTON_SIZE * 2 * list(data[building_name]).index(key)))
                 size = (BUTTON_SIZE, BUTTON_SIZE)
                 self.draw_image(pos, size, image)
-
     def draw_buildings(self):
+        x_lines = [1920/n for n in range(1, 10)]
+        y_lines = [1080/n for n in range(1, 10)]
+
         data = OrderedDict(self.data)
         for index, (building_name, dict_) in enumerate(data.items()):
-            pos = (self.world_x + (BUTTON_SIZE * 2 * index), self.world_y + 200)
+            pos = (x_lines[0], y_lines[index])
             size = (BUTTON_SIZE, BUTTON_SIZE)
             image = get_image(f"{building_name}_25x25.png")
             self.draw_image(pos, size, image)
+
             for key_index, (key, value) in enumerate(dict_.items()):
                 image = get_image(f"{key}_25x25.png")
-                pos = (self.world_x + (BUTTON_SIZE * 2 * key_index) * key_index,
-                       self.world_y + (BUTTON_SIZE * 2 * key_index))
+                pos = (x_lines[key_index + 1],
+                       y_lines[index])
                 self.draw_image(pos, size, image)
+
 
     # def create_buttons(self):
     #     y = self.world_y

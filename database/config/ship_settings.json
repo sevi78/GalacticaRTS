@@ -94,5 +94,37 @@
         "upgrade_factor_max": 3.0,
         "water": 0,
         "water_max": 400
-    }
+    },
+    "spacestation": {
+        "attack_distance_raw": 200,
+        "crew": 150,
+        "crew_max": 350,
+        "desired_orbit_radius_raw": 100,
+        "energy": 10000,
+        "energy_max": 10000,
+        "energy_use": -1,
+        "energy_use_max": 0,
+        "energy_reload_rate": 0.1,
+        "fog_of_war_radius": 1000,
+        "fog_of_war_radius_max": 300,
+        "food": 5000,
+        "food_max": 10000,
+        "min_dist_to_other_ships": 100,
+        "min_dist_to_other_ships_max": 200,
+        "minerals": 5000,
+        "minerals_max": 10000,
+        "orbit_radius": 130,
+        "orbit_radius_max": 300,
+        "orbit_speed": 0.5,
+        "orbit_speed_max": 0.6,
+        "reload_max_distance_raw": 300,
+        "speed": 1.5,
+        "speed_max": 2.5,
+        "technology": 5000,
+        "technology_max": 10000,
+        "upgrade_factor": 1.5,
+        "upgrade_factor_max": 3.0,
+        "water": 5000,
+        "water_max": 10000}
+
 }

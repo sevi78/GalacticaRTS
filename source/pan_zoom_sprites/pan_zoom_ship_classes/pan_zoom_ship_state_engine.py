@@ -58,8 +58,13 @@ class PanZoomShipStateEngine:
         #     self.image.setImage(self.autopilot_image)
 
         else:
-            self.state_image.set_image(self.sleep_image)
-            self.state_image.image.set_alpha(130)
+            if hasattr(self.parent, "autopilot"):
+                if self.parent.autopilot:
+                    self.state_image.set_image(self.autopilot_image)
+                    self.state_image.image.set_alpha(255)
+            else:
+                self.state_image.set_image(self.sleep_image)
+                self.state_image.image.set_alpha(130)
 
     def draw_rank_image(self) -> None:
         # set image

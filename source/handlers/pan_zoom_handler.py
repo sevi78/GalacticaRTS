@@ -2,9 +2,7 @@ import pygame as pg
 import pygame.transform
 
 from source.configuration.game_config import config
-
-
-# from source.handlers.value_handler import ValueHandler, ValueSmoother
+from source.gui.widgets.container_widget import ContainerWidget
 
 
 class PanZoomHandler:  # original
@@ -119,17 +117,20 @@ class PanZoomHandler:  # original
             # mouse
             if event.type == pg.MOUSEBUTTONDOWN:  # and self.ctrl_pressed:
                 if event.button in [4, 5]:
-                    # X and Y before the zoom
-                    self._set_mouse_world_before(mouse_x, mouse_y)
+                    # check if containers at mouse position to avoid strange double behaviour
+                    if not isinstance(config.hover_object, (ContainerWidget, str)):
+                        # X and Y before the zoom
 
-                    # ZOOM IN/OUT
-                    self._zoom_in_out(event)
+                        self._set_mouse_world_before(mouse_x, mouse_y)
 
-                    # X and Y after the zoom
-                    self._set_mouse_world_after(mouse_x, mouse_y)
+                        # ZOOM IN/OUT
+                        self._zoom_in_out(event)
 
-                    # Do the difference between before and after, and add it to the offset
-                    self._set_world_offset()
+                        # X and Y after the zoom
+                        self._set_mouse_world_after(mouse_x, mouse_y)
+
+                        # Do the difference between before and after, and add it to the offset
+                        self._set_world_offset()
 
                 elif event.button == 2:
                     # PAN START

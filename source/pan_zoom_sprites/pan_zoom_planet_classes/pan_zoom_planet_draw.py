@@ -50,9 +50,21 @@ class PanZoomPlanetDraw:
             w = 30
             #pygame.draw.circle(self.win, self.average_color, self.rect.center, 5, 1)
             #draw_cross_in_circle(self.win, self.average_color, self.rect.center, CROSS_RADIUS)
-            if config.enable_cross:
-                draw_dashed_cross_in_circle(self.win, self.average_color, self.rect.center, CROSS_RADIUS, 1, DASH_LENGHT)
+            self.draw_cross()
 
+    def draw_cross(self):
+        if config.enable_cross:
+            color = self.average_color
+            if config.view_explored_planets:
+                if self.explored:
+                    color = pygame.color.THECOLORS.get("green")
+
+            draw_dashed_cross_in_circle(self.win, color, self.rect.center, CROSS_RADIUS, 1, DASH_LENGHT)
+        else:
+            if config.view_explored_planets:
+                if self.explored:
+                    color = pygame.color.THECOLORS.get("green")
+                    draw_dashed_cross_in_circle(self.win, color, self.rect.center, CROSS_RADIUS, 1, DASH_LENGHT)
 
     def draw_hover_circle(self):
         panzoom = pan_zoom_handler

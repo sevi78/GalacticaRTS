@@ -3,6 +3,7 @@ import math
 import pygame
 
 from source.configuration.game_config import config
+from source.draw.circles import draw_dashed_circle
 from source.draw.dashed_line import draw_dashed_line
 from source.handlers.color_handler import colors
 from source.handlers.pan_zoom_handler import pan_zoom_handler
@@ -23,6 +24,7 @@ class Scope:
         self.hover_color = colors.hover_color
         self.warn_color = pygame.color.THECOLORS.get("red")
         self.warn_image = get_image("warning.png")
+        self.distance = 1
 
     def draw_text(self, x, y, color, text: str):
         text = self.font.render(text, 1, color)
@@ -31,6 +33,10 @@ class Scope:
     def draw_warning_image(self, x, y):
         self.win.blit(self.warn_image, (x, y))
 
+    def draw_range(self, obj):
+        max_range = obj.energy / obj.energy_use
+        draw_dashed_circle(self.win, self.base_color, obj.rect.center, max_range * pan_zoom_handler.zoom, 25 )
+
     def draw_scope(self, start_pos: tuple, range_: float, info: dict) -> bool:
         """
         draws line to mouse position and draws the scope and some info text
@@ -38,10 +44,10 @@ class Scope:
 
         # handle different colors depending on distance and hover object
         mouse_x, mouse_y = pygame.mouse.get_pos()
-        distance = math.dist(start_pos, (mouse_x, mouse_y)) / pan_zoom_handler.zoom
+        self.distance = math.dist(start_pos, (mouse_x, mouse_y)) / pan_zoom_handler.zoom
 
         # handle range
-        is_inside_range = distance <= range_
+        is_inside_range = self.distance <= range_
         # if hover over a possible target -> green
         if config.hover_object:
             color = self.hover_color
@@ -83,7 +89,7 @@ class Scope:
 
         # text
         y = 0
-        self.draw_text(mouse_x + SCOPE_SIZE, mouse_y - SCOPE_SIZE - self.font_size - 2, color, f"distance: {format_number(distance * 1000, 1)}")
+        self.draw_text(mouse_x + SCOPE_SIZE, mouse_y - SCOPE_SIZE - self.font_size - 2, color, f"distance: {format_number(self.distance * 1000, 1)}")
         for key, value in info.items():
             self.draw_text(mouse_x + SCOPE_SIZE, mouse_y - y - SCOPE_SIZE, color, f"{key}: {value}")
             y += SCOPE_SIZE

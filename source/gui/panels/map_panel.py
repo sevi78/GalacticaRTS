@@ -408,6 +408,12 @@ class MapPanel:
                 # planets, sun, moons
                 if sprite.property == "planet" and self.show_planets:
                     radius = sprite.world_width / self.factor if sprite.world_width / self.factor > MIN_OBJECT_SIZE else MIN_OBJECT_SIZE
+
+                    if sprite.explored and config.view_explored_planets:
+                        color = pygame.color.THECOLORS.get("green")
+
+
+
                     self.draw_object(pos, radius, color, sprite, surface)
                     self.draw_image(pos, size, sprite.image_raw)
 
