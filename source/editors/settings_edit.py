@@ -3,10 +3,11 @@ import pygame
 from source.configuration.game_config import config
 from source.editors.editor_base.editor_base import EditorBase
 from source.editors.editor_base.editor_config import ARROW_SIZE, FONT_SIZE, TOP_SPACING
+from source.gui.event_text import event_text
 from source.gui.widgets.selector import Selector
 from source.gui.widgets.slider import Slider
 from source.handlers.color_handler import colors
-from source.handlers.file_handler import write_file, load_file
+from source.handlers.file_handler import write_file
 from source.handlers.widget_handler import WidgetHandler
 
 ARROW_SIZE = 20
@@ -23,9 +24,9 @@ class SettingsEdit(EditorBase):
         self.current_font = None
         self.font_name_list = pygame.sysfont.get_fonts()
         self.boolean_list = [True, False]
-        self.selector_lists = {}
 
-        self.selector_lists = {"player":[_ for _ in range(config.players)],
+        self.default_list = [_ for _ in range(100)]
+        self.selector_lists = {"player": [_ for _ in range(config.players)],
                                "fps": [25, 60, 90, 120, 1000],
                                "enable_game_events": self.boolean_list,
                                "draw_universe": self.boolean_list,
@@ -61,8 +62,8 @@ class SettingsEdit(EditorBase):
         x = self.world_x - ARROW_SIZE / 2 + self.world_width / 2
         y = 130
 
-        for key, value in config.editable_params.items():
-            # booleans
+        # for key, value in config.editable_params.items():
+        for key, value in config.settings.items():  # booleans
             if type(value) is bool:
                 self.selector_lists[key] = self.boolean_list
                 self.selectors.append(Selector(self.win, x, self.world_y + y, ARROW_SIZE, self.frame_color, 9,
@@ -72,6 +73,9 @@ class SettingsEdit(EditorBase):
 
             # integers
             if type(value) is int:
+                if not key in self.selector_lists.keys():
+                    self.selector_lists[key] = self.default_list
+
                 self.selectors.append(Selector(self.win, x, self.world_y + y, ARROW_SIZE, self.frame_color, 9,
                     self.spacing_x, {"list_name": f"{key}_list", "list": self.selector_lists[key]}, self, FONT_SIZE,
                     repeat_clicks=True))
@@ -111,10 +115,7 @@ class SettingsEdit(EditorBase):
                 layer=self.layer,
                 parent=self)
 
-
-
             slider.colour = colors.ui_darker
-
 
             y += self.spacing_y
 
@@ -164,12 +165,13 @@ class SettingsEdit(EditorBase):
             config.app.tooltip_instance.font_size = value
             config.app.tooltip_instance.font = pygame.font.SysFont(config.font_name, config.app.tooltip_instance.font_size)
 
+        elif key == "ui_event_text_size":
+            event_text.event_text_font_size = value
+
         else:
             setattr(config, key, value)
             if key == "player":
                 config.app.player = config.app.players[value]
-
-
 
     def save_settings(self):
         data = {}

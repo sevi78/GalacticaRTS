@@ -64,7 +64,7 @@ class ToolTip(WidgetBase):
         self.font = pygame.font.SysFont(config.font_name, self.font_size)
         self.text_img = None
         self.txt_rect = None
-        self.active = True
+        self.active = config.ui_tooltip_enabled
 
         self.frame = Frame(self.win, self.world_x, self.world_y, self.world_width, self.world_height)
 

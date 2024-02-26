@@ -94,7 +94,8 @@ class SpriteGroups:  # original
 
         if WidgetHandler.layer_switch["0"]:
             self.planets.draw(surface)
-            WidgetHandler.draw_layer(events, 0)
+            if config.show_universe:
+                WidgetHandler.draw_layer(events, 0)
             self.gif_handlers.draw(surface)
 
         if WidgetHandler.layer_switch["1"]:

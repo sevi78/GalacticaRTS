@@ -1,15 +1,8 @@
 import pygame
 
+from source.configuration.game_config import config
 from source.draw.rect import draw_transparent_rounded_rect
 from source.handlers.color_handler import colors
-
-config = {
-    "ui_panel_alpha": 220,
-    "ui_rounded_corner_big_thickness": 3,
-    "ui_rounded_corner_radius_big": 30,
-    "ui_rounded_corner_radius_small": 9,
-    "ui_rounded_corner_small_thickness": 1
-    }
 
 
 class Frame:
@@ -23,13 +16,13 @@ class Frame:
         self.surface = pygame.surface.Surface((self.world_width, self.world_height))
         self.rect = self.surface.get_rect()
         self.rect.x, self.rect.y = self.world_x, self.world_y
-        self.ui_rounded_corner_radius_big = config["ui_rounded_corner_radius_big"]
-        self.ui_rounded_corner_radius_small = config["ui_rounded_corner_radius_small"]
-        self.ui_rounded_corner_big_thickness = config["ui_rounded_corner_big_thickness"]
-        self.ui_rounded_corner_small_thickness = config["ui_rounded_corner_small_thickness"]
-        self.ui_panel_alpha = config["ui_panel_alpha"]
-        self.ui_rounded_corner_radius = config["ui_rounded_corner_radius_small"]
-        self.ui_rounded_corner_thickness = config["ui_rounded_corner_small_thickness"]
+        self.ui_rounded_corner_radius_big = config.ui_rounded_corner_radius_big
+        self.ui_rounded_corner_radius_small = config.ui_rounded_corner_radius_small
+        self.ui_rounded_corner_big_thickness = config.ui_rounded_corner_big_thickness
+        self.ui_rounded_corner_small_thickness = config.ui_rounded_corner_small_thickness
+        self.ui_panel_alpha = config.ui_panel_alpha
+        self.ui_rounded_corner_radius = config.ui_rounded_corner_radius_small
+        self.ui_rounded_corner_thickness = config.ui_rounded_corner_small_thickness
         self.frame_border = 10
 
     def update_position(self, pos):

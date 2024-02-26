@@ -9,13 +9,17 @@ from source.handlers.image_handler import overblit_button_image
 
 
 class GameConfig:
+    """
+    simply write new elements into settings.json
+    """
     def __init__(self):
         # Load settings from a JSON file
-
         self.settings = load_file("settings.json", "config")
+        for key, value in self.settings.items():
+            setattr(self, key, value)
 
         # Initialize configuration variables
-        self.font_name = self.settings["font_name"]
+        # self.font_name = self.settings["font_name"]
         self.width = 1920
         self.height = 1080
         self.width_minimized = 1920
@@ -25,11 +29,11 @@ class GameConfig:
         self.moveable = True
         self.app = None
         self.players = 2
-        self.player = None
+        self.player = 0
         self.tooltip_text = ""
         self.game_paused = False
-        self.game_speed = self.settings["game_speed"]
-        self.fps = int(self.settings["fps"])
+        # self.game_speed = self.settings["game_speed"]
+        # self.fps = int(self.settings["fps"])
         self.scene_width = 14000
         self.scene_height = 14000
         self.quadrant_amount = 1
@@ -39,7 +43,7 @@ class GameConfig:
         self.cross_view_start = 0.2
         self.debug = False
         self.enable_orbit = True
-        self.enable_game_events = self.settings["enable_game_events"]
+        # self.enable_game_events = self.settings["enable_game_events"]
         self.enable_autopilot = False
         self.show_orbit = True
         self.show_grid = False
@@ -49,38 +53,20 @@ class GameConfig:
         self.hover_object = None
         self.edit_mode = False
         self.show_overview_buttons = True
-        self.ui_rounded_corner_radius_small = self.settings["ui_rounded_corner_radius_small"]
-        self.ui_rounded_corner_radius_big = self.settings["ui_rounded_corner_radius_big"]
-        self.ui_rounded_corner_small_thickness = self.settings["ui_rounded_corner_small_thickness"]
-        self.ui_rounded_corner_big_thickness = self.settings["ui_rounded_corner_big_thickness"]
-        self.ui_panel_alpha = self.settings["ui_panel_alpha"]
-        self.ui_cross_size = self.settings["ui_cross_size"]
-        self.ui_cross_dash_length = self.settings["ui_cross_dash_length"]
-        self.ui_cross_thickness = self.settings["ui_cross_thickness"]
-        self.ui_tooltip_size = self.settings["ui_tooltip_size"]
+        # self.ui_rounded_corner_radius_small = self.settings["ui_rounded_corner_radius_small"]
+        # self.ui_rounded_corner_radius_big = self.settings["ui_rounded_corner_radius_big"]
+        # self.ui_rounded_corner_small_thickness = self.settings["ui_rounded_corner_small_thickness"]
+        # self.ui_rounded_corner_big_thickness = self.settings["ui_rounded_corner_big_thickness"]
+        # self.ui_panel_alpha = self.settings["ui_panel_alpha"]
+        # self.ui_cross_size = self.settings["ui_cross_size"]
+        # self.ui_cross_dash_length = self.settings["ui_cross_dash_length"]
+        # self.ui_cross_thickness = self.settings["ui_cross_thickness"]
+        # self.ui_tooltip_size = self.settings["ui_tooltip_size"]
         self.draw_universe = True
         self.universe_density = 25
-
         self.view_explored_planets = True
-
         self.selected_monitor = 1
 
-        # set a list of editable params for setting_editor
-        self.editable_params = {"player": 0,
-                                "fps": self.fps,
-                                "enable_game_events": self.enable_game_events,
-                                "draw_universe": self.draw_universe,
-                                "ui_panel_alpha": self.ui_panel_alpha,
-                                "ui_rounded_corner_radius_small": self.ui_rounded_corner_radius_small,
-                                "ui_rounded_corner_radius_big": self.ui_rounded_corner_radius_big,
-                                "ui_rounded_corner_small_thickness": self.ui_rounded_corner_small_thickness,
-                                "ui_rounded_corner_big_thickness": self.ui_rounded_corner_big_thickness,
-                                "ui_cross_size": self.ui_cross_size,
-                                "ui_cross_dash_length": self.ui_cross_dash_length,
-                                "ui_cross_thickness": self.ui_cross_thickness,
-                                "ui_tooltip_size": self.ui_tooltip_size,
-                                "game_speed": self.game_speed
-                                }
 
         # Initialize pygame and window
         self.init_window()

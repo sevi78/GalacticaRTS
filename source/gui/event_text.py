@@ -6,7 +6,6 @@ from source.text.text_wrap import TextWrap
 
 pygame.font.init()
 
-EVENT_TEXT_HEIGHT = 20
 EVENT_TEXT_FADE = True
 TEXT_DISPLAY_UPDATE = 15000
 TEXT_LINES = 4
@@ -60,7 +59,7 @@ class EventText(TextWrap):
         self.last_update_time = pygame.time.get_ticks()
         self.texts = []
         self._text = None
-        self.event_text_font_size = EVENT_TEXT_HEIGHT
+        self.event_text_font_size = config.ui_event_text_size
         self.event_text_font = pygame.font.SysFont(config.font_name, self.event_text_font_size)
         self.text_count = 0
         self.prefix = "GPT-1357: "
@@ -70,6 +69,14 @@ class EventText(TextWrap):
 
         self.event_display_text = ''.join([self.prefix, self.text])
 
+    @property
+    def event_text_font_size(self):
+        return self._event_text_font_size
+
+    @event_text_font_size.setter
+    def event_text_font_size(self, value):
+        self._event_text_font_size = value
+        self.event_text_font = pygame.font.SysFont(config.font_name, self.event_text_font_size)
     @property
     def text(self):
         return self._text
@@ -94,27 +101,28 @@ class EventText(TextWrap):
 
         # Remove the square brackets from the string representation of the list
         self.event_display_text = last_texts.replace("[", "").replace("]", "")
-        self.new_bottom = pygame.display.get_surface().get_height() - EVENT_TEXT_HEIGHT * 2 - (
-                EVENT_TEXT_HEIGHT * len(self.texts))
+        self.new_bottom = pygame.display.get_surface().get_height() - config.ui_event_text_size * 2 - (
+                config.ui_event_text_size * len(self.texts))
 
         # set alpha value
         self.alpha = 255
 
     def update(self):
-        if config.edit_mode:
-            if config.app.weapon_select._hidden:
-                return
+        # if config.edit_mode:
+        #     if config.app.weapon_select._hidden:
+        #         return
 
-        if pygame.time.get_ticks() > self.last_update_time + TEXT_DISPLAY_UPDATE:
-            if self.alpha > 0:
-                self.alpha -= 1
-            else:
-                self.last_update_time = pygame.time.get_ticks()
+        if config.ui_event_text_fade:
+            if pygame.time.get_ticks() > self.last_update_time + TEXT_DISPLAY_UPDATE:
+                if self.alpha > 0:
+                    self.alpha -= 1
+                else:
+                    self.last_update_time = pygame.time.get_ticks()
 
         # set x position if the map is visible
         x = config.app.ui_helper.left + config.app.map_panel.world_width if config.app.map_panel.visible else config.app.ui_helper.left
         self.wrap_text(self.win, self.event_display_text, (x, self.new_bottom),
-            (config.app.ui_helper.world_width, EVENT_TEXT_HEIGHT), self.event_text_font, colors.ui_dark,
+            (config.app.ui_helper.world_width, config.ui_event_text_size), self.event_text_font, colors.ui_dark,
             fade_out=EVENT_TEXT_FADE, alpha=self.alpha)
 
 
