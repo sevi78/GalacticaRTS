@@ -19,7 +19,7 @@ class GameTime(WidgetBase):
         super().__init__(win, x, y, width, height, isSubWidget, **kwargs)
         self.time_warp_text = None
         self.clockslider_height = 7
-        self.game_speed = 1
+        self.game_speed = config.game_speed
         self.world_year = int(datetime.timestamp(datetime.now()))
         self.bg_color = pygame.colordict.THECOLORS["black"]
         self.frame_color = colors.frame_color

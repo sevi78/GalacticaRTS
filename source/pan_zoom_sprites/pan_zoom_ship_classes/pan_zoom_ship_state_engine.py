@@ -90,7 +90,7 @@ class PanZoomShipStateEngine:
         else:
             self.rank_image.hide()
             self.state_image.hide()
-            draw_dashed_cross_in_circle(self.parent.win, self.parent.frame_color, self.parent.get_screen_position(), 12, 2, DASH_LENGHT/2)
+            draw_dashed_cross_in_circle(self.parent.win, self.parent.frame_color, self.parent.get_screen_position(), config.ui_cross_size, config.ui_cross_thickness, config.ui_cross_dash_length/2)
             #self.parent.win.blit(self.parent.image_outline, (self.parent.rect.x, self.parent.rect.y, 15,15))
 
 

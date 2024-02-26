@@ -1,12 +1,7 @@
-tifffile==2023.9.26
-pygame-menu==4.4.3
-pywin32-ctypes==0.2.2
-trove-classifiers==2023.9.19
-certifi==2023.7.22
-platformdirs==3.11.0
-pygame-widgets==1.1.1
 psutil==5.9.6
-fuzzywuzzy==0.18.0
 pygame==2.5.2
-importlib-resources==6.1.0
-jsonschema-specifications==2023.7.1
+
+matplotlib~=3.8.2
+networkx~=3.2.1
+Send2Trash~=1.8.2
+Pillow~=10.0.1

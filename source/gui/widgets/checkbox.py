@@ -36,7 +36,7 @@ class Checkbox(ImageButton):
         if not self.image:
             try:
                 self.image = pygame.transform.scale(
-                    images[pictures_path]["resources"][self.key + "_25x25.png"], (self.button_size, self.button_size))
+                    get_image(self.key + "_25x25.png"), (self.button_size, self.button_size))
             except KeyError:
                 try:
                     self.image = pygame.transform.scale(

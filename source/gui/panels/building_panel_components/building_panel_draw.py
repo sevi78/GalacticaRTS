@@ -59,13 +59,9 @@ class BuildingPanelDraw:
         self.win.blit(self.smiley, (x - 1, self.world_y))
 
         # draw background planet icon
-        name = self.parent.selected_planet.name
-        pic = name + "_150x150.png"
-        if pic in images[pictures_path]["planets"].keys():
-            self.planet_image = get_image(pic)
-        else:
-            self.planet_image = pygame.transform.scale(self.parent.selected_planet.image_raw.copy(), (150, 150))
+        image_name = self.parent.selected_planet.image_name_big
 
+        self.planet_image = pygame.transform.scale(self.parent.selected_planet.image_raw, (150, 150))
         self.planet_image.set_alpha(128)
         self.win.blit(self.planet_image, self.surface_rect.midtop)
         self.world_y += self.spacing * 3
@@ -167,7 +163,7 @@ class BuildingPanelDraw:
         resources = self.parent.resources
         for r in resources:
             image = pygame.transform.scale(
-                images[pictures_path]["resources"][r + "_25x25.png"], self.resource_image_size)
+                get_image(r + "_25x25.png"), self.resource_image_size)
             self.win.blit(image, (x, self.world_y))
 
             # draw specials
@@ -199,7 +195,7 @@ class BuildingPanelDraw:
         self.world_y += self.spacing * 3
         for r in resources:
             image = pygame.transform.scale(
-                images[pictures_path]["resources"][r + "_25x25.png"], self.resource_image_size)
+                get_image(r + "_25x25.png"), self.resource_image_size)
             self.win.blit(image, (x, self.world_y))
             value = self.parent.player.production[r]
             text = self.font.render(r + ": " + str(value), True, self.frame_color)

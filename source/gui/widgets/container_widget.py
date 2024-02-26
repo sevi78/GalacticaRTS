@@ -2,6 +2,8 @@ import copy
 import math
 
 import pygame
+
+from source.editors.editor_base.editor_config import TOP_SPACING
 from source.gui.widgets.frame import Frame
 from source.gui.widgets.scroll_bar import ScrollBar
 from source.handlers.mouse_handler import mouse_handler
@@ -19,17 +21,19 @@ config = {
 
 
 class ContainerWidgetItem:
-    def __init__(self, win, x, y, width, height, image, **kwargs):
+    def __init__(self, win, x, y, width, height, image, index, **kwargs):
         self.win = win
         self.world_x = x
         self.world_y = y
         self.image_raw = image
         self.image = pygame.transform.scale(image, (width, height))
         self.rect = self.image.get_rect(topleft=(x, y))
+        self.index = index
         self.world_width = width
         self.world_height = height
         self._hidden = False
         self.obj = kwargs.get("obj", None)
+
 
     def set_position(self, pos):
         self.world_x, self.world_y = pos
@@ -45,6 +49,9 @@ class ContainerWidgetItem:
         self.rect.topleft = (self.world_x, self.world_y)
         if not self._hidden:
             self.win.blit(self.image, self.rect)
+
+            # if self.obj:
+            #     print(f"obj:{self.obj}, obj.name:{self.obj.name}, obj.id: {self.obj.id}")
 
 
 class ContainerWidget(InteractionHandler):
@@ -69,6 +76,7 @@ class ContainerWidget(InteractionHandler):
         self.parent = kwargs.get("parent", None)
         self.group = kwargs.get("group", None)
         self.layer = kwargs.get("layer", 10)
+        self.name = kwargs.get("name", "container")
         self.isSubWidget = True
         self._hidden = True
 
@@ -104,7 +112,7 @@ class ContainerWidget(InteractionHandler):
         if widgets:
             if not isinstance(widgets[0], ContainerWidgetItem):
                 self.set_widgets([ContainerWidgetItem(self.win, 0, WIDGET_SIZE * index, WIDGET_SIZE, WIDGET_SIZE,
-                    image=copy.copy(_.image_raw), obj=_) for index, _ in enumerate(widgets)])
+                    image=copy.copy(_.image_raw), index=index, obj=_) for index, _ in enumerate(widgets)])
             else:
                 self.widgets = widgets
 
@@ -137,9 +145,9 @@ class ContainerWidget(InteractionHandler):
     def get_scroll_step(self) -> int:
         return self.widgets[0].world_height
 
-    def select(self, rel_offset_y):
+    def select(self):
         # set index
-        self.offset_index = math.floor(rel_offset_y / WIDGET_SIZE)
+
         # print(f"self.offset_index: {self.offset_index}")
         # print(f"self.function: {self.function}")
 
@@ -193,7 +201,7 @@ class ContainerWidget(InteractionHandler):
 
     def set_visible(self):
         self._hidden = not self._hidden
-        self.world_x, self.world_y = pygame.mouse.get_pos()
+        self.world_x, self.world_y = pygame.mouse.get_pos()[0], TOP_SPACING
 
     def listen(self, events):
         if self._hidden:
@@ -228,7 +236,11 @@ class ContainerWidget(InteractionHandler):
                     if self.rect.collidepoint(event.pos):
                         offset_y = mouse_handler.get_mouse_pos()[1] - self.world_y
                         rel_offset_y = offset_y - (self.scroll_offset_y * WIDGET_SIZE)
-                        self.select(rel_offset_y)
+
+                        #pygame.draw.rect(self.win, (255, 0, 0), (self.world_x, self.world_y, self.rect.width, rel_offset_y))
+                        self.offset_index = math.floor(rel_offset_y / WIDGET_SIZE)
+                        self.select()
+                        print (self.offset_index)
 
     def draw(self):
         if self._hidden:

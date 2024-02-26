@@ -19,9 +19,9 @@ class Colors:
         self.ui_white = (238, 253, 254)  # "#eefdfe"
         self.ui_dark = (55, 130, 157)  # "#37829d"
         self.ui_darker = (8, 51, 54)
-        self.orbit_color = (8, 51, 54)
-        self.orbit_color_planet = (10, 65, 40)
-        self.orbit_color_moon = (12, 25, 40)
+        self.orbit_color = (8, 51, 50)
+        self.orbit_color_planet = (9, 30, 20)
+        self.orbit_color_moon = (7, 15, 36)
         self.select_color = pygame.color.THECOLORS["cyan"]
         self.outside_screen_color = pygame.color.THECOLORS.get("red")
         self.pygame_color_names = list(pygame.color.THECOLORS.keys())

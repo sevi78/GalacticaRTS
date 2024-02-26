@@ -53,6 +53,7 @@ class GameObjectDebug:
 
         # text
         font = pygame.font.SysFont(config.font_name, 18)
-        text = self.type
-        drawText(config.app.win, text, color, (
-            self.rect.x, self.rect.y, 400, 30), font, "left")
+        if self.type:
+            text = self.type
+            drawText(config.app.win, text, color, (
+                self.rect.x, self.rect.y, 400, 30), font, "left")

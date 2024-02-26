@@ -17,8 +17,7 @@ from source.game_play.navigation import navigate_to, navigate_to_ship_by_offset_
     navigate_to_planet_by_offset_index
 from source.gui.event_text import event_text
 from source.gui.panels.map_panel import MapPanel
-from source.gui.widgets.buttons.image_button import ImageButton
-from source.gui.widgets.container_widget import ContainerWidget, ContainerWidgetItem, WIDGET_SIZE
+from source.gui.widgets.container_widget import ContainerWidget,  WIDGET_SIZE
 from source.gui.widgets.image_widget import ImageSprite
 from source.handlers.economy_handler import economy_handler
 from source.handlers.file_handler import load_file
@@ -318,12 +317,12 @@ def main():
     app.ship_container = ContainerWidget(
         app.win, 220, 60, WIDGET_SIZE + 6, 300,
         sprite_groups.convert_sprite_groups_to_image_widget_list(sprite_groups.ships.sprites()),
-        function=navigate_to_ship_by_offset_index, layer=10, group="containers")
+        function=navigate_to_ship_by_offset_index, layer=10)
 
     app.planet_container = ContainerWidget(
         app.win, 260, 60, WIDGET_SIZE + 6, 300,
         sprite_groups.convert_sprite_groups_to_image_widget_list(sprite_groups.planets.sprites()),
-        function=navigate_to_planet_by_offset_index, layer=10, group="containers")
+        function=navigate_to_planet_by_offset_index, layer=10)
 
     # start game loop
     app.loop()

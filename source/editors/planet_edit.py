@@ -1,3 +1,4 @@
+import os
 import random
 
 import pygame
@@ -178,8 +179,10 @@ class PlanetEdit(EditorBase, PlanetEditBuilder):
         self.orbit_speed_list = [round(0.001 + _ * 0.001, 3) for _ in range(20)]
         self.atmosphere_name_list = get_image_names_from_folder("gifs")
         self.atmosphere_name_list.append("")
-        self.image_name_small_list = list(images[pictures_path]["planets"].keys()) + list(
-            images[pictures_path]["suns"].keys())
+        # self.image_name_small_list = list(images[pictures_path]["planets"].keys()) + list(
+        #     images[pictures_path]["suns"].keys())
+        self.image_name_small_list = os.listdir(os.path.join(pictures_path, "planets")) + os.listdir(os.path.join(pictures_path, "suns"))
+
         self.orbit_angle_list = [_ for _ in range(0, 360)]
         self.alien_population_list = [_ for _ in range(0, 10000000, 100000)]
 

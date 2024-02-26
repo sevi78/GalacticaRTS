@@ -33,7 +33,12 @@ class SettingsEdit(EditorBase):
                                "ui_rounded_corner_radius_small": [_ for _ in range(11)],
                                "ui_rounded_corner_radius_big": [_ for _ in range(3, 25)],
                                "ui_rounded_corner_small_thickness": [_ for _ in range(0, 5)],
-                               "ui_rounded_corner_big_thickness": [_ for _ in range(0, 15)]
+                               "ui_rounded_corner_big_thickness": [_ for _ in range(0, 15)],
+                               "ui_cross_size": [_ for _ in range(3, 50)],
+                               "ui_cross_dash_length": [_ for _ in range(1, 20)],
+                               "ui_cross_thickness": [_ for _ in range(1, 10)],
+                               "game_speed": [_ for _ in range(1, 10)],
+                               "ui_tooltip_size": [_ for _ in range(10, 50)],
                                }
 
         #  widgets
@@ -42,7 +47,7 @@ class SettingsEdit(EditorBase):
 
         # create widgets
         self.create_selectors()
-        #self.create_color_sliders()
+        # self.create_color_sliders()
         self.create_close_button()
         self.create_save_button(lambda: self.save_settings(), "save settings")
         self.set_selector_current_value()
@@ -151,6 +156,13 @@ class SettingsEdit(EditorBase):
                         # set the font
                         widget.font = pygame.font.SysFont(value, widget.font_size)
 
+        elif key == "game_speed":
+            config.game_speed = value
+            config.app.game_time.game_speed = value
+
+        elif key == "ui_tooltip_size":
+            config.app.tooltip_instance.font_size = value
+            config.app.tooltip_instance.font = pygame.font.SysFont(config.font_name, config.app.tooltip_instance.font_size)
 
         else:
             setattr(config, key, value)

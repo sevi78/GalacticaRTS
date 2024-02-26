@@ -2,6 +2,7 @@ import pygame
 from pygame.locals import MOUSEMOTION
 
 from source.configuration.game_config import config
+from source.gui.widgets.frame import Frame
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.handlers.mouse_handler import mouse_handler
 
@@ -51,19 +52,21 @@ class ToolTip(WidgetBase):
         self.world_x = x
         self.world_y = y
         self.world_width = width
-        self.height = height
-        self.size = (self.world_width, self.height)
+        self.world_height = height
+        self.size = (self.world_width, self.world_height)
         self.rect_filled = pygame.surface.Surface(self.size)
         self.rect_filled.set_alpha(TOOLTIP_ALPHA)
         self.parent = parent
 
         # text
         self._text = ""
-        self.font_size = 18
+        self.font_size = config.ui_tooltip_size
         self.font = pygame.font.SysFont(config.font_name, self.font_size)
         self.text_img = None
         self.txt_rect = None
         self.active = True
+
+        self.frame = Frame(self.win, self.world_x, self.world_y, self.world_width, self.world_height)
 
     @property
     def text(self):
@@ -136,11 +139,6 @@ class ToolTip(WidgetBase):
 
         return False
 
-    def reset_tooltip__(self, obj):
-        x, y = mouse_handler.get_mouse_pos()
-        if obj.on_hover_release_callback(x, y, obj.rect):
-            config.tooltip_text = ""
-
     def reset_tooltip(self, obj):
         x, y = mouse_handler.get_mouse_pos()
         if self.on_hover_release_callback(x, y, obj):
@@ -158,23 +156,21 @@ class ToolTip(WidgetBase):
             return
         self.get_text()
         self.move(events)
-        # self.draw()
 
     def draw(self):
         if not self.active:
             return
+        # render text
         self.text_img = self.font.render(self._text, True, self.text_color)
 
-        self.world_width = self.text_img.get_rect().width + 10
-        self.height = self.text_img.get_rect().height + 7
-        self.size = (self.world_width, self.height)
+        # update pos, size
+        self.world_width = self.text_img.get_rect().width + config.ui_rounded_corner_radius_small * 2
+        self.world_height = self.text_img.get_rect().height + 7
+        self.size = (self.world_width, self.world_height)
 
-        self.rect_filled = pygame.surface.Surface(self.size)
-        self.rect_filled.set_alpha(TOOLTIP_ALPHA)
+        # draw frame
+        self.frame.update(self.world_x, self.world_y, self.world_width, self.world_height)
+        self.frame.draw()
 
-        self.win.blit(self.rect_filled, (self.world_x, self.world_y))
-        self.win.blit(self.text_img, (self.world_x + 5, self.world_y + 5))
-
-        pygame.draw.rect(self.win, self.frame_color, (
-            self.world_x, self.world_y, self.world_width,
-            self.height), 1, config.ui_rounded_corner_radius_small)
+        # draw text
+        self.win.blit(self.text_img, (self.world_x + 5, self.world_y))

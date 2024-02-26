@@ -15,8 +15,6 @@ DEFAULT_ZOOM = 0.2
 TEXT_ZOOM = DEFAULT_ZOOM
 IMAGE_ZOOM = DEFAULT_ZOOM
 SPECIALS_ZOOM =  DEFAULT_ZOOM
-CROSS_RADIUS = 24
-DASH_LENGHT =  6
 class PanZoomPlanetDraw:
     def __init__(self, **kwargs):
         self.frame_color = colors.frame_color
@@ -59,12 +57,12 @@ class PanZoomPlanetDraw:
                 if self.explored:
                     color = pygame.color.THECOLORS.get("green")
 
-            draw_dashed_cross_in_circle(self.win, color, self.rect.center, CROSS_RADIUS, 1, DASH_LENGHT)
+            draw_dashed_cross_in_circle(self.win, color, self.rect.center, config.ui_cross_size, config.ui_cross_thickness, config.ui_cross_dash_length)
         else:
             if config.view_explored_planets:
                 if self.explored:
                     color = pygame.color.THECOLORS.get("green")
-                    draw_dashed_cross_in_circle(self.win, color, self.rect.center, CROSS_RADIUS, 1, DASH_LENGHT)
+                    draw_dashed_cross_in_circle(self.win, color, self.rect.center, config.ui_cross_size, config.ui_cross_thickness, config.ui_cross_dash_length)
 
     def draw_hover_circle(self):
         panzoom = pan_zoom_handler

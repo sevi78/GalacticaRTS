@@ -1,4 +1,5 @@
 import os
+import time
 from functools import lru_cache
 from pprint import pprint
 
@@ -19,49 +20,26 @@ gif_frames = {}
 gif_fps = {}
 gif_durations = {}
 MAX_GIF_SIZE = 150
-LOAD_AT_GAME_START = True
+LOAD_AT_GAME_START = False
 
-
-# @lru_cache(maxsize=None)
-# def load_image(folder, image, sub):
-#     img = pygame.image.load(os.path.join(folder, sub, image))
-#     return img
-#
-# def get_image(image_name):
-#     try:
-#         # Attempt to retrieve the image from the loaded images dictionary
-#         for category, sub_dict in images.items():
-#             for sub_category, items in sub_dict.items():
-#                 if image_name in items:
-#                     return items[image_name]
-#         # If the image is not found, manually load it based on its file extension
-#         file_path = os.path.join(pictures_path, image_name)
-#         if not os.path.exists(file_path):
-#             raise FileNotFoundError(f"No such file: {file_path}")
-#         _, file_extension = os.path.splitext(image_name)
-#         if file_extension.lower() == ".png":
-#             return load_image(os.path.dirname(file_path), os.path.basename(file_path), os.path.basename(os.path.dirname(file_path)))
-#         elif file_extension.lower() == ".gif":
-#             return load_gif(os.path.basename(file_path))
-#         else:
-#             raise ValueError(f"Unsupported file type: {file_extension}")
-#     except KeyError:
-#         # Return a default 'no_icon' image if the specific image is not found
-#         return images[pictures_path]["icons"]["no_icon.png"]
-#     except FileNotFoundError as e:
-#         print(e)
-#         return None
 #
 # @lru_cache(maxsize=None)
-# def load_gif(gif_name):
-#     path = os.path.join(pictures_path + "gifs", gif_name)
-#     gif = Image.open(path)
-#     gifs[gif_name] = gif
-#     gif_frames[gif_name] = get_gif_frames(gif_name)
-#     gif_fps[gif_name] = load_gif_fps(gif)
-#     gif_durations[gif_name] = load_gif_durations(gif)
-#     return gif
-########################################
+# def load_image(path):
+#     """Load an image from the given path."""
+#     image = pygame.image.load(path)
+#     image.convert_alpha()  # Optimize image for alpha transparency
+#     return image
+#
+# def load_folders(folder):
+#     """Load all PNG images from the given folder and its subfolders."""
+#     for root, dirs, files in os.walk(folder):
+#         for file in files:
+#             if file.lower().endswith('.png'):
+#                 path = os.path.join(root, file)
+#                 images[file] = load_image(path)
+#             if file.lower().endswith('.gif'):
+#                 gifs[file] = load_gif(path)
+
 @lru_cache(maxsize=None)
 def load_folders(folder):
     """Objective:
@@ -162,16 +140,86 @@ def load_gif_fps(gif_file):
     return fps
 
 
+# @lru_cache(maxsize=None)
+# def get_image(image_name):
+#     try:
+#         no_icon = images[pictures_path]["icons"]["no_icon.png"]
+#     except KeyError:
+#         no_icon = pygame.image.load(os.path.join(pictures_path, "icons", "no_icon.png"))
+#     for category, sub_dict in images.items():
+#         for sub_category, items in sub_dict.items():
+#             if image_name in items:
+#                 return items[image_name]
+#     return no_icon
+
+
+# @lru_cache(maxsize=None)
+# def get_image(image_name):
+#     try:
+#         no_icon = images[pictures_path]["icons"]["no_icon.png"]
+#     except KeyError:
+#         no_icon = pygame.image.load(os.path.join(pictures_path, "icons", "no_icon.png"))
+#     for category, sub_dict in images.items():
+#         for sub_category, items in sub_dict.items():
+#             if image_name in items:
+#                 return items[image_name]
+#     return no_icon
+
+
+# @lru_cache(maxsize=None)
+# def get_image(image_name):
+#     # Try to get the `no_icon` image
+#     try:
+#         no_icon = images[pictures_path]["icons"]["no_icon.png"]
+#     except KeyError:
+#         no_icon = pygame.image.load(os.path.join(pictures_path, "icons", "no_icon.png"))
+#         images[pictures_path]["icons"]["no_icon.png"] = no_icon  # Add `no_icon` to `images` if it's not there
+#
+#     # Search in all subdirectories of `images` to find the image
+#     for category, sub_dict in images.items():
+#         for sub_category, items in sub_dict.items():
+#             if image_name in items:
+#                 return items[image_name]
+#
+#     # If image is not found in `images`, search in `pictures_path` subdirectories
+#     for root, dirs, files in os.walk(pictures_path):
+#         if image_name in files:
+#             img = pygame.image.load(os.path.join(root, image_name))
+#             img.convert_alpha()
+#             # Add the image to `images` dictionary
+#             images[root][os.path.dirname(image_name)][image_name] = img
+#             return img
+#
+#     # If no image is found, return `no_icon`
+#     return no_icon
+
 @lru_cache(maxsize=None)
 def get_image(image_name):
-    try:
-        no_icon = images[pictures_path]["icons"]["no_icon.png"]
-    except KeyError:
-        no_icon = pygame.image.load(os.path.join(pictures_path, "icons", "no_icon.png"))
+    # Initialize `no_icon` image
+    no_icon_path = os.path.join(pictures_path, "icons", "no_icon.png")
+    no_icon = images.get(pictures_path, {}).get("icons", {}).get("no_icon.png")
+
+    if no_icon is None:
+        no_icon = pygame.image.load(no_icon_path)
+        images.setdefault(pictures_path, {}).setdefault("icons", {})[no_icon_path] = no_icon
+
+    # Search in all subdirectories of `images` to find the image
     for category, sub_dict in images.items():
         for sub_category, items in sub_dict.items():
             if image_name in items:
                 return items[image_name]
+
+    # If image is not found in `images`, search in `pictures_path` subdirectories
+    for root, dirs, files in os.walk(pictures_path):
+        if image_name in files:
+            img_path = os.path.join(root, image_name)
+            img = pygame.image.load(img_path)
+            img.convert_alpha()
+            # Add the image to `images` dictionary
+            images.setdefault(root, {}).setdefault(os.path.dirname(image_name), {})[image_name] = img
+            return img
+
+    # If no image is found, return `no_icon`
     return no_icon
 
 
@@ -269,6 +317,8 @@ def find_unused_images_gifs(image_dir, gif_dir, images_dict, gifs_dict):
 
 
 if LOAD_AT_GAME_START:
+    start = time.time()
     images = load_folders(os.path.join(pictures_path))
-
-    # pprint(find_unused_images_gifs(pictures_path, os.path.join(pictures_path, "gifs"), images, gifs))
+    end = time.time()
+    print(f"Loaded images in {end - start} seconds")
+    #pprint(find_unused_images_gifs(pictures_path, os.path.join(pictures_path, 'gifs'), images, gifs))

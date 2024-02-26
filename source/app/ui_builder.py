@@ -264,7 +264,7 @@ class UIBuilder(SceneBuilder):
         size_x = 800  # doesnt matter, will be recalculated
         size_y = 35
         start_x = 250
-        spacing = 150
+        spacing = 142
         pos_x = start_x
         pos_y = 10
 
