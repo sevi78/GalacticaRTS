@@ -87,8 +87,15 @@ class PlanetFactory:
             # register
             sprite_groups.planets.add(pan_zoom_planet_button)
 
-    def get_all_planets(self, keys):
+    def get_all_planets(self, keys:list):
+        """
+        returns a list of all planets in the game with the same type as in list
+        :param keys: list of planet types
+        """
         return [_ for _ in sprite_groups.planets.sprites() if _.type in keys]
+
+    def get_all_planet_names(self):
+        return [i.name for i in sprite_groups.planets.sprites()]
 
     def generate_planet_names(self):
         solar_system_names = copy.deepcopy(config.app.level_handler.level_dict_generator.solar_system_names)

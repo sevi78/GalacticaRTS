@@ -2,6 +2,7 @@ import pygame
 
 from source.configuration.game_config import config
 from source.handlers.color_handler import colors
+
 from source.text.text_wrap import TextWrap
 
 pygame.font.init()
@@ -54,6 +55,8 @@ class EventText(TextWrap):
 
     def __init__(self, win):
         TextWrap.__init__(self)
+        self.obj = None
+        self.planet_names = []
         self.win = win
         self.alpha = 255
         self.last_update_time = pygame.time.get_ticks()
@@ -77,12 +80,13 @@ class EventText(TextWrap):
     def event_text_font_size(self, value):
         self._event_text_font_size = value
         self.event_text_font = pygame.font.SysFont(config.font_name, self.event_text_font_size)
+
     @property
     def text(self):
         return self._text
 
     @text.setter
-    def text(self, value):
+    def text(self, value, **kwargs):
         if self._text == value:
             return
 
@@ -107,6 +111,10 @@ class EventText(TextWrap):
         # set alpha value
         self.alpha = 255
 
+    def set_text(self, text, **kwargs):
+        self.text = text
+        self.obj = kwargs.get("obj", None)
+
     def update(self):
         # if config.edit_mode:
         #     if config.app.weapon_select._hidden:
@@ -121,9 +129,18 @@ class EventText(TextWrap):
 
         # set x position if the map is visible
         x = config.app.ui_helper.left + config.app.map_panel.world_width if config.app.map_panel.visible else config.app.ui_helper.left
-        self.wrap_text(self.win, self.event_display_text, (x, self.new_bottom),
-            (config.app.ui_helper.world_width, config.ui_event_text_size), self.event_text_font, colors.ui_dark,
-            fade_out=EVENT_TEXT_FADE, alpha=self.alpha)
+        alarm_links = [self.obj.name] if self.obj else []
+        self.wrap_text(
+            win=self.win,
+            text=self.event_display_text,
+            pos=(x, self.new_bottom),
+            size=(config.app.ui_helper.world_width, config.ui_event_text_size),
+            font=self.event_text_font,
+            color=colors.ui_dark,
+            fade_out=EVENT_TEXT_FADE,
+            alpha=self.alpha,
+            alarm_links=alarm_links,
+            )
 
 
 event_text = EventText(config.win)

@@ -162,7 +162,7 @@ class PanZoomUfo(PanZoomGameObject):  # , InteractionHandler):
         if self.target.population - self.weapon_handler.gun_power / 100 > 0:
             self.target.under_attack = True
             self.target.population -= self.weapon_handler.gun_power / 100
-            event_text.text = f"ufo attack !!!!, people are getting killed at {self.target.name}! {int(self.target.population)}"
+            event_text.set_text(f"ufo attack !!!!, people are getting killed at {self.target.name}! population: {int(self.target.population)}", obj=self.target)
 
     def listen(self):
         if not self._hidden and not self._disabled:

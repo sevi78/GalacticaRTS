@@ -539,6 +539,8 @@ class LevelHandler:
             # self.app.container.set_widgets([ImageWidget(self.win, 0, WIDGET_SIZE * index, WIDGET_SIZE, WIDGET_SIZE,
             #     image=copy.copy(_.image_raw), obj=_) for index, _ in enumerate(sprite_groups.ships.sprites())])
 
+        # setup event_text
+        event_text.planet_links = planet_factory.get_all_planet_names()
     def save_level(self, filename, folder):
         data = self.generate_level_dict_from_scene()
         write_file(filename, folder, data)

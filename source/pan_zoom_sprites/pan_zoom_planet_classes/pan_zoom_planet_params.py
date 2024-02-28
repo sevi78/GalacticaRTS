@@ -105,5 +105,6 @@ class PanZoomPlanetParams:
         self.string = self.name
 
         # set event text
-        event_text.text = f"Gratulation! you have reached a the Planet {self.name} !"
+        #event_text.text = f"Gratulation! you have reached a the Planet {self.name} !"
+        event_text.set_text(f"Gratulation! you have reached a the Planet {self.name} !", obj=self)
         self.parent.update_building_button_widgets()

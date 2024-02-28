@@ -73,8 +73,6 @@ class SpriteGroups:  # original
         self.moving_images = PanZoomLayeredUpdates(default_layer=8)
         self.state_images = PanZoomLayeredUpdates(default_layer=8)
 
-
-
     def update(self, *args, **kwargs):
         # self.layered_updates.update(*args)
         self.planets.update(*args)
@@ -233,7 +231,7 @@ class SpriteGroups__:  # multithreading
         self.moving_images.update()
         self.state_images.update()
 
-    def draw(self, surface, **kwargs):#orog
+    def draw(self, surface, **kwargs):  # orog
         events = kwargs.get("events")
         threads = []
 
@@ -241,10 +239,8 @@ class SpriteGroups__:  # multithreading
 
         for layer, group in enumerate(self.sprite_groups.values()):
             if WidgetHandler.layer_switch[str(layer)]:
-
                 WidgetHandler.draw_layer(events, layer)
                 group.draw(surface)
-
 
     # mulithreading
     # def draw(self, surface, **kwargs):
@@ -267,6 +263,8 @@ class SpriteGroups__:  # multithreading
     # def _draw_group(self, events, layer, group, surface):
     #     WidgetHandler.draw_layer(events, layer)
     #     group.draw(surface)
+
+
 class SpriteGroups__:  # doesn work yet, needs to refactor all registration to it
     def __init__(self):
         self.sprite_groups = {

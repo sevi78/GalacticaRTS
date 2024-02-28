@@ -19,6 +19,7 @@ from source.gui.event_text import event_text
 from source.gui.panels.map_panel import MapPanel
 from source.gui.widgets.container_widget import ContainerWidget,  WIDGET_SIZE
 from source.gui.widgets.image_widget import ImageSprite
+from source.handlers import event_text_handler
 from source.handlers.economy_handler import economy_handler
 from source.handlers.file_handler import load_file
 from source.handlers.game_event_handler import GameEventHandler
@@ -201,6 +202,12 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
         # cheat
         self.cheat(events)
 
+        # update event_text
+        event_text.update()
+        #event_text.listen(events)
+        event_text_handler.listen(event_text,events)
+
+
         # self.ship_container.listen(events)
         # self.ship_container.draw()
         #
@@ -260,8 +267,7 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
             # update enemy handler
             enemy_handler.update()
 
-            # update event_text
-            event_text.update()
+
 
             # pygame update
             # pygame.display.update()
