@@ -3,7 +3,7 @@
     "show_universe": true,
     "enable_game_events": true,
     "fps": 60,
-    "game_speed": 5,
+    "game_speed": 1,
     "player": 0,
     "players": 3,
     "ui_cross_dash_length": 3,

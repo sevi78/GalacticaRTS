@@ -6,6 +6,7 @@ import pygame
 from source.app.app_helper import AppHelper, select_next_item_in_list
 from source.app.ui_builder import UIBuilder
 from source.configuration.game_config import config
+from source.draw.cursor import Cursor
 from source.editors.level_edit import LevelEdit
 from source.editors.level_select import LevelSelect
 from source.editors.filter_widget import FilterWidget
@@ -366,16 +367,8 @@ def main():
             list_name="planets"
             ))
 
-    # app.planet_select = PlanetSelect(
-    #     pygame.display.get_surface(),
-    #     pygame.display.get_surface().get_rect().centerx - width * 1.5 / 2,
-    #     pygame.display.get_surface().get_rect().y,
-    #     width,
-    #     150,
-    #     ["population", "buildings", "explored"],
-    #     parent=app,
-    #     layer = 9,
-    #     )
+    # cursor object
+    cursor = Cursor()
 
 
     # restore ui elements

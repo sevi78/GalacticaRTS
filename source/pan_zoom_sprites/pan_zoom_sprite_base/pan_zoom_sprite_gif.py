@@ -16,6 +16,7 @@ from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_visibility_handler im
 WIDTH = 800
 HEIGHT = 600
 EXPLOSION_RELATIVE_GIF_SIZE = 0.3
+SHRINK_FACTOR = 0.005
 
 # screen = pygame.display.set_mode((WIDTH, HEIGHT))
 # clock = pygame.time.Clock()
@@ -72,7 +73,8 @@ class PanZoomSprite(pygame.sprite.Sprite, PanZoomVisibilityHandler, GameObjectDe
         self.relative_gif_size = kwargs.get("relative_gif_size", 1.0)
         self.loop_gif = kwargs.get("loop_gif", True)
         self.kill_after_gif_loop = kwargs.get("kill_after_gif_loop", False)
-        self.shrink = 1.0
+        self.appear_at_start = kwargs.get("appear_at_start", False)
+        self.shrink = 0.0 if self.appear_at_start else 1.0
         self.gif_index = 1
         self.gif_start = time.time()
         self.gif_animation_time = 0.1
@@ -233,18 +235,29 @@ class PanZoomSprite(pygame.sprite.Sprite, PanZoomVisibilityHandler, GameObjectDe
             self.gif_index += 1
             self.gif_start += self.gif_animation_time
 
+    def appear(self):
+        if self.shrink >= 1.0:
+            self.appear_at_start = False
+            return
+        self.shrink += SHRINK_FACTOR
+
+    def disappear(self):
+        self.shrink -= SHRINK_FACTOR
+        if self.shrink <= SHRINK_FACTOR:
+            self.end_object(explode=False)
+
     def update_pan_zoom_sprite(self):
         # if self.get_game_paused():
         #     return
-        # start = time.time()
+
+        if self.appear_at_start:
+            self.appear()
         self.set_world_position((self.world_x, self.world_y))
         self.update_gif_index()
 
-
         if self.debug or config.debug:
             self.debug_object()
-        # end = time.time()
-        # print(f"update_pan_zoom_sprite tooks: {end - start} seconds")
+
     def update(self):
         self.update_pan_zoom_sprite()
 

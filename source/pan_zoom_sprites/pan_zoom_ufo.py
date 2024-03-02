@@ -187,16 +187,6 @@ class PanZoomUfo(PanZoomGameObject):  # , InteractionHandler):
                             config.app.info_panel.set_planet_image(self.image_raw, size=(
                                 self.image_raw.get_width(), self.image_raw.get_height()), align="topright")
 
-    def appear(self):
-        if self.shrink >= 1.0:
-            return
-        self.shrink += SHRINK_FACTOR
-
-    def disappear(self):
-        self.shrink -= SHRINK_FACTOR
-        if self.shrink <= SHRINK_FACTOR:
-            self.end_object(explode=False)
-
     def end_object(self, **kwargs):
         explode = kwargs.get("explode", True)
         if explode:

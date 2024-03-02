@@ -3,6 +3,7 @@ import random
 import pygame
 
 from source.draw.dashed_line import draw_dashed_line
+from source.draw.draw_arrows import draw_arrows
 from source.gui.event_text import event_text
 from source.gui.lod import level_of_detail
 from source.gui.widgets.progress_bar import ProgressBar
@@ -74,4 +75,12 @@ class PanZoomShipDraw:
 
     def draw_connections(self):
         if self.target:
-            draw_dashed_line(self.win, self.frame_color, self.rect.center, self.target.rect.center,  5)
+            draw_arrows(
+                surf=self.win,
+                color=self.frame_color,
+                start_pos=self.rect.center,
+                end_pos=self.target.rect.center,
+                width=1,
+                dash_length=20,
+                arrow_size=(1, 3)
+                )

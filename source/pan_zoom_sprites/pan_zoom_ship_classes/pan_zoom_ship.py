@@ -118,7 +118,7 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         # target object
         self.target_object = PanZoomTargetObject(config.win,
             pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1],
-            60, 60, pan_zoom_handler, "target.gif", align_image="center", debug=False,
+            25, 25, pan_zoom_handler, "target.gif", align_image="center", debug=False,
             group="target_objects", parent=self, zoomable=False, relative_gif_size=2.0)
         self.target_object_reset_distance_raw = SHIP_TARGET_OBJECT_RESET_DISTANCE
         self.target_object_reset_distance = self.target_object_reset_distance_raw

@@ -96,7 +96,9 @@ class WeaponHandler:
                     explosion_relative_gif_size=1.0,
                     layer=9,
                     debug=False,
-                    target=defender, missile_power=power)
+                    target=defender,
+                    missile_power=power,
+                    appear_at_start=True)
                 # missile.set_target(defender)
 
     def draw_moving_image(self, defender, power):
@@ -168,7 +170,8 @@ def launch_missile(attacker, defender):
             explosion_relative_gif_size=1.0,
             layer=9,
             debug=False,
-            target=defender)
+            target=defender,
+            appear_at_start=True)
         # missile.set_target(defender)
 
 
