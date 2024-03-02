@@ -319,7 +319,7 @@ def main():
     # containers
 
     # containers
-    container_width = 150
+    container_width = 80
     container_height = 150
     app.ship_container = ContainerWidget(
         app.win,

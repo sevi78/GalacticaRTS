@@ -59,9 +59,11 @@ class ContainerWidgetItem:
     def draw_hover_rect(self):
         if self.parent:
             self.rect.width = self.parent.world_width
-
             if self.parent.rect.collidepoint(pygame.mouse.get_pos()):
-                start_y = (self.parent.rect.y + self.index * self.parent.scroll_factor) - self.parent.scroll_factor
+                # set start x: the position for the rect to start. no way to explain the logic ---... :()
+                start_y = ((self.parent.rect.y + (self.index + self.parent.scroll_offset_y) * self.parent.scroll_factor)
+                           - self.parent.scroll_factor)
+
                 end_y = start_y + self.parent.scroll_factor
 
                 if pygame.mouse.get_pos()[1] in range(start_y, end_y):
