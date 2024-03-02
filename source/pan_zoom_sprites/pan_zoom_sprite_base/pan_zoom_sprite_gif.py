@@ -236,14 +236,15 @@ class PanZoomSprite(pygame.sprite.Sprite, PanZoomVisibilityHandler, GameObjectDe
     def update_pan_zoom_sprite(self):
         # if self.get_game_paused():
         #     return
-
+        # start = time.time()
         self.set_world_position((self.world_x, self.world_y))
         self.update_gif_index()
 
 
         if self.debug or config.debug:
             self.debug_object()
-
+        # end = time.time()
+        # print(f"update_pan_zoom_sprite tooks: {end - start} seconds")
     def update(self):
         self.update_pan_zoom_sprite()
 

@@ -1,7 +1,5 @@
 import random
 
-import pygame
-
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 
 

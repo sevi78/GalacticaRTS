@@ -190,11 +190,11 @@ class InfoPanelTextGenerator:
         text += "rank: " + ship.rank + "\n"
         text += "speed: " + str(ship.speed) + "\n\n"
         text += "resources loaded: " + "\n\n"
-        text += "    water: " + str(ship.water) + "/" + str(ship.water_max) + "\n"
-        text += "    energy: " + str(int(ship.energy)) + "/" + str(int(ship.energy_max)) + "\n"
-        text += "    food: " + str(ship.food) + "/" + str(ship.food_max) + "\n"
-        text += "    minerals: " + str(ship.minerals) + "/" + str(ship.minerals_max) + "\n"
-        text += "    technology: " + str(ship.technology) + "/" + str(ship.technology_max) + "\n\n"
+        text += "    water: " + format_number(ship.water, 1) + "/" + format_number(ship.water_max, 1) + "\n"
+        text += "    energy: " + format_number(ship.energy, 1) + "/" + format_number(ship.energy_max, 1) + "\n"
+        text += "    food: " + format_number(ship.food, 1) + "/" + format_number(ship.food_max, 1) + "\n"
+        text += "    minerals: " + format_number(ship.minerals, 1) + "/" + format_number(ship.minerals_max, 1) + "\n"
+        text += "    technology: " + format_number(ship.technology, 1) + "/" + format_number(ship.technology_max, 1) + "\n\n"
 
         if ship.specials:
             text += f"    specials:\n"
@@ -211,6 +211,9 @@ class InfoPanelTextGenerator:
 
         # text += "scanner range: " + str(self.fog_of_war_radius) + "\n"
         # text += "crew: " + str(self.crew) + "\n"
+
+        if ship.is_spacestation:
+            text += f"\nspacestation energy production:{format_number(ship.spacestation.production_energy, 3)} \n"
 
         if ship.debug:
             text += "\n\ndebug:\n"

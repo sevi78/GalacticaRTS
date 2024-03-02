@@ -138,5 +138,7 @@ class Player:
 
         self.population = int(sum([i.population for i in sprite_groups.planets]))
 
+        # print (f"player {self.name}: population: {self.population}, self.stock: {self.stock}")
+
         # problem: this overwrites the population of player if set from data. but it also makes no sense to have any population if no planets has population.
         # solution: set population to the planets NOT to player itself!!!

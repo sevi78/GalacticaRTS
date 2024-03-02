@@ -138,7 +138,7 @@ def abs_games_path():
 
 def write_file(filename, folder, data):
     with open(os.path.join(abs_database_path() + folder + os.sep + filename), 'w') as file:
-        json.dump(data, file, indent=4, sort_keys=True)
+        json.dump(data, file, indent=4, sort_keys=False)
 
 
 def load_file(filename, folder):

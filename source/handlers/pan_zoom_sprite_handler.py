@@ -4,10 +4,10 @@ from pygame.sprite import LayeredUpdates
 
 from source.configuration.game_config import config
 from source.gui.lod import level_of_detail
-from source.gui.widgets.container_widget import ContainerWidgetItem, WIDGET_SIZE
+from source.gui.container.container_widget import ContainerWidgetItem, WIDGET_SIZE
 from source.handlers import widget_handler
 from source.handlers.widget_handler import WidgetHandler
-from source.multimedia_library.images import get_image, get_gif, get_gif_frames
+from source.multimedia_library.images import get_image, get_gif_frames
 
 
 class PanZoomLayeredUpdates(LayeredUpdates):
@@ -137,10 +137,34 @@ class SpriteGroups:  # original
         # ships must be updated here, because they draw also... this is bullshit but... ;)
         # self.ships.update()
 
-    def convert_sprite_groups_to_image_widget_list(self, sprite_group) -> list:
-        return [ContainerWidgetItem(config.app.win, 0, WIDGET_SIZE * index, WIDGET_SIZE, WIDGET_SIZE,
+    def convert_sprite_groups_to_image_widget_list__(self, sprite_group) -> list:# orig
+        return [ContainerWidgetItem(
+            config.app.win,
+            0,
+            WIDGET_SIZE * index,
+            WIDGET_SIZE,
+            WIDGET_SIZE,
             image=get_image(_.image_name) if not _.image_name.endswith(".gif") else get_gif_frames(_.image_name)[0],
-            obj=_, index=index) for index, _ in enumerate(sprite_group)]
+            obj=_,
+            index=index+1)
+            for index, _ in enumerate(sprite_group)]
+
+    def convert_sprite_groups_to_image_widget_list(self, sprite_group_name, sort_by=None, reverse=True) -> list:
+        # If a sort_by attribute is provided, sort the sprite_group by that attribute
+        sprite_group = getattr(self, sprite_group_name)
+        if sort_by is not None:
+            sprite_group = sorted(sprite_group, key=lambda x: getattr(x, sort_by), reverse=reverse)
+
+        return [ContainerWidgetItem(
+            config.app.win,
+            0,
+            WIDGET_SIZE * index,
+            WIDGET_SIZE,
+            WIDGET_SIZE,
+            image=get_image(_.image_name) if not _.image_name.endswith(".gif") else get_gif_frames(_.image_name)[0],
+            obj=_,
+            index=index + 1)
+            for index, _ in enumerate(sprite_group)]
 
     def listen(self, events):
         for i in self.planets:
@@ -160,6 +184,11 @@ class SpriteGroups:  # original
 
         return None
 
+    def get_nearest_obj_by_type(self, sprite_group, key, caller):
+        objects = [obj for obj in sprite_group if obj.type == key]
+        if objects:
+            return min(objects, key=lambda obj: pygame.math.Vector2(obj.rect.center).distance_to(caller.rect.center))
+        return None
 
 # Define a function that will be the target of the thread
 def update_sprite_group(group, *args):
@@ -206,6 +235,8 @@ class SpriteGroups__:  # multithreading
                         return obj
 
         return None
+
+
 
     def update__(self, *args, **kwargs):
         threads = []

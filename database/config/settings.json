@@ -1,20 +1,25 @@
 {
     "draw_universe": true,
+    "show_universe": true,
     "enable_game_events": true,
-    "font_name": "segoeuiemoji",
     "fps": 60,
     "game_speed": 5,
-    "show_universe": true,
+    "player": 0,
+    "players": 3,
     "ui_cross_dash_length": 3,
     "ui_cross_size": 9,
     "ui_cross_thickness": 1,
     "ui_event_text_fade": false,
     "ui_event_text_size": 15,
+    "ui_orbit_color_brightness": 15,
+    "ui_planet_orbit_color_brightness": 1,
+    "ui_moon_orbit_color_brightness": 12,
     "ui_panel_alpha": 220,
     "ui_rounded_corner_big_thickness": 1,
     "ui_rounded_corner_radius_big": 30,
     "ui_rounded_corner_radius_small": 9,
     "ui_rounded_corner_small_thickness": 1,
     "ui_tooltip_enabled": true,
-    "ui_tooltip_size": 12
+    "ui_tooltip_size": 10,
+    "font_name": "segoeuiemoji"
 }

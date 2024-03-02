@@ -8,6 +8,7 @@ from source.gui.widgets.selector import Selector
 from source.gui.widgets.slider import Slider
 from source.handlers.color_handler import colors
 from source.handlers.file_handler import write_file
+from source.handlers.ui_handler import ui_handler
 from source.handlers.widget_handler import WidgetHandler
 
 ARROW_SIZE = 20
@@ -26,7 +27,7 @@ class SettingsEdit(EditorBase):
         self.boolean_list = [True, False]
 
         self.default_list = [_ for _ in range(100)]
-        self.selector_lists = {"player": [_ for _ in range(config.players)],
+        self.selector_lists = {"players": [_ for _ in range(config.players)],
                                "fps": [25, 60, 90, 120, 1000],
                                "enable_game_events": self.boolean_list,
                                "draw_universe": self.boolean_list,
@@ -168,6 +169,11 @@ class SettingsEdit(EditorBase):
         elif key == "ui_event_text_size":
             event_text.event_text_font_size = value
 
+        elif key in ["ui_orbit_color_brightness",
+                     "ui_planet_orbit_color_brightness",
+                     "ui_moon_orbit_color_brightness"]:
+            setattr(config, key, value)
+            colors.set_orbit_colors()
         else:
             setattr(config, key, value)
             if key == "player":
@@ -178,6 +184,7 @@ class SettingsEdit(EditorBase):
         for i in self.selectors:
             data[i.key] = i.current_value
         write_file("settings.json", "config", data)
+        ui_handler.save_ui_elements()
 
     def listen(self, events):
         if not self._hidden and not self._disabled:

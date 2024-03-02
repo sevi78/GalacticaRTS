@@ -28,7 +28,7 @@ class GameConfig:
         self.height_current = self.height
         self.moveable = True
         self.app = None
-        self.players = 2
+        self.players = 3
         self.player = 0
         self.tooltip_text = ""
         self.game_paused = False

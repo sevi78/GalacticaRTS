@@ -1,5 +1,26 @@
 import pygame
 
+from source.configuration.game_config import config
+
+
+def dim_color(color, value, min_value, maximize=False):
+    r, g, b = color
+    max_color = max(r, g, b)
+
+    if maximize:
+        if max_color > 0:
+            r = 255 / max_color * r
+            g = 255 / max_color * g
+            b = 255 / max_color * b
+
+    fade_factor = 1 - (value / 255)
+
+    r = max(min_value, min(255, int(r * fade_factor)))
+    g = max(min_value, min(255, int(g * fade_factor)))
+    b = max(min_value, min(255, int(b * fade_factor)))
+
+    return r, g, b
+
 
 class Colors:
     def __init__(self):
@@ -20,11 +41,31 @@ class Colors:
         self.ui_dark = (55, 130, 157)  # "#37829d"
         self.ui_darker = (8, 51, 54)
         self.orbit_color = (8, 51, 50)
-        self.orbit_color_planet = (9, 30, 20)
-        self.orbit_color_moon = (7, 15, 36)
+        self.orbit_color_planet = (9, 32, 20)
+        self.orbit_color_moon = (7, 15, 32)
+
         self.select_color = pygame.color.THECOLORS["cyan"]
         self.outside_screen_color = pygame.color.THECOLORS.get("red")
         self.pygame_color_names = list(pygame.color.THECOLORS.keys())
+
+        self.orbit_colors = {}
+        self.set_orbit_colors()
+
+    def set_orbit_colors(self):
+        self.orbit_colors = {"orbit_color": dim_color(self.orbit_color, -config.ui_orbit_color_brightness * 2.55, 0, maximize=False),
+                             "planet_orbit_color": dim_color(self.orbit_color_planet, -config.ui_planet_orbit_color_brightness * 2.55, 0, maximize=False),
+                             "moon_orbit_color": dim_color(self.orbit_color_moon, -config.ui_moon_orbit_color_brightness * 2.55, 0, maximize=False)
+                             }
+
+    def get_orbit_color(self, type_):
+        if type_ == "sun":
+            return self.orbit_colors["orbit_color"]
+        elif type_ == "planet":
+            return self.orbit_colors["planet_orbit_color"]
+        elif type_ == "moon":
+            return self.orbit_colors["moon_orbit_color"]
+        else:
+            return self.orbit_colors["orbit_color"]
 
 
 class PygameColors:
@@ -54,15 +95,20 @@ colors = Colors()
 #         self.ui_white = pygame.color.THECOLORS["cyan"]
 #         self.ui_dark = pygame.color.THECOLORS["purple"]
 
-def dim_color(color, value, min_value):
-    r, g, b = color
-    fade_factor = 1 - (value / 255)
+# def dim_color(color, value, min_value, maximize=False):
+#     if maximize:
+#         value = 255 - value
+#
+#     r, g, b = color
+#     fade_factor = 1 - (value / 255)
+#
+#     r = max(min_value, min(255, int(r * fade_factor)))
+#     g = max(min_value, min(255, int(g * fade_factor)))
+#     b = max(min_value, min(255, int(b * fade_factor)))
+#
+#     return r, g, b
 
-    r = max(min_value, min(255, int(r * fade_factor)))
-    g = max(min_value, min(255, int(g * fade_factor)))
-    b = max(min_value, min(255, int(b * fade_factor)))
 
-    return r, g, b
 
 
 def gradient_color(colors, progress):

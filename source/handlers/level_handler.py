@@ -532,12 +532,13 @@ class LevelHandler:
 
         # setup container
         if hasattr(self.app, "ship_container"):
-            self.app.ship_container.set_widgets(sprite_groups.convert_sprite_groups_to_image_widget_list(sprite_groups.ships.sprites()))
+            self.app.ship_container.set_widgets(sprite_groups.convert_sprite_groups_to_image_widget_list("ships"))
+
+            # self.app.ship_container.filter_widget.show()
 
         if hasattr(self.app, "planet_container"):
-            self.app.planet_container.set_widgets(sprite_groups.convert_sprite_groups_to_image_widget_list(sprite_groups.planets.sprites()))
-            # self.app.container.set_widgets([ImageWidget(self.win, 0, WIDGET_SIZE * index, WIDGET_SIZE, WIDGET_SIZE,
-            #     image=copy.copy(_.image_raw), obj=_) for index, _ in enumerate(sprite_groups.ships.sprites())])
+            self.app.planet_container.set_widgets(sprite_groups.convert_sprite_groups_to_image_widget_list("planets"))
+            # self.app.ship_container.filter_widget.show()
 
         # setup event_text
         event_text.planet_links = planet_factory.get_all_planet_names()

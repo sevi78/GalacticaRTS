@@ -2,56 +2,14 @@ import copy
 import math
 
 import pygame
-
-from source.editors.editor_base.editor_config import TOP_SPACING
+from source.editors.editor_base.editor_config import TOP_SPACING, TOP_LIMIT
+from source.gui.container.container_config import WIDGET_SIZE
+from source.gui.container.container_widget_item import ContainerWidgetItem
 from source.gui.widgets.frame import Frame
 from source.gui.widgets.scroll_bar import ScrollBar
 from source.handlers.mouse_handler import mouse_handler
 from source.handlers.widget_handler import WidgetHandler
 from source.interaction.interaction_handler import InteractionHandler
-
-WIDGET_SIZE = 30
-config = {
-    "ui_panel_alpha": 220,
-    "ui_rounded_corner_big_thickness": 3,
-    "ui_rounded_corner_radius_big": 30,
-    "ui_rounded_corner_radius_small": 9,
-    "ui_rounded_corner_small_thickness": 1
-    }
-
-
-class ContainerWidgetItem:
-    def __init__(self, win, x, y, width, height, image, index, **kwargs):
-        self.win = win
-        self.world_x = x
-        self.world_y = y
-        self.image_raw = image
-        self.image = pygame.transform.scale(image, (width, height))
-        self.rect = self.image.get_rect(topleft=(x, y))
-        self.index = index
-        self.world_width = width
-        self.world_height = height
-        self._hidden = False
-        self.obj = kwargs.get("obj", None)
-
-
-    def set_position(self, pos):
-        self.world_x, self.world_y = pos
-        self.rect.topleft = pos
-
-    def hide(self):
-        self._hidden = True
-
-    def show(self):
-        self._hidden = False
-
-    def draw(self):
-        self.rect.topleft = (self.world_x, self.world_y)
-        if not self._hidden:
-            self.win.blit(self.image, self.rect)
-
-            # if self.obj:
-            #     print(f"obj:{self.obj}, obj.name:{self.obj.name}, obj.id: {self.obj.id}")
 
 
 class ContainerWidget(InteractionHandler):
@@ -77,6 +35,12 @@ class ContainerWidget(InteractionHandler):
         self.group = kwargs.get("group", None)
         self.layer = kwargs.get("layer", 10)
         self.name = kwargs.get("name", "container")
+        self.list_name = kwargs.get("list_name", None)
+        self.filters = kwargs.get("filters", [])
+        self.filter_widget = kwargs.get("filter_widget", None)
+        if self.filter_widget:
+            self.filter_widget.parent = self
+
         self.isSubWidget = True
         self._hidden = True
 
@@ -108,11 +72,14 @@ class ContainerWidget(InteractionHandler):
         # register
         WidgetHandler.addWidget(self)
 
+        # save
+        self.save = kwargs.get("save", True)
+
     def set_widgets(self, widgets):
         if widgets:
             if not isinstance(widgets[0], ContainerWidgetItem):
                 self.set_widgets([ContainerWidgetItem(self.win, 0, WIDGET_SIZE * index, WIDGET_SIZE, WIDGET_SIZE,
-                    image=copy.copy(_.image_raw), index=index, obj=_) for index, _ in enumerate(widgets)])
+                    image=copy.copy(_.image_raw), index=index, obj=_, parent=self) for index, _ in enumerate(widgets)])
             else:
                 self.widgets = widgets
 
@@ -127,6 +94,10 @@ class ContainerWidget(InteractionHandler):
         self.scroll_offset_y = 0
         self.max_scroll_y = self.get_max_scroll_y()
         self.reposition_widgets()
+
+        # hahahah :) !!! this makes is stay visible --- grotesque :)
+        self.set_visible()
+        self.set_visible()
 
     def set_x(self, value):
         self.world_x = value
@@ -146,11 +117,6 @@ class ContainerWidget(InteractionHandler):
         return self.widgets[0].world_height
 
     def select(self):
-        # set index
-
-        # print(f"self.offset_index: {self.offset_index}")
-        # print(f"self.function: {self.function}")
-
         # call the function
         getattr(self, "function")(self)
 
@@ -176,7 +142,7 @@ class ContainerWidget(InteractionHandler):
 
                 # limit y to avoid strange behaviour if close button is at the same spot as the editor open button
 
-                # if self.world_y < TOP_LIMIT: self.world_y = TOP_LIMIT
+                if self.world_y < TOP_LIMIT: self.world_y = TOP_LIMIT
 
                 # set rect
                 self.rect.x = self.world_x
@@ -201,7 +167,13 @@ class ContainerWidget(InteractionHandler):
 
     def set_visible(self):
         self._hidden = not self._hidden
-        self.world_x, self.world_y = pygame.mouse.get_pos()[0], TOP_SPACING
+        # self.world_x, self.world_y = pygame.mouse.get_pos()[0], TOP_SPACING
+
+        if self.filter_widget:
+            if self._hidden:
+                self.filter_widget.hide()
+            else:
+                self.filter_widget.show()
 
     def listen(self, events):
         if self._hidden:
@@ -237,31 +209,49 @@ class ContainerWidget(InteractionHandler):
                         offset_y = mouse_handler.get_mouse_pos()[1] - self.world_y
                         rel_offset_y = offset_y - (self.scroll_offset_y * WIDGET_SIZE)
 
-                        #pygame.draw.rect(self.win, (255, 0, 0), (self.world_x, self.world_y, self.rect.width, rel_offset_y))
                         self.offset_index = math.floor(rel_offset_y / WIDGET_SIZE)
                         self.select()
-                        print (self.offset_index)
+
+
+        # hover
+        for i in self.widgets:
+            if not i.parent:
+                i.parent = self
 
     def draw(self):
         if self._hidden:
             return
 
+        # set rect position
         self.rect.x = self.world_x
         self.rect.y = self.world_y
         if self.parent:
             self.rect.x = self.parent.rect.x
             self.rect.y = self.parent.rect.y
+
+        # set surface position
         self.surface.get_rect().x = self.rect.x
         self.surface.get_rect().y = self.rect.y
+
+        # fill surface
         self.surface.fill((0, 123, 0))  # Clear the container's surface
+
+        # draw frame
         self.frame.update_position((self.world_x, self.world_y))
         self.frame.draw()
         self.surface.blit(self.frame.surface, (0, 0))
+
+        # draw widgets
         self.draw_widgets()  # Draw the widgets onto the container's surface
         self.win.blit(self.surface, self.rect)
 
+        # draw scrollbar
         self.scrollbar.update_position()
         self.scrollbar.draw()
+
+        # filter wiget
+        self.filter_widget.world_x = self.rect.x + self.rect.width - self.filter_widget.screen_width - 10
+        self.filter_widget.world_y = self.rect.y - TOP_SPACING
 
 # def main():
 #     pygame.init()

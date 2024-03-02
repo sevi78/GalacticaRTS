@@ -27,6 +27,7 @@ from source.pan_zoom_sprites.pan_zoom_ship_classes.pan_zoom_ship_moving import P
 from source.pan_zoom_sprites.pan_zoom_ship_classes.pan_zoom_ship_params import PanZoomShipParams, \
     SHIP_ITEM_COLLECT_DISTANCE, SHIP_SPEED, SHIP_ROTATE_CORRECTION_ANGLE, SHIP_TARGET_OBJECT_RESET_DISTANCE
 from source.pan_zoom_sprites.pan_zoom_ship_classes.pan_zoom_ship_ranking import PanZoomShipRanking
+from source.pan_zoom_sprites.pan_zoom_ship_classes.spacestation import Spacestation
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_game_object import PanZoomGameObject
 from source.pan_zoom_sprites.pan_zoom_target_object import PanZoomTargetObject
 from source.text.text_formatter import format_number
@@ -99,6 +100,9 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         PanZoomShipInteraction.__init__(self)
 
         # init vars
+        self.is_spacestation = kwargs.get("is_spacestation", False)
+        self.spacestation = Spacestation(self) if self.is_spacestation else None
+
         self.name = kwargs.get("name", "no_name")
         self.data = kwargs.get("data", {})
         self.item_collect_distance = SHIP_ITEM_COLLECT_DISTANCE
@@ -544,9 +548,6 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         else:
             config.app.weapon_select.obj = self
 
-
-
-
     def update(self):
         self.state_engine.update()
         self.update_pan_zoom_game_object()
@@ -574,7 +575,7 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         else:
             self.target_object.hide()
 
-        # maybe we dont neeed inside screen here, because it is checked in WidgetHandler and pan_zoom_sprite_handler
+        # maybe we dont need inside screen here, because it is checked in WidgetHandler and pan_zoom_sprite_handler
         if level_of_detail.inside_screen(self.rect.center):
             self.progress_bar.show()
             prevent_object_overlap(sprite_groups.ships, self.min_dist_to_other_ships)
@@ -639,6 +640,10 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         # consume energy for traveling
         self.consume_energy_if_traveling()
 
+        # produce energy if spacestation
+        if self.spacestation:
+            self.spacestation.produce_energy()
+
         # set previous position, used for energy consumation calculation
         # make shure this is the last task, otherwise it would work(propbably)
         self.previous_position = (self.world_x, self.world_y)
@@ -646,5 +651,6 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
 
     def draw(self):  # unused
         print("drawing ---")
+
 
 

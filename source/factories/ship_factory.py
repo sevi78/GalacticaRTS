@@ -10,6 +10,10 @@ class ShipFactory:
         data = kwargs.get("data", {})
         size_x, size_y = map(int, name.split("_")[1].split(".")[0].split("x"))
         name = name.split("_")[0]
+
+        if name == "spacestation":
+            size_x, size_y = 100, 100
+
         ship = PanZoomShip(config.win,
             x,
             y,
@@ -30,7 +34,8 @@ class ShipFactory:
             weapons=weapons,
             data=data,
             outline_thickness=3,
-            outline_threshold=127)
+            outline_threshold=127,
+            is_spacestation=True if name == "spacestation" else False)
         return ship
 
     def create_ships_from_data(self, data):

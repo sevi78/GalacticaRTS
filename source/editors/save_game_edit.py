@@ -4,9 +4,7 @@ import pygame
 
 from source.editors.editor_base.editor_base import EditorBase
 from source.editors.editor_base.editor_config import TOP_SPACING
-from source.game_play.navigation import navigate_to_ship_by_offset_index
 from source.gui.widgets.buttons.image_button import ImageButton
-from source.gui.widgets.container_widget import ContainerWidget
 from source.handlers.file_handler import write_file, abs_games_path, \
     generate_json_filename_based_on_datetime, get_games_list, move_file_to_trash
 from source.multimedia_library.images import get_image
@@ -164,7 +162,6 @@ class SaveGameEdit(EditorBase):
         if not self._hidden and not self._disabled:
             self.draw_frame()
             self.draw_text(self.world_x + self.text_spacing, self.world_y + TOP_SPACING + self.text_spacing, 200, 25, f"Current Game: {self.current_game}")
-
 
             # self.container.set_x(self.screen_x)
             # self.container.set_y(self.screen_y)

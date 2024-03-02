@@ -54,8 +54,6 @@ class ToolTip(WidgetBase):
         self.world_width = width
         self.world_height = height
         self.size = (self.world_width, self.world_height)
-        self.rect_filled = pygame.surface.Surface(self.size)
-        self.rect_filled.set_alpha(TOOLTIP_ALPHA)
         self.parent = parent
 
         # text
@@ -79,7 +77,7 @@ class ToolTip(WidgetBase):
 
     def move(self, event):
         if self.visible and self.text_img:
-
+            cursor_space = 13
             # limit position x
             max_x = pygame.display.get_surface().get_width()
             x = event.pos[0] + self.text_img.get_width() / 2
@@ -104,7 +102,7 @@ class ToolTip(WidgetBase):
             elif y1 < min_y:
                 self.world_y = min_y
             else:
-                self.world_y = event.pos[1] + self.text_img.get_height()
+                self.world_y = event.pos[1] + self.text_img.get_height() + cursor_space
 
         else:
             self.world_x = INVISIBLE_X
@@ -116,8 +114,10 @@ class ToolTip(WidgetBase):
         self._text = config.tooltip_text
         if self._text != "":
             self.visible = True
+            # pygame.mouse.set_visible(False)  # hide cursor when tooltip is visible
         else:
             self.visible = False
+            # pygame.mouse.set_visible(True)  # show cursor when tooltip is not visible
 
     def on_hover_release_callback(self, x, y, obj):
         # if self._hidden or self._disabled:
@@ -174,3 +174,6 @@ class ToolTip(WidgetBase):
 
         # draw text
         self.win.blit(self.text_img, (self.world_x + 5, self.world_y))
+
+        # hide mouse cursor if tooltip is visible
+        # pygame.mouse.set_visible(not self.visible)

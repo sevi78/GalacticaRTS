@@ -2,7 +2,7 @@ import pygame as pg
 import pygame.transform
 
 from source.configuration.game_config import config
-from source.gui.widgets.container_widget import ContainerWidget
+
 
 
 class PanZoomHandler:  # original
@@ -118,7 +118,7 @@ class PanZoomHandler:  # original
             if event.type == pg.MOUSEBUTTONDOWN:  # and self.ctrl_pressed:
                 if event.button in [4, 5]:
                     # check if containers at mouse position to avoid strange double behaviour
-                    if not isinstance(config.hover_object, (ContainerWidget, str)):
+                    if not config.hover_object.__class__.__name__ == "ContainerWidget":
                         # X and Y before the zoom
 
                         self._set_mouse_world_before(mouse_x, mouse_y)

@@ -101,6 +101,9 @@ class EditorBase(WidgetBase):
         self.checkbox_values = []
         self.parent.editors.append(self)
 
+        # save
+        self.save = kwargs.get("save", True)
+
     @property
     def on_hover(self):
         return self._on_hover
@@ -266,10 +269,12 @@ class EditorBase(WidgetBase):
                 self.rect.x = self.world_x
                 self.rect.y = self.world_y
 
+        self.reposition(old_x, old_y)
+
+    def reposition(self, old_x, old_y):
         # calculate the difference
         diff_x = self.world_x - old_x
         diff_y = self.world_y - old_y
-
         # apply the difference to each widget
         for widget in self.widgets:
             widget.world_x += diff_x
@@ -288,11 +293,13 @@ class EditorBase(WidgetBase):
         text = font.render(text, 1, self.frame_color)
         self.win.blit(text, (x, y))
 
-    def draw_frame(self):
+    def draw_frame(self, **kwargs):
+        corner_radius = kwargs.get("corner_radius",config.ui_rounded_corner_radius_big )
+        corner_thickness = kwargs.get("corner_thickness",config.ui_rounded_corner_big_thickness)
+
         height = self.max_height
         self.frame = pygame.transform.scale(self.frame, (self.get_screen_width(), height))
+
         rect = (self.world_x, self.world_y + TOP_SPACING, self.frame.get_rect().width, self.frame.get_rect().height)
-        draw_transparent_rounded_rect(self.win, (0, 0, 0), rect,
-            config.ui_rounded_corner_radius_big, config.ui_panel_alpha)
-        pygame.draw.rect(self.win, self.frame_color, rect,
-            config.ui_rounded_corner_big_thickness, config.ui_rounded_corner_radius_big)
+        draw_transparent_rounded_rect(self.win, (0, 0, 0), rect,corner_radius , config.ui_panel_alpha)
+        pygame.draw.rect(self.win, self.frame_color, rect,corner_thickness, corner_radius)

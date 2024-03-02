@@ -1,4 +1,3 @@
-import copy
 import time
 import traceback
 
@@ -9,15 +8,15 @@ from source.app.ui_builder import UIBuilder
 from source.configuration.game_config import config
 from source.editors.level_edit import LevelEdit
 from source.editors.level_select import LevelSelect
+from source.editors.filter_widget import FilterWidget
 from source.factories.ship_factory import ShipFactory
 from source.game_play.cheat import Cheat
 from source.game_play.enemy_handler import enemy_handler
 from source.game_play.game_logic import GameLogic
-from source.game_play.navigation import navigate_to, navigate_to_ship_by_offset_index, \
-    navigate_to_planet_by_offset_index
+from source.game_play.navigation import navigate_to, navigate_to_game_object_by_index
+from source.gui.container.container_widget import ContainerWidget
 from source.gui.event_text import event_text
 from source.gui.panels.map_panel import MapPanel
-from source.gui.widgets.container_widget import ContainerWidget,  WIDGET_SIZE
 from source.gui.widgets.image_widget import ImageSprite
 from source.handlers import event_text_handler
 from source.handlers.economy_handler import economy_handler
@@ -28,6 +27,7 @@ from source.handlers.mouse_handler import mouse_handler
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.handlers.time_handler import time_handler
+from source.handlers.ui_handler import ui_handler
 from source.interaction.box_selection import BoxSelection
 from source.multimedia_library.images import get_image
 
@@ -204,9 +204,8 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
 
         # update event_text
         event_text.update()
-        #event_text.listen(events)
-        event_text_handler.listen(event_text,events)
-
+        # event_text.listen(events)
+        event_text_handler.listen(event_text, events)
 
         # self.ship_container.listen(events)
         # self.ship_container.draw()
@@ -267,8 +266,6 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
             # update enemy handler
             enemy_handler.update()
 
-
-
             # pygame update
             # pygame.display.update()
             # pygame.draw.rect(self.win, self.frame_color, (300,300,300,300), 0, 30)
@@ -320,16 +317,69 @@ def main():
     app.map_panel = MapPanel(app.win, app.info_panel.world_x, app.win.get_size()[1] - width, width, height)
 
     # containers
+
+    # containers
+    container_width = 150
+    container_height = 150
     app.ship_container = ContainerWidget(
-        app.win, 220, 60, WIDGET_SIZE + 6, 300,
-        sprite_groups.convert_sprite_groups_to_image_widget_list(sprite_groups.ships.sprites()),
-        function=navigate_to_ship_by_offset_index, layer=10)
+        app.win,
+        app.advanced_settings_panel.screen_x,
+        60,
+        container_width,
+        container_height,
+        sprite_groups.convert_sprite_groups_to_image_widget_list("ships"),
+        function=navigate_to_game_object_by_index,
+        layer=9,
+        list_name="ships",
 
+        filter_widget=FilterWidget(
+            app.win,
+            260,
+            60,
+            container_width,
+            150,
+            ["energy", "speed", "experience"],
+            parent=app,
+            layer=10,
+            list_name="ships"
+            )
+        )
     app.planet_container = ContainerWidget(
-        app.win, 260, 60, WIDGET_SIZE + 6, 300,
-        sprite_groups.convert_sprite_groups_to_image_widget_list(sprite_groups.planets.sprites()),
-        function=navigate_to_planet_by_offset_index, layer=10)
+        app.win,
+        app.advanced_settings_panel.screen_x + 320,
+        60,
+        container_width,
+        container_height,
+        sprite_groups.convert_sprite_groups_to_image_widget_list("planets"),
+        function=navigate_to_game_object_by_index,
+        layer=9,
+        list_name="planets",
+        filter_widget=FilterWidget(
+            app.win,
+            260,
+            60,
+            container_width,
+            150,
+            ["population", "population_limit", "buildings", "explored"],
+            parent=app,
+            layer=10,
+            list_name="planets"
+            ))
 
+    # app.planet_select = PlanetSelect(
+    #     pygame.display.get_surface(),
+    #     pygame.display.get_surface().get_rect().centerx - width * 1.5 / 2,
+    #     pygame.display.get_surface().get_rect().y,
+    #     width,
+    #     150,
+    #     ["population", "buildings", "explored"],
+    #     parent=app,
+    #     layer = 9,
+    #     )
+
+
+    # restore ui elements
+    ui_handler.restore_ui_elements()
     # start game loop
     app.loop()
 

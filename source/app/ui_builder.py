@@ -1,3 +1,5 @@
+import random
+
 import pygame
 
 from source.app.scene_builder import SceneBuilder
@@ -6,7 +8,6 @@ from source.editors.building_edit import BuildingEdit
 from source.editors.debug_edit import DebugEdit
 from source.editors.economy_overview import EconomyOverview
 from source.editors.enemy_handler_edit import EnemyHandlerEdit
-from source.editors.font_edit import FontEdit
 from source.editors.planet_edit import PlanetEdit
 from source.editors.save_game_edit import SaveGameEdit
 from source.editors.settings_edit import SettingsEdit
@@ -69,7 +70,7 @@ class UIBuilder(SceneBuilder):
 
         # players
         self.players = {}
-        self.create_players(2)
+        self.create_players(["zork", "bauz"])
 
         # building_panel
         self.create_building_panel()
@@ -91,6 +92,8 @@ class UIBuilder(SceneBuilder):
         self.background_gradient = BackgroundGradient(self.win, 0, 0, 1920, 1080, isSubWidget=False,
             layer=8, draw_gradient=BACKGROUND_GRADIENT_DRAW, fade_range=BACKGROUND_GRADIENT_FADE_RANGE)
 
+
+
     def create_editors(self):
         width = EDITOR_WIDTH
         height = EDITOR_HEIGHT
@@ -102,6 +105,8 @@ class UIBuilder(SceneBuilder):
             pygame.display.get_surface().get_rect().centerx - width * 1.5 / 2,
             pygame.display.get_surface().get_rect().y + spacing_y,
             width, height, parent=self)
+
+
 
         # self.level_select = LevelSelect(pygame.display.get_surface(),
         #     pygame.display.get_surface().get_rect().centerx - width / 2,
@@ -163,10 +168,16 @@ class UIBuilder(SceneBuilder):
             pygame.display.get_surface().get_rect().y + spacing_y,
             int(width/1.5), height, parent=self, obj=None, layer=9)  # , game_paused=True)
 
-    def create_players(self, amount):
-        for i in range(amount):
-            self.players[i] = Player(name="zork",
-                color=pygame.Color('red'),
+    def create_players(self, players):
+        # choose player color
+        player_colors = ["red", "orange", "blue", "green", "black"]
+        color = random.choice(player_colors)
+        player_colors.remove(color)
+
+        # setup player
+        for i in range(len(players)):
+            self.players[i] = Player(name=players[i],
+                color=color,
                 stock={
                     "energy": 1000,
                     "food": 1000,
@@ -177,7 +188,11 @@ class UIBuilder(SceneBuilder):
                     },
                 clock=0
                 )
+
+        # set active (human) player
         self.player =  self.players[0]
+
+
 
     def create_event_panel(self):
         w, h = 900, 600
