@@ -2,7 +2,7 @@ import pygame
 
 from source.configuration.game_config import config
 from source.editors.editor_base.editor_base import EditorBase
-from source.editors.editor_base.editor_config import ARROW_SIZE, FONT_SIZE, TOP_SPACING
+from source.editors.editor_base.editor_config import TOP_SPACING
 from source.gui.event_text import event_text
 from source.gui.widgets.selector import Selector
 from source.gui.widgets.slider import Slider
@@ -24,9 +24,6 @@ class SettingsEdit(EditorBase):
         self.sliders = {}
         self.current_font = None
         self.font_name_list = pygame.sysfont.get_fonts()
-        self.boolean_list = [True, False]
-
-        self.default_list = [_ for _ in range(100)]
         self.selector_lists = {"players": [_ for _ in range(config.players)],
                                "fps": [25, 60, 90, 120, 1000],
                                "enable_game_events": self.boolean_list,
@@ -48,7 +45,24 @@ class SettingsEdit(EditorBase):
         self.selector_font_name = None
 
         # create widgets
-        self.create_selectors()
+        self.create_selectors_from_dict(
+            x=self.world_x - ARROW_SIZE / 2 + self.world_width / 2,
+            y=130,
+            dict_=config.settings.items())
+
+        # fonts
+        self.selector_font_name = Selector(
+            self.win,
+            self.world_x - ARROW_SIZE / 2 + self.world_width / 2,
+            self.max_height - self.spacing_y,
+            ARROW_SIZE,
+            self.frame_color,
+            9,
+            self.spacing_x,
+            {"list_name": "font_name_list", "list": self.font_name_list},
+            self,
+            FONT_SIZE)
+
         # self.create_color_sliders()
         self.create_close_button()
         self.create_save_button(lambda: self.save_settings(), "save settings")
@@ -56,40 +70,6 @@ class SettingsEdit(EditorBase):
 
         # hide initially
         self.hide()
-
-    def create_selectors(self):
-        """
-        """
-        x = self.world_x - ARROW_SIZE / 2 + self.world_width / 2
-        y = 130
-
-        # for key, value in config.editable_params.items():
-        for key, value in config.settings.items():  # booleans
-            if type(value) is bool:
-                self.selector_lists[key] = self.boolean_list
-                self.selectors.append(Selector(self.win, x, self.world_y + y, ARROW_SIZE, self.frame_color, 9,
-                    self.spacing_x, {"list_name": f"{key}_list", "list": self.boolean_list}, self, FONT_SIZE))
-
-                y += self.spacing_y
-
-            # integers
-            if type(value) is int:
-                if not key in self.selector_lists.keys():
-                    self.selector_lists[key] = self.default_list
-
-                self.selectors.append(Selector(self.win, x, self.world_y + y, ARROW_SIZE, self.frame_color, 9,
-                    self.spacing_x, {"list_name": f"{key}_list", "list": self.selector_lists[key]}, self, FONT_SIZE,
-                    repeat_clicks=True))
-
-                y += self.spacing_y
-
-        # fonts
-        self.selector_font_name = Selector(self.win, x, self.world_y + y, ARROW_SIZE, self.frame_color, 9,
-            self.spacing_x, {"list_name": "font_name_list", "list": self.font_name_list}, self, FONT_SIZE)
-        y += self.spacing_y
-
-        # set max height to draw the frame dynamical
-        self.max_height = y + ARROW_SIZE
 
     def create_color_sliders(self):
         width = self.get_screen_width() / 2 - self.text_spacing

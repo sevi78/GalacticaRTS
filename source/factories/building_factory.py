@@ -123,6 +123,38 @@ class BuildingFactoryJsonDictReader:
                 building_names.append(building['name'])
         return building_names
 
+    def add_production(self,production, production1):
+        d = {
+            "energy": 0,
+            "food": 0,
+            "minerals": 0,
+            "water": 0,
+            "technology": 0,
+            "population": 0
+            }
+
+        for key, value in production1.items():
+            if key in production:
+                d[key] = value + production[key]
+
+
+        print(production)
+
+    def add_production(self, production, production1):
+        d = {
+            "energy": 0,
+            "food": 0,
+            "minerals": 0,
+            "water": 0,
+            "technology": 0,
+            "population": 0
+            }
+        for key, value in production.items():
+            if key in production1:
+                d[key] = value + production1[key]
+
+        return d
+
 
 class BuildingFactory(BuildingFactoryJsonDictReader):
     def __init__(self):

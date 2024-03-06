@@ -143,6 +143,7 @@ class ToolTip(WidgetBase):
         x, y = mouse_handler.get_mouse_pos()
         if self.on_hover_release_callback(x, y, obj):
             config.tooltip_text = ""
+            config.app.cursor.set_cursor("idle")
 
     def listen(self, events):
         if not self.active:

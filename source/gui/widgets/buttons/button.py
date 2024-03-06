@@ -172,6 +172,14 @@ class Button(WidgetBase, Moveable):
                         self.borderColour = self.pressedBorderColour
                         self.drawCircle(self.pressedColour, 128)
 
+                        # set cursor
+                        if self.name == "minus_arrow":
+                            config.app.cursor.set_cursor("left_arrow_repeated")
+
+                        if self.name == "plus_arrow":
+                            config.app.cursor.set_cursor("right_arrow_repeated")
+
+
 
                     elif event.type == pygame.MOUSEBUTTONUP:
                         if mouse_state == MouseState.LEFT_RELEASE and self.clicked:
@@ -207,6 +215,13 @@ class Button(WidgetBase, Moveable):
                                 config.app.info_panel.set_text(self.info_text)
                                 config.app.info_panel.set_planet_image(self.image, size=(
                                     85, 85), align="topright")
+
+                        # set cursor
+                        if self.name == "minus_arrow":
+                            config.app.cursor.set_cursor("left_arrow")
+
+                        if self.name == "plus_arrow":
+                            config.app.cursor.set_cursor("right_arrow")
             else:
                 self.image = self.image_raw
                 self.clicked = False

@@ -4,13 +4,14 @@ import time
 import pygame
 
 from source.configuration.game_config import config
+from source.gui.widgets.widget_base_components.visibilty_handler import VisibilityHandler
 from source.handlers.color_handler import colors, get_average_color
 from source.handlers.image_handler import outline_image
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.multimedia_library.images import get_image, get_gif_frames, get_gif, get_gif_fps, get_gif_duration
 from source.multimedia_library.sounds import sounds
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_debug import GameObjectDebug
-from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_visibility_handler import PanZoomVisibilityHandler
+
 
 # pygame.init()
 WIDTH = 800
@@ -23,7 +24,7 @@ SHRINK_FACTOR = 0.005
 screen = config.win
 
 
-class PanZoomSprite(pygame.sprite.Sprite, PanZoomVisibilityHandler, GameObjectDebug):
+class PanZoomSprite(pygame.sprite.Sprite, VisibilityHandler, GameObjectDebug):
     """
     this is the base class for game_objects that are sprite based.
     it has the ability to pan_zoom, means: scale and reposition the images or gif based on the pan_zoom_handler
@@ -55,7 +56,7 @@ class PanZoomSprite(pygame.sprite.Sprite, PanZoomVisibilityHandler, GameObjectDe
     def __init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs):
         GameObjectDebug.__init__(self)
         pygame.sprite.Sprite.__init__(self)
-        PanZoomVisibilityHandler.__init__(self)
+        VisibilityHandler.__init__(self)
         self.layer = kwargs.get("layer", 0)
         self.group = kwargs.get("group", None)
         self.property = ""

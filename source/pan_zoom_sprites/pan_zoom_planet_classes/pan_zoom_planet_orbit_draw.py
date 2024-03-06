@@ -65,12 +65,12 @@ def draw_orbit(self):
             x = pos[0] + radius * math.cos(angle)  # x-coordinate of the current point
             y = pos[1] + radius * math.sin(angle)  # y-coordinate of the current point
             if level_of_detail.inside_screen((x, y)):
-                if math.dist(self.center, (x, y)) * self.get_zoom() > min_dist_to_draw / self.get_zoom():
+                if math.dist(self.rect.center, (x, y)) * self.get_zoom() > min_dist_to_draw / self.get_zoom():
                     points.append((int(x), int(y)))
 
         if len(points) > 1:
             for i in points:
-                dist = math.dist(self.center, (i[0], i[1]))
+                dist = math.dist(self.rect.center, (i[0], i[1]))
                 if dist < min_dist:
                     dist = min_dist
                 if dist > max_dist:
@@ -91,7 +91,7 @@ def draw_orbits(self):
     elif self.get_zoom() < 0.8 > 0.1:
         draw_orbit_simple(self)
     elif self.get_zoom() > 0.8:
-        if level_of_detail.inside_screen(self.center):
+        if level_of_detail.inside_screen(self.rect.center):
             draw_orbit(self)
 
     # draw_orbit_angle(self)

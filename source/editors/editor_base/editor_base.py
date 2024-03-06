@@ -4,6 +4,7 @@ from source.configuration.game_config import config
 from source.draw.rect import draw_transparent_rounded_rect
 from source.editors.editor_base.editor_config import ARROW_SIZE, SPACING_Y, FONT_SIZE, TOP_SPACING, TOP_LIMIT
 from source.gui.widgets.buttons.image_button import ImageButton
+from source.gui.widgets.selector import Selector
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.handlers.color_handler import colors
 from source.multimedia_library.images import get_image
@@ -95,6 +96,10 @@ class EditorBase(WidgetBase):
         self._on_hover = False
 
         # register
+        self.boolean_list = [True, False]
+        self.selector_lists = {}
+        self.default_list = [_ for _ in range(100)]
+
         self.buttons = []
         self.selectors = []
         self.checkboxes = []
@@ -217,12 +222,37 @@ class EditorBase(WidgetBase):
             include_text=False,
             layer=self.layer,
             onClick=lambda: self.close(),
+            name="close_button"
             )
 
         close_icon.hide()
 
         self.buttons.append(close_icon)
         self.widgets.append(close_icon)
+
+    def create_selectors_from_dict(self, x, y, dict_):
+        for key, value in dict_:
+            # booleans
+            if type(value) is bool:
+                self.selector_lists[key] = self.boolean_list
+                self.selectors.append(Selector(self.win, x, self.world_y + y, ARROW_SIZE, self.frame_color, 9,
+                    self.spacing_x, {"list_name": f"{key}_list", "list": self.boolean_list}, self, FONT_SIZE))
+
+                y += self.spacing_y
+
+            # integers
+            if type(value) is int:
+                if not key in self.selector_lists.keys():
+                    self.selector_lists[key] = self.default_list
+
+                self.selectors.append(Selector(self.win, x, self.world_y + y, ARROW_SIZE, self.frame_color, 9,
+                    self.spacing_x, {"list_name": f"{key}_list", "list": self.selector_lists[key]}, self, FONT_SIZE,
+                    repeat_clicks=True))
+
+                y += self.spacing_y
+
+        # set max height to draw the frame dynamical
+        self.max_height = y + ARROW_SIZE
 
     def close(self):
         config.set_global_variable("edit_mode", True)
@@ -259,7 +289,7 @@ class EditorBase(WidgetBase):
 
             elif event.type == pygame.MOUSEMOTION and self.moving:
                 self.world_x = event.pos[0] + self.offset_x  # apply the offset x
-                self.world_y = event.pos[1] + self.offset_y # apply the offset y
+                self.world_y = event.pos[1] + self.offset_y  # apply the offset y
 
                 # limit y to avoid strange behaviour if close button is at the same spot as the editor open button
 
@@ -268,6 +298,9 @@ class EditorBase(WidgetBase):
                 # set rect
                 self.rect.x = self.world_x
                 self.rect.y = self.world_y
+
+                # set drag cursor
+                config.app.cursor.set_cursor("drag")
 
         self.reposition(old_x, old_y)
 
@@ -294,12 +327,12 @@ class EditorBase(WidgetBase):
         self.win.blit(text, (x, y))
 
     def draw_frame(self, **kwargs):
-        corner_radius = kwargs.get("corner_radius",config.ui_rounded_corner_radius_big )
-        corner_thickness = kwargs.get("corner_thickness",config.ui_rounded_corner_big_thickness)
+        corner_radius = kwargs.get("corner_radius", config.ui_rounded_corner_radius_big)
+        corner_thickness = kwargs.get("corner_thickness", config.ui_rounded_corner_big_thickness)
 
         height = self.max_height
         self.frame = pygame.transform.scale(self.frame, (self.get_screen_width(), height))
 
         rect = (self.world_x, self.world_y + TOP_SPACING, self.frame.get_rect().width, self.frame.get_rect().height)
-        draw_transparent_rounded_rect(self.win, (0, 0, 0), rect,corner_radius , config.ui_panel_alpha)
-        pygame.draw.rect(self.win, self.frame_color, rect,corner_thickness, corner_radius)
+        draw_transparent_rounded_rect(self.win, (0, 0, 0), rect, corner_radius, config.ui_panel_alpha)
+        pygame.draw.rect(self.win, self.frame_color, rect, corner_thickness, corner_radius)

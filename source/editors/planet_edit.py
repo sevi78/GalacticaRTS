@@ -130,7 +130,7 @@ class PlanetEdit(EditorBase, PlanetEditBuilder):
 
     Methods:
     - create_inputboxes(): creates an input box for the planet name
-    - create_selectors(): creates selectors for the planet image, atmosphere, and orbit object ID
+    - create_selectors_from_dict(): creates selectors for the planet image, atmosphere, and orbit object ID
     - create_checkboxes(): creates a checkbox for each possible resource
     - set_checkbox_values(): sets the value of each checkbox based on the selected planet's possible resources
     - get_checkbox_values(): gets the values of all checkboxes and updates the selected planet's resources accordingly

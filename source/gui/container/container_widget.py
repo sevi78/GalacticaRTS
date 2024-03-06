@@ -2,6 +2,8 @@ import copy
 import math
 
 import pygame
+
+from source.configuration.game_config import config
 from source.editors.editor_base.editor_config import TOP_SPACING, TOP_LIMIT
 from source.gui.container.container_config import WIDGET_SIZE
 from source.gui.container.container_widget_item import ContainerWidgetItem
@@ -148,6 +150,9 @@ class ContainerWidget(InteractionHandler):
                 self.rect.x = self.world_x
                 self.rect.y = self.world_y
 
+                # set cursor
+                config.app.cursor.set_cursor("drag")
+
     def reposition_widgets(self):
         # Adjust the position of each widget relative to the container's current position
         if not self.scroll_offset_y in range(-len(self.widgets), len(self.widgets)):
@@ -183,6 +188,7 @@ class ContainerWidget(InteractionHandler):
 
         if self.rect.collidepoint(pygame.mouse.get_pos()):
             self.on_hover = True
+            config.app.cursor.set_cursor("scroll")
         else:
             self.on_hover = False
 
@@ -201,6 +207,12 @@ class ContainerWidget(InteractionHandler):
                         self.scrollbar.value = abs(1 / len(self.widgets) * self.scroll_offset_y)
 
                         self.reposition_widgets()
+
+                        # set cursor
+                        if event.y > 0:
+                            config.app.cursor.set_cursor("scroll_up")
+                        else:
+                            config.app.cursor.set_cursor("scroll_down")
 
             # select
             if event.type == pygame.MOUSEBUTTONDOWN:

@@ -71,7 +71,8 @@ class GameTime(WidgetBase):
             frame_color=self.frame_color,
             transparent=True,
             onClick=lambda: self.set_clockslider_value(-1),
-            layer=self.layer
+            layer=self.layer,
+            name="minus_arrow_button"
             )
 
         self.plus_arrow_button = Button(win=self.win,
@@ -86,7 +87,8 @@ class GameTime(WidgetBase):
             frame_color=self.frame_color,
             transparent=True,
             onClick=lambda: self.set_clockslider_value(+1),
-            layer=self.layer
+            layer=self.layer,
+            name="plus_arrow_button"
             )
 
     def create_slider(self):

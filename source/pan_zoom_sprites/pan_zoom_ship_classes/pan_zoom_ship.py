@@ -520,6 +520,9 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
                     # self.win.blit(self.image_outline, self.rect)
 
                     self.weapon_handler.draw_attack_distance()
+
+                    # set cursor
+                    config.app.cursor.set_cursor("ship")
             else:
                 # not mouse over object
                 self.clicked = False

@@ -90,6 +90,8 @@ class PanZoomHandler:  # original
         self.world_offset_y -= (mouse_y - self.pan_start_pos[1]) / self.zoom
         self.pan_start_pos = mouse_x, mouse_y
 
+        config.app.cursor.set_cursor("navigate")
+
     def world_2_screen(self, world_x, world_y):
         screen_x = (world_x - self.world_offset_x) * self.zoom
         screen_y = (world_y - self.world_offset_y) * self.zoom
@@ -149,8 +151,10 @@ class PanZoomHandler:  # original
     def _zoom_in_out(self, event):
         if event.button == 4 and self.zoom < self.zoom_max:
             self.set_zoom(self.zoom * self.scale_up)
+            config.app.cursor.set_cursor("zoom_in")
         elif event.button == 5 and self.zoom > self.zoom_min:
             self.set_zoom(self.zoom * self.scale_down)
+            config.app.cursor.set_cursor("zoom_out")
 
     def _set_world_offset(self):
         self.world_offset_x += self.mouseworld_x_before - self.mouseworld_x_after

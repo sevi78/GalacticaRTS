@@ -14,7 +14,9 @@ from source.handlers.color_handler import colors
 DEFAULT_ZOOM = 0.2
 TEXT_ZOOM = DEFAULT_ZOOM
 IMAGE_ZOOM = DEFAULT_ZOOM
-SPECIALS_ZOOM =  DEFAULT_ZOOM
+SPECIALS_ZOOM = DEFAULT_ZOOM
+
+
 class PanZoomPlanetDraw:
     def __init__(self, **kwargs):
         self.frame_color = colors.frame_color
@@ -46,8 +48,8 @@ class PanZoomPlanetDraw:
 
         else:
             w = 30
-            #pygame.draw.circle(self.win, self.average_color, self.rect.center, 5, 1)
-            #draw_cross_in_circle(self.win, self.average_color, self.rect.center, CROSS_RADIUS)
+            # pygame.draw.circle(self.win, self.average_color, self.rect.center, 5, 1)
+            # draw_cross_in_circle(self.win, self.average_color, self.rect.center, CROSS_RADIUS)
             self.draw_cross()
 
     def draw_cross(self):
@@ -104,6 +106,3 @@ class PanZoomPlanetDraw:
                     alien_image = pygame.transform.scale(get_image("alien_face_green.png"), (25, 25))
                 self.win.blit(alien_image, (
                     x, self.rect.centery))
-
-    def draw_image__(self):
-        self.win.blit(self.image, self.rect)

@@ -166,6 +166,7 @@ class BoxSelection:
                 if event.button == pygame.BUTTON_LEFT and not pygame.key.get_mods() & pygame.KMOD_CTRL:
                     self.start_pos = event.pos
 
+                    # config.app.cursor.set_cursor("box_select")
             elif event.type == pygame.MOUSEBUTTONUP:
                 mods = pygame.key.get_mods()
                 if event.button == pygame.BUTTON_LEFT and not mods & pygame.KMOD_CTRL and not mods & pygame.KMOD_SHIFT:
@@ -179,6 +180,8 @@ class BoxSelection:
                     self.selected_objects = self.check_selection()
                     self.select_objects()
 
+                    # config.app.cursor.set_cursor("box_select")
+
                 if event.button == pygame.BUTTON_LEFT and pygame.key.get_mods() & pygame.KMOD_SHIFT:
                     selected = self.check_selection()
                     self.deselect_objects(selected)
@@ -189,6 +192,9 @@ class BoxSelection:
             elif event.type == pygame.MOUSEMOTION:
                 if event.buttons[0] and not pygame.key.get_mods() & pygame.KMOD_CTRL:
                     self.end_pos = event.pos
+
+                    # set cursor
+                    config.app.cursor.set_cursor("box_select")
 
             elif  event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_p:

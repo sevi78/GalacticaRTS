@@ -104,12 +104,6 @@ class ImageButton(WidgetBase):
                     pass
 
                 elif mouse_state == MouseState.HOVER or mouse_state == MouseState.LEFT_DRAG:
-                    # self.draw_hover_rect()
-                    # self.image = self.image_outline
-                    # self.image = pygame.transform.scale(self.image_outline, self.rect.size)
-                    # self.win.blit(self.image_outline, self.image.get_rect())
-                    # self.win.blit(pygame.transform.scale(self.image_outline, self.rect.size), self.rect)
-                    # self.win.blit(self.image_outline, self.rect)
                     self.win.blit(pygame.transform.scale(self.image_outline, self.rect.size), self.rect)
                     # set info_panel
                     if self.info_text:
@@ -121,10 +115,18 @@ class ImageButton(WidgetBase):
                     if self.tooltip:
                         if self.tooltip != "":
                             config.tooltip_text = self.tooltip
-                # else:
-                #     self.image = self.image_raw
+
+                    # set cursor
+                    if hasattr(self, "parent"):
+                        if self.parent.__class__.__name__ == "ToggleSwitch":
+                            if not self.parent.parent._hidden:
+                                config.app.cursor.set_cursor("toggle_up")
+                            else:
+                                config.app.cursor.set_cursor("toggle_down")
+
+                    if self.name == "close_button":
+                        config.app.cursor.set_cursor("close")
             else:
-                # self.image = self.image_raw
                 self.clicked = False
 
     def draw(self):
