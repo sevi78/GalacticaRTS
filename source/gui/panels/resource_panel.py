@@ -59,6 +59,31 @@ class ResourcePanel(WidgetBase):
         pos_x = 160
         pos_y = 15
 
+        self.players_icon = ImageButton(win=self.win,
+            x=70,
+            y=pos_y,
+            width=self.icon_size,
+            height=self.icon_size,
+            isSubWidget=False,
+            parent=self,
+            image=pygame.transform.scale(get_image("multiplayer.png"), (25, 25)),
+            image_raw=get_image("multiplayer.png"),
+            tooltip="players",
+            frame_color=self.frame_color,
+            moveable=False,
+            include_text=True,
+            layer=self.layer,
+            key="",
+            info_text="players",
+            name="players_icon",
+            textColours=(0, 0, 0),
+            font_size=0,
+            outline_thickness=0,
+            outline_threshold=0,
+            onClick=lambda: config.app.player_edit.set_visible())
+
+        self.widgets.append(self.players_icon)
+
         self.mission_icon = ImageButton(win=self.win,
             x=5,
             y=pos_y,

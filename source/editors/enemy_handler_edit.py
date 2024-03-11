@@ -22,3 +22,4 @@ class EnemyHandlerEdit(Interface):
         if not self._hidden and not self._disabled:
             self.handle_hovering()
             self.drag(events)
+

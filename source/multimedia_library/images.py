@@ -322,3 +322,7 @@ if LOAD_AT_GAME_START:
     end = time.time()
     print(f"Loaded images in {end - start} seconds")
     #pprint(find_unused_images_gifs(pictures_path, os.path.join(pictures_path, 'gifs'), images, gifs))
+
+
+if __name__ ==  "__main__":
+    pass

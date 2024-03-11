@@ -39,13 +39,13 @@ class CelestialObject(WidgetBase):
 
         # colors
         # Generate a list of random colors
-        self.colors = [(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)) for _ in range(10)]
+        self.colors = [(random.randint(0, config.star_brightness), random.randint(0, config.star_brightness), random.randint(0, config.star_brightness)) for _ in range(10)]
 
         # start pulse
         self.start_pulse = random.random()
         self.pulse_time = random.uniform(0.5, 3.0)
         self.pulsating_star_size = random.randint(1, 3)
-        self.pulsating_star_color = (random.randint(110, 255), random.randint(110, 255), random.randint(110, 255))
+        self.pulsating_star_color = (random.randint(0, config.star_brightness), random.randint(0, config.star_brightness), random.randint(0, config.star_brightness))
 
         # Initialize the color index
         self.color_index = 0

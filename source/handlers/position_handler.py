@@ -1,6 +1,12 @@
+import math
 import random
+import pygame
 
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
+
+LERP_FACTOR = 0.05
+MOON_MAX_DISTANCE = 100  # Define this value
+PLANET_MAX_DISTANCE = 200  # Define this value
 
 
 def smooth_position(prev_x, prev_y, x, y, smooth):
@@ -140,29 +146,31 @@ def align_vertical(rect, v_align):
     return rect.y
 
 
-def smooth_planet_positions__(width, height):  # ki
-    center_x = width / 2
-    center_y = height / 2
-    for planet in sprite_groups.planets.sprites():
-        # check if it has an orbit object
+def smooth_ship_positions():
+    for ship in sprite_groups.ships.sprites():
+        nearest_planet = sprite_groups.get_nearest_obj(sprite_groups.planets.sprites(), ship)
+        distance_to_nearest_planet = math.dist((ship.world_x, ship.world_y), (
+            nearest_planet.world_x, nearest_planet.world_y))
 
-        if planet.orbit_object:
-            dist_x = planet.world_x - center_x
-            dist_y = planet.world_y - center_y
-            distance_from_center = math.hypot(dist_x, dist_y)
+        if distance_to_nearest_planet > ship.get_max_travel_range():
+            # Calculate the direction vector from the ship to the planet
+            direction_x = nearest_planet.world_x - ship.world_x
+            direction_y = nearest_planet.world_y - ship.world_y
 
-            if distance_from_center > min(width, height) / 2:
-                # Calculate the angle from the center to the current position
-                angle = math.atan2(dist_y, dist_x)
-                # Set the position to the edge of the circular boundary
-                planet.world_x = center_x + (min(width, height) / 2) * math.cos(angle)
-                planet.world_y = center_y + (min(width, height) / 2) * math.sin(angle)
+            # Normalize the direction vector
+            length = math.sqrt(direction_x ** 2 + direction_y ** 2)
+            direction_x /= length
+            direction_y /= length
 
+            # Move the ship towards the planet using the LERP factor
+            ship.world_x += direction_x * LERP_FACTOR * distance_to_nearest_planet
+            ship.world_y += direction_y * LERP_FACTOR * distance_to_nearest_planet
 
-import math
+        ship.energy = ship.energy_max
 
 
 def smooth_planet_positions(width, height):
+    smooth_ship_positions()
     center_x = width / 2
     center_y = height / 2
     boundary_radius = min(width, height) / 2
@@ -188,71 +196,28 @@ def smooth_planet_positions(width, height):
                 if math.dist((planet.world_x, planet.world_y), (center_x, center_y)) < -PLANET_MAX_DISTANCE:
                     planet.orbit_radius -= PLANET_MAX_DISTANCE / 10
 
-
-MOON_MAX_DISTANCE = 100  # Define this value
-PLANET_MAX_DISTANCE = 200  # Define this value
-
-import math
-
-
-def smooth_planet_positions__(width, height):
-    center_x = width / 2
-    center_y = height / 2
-    boundary_radius = min(width, height) / 2
-
-    for planet in sprite_groups.planets.sprites():
-        if planet.orbit_object:
-            dist_x = planet.world_x - center_x
-            dist_y = planet.world_y - center_y
-            distance_from_center = math.hypot(dist_x, dist_y)
-
-            # Check if the planet is too far from the sun
-            if distance_from_center + planet.orbit_radius > PLANET_MAX_DISTANCE:
-                # Adjust the planet's position
-                # Here you should write the code to adjust the planet's position
-                # Calculate the angle from the center to the current position
-                angle = math.atan2(dist_y, dist_x)
-                # Set the position to the edge of the circular boundary minus the planet's radius
-                new_distance = boundary_radius - planet.orbit_radius
-                planet.world_x = center_x + new_distance * math.cos(angle)
-                planet.world_y = center_y + new_distance * math.sin(angle)
-                if planet.orbit_object.orbit_object:
-                    dist_x = planet.world_x - center_x
-                    dist_y = planet.world_y - center_y
-                    distance_from_center = math.hypot(dist_x, dist_y)
-
-                    # Check if the planet is too far from the sun
-                    if distance_from_center + planet.orbit_radius > MOON_MAX_DISTANCE:
-                        # Adjust the planet's position
-                        # Here you should write the code to adjust the planet's position
-                        # Calculate the angle from the center to the current position
-                        angle = math.atan2(dist_y, dist_x)
-                        # Set the position to the edge of the circular boundary minus the planet's radius
-                        new_distance = boundary_radius - planet.orbit_radius
-                        planet.world_x = center_x + new_distance * math.cos(angle)
-                        planet.world_y = center_y + new_distance * math.sin(angle)
-
-
-import pygame
-
-LERP_FACTOR      = 0.05
-minimum_distance = 25
-maximum_distance = 100
-
-def FollowMe(pops, fpos):
-    target_vector       = pygame.math.Vector2(*pops)
-    follower_vector     = pygame.math.Vector2(*fpos)
-    new_follower_vector = pygame.math.Vector2(*fpos)
-
-    distance = follower_vector.distance_to(target_vector)
-    if distance > minimum_distance:
-        direction_vector    = (target_vector - follower_vector) / distance
-        min_step            = max(0, distance - maximum_distance)
-        max_step            = distance - minimum_distance
-        step_distance       = min_step + (max_step - min_step) * LERP_FACTOR
-        new_follower_vector = follower_vector + direction_vector * step_distance
-
-    return (new_follower_vector.x, new_follower_vector.y)
+#
+# import pygame
+#
+# LERP_FACTOR = 0.05
+# minimum_distance = 25
+# maximum_distance = 100
+#
+#
+# def FollowMe(pops, fpos):
+#     target_vector = pygame.math.Vector2(*pops)
+#     follower_vector = pygame.math.Vector2(*fpos)
+#     new_follower_vector = pygame.math.Vector2(*fpos)
+#
+#     distance = follower_vector.distance_to(target_vector)
+#     if distance > minimum_distance:
+#         direction_vector = (target_vector - follower_vector) / distance
+#         min_step = max(0, distance - maximum_distance)
+#         max_step = distance - minimum_distance
+#         step_distance = min_step + (max_step - min_step) * LERP_FACTOR
+#         new_follower_vector = follower_vector + direction_vector * step_distance
+#
+#     return (new_follower_vector.x, new_follower_vector.y)
 #
 # pygame.init()
 # window = pygame.display.set_mode((500, 500))

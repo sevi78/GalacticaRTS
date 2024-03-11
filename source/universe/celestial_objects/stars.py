@@ -3,6 +3,7 @@ import math
 import pygame
 from pygame import gfxdraw
 
+from source.configuration.game_config import config
 from source.gui.lod import level_of_detail
 from source.universe.celestial_objects.celestial_object import CelestialObject
 
@@ -19,8 +20,8 @@ class FlickeringStar(CelestialObject):
 
         if not self._hidden:
             """
-                    Draw a flickering star on the screen.
-                    """
+                Draw a flickering star on the screen.
+            """
             # Get the current color from the colors list
             color = self.colors[self.color_index]
 
@@ -45,8 +46,12 @@ class PulsatingStar(CelestialObject):
         if not self._hidden:
             t = pygame.time.get_ticks() % (self.pulse_time * 1000) / (self.pulse_time * 1000)
             s = 2 * math.pi * (t + self.start_pulse)
-            c = int(127 * max(0.5, 1 + math.cos(2 * math.pi * t)))
-            gfxdraw.filled_circle(self.win, int(self.get_screen_x()), int(self.get_screen_y()), int(self.pulsating_star_size * self.get_zoom()), (
-                c, c, c))
+            c = int(config.star_brightness/2 * max(0.5, 1 + math.cos(2 * math.pi * t)))
+            gfxdraw.filled_circle(
+                self.win,
+                int(self.get_screen_x()),
+                int(self.get_screen_y()),
+                int(self.pulsating_star_size * self.get_zoom()),
+                (c, c, c))
 
             # self.debug_object()

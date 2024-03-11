@@ -274,9 +274,10 @@ class PlanetEdit(EditorBase, PlanetEditBuilder):
         """this is the selector_callback function called from the selector to return the values to the editor"""
         if key == "type":
             if value == "sun":
-                self.selector_image_name_small.list = list(images[pictures_path]["suns"].keys())
+                os.listdir(os.path.join(pictures_path, "planets")) + os.listdir(os.path.join(pictures_path, "suns"))
+                self.selector_image_name_small.list = os.listdir(os.path.join(pictures_path, "suns"))
             if value == "planet":
-                self.selector_image_name_small.list = list(images[pictures_path]["planets"].keys())
+                self.selector_image_name_small.list = os.listdir(os.path.join(pictures_path, "planets"))
 
         if key == "image_name_small":
             self.selected_planet.image_name_small = value

@@ -70,8 +70,8 @@ class PanZoomShipRanking:
 
         # generate feedback for player, set event_text and play sound
         if curr_key > prev_key:
-            event_text.text = "Congratulations !!! Rank increased from {} to {} !!!".format(prev_rank, self.rank)
+            event_text.set_text("Congratulations !!! Rank increased from {} to {} !!!".format(prev_rank, self.rank), obj=self)
             sounds.play_sound(sounds.rank_up)
         elif curr_key < prev_key:
-            event_text.text = "Shame on you !!! Rank decreased from {} to {} !!!".format(prev_rank, self.rank)
+            event_text.set_text("Shame on you !!! Rank decreased from {} to {} !!!".format(prev_rank, self.rank), obj=self)
             sounds.play_sound(sounds.rank_down)

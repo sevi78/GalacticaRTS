@@ -100,7 +100,7 @@ class PanZoomShipMoving:
 
         self.set_experience(1000)
         self.parent.info_panel.set_planet_image(self.target.image_raw)
-        self.target.get_explored()
+        self.target.get_explored(self.owner)
 
     def reach_enemy(self):
         self.target_reached = True
@@ -113,8 +113,9 @@ class PanZoomShipMoving:
         self.develop_planet()
 
         # unload_cargo goods
-        if not self.target.type == "sun":
+        if not self.target.type == "sun" and self.target.owner == self.owner or self.target.owner == -1:
             self.unload_cargo()
+
         self.set_energy_reloader(self.target)
 
         sounds.stop_sound(self.sound_channel)

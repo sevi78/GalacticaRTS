@@ -58,3 +58,4 @@ def navigate_to_game_object_by_index(self):
                 navigate_to_position(obj.screen_x, obj.screen_y)
                 # select
                 config.app.ship = obj
+                selected = [i.selected for i in sprite_groups.ships.sprites() if not i == obj]

@@ -137,7 +137,7 @@ class EnemyHandler(InterfaceData):
             lifetime=random.randint(30, 60),
             explosion_relative_gif_size=5.0,
             id=self.ufo_id,
-            layer=0,
+            layer=5,
             outline_thickness=1,
             outline_threshold=0)
 

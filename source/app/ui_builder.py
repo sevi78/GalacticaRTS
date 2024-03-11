@@ -9,6 +9,7 @@ from source.editors.debug_edit import DebugEdit
 from source.editors.economy_overview import EconomyOverview
 from source.editors.enemy_handler_edit import EnemyHandlerEdit
 from source.editors.planet_edit import PlanetEdit
+from source.editors.player_edit import PlayerEdit
 from source.editors.save_game_edit import SaveGameEdit
 from source.editors.settings_edit import SettingsEdit
 from source.editors.ship_edit import ShipEdit
@@ -27,6 +28,7 @@ from source.gui.tool_tip import ToolTip
 from source.gui.widgets.background_image import BackgroundGradient
 from source.handlers.debug_handler import debugger
 from source.handlers.file_handler import load_file
+from source.handlers.player_handler import player_handler
 
 EDITOR_HEIGHT = 600
 
@@ -92,8 +94,6 @@ class UIBuilder(SceneBuilder):
         self.background_gradient = BackgroundGradient(self.win, 0, 0, 1920, 1080, isSubWidget=False,
             layer=8, draw_gradient=BACKGROUND_GRADIENT_DRAW, fade_range=BACKGROUND_GRADIENT_FADE_RANGE)
 
-
-
     def create_editors(self):
         width = EDITOR_WIDTH
         height = EDITOR_HEIGHT
@@ -105,8 +105,6 @@ class UIBuilder(SceneBuilder):
             pygame.display.get_surface().get_rect().centerx - width * 1.5 / 2,
             pygame.display.get_surface().get_rect().y + spacing_y,
             width, height, parent=self)
-
-
 
         # self.level_select = LevelSelect(pygame.display.get_surface(),
         #     pygame.display.get_surface().get_rect().centerx - width / 2,
@@ -166,18 +164,23 @@ class UIBuilder(SceneBuilder):
         self.settings_edit = SettingsEdit(pygame.display.get_surface(),
             pygame.display.get_surface().get_rect().centerx - width / 2,
             pygame.display.get_surface().get_rect().y + spacing_y,
-            int(width/1.5), height, parent=self, obj=None, layer=9)  # , game_paused=True)
+            int(width / 1.5), height, parent=self, obj=None, layer=9)  # , game_paused=True)
+
+        self.player_edit = PlayerEdit(pygame.display.get_surface(),
+            100,
+            pygame.display.get_surface().get_rect().y + spacing_y,
+            int(width * 1.7), height, parent=self, obj=None, layer=9)  # , game_paused=True)
 
     def create_players(self, players):
         # choose player color
-        player_colors = ["red", "orange", "blue", "green", "black"]
-        color = random.choice(player_colors)
-        player_colors.remove(color)
+        # player_colors = ["blue","red", "orange", "green", "black"]
+        # color = random.choice(player_colors)
+        # player_colors.remove(color)
 
         # setup player
         for i in range(len(players)):
             self.players[i] = Player(name=players[i],
-                color=color,
+                color=player_handler.get_player_color(i),
                 stock={
                     "energy": 1000,
                     "food": 1000,
@@ -190,9 +193,7 @@ class UIBuilder(SceneBuilder):
                 )
 
         # set active (human) player
-        self.player =  self.players[0]
-
-
+        self.player = self.players[0]
 
     def create_event_panel(self):
         w, h = 900, 600

@@ -45,7 +45,7 @@ class Cheat:
         for p in sprite_groups.planets:
             p.explored = True
         for pl in sprite_groups.planets:
-            pl.get_explored()
+            pl.get_explored(-1)
             pl.explored = True
 
     def cheat_missile(self):

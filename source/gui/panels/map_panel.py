@@ -382,11 +382,11 @@ class MapPanel:
         mx, my = pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1]
 
         # calculate the relative mouse position when clicked on the map
-        dist_x, dist_y = abs(self.world_x - mx), abs(self.world_y - my)
+        dist_x, dist_y = abs(self.background_surface_rect.x - mx), abs(self.background_surface_rect.y - my)
 
         # multiply with factor to make sure world position is correct
         x, y = dist_x * self.factor, dist_y * self.factor
-        self.relative_mouse_x, self.relative_mouse_y = x, x
+        self.relative_mouse_x, self.relative_mouse_y = x, y
 
         # navigate to position
         navigate_to_position(x, y)
@@ -411,8 +411,6 @@ class MapPanel:
 
                     if sprite.explored and config.view_explored_planets:
                         color = pygame.color.THECOLORS.get("green")
-
-
 
                     self.draw_object(pos, radius, color, sprite, surface)
                     self.draw_image(pos, size, sprite.image_raw)
@@ -565,45 +563,6 @@ class MapPanel:
 
         if self.left_mouse_button_pressed or self.middle_button_pressed:
             self.update_camera_position()
-
-    def draw__(self) -> None:  # original, unfancy because of edges outside rouded rect-
-        self.set_visible()
-        if not self.visible:
-            return
-
-        self.reposition()
-        self.update_checkboxes()
-
-        # generate rect
-        self.frame_rect = pygame.Rect(self.world_x, self.world_y, self.world_width, self.world_height)
-
-        # draw the panel, dont set aplha to 255 !!! inperformant, replace it is much better !!!
-        if self.show_alpha:
-            self.background_surface = pygame.Surface((self.world_width, self.world_height))
-            self.background_surface.fill((0, 0, 0))
-            self.background_surface.set_alpha(config.ui_panel_alpha)
-        else:
-            self.background_surface = pygame.Surface((self.world_width, self.world_height))
-            self.background_surface.fill((0, 0, 0))
-
-        # draw the objects
-        self.draw_objects(sprite_groups.planets.sprites(), self.background_surface)
-        self.draw_objects(sprite_groups.ships.sprites(), self.background_surface)
-        self.draw_objects(sprite_groups.collectable_items.sprites(), self.background_surface)
-        self.draw_objects(sprite_groups.ufos.sprites(), self.background_surface)
-
-        # draw camera focus
-        self.draw_camera_focus(pan_zoom_handler)
-
-        # draw the map_image
-        self.win.blit(self.background_surface, self.frame_rect)
-
-        # draw the frame
-        pygame.draw.rect(self.win, self.frame_color, pygame.Rect(self.world_x, self.world_y, self.world_width,
-            self.world_height), config.ui_rounded_corner_small_thickness, config.ui_rounded_corner_radius_small)
-
-        # draw button frame
-        pygame.draw.rect(self.win, self.frame_color, self.checkbox_frame, config.ui_rounded_corner_small_thickness, config.ui_rounded_corner_radius_small)
 
     def draw_frame(self):
         draw_transparent_rounded_rect(self.win, (0, 0, 0), self.frame_rect,

@@ -317,11 +317,12 @@ def main():
     width, height = app.info_panel.world_width, app.info_panel.world_width
     app.map_panel = MapPanel(app.win, app.info_panel.world_x, app.win.get_size()[1] - width, width, height)
 
-    # containers
 
-    # containers
+    # containers:
     container_width = 80
     container_height = 150
+
+    # ship container
     app.ship_container = ContainerWidget(
         app.win,
         app.advanced_settings_panel.screen_x,
@@ -345,6 +346,8 @@ def main():
             list_name="ships"
             )
         )
+
+    # planet container
     app.planet_container = ContainerWidget(
         app.win,
         app.advanced_settings_panel.screen_x + 320,

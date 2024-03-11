@@ -75,10 +75,19 @@ def draw_zoomable_circle(surface, color, world_x, world_y, radius):
     pygame.draw.circle(surface, color, (screen_x, screen_y), radius * pan_zoom_handler.zoom, 1)
 
 
-def draw_transparent_circle(surface, color, position, radius, alpha):
+def draw_transparent_circle__(surface, color, position, radius, alpha):
     circle_surface = pygame.Surface((radius * 2, radius * 2), pygame.SRCALPHA)
     pygame.draw.circle(circle_surface, color + (alpha,), (radius, radius), radius)
     surface.blit(circle_surface, (position[0] - radius, position[1] - radius))
+
+def draw_transparent_circle(surface, color, position, radius, alpha, **kwargs):
+    special_flags=kwargs.get('special_flags', 0)
+
+    if len(color) == 4:
+        color = color[:3]  # Ignore the original alpha value
+    circle_surface = pygame.Surface((radius * 2, radius * 2), pygame.SRCALPHA)
+    pygame.draw.circle(circle_surface, color + (alpha,), (radius, radius), radius)
+    surface.blit(circle_surface, (position[0] - radius, position[1] - radius),special_flags=special_flags)
 
 
 def draw_dashed_circle(surf, color, center, radius, dash_length=10, width=1):
@@ -87,3 +96,21 @@ def draw_dashed_circle(surf, color, center, radius, dash_length=10, width=1):
 
     # Draw a dashed circle by drawing a dashed arc with a 360-degree sweep
     draw_arc_with_dashes(surf, color, circle_rect, 0, 360, radius, dash_length, width)
+
+
+def main():
+    pygame.init()
+    win = pygame.display.set_mode((900, 600))
+
+    run= True
+    while run:
+        win.fill((0,0,0))
+        x = 100
+        size = 60
+        for i in range(10):
+            draw_transparent_circle(win, (255, 255, 255), (x, 300), size, 20, special_flags=6)
+            # draw_transparent_circle(win, (255, 255, 255), (x, 300), size, 20)
+            x += size
+        pygame.display.update()
+if __name__ == "__main__":
+    main()

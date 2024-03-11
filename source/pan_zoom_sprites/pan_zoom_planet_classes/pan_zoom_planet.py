@@ -227,6 +227,9 @@ class PanZoomPlanet(PanZoomSprite, VisibilityHandler, PanZoomPlanetOverviewButto
                     self.draw_hover_circle()
                     if self.tooltip != "":
                         config.tooltip_text = self.tooltip
+                        config.app.info_panel.set_text(self.info_text)
+                        config.app.info_panel.set_planet_image(self.image_raw)
+
 
                     draw_transparent_circle(self.win, self.frame_color, self.rect.center, self.planet_defence.attack_distance, 20)
                     self.draw_specials()
@@ -271,6 +274,8 @@ class PanZoomPlanet(PanZoomSprite, VisibilityHandler, PanZoomPlanetOverviewButto
 
     def draw(self):
         draw_orbits(self)
+        self.set_display_color()
         self.draw_cross()
+        self.draw_player_colors()
         if self.show_text:
             self.draw_text()

@@ -134,7 +134,7 @@ class PanZoomGameObject(PanZoomSprite, InteractionHandler):
         self.image = new_image
         self.rect = new_rect
 
-    def move_towards_target(self):
+    def move_towards_target__(self):
         self.moving = True
         direction = self.target_position - Vector2(self.world_x, self.world_y)
 
@@ -164,6 +164,27 @@ class PanZoomGameObject(PanZoomSprite, InteractionHandler):
             self.world_y += displacement.y / time_steps
         except ZeroDivisionError as e:
             print(f"move_towards_target error! (self.world_x += displacement.x / time_steps...):{e}")
+
+    def move_towards_target(self):
+        self.moving = True
+        direction = self.target_position - Vector2(self.world_x, self.world_y)
+        distance = direction.length() * self.get_zoom()
+        if distance < self.attack_distance:
+            self.target_reached = True
+            return
+        if direction.length() != 0:
+            direction.normalize()
+        else:
+            print("move_towards_target error! direction vector length is zero.")
+            return
+        displacement = direction * self.speed * config.game_speed
+        time_steps = int(distance / self.speed) / self.get_zoom()
+        if time_steps != 0:
+            self.world_x += displacement.x / time_steps
+            self.world_y += displacement.y / time_steps
+        else:
+            print("move_towards_target error! time_steps is zero.")
+
 
     def explode(self, **kwargs):
         # self.explode_calls += 1

@@ -8,15 +8,43 @@ from source.handlers.file_handler import load_file
 from source.handlers.image_handler import overblit_button_image
 
 
+class ScreenConfig:
+    def set_monitor(self, monitor_index=0):
+        """
+        Sets the monitor at runtime and initializes a Pygame window on the selected monitor.
+        :param monitor_index: The index of the monitor where the window should be displayed. Defaults to 0.
+        this funtion has some problems.
+        some windows are not shown up after calling
+        """
+        # Get the list of available monitors
+        monitors = pygame.display.get_desktop_sizes()
+
+        # Check if the monitor_index is within the range of connected monitors
+        if monitor_index >= len(monitors):
+            print(f"cant choose monitor:{monitor_index}, index out of range")
+            return
+
+        # Get the resolution of the selected monitor
+        monitor_resolution = monitors[monitor_index]
+
+        # set the window position(vertical stack)
+        window_position_x = 0
+        window_position_y = monitor_resolution[1] * monitor_index
+
+        # Set the SDL environment variable to position the window
+        os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (window_position_x, window_position_y)
+
+        # Initialize the window on the selected monitor
+        win = pygame.display.set_mode(monitor_resolution, pygame.HWSURFACE | pygame.DOUBLEBUF, display=monitor_index)
+        return win
+
 class GameConfig:
     """
     simply write new elements into settings.json
     """
+
     def __init__(self):
-        # Load settings from a JSON file
-        self.settings = load_file("settings.json", "config")
-        for key, value in self.settings.items():
-            setattr(self, key, value)
+        self.screen_config = ScreenConfig()
 
         # Initialize configuration variables
         self.width = 1920
@@ -54,9 +82,22 @@ class GameConfig:
         self.view_explored_planets = True
         self.selected_monitor = 1
 
+        # Load settings from a JSON file
+        self.settings = load_file("settings.json", "config")
+        for key, value in self.settings.items():
+            setattr(self, key, value)
 
         # Initialize pygame and window
-        self.init_window()
+        self.win = self.screen_config.set_monitor(self.monitor)
+
+    @property
+    def monitor(self):
+        return self._monitor
+
+    @monitor.setter
+    def monitor(self, value):
+        self._monitor = value
+        self.win = self.screen_config.set_monitor(self._monitor)
 
     @property
     def enable_autopilot(self):
@@ -65,25 +106,6 @@ class GameConfig:
     @enable_autopilot.setter
     def enable_autopilot(self, value):
         self._enable_autopilot = value
-
-
-    def init_window(self):
-        # Call the GetSystemMetrics function with index 80 to get the number of monitors
-        number_of_monitors = ctypes.windll.user32.GetSystemMetrics(80)
-        if number_of_monitors > 1:
-            print("Multiple monitors detected")
-        else:
-            print("Only one monitor detected")
-
-        # Set the position of the window to the selected monitor
-        if self.selected_monitor <= number_of_monitors:
-            os.environ["SDL_VIDEO_WINDOW_POS"] = "%d,%d" % (self.width * self.selected_monitor, 0)
-        else:
-            print("Selected monitor index is out of range")
-
-        # Set the display mode to full screen on the selected monitor
-        # self.win = pygame.display.set_mode((self.width, self.height), pygame.FULLSCREEN, pygame.DOUBLEBUF)
-        self.win = pygame.display.set_mode((self.width, self.height), pygame.HWSURFACE, pygame.DOUBLEBUF)
 
     def set_global_variable(self, key, value, **kwargs):
         var = kwargs.get("var", None)
@@ -94,6 +116,9 @@ class GameConfig:
                 setattr(config, var, False)
             else:
                 setattr(config, var, True)
+
+        if not hasattr(config, key):
+            setattr(config, key, value)
 
         if getattr(config, key):
             setattr(config, key, False)

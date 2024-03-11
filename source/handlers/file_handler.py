@@ -2,6 +2,7 @@ import datetime
 import glob
 import json
 import os
+from pprint import pprint
 
 import send2trash
 
@@ -108,6 +109,34 @@ def compare_json_files(folder, default_file):
                 compare_json(default_file, data, file_name)
 
 
+def update_files(folder, category, key, value, condition):
+    # get path
+    path = os.path.join(abs_database_path() + os.sep + folder)
+
+    # search files
+    for file_name in os.listdir(path):
+        if file_name.endswith('.json'):
+
+            # open file
+            with open(os.path.join(path, file_name)) as json_file:
+                data = json.load(json_file)
+
+                # search for key
+                for k, v in data[category].items():
+                    # add key
+                    if not key in data[category][k]:
+                        data[category][k][key] = value
+
+                    else:
+                        if condition and eval(condition):
+                            data[category][k][key] = value
+                        else:
+                            data[category][k][key] = -1
+
+
+            write_file(file_name, folder, data)
+
+
 def compare_json(default, data, file_name, path=""):
     for key in default:
         if key not in data:
@@ -134,6 +163,10 @@ def abs_level_path():
 
 def abs_games_path():
     return (os.path.join(abs_database_path(), "games"))
+
+
+def abs_players_path():
+    return (os.path.join(abs_database_path(), "players"))
 
 
 def write_file(filename, folder, data):
@@ -189,8 +222,10 @@ def move_file_to_trash(file_path):
 def main():
     pass
     # update_json_files(load_file("level_0.json", folder="levels"))
-    compare_json_files(abs_level_path(), load_file("level_0.json", folder="levels"))
-
+    # compare_json_files(abs_level_path(), load_file("level_0.json", folder="levels"))
+    # update_files("games", "ships", "owner", 0, None)
+    update_files("levels", "celestial_objects", "owner", 0, condition="data[category][k]['explored'] == True" )
+    update_files("levels", "celestial_objects", "owner", 1, condition="data[category][k]['alien_population'] > 0")
 
 if __name__ == "__main__":
     main()

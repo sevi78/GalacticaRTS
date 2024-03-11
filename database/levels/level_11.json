@@ -26,7 +26,8 @@
             "world_height": 94,
             "world_width": 94,
             "world_x": 549516.8860032649,
-            "world_y": 320955.38507308066
+            "world_y": 320955.38507308066,
+            "owner": 1
         },
         "1": {
             "alien_attitude": 63,
@@ -54,7 +55,8 @@
             "world_height": 98,
             "world_width": 98,
             "world_x": 289585.79949294217,
-            "world_y": 440801.08541343076
+            "world_y": 440801.08541343076,
+            "owner": -1
         },
         "10": {
             "alien_attitude": 24,
@@ -82,7 +84,8 @@
             "world_height": 105,
             "world_width": 105,
             "world_x": 590819.8245689097,
-            "world_y": 385451.79656031664
+            "world_y": 385451.79656031664,
+            "owner": -1
         },
         "100": {
             "alien_attitude": 97,
@@ -116,7 +119,8 @@
             "world_height": 35,
             "world_width": 35,
             "world_x": 708948.5153357246,
-            "world_y": 443922.9971204527
+            "world_y": 443922.9971204527,
+            "owner": -1
         },
         "101": {
             "alien_attitude": 14,
@@ -150,7 +154,8 @@
             "world_height": 41,
             "world_width": 41,
             "world_x": 590557.2405373825,
-            "world_y": 593848.8724789431
+            "world_y": 593848.8724789431,
+            "owner": -1
         },
         "102": {
             "alien_attitude": 1,
@@ -182,7 +187,8 @@
             "world_height": 34,
             "world_width": 34,
             "world_x": 692946.4638632749,
-            "world_y": 712853.1694939935
+            "world_y": 712853.1694939935,
+            "owner": -1
         },
         "103": {
             "alien_attitude": 75,
@@ -216,7 +222,8 @@
             "world_height": 32,
             "world_width": 32,
             "world_x": 697429.6906643673,
-            "world_y": 727375.7357762434
+            "world_y": 727375.7357762434,
+            "owner": -1
         },
         "104": {
             "alien_attitude": 99,
@@ -248,7 +255,8 @@
             "world_height": 42,
             "world_width": 42,
             "world_x": 664590.526177039,
-            "world_y": 262020.88301773593
+            "world_y": 262020.88301773593,
+            "owner": -1
         },
         "105": {
             "alien_attitude": 65,
@@ -280,7 +288,8 @@
             "world_height": 31,
             "world_width": 31,
             "world_x": 660705.2826967067,
-            "world_y": 554576.8468526985
+            "world_y": 554576.8468526985,
+            "owner": -1
         },
         "106": {
             "alien_attitude": 54,
@@ -315,7 +324,8 @@
             "world_height": 34,
             "world_width": 34,
             "world_x": 692378.3630833647,
-            "world_y": 454899.13764520787
+            "world_y": 454899.13764520787,
+            "owner": -1
         },
         "107": {
             "alien_attitude": 68,
@@ -347,7 +357,8 @@
             "world_height": 32,
             "world_width": 32,
             "world_x": 384683.4279369119,
-            "world_y": 600531.559371916
+            "world_y": 600531.559371916,
+            "owner": 1
         },
         "108": {
             "alien_attitude": 44,
@@ -380,7 +391,8 @@
             "world_height": 43,
             "world_width": 43,
             "world_x": 504432.5768708555,
-            "world_y": 580639.8277142226
+            "world_y": 580639.8277142226,
+            "owner": 1
         },
         "109": {
             "alien_attitude": 50,
@@ -413,7 +425,8 @@
             "world_height": 37,
             "world_width": 37,
             "world_x": 699539.7330920289,
-            "world_y": 730900.352905991
+            "world_y": 730900.352905991,
+            "owner": -1
         },
         "11": {
             "alien_attitude": 6,
@@ -441,7 +454,8 @@
             "world_height": 105,
             "world_width": 105,
             "world_x": 482382.07950240816,
-            "world_y": 442126.6254731942
+            "world_y": 442126.6254731942,
+            "owner": -1
         },
         "110": {
             "alien_attitude": 89,
@@ -476,7 +490,8 @@
             "world_height": 48,
             "world_width": 48,
             "world_x": 697119.9899467656,
-            "world_y": 556226.8819464811
+            "world_y": 556226.8819464811,
+            "owner": -1
         },
         "111": {
             "alien_attitude": 61,
@@ -511,7 +526,8 @@
             "world_height": 35,
             "world_width": 35,
             "world_x": 434210.3869591096,
-            "world_y": 559721.4632018842
+            "world_y": 559721.4632018842,
+            "owner": -1
         },
         "112": {
             "alien_attitude": 78,
@@ -544,7 +560,8 @@
             "world_height": 39,
             "world_width": 39,
             "world_x": 658136.8636332905,
-            "world_y": 580959.6754672264
+            "world_y": 580959.6754672264,
+            "owner": 1
         },
         "113": {
             "alien_attitude": 69,
@@ -578,7 +595,8 @@
             "world_height": 41,
             "world_width": 41,
             "world_x": 672099.3428120945,
-            "world_y": 565398.438778455
+            "world_y": 565398.438778455,
+            "owner": 1
         },
         "114": {
             "alien_attitude": 26,
@@ -611,7 +629,8 @@
             "world_height": 49,
             "world_width": 49,
             "world_x": 568385.0487105765,
-            "world_y": 671827.656006861
+            "world_y": 671827.656006861,
+            "owner": -1
         },
         "115": {
             "alien_attitude": 70,
@@ -643,7 +662,8 @@
             "world_height": 46,
             "world_width": 46,
             "world_x": 708809.4405342463,
-            "world_y": 440050.5123037958
+            "world_y": 440050.5123037958,
+            "owner": -1
         },
         "116": {
             "alien_attitude": 51,
@@ -675,7 +695,8 @@
             "world_height": 31,
             "world_width": 31,
             "world_x": 737800.3403934975,
-            "world_y": 329104.14013523766
+            "world_y": 329104.14013523766,
+            "owner": -1
         },
         "117": {
             "alien_attitude": 41,
@@ -710,7 +731,8 @@
             "world_height": 40,
             "world_width": 40,
             "world_x": 600160.6912349692,
-            "world_y": 315555.2897463879
+            "world_y": 315555.2897463879,
+            "owner": 1
         },
         "118": {
             "alien_attitude": 13,
@@ -742,7 +764,8 @@
             "world_height": 48,
             "world_width": 48,
             "world_x": 477749.725538168,
-            "world_y": 453896.6330708012
+            "world_y": 453896.6330708012,
+            "owner": 1
         },
         "119": {
             "alien_attitude": 66,
@@ -777,7 +800,8 @@
             "world_height": 30,
             "world_width": 30,
             "world_x": 771544.6171525748,
-            "world_y": 682555.579572174
+            "world_y": 682555.579572174,
+            "owner": -1
         },
         "12": {
             "alien_attitude": 85,
@@ -805,7 +829,8 @@
             "world_height": 105,
             "world_width": 105,
             "world_x": 626943.9076130753,
-            "world_y": 393729.7189948204
+            "world_y": 393729.7189948204,
+            "owner": -1
         },
         "120": {
             "alien_attitude": 88,
@@ -838,7 +863,8 @@
             "world_height": 39,
             "world_width": 39,
             "world_x": 772283.7837193208,
-            "world_y": 682930.653920163
+            "world_y": 682930.653920163,
+            "owner": -1
         },
         "121": {
             "alien_attitude": 82,
@@ -871,7 +897,8 @@
             "world_height": 38,
             "world_width": 38,
             "world_x": 518476.4339386433,
-            "world_y": 309188.170651401
+            "world_y": 309188.170651401,
+            "owner": -1
         },
         "122": {
             "alien_attitude": 76,
@@ -903,7 +930,8 @@
             "world_height": 34,
             "world_width": 34,
             "world_x": 281833.36681364913,
-            "world_y": 635538.7045767606
+            "world_y": 635538.7045767606,
+            "owner": 1
         },
         "123": {
             "alien_attitude": 96,
@@ -938,7 +966,8 @@
             "world_height": 38,
             "world_width": 38,
             "world_x": 709689.4360267799,
-            "world_y": 448229.6625250233
+            "world_y": 448229.6625250233,
+            "owner": -1
         },
         "124": {
             "alien_attitude": 37,
@@ -972,7 +1001,8 @@
             "world_height": 31,
             "world_width": 31,
             "world_x": 599737.9355477389,
-            "world_y": 414441.5599863045
+            "world_y": 414441.5599863045,
+            "owner": -1
         },
         "125": {
             "alien_attitude": 80,
@@ -1005,7 +1035,8 @@
             "world_height": 36,
             "world_width": 36,
             "world_x": 445184.3928756636,
-            "world_y": 567821.4353678616
+            "world_y": 567821.4353678616,
+            "owner": -1
         },
         "126": {
             "alien_attitude": 8,
@@ -1038,7 +1069,8 @@
             "world_height": 43,
             "world_width": 43,
             "world_x": 665903.6389554892,
-            "world_y": 494631.66402687493
+            "world_y": 494631.66402687493,
+            "owner": -1
         },
         "127": {
             "alien_attitude": 41,
@@ -1070,7 +1102,8 @@
             "world_height": 38,
             "world_width": 38,
             "world_x": 705051.6439760627,
-            "world_y": 305403.2467749246
+            "world_y": 305403.2467749246,
+            "owner": -1
         },
         "128": {
             "alien_attitude": 27,
@@ -1102,7 +1135,8 @@
             "world_height": 47,
             "world_width": 47,
             "world_x": 415415.78031195677,
-            "world_y": 690742.5462452121
+            "world_y": 690742.5462452121,
+            "owner": -1
         },
         "129": {
             "alien_attitude": 59,
@@ -1135,7 +1169,8 @@
             "world_height": 40,
             "world_width": 40,
             "world_x": 701733.621776928,
-            "world_y": 553068.2138824266
+            "world_y": 553068.2138824266,
+            "owner": -1
         },
         "13": {
             "alien_attitude": 49,
@@ -1163,7 +1198,8 @@
             "world_height": 100,
             "world_width": 100,
             "world_x": 747770.967332194,
-            "world_y": 312449.771048577
+            "world_y": 312449.771048577,
+            "owner": -1
         },
         "130": {
             "alien_attitude": 28,
@@ -1196,7 +1232,8 @@
             "world_height": 41,
             "world_width": 41,
             "world_x": 594435.7832840758,
-            "world_y": 315298.6688550339
+            "world_y": 315298.6688550339,
+            "owner": -1
         },
         "131": {
             "alien_attitude": 41,
@@ -1231,7 +1268,8 @@
             "world_height": 41,
             "world_width": 41,
             "world_x": 606819.3203029741,
-            "world_y": 492053.76633839944
+            "world_y": 492053.76633839944,
+            "owner": -1
         },
         "132": {
             "alien_attitude": 81,
@@ -1265,7 +1303,8 @@
             "world_height": 37,
             "world_width": 37,
             "world_x": 427101.689427075,
-            "world_y": 564607.2592530065
+            "world_y": 564607.2592530065,
+            "owner": 1
         },
         "133": {
             "alien_attitude": 3,
@@ -1298,7 +1337,8 @@
             "world_height": 43,
             "world_width": 43,
             "world_x": 498494.5445467353,
-            "world_y": 319507.50474224525
+            "world_y": 319507.50474224525,
+            "owner": 1
         },
         "134": {
             "alien_attitude": 86,
@@ -1331,7 +1371,8 @@
             "world_height": 48,
             "world_width": 48,
             "world_x": 252546.59387420362,
-            "world_y": 467686.50821266574
+            "world_y": 467686.50821266574,
+            "owner": -1
         },
         "135": {
             "alien_attitude": 44,
@@ -1363,7 +1404,8 @@
             "world_height": 30,
             "world_width": 30,
             "world_x": 558296.1673811342,
-            "world_y": 331193.5638587819
+            "world_y": 331193.5638587819,
+            "owner": -1
         },
         "136": {
             "alien_attitude": 86,
@@ -1397,7 +1439,8 @@
             "world_height": 50,
             "world_width": 50,
             "world_x": 504738.1448885464,
-            "world_y": 335435.9577562774
+            "world_y": 335435.9577562774,
+            "owner": -1
         },
         "137": {
             "alien_attitude": 1,
@@ -1432,7 +1475,8 @@
             "world_height": 36,
             "world_width": 36,
             "world_x": 622702.717375225,
-            "world_y": 472199.5919103202
+            "world_y": 472199.5919103202,
+            "owner": 1
         },
         "138": {
             "alien_attitude": 74,
@@ -1466,7 +1510,8 @@
             "world_height": 37,
             "world_width": 37,
             "world_x": 660079.718146167,
-            "world_y": 575848.7276253008
+            "world_y": 575848.7276253008,
+            "owner": -1
         },
         "139": {
             "alien_attitude": 92,
@@ -1501,7 +1546,8 @@
             "world_height": 37,
             "world_width": 37,
             "world_x": 641257.7049643788,
-            "world_y": 565519.9017449406
+            "world_y": 565519.9017449406,
+            "owner": 1
         },
         "14": {
             "alien_attitude": 48,
@@ -1529,7 +1575,8 @@
             "world_height": 94,
             "world_width": 94,
             "world_x": 275837.78068953555,
-            "world_y": 465883.7670761385
+            "world_y": 465883.7670761385,
+            "owner": -1
         },
         "140": {
             "alien_attitude": 86,
@@ -1564,7 +1611,8 @@
             "world_height": 50,
             "world_width": 50,
             "world_x": 667152.0699371516,
-            "world_y": 558190.8683140059
+            "world_y": 558190.8683140059,
+            "owner": -1
         },
         "141": {
             "alien_attitude": 74,
@@ -1598,7 +1646,8 @@
             "world_height": 40,
             "world_width": 40,
             "world_x": 678949.6983718706,
-            "world_y": 383630.6118759257
+            "world_y": 383630.6118759257,
+            "owner": -1
         },
         "142": {
             "alien_attitude": 71,
@@ -1630,7 +1679,8 @@
             "world_height": 42,
             "world_width": 42,
             "world_x": 517229.60866202536,
-            "world_y": 304497.7027580717
+            "world_y": 304497.7027580717,
+            "owner": -1
         },
         "143": {
             "alien_attitude": 52,
@@ -1664,7 +1714,8 @@
             "world_height": 47,
             "world_width": 47,
             "world_x": 415537.3838906579,
-            "world_y": 691313.3325119372
+            "world_y": 691313.3325119372,
+            "owner": -1
         },
         "144": {
             "alien_attitude": 43,
@@ -1696,7 +1747,8 @@
             "world_height": 38,
             "world_width": 38,
             "world_x": 511803.4321288022,
-            "world_y": 669880.8271441868
+            "world_y": 669880.8271441868,
+            "owner": -1
         },
         "145": {
             "alien_attitude": 76,
@@ -1728,7 +1780,8 @@
             "world_height": 34,
             "world_width": 34,
             "world_x": 415742.5886282741,
-            "world_y": 687440.9783116501
+            "world_y": 687440.9783116501,
+            "owner": 1
         },
         "146": {
             "alien_attitude": 22,
@@ -1761,7 +1814,8 @@
             "world_height": 34,
             "world_width": 34,
             "world_x": 512538.8167310614,
-            "world_y": 659592.6964127655
+            "world_y": 659592.6964127655,
+            "owner": -1
         },
         "147": {
             "alien_attitude": 72,
@@ -1795,7 +1849,8 @@
             "world_height": 36,
             "world_width": 36,
             "world_x": 555885.1965807831,
-            "world_y": 692013.5649239364
+            "world_y": 692013.5649239364,
+            "owner": -1
         },
         "148": {
             "alien_attitude": 81,
@@ -1827,7 +1882,8 @@
             "world_height": 30,
             "world_width": 30,
             "world_x": 638086.2810668517,
-            "world_y": 572384.0406035471
+            "world_y": 572384.0406035471,
+            "owner": 1
         },
         "149": {
             "alien_attitude": 31,
@@ -1859,7 +1915,8 @@
             "world_height": 45,
             "world_width": 45,
             "world_x": 704959.8207267275,
-            "world_y": 561835.2970240626
+            "world_y": 561835.2970240626,
+            "owner": -1
         },
         "15": {
             "alien_attitude": 33,
@@ -1887,7 +1944,8 @@
             "world_height": 107,
             "world_width": 107,
             "world_x": 566421.7769871269,
-            "world_y": 418450.5464614471
+            "world_y": 418450.5464614471,
+            "owner": -1
         },
         "150": {
             "alien_attitude": 27,
@@ -1922,7 +1980,8 @@
             "world_height": 33,
             "world_width": 33,
             "world_x": 679666.6316143669,
-            "world_y": 491058.14834063366
+            "world_y": 491058.14834063366,
+            "owner": -1
         },
         "151": {
             "alien_attitude": 35,
@@ -1954,7 +2013,8 @@
             "world_height": 41,
             "world_width": 41,
             "world_x": 764040.9844881586,
-            "world_y": 693377.1527966323
+            "world_y": 693377.1527966323,
+            "owner": -1
         },
         "152": {
             "alien_attitude": 18,
@@ -1987,7 +2047,8 @@
             "world_height": 30,
             "world_width": 30,
             "world_x": 656424.337137851,
-            "world_y": 269085.0194357949
+            "world_y": 269085.0194357949,
+            "owner": -1
         },
         "153": {
             "alien_attitude": 68,
@@ -2021,7 +2082,8 @@
             "world_height": 30,
             "world_width": 30,
             "world_x": 665323.8635987703,
-            "world_y": 384487.66431695403
+            "world_y": 384487.66431695403,
+            "owner": -1
         },
         "154": {
             "alien_attitude": 48,
@@ -2056,7 +2118,8 @@
             "world_height": 33,
             "world_width": 33,
             "world_x": 677553.4616110235,
-            "world_y": 392975.5414761125
+            "world_y": 392975.5414761125,
+            "owner": -1
         },
         "155": {
             "alien_attitude": 100,
@@ -2090,7 +2153,8 @@
             "world_height": 50,
             "world_width": 50,
             "world_x": 696574.8917737384,
-            "world_y": 555384.1045749163
+            "world_y": 555384.1045749163,
+            "owner": -1
         },
         "156": {
             "alien_attitude": 1,
@@ -2122,7 +2186,8 @@
             "world_height": 48,
             "world_width": 48,
             "world_x": 539656.2278127183,
-            "world_y": 436529.82854787743
+            "world_y": 436529.82854787743,
+            "owner": -1
         },
         "157": {
             "alien_attitude": 13,
@@ -2157,7 +2222,8 @@
             "world_height": 47,
             "world_width": 47,
             "world_x": 512764.4295466606,
-            "world_y": 660846.4765265863
+            "world_y": 660846.4765265863,
+            "owner": -1
         },
         "158": {
             "alien_attitude": 26,
@@ -2191,7 +2257,8 @@
             "world_height": 39,
             "world_width": 39,
             "world_x": 520419.5218196968,
-            "world_y": 307171.04658577545
+            "world_y": 307171.04658577545,
+            "owner": -1
         },
         "159": {
             "alien_attitude": 25,
@@ -2225,7 +2292,8 @@
             "world_height": 49,
             "world_width": 49,
             "world_x": 645244.2661777071,
-            "world_y": 261585.02573285982
+            "world_y": 261585.02573285982,
+            "owner": -1
         },
         "16": {
             "alien_attitude": 12,
@@ -2253,7 +2321,8 @@
             "world_height": 94,
             "world_width": 94,
             "world_x": 625644.7503551459,
-            "world_y": 578773.2640983355
+            "world_y": 578773.2640983355,
+            "owner": -1
         },
         "160": {
             "alien_attitude": 56,
@@ -2287,7 +2356,8 @@
             "world_height": 42,
             "world_width": 42,
             "world_x": 657394.8712840627,
-            "world_y": 344659.94960886025
+            "world_y": 344659.94960886025,
+            "owner": -1
         },
         "161": {
             "alien_attitude": 12,
@@ -2321,7 +2391,8 @@
             "world_height": 43,
             "world_width": 43,
             "world_x": 254039.4285585776,
-            "world_y": 450423.6010749136
+            "world_y": 450423.6010749136,
+            "owner": -1
         },
         "162": {
             "alien_attitude": 67,
@@ -2356,7 +2427,8 @@
             "world_height": 32,
             "world_width": 32,
             "world_x": 655979.7465396204,
-            "world_y": 324964.8434879601
+            "world_y": 324964.8434879601,
+            "owner": -1
         },
         "163": {
             "alien_attitude": 69,
@@ -2390,7 +2462,8 @@
             "world_height": 39,
             "world_width": 39,
             "world_x": 285621.80030706443,
-            "world_y": 653948.372201167
+            "world_y": 653948.372201167,
+            "owner": 1
         },
         "164": {
             "alien_attitude": 0,
@@ -2422,7 +2495,8 @@
             "world_height": 43,
             "world_width": 43,
             "world_x": 588394.0663149859,
-            "world_y": 328354.436616523
+            "world_y": 328354.436616523,
+            "owner": -1
         },
         "165": {
             "alien_attitude": 94,
@@ -2457,7 +2531,8 @@
             "world_height": 37,
             "world_width": 37,
             "world_x": 501618.42757178855,
-            "world_y": 595552.2833109675
+            "world_y": 595552.2833109675,
+            "owner": -1
         },
         "166": {
             "alien_attitude": 43,
@@ -2492,7 +2567,8 @@
             "world_height": 35,
             "world_width": 35,
             "world_x": 748268.8031235014,
-            "world_y": 489834.30784967524
+            "world_y": 489834.30784967524,
+            "owner": -1
         },
         "167": {
             "alien_attitude": 59,
@@ -2524,7 +2600,8 @@
             "world_height": 41,
             "world_width": 41,
             "world_x": 656500.688701249,
-            "world_y": 277226.35054518713
+            "world_y": 277226.35054518713,
+            "owner": -1
         },
         "168": {
             "alien_attitude": 22,
@@ -2558,7 +2635,8 @@
             "world_height": 43,
             "world_width": 43,
             "world_x": 686443.1977764098,
-            "world_y": 304658.31101702264
+            "world_y": 304658.31101702264,
+            "owner": -1
         },
         "169": {
             "alien_attitude": 99,
@@ -2593,7 +2671,8 @@
             "world_height": 34,
             "world_width": 34,
             "world_x": 329103.9237544826,
-            "world_y": 647879.14234923
+            "world_y": 647879.14234923,
+            "owner": 1
         },
         "17": {
             "alien_attitude": 48,
@@ -2621,7 +2700,8 @@
             "world_height": 100,
             "world_width": 100,
             "world_x": 541801.406839728,
-            "world_y": 686716.9897833636
+            "world_y": 686716.9897833636,
+            "owner": -1
         },
         "170": {
             "alien_attitude": 28,
@@ -2656,7 +2736,8 @@
             "world_height": 40,
             "world_width": 40,
             "world_x": 669677.970827513,
-            "world_y": 503813.73235997756
+            "world_y": 503813.73235997756,
+            "owner": 1
         },
         "171": {
             "alien_attitude": 13,
@@ -2690,7 +2771,8 @@
             "world_height": 35,
             "world_width": 35,
             "world_x": 661634.1004672218,
-            "world_y": 576682.9239828256
+            "world_y": 576682.9239828256,
+            "owner": -1
         },
         "172": {
             "alien_attitude": 53,
@@ -2722,7 +2804,8 @@
             "world_height": 37,
             "world_width": 37,
             "world_x": 636451.3335512866,
-            "world_y": 463627.6457784398
+            "world_y": 463627.6457784398,
+            "owner": -1
         },
         "173": {
             "alien_attitude": 87,
@@ -2755,7 +2838,8 @@
             "world_height": 37,
             "world_width": 37,
             "world_x": 244380.81511922483,
-            "world_y": 448158.42648555496
+            "world_y": 448158.42648555496,
+            "owner": -1
         },
         "174": {
             "alien_attitude": 44,
@@ -2789,7 +2873,8 @@
             "world_height": 49,
             "world_width": 49,
             "world_x": 693808.7204674504,
-            "world_y": 288129.7685988006
+            "world_y": 288129.7685988006,
+            "owner": -1
         },
         "175": {
             "alien_attitude": 27,
@@ -2823,7 +2908,8 @@
             "world_height": 50,
             "world_width": 50,
             "world_x": 507393.73617370665,
-            "world_y": 651422.339677531
+            "world_y": 651422.339677531,
+            "owner": -1
         },
         "176": {
             "alien_attitude": 74,
@@ -2856,7 +2942,8 @@
             "world_height": 41,
             "world_width": 41,
             "world_x": 380869.34072808747,
-            "world_y": 382061.8464693766
+            "world_y": 382061.8464693766,
+            "owner": -1
         },
         "177": {
             "alien_attitude": 56,
@@ -2888,7 +2975,8 @@
             "world_height": 34,
             "world_width": 34,
             "world_x": 523767.47379745956,
-            "world_y": 314571.22676536895
+            "world_y": 314571.22676536895,
+            "owner": -1
         },
         "178": {
             "alien_attitude": 16,
@@ -2920,7 +3008,8 @@
             "world_height": 32,
             "world_width": 32,
             "world_x": 694584.1575213564,
-            "world_y": 733988.4472196648
+            "world_y": 733988.4472196648,
+            "owner": 1
         },
         "179": {
             "alien_attitude": 80,
@@ -2954,7 +3043,8 @@
             "world_height": 40,
             "world_width": 40,
             "world_x": 288575.6662306037,
-            "world_y": 657194.6530303827
+            "world_y": 657194.6530303827,
+            "owner": -1
         },
         "18": {
             "alien_attitude": 98,
@@ -2982,7 +3072,8 @@
             "world_height": 91,
             "world_width": 91,
             "world_x": 455690.1328287261,
-            "world_y": 674897.7401671879
+            "world_y": 674897.7401671879,
+            "owner": -1
         },
         "180": {
             "alien_attitude": 46,
@@ -3017,7 +3108,8 @@
             "world_height": 46,
             "world_width": 46,
             "world_x": 328061.42717000155,
-            "world_y": 642635.4472069456
+            "world_y": 642635.4472069456,
+            "owner": -1
         },
         "181": {
             "alien_attitude": 28,
@@ -3049,7 +3141,8 @@
             "world_height": 32,
             "world_width": 32,
             "world_x": 321199.371037374,
-            "world_y": 636934.8408814311
+            "world_y": 636934.8408814311,
+            "owner": -1
         },
         "182": {
             "alien_attitude": 17,
@@ -3084,7 +3177,8 @@
             "world_height": 43,
             "world_width": 43,
             "world_x": 697991.9294062266,
-            "world_y": 312199.42712313886
+            "world_y": 312199.42712313886,
+            "owner": -1
         },
         "183": {
             "alien_attitude": 11,
@@ -3118,7 +3212,8 @@
             "world_height": 43,
             "world_width": 43,
             "world_x": 441249.1313936634,
-            "world_y": 577386.7901654139
+            "world_y": 577386.7901654139,
+            "owner": -1
         },
         "184": {
             "alien_attitude": 61,
@@ -3150,7 +3245,8 @@
             "world_height": 45,
             "world_width": 45,
             "world_x": 623626.0362694402,
-            "world_y": 459349.493404523
+            "world_y": 459349.493404523,
+            "owner": -1
         },
         "185": {
             "alien_attitude": 44,
@@ -3185,7 +3281,8 @@
             "world_height": 45,
             "world_width": 45,
             "world_x": 753827.173085723,
-            "world_y": 682614.9096854852
+            "world_y": 682614.9096854852,
+            "owner": -1
         },
         "186": {
             "alien_attitude": 62,
@@ -3217,7 +3314,8 @@
             "world_height": 30,
             "world_width": 30,
             "world_x": 757705.6531024158,
-            "world_y": 327982.5848947604
+            "world_y": 327982.5848947604,
+            "owner": -1
         },
         "187": {
             "alien_attitude": 11,
@@ -3251,7 +3349,8 @@
             "world_height": 43,
             "world_width": 43,
             "world_x": 559395.5962607844,
-            "world_y": 332806.3514402985
+            "world_y": 332806.3514402985,
+            "owner": -1
         },
         "188": {
             "alien_attitude": 71,
@@ -3284,7 +3383,8 @@
             "world_height": 42,
             "world_width": 42,
             "world_x": 552437.1773329481,
-            "world_y": 695088.7790149348
+            "world_y": 695088.7790149348,
+            "owner": -1
         },
         "189": {
             "alien_attitude": 88,
@@ -3318,7 +3418,8 @@
             "world_height": 50,
             "world_width": 50,
             "world_x": 741006.2553067906,
-            "world_y": 336637.24274902506
+            "world_y": 336637.24274902506,
+            "owner": -1
         },
         "19": {
             "alien_attitude": 16,
@@ -3346,7 +3447,8 @@
             "world_height": 94,
             "world_width": 94,
             "world_x": 457710.37407965126,
-            "world_y": 581471.1279063106
+            "world_y": 581471.1279063106,
+            "owner": 1
         },
         "190": {
             "alien_attitude": 61,
@@ -3381,7 +3483,8 @@
             "world_height": 32,
             "world_width": 32,
             "world_x": 673760.2839130148,
-            "world_y": 569855.1556676595
+            "world_y": 569855.1556676595,
+            "owner": -1
         },
         "191": {
             "alien_attitude": 60,
@@ -3415,7 +3518,8 @@
             "world_height": 33,
             "world_width": 33,
             "world_x": 578947.2546164381,
-            "world_y": 600806.0662492337
+            "world_y": 600806.0662492337,
+            "owner": -1
         },
         "192": {
             "alien_attitude": 66,
@@ -3449,7 +3553,8 @@
             "world_height": 41,
             "world_width": 41,
             "world_x": 692336.1319542732,
-            "world_y": 729915.4082859859
+            "world_y": 729915.4082859859,
+            "owner": -1
         },
         "193": {
             "alien_attitude": 28,
@@ -3482,7 +3587,8 @@
             "world_height": 47,
             "world_width": 47,
             "world_x": 463193.5044875361,
-            "world_y": 456452.6632767106
+            "world_y": 456452.6632767106,
+            "owner": -1
         },
         "194": {
             "alien_attitude": 37,
@@ -3516,7 +3622,8 @@
             "world_height": 41,
             "world_width": 41,
             "world_x": 688203.324575853,
-            "world_y": 306336.51838524954
+            "world_y": 306336.51838524954,
+            "owner": -1
         },
         "195": {
             "alien_attitude": 43,
@@ -3548,7 +3655,8 @@
             "world_height": 43,
             "world_width": 43,
             "world_x": 390844.83355380327,
-            "world_y": 619293.3622990889
+            "world_y": 619293.3622990889,
+            "owner": -1
         },
         "196": {
             "alien_attitude": 72,
@@ -3581,7 +3689,8 @@
             "world_height": 46,
             "world_width": 46,
             "world_x": 508535.57816277194,
-            "world_y": 335525.0622940989
+            "world_y": 335525.0622940989,
+            "owner": -1
         },
         "197": {
             "alien_attitude": 88,
@@ -3613,7 +3722,8 @@
             "world_height": 46,
             "world_width": 46,
             "world_x": 686379.1127201468,
-            "world_y": 715630.4448041794
+            "world_y": 715630.4448041794,
+            "owner": -1
         },
         "198": {
             "alien_attitude": 70,
@@ -3647,7 +3757,8 @@
             "world_height": 44,
             "world_width": 44,
             "world_x": 662297.3854881072,
-            "world_y": 313970.8975514096
+            "world_y": 313970.8975514096,
+            "owner": -1
         },
         "199": {
             "alien_attitude": 67,
@@ -3682,7 +3793,8 @@
             "world_height": 48,
             "world_width": 48,
             "world_x": 588812.691715579,
-            "world_y": 671281.6251143785
+            "world_y": 671281.6251143785,
+            "owner": -1
         },
         "2": {
             "alien_attitude": 94,
@@ -3710,7 +3822,8 @@
             "world_height": 103,
             "world_width": 103,
             "world_x": 613991.5028383565,
-            "world_y": 286058.98334319843
+            "world_y": 286058.98334319843,
+            "owner": -1
         },
         "20": {
             "alien_attitude": 45,
@@ -3738,7 +3851,8 @@
             "world_height": 108,
             "world_width": 108,
             "world_x": 654744.080517577,
-            "world_y": 558596.7177348495
+            "world_y": 558596.7177348495,
+            "owner": -1
         },
         "200": {
             "alien_attitude": 78,
@@ -3772,7 +3886,8 @@
             "world_height": 34,
             "world_width": 34,
             "world_x": 685932.0847063025,
-            "world_y": 493780.07480374374
+            "world_y": 493780.07480374374,
+            "owner": 1
         },
         "201": {
             "alien_attitude": 12,
@@ -3805,7 +3920,8 @@
             "world_height": 42,
             "world_width": 42,
             "world_x": 651372.3944222151,
-            "world_y": 587088.3783394091
+            "world_y": 587088.3783394091,
+            "owner": -1
         },
         "202": {
             "alien_attitude": 87,
@@ -3837,7 +3953,8 @@
             "world_height": 36,
             "world_width": 36,
             "world_x": 553529.231300571,
-            "world_y": 347117.4713837482
+            "world_y": 347117.4713837482,
+            "owner": -1
         },
         "203": {
             "alien_attitude": 44,
@@ -3872,7 +3989,8 @@
             "world_height": 42,
             "world_width": 42,
             "world_x": 785035.2878115942,
-            "world_y": 693976.9743238795
+            "world_y": 693976.9743238795,
+            "owner": -1
         },
         "204": {
             "alien_attitude": 83,
@@ -3907,7 +4025,8 @@
             "world_height": 36,
             "world_width": 36,
             "world_x": 600076.2241779508,
-            "world_y": 684112.5328191607
+            "world_y": 684112.5328191607,
+            "owner": -1
         },
         "205": {
             "alien_attitude": 51,
@@ -3940,7 +4059,8 @@
             "world_height": 34,
             "world_width": 34,
             "world_x": 494149.2955095822,
-            "world_y": 662079.5493302371
+            "world_y": 662079.5493302371,
+            "owner": -1
         },
         "206": {
             "alien_attitude": 42,
@@ -3972,7 +4092,8 @@
             "world_height": 43,
             "world_width": 43,
             "world_x": 653208.1347426751,
-            "world_y": 436879.9365289269
+            "world_y": 436879.9365289269,
+            "owner": -1
         },
         "207": {
             "alien_attitude": 83,
@@ -4004,7 +4125,8 @@
             "world_height": 40,
             "world_width": 40,
             "world_x": 691183.2869525499,
-            "world_y": 715046.2046015956
+            "world_y": 715046.2046015956,
+            "owner": -1
         },
         "208": {
             "alien_attitude": 0,
@@ -4037,7 +4159,8 @@
             "world_height": 40,
             "world_width": 40,
             "world_x": 381020.627036196,
-            "world_y": 396292.3437305507
+            "world_y": 396292.3437305507,
+            "owner": -1
         },
         "209": {
             "alien_attitude": 18,
@@ -4069,7 +4192,8 @@
             "world_height": 37,
             "world_width": 37,
             "world_x": 322876.39291190606,
-            "world_y": 656012.96546606
+            "world_y": 656012.96546606,
+            "owner": -1
         },
         "21": {
             "alien_attitude": 21,
@@ -4097,7 +4221,8 @@
             "world_height": 97,
             "world_width": 97,
             "world_x": 504588.0357825053,
-            "world_y": 371650.1134264022
+            "world_y": 371650.1134264022,
+            "owner": -1
         },
         "210": {
             "alien_attitude": 40,
@@ -4132,7 +4257,8 @@
             "world_height": 44,
             "world_width": 44,
             "world_x": 655756.845201868,
-            "world_y": 285331.39835315227
+            "world_y": 285331.39835315227,
+            "owner": -1
         },
         "211": {
             "alien_attitude": 70,
@@ -4167,7 +4293,8 @@
             "world_height": 37,
             "world_width": 37,
             "world_x": 474018.7382343726,
-            "world_y": 468931.6618644013
+            "world_y": 468931.6618644013,
+            "owner": -1
         },
         "212": {
             "alien_attitude": 5,
@@ -4201,7 +4328,8 @@
             "world_height": 48,
             "world_width": 48,
             "world_x": 493832.08605613513,
-            "world_y": 667355.8139285418
+            "world_y": 667355.8139285418,
+            "owner": -1
         },
         "213": {
             "alien_attitude": 25,
@@ -4235,7 +4363,8 @@
             "world_height": 45,
             "world_width": 45,
             "world_x": 779896.2412989568,
-            "world_y": 703748.9560789397
+            "world_y": 703748.9560789397,
+            "owner": 1
         },
         "214": {
             "alien_attitude": 61,
@@ -4267,7 +4396,8 @@
             "world_height": 42,
             "world_width": 42,
             "world_x": 318817.3206733432,
-            "world_y": 656821.554277695
+            "world_y": 656821.554277695,
+            "owner": -1
         },
         "215": {
             "alien_attitude": 61,
@@ -4299,7 +4429,8 @@
             "world_height": 35,
             "world_width": 35,
             "world_x": 702514.9943345413,
-            "world_y": 724624.5560226062
+            "world_y": 724624.5560226062,
+            "owner": -1
         },
         "216": {
             "alien_attitude": 4,
@@ -4332,7 +4463,8 @@
             "world_height": 48,
             "world_width": 48,
             "world_x": 494704.22005264246,
-            "world_y": 596373.9622732984
+            "world_y": 596373.9622732984,
+            "owner": -1
         },
         "217": {
             "alien_attitude": 26,
@@ -4366,7 +4498,8 @@
             "world_height": 39,
             "world_width": 39,
             "world_x": 621247.6711372024,
-            "world_y": 476700.5334537459
+            "world_y": 476700.5334537459,
+            "owner": -1
         },
         "218": {
             "alien_attitude": 8,
@@ -4400,7 +4533,8 @@
             "world_height": 48,
             "world_width": 48,
             "world_x": 533439.1796603751,
-            "world_y": 418387.04460729746
+            "world_y": 418387.04460729746,
+            "owner": -1
         },
         "219": {
             "alien_attitude": 42,
@@ -4434,7 +4568,8 @@
             "world_height": 30,
             "world_width": 30,
             "world_x": 425052.05048635736,
-            "world_y": 701346.5923020002
+            "world_y": 701346.5923020002,
+            "owner": -1
         },
         "22": {
             "alien_attitude": 100,
@@ -4462,7 +4597,8 @@
             "world_height": 98,
             "world_width": 98,
             "world_x": 698255.6787431799,
-            "world_y": 549557.4461319832
+            "world_y": 549557.4461319832,
+            "owner": -1
         },
         "220": {
             "alien_attitude": 6,
@@ -4496,7 +4632,8 @@
             "world_height": 48,
             "world_width": 48,
             "world_x": 704039.4418838181,
-            "world_y": 306230.3585828377
+            "world_y": 306230.3585828377,
+            "owner": 1
         },
         "221": {
             "alien_attitude": 23,
@@ -4531,7 +4668,8 @@
             "world_height": 37,
             "world_width": 37,
             "world_x": 383942.2013588063,
-            "world_y": 390647.25311159
+            "world_y": 390647.25311159,
+            "owner": -1
         },
         "222": {
             "alien_attitude": 55,
@@ -4564,7 +4702,8 @@
             "world_height": 49,
             "world_width": 49,
             "world_x": 406491.43645505485,
-            "world_y": 690500.3989549207
+            "world_y": 690500.3989549207,
+            "owner": -1
         },
         "223": {
             "alien_attitude": 15,
@@ -4598,7 +4737,8 @@
             "world_height": 39,
             "world_width": 39,
             "world_x": 668106.5187008857,
-            "world_y": 287707.515391104
+            "world_y": 287707.515391104,
+            "owner": -1
         },
         "224": {
             "alien_attitude": 38,
@@ -4632,7 +4772,8 @@
             "world_height": 45,
             "world_width": 45,
             "world_x": 659550.2136179503,
-            "world_y": 437278.7162794466
+            "world_y": 437278.7162794466,
+            "owner": -1
         },
         "225": {
             "alien_attitude": 42,
@@ -4665,7 +4806,8 @@
             "world_height": 38,
             "world_width": 38,
             "world_x": 220640.28760722786,
-            "world_y": 482175.80118238175
+            "world_y": 482175.80118238175,
+            "owner": -1
         },
         "226": {
             "alien_attitude": 27,
@@ -4700,7 +4842,8 @@
             "world_height": 49,
             "world_width": 49,
             "world_x": 645445.1022075387,
-            "world_y": 334195.5448308479
+            "world_y": 334195.5448308479,
+            "owner": -1
         },
         "227": {
             "alien_attitude": 13,
@@ -4734,7 +4877,8 @@
             "world_height": 32,
             "world_width": 32,
             "world_x": 687579.5394192942,
-            "world_y": 304894.0578888571
+            "world_y": 304894.0578888571,
+            "owner": -1
         },
         "228": {
             "alien_attitude": 17,
@@ -4768,7 +4912,8 @@
             "world_height": 34,
             "world_width": 34,
             "world_x": 647366.9620773861,
-            "world_y": 442051.45024045033
+            "world_y": 442051.45024045033,
+            "owner": -1
         },
         "229": {
             "alien_attitude": 98,
@@ -4802,7 +4947,8 @@
             "world_height": 40,
             "world_width": 40,
             "world_x": 570748.1280329812,
-            "world_y": 588300.7704329863
+            "world_y": 588300.7704329863,
+            "owner": -1
         },
         "23": {
             "alien_attitude": 33,
@@ -4830,7 +4976,8 @@
             "world_height": 103,
             "world_width": 103,
             "world_x": 371220.16879193473,
-            "world_y": 373061.1929416914
+            "world_y": 373061.1929416914,
+            "owner": -1
         },
         "24": {
             "alien_attitude": 75,
@@ -4858,7 +5005,8 @@
             "world_height": 103,
             "world_width": 103,
             "world_x": 658853.4702030693,
-            "world_y": 317674.8651395323
+            "world_y": 317674.8651395323,
+            "owner": -1
         },
         "25": {
             "alien_attitude": 39,
@@ -4886,7 +5034,8 @@
             "world_height": 108,
             "world_width": 108,
             "world_x": 321646.9111005536,
-            "world_y": 629919.5966747394
+            "world_y": 629919.5966747394,
+            "owner": 1
         },
         "26": {
             "alien_attitude": 90,
@@ -4914,7 +5063,8 @@
             "world_height": 90,
             "world_width": 90,
             "world_x": 583834.1684118813,
-            "world_y": 476281.840374098
+            "world_y": 476281.840374098,
+            "owner": 1
         },
         "27": {
             "alien_attitude": 0,
@@ -4942,7 +5092,8 @@
             "world_height": 91,
             "world_width": 91,
             "world_x": 704990.707144504,
-            "world_y": 392220.23736458365
+            "world_y": 392220.23736458365,
+            "owner": 1
         },
         "28": {
             "alien_attitude": 73,
@@ -4970,7 +5121,8 @@
             "world_height": 100,
             "world_width": 100,
             "world_x": 705001.2206620758,
-            "world_y": 289292.1280518448
+            "world_y": 289292.1280518448,
+            "owner": -1
         },
         "29": {
             "alien_attitude": 44,
@@ -4998,7 +5150,8 @@
             "world_height": 97,
             "world_width": 97,
             "world_x": 728977.3658488427,
-            "world_y": 704039.1052199048
+            "world_y": 704039.1052199048,
+            "owner": -1
         },
         "3": {
             "alien_attitude": 54,
@@ -5026,7 +5179,8 @@
             "world_height": 109,
             "world_width": 109,
             "world_x": 490365.2389401003,
-            "world_y": 473801.71345902066
+            "world_y": 473801.71345902066,
+            "owner": -1
         },
         "30": {
             "alien_attitude": 58,
@@ -5058,7 +5212,8 @@
             "world_height": 64,
             "world_width": 64,
             "world_x": 498854.1599738413,
-            "world_y": 439587.2667509214
+            "world_y": 439587.2667509214,
+            "owner": -1
         },
         "31": {
             "alien_attitude": 93,
@@ -5092,7 +5247,8 @@
             "world_height": 70,
             "world_width": 70,
             "world_x": 666572.3352603043,
-            "world_y": 571633.3973532179
+            "world_y": 571633.3973532179,
+            "owner": -1
         },
         "32": {
             "alien_attitude": 81,
@@ -5124,7 +5280,8 @@
             "world_height": 73,
             "world_width": 73,
             "world_x": 668933.0576845411,
-            "world_y": 570401.0274679922
+            "world_y": 570401.0274679922,
+            "owner": -1
         },
         "33": {
             "alien_attitude": 83,
@@ -5156,7 +5313,8 @@
             "world_height": 75,
             "world_width": 75,
             "world_x": 610076.7176672523,
-            "world_y": 584724.2418336691
+            "world_y": 584724.2418336691,
+            "owner": -1
         },
         "34": {
             "alien_attitude": 26,
@@ -5191,7 +5349,8 @@
             "world_height": 67,
             "world_width": 67,
             "world_x": 550863.5978994677,
-            "world_y": 337567.5536505545
+            "world_y": 337567.5536505545,
+            "owner": 1
         },
         "35": {
             "alien_attitude": 37,
@@ -5224,7 +5383,8 @@
             "world_height": 69,
             "world_width": 69,
             "world_x": 717479.3150001764,
-            "world_y": 716104.452478035
+            "world_y": 716104.452478035,
+            "owner": -1
         },
         "36": {
             "alien_attitude": 97,
@@ -5258,7 +5418,8 @@
             "world_height": 73,
             "world_width": 73,
             "world_x": 564405.5947144156,
-            "world_y": 328445.6541398303
+            "world_y": 328445.6541398303,
+            "owner": 1
         },
         "37": {
             "alien_attitude": 69,
@@ -5291,7 +5452,8 @@
             "world_height": 68,
             "world_width": 68,
             "world_x": 739594.0615064923,
-            "world_y": 691191.3991565383
+            "world_y": 691191.3991565383,
+            "owner": 1
         },
         "38": {
             "alien_attitude": 73,
@@ -5325,7 +5487,8 @@
             "world_height": 63,
             "world_width": 63,
             "world_x": 373354.56511044514,
-            "world_y": 389590.6251803778
+            "world_y": 389590.6251803778,
+            "owner": -1
         },
         "39": {
             "alien_attitude": 41,
@@ -5359,7 +5522,8 @@
             "world_height": 69,
             "world_width": 69,
             "world_x": 672524.9263408679,
-            "world_y": 452773.3439053149
+            "world_y": 452773.3439053149,
+            "owner": -1
         },
         "4": {
             "alien_attitude": 58,
@@ -5387,7 +5551,8 @@
             "world_height": 107,
             "world_width": 107,
             "world_x": 675440.8641037238,
-            "world_y": 585744.6330868879
+            "world_y": 585744.6330868879,
+            "owner": -1
         },
         "40": {
             "alien_attitude": 91,
@@ -5422,7 +5587,8 @@
             "world_height": 62,
             "world_width": 62,
             "world_x": 748886.7238753554,
-            "world_y": 329079.0483965006
+            "world_y": 329079.0483965006,
+            "owner": -1
         },
         "41": {
             "alien_attitude": 75,
@@ -5455,7 +5621,8 @@
             "world_height": 65,
             "world_width": 65,
             "world_x": 377550.00098243816,
-            "world_y": 717744.2751967952
+            "world_y": 717744.2751967952,
+            "owner": -1
         },
         "42": {
             "alien_attitude": 87,
@@ -5488,7 +5655,8 @@
             "world_height": 73,
             "world_width": 73,
             "world_x": 594816.7900099006,
-            "world_y": 488818.17957709054
+            "world_y": 488818.17957709054,
+            "owner": 1
         },
         "43": {
             "alien_attitude": 58,
@@ -5522,7 +5690,8 @@
             "world_height": 66,
             "world_width": 66,
             "world_x": 686599.9202843836,
-            "world_y": 561470.5092363206
+            "world_y": 561470.5092363206,
+            "owner": 1
         },
         "44": {
             "alien_attitude": 47,
@@ -5554,7 +5723,8 @@
             "world_height": 68,
             "world_width": 68,
             "world_x": 445978.4463454036,
-            "world_y": 688442.5149319246
+            "world_y": 688442.5149319246,
+            "owner": -1
         },
         "45": {
             "alien_attitude": 51,
@@ -5588,7 +5758,8 @@
             "world_height": 62,
             "world_width": 62,
             "world_x": 265328.54058157303,
-            "world_y": 452948.01622313436
+            "world_y": 452948.01622313436,
+            "owner": -1
         },
         "46": {
             "alien_attitude": 20,
@@ -5620,7 +5791,8 @@
             "world_height": 72,
             "world_width": 72,
             "world_x": 439323.1528360189,
-            "world_y": 678044.1259820708
+            "world_y": 678044.1259820708,
+            "owner": -1
         },
         "47": {
             "alien_attitude": 66,
@@ -5654,7 +5826,8 @@
             "world_height": 76,
             "world_width": 76,
             "world_x": 471180.3115992339,
-            "world_y": 591286.3487900377
+            "world_y": 591286.3487900377,
+            "owner": -1
         },
         "48": {
             "alien_attitude": 60,
@@ -5687,7 +5860,8 @@
             "world_height": 80,
             "world_width": 80,
             "world_x": 260684.79116905824,
-            "world_y": 472823.84534443496
+            "world_y": 472823.84534443496,
+            "owner": -1
         },
         "49": {
             "alien_attitude": 96,
@@ -5719,7 +5893,8 @@
             "world_height": 77,
             "world_width": 77,
             "world_x": 689729.7745897269,
-            "world_y": 535236.5964314967
+            "world_y": 535236.5964314967,
+            "owner": -1
         },
         "5": {
             "alien_attitude": 97,
@@ -5747,7 +5922,8 @@
             "world_height": 91,
             "world_width": 91,
             "world_x": 336380.0119857506,
-            "world_y": 614073.5871588361
+            "world_y": 614073.5871588361,
+            "owner": 1
         },
         "50": {
             "alien_attitude": 56,
@@ -5782,7 +5958,8 @@
             "world_height": 68,
             "world_width": 68,
             "world_x": 666247.8834274547,
-            "world_y": 571842.5870481398
+            "world_y": 571842.5870481398,
+            "owner": -1
         },
         "51": {
             "alien_attitude": 62,
@@ -5816,7 +5993,8 @@
             "world_height": 75,
             "world_width": 75,
             "world_x": 549372.2987454438,
-            "world_y": 701564.8641608539
+            "world_y": 701564.8641608539,
+            "owner": 1
         },
         "52": {
             "alien_attitude": 14,
@@ -5849,7 +6027,8 @@
             "world_height": 75,
             "world_width": 75,
             "world_x": 611306.8904500459,
-            "world_y": 387962.4430329025
+            "world_y": 387962.4430329025,
+            "owner": -1
         },
         "53": {
             "alien_attitude": 7,
@@ -5881,7 +6060,8 @@
             "world_height": 80,
             "world_width": 80,
             "world_x": 532987.324479772,
-            "world_y": 323088.7799307765
+            "world_y": 323088.7799307765,
+            "owner": -1
         },
         "54": {
             "alien_attitude": 51,
@@ -5916,7 +6096,8 @@
             "world_height": 66,
             "world_width": 66,
             "world_x": 642137.2442206211,
-            "world_y": 386878.4198109004
+            "world_y": 386878.4198109004,
+            "owner": -1
         },
         "55": {
             "alien_attitude": 37,
@@ -5949,7 +6130,8 @@
             "world_height": 64,
             "world_width": 64,
             "world_x": 664845.3189683679,
-            "world_y": 572879.4785576011
+            "world_y": 572879.4785576011,
+            "owner": -1
         },
         "56": {
             "alien_attitude": 28,
@@ -5982,7 +6164,8 @@
             "world_height": 61,
             "world_width": 61,
             "world_x": 744552.3416025807,
-            "world_y": 698106.3227320474
+            "world_y": 698106.3227320474,
+            "owner": -1
         },
         "57": {
             "alien_attitude": 61,
@@ -6014,7 +6197,8 @@
             "world_height": 67,
             "world_width": 67,
             "world_x": 537011.9374697715,
-            "world_y": 309937.0349265077
+            "world_y": 309937.0349265077,
+            "owner": -1
         },
         "58": {
             "alien_attitude": 73,
@@ -6049,7 +6233,8 @@
             "world_height": 67,
             "world_width": 67,
             "world_x": 321062.41850953846,
-            "world_y": 646576.0112405692
+            "world_y": 646576.0112405692,
+            "owner": -1
         },
         "59": {
             "alien_attitude": 33,
@@ -6083,7 +6268,8 @@
             "world_height": 74,
             "world_width": 74,
             "world_x": 614337.2339618009,
-            "world_y": 404631.53339555423
+            "world_y": 404631.53339555423,
+            "owner": 1
         },
         "6": {
             "alien_attitude": 99,
@@ -6111,7 +6297,8 @@
             "world_height": 105,
             "world_width": 105,
             "world_x": 377395.4363319398,
-            "world_y": 349635.81586499565
+            "world_y": 349635.81586499565,
+            "owner": -1
         },
         "60": {
             "alien_attitude": 62,
@@ -6144,7 +6331,8 @@
             "world_height": 80,
             "world_width": 80,
             "world_x": 547135.7079146742,
-            "world_y": 670927.0243046285
+            "world_y": 670927.0243046285,
+            "owner": -1
         },
         "61": {
             "alien_attitude": 36,
@@ -6178,7 +6366,8 @@
             "world_height": 66,
             "world_width": 66,
             "world_x": 308794.649389567,
-            "world_y": 640530.7769432152
+            "world_y": 640530.7769432152,
+            "owner": -1
         },
         "62": {
             "alien_attitude": 100,
@@ -6212,7 +6401,8 @@
             "world_height": 61,
             "world_width": 61,
             "world_x": 658097.0457005232,
-            "world_y": 334324.357616774
+            "world_y": 334324.357616774,
+            "owner": -1
         },
         "63": {
             "alien_attitude": 82,
@@ -6246,7 +6436,8 @@
             "world_height": 69,
             "world_width": 69,
             "world_x": 630145.8791834525,
-            "world_y": 281958.5074343792
+            "world_y": 281958.5074343792,
+            "owner": -1
         },
         "64": {
             "alien_attitude": 84,
@@ -6278,7 +6469,8 @@
             "world_height": 77,
             "world_width": 77,
             "world_x": 483220.4078887053,
-            "world_y": 458744.1848761222
+            "world_y": 458744.1848761222,
+            "owner": -1
         },
         "65": {
             "alien_attitude": 40,
@@ -6312,7 +6504,8 @@
             "world_height": 63,
             "world_width": 63,
             "world_x": 449937.2496233017,
-            "world_y": 566728.1189202229
+            "world_y": 566728.1189202229,
+            "owner": 1
         },
         "66": {
             "alien_attitude": 59,
@@ -6346,7 +6539,8 @@
             "world_height": 72,
             "world_width": 72,
             "world_x": 626310.4823030317,
-            "world_y": 274833.09706519323
+            "world_y": 274833.09706519323,
+            "owner": -1
         },
         "67": {
             "alien_attitude": 78,
@@ -6381,7 +6575,8 @@
             "world_height": 68,
             "world_width": 68,
             "world_x": 670673.9358366837,
-            "world_y": 305925.2111028253
+            "world_y": 305925.2111028253,
+            "owner": -1
         },
         "68": {
             "alien_attitude": 43,
@@ -6415,7 +6610,8 @@
             "world_height": 80,
             "world_width": 80,
             "world_x": 657121.7361229106,
-            "world_y": 446229.8146039663
+            "world_y": 446229.8146039663,
+            "owner": -1
         },
         "69": {
             "alien_attitude": 48,
@@ -6448,7 +6644,8 @@
             "world_height": 66,
             "world_width": 66,
             "world_x": 351907.7796258499,
-            "world_y": 620128.8501500553
+            "world_y": 620128.8501500553,
+            "owner": -1
         },
         "7": {
             "alien_attitude": 52,
@@ -6476,7 +6673,8 @@
             "world_height": 95,
             "world_width": 95,
             "world_x": 659187.5549050202,
-            "world_y": 462767.9575026489
+            "world_y": 462767.9575026489,
+            "owner": -1
         },
         "70": {
             "alien_attitude": 50,
@@ -6510,7 +6708,8 @@
             "world_height": 63,
             "world_width": 63,
             "world_x": 671033.0694216068,
-            "world_y": 555068.7412238619
+            "world_y": 555068.7412238619,
+            "owner": -1
         },
         "71": {
             "alien_attitude": 14,
@@ -6544,7 +6743,8 @@
             "world_height": 64,
             "world_width": 64,
             "world_x": 575130.1018688376,
-            "world_y": 432661.2063874449
+            "world_y": 432661.2063874449,
+            "owner": -1
         },
         "72": {
             "alien_attitude": 50,
@@ -6578,7 +6778,8 @@
             "world_height": 73,
             "world_width": 73,
             "world_x": 707897.8318971371,
-            "world_y": 490698.33934125333
+            "world_y": 490698.33934125333,
+            "owner": -1
         },
         "73": {
             "alien_attitude": 49,
@@ -6613,7 +6814,8 @@
             "world_height": 74,
             "world_width": 74,
             "world_x": 558384.5846354654,
-            "world_y": 685050.8589443215
+            "world_y": 685050.8589443215,
+            "owner": -1
         },
         "74": {
             "alien_attitude": 40,
@@ -6645,7 +6847,8 @@
             "world_height": 66,
             "world_width": 66,
             "world_x": 367988.7046645499,
-            "world_y": 356710.79791982047
+            "world_y": 356710.79791982047,
+            "owner": -1
         },
         "75": {
             "alien_attitude": 75,
@@ -6679,7 +6882,8 @@
             "world_height": 68,
             "world_width": 68,
             "world_x": 675547.425350456,
-            "world_y": 459584.8117651261
+            "world_y": 459584.8117651261,
+            "owner": -1
         },
         "76": {
             "alien_attitude": 34,
@@ -6712,7 +6916,8 @@
             "world_height": 63,
             "world_width": 63,
             "world_x": 600467.5014414663,
-            "world_y": 477335.4105448393
+            "world_y": 477335.4105448393,
+            "owner": -1
         },
         "77": {
             "alien_attitude": 92,
@@ -6745,7 +6950,8 @@
             "world_height": 62,
             "world_width": 62,
             "world_x": 691538.166899379,
-            "world_y": 299116.7889193001
+            "world_y": 299116.7889193001,
+            "owner": -1
         },
         "78": {
             "alien_attitude": 86,
@@ -6777,7 +6983,8 @@
             "world_height": 65,
             "world_width": 65,
             "world_x": 471705.29715902806,
-            "world_y": 670283.383305043
+            "world_y": 670283.383305043,
+            "owner": -1
         },
         "79": {
             "alien_attitude": 69,
@@ -6812,7 +7019,8 @@
             "world_height": 64,
             "world_width": 64,
             "world_x": 735080.1393313534,
-            "world_y": 497162.229885887
+            "world_y": 497162.229885887,
+            "owner": -1
         },
         "8": {
             "alien_attitude": 34,
@@ -6840,7 +7048,8 @@
             "world_height": 104,
             "world_width": 104,
             "world_x": 723591.7320527699,
-            "world_y": 485087.69983378315
+            "world_y": 485087.69983378315,
+            "owner": -1
         },
         "80": {
             "alien_attitude": 41,
@@ -6875,7 +7084,8 @@
             "world_height": 37,
             "world_width": 37,
             "world_x": 752774.370067275,
-            "world_y": 320557.5554270236
+            "world_y": 320557.5554270236,
+            "owner": -1
         },
         "81": {
             "alien_attitude": 16,
@@ -6910,7 +7120,8 @@
             "world_height": 44,
             "world_width": 44,
             "world_x": 521517.8483814554,
-            "world_y": 434391.9035469291
+            "world_y": 434391.9035469291,
+            "owner": -1
         },
         "82": {
             "alien_attitude": 45,
@@ -6944,7 +7155,8 @@
             "world_height": 32,
             "world_width": 32,
             "world_x": 517508.7392239091,
-            "world_y": 323013.9891783009
+            "world_y": 323013.9891783009,
+            "owner": -1
         },
         "83": {
             "alien_attitude": 5,
@@ -6979,7 +7191,8 @@
             "world_height": 34,
             "world_width": 34,
             "world_x": 646178.314733819,
-            "world_y": 447546.86265880434
+            "world_y": 447546.86265880434,
+            "owner": 1
         },
         "84": {
             "alien_attitude": 96,
@@ -7014,7 +7227,8 @@
             "world_height": 45,
             "world_width": 45,
             "world_x": 498055.50754534086,
-            "world_y": 343380.84114445804
+            "world_y": 343380.84114445804,
+            "owner": -1
         },
         "85": {
             "alien_attitude": 97,
@@ -7047,7 +7261,8 @@
             "world_height": 47,
             "world_width": 47,
             "world_x": 694780.7911676385,
-            "world_y": 436163.90932954574
+            "world_y": 436163.90932954574,
+            "owner": -1
         },
         "86": {
             "alien_attitude": 37,
@@ -7081,7 +7296,8 @@
             "world_height": 42,
             "world_width": 42,
             "world_x": 605065.3092506826,
-            "world_y": 479491.94355572
+            "world_y": 479491.94355572,
+            "owner": -1
         },
         "87": {
             "alien_attitude": 76,
@@ -7116,7 +7332,8 @@
             "world_height": 37,
             "world_width": 37,
             "world_x": 643862.7327819943,
-            "world_y": 582585.1173293062
+            "world_y": 582585.1173293062,
+            "owner": -1
         },
         "88": {
             "alien_attitude": 82,
@@ -7149,7 +7366,8 @@
             "world_height": 48,
             "world_width": 48,
             "world_x": 600534.199871264,
-            "world_y": 682527.7107946223
+            "world_y": 682527.7107946223,
+            "owner": -1
         },
         "89": {
             "alien_attitude": 23,
@@ -7184,7 +7402,8 @@
             "world_height": 32,
             "world_width": 32,
             "world_x": 582508.7324983005,
-            "world_y": 322405.4810392521
+            "world_y": 322405.4810392521,
+            "owner": -1
         },
         "9": {
             "alien_attitude": 76,
@@ -7212,7 +7431,8 @@
             "world_height": 90,
             "world_width": 90,
             "world_x": 387425.62342321605,
-            "world_y": 704318.5588589252
+            "world_y": 704318.5588589252,
+            "owner": -1
         },
         "90": {
             "alien_attitude": 99,
@@ -7245,7 +7465,8 @@
             "world_height": 36,
             "world_width": 36,
             "world_x": 583000.1392383745,
-            "world_y": 380675.69716105843
+            "world_y": 380675.69716105843,
+            "owner": -1
         },
         "91": {
             "alien_attitude": 27,
@@ -7278,7 +7499,8 @@
             "world_height": 50,
             "world_width": 50,
             "world_x": 594804.618566424,
-            "world_y": 665703.2001175834
+            "world_y": 665703.2001175834,
+            "owner": -1
         },
         "92": {
             "alien_attitude": 24,
@@ -7312,7 +7534,8 @@
             "world_height": 40,
             "world_width": 40,
             "world_x": 367342.072601439,
-            "world_y": 347882.7740325827
+            "world_y": 347882.7740325827,
+            "owner": -1
         },
         "93": {
             "alien_attitude": 44,
@@ -7346,7 +7569,8 @@
             "world_height": 35,
             "world_width": 35,
             "world_x": 525666.2922758511,
-            "world_y": 441638.7506418927
+            "world_y": 441638.7506418927,
+            "owner": -1
         },
         "94": {
             "alien_attitude": 16,
@@ -7379,7 +7603,8 @@
             "world_height": 47,
             "world_width": 47,
             "world_x": 442781.5362281471,
-            "world_y": 564728.7838512249
+            "world_y": 564728.7838512249,
+            "owner": -1
         },
         "95": {
             "alien_attitude": 76,
@@ -7414,7 +7639,8 @@
             "world_height": 31,
             "world_width": 31,
             "world_x": 625186.2716375553,
-            "world_y": 464288.54041060765
+            "world_y": 464288.54041060765,
+            "owner": -1
         },
         "96": {
             "alien_attitude": 92,
@@ -7446,7 +7672,8 @@
             "world_height": 39,
             "world_width": 39,
             "world_x": 228277.92966098496,
-            "world_y": 467750.7053607659
+            "world_y": 467750.7053607659,
+            "owner": -1
         },
         "97": {
             "alien_attitude": 16,
@@ -7479,7 +7706,8 @@
             "world_height": 48,
             "world_width": 48,
             "world_x": 509089.7707656952,
-            "world_y": 310496.48878570757
+            "world_y": 310496.48878570757,
+            "owner": -1
         },
         "98": {
             "alien_attitude": 16,
@@ -7512,7 +7740,8 @@
             "world_height": 40,
             "world_width": 40,
             "world_x": 663934.7783150461,
-            "world_y": 313394.96979548095
+            "world_y": 313394.96979548095,
+            "owner": -1
         },
         "99": {
             "alien_attitude": 30,
@@ -7544,7 +7773,8 @@
             "world_height": 37,
             "world_width": 37,
             "world_x": 226844.36680156962,
-            "world_y": 492617.1954091308
+            "world_y": 492617.1954091308,
+            "owner": -1
         }
     },
     "globals": {
@@ -7614,7 +7844,8 @@
             "water_max": 400,
             "weapons": {},
             "world_x": 661800.6338802422,
-            "world_y": 392043.7852332231
+            "world_y": 392043.7852332231,
+            "owner": 0
         },
         "1": {
             "attack_distance_raw": 200,
@@ -7653,7 +7884,8 @@
             "water_max": 200,
             "weapons": {},
             "world_x": 661800.6338802422,
-            "world_y": 392043.7852332231
+            "world_y": 392043.7852332231,
+            "owner": 0
         },
         "10": {
             "attack_distance_raw": 200,
@@ -7692,7 +7924,8 @@
             "water_max": 200,
             "weapons": {},
             "world_x": 631353.6948363729,
-            "world_y": 391745.41628000606
+            "world_y": 391745.41628000606,
+            "owner": 0
         },
         "11": {
             "attack_distance_raw": 200,
@@ -7802,7 +8035,8 @@
                 }
             },
             "world_x": 297525.04380047775,
-            "world_y": 715733.8630526883
+            "world_y": 715733.8630526883,
+            "owner": 0
         },
         "12": {
             "attack_distance_raw": 200,
@@ -7912,7 +8146,8 @@
                 }
             },
             "world_x": 393673.0556106136,
-            "world_y": 620286.030576555
+            "world_y": 620286.030576555,
+            "owner": 0
         },
         "13": {
             "attack_distance_raw": 200,
@@ -8022,7 +8257,8 @@
                 }
             },
             "world_x": 467546.9545947995,
-            "world_y": 374806.97103291773
+            "world_y": 374806.97103291773,
+            "owner": 0
         },
         "14": {
             "attack_distance_raw": 200,
@@ -8132,7 +8368,8 @@
                 }
             },
             "world_x": 262262.791630289,
-            "world_y": 513054.5416266845
+            "world_y": 513054.5416266845,
+            "owner": 0
         },
         "15": {
             "attack_distance_raw": 200,
@@ -8242,7 +8479,8 @@
                 }
             },
             "world_x": 581848.8976758234,
-            "world_y": 430550.283327054
+            "world_y": 430550.283327054,
+            "owner": 0
         },
         "16": {
             "attack_distance_raw": 200,
@@ -8352,7 +8590,8 @@
                 }
             },
             "world_x": 554337.2040864901,
-            "world_y": 710313.3303784464
+            "world_y": 710313.3303784464,
+            "owner": 0
         },
         "17": {
             "attack_distance_raw": 200,
@@ -8462,7 +8701,8 @@
                 }
             },
             "world_x": 278327.1291627316,
-            "world_y": 371115.3129264382
+            "world_y": 371115.3129264382,
+            "owner": 0
         },
         "18": {
             "attack_distance_raw": 200,
@@ -8572,7 +8812,8 @@
                 }
             },
             "world_x": 529744.1124471016,
-            "world_y": 674452.4315126945
+            "world_y": 674452.4315126945,
+            "owner": 0
         },
         "19": {
             "attack_distance_raw": 200,
@@ -8682,7 +8923,8 @@
                 }
             },
             "world_x": 309487.03664331784,
-            "world_y": 640141.0703473617
+            "world_y": 640141.0703473617,
+            "owner": 0
         },
         "2": {
             "attack_distance_raw": 200,
@@ -8721,7 +8963,8 @@
             "water_max": 200,
             "weapons": {},
             "world_x": 662690.5332108855,
-            "world_y": 499542.16796578025
+            "world_y": 499542.16796578025,
+            "owner": 0
         },
         "20": {
             "attack_distance_raw": 200,
@@ -8831,7 +9074,8 @@
                 }
             },
             "world_x": 431196.1790995368,
-            "world_y": 480616.35281539476
+            "world_y": 480616.35281539476,
+            "owner": 0
         },
         "21": {
             "attack_distance_raw": 200,
@@ -8870,7 +9114,8 @@
             "water_max": 200,
             "weapons": {},
             "world_x": 317636.1250050311,
-            "world_y": 363793.62449880666
+            "world_y": 363793.62449880666,
+            "owner": 0
         },
         "22": {
             "attack_distance_raw": 200,
@@ -8909,7 +9154,8 @@
             "water_max": 200,
             "weapons": {},
             "world_x": 598382.4684397803,
-            "world_y": 398653.39290940476
+            "world_y": 398653.39290940476,
+            "owner": 0
         },
         "23": {
             "attack_distance_raw": 200,
@@ -8948,7 +9194,8 @@
             "water_max": 200,
             "weapons": {},
             "world_x": 435547.09141252947,
-            "world_y": 621235.9969371974
+            "world_y": 621235.9969371974,
+            "owner": 0
         },
         "24": {
             "attack_distance_raw": 200,
@@ -8987,7 +9234,8 @@
             "water_max": 200,
             "weapons": {},
             "world_x": 420450.69084945065,
-            "world_y": 292373.98692975467
+            "world_y": 292373.98692975467,
+            "owner": 0
         },
         "25": {
             "attack_distance_raw": 200,
@@ -9026,7 +9274,8 @@
             "water_max": 200,
             "weapons": {},
             "world_x": 631311.8914110849,
-            "world_y": 721516.8265576493
+            "world_y": 721516.8265576493,
+            "owner": 0
         },
         "26": {
             "attack_distance_raw": 200,
@@ -9065,7 +9314,8 @@
             "water_max": 200,
             "weapons": {},
             "world_x": 490411.23855711496,
-            "world_y": 466320.1620593766
+            "world_y": 466320.1620593766,
+            "owner": 0
         },
         "27": {
             "attack_distance_raw": 200,
@@ -9104,7 +9354,8 @@
             "water_max": 200,
             "weapons": {},
             "world_x": 737020.8835983612,
-            "world_y": 310900.602509762
+            "world_y": 310900.602509762,
+            "owner": 0
         },
         "28": {
             "attack_distance_raw": 200,
@@ -9143,7 +9394,8 @@
             "water_max": 200,
             "weapons": {},
             "world_x": 329261.6912070256,
-            "world_y": 444150.7649365929
+            "world_y": 444150.7649365929,
+            "owner": 0
         },
         "29": {
             "attack_distance_raw": 200,
@@ -9182,7 +9434,8 @@
             "water_max": 200,
             "weapons": {},
             "world_x": 738497.944664177,
-            "world_y": 402386.0726231441
+            "world_y": 402386.0726231441,
+            "owner": 0
         },
         "3": {
             "attack_distance_raw": 200,
@@ -9221,7 +9474,8 @@
             "water_max": 200,
             "weapons": {},
             "world_x": 676434.9688405147,
-            "world_y": 674779.3697827447
+            "world_y": 674779.3697827447,
+            "owner": 0
         },
         "30": {
             "attack_distance_raw": 200,
@@ -9257,7 +9511,8 @@
             "water_max": 200,
             "weapons": {},
             "world_x": 705511.2543628665,
-            "world_y": 746355.0119590698
+            "world_y": 746355.0119590698,
+            "owner": 0
         },
         "4": {
             "attack_distance_raw": 200,
@@ -9296,7 +9551,8 @@
             "water_max": 200,
             "weapons": {},
             "world_x": 668365.7777926314,
-            "world_y": 592949.4317006287
+            "world_y": 592949.4317006287,
+            "owner": 0
         },
         "5": {
             "attack_distance_raw": 200,
@@ -9335,7 +9591,8 @@
             "water_max": 200,
             "weapons": {},
             "world_x": 697945.595237616,
-            "world_y": 526883.2043456973
+            "world_y": 526883.2043456973,
+            "owner": 0
         },
         "6": {
             "attack_distance_raw": 200,
@@ -9374,7 +9631,8 @@
             "water_max": 200,
             "weapons": {},
             "world_x": 337580.70971861307,
-            "world_y": 544830.9164649902
+            "world_y": 544830.9164649902,
+            "owner": 0
         },
         "7": {
             "attack_distance_raw": 200,
@@ -9413,7 +9671,8 @@
             "water_max": 200,
             "weapons": {},
             "world_x": 727372.0337454109,
-            "world_y": 576773.5451194867
+            "world_y": 576773.5451194867,
+            "owner": 0
         },
         "8": {
             "attack_distance_raw": 200,
@@ -9452,7 +9711,8 @@
             "water_max": 200,
             "weapons": {},
             "world_x": 632654.4397388375,
-            "world_y": 350617.26320931414
+            "world_y": 350617.26320931414,
+            "owner": 0
         },
         "9": {
             "attack_distance_raw": 200,
@@ -9491,7 +9751,8 @@
             "water_max": 200,
             "weapons": {},
             "world_x": 655192.6054098499,
-            "world_y": 290970.9734081296
+            "world_y": 290970.9734081296,
+            "owner": 0
         }
     }
 }

@@ -38,7 +38,21 @@ class Cursor:
                         "left_arrow_repeated": pygame.transform.rotate(pygame.transform.scale(get_image(f"crosshair023.png"), self.cursor_size), 90),
                         "right_arrow_repeated": pygame.transform.rotate(pygame.transform.flip(pygame.transform.scale(get_image(f"crosshair023.png"), self.cursor_size), False, True), 90),
                         "close": pygame.transform.scale(get_image(f"crosshair005.png"), self.cursor_size),
+                        "resize_0":pygame.transform.rotate(pygame.transform.scale(get_image(f"crosshair015.png"), self.cursor_size), 0),
+                        "resize_45": pygame.transform.rotate(pygame.transform.scale(get_image(f"crosshair015.png"), self.cursor_size), 45),
+                        "resize_90": pygame.transform.rotate(pygame.transform.scale(get_image(f"crosshair015.png"), self.cursor_size), 90),
+                        "resize_135": pygame.transform.rotate(pygame.transform.scale(get_image(f"crosshair015.png"), self.cursor_size), 135),
                         }
+
+        self.resize_cursor_orientations = {"top": 90,
+                                           "bottom": 90,
+                                           "left": 0,
+                                           "right": 0,
+                                           "top-left": 135,
+                                           "bottom-left": 45,
+                                           "top-right": 45,
+                                           "bottom-right": 135
+                                           }
 
         # change image color
         self.change_image_color()
@@ -57,11 +71,24 @@ class Cursor:
         self.cursor = value
         self.image = self.cursors.get(self.cursor)
 
+    def get_resize_cursor_orientation(self, resize_side):
+        if resize_side:
+            return self.resize_cursor_orientations[resize_side]
+        else:
+            return self.resize_cursor_orientations["top"]
+    def get_resize_cursor(self, angle):
+        return f"resize_{angle}"
+
     def draw(self):
         if config.ui_show_cursor:
-            pygame.mouse.set_visible(False)
-            pos = (pygame.mouse.get_pos()[0] - self.image.get_rect().width / 2,
-                   pygame.mouse.get_pos()[1] - self.image.get_rect().height / 2)
-            self.win.blit(self.image, pos)
+            if not self.cursor == "idle":
+                pygame.mouse.set_visible(False)
+                if self.image:
+                    pos = (pygame.mouse.get_pos()[0] - self.image.get_rect().width / 2,
+                           pygame.mouse.get_pos()[1] - self.image.get_rect().height / 2)
+                    self.win.blit(self.image, pos)
+            else:
+                pygame.mouse.set_visible(True)
+
         else:
             pygame.mouse.set_visible(True)

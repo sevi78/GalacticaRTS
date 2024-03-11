@@ -1,5 +1,7 @@
 import math
 
+import pygame.mouse
+
 from source.configuration.game_config import config
 from source.gui.event_text import event_text
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
@@ -101,6 +103,11 @@ class PanZoomShipParams:
 
     def set_info_text(self):
         if not self == config.app.ship:
+            if self.rect.collidepoint(pygame.mouse.get_pos()):
+                text = info_panel_text_generator.create_info_panel_ship_text(self)
+                self.parent.info_panel.set_text(text)
+                self.parent.info_panel.set_planet_image(self.image_raw, alpha=self.info_panel_alpha)
+
             return
 
         text = info_panel_text_generator.create_info_panel_ship_text(self)
@@ -133,7 +140,7 @@ class PanZoomShipParams:
                                 "energy"] * config.game_speed
                             self.flickering()
                         else:
-                            event_text.text = "PanZoomShip reloaded successfully!!!"
+                            event_text.set_text("PanZoomShip reloaded successfully!!!", obj=self)
                             sounds.stop_sound(self.sound_channel)
 
                 if self.energy_reloader.type == "sun":
@@ -150,7 +157,7 @@ class PanZoomShipParams:
                             self.energy_reloader.energy -= self.energy_reload_rate * config.game_speed
                             self.flickering()
                         else:
-                            event_text.text = "PanZoomShip reloaded sucessfully!!!"
+                            event_text.set_text("PanZoomShip reloaded successfully!!!", obj=self)
                             sounds.stop_sound(self.sound_channel)
         else:
             sounds.stop_sound(self.sound_channel)

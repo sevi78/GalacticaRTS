@@ -2,6 +2,7 @@ import pygame
 
 from source.game_play.ranking import Ranking
 from source.gui.event_text import event_text
+from source.handlers.player_handler import player_handler
 from source.multimedia_library.images import get_image
 from source.multimedia_library.sounds import sounds
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
@@ -82,11 +83,20 @@ class PanZoomPlanetParams:
         self.parent.info_panel.set_planet_image(self.image_raw)
         return
 
-    def get_explored(self):
+    def get_explored(self,owner):
+
         """
         called only once when the planet gets explored
         shows buttons ect
         """
+        # set owner
+        if not self.owner == -1:
+            event_text.set_text(f"Bad Luck! the planet {self.name} belongs to an alien species !", obj=self)
+            return
+
+        self.owner = owner
+        self.player_color = pygame.color.THECOLORS.get(player_handler.get_player_color(self.owner))
+
         if self.type == "sun":
             self.explored = True
             self.just_explored = True
@@ -105,6 +115,5 @@ class PanZoomPlanetParams:
         self.string = self.name
 
         # set event text
-        #event_text.text = f"Gratulation! you have reached a the Planet {self.name} !"
         event_text.set_text(f"Gratulation! you have reached a the Planet {self.name} !", obj=self)
         self.parent.update_building_button_widgets()

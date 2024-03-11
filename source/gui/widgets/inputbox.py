@@ -28,6 +28,7 @@ class InputBox(WidgetBase):
         self.text_input_type = kwargs.get("text_input_type", str)
         self.property = "input_box"
         self.draw_frame = kwargs.get("draw_frame", True)
+        self.kwargs = kwargs
 
         self.hide()
 
@@ -57,11 +58,12 @@ class InputBox(WidgetBase):
         self.color = COLOR_ACTIVE if self.active else COLOR_INACTIVE
         self.txt_surface = self.font.render(self.text, True, self.color)
 
-    def set_text(self, text):
+    def set_text(self, text, **kwargs):
+        color = kwargs.get("color", self.color)
         if not self.active:
             self.text = text
             # Re-render the text.
-            self.txt_surface = self.font.render(self.text, True, self.color)
+            self.txt_surface = self.font.render(self.text, True, color)
 
     def handle_events(self, events):
         if self._disabled:

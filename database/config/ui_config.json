@@ -24,8 +24,8 @@
         "world_y": 0
     },
     "6": {
-        "world_x": 1203.0,
-        "world_y": 398
+        "world_x": 1213.0,
+        "world_y": 349
     },
     "7": {
         "world_x": 610.0,
@@ -36,35 +36,39 @@
         "world_y": 0
     },
     "9": {
-        "world_x": 779.0,
-        "world_y": 38
+        "world_x": 1447.0,
+        "world_y": 30
     },
     "10": {
         "world_x": 590.0,
         "world_y": 0
     },
     "11": {
-        "world_x": 1482.5,
-        "world_y": 0
+        "world_x": 673.5,
+        "world_y": 30
     },
     "12": {
-        "world_x": 1525,
-        "world_y": 52
+        "world_x": 1474,
+        "world_y": 322
     },
     "13": {
-        "world_x": 1525,
-        "world_y": 214
+        "world_x": 1593,
+        "world_y": 52
     },
     "14": {
-        "world_x": 173,
-        "world_y": 674
+        "world_x": 1593,
+        "world_y": 213
     },
     "15": {
-        "world_x": 1620,
-        "world_y": -8
+        "world_x": 1726,
+        "world_y": 298
     },
     "16": {
-        "world_x": 1605,
-        "world_y": 154
+        "world_x": 1618,
+        "world_y": -8
+    },
+    "17": {
+        "world_x": 1603,
+        "world_y": 153
     }
 }

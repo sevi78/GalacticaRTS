@@ -1,5 +1,6 @@
 {
     "cargoloader": {
+        "owner": 0,
         "attack_distance_raw": 200,
         "crew": 10,
         "crew_max": 20,
@@ -32,6 +33,7 @@
         "water_max": 1000
     },
     "spacehunter": {
+        "owner": 0,
         "attack_distance_raw": 200,
         "crew": 3,
         "crew_max": 5,
@@ -64,6 +66,7 @@
         "water_max": 100
     },
     "spaceship": {
+        "owner": 0,
         "attack_distance_raw": 200,
         "crew": 7,
         "crew_max": 12,
@@ -96,6 +99,7 @@
         "water_max": 400
     },
     "spacestation": {
+        "owner": 0,
         "attack_distance_raw": 200,
         "crew": 150,
         "crew_max": 350,

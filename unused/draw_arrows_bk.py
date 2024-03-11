@@ -3,7 +3,7 @@ import sys
 import math
 
 
-# Define the draw_arrows function as provided
+# Define the draw_arrows_on_line_from_start_to_end function as provided
 def draw_arrows(surf, color, start_pos, end_pos, width=1, dash_length=10, arrow_size=(4, 6)):
     x1, y1 = end_pos
     x2, y2 = start_pos

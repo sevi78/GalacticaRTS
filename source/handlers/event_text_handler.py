@@ -1,6 +1,6 @@
 import pygame
 
-from source.game_play.navigation import navigate_to
+from source.game_play.navigation import navigate_to, navigate_to_position
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 
 """ cant move back to event_text; big mess with imports"""
@@ -20,4 +20,7 @@ def listen(self, events):
 
 def follow_link(self):
     if self.obj:
-        navigate_to(self.obj)
+        if self.obj.__class__.__name__ == "PanZoomShip":
+            navigate_to_position(self.obj.screen_x, self.obj.screen_y)
+        if self.obj.__class__.__name__ == "PanZoomPlanet":
+            navigate_to(self.obj)

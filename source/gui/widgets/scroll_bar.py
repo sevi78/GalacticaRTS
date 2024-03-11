@@ -55,6 +55,7 @@ class ScrollBar:
             0, y, self.world_width, height), 0, config.get("ui_rounded_corner_radius_small"))
 
     def update_position(self):
+        """sets the position of the widget to the bottom right corner of the parent"""
         self.world_x = self.parent.world_x + self.parent.world_width - self.world_width
         self.world_y = self.parent.world_y + self.parent.world_height - self.world_height
         self.rect.x, self.rect.y = self.world_x, self.world_y
@@ -64,12 +65,77 @@ class ScrollBar:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if self.rect.collidepoint(event.pos):
                     self.value = 1 / self.world_height * (pygame.mouse.get_pos()[1] - self.rect.y)
-                    self.parent.scroll_offset_y = int(-self.value * len(self.parent.widgets))
-                    print("self.parent.scroll_offset_y:", self.parent.scroll_offset_y)
+                    scroll_offset_y = int(self.value * len(self.parent.widgets)) * -1
+
+                    if scroll_offset_y < self.parent.scroll_offset_y:
+                       self.parent.scroll_y = -1
+                    elif scroll_offset_y == 0:
+                        self.parent.scroll_y = 0
+                    else:
+                        self.parent.scroll_y = 1
+
+                    self.parent.scroll_offset_y = scroll_offset_y
+                    self.value = abs(1 / len(self.parent.widgets) * self.parent.scroll_offset_y)
                     self.parent.reposition_widgets()
-                    self.parent.drag_enabled = False
-                else:
-                    self.parent.drag_enabled = True
+
+
+                    # print (f"self.parent.scroll_offset_y:{self.parent.scroll_offset_y},scroll_offset_y:{scroll_offset_y}")
+
+                    # self.parent.scroll_offset_y =
+                    # self.parent.reposition_widgets()
+
+                    # print(f"self.parent.scroll_offset_y: {self.parent.scroll_offset_y},self.parent.scroll_y:{self.parent.scroll_y}")
+                    # print (f"self.parent.scroll_factor:{self.parent.scroll_factor}")
+                    #self.parent.scroll_y = -1
+
+                    # print ("_________________________________________________________________________________________")
+                    # print (f"self.parent.scroll_offset_y: {self.parent.scroll_offset_y}, new_offset_y:{new_offset_y}")
+                    # print(f"self.parent.scroll_offset_y: {self.parent.scroll_offset_y}, new_offset_y1:{new_offset_y1}")
+                    # print(f"self.parent.scroll_offset_y: {self.parent.scroll_offset_y}, new_offset_y2:{new_offset_y2}")
+                    # print(f"self.parent.scroll_offset_y: {self.parent.scroll_offset_y}, new_offset_y3:{new_offset_y3}")
+                    # print(f"self.parent.scroll_offset_y: {self.parent.scroll_offset_y}, new_offset_y4:{new_offset_y4}")
+
+                    #self.parent.scroll_offset_y = int(1/self.value * len(self.parent.widgets))
+                    # print (f"value: {self.value}")
+                    # # self.scrollbar.value = abs(1 / len(self.widgets) * self.scroll_offset_y)
+                    #
+                    # self.parent.scroll_offset_y = int(-self.value * len(self.parent.widgets))
+                    # print("self.parent.scroll_offset_y:", self.parent.scroll_offset_y)
+                    #self.parent.reposition_widgets()
+                #     self.parent.drag_enabled = False
+                # else:
+                #     self.parent.drag_enabled = True
+
+    def listen__(self, events):
+        for event in events:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if self.rect.collidepoint(event.pos):
+                    # Calculate the relative position of the click on the scrollbar
+                    # as a value between 0 and 1.
+                    relative_click_position = (pygame.mouse.get_pos()[1] - self.rect.y) / self.rect.height
+
+                    # Print the relative click position for debugging purposes.
+                    print(f"Relative click position: {relative_click_position}")
+
+                    # Calculate the new scroll_offset_y for the parent container.
+                    # This involves scaling the relative position by the total scrollable height.
+                    # The total scrollable height is the number of widgets minus the visible area.
+                    # Assuming 'visible_area' represents the number of widgets that can be displayed at once.
+                    total_scrollable_height = len(self.parent.widgets) - visible_area
+
+                    # Set the parent's scroll_offset_y, ensuring it's within the allowed range.
+                    self.parent.scroll_offset_y = int(relative_click_position * total_scrollable_height)
+
+                    # Ensure scroll_offset_y does not exceed the bounds.
+                    self.parent.scroll_offset_y = max(0, min(self.parent.scroll_offset_y, total_scrollable_height))
+
+                    # Update the scrollbar's value based on the new scroll_offset_y.
+                    # This is the inverse operation of the initial calculation.
+                    self.value = abs(1 / len(self.parent.widgets) * self.parent.scroll_offset_y)
+
+                    # Debug print the new scrollbar value.
+                    print(f"Scrollbar value: {self.value}")
+
 
     def draw(self):
         self.win.blit(self.surface, self.rect)

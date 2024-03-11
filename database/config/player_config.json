@@ -1,0 +1,42 @@
+{
+  "0": {
+    "name": "zork",
+    "population": 0,
+    "stock": {
+      "energy": 1000,
+      "food": 1000,
+      "minerals": 1000,
+      "population": 0,
+      "technology": 1000,
+      "water": 1000
+    },
+    "production": {
+      "energy": 0,
+      "food": 0,
+      "minerals": 0,
+      "population": 0,
+      "technology": 0,
+      "water": 0
+    }
+  },
+  "1": {
+    "name": "bauz",
+    "population": 0,
+    "stock": {
+      "energy": 1000,
+      "food": 1000,
+      "minerals": 1000,
+      "population": 0,
+      "technology": 1000,
+      "water": 1000
+    },
+    "production": {
+      "energy": 0,
+      "food": 0,
+      "minerals": 0,
+      "population": 0,
+      "technology": 0,
+      "water": 0
+    }
+  }
+}

@@ -79,7 +79,7 @@ class PlanetFactory:
                 )
 
             if explored:
-                pan_zoom_planet_button.get_explored()
+                pan_zoom_planet_button.get_explored(-1)
 
             # update stats
             pan_zoom_planet_button.set_population_limit()
@@ -120,7 +120,7 @@ class PlanetFactory:
     def explore_planets(self):
         for i in sprite_groups.planets.sprites():
             if not i.explored:
-                i.get_explored()
+                i.get_explored(-1)
             else:
                 i.explored = False
                 i.string = "?"

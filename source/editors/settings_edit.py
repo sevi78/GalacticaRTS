@@ -1,3 +1,5 @@
+import random
+
 import pygame
 
 from source.configuration.game_config import config
@@ -8,6 +10,7 @@ from source.gui.widgets.selector import Selector
 from source.gui.widgets.slider import Slider
 from source.handlers.color_handler import colors
 from source.handlers.file_handler import write_file
+from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.handlers.ui_handler import ui_handler
 from source.handlers.widget_handler import WidgetHandler
 
@@ -38,6 +41,8 @@ class SettingsEdit(EditorBase):
                                "ui_cross_thickness": [_ for _ in range(1, 10)],
                                "game_speed": [_ for _ in range(1, 10)],
                                "ui_tooltip_size": [_ for _ in range(10, 50)],
+                               "monitor": [0, 1],
+                               "star_brightness": [_ for _ in range(1, 256)]
                                }
 
         #  widgets
@@ -154,6 +159,9 @@ class SettingsEdit(EditorBase):
                      "ui_moon_orbit_color_brightness"]:
             setattr(config, key, value)
             colors.set_orbit_colors()
+        elif key == "star_brightness":
+            self.set_star_colors(value)
+            setattr(config, key, value)
         else:
             setattr(config, key, value)
             if key == "player":
@@ -175,3 +183,9 @@ class SettingsEdit(EditorBase):
         if not self._hidden and not self._disabled:
             self.draw_frame()
             self.draw_text(self.world_x + self.text_spacing, self.world_y + TOP_SPACING + self.text_spacing, 200, 30, "Settings:")
+
+    def set_star_colors(self, value):
+        for i in WidgetHandler.get_all_widgets():
+            if i.__class__.__name__ in ["FlickeringStar", "PulsatingStar"]:
+                i.colors = [(random.randint(0, config.star_brightness), random.randint(0, config.star_brightness),
+                                random.randint(0, config.star_brightness)) for _ in range(10)]

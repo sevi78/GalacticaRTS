@@ -122,38 +122,7 @@ class ContainerWidget(InteractionHandler):
         # call the function
         getattr(self, "function")(self)
 
-    def drag(self, events):
-        """ drag the widget """
-        if not self.drag_enabled:
-            return
-
-        old_x, old_y = self.world_x, self.world_y  # store old position
-        for event in events:
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if self.rect.collidepoint(event.pos):
-                    self.moving = True
-                    self.offset_x = self.world_x - event.pos[0]  # calculate the offset x
-                    self.offset_y = self.world_y - event.pos[1]  # calculate the offset y
-
-            elif event.type == pygame.MOUSEBUTTONUP:
-                self.moving = False
-
-            elif event.type == pygame.MOUSEMOTION and self.moving:
-                self.world_x = event.pos[0] + self.offset_x  # apply the offset x
-                self.world_y = event.pos[1] + self.offset_y  # apply the offset y
-
-                # limit y to avoid strange behaviour if close button is at the same spot as the editor open button
-
-                if self.world_y < TOP_LIMIT: self.world_y = TOP_LIMIT
-
-                # set rect
-                self.rect.x = self.world_x
-                self.rect.y = self.world_y
-
-                # set cursor
-                config.app.cursor.set_cursor("drag")
-
-    def reposition_widgets(self):
+    def reposition_widgets(self):  # original
         # Adjust the position of each widget relative to the container's current position
         if not self.scroll_offset_y in range(-len(self.widgets), len(self.widgets)):
             return
@@ -180,23 +149,50 @@ class ContainerWidget(InteractionHandler):
             else:
                 self.filter_widget.show()
 
+    def reposition(self, x, y):
+        # set rect position
+        self.rect.x = self.world_x
+        self.rect.y = self.world_y
+        if self.parent:
+            self.rect.x = self.parent.rect.x
+            self.rect.y = self.parent.rect.y
+
+        # set surface position
+        self.surface.get_rect().x = self.rect.x
+        self.surface.get_rect().y = self.rect.y
+
+        # set frame position
+        self.frame.update_position((self.world_x, self.world_y))
+
+        # scrollbar
+        self.scrollbar.update_position()
+
+        # filter wiget
+        self.filter_widget.world_x = self.rect.x + self.rect.width - self.filter_widget.screen_width - 10
+        self.filter_widget.world_y = self.rect.y - TOP_SPACING
+
     def listen(self, events):
         if self._hidden:
             return
+
         # all widgets listen
         self.scrollbar.listen(events)
 
+        # set hovering
         if self.rect.collidepoint(pygame.mouse.get_pos()):
             self.on_hover = True
             config.app.cursor.set_cursor("scroll")
         else:
             self.on_hover = False
 
+        # drag
+        self.drag(events)
+        self.resize(events)
+
+        # handle events
         for event in events:
             if event.type == pygame.QUIT:
                 exit()
-            # drag
-            self.drag(events)
 
             # scroll
             if event.type == pygame.MOUSEWHEEL:
@@ -205,6 +201,7 @@ class ContainerWidget(InteractionHandler):
                     if self.scroll_offset_y + self.scroll_y in range(-(len(self.widgets) - 1), 1):
                         self.scroll_offset_y += self.scroll_y
                         self.scrollbar.value = abs(1 / len(self.widgets) * self.scroll_offset_y)
+                        print(f"self.scroll_offset_y: {self.scroll_offset_y},self.scrollbar.value: {self.scrollbar.value}")
 
                         self.reposition_widgets()
 
@@ -224,7 +221,6 @@ class ContainerWidget(InteractionHandler):
                         self.offset_index = math.floor(rel_offset_y / WIDGET_SIZE)
                         self.select()
 
-
         # hover
         for i in self.widgets:
             if not i.parent:
@@ -234,22 +230,10 @@ class ContainerWidget(InteractionHandler):
         if self._hidden:
             return
 
-        # set rect position
-        self.rect.x = self.world_x
-        self.rect.y = self.world_y
-        if self.parent:
-            self.rect.x = self.parent.rect.x
-            self.rect.y = self.parent.rect.y
-
-        # set surface position
-        self.surface.get_rect().x = self.rect.x
-        self.surface.get_rect().y = self.rect.y
-
         # fill surface
         self.surface.fill((0, 123, 0))  # Clear the container's surface
 
         # draw frame
-        self.frame.update_position((self.world_x, self.world_y))
         self.frame.draw()
         self.surface.blit(self.frame.surface, (0, 0))
 
@@ -258,12 +242,7 @@ class ContainerWidget(InteractionHandler):
         self.win.blit(self.surface, self.rect)
 
         # draw scrollbar
-        self.scrollbar.update_position()
         self.scrollbar.draw()
-
-        # filter wiget
-        self.filter_widget.world_x = self.rect.x + self.rect.width - self.filter_widget.screen_width - 10
-        self.filter_widget.world_y = self.rect.y - TOP_SPACING
 
 # def main():
 #     pygame.init()

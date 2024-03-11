@@ -247,7 +247,7 @@ class EditorBase(WidgetBase):
 
                 self.selectors.append(Selector(self.win, x, self.world_y + y, ARROW_SIZE, self.frame_color, 9,
                     self.spacing_x, {"list_name": f"{key}_list", "list": self.selector_lists[key]}, self, FONT_SIZE,
-                    repeat_clicks=True))
+                    repeat_clicks=False))
 
                 y += self.spacing_y
 
@@ -271,38 +271,38 @@ class EditorBase(WidgetBase):
         else:
             self.on_hover = False
 
-    def drag(self, events):
-        """ drag the widget """
-        if not self.drag_enabled:
-            return
-
-        old_x, old_y = self.world_x, self.world_y  # store old position
-        for event in events:
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if self.rect.collidepoint(event.pos):
-                    self.moving = True
-                    self.offset_x = self.world_x - event.pos[0]  # calculate the offset x
-                    self.offset_y = self.world_y - event.pos[1]  # calculate the offset y
-
-            elif event.type == pygame.MOUSEBUTTONUP:
-                self.moving = False
-
-            elif event.type == pygame.MOUSEMOTION and self.moving:
-                self.world_x = event.pos[0] + self.offset_x  # apply the offset x
-                self.world_y = event.pos[1] + self.offset_y  # apply the offset y
-
-                # limit y to avoid strange behaviour if close button is at the same spot as the editor open button
-
-                if self.world_y < TOP_LIMIT: self.world_y = TOP_LIMIT
-
-                # set rect
-                self.rect.x = self.world_x
-                self.rect.y = self.world_y
-
-                # set drag cursor
-                config.app.cursor.set_cursor("drag")
-
-        self.reposition(old_x, old_y)
+    # def drag(self, events):
+    #     """ drag the widget """
+    #     if not self.drag_enabled:
+    #         return
+    #
+    #     old_x, old_y = self.world_x, self.world_y  # store old position
+    #     for event in events:
+    #         if event.type == pygame.MOUSEBUTTONDOWN:
+    #             if self.rect.collidepoint(event.pos):
+    #                 self.moving = True
+    #                 self.offset_x = self.world_x - event.pos[0]  # calculate the offset x
+    #                 self.offset_y = self.world_y - event.pos[1]  # calculate the offset y
+    #
+    #         elif event.type == pygame.MOUSEBUTTONUP:
+    #             self.moving = False
+    #
+    #         elif event.type == pygame.MOUSEMOTION and self.moving:
+    #             self.world_x = event.pos[0] + self.offset_x  # apply the offset x
+    #             self.world_y = event.pos[1] + self.offset_y  # apply the offset y
+    #
+    #             # limit y to avoid strange behaviour if close button is at the same spot as the editor open button
+    #
+    #             if self.world_y < TOP_LIMIT: self.world_y = TOP_LIMIT
+    #
+    #             # set rect
+    #             self.rect.x = self.world_x
+    #             self.rect.y = self.world_y
+    #
+    #             # set drag cursor
+    #             config.app.cursor.set_cursor("drag")
+    #
+    #     self.reposition(old_x, old_y)
 
     def reposition(self, old_x, old_y):
         # calculate the difference

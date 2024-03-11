@@ -57,13 +57,13 @@ class PanZoomCollectableItem(PanZoomSprite, InteractionHandler):
                         if self.tooltip != "":
                             config.tooltip_text = self.tooltip
 
-                    if self.info_text:
-                        config.app.info_panel.set_text(self.info_text)
-                        config.app.info_panel.set_planet_image(self.image_raw, size=self.image_raw.get_size())
-
                     # set cursor
                     config.app.cursor.set_cursor("watch")
 
+                # set info text on hover
+                if self.info_text:
+                    config.app.info_panel.set_text(self.info_text)
+                    config.app.info_panel.set_planet_image(self.image_raw, size=self.image_raw.get_size())
     def update(self):
         self.update_pan_zoom_sprite()
         self.listen()

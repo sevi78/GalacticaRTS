@@ -26,7 +26,8 @@
             "world_height": 110,
             "world_width": 110,
             "world_x": 2541.490330133278,
-            "world_y": 2489.796657071906
+            "world_y": 2489.796657071906,
+            "owner": -1
         },
         "1": {
             "alien_attitude": 0,
@@ -70,7 +71,8 @@
             "world_height": 70,
             "world_width": 70,
             "world_x": 1307.603290466041,
-            "world_y": 1995.3025439221624
+            "world_y": 1995.3025439221624,
+            "owner": -1
         },
         "2": {
             "alien_attitude": 100,
@@ -105,7 +107,8 @@
             "world_height": 30,
             "world_width": 30,
             "world_x": 1458.6720680060791,
-            "world_y": 1730.6931478056367
+            "world_y": 1730.6931478056367,
+            "owner": 1
         },
         "3": {
             "alien_attitude": 0,
@@ -140,7 +143,8 @@
             "world_height": 30,
             "world_width": 30,
             "world_x": 2000.6771446444823,
-            "world_y": 2246.3639106524975
+            "world_y": 2246.3639106524975,
+            "owner": 1
         }
     },
     "globals": {
@@ -211,7 +215,8 @@
             "water_max": 400,
             "weapons": {},
             "world_x": 910.423933368095,
-            "world_y": 2089.4423285953962
+            "world_y": 2089.4423285953962,
+            "owner": -1
         }
     }
 }

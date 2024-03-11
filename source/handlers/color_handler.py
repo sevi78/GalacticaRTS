@@ -34,8 +34,7 @@ class Colors:
         self.border_color = pygame.color.THECOLORS["purple"]
         self.hoverBorderColour = pygame.color.THECOLORS["brown"]
         self.pressedBorderColour = pygame.color.THECOLORS["grey"]
-        self.frame_color = (55, 130,
-                            157)  # (120, 204, 226)  # "#78cce2" #"#4E7988"  #("#38BFC6")# pygame.colordict.THECOLORS["darkslategray1"]"#d3f8ff"
+        self.frame_color = (55, 130, 157)  ##37829D# (120, 204, 226)  # "#78cce2" #"#4E7988"  #("#38BFC6")# pygame.colordict.THECOLORS["darkslategray1"]"#d3f8ff"
         self.background_color = (0, 7, 13)  # pygame.colordict.THECOLORS["black"]
         self.ui_white = (238, 253, 254)  # "#eefdfe"
         self.ui_dark = (55, 130, 157)  # "#37829d"

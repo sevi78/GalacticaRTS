@@ -119,6 +119,8 @@ class EventText(TextWrap):
         # if config.edit_mode:
         #     if config.app.weapon_select._hidden:
         #         return
+        if not config.ui_event_text_visible:
+            return
 
         if config.ui_event_text_fade:
             if pygame.time.get_ticks() > self.last_update_time + TEXT_DISPLAY_UPDATE:
