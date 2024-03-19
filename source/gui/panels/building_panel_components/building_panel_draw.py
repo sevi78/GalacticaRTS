@@ -1,6 +1,7 @@
 import pygame
 from pygame_widgets.util import drawText
 
+from source.configuration.game_config import config
 from source.factories.building_factory import building_factory
 from source.multimedia_library.images import images, pictures_path, get_image
 from source.text.text_formatter import format_number
@@ -29,6 +30,12 @@ class BuildingPanelDraw:
 
     def draw_planet_params(self, x):
         selected_planet = self.parent.selected_planet
+
+        # draw owner
+        drawText(self.win, f"owner:{selected_planet.owner}", self.frame_color,(
+            x + self.spacing_x, self.world_y, self.get_screen_width(), 20), self.font, "left")
+
+        self.world_y += self.spacing * 3
 
         # draw population text
         # population
@@ -60,6 +67,8 @@ class BuildingPanelDraw:
 
         # draw background planet icon
         image_name = self.parent.selected_planet.image_name_big
+        # if self.parent.selected_planet.owner != -1:
+        #     image = config.app.players[self.parent.selected_planet.owner].image
 
         self.planet_image = pygame.transform.scale(self.parent.selected_planet.image_raw, (150, 150))
         self.planet_image.set_alpha(128)
@@ -197,7 +206,12 @@ class BuildingPanelDraw:
             image = pygame.transform.scale(
                 get_image(r + "_25x25.png"), self.resource_image_size)
             self.win.blit(image, (x, self.world_y))
-            value = self.parent.player.production[r]
+
+            if self.parent.selected_planet.owner != -1:
+                value = self.parent.players[self.parent.selected_planet.owner].production[r]
+            else:
+                value = 0
+
             text = self.font.render(r + ": " + str(value), True, self.frame_color)
             self.win.blit(text, (x + self.spacing_x, self.world_y))
 

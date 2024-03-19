@@ -205,6 +205,9 @@ def get_ships_list():
     file = load_file("ship_settings.json", "config")
     return file.keys()
 
+def get_player_list():
+    file_list = [file for file in os.listdir(abs_players_path()) if file.startswith("player_")]
+    return file_list
 
 def generate_json_filename_based_on_datetime(prefix):
     current_datetime = datetime.datetime.now().strftime("%Y.%m.%d %Hh%Mm%Ss")

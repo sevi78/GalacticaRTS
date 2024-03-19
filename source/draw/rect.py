@@ -9,6 +9,9 @@ def draw_transparent_rounded_rect(surface, color, rect, radius, alpha):
     # Blit the transparent rounded rectangle onto the target surface at the correct position
     surface.blit(rect_surface, rect[:2])
 
+    return rect_surface
+
+
 # def main():
 #     pygame.init()
 #     screen = pygame.display.set_mode((640, 480))

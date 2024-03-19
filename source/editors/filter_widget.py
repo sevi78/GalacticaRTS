@@ -72,15 +72,14 @@ class FilterWidget(EditorBase):
         # print ("dict: ", self.parent.widgets)
 
         for i in self.parent.widgets:
-            print (getattr(i.obj, key))
-
+            print(getattr(i.obj, key))
 
         # Sort the list of widgets based on the specified key (attribute) in ascending order
-        sorted_widgets = sorted(copy.copy(self.parent.widgets), key=lambda widget: getattr(widget.obj, key), reverse=False)
+        sorted_widgets = sorted(copy.copy(self.parent.widgets), key=lambda
+            widget: getattr(widget.obj, key), reverse=False)
 
         # Update the parent's widgets list with the sorted list
         self.parent.set_widgets(sorted_widgets)
-
 
     def select_filter(self, key):
         # store the last key to for toggling
@@ -91,10 +90,6 @@ class FilterWidget(EditorBase):
             setattr(self, key, True)
         else:
             setattr(self, key, False)
-
-
-
-
 
         # Print the key and the current list of widgets for debugging purposes
         print("key:", key)

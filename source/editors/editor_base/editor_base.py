@@ -1,3 +1,5 @@
+import inspect
+
 import pygame
 
 from source.configuration.game_config import config
@@ -82,6 +84,7 @@ class EditorBase(WidgetBase):
         self.spacing_y = SPACING_Y
         self.parent = kwargs.get("parent", None)
         self.layer = kwargs.get("layer", 9)
+        self.ignore_other_editors = kwargs.get("ignore_other_editors", False)
         self.font = pygame.font.SysFont(config.font_name, FONT_SIZE)
         self.text_spacing = 20
         self.frame_color = colors.ui_dark
@@ -104,7 +107,9 @@ class EditorBase(WidgetBase):
         self.selectors = []
         self.checkboxes = []
         self.checkbox_values = []
-        self.parent.editors.append(self)
+
+        self.editors = []
+        config.app.editors.append(self)
 
         # save
         self.save = kwargs.get("save", True)
@@ -140,6 +145,8 @@ class EditorBase(WidgetBase):
         config.enable_orbit = self._hidden
 
     def hide_other_editors(self):
+        if self.ignore_other_editors:
+            return
         for i in self.parent.editors:
             if not i == self:
                 i.hide()
@@ -152,6 +159,10 @@ class EditorBase(WidgetBase):
 
         # config.game_paused = self.game_paused and not self._hidden
         config.edit_mode = not self._hidden
+
+        for i in self.editors:
+            i.set_visible()
+
         self.hide_other_editors()
 
     def create_save_button(self, function, tooltip, **kwargs):
@@ -262,6 +273,9 @@ class EditorBase(WidgetBase):
         config.tooltip_text = ""
         self.hide()
 
+        for i in self.editors:
+            i.hide()
+
     def handle_hovering(self):
         if self._hidden:
             return
@@ -304,10 +318,52 @@ class EditorBase(WidgetBase):
     #
     #     self.reposition(old_x, old_y)
 
+    def is_same_or_subclass(self, other_obj):
+        # Check if other_obj is an instance of the same class as self
+        if isinstance(other_obj, self.__class__):
+            return True
+
+        # Check if self is an instance of any subclass of other_obj's class
+        if issubclass(self.__class__, other_obj.__class__):
+            return True
+
+        # Check if other_obj is an instance of any subclass of self's class
+        if issubclass(other_obj.__class__, self.__class__):
+            return True
+
+        return False
+
     def reposition(self, old_x, old_y):
         # calculate the difference
         diff_x = self.world_x - old_x
         diff_y = self.world_y - old_y
+
+        # editors
+        for editor in self.editors:
+            editor.world_x += diff_x
+            editor.world_y += diff_y
+            # apply the difference to each widget
+            for widget in editor.widgets:
+                widget.world_x += diff_x
+                widget.world_y += diff_y
+
+                widget.screen_x += diff_x
+                widget.screen_y += diff_y
+                if hasattr(widget, "reposition"):
+                    # Get the signature of the reposition method
+                    sig = inspect.signature(widget.reposition)
+                    params = sig.parameters
+
+                    # Check if 'old_x' and 'old_y' are in the parameters of the reposition method
+                    if 'old_x' in params and 'old_y' in params:
+                        widget.reposition(old_x, old_y)
+                    else:
+                        widget.reposition()
+
+                if hasattr(widget, "set_center"):
+                    widget.set_center()
+            # editor.reposition( self.world_x,  self.world_y)
+
         # apply the difference to each widget
         for widget in self.widgets:
             widget.world_x += diff_x
@@ -316,7 +372,15 @@ class EditorBase(WidgetBase):
             widget.screen_x += diff_x
             widget.screen_y += diff_y
             if hasattr(widget, "reposition"):
-                widget.reposition()
+                # Get the signature of the reposition method
+                sig = inspect.signature(widget.reposition)
+                params = sig.parameters
+
+                # Check if 'old_x' and 'old_y' are in the parameters of the reposition method
+                if 'old_x' in params and 'old_y' in params:
+                    widget.reposition(old_x, old_y)
+                else:
+                    widget.reposition()
 
             if hasattr(widget, "set_center"):
                 widget.set_center()

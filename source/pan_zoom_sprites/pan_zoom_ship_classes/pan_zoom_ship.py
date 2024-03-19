@@ -402,7 +402,7 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
             if value > 0:
                 text += key + ": " + str(value) + ", "
                 if not key == "energy":
-                    setattr(self.parent.player, key, getattr(self.parent.player, key) + value)
+                    setattr(self.parent.players[self.owner], key, getattr(self.parent.players[self.owner], key) + value)
                     self.resources[key] = 0
                     setattr(self, key, 0)
                     if hasattr(config.app.resource_panel, key + "_icon"):

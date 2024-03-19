@@ -36,19 +36,19 @@
         "world_y": 0
     },
     "9": {
-        "world_x": 1447.0,
+        "world_x": 1448.0,
         "world_y": 30
     },
     "10": {
-        "world_x": 590.0,
-        "world_y": 0
+        "world_x": 280.0,
+        "world_y": 50
     },
     "11": {
         "world_x": 673.5,
         "world_y": 30
     },
     "12": {
-        "world_x": 1474,
+        "world_x": 1470,
         "world_y": 322
     },
     "13": {
@@ -60,15 +60,15 @@
         "world_y": 213
     },
     "15": {
-        "world_x": 1726,
-        "world_y": 298
+        "world_x": 366.0,
+        "world_y": 347.0
     },
     "16": {
-        "world_x": 1618,
-        "world_y": -8
+        "world_x": 384.0,
+        "world_y": 223
     },
     "17": {
-        "world_x": 1603,
-        "world_y": 153
+        "world_x": 1725,
+        "world_y": 298
     }
 }

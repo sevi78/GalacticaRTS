@@ -2,6 +2,7 @@ import pygame
 
 from source.configuration.game_config import config
 from source.gui.event_text import event_text
+from source.handlers.economy_handler import economy_handler
 
 
 class BuildingSlot:
@@ -129,7 +130,7 @@ class BuildingSlot:
             if self.tooltip != config.tooltip_text:
                 config.tooltip_text = self.tooltip
 
-    def upgrade_building_slots(self, events):
+    def upgrade_building_slots(self, events, player):
         planet = self.parent.selected_planet
         if not planet.explored or planet.type == "sun":
             return
@@ -159,21 +160,21 @@ class BuildingSlot:
             return
 
         # if enough technology
-        if self.parent.player.technology - price > 0:
+        if player.technology - price > 0:
             event_text.text = f"Upgraded from {planet.building_slot_amount} building slots to {planet.building_slot_amount + 1}!"
             # if not max reached
             if planet.building_slot_upgrades < len(planet.building_slot_upgrade_prices.items()):
                 planet.building_slot_amount += 1
                 planet.building_slot_upgrades += 1
-                self.parent.player.technology -= price
+                player.technology -= price
         else:
-            event_text.text = f"not enough technology to upgrade building slot ! you have {self.parent.player.technology}, but you will need {price}"
+            event_text.text = f"not enough technology to upgrade building slot ! you have {player.technology}, but you will need {price}"
 
         # finally calculate new productions
         planet.calculate_production()
-        self.parent.calculate_global_production()
+        economy_handler.calculate_global_production(player)
 
-    def downgrade_building_slots(self, events):
+    def downgrade_building_slots(self, events, player):
         planet = self.parent.selected_planet
         if not planet.explored or planet.type == "sun":
             return
@@ -209,4 +210,4 @@ class BuildingSlot:
 
         # finally calculate new productions
         planet.calculate_production()
-        self.parent.calculate_global_production()
+        economy_handler.calculate_global_production(player)

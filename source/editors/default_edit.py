@@ -1,0 +1,28 @@
+from source.editors.editor_base.editor_base import EditorBase
+from source.editors.editor_base.editor_config import ARROW_SIZE, FONT_SIZE, TOP_SPACING
+
+
+class DefaultEdit(EditorBase):
+    def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
+        EditorBase.__init__(self, win, x, y, width, height, isSubWidget=False, **kwargs)
+
+        #  widgets
+        self.widgets = []
+
+        # create widgets
+        self.create_close_button()
+        # self.create_save_button(lambda: self.save_font(self.current_font), "save font")
+
+        # hide initially
+        self.hide()
+        self.max_height = 200
+
+    def listen(self, events):
+        if not self._hidden and not self._disabled:
+            self.handle_hovering()
+            self.drag(events)
+
+    def draw(self):
+        if not self._hidden and not self._disabled:
+            self.draw_frame()
+            self.draw_text(self.world_x + self.text_spacing, self.world_y + TOP_SPACING + self.text_spacing, 200, 30, "DefaultEdit:")

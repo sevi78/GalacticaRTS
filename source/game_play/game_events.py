@@ -36,8 +36,8 @@ class Deal:
 
         self.create_friendly_offer()
 
-    def make_deal(self):
-        player = config.app.player
+    def make_deal(self, player):
+
         # add offer
         for key, value in self.offer.items():
             setattr(player, key, getattr(player, key) + value)
@@ -46,66 +46,11 @@ class Deal:
         for key, value in self.request.items():
             setattr(player, key, getattr(player, key) - value)
 
-    def create_friendly_offer__(self):  # orig
-        """
-        this should create an offer based on the resources of the player, always what you need
-        """
-        if not config.app:
-            return
-
-        player = config.app.player
-
-        # extract "population" from dict
-        d_raw = player.get_stock()
-        d = {key: max(0, value) for key, value in d_raw.items() if key != "population"}
-
-        # check if any value in the stock is less than 0
-        if any(value < 0 for value in d.values()):
-            # replace negative values with 0
-            d = {key: max(0, value) for key, value in d.items()}
-
-        # get key with lowest value
-        lowest_value_key = min(d, key=d.get)
-
-        # calculate minimum value needed to set lowest value to 25
-        min_value = max(25 - d[lowest_value_key], 0)
-
-        # calculate offer value
-        offer_value = d[lowest_value_key] + min_value + random.randint(25, 250)
-        self.offer = {lowest_value_key: offer_value}
-
-        # calculate request value
-        request_key = max(d, key=d.get)
-        request_value = getattr(player, request_key)
-        request_value -= random.randint(25, 250)
-        self.request = {request_key: request_value}
-
-    def create_friendly_offer__(self):
+    def create_friendly_offer(self, player):
         """This should create an offer based on the resources of the player, always what you need"""
         if not config.app:
             return
-        player = config.app.player
-        # extract "population" from dict
-        d_raw = player.get_stock()
-        d = {key: max(0, value) for key, value in d_raw.items() if key != "population"}
 
-        # get key with lowest value
-        lowest_value_key = min(d, key=d.get)
-        # calculate offer value
-        offer_value = d[lowest_value_key] + random.randint(25, 250)
-        self.offer = {lowest_value_key: offer_value}
-
-        # get key with highest value
-        highest_value_key = max(d, key=d.get)
-        # calculate request value
-        request_value = int(d[highest_value_key] * 0.25)
-        self.request = {highest_value_key: request_value}
-
-    def create_friendly_offer(self):
-        """This should create an offer based on the resources of the player, always what you need"""
-        if not config.app:
-            return
-        player = config.app.player
         # extract "population" from dict
         d_raw = player.get_stock()
         d = {key: max(0, value) for key, value in d_raw.items() if key != "population"}

@@ -43,7 +43,7 @@ class ShipFactory:
             self.create_ship(
                 data["ships"][key]["name"] + "_30x30.png",
                 data["ships"][key]["world_x"],
-                data["ships"][key]["world_y"], config.app, data["ships"][key]["weapons"], data=data)
+                data["ships"][key]["world_y"], config.app, data["ships"][key]["weapons"], data=data["ships"][key])
 
     def delete_ships(self):
         for i in sprite_groups.ships.sprites():

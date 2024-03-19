@@ -587,6 +587,7 @@
   "weapons": {
     "laser": {
       "name": "laser",
+      "category": "weapons",
       "level": 0,
       "production_energy": 0,
       "production_food": 0,
@@ -656,6 +657,7 @@
     },
     "phaser": {
       "name": "phaser",
+      "category": "weapons",
       "level": 0,
       "production_energy": 0,
       "production_food": 0,
@@ -725,6 +727,7 @@
     },
     "rocket": {
       "name": "rocket",
+      "category": "weapons",
       "level": 0,
       "production_energy": 0,
       "production_food": 0,

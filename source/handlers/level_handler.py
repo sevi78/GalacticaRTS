@@ -6,11 +6,13 @@ from source.configuration.game_config import config
 from source.factories.planet_factory import planet_factory
 from source.factories.universe_factory import universe_factory
 from source.game_play.navigation import navigate_to_position
+from source.game_play.player import Player
 from source.gui.event_text import event_text
 from source.handlers.economy_handler import economy_handler
 from source.handlers.file_handler import load_file, write_file, get_level_list
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
+from source.handlers.player_handler import player_handler
 from source.multimedia_library.images import get_image_names_from_folder
 from source.multimedia_library.screenshot import capture_screenshot
 from source.text.info_panel_text_generator import info_panel_text_generator
@@ -134,7 +136,9 @@ class LevelDictGenerator:
             orbit_distance = self.parent.data["globals"]["width"] / len(self.sun_names) / 2
             world_x, world_y = self.get_orbit_position(data["celestial_objects"][str(orbit_object_id)], orbit_distance)
             planet_name = f"{self.sun_names[orbit_object_id]} {to_roman(i - self.parent.data['globals']['suns'] + 1)}"
-            self.planet_names[i] = planet_name  # Store planet name in the dictionary
+            self.planet_names[i] = planet_name
+
+            # Store planet name in the dictionary
             data["celestial_objects"][
                 str(i)] = self.create_celestial_object(i, "planet", planet_images, orbit_object_id, world_x, world_y)
 
@@ -148,7 +152,9 @@ class LevelDictGenerator:
             orbit_distance = self.parent.data["globals"]["width"] / len(self.planet_names) / 2
             world_x, world_y = self.get_orbit_position(data["celestial_objects"][str(orbit_object_id)], orbit_distance)
             moon_name = f"{self.planet_names[orbit_object_id]}, {chr(97 + i - self.parent.data['globals']['suns'] + self.parent.data['globals']['planets'])}"
-            self.moon_names[i] = moon_name  # Store moon name in the dictionary
+            self.moon_names[i] = moon_name
+
+            # Store moon name in the dictionary
             data["celestial_objects"][
                 str(i)] = self.create_celestial_object(i, "moon", moon_images, orbit_object_id, world_x, world_y)
 
@@ -284,7 +290,8 @@ class LevelDictGenerator:
                 "energy_reload_rate": self.ship_settings[ship_name]["energy_reload_rate"],
                 "specials": [],
                 "orbit_object_id": -1,
-                "orbit_object_name": ""
+                "orbit_object_name": "",
+                "owner": 0
                 }
 
             self.parent.data["ships"][str(index)] = ship_data
@@ -340,6 +347,10 @@ class LevelDictGenerator:
         else:
             alien_population = 0
 
+        owner = random.randint(-1, config.players)
+        if owner == 0:
+            owner = -1
+
         return {
             "id": i,
             "name": name,
@@ -366,7 +377,8 @@ class LevelDictGenerator:
             "atmosphere_name": random.choice(atmospheres),
             "orbit_angle": None,
             "explored": False,
-            "gif": random.choice(moons)
+            "gif": random.choice(moons),
+            "owner": owner
             }
 
 
@@ -379,6 +391,7 @@ class LevelHandler:
         self.level_dict_generator = LevelDictGenerator(self)
         self.level_successes = {}
         self.current_game = None
+
 
     def delete_level(self):
         # delete objects
@@ -420,6 +433,7 @@ class LevelHandler:
             self.data["globals"]["collectable_item_amount"])
 
     def generate_level_dict_from_scene(self):
+        """TODO: different players must be stored"""
         data = self.data
         # get player
         player = config.app.player
@@ -492,6 +506,7 @@ class LevelHandler:
         navigate_to_position(self.data["globals"]["width"] / 2, self.data["globals"]["height"] / 2)
 
     def load_level(self, filename, folder):
+        """TODO: how to store the ai player??"""
         self.current_game = filename
         self.data = load_file(filename, folder=folder)
         config.app.level_edit.set_selector_current_value()
@@ -500,7 +515,8 @@ class LevelHandler:
         self.delete_level()
 
         # reset player
-        self.app.player.reset(self.data["player"])
+        # self.app.player.reset(self.data["player"])
+        player_handler.reset_players()
 
         # create planets, AND SELECT ONE ! to make ensure no errors are generated!!!
         planet_factory.create_planets_from_data(self.data)
@@ -525,7 +541,7 @@ class LevelHandler:
         self.app.resource_panel.mission_icon.info_text = info_panel_text_generator.create_info_panel_mission_text()
         config.edit_mode = False
 
-        self.app.calculate_global_production()
+        economy_handler.calculate_global_production(config.app.player)
 
         # setup pan_zoom_handler
         self.setup_pan_zoom_handler()
@@ -542,6 +558,7 @@ class LevelHandler:
 
         # setup event_text
         event_text.planet_links = planet_factory.get_all_planet_names()
+
     def save_level(self, filename, folder):
         data = self.generate_level_dict_from_scene()
         write_file(filename, folder, data)
@@ -584,3 +601,8 @@ class LevelHandler:
         print(f"level_handler.update_level_successes(): self.level_successes: {self.level_successes}")
         # update the icons of level select to displax the successes
         self.app.level_select.update_icons()
+
+    def set_planet_owners(self):
+        player_handler.reset_players()
+        for i in sprite_groups.planets:
+            i.owner = random.randint(-1,len(config.app.players)-1)

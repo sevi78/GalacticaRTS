@@ -7,6 +7,7 @@ from source.app.app_helper import AppHelper, select_next_item_in_list
 from source.app.ui_builder import UIBuilder
 from source.configuration.game_config import config
 from source.draw.cursor import Cursor
+from source.editors.auto_economy_edit import AutoEconomyEdit
 from source.editors.level_edit import LevelEdit
 from source.editors.level_select import LevelSelect
 from source.editors.filter_widget import FilterWidget
@@ -91,12 +92,6 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
         self.game_speed = 0
         self.run = 1
 
-        # whats this ????
-        # temp = []
-        # for key, value in self.__dict__.items():
-        #     if not key in self.__slots__:
-        #         temp.append(key)
-
         self._selected_planet = None
         self.select_image = ImageSprite(0, 0, 25, 25, get_image("check.png"), "state_images", parent=self)
         self.sprite_groups = sprite_groups
@@ -161,7 +156,7 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
         if time.time() > self.start_time + self.wait:
             self.start_time = time.time()
 
-            self.calculate_global_production()
+
             economy_handler.update()
 
     def update(self, events):
@@ -198,24 +193,15 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
         self.ui_helper.update()
 
         # update player
-        self.player.update()
+        for key, value in self.players.items():
+            value.update()
 
         # cheat
         self.cheat(events)
 
         # update event_text
         event_text.update()
-        # event_text.listen(events)
         event_text_handler.listen(event_text, events)
-
-        # self.ship_container.listen(events)
-        # self.ship_container.draw()
-        #
-        # self.planet_container.listen(events)
-        # self.planet_container.draw()
-
-        # # store planet positions
-        # self.save_load(events)
 
     def loop(self):
         """
@@ -303,12 +289,12 @@ def main():
     app.level_edit = LevelEdit(pygame.display.get_surface(),
         pygame.display.get_surface().get_rect().right - level_edit_width,
         pygame.display.get_surface().get_rect().y,
-        level_edit_width, EDITOR_HEIGHT, parent=app)
+        level_edit_width, EDITOR_HEIGHT, parent=app,ignore_other_editors= True)
 
     app.game_event_handler = GameEventHandler(data=load_file("game_event_handler.json", "config"), app=app)
 
     # load first level
-    app.level_handler.load_level("level_0.json", "levels")
+    app.level_handler.load_level(f"level_{config.level}.json", "levels")
 
     # update level_successes
     app.level_handler.update_level_successes()
@@ -316,7 +302,6 @@ def main():
     # create map
     width, height = app.info_panel.world_width, app.info_panel.world_width
     app.map_panel = MapPanel(app.win, app.info_panel.world_x, app.win.get_size()[1] - width, width, height)
-
 
     # containers:
     container_width = 80
@@ -374,8 +359,10 @@ def main():
     app.cursor = Cursor()
 
 
+
     # restore ui elements
     ui_handler.restore_ui_elements()
+
     # start game loop
     app.loop()
 

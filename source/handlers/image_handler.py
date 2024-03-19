@@ -47,12 +47,15 @@ def blur_image(surf, radius):
     return blurred_image.convert_alpha()
 
 
-def overblit_button_image(button, image_name, value):
+def overblit_button_image(button, image_name: str, value: bool, **kwargs):
     if not button:
         return
+
+    size = kwargs.get("size", (button.image.get_rect().width, button.image.get_rect().height))
+    offset_x, offset_y = kwargs.get("offset_x", 0), kwargs.get("offset_y", 0)
+
     if not value:
-        size = (button.image.get_rect().width, button.image.get_rect().height)
-        button.image.blit(pygame.transform.scale(get_image(image_name), size), (0, 0))  # Scale and blit the image
+        button.image.blit(pygame.transform.scale(get_image(image_name), size), (offset_x, offset_y))  # Scale and blit the image
     else:
         # Restore the original image before overblitting
         button.image.fill((0, 0, 0, 0))  # Fill with transparent black

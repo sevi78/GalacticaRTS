@@ -65,7 +65,9 @@ class LevelEdit(EditorBase):
         self.create_smoothing_button()
         self.create_update_button()
         self.create_rename_button()
+        self.create_owner_button()
         self.create_explore_button()
+
         self.set_selector_current_value()
 
         # hide initially
@@ -98,7 +100,7 @@ class LevelEdit(EditorBase):
 
     def create_update_button(self):
         update_button = ImageButton(win=self.win,
-            x=self.get_screen_x() + BUTTON_SIZE * 2,
+            x=self.get_screen_x() + BUTTON_SIZE / 2 + BUTTON_SIZE,
             y=self.world_y + TOP_SPACING + BUTTON_SIZE / 2,
             width=BUTTON_SIZE,
             height=BUTTON_SIZE,
@@ -121,9 +123,34 @@ class LevelEdit(EditorBase):
         self.buttons.append(update_button)
         self.widgets.append(update_button)
 
+    def create_owner_button(self):
+        owner_button = ImageButton(win=self.win,
+            x=self.get_screen_x() + BUTTON_SIZE / 2 + BUTTON_SIZE *2,
+            y=self.world_y + TOP_SPACING + BUTTON_SIZE / 2,
+            width=BUTTON_SIZE,
+            height=BUTTON_SIZE,
+            isSubWidget=False,
+            parent=self,
+            image=pygame.transform.scale(
+                get_image("owner.png"), (BUTTON_SIZE, BUTTON_SIZE)),
+            tooltip="set owners",
+            info_text=info_panel_text_generator.create_create_info_panel_level_text(
+                self.level_handler.data["globals"]["level"], self.level_handler.data),
+            frame_color=self.frame_color,
+            moveable=False,
+            include_text=False,
+            layer=self.layer,
+            onClick=lambda: self.level_handler.set_planet_owners(),
+            )
+
+        owner_button.hide()
+
+        self.buttons.append(owner_button)
+        self.widgets.append(owner_button)
+
     def create_smoothing_button(self):
         smoothing_button = ImageButton(win=self.win,
-            x=self.get_screen_x() + BUTTON_SIZE * 3 + BUTTON_SIZE / 2,
+            x=self.get_screen_x() + BUTTON_SIZE / 2 + BUTTON_SIZE *3,
             y=self.world_y + TOP_SPACING + BUTTON_SIZE / 2,
             width=BUTTON_SIZE,
             height=BUTTON_SIZE,
@@ -149,7 +176,7 @@ class LevelEdit(EditorBase):
 
     def create_rename_button(self):
         rename_button = ImageButton(win=self.win,
-            x=self.get_screen_x() + BUTTON_SIZE * 4 + BUTTON_SIZE,
+            x=self.get_screen_x() + BUTTON_SIZE / 2 + BUTTON_SIZE *4,
             y=self.world_y + TOP_SPACING + BUTTON_SIZE / 2,
             width=BUTTON_SIZE,
             height=BUTTON_SIZE,
@@ -173,7 +200,7 @@ class LevelEdit(EditorBase):
 
     def create_explore_button(self):
         explore_button = ImageButton(win=self.win,
-            x=self.get_screen_x() + BUTTON_SIZE * 6 + BUTTON_SIZE / 2,
+            x=self.get_screen_x() + BUTTON_SIZE / 2 + BUTTON_SIZE *5,
             y=self.world_y + TOP_SPACING + BUTTON_SIZE / 2,
             width=BUTTON_SIZE,
             height=BUTTON_SIZE,

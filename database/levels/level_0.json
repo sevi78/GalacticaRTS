@@ -53,7 +53,9 @@
                 "energy",
                 "food",
                 "technology",
-                "population"
+                "population",
+                "water",
+                "minerals"
             ],
             "specials": [
                 "population_grow_factor * 2",
@@ -79,7 +81,15 @@
             "alien_population": 1000,
             "atmosphere_name": "",
             "building_slot_amount": 3,
-            "buildings": [],
+            "buildings": [
+                "town",
+                "farm",
+                "farm",
+                "farm",
+                "solar panel",
+                "solar panel",
+                "mine"
+            ],
             "buildings_max": 10,
             "explored": false,
             "gif": "moon.gif",
@@ -95,9 +105,11 @@
             "population": 0.0,
             "population_grow": 0.0,
             "possible_resources": [
-                "water",
                 "energy",
                 "food",
+                "technology",
+                "population",
+                "water",
                 "minerals"
             ],
             "specials": [
@@ -116,7 +128,7 @@
             "atmosphere_name": "",
             "building_slot_amount": 3,
             "buildings": [],
-            "buildings_max": 10,
+            "buildings_max": 12,
             "explored": false,
             "gif": "moon.gif",
             "id": 3,

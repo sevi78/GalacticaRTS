@@ -75,11 +75,12 @@ class PlanetFactory:
                 debug=False,
                 align_image="center",
                 atmosphere_name=value["atmosphere_name"],
-                data=data["celestial_objects"][key]
+                data=data["celestial_objects"][key],
+                owner=data["celestial_objects"][key]["owner"],
                 )
 
             if explored:
-                pan_zoom_planet_button.get_explored(-1)
+                pan_zoom_planet_button.get_explored(data["celestial_objects"][key]["owner"])
 
             # update stats
             pan_zoom_planet_button.set_population_limit()
@@ -120,7 +121,7 @@ class PlanetFactory:
     def explore_planets(self):
         for i in sprite_groups.planets.sprites():
             if not i.explored:
-                i.get_explored(-1)
+                i.get_explored(0)
             else:
                 i.explored = False
                 i.string = "?"

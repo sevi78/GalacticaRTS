@@ -5,7 +5,7 @@ from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.handlers.position_handler import get_random_pos
 from source.handlers.widget_handler import WidgetHandler
-from source.multimedia_library.images import get_image
+from source.multimedia_library.images import get_image, get_gif
 from source.pan_zoom_sprites.pan_zoom_collectable_item import PanZoomCollectableItem
 from source.text.info_panel_text_generator import info_panel_text_generator
 from source.universe.celestial_objects.asteroid import Asteroid
@@ -284,11 +284,12 @@ class UniverseFactory:
     def create_comets(self):
         for i in range(max(1, int(self.amount / COMET_DIVIDE_FACTOR))):
             image = random.choice(self.comet_images)
+
             w = image.get_rect().width
             h = image.get_rect().height
             x, y = get_random_pos(self.left_end, self.right_end, self.top_end, self.bottom_end, self.central_compression)
 
-            comet = Comet(self.win, x, y, w, h, image=image, layer=self.layer, parent=self, type="comet")
+            comet = Comet(self.win, x, y, w, h, image=image, layer=self.layer, parent=self, type="comet", gif="comet.gif")
 
     def create_universe(self, x, y, width, height):
         self.left_end = x

@@ -112,8 +112,21 @@ class WidgetBase(WidgetBaseMethods, ImageHandler, TextHandler, PositionHandler, 
         # # register
         WidgetHandler.addWidget(self)
 
-    def draw_frame(self):
-        draw_transparent_rounded_rect(self.win, (0, 0, 0), self.surface_rect,
+    def draw_frame(self, **kwargs):
+        image = kwargs.get('image', None)
+        rect = kwargs.get('rect', None)
+
+
+
+
+        rect_surface = draw_transparent_rounded_rect(self.win, (0, 0, 0), self.surface_rect,
             config.ui_rounded_corner_radius_small, config.ui_panel_alpha)
+
+        if image and rect:
+            rect_surface.blit(image, rect)
+            self.win.blit(rect_surface, self.surface_rect)
+
         pygame.draw.rect(self.win, self.frame_color, self.surface_rect,
             config.ui_rounded_corner_small_thickness, config.ui_rounded_corner_radius_small)
+        return rect_surface
+

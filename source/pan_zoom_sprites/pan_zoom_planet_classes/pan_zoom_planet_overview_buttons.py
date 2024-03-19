@@ -19,6 +19,7 @@ class PanZoomPlanetOverviewButtons(PanZoomPlanetEconomy):
         self.thumpsup_button_size = (18, 18)
         self.smiley_button_size = (20, 20)
         self.min_offset_y_to_text = 25
+        self.set_population_limit()
 
     def create_overview_buttons(self):
         """

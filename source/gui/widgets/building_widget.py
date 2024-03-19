@@ -9,13 +9,15 @@ from source.factories.weapon_factory import weapon_factory
 from source.gui.widgets.buttons.button import Button
 from source.gui.widgets.progress_bar import ProgressBar
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
+from source.handlers.image_handler import overblit_button_image
+
 from source.handlers.orbit_handler import set_orbit_object_id
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.multimedia_library.images import get_image
 from source.multimedia_library.sounds import sounds
 
 PROGRESSBAR_UPDATE_RATE_IN_SECONDS = 0.1
-
+FONT_SIZE = 10
 
 class BuildingWidget(WidgetBase):
     """
@@ -131,6 +133,7 @@ class BuildingWidget(WidgetBase):
         self.tooltip = kwargs.get("tooltip", "no tooltip set yet!")
         self.is_building = kwargs.get("is_building", True)
 
+
         # get the position and size
         self.win = pygame.display.get_surface()
         height = win.get_height()
@@ -138,8 +141,8 @@ class BuildingWidget(WidgetBase):
         self.cue_id = len(config.app.building_widget_list)
         self.spacing = 5
         self.dynamic_y = height - self.spacing - self.get_screen_height() - self.get_screen_height() * self.cue_id
-        self.font_size = kwargs.get("fontsize", 15)
-        self.font = pygame.font.SysFont(kwargs.get("fontname", config.font_name), kwargs.get("fontsize", 15))
+        self.font_size = kwargs.get("fontsize", FONT_SIZE)
+        self.font = pygame.font.SysFont(kwargs.get("fontname", config.font_name), self.font_size)
         self.spacing = kwargs.get("spacing", 15)
 
         if self.is_building:
@@ -181,6 +184,9 @@ class BuildingWidget(WidgetBase):
             curved=True,
             completedColour=self.frame_color, layer=self.layer, ignore_progress=True)
 
+
+        self.surface_rect = pygame.Rect(self.dynamic_x, self.dynamic_y, self.get_screen_width(), self.get_screen_height())
+
         # register
         config.app.building_widget_list.append(self)
 
@@ -218,6 +224,16 @@ class BuildingWidget(WidgetBase):
         and plays some nice sound :)
         :return:
         """
+
+        # print(f"set_building_to_receiver:receiver:{self.receiver.name}, self.receiver.owner:{self.receiver.owner},"
+        #       f" self.receiver:{self.receiver}, self.key: {self.key}, self.value: {self.value}")
+        #
+        # print ("________________________________________________________________________________")
+        # this should be fixed
+        if self.receiver.owner == -1:
+            print (f"set_building_to_receiver: You can't build on this planet!: {self.receiver.name}")
+            return
+
         ships = ["spaceship", "cargoloader", "spacehunter", "spacestation"]
         # technology_upgrades = ["university"]
         planet_defence_upgrades = ["cannon", "missile"]
@@ -243,7 +259,6 @@ class BuildingWidget(WidgetBase):
 
         if weapons:
             if self.name in weapons:
-
                 # upgrade
                 if self.name in self.receiver.weapon_handler.weapons.keys():
                     self.receiver.weapon_handler.weapons[self.name]["level"] += 1
@@ -265,11 +280,13 @@ class BuildingWidget(WidgetBase):
 
         # set new value to receivers production
         setattr(self.receiver, self.name, getattr(self.receiver, "production_" + self.key) - self.value)
-        setattr(config.app.player, self.name, getattr(config.app.player, self.key) - self.value)
+        # set new value to player production
+        player = config.app.players[self.receiver.owner]
+        setattr(player, self.name, getattr(player, self.key) - self.value)
 
         self.receiver.set_population_limit()
         self.receiver.calculate_production()
-        config.app.calculate_global_production()
+        config.app.calculate_global_production(player)
         config.app.tooltip_instance.reset_tooltip(self)
 
         # # debug
@@ -279,8 +296,9 @@ class BuildingWidget(WidgetBase):
         # print(debug_text)
 
     def function(self, arg):
+        player = config.app.players[self.receiver.owner]
         config.tooltip_text = ""
-        if self.immediately_build_cost < config.app.player.technology:
+        if self.immediately_build_cost < player.technology:
             self.build_immediately()
             self.set_building_to_receiver()
             self.delete()
@@ -289,7 +307,9 @@ class BuildingWidget(WidgetBase):
         self.button.tooltip = f"are you sure to build this {self.name} immediately? this will cost you {self.immediately_build_cost} technology units?{self.receiver}"
 
     def build_immediately(self):
-        config.app.player.technology -= self.immediately_build_cost
+        """ !!! make shure the correcz player is adressed!!!"""
+        player = config.app.players[self.receiver.owner]
+        player.technology -= self.immediately_build_cost
 
     def delete(self):
         if self in config.app.building_widget_list:
@@ -308,6 +328,10 @@ class BuildingWidget(WidgetBase):
         """
         reposition the elements dynamically, draw elements, and finally deletes itself
         """
+        # show owner
+        if self.receiver.owner > 0:
+            image_name = "alien_face_green.png" if self.receiver.alien_attitude < 50 else "alien_face_orange.png"
+            overblit_button_image(self.button, "alien_face_green.png", False, offset_x=10,size=(15,15))
 
         # update progress bar
         self.update_progressbar()
@@ -320,6 +344,10 @@ class BuildingWidget(WidgetBase):
         win = pygame.display.get_surface()
         height = win.get_height()
         y = height - spacing - widget_height - widget_height * self.cue_id
+
+        # frame
+        self.surface_rect = pygame.Rect(self.dynamic_x, y, self.get_screen_width(), self.get_screen_height())
+        self.draw_frame()
 
         # button
         self.button.image_hover_surface.set_alpha(0)
@@ -346,3 +374,5 @@ class BuildingWidget(WidgetBase):
 
             # finally delete it and its references
             self.delete()
+
+

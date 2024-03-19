@@ -27,7 +27,9 @@ class SettingsEdit(EditorBase):
         self.sliders = {}
         self.current_font = None
         self.font_name_list = pygame.sysfont.get_fonts()
-        self.selector_lists = {"players": [_ for _ in range(config.players)],
+
+        self.selector_lists = {"player": [_ for _ in range(0, config.players)],
+                               "players": [_ for _ in range(0, config.players)],
                                "fps": [25, 60, 90, 120, 1000],
                                "enable_game_events": self.boolean_list,
                                "draw_universe": self.boolean_list,

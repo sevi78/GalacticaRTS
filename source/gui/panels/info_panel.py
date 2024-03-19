@@ -85,6 +85,7 @@ class InfoPanel(WidgetBase, TextWrap):
 
         self.update_text()
 
+
     def update_text(self):
         # Wrap text before rendering onto surface
         self.wrap_text(self.win, self.text, self.pos, self.size, self.font, self.color,
@@ -190,11 +191,15 @@ class InfoPanel(WidgetBase, TextWrap):
 
             # create surface rect to make sure the frame is correct
             self.surface_rect = pygame.Rect(self.world_x, self.world_y, self.world_width, self.world_height)
-            self.draw_frame()
+
 
             # draw the planet icon
             if hasattr(self, 'planet_image') and self.planet_image:
-                self.win.blit(self.planet_image, self.planet_rect)
+                self.draw_frame(image=self.planet_image, rect=self.planet_rect)
+                #self.win.blit(self.planet_image, self.planet_rect)
+            else:
+                self.draw_frame()
+
 
             self.update_text()
 

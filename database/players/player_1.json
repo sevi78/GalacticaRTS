@@ -1,6 +1,7 @@
 {
   "player": 1,
-  "color": "blue",
+  "image_name": "alien1.png",
+  "color": "red",
   "name": "Bauz",
   "energy": 1000,
   "food": 1000,

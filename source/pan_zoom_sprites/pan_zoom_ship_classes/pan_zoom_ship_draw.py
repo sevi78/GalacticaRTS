@@ -3,13 +3,11 @@ import random
 import pygame
 
 from source.configuration.game_config import config
-from source.draw.dashed_line import draw_dashed_line
 from source.draw.arrow import draw_arrows_on_line_from_start_to_end
 from source.gui.event_text import event_text
 from source.gui.lod import level_of_detail
 from source.gui.widgets.progress_bar import ProgressBar
 from source.handlers.color_handler import colors
-from source.handlers.player_handler import player_handler
 
 STATE_IMAGE_SIZE = 27
 

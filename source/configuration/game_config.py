@@ -4,7 +4,7 @@ import os
 
 import pygame
 
-from source.handlers.file_handler import load_file
+from source.handlers.file_handler import load_file, get_player_list
 from source.handlers.image_handler import overblit_button_image
 
 
@@ -55,7 +55,7 @@ class GameConfig:
         self.height_current = self.height
         self.moveable = True
         self.app = None
-        self.players = 3
+        self.players = len(get_player_list())
         self.player = 0
         self.tooltip_text = ""
         self.game_paused = False

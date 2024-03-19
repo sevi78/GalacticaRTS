@@ -22,6 +22,7 @@ gif_durations = {}
 MAX_GIF_SIZE = 150
 LOAD_AT_GAME_START = False
 
+
 #
 # @lru_cache(maxsize=None)
 # def load_image(path):
@@ -321,8 +322,7 @@ if LOAD_AT_GAME_START:
     images = load_folders(os.path.join(pictures_path))
     end = time.time()
     print(f"Loaded images in {end - start} seconds")
-    #pprint(find_unused_images_gifs(pictures_path, os.path.join(pictures_path, 'gifs'), images, gifs))
+    # pprint(find_unused_images_gifs(pictures_path, os.path.join(pictures_path, 'gifs'), images, gifs))
 
-
-if __name__ ==  "__main__":
+if __name__ == "__main__":
     pass

@@ -83,7 +83,7 @@ class Icon(WidgetBase):
             if self.key == "population":
                 self.text = str(int(self.value)) + "/" + format_number(self.parent.player.population_limit, 1)
             else:
-                self.text = str(int(self.value)) + "/" + str(int(getattr(self.parent, "production_" + self.key)))
+                self.text = str(int(self.value)) + "/" + str(int(getattr(self.parent.player, "production_" + self.key)))
 
         self.text_img = self.font.render(self.text, True, self.frame_color)
 

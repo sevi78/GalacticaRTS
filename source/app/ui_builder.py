@@ -4,6 +4,7 @@ import pygame
 
 from source.app.scene_builder import SceneBuilder
 from source.configuration.game_config import config
+from source.editors.auto_economy_edit import AutoEconomyEdit
 from source.editors.building_edit import BuildingEdit
 from source.editors.debug_edit import DebugEdit
 from source.editors.economy_overview import EconomyOverview
@@ -72,7 +73,10 @@ class UIBuilder(SceneBuilder):
 
         # players
         self.players = {}
-        self.create_players(["zork", "bauz"])
+        # d = player_handler.get_players()
+        # k = d.keys()
+        # self.create_players(player_handler.get_players())
+        self.player = None
 
         # building_panel
         self.create_building_panel()
@@ -106,11 +110,6 @@ class UIBuilder(SceneBuilder):
             pygame.display.get_surface().get_rect().y + spacing_y,
             width, height, parent=self)
 
-        # self.level_select = LevelSelect(pygame.display.get_surface(),
-        #     pygame.display.get_surface().get_rect().centerx - width / 2,
-        #     pygame.display.get_surface().get_rect().y,
-        #     width, width, parent=self, obj=None)
-
         self.planet_edit = PlanetEdit(pygame.display.get_surface(),
             pygame.display.get_surface().get_rect().centerx - width / 2,
             pygame.display.get_surface().get_rect().y + spacing_y,
@@ -126,11 +125,6 @@ class UIBuilder(SceneBuilder):
             pygame.display.get_surface().get_rect().y,
             width, height, parent=self)
 
-        # self.font_edit = FontEdit(pygame.display.get_surface(),
-        #     pygame.display.get_surface().get_rect().centerx - width / 2,
-        #     pygame.display.get_surface().get_rect().y,
-        #     width, height, parent=self)
-
         self.enemy_handler_edit = EnemyHandlerEdit(pygame.display.get_surface(),
             pygame.display.get_surface().get_rect().centerx - width / 2,
             pygame.display.get_surface().get_rect().y + spacing_y,
@@ -145,11 +139,6 @@ class UIBuilder(SceneBuilder):
             pygame.display.get_surface().get_rect().centerx - width / 2,
             pygame.display.get_surface().get_rect().y + spacing_y,
             width, height, parent=self, obj=debugger, layer=9)
-
-        # self.event_panel_edit = EventPanelEdit(pygame.display.get_surface(),
-        #     pygame.display.get_surface().get_rect().centerx - width / 2,
-        #     pygame.display.get_surface().get_rect().y,
-        #     width, height, parent=self, obj=self.event_panel, layer=9)
 
         self.trade_edit = TradeEdit(pygame.display.get_surface(),
             pygame.display.get_surface().get_rect().centerx - width / 2,
@@ -169,17 +158,43 @@ class UIBuilder(SceneBuilder):
         self.player_edit = PlayerEdit(pygame.display.get_surface(),
             100,
             pygame.display.get_surface().get_rect().y + spacing_y,
-            int(width * 1.7), height, parent=self, obj=None, layer=9)  # , game_paused=True)
+            int(width * 1.7), height, parent=self, obj=None, layer=9,ignore_other_editors=True)  # , game_paused=True)
 
-    def create_players(self, players):
-        # choose player color
-        # player_colors = ["blue","red", "orange", "green", "black"]
-        # color = random.choice(player_colors)
-        # player_colors.remove(color)
 
+    def create_players(self, data):
+        for key, value  in data.items():
+            player_id = data[key]["player"]
+            self.players[player_id] = Player(
+                name=data[key]["name"],
+                color=player_handler.get_player_color(player_id),
+                stock={
+                    "energy": 1000,
+                    "food": 1000,
+                    "minerals": 1000,
+                    "water": 1000,
+                    "technology": 1000,
+                    "population": 0
+                    },
+                production={
+                    "energy": 0,
+                    "food": 0,
+                    "minerals": 0,
+                    "water": 0,
+                    "technology": 0,
+                    "population": 0
+                    },
+                clock=0,
+                owner=player_id
+                )
+
+            # set active (human) player
+            self.player = self.players[0]
+
+    def create_players__(self, players):
         # setup player
         for i in range(len(players)):
-            self.players[i] = Player(name=players[i],
+            self.players[i] = Player(
+                name=players[i],
                 color=player_handler.get_player_color(i),
                 stock={
                     "energy": 1000,
@@ -189,7 +204,8 @@ class UIBuilder(SceneBuilder):
                     "technology": 1000,
                     "population": 0
                     },
-                clock=0
+                clock=0,
+                owner=i
                 )
 
         # set active (human) player

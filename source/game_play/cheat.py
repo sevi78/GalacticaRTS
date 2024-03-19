@@ -42,10 +42,8 @@ class Cheat:
             i.population += value / 4
 
     def explore_all(self):
-        for p in sprite_groups.planets:
-            p.explored = True
         for pl in sprite_groups.planets:
-            pl.get_explored(-1)
+            pl.get_explored(0)
             pl.explored = True
 
     def cheat_missile(self):

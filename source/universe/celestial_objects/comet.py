@@ -23,7 +23,8 @@ class Comet(CelestialObject):
                 self.rect.y = self.get_screen_y() + self.image.get_size()[1] / 2 * self.get_zoom()
 
                 self.move(direction=None)
-                self.win.blit(self.image, self.rect)
+                if not self.gif:
+                    self.win.blit(self.image, self.rect)
 
             if config.debug:
                 self.debug_object()

@@ -3,6 +3,7 @@ from pygame_widgets.util import drawText
 
 from source.configuration.economy_params import EconomyParams
 from source.configuration.game_config import config
+from source.factories.building_factory import building_factory
 from source.game_play.navigation import navigate_to
 from source.gui.event_text import event_text
 from source.gui.panels.building_panel_components.building_panel_constructor import BuildingPanelConstructor
@@ -123,7 +124,7 @@ class BuildingPanel(WidgetBase, BuildingPanelConstructor, BuildingSlot, EconomyP
 
         return buildings
 
-    def destroy_building(self, b):
+    def destroy_building__(self, b):
         print("destroy_building", b)
         try:
             self.parent.selected_planet.buildings.remove(b)
@@ -158,7 +159,7 @@ class BuildingPanel(WidgetBase, BuildingPanelConstructor, BuildingSlot, EconomyP
                 # check for mouse click and destroy building
                 for event in events:
                     if event.type == pygame.MOUSEBUTTONDOWN:
-                        self.destroy_building(building_name)
+                        building_factory.destroy_building(building_name, self.parent.selected_planet)
             else:
                 if config.tooltip_text == f"Are you sure you want to destroy this {building_name}? You will probably not get anything back.":
                     config.tooltip_text = ""
@@ -167,8 +168,10 @@ class BuildingPanel(WidgetBase, BuildingPanelConstructor, BuildingSlot, EconomyP
         if self.parent.selected_planet:
             self.set_building_slot_tooltip_plus()
             self.set_building_slot_tooltip_minus()
-            self.upgrade_building_slots(events)
-            self.downgrade_building_slots(events)
+
+            if self.parent.selected_planet.owner in config.app.players.keys():
+                self.upgrade_building_slots(events, config.app.players[self.parent.selected_planet.owner])
+                self.downgrade_building_slots(events, config.app.players[self.parent.selected_planet.owner])
 
         self.reset_building_slot_tooltip()
 
@@ -179,7 +182,7 @@ class BuildingPanel(WidgetBase, BuildingPanelConstructor, BuildingSlot, EconomyP
                 elif event.key == pygame.K_LEFT:
                     config.app.set_planet_selection(-1)
 
-            if event.type  == pygame.MOUSEBUTTONDOWN:
+            if event.type == pygame.MOUSEBUTTONDOWN:
                 if self.surface_rect.collidepoint(pygame.mouse.get_pos()):
                     navigate_to(self.parent.selected_planet)
 

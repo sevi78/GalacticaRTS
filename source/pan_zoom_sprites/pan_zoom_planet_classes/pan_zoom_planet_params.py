@@ -90,9 +90,10 @@ class PanZoomPlanetParams:
         shows buttons ect
         """
         # set owner
-        if not self.owner == -1:
-            event_text.set_text(f"Bad Luck! the planet {self.name} belongs to an alien species !", obj=self)
-            return
+        if self.owner != owner:
+            if self.owner != -1:
+                event_text.set_text(f"Bad Luck! the planet {self.name} belongs to an alien species !", obj=self)
+                return
 
         self.owner = owner
         self.player_color = pygame.color.THECOLORS.get(player_handler.get_player_color(self.owner))
