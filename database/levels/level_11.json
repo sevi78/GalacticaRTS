@@ -7794,7 +7794,8 @@
         "spaceship": 10,
         "suns": 30,
         "universe_density": 100,
-        "width": 1000000
+        "width": 1000000,
+        "population_density": 50.0
     },
     "player": {
         "population": 0,

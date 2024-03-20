@@ -7,7 +7,7 @@ from source.app.app_helper import AppHelper, select_next_item_in_list
 from source.app.ui_builder import UIBuilder
 from source.configuration.game_config import config
 from source.draw.cursor import Cursor
-from source.editors.auto_economy_edit import AutoEconomyEdit
+from source.draw.zoom_scale import ZoomScale
 from source.editors.level_edit import LevelEdit
 from source.editors.level_select import LevelSelect
 from source.editors.filter_widget import FilterWidget
@@ -358,6 +358,8 @@ def main():
     # cursor object
     app.cursor = Cursor()
 
+    # zoom scale
+    app.zoom_scale = ZoomScale(app.win, 250, 55, 180, 5)
 
 
     # restore ui elements

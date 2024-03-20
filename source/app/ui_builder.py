@@ -76,7 +76,7 @@ class UIBuilder(SceneBuilder):
         # d = player_handler.get_players()
         # k = d.keys()
         # self.create_players(player_handler.get_players())
-        self.player = None
+        # self.player = None
 
         # building_panel
         self.create_building_panel()
@@ -184,7 +184,8 @@ class UIBuilder(SceneBuilder):
                     "population": 0
                     },
                 clock=0,
-                owner=player_id
+                owner=player_id,
+                image_name = data[key]["image_name"]
                 )
 
             # set active (human) player

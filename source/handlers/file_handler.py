@@ -109,7 +109,8 @@ def compare_json_files(folder, default_file):
                 compare_json(default_file, data, file_name)
 
 
-def update_files(folder, category, key, value, condition):
+def update_files(folder, category, key, value, **kwargs):
+    condition = kwargs.get('condition', "1=1")
     # get path
     path = os.path.join(abs_database_path() + os.sep + folder)
 
@@ -227,8 +228,9 @@ def main():
     # update_json_files(load_file("level_0.json", folder="levels"))
     # compare_json_files(abs_level_path(), load_file("level_0.json", folder="levels"))
     # update_files("games", "ships", "owner", 0, None)
-    update_files("levels", "celestial_objects", "owner", 0, condition="data[category][k]['explored'] == True" )
-    update_files("levels", "celestial_objects", "owner", 1, condition="data[category][k]['alien_population'] > 0")
+    # update_files("levels", "celestial_objects", "owner", 0, condition="data[category][k]['explored'] == True" )
+    # update_files("levels", "celestial_objects", "owner", 1, condition="data[category][k]['alien_population'] > 0")
+    update_files("levels", "globals", "population_density", 50.0, condition=None)
 
 if __name__ == "__main__":
     main()

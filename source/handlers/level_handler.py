@@ -392,7 +392,6 @@ class LevelHandler:
         self.level_successes = {}
         self.current_game = None
 
-
     def delete_level(self):
         # delete objects
         # universe
@@ -599,10 +598,79 @@ class LevelHandler:
                 self.level_successes[key] = value
 
         print(f"level_handler.update_level_successes(): self.level_successes: {self.level_successes}")
-        # update the icons of level select to displax the successes
+        # update the icons of level select to display the successes
         self.app.level_select.update_icons()
 
     def set_planet_owners(self):
+        # self.set_planet_owners_geographically()
+        self.set_celestial_body_owners()
         player_handler.reset_players()
+        return
+        population_density = int(self.data["globals"]["population_density"])
         for i in sprite_groups.planets:
-            i.owner = random.randint(-1,len(config.app.players)-1)
+            r = random.randint(0, 100)
+            if r in range(0, population_density):
+                i.owner = random.randint(0, len(config.app.players) - 1)
+            else:
+                i.owner = -1
+
+    def set_planet_owners_geographically(self):
+        player_handler.reset_players()
+        population_density = int(self.data["globals"]["population_density"])
+        num_players = len(config.app.players)
+
+        # Step 1: Divide the planets into clusters
+        clusters = self.divide_planets_into_clusters(num_players)
+
+        # Step 2: Assign each cluster to a player
+        for player_id, cluster in enumerate(clusters):
+            for planet in cluster:
+                # There's a chance based on population_density that a planet will be owned by a player
+                r = random.randint(0, 100)
+                if r < population_density:
+                    planet.owner = player_id
+                else:
+                    planet.owner = -1
+
+    def divide_planets_into_clusters(self, num_clusters):
+        # This is a placeholder for the clustering logic. You might use a simple geometric approach,
+        # or a more complex clustering algorithm like K-means, depending on your game's requirements
+        # and the structure of your planet objects.
+        # For simplicity, let's assume each planet has attributes `x` and `y` for its position.
+
+        # Example simple clustering based on x-coordinate (for illustration purposes only):
+        sorted_planets = sorted(sprite_groups.planets.sprites(), key=lambda p: p.world_x)
+        clusters = [[] for _ in range(num_clusters)]
+        for i, planet in enumerate(sorted_planets):
+            clusters[i % num_clusters].append(planet)
+
+        return clusters
+
+    def set_celestial_body_owners(self):
+        player_handler.reset_players()
+        population_density = int(self.data["globals"]["population_density"])
+        num_players = len(config.app.players)
+
+        # Assuming `sprite_groups.suns` holds all sun objects
+        suns = [i for i in sprite_groups.planets if i.type == "sun"]
+
+        for sun in suns:
+            # There's a chance based on population_density that a celestial body will be owned by a player
+            r = random.randint(0, 100)
+            if r < population_density:
+                owner_id = random.randint(0, num_players - 1)
+            else:
+                owner_id = -1
+
+            # Set owner for the sun
+            sun.owner = owner_id
+
+            # Propagate the owner to all planets of the sun
+            sun_planets = [i for i in sprite_groups.planets if i.type == "planet" and i.orbit_object_id == sun.id]
+            for planet in sun_planets:  # Assuming `sun.planets` holds all planet objects belonging to the sun
+                planet.owner = owner_id
+
+                # Propagate the owner to all moons of the planet
+                planet_moons = [i for i in sprite_groups.planets if i.type == "moon" and i.orbit_object_id == planet.id]
+                for moon in planet_moons:  # Assuming `planet.moons` holds all moon objects belonging to the planet
+                    moon.owner = owner_id

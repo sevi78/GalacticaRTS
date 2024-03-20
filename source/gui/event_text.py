@@ -136,7 +136,7 @@ class EventText(TextWrap):
             win=self.win,
             text=self.event_display_text,
             pos=(x, self.new_bottom),
-            size=(config.app.ui_helper.world_width, config.ui_event_text_size),
+            size=(config.app.ui_helper.world_width - config.app.building_panel.world_width, config.ui_event_text_size),
             font=self.event_text_font,
             color=colors.ui_dark,
             fade_out=EVENT_TEXT_FADE,

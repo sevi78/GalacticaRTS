@@ -17,6 +17,11 @@ def format_number(n, digits=0):
         formatted_number = formatted_number.rstrip('0').rstrip('.')
     return f'{formatted_number}{SUFFIXES[magnitude]}'
 
+def get_reduced_number(number) -> float:
+    """ reduces number to next even number like 10, 1000, 10000 ect """
+    magnitude = 10 ** (len(str(int(number))) - 1)  # Correctly find the magnitude
+    reduced_number = (number // magnitude) * magnitude
+    return reduced_number
 
 def to_roman(num: int):
     val = [

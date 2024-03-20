@@ -50,8 +50,9 @@ class LevelEdit(EditorBase):
         self.height_list = [_ for _ in range(5000, 1001000, 1000)]
         self.collectable_item_amount_list = [_ for _ in range(0, 101, 1)]
         self.universe_density_list = [_ for _ in range(0, 110, 10)]
+        self.population_density_list = [_ for _ in range(0,105, 5)]
         self.lists = ["level_list", "planets_list", "suns_list", "moons_list", "width_list", "height_list",
-                      "collectable_item_amount_list", "universe_density_list", "central_compression_list"]
+                      "collectable_item_amount_list", "universe_density_list", "central_compression_list", "population_density_list"]
 
         # temp dict
         self.last_created = {}
@@ -232,7 +233,11 @@ class LevelEdit(EditorBase):
         # Desired order of keys
         desired_order = ["level", "level_success", "width", "height", "universe_density", "central_compression",
                          "goal", "suns", "planets", "moons", "collectable_item_amount", "spaceship", "spacehunter",
-                         "cargoloader"]
+                         "cargoloader", "population_density"]
+
+        # for key, value in self.level_handler.data["globals"].items():
+        #     if not key in desired_order:
+        #         desired_order.append(key)
 
         # Create a new dictionary with the desired key order
         self.level_handler.data["globals"] = {key: self.level_handler.data["globals"][key] for key in desired_order}

@@ -133,7 +133,6 @@ class BuildingWidget(WidgetBase):
         self.tooltip = kwargs.get("tooltip", "no tooltip set yet!")
         self.is_building = kwargs.get("is_building", True)
 
-
         # get the position and size
         self.win = pygame.display.get_surface()
         height = win.get_height()
@@ -184,9 +183,15 @@ class BuildingWidget(WidgetBase):
             curved=True,
             completedColour=self.frame_color, layer=self.layer, ignore_progress=True)
 
-
         self.surface_rect = pygame.Rect(self.dynamic_x, self.dynamic_y, self.get_screen_width(), self.get_screen_height())
 
+        # overblit image
+        self.overblit_image_name = None
+        if self.receiver.owner > 0:
+            self.overblit_image_name = config.app.players[self.receiver.owner].image_name
+
+        # frame owner coloring
+        self.frame_color = self.receiver.player_color
         # register
         config.app.building_widget_list.append(self)
 
@@ -231,7 +236,7 @@ class BuildingWidget(WidgetBase):
         # print ("________________________________________________________________________________")
         # this should be fixed
         if self.receiver.owner == -1:
-            print (f"set_building_to_receiver: You can't build on this planet!: {self.receiver.name}")
+            print(f"set_building_to_receiver: You can't build on this planet!: {self.receiver.name}")
             return
 
         ships = ["spaceship", "cargoloader", "spacehunter", "spacestation"]
@@ -328,13 +333,13 @@ class BuildingWidget(WidgetBase):
         """
         reposition the elements dynamically, draw elements, and finally deletes itself
         """
+
         # show owner
-        if self.receiver.owner > 0:
-            image_name = "alien_face_green.png" if self.receiver.alien_attitude < 50 else "alien_face_orange.png"
-            overblit_button_image(self.button, "alien_face_green.png", False, offset_x=10,size=(15,15))
+        overblit_button_image(self.button, self.overblit_image_name, False, offset_x=5, size=(25, 25), outline=True, color=self.receiver.player_color)
 
         # update progress bar
         self.update_progressbar()
+
         # reposition
         widget_height = self.get_screen_height()
         self.dynamic_x = config.app.ui_helper.anchor_right
@@ -374,5 +379,3 @@ class BuildingWidget(WidgetBase):
 
             # finally delete it and its references
             self.delete()
-
-

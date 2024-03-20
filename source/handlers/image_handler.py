@@ -2,6 +2,7 @@ import pygame
 from PIL import ImageFilter
 from PIL.Image import Image
 
+
 from source.multimedia_library.images import get_image
 
 
@@ -53,9 +54,17 @@ def overblit_button_image(button, image_name: str, value: bool, **kwargs):
 
     size = kwargs.get("size", (button.image.get_rect().width, button.image.get_rect().height))
     offset_x, offset_y = kwargs.get("offset_x", 0), kwargs.get("offset_y", 0)
+    outline = kwargs.get("outline", False)
+    color = kwargs.get("color", (100,100,100))
+
 
     if not value:
-        button.image.blit(pygame.transform.scale(get_image(image_name), size), (offset_x, offset_y))  # Scale and blit the image
+        if outline:
+            image = outline_image(pygame.transform.scale(get_image(image_name), size), color,127, 0)
+        else:
+            image = pygame.transform.scale(get_image(image_name), size)
+
+        button.image.blit(image, (offset_x, offset_y))  # Scale and blit the image
     else:
         # Restore the original image before overblitting
         button.image.fill((0, 0, 0, 0))  # Fill with transparent black

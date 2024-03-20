@@ -70,9 +70,6 @@ class PanZoomHandler:  # original
         self.scale_up = 1.2
         self.scale_down = 0.8
 
-        # self.value_handler = ValueHandler()
-        # self.value_handler.add_value("zoom", ValueSmoother(0.0001, 3))
-
         self.zoom_max = 2.0
         self.zoom_min = 0.001
         self.zoom = 1
@@ -80,6 +77,21 @@ class PanZoomHandler:  # original
         self.update_screen = True
         self.panning = False
         self.pan_start_pos = None
+
+    @property
+    def zoom(self):
+        return self._zoom
+
+    @zoom.setter
+    def zoom(self, value):
+        if value > self.zoom_max:
+            value = self.zoom_max
+        elif value < self.zoom_min:
+            value = self.zoom_min
+        self._zoom = value
+
+        if hasattr(config.app, "zoom_scale"):
+           config.app.zoom_scale.set_zoom(self.zoom)
 
     def __str__(self):
         return f"world_offset_x: {self.world_offset_x}, world_offset_y: {self.world_offset_y}, zoom: {self.zoom}"
@@ -149,10 +161,10 @@ class PanZoomHandler:  # original
                 self.pan(mouse_x, mouse_y)
 
     def _zoom_in_out(self, event):
-        if event.button == 4 and self.zoom < self.zoom_max:
+        if event.button == 4 and self.zoom:
             self.set_zoom(self.zoom * self.scale_up)
             config.app.cursor.set_cursor("zoom_in")
-        elif event.button == 5 and self.zoom > self.zoom_min:
+        elif event.button == 5 and self.zoom:
             self.set_zoom(self.zoom * self.scale_down)
             config.app.cursor.set_cursor("zoom_out")
 
