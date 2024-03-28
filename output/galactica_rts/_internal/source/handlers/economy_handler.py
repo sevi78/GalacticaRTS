@@ -4,8 +4,19 @@ from source.factories.building_factory import building_factory
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 
 
+def get_sum_up_to_n(dict, n):
+    sum = 0
+    for key, value in dict.items():
+        if key < n:
+            sum += value
+
+    return sum
+
+
 class EconomyHandler:
     def __init__(self):
+        self.player = None
+        self.population_limit = 0
         self.production = {
             "energy": 0,
             "food": 0,
@@ -14,6 +25,12 @@ class EconomyHandler:
             "population": 0,
             "technology": 0
             }
+
+        self.production_water = self.production["water"]
+        self.production_energy = self.production["energy"]
+        self.production_food = self.production["food"]
+        self.production_minerals = self.production["minerals"]
+        self.production_technology = self.production["technology"]
         self.planet_production = {}
         self.planet_buildings = {}
         self.all_buildings = []
@@ -38,13 +55,14 @@ class EconomyHandler:
             "population_grow_factor": {"operator": "", "value": 0},
             "buildings_max": {"operator": "", "value": 0}
             }
+
         for special in planet.specials:
             special_key, operator, special_value = special.split()
             special_value = float(special_value)
             planet.specials_dict[special_key]["operator"] = operator
             planet.specials_dict[special_key]["value"] += special_value
 
-        #pprint (f"setup_planet_specials_dict:{planet}: {planet.specials_dict}")
+        # pprint (f"setup_planet_specials_dict:{planet}: {planet.specials_dict}")
         return planet.specials_dict
 
     def calculate_planet_production(self, planet):
@@ -86,8 +104,48 @@ class EconomyHandler:
                     else:
                         pass
 
-
         return planet.production
+
+    def calculate_global_production(self, player):
+        self.production = {
+            "energy": 0,
+            "food": 0,
+            "minerals": 0,
+            "water": 0,
+            "technology": 0,
+            "population": 0
+            }
+
+        self.population_limit = 0
+
+        for planet in sprite_groups.planets:
+            if planet.owner == player.owner:
+                planet.calculate_production()
+                planet.add_population()
+
+                # set population limits
+                self.population_limit += planet.population_limit
+                for key, value in planet.production.items():
+                    self.production[key] += getattr(planet, "production_" + key)
+
+                # subtract the building_slot_upgrades ( they cost 1 energy)
+                self.production["energy"] -= get_sum_up_to_n(planet.building_slot_upgrade_energy_consumption,
+                    planet.building_slot_upgrades + 1)
+
+        player.population_limit = self.population_limit
+        player.production = self.production
+
+        self.production_water = self.production["water"]
+        self.production_energy = self.production["energy"]
+        self.production_food = self.production["food"]
+        self.production_minerals = self.production["minerals"]
+        self.production_technology = self.production["technology"]
+
+        player.production_water = self.production["water"]
+        player.production_energy = self.production["energy"]
+        player.production_food = self.production["food"]
+        player.production_minerals = self.production["minerals"]
+        player.production_technology = self.production["technology"]
 
     def randomize_planet_resources(self):
         all_possible_resources = building_factory.get_resource_categories()
@@ -101,5 +159,7 @@ class EconomyHandler:
             self.calculate_planet_production(planet)
             self.setup_planet_specials_dict(planet)
 
+        # economy_handler.calculate_global_production(self.player)
+        # economy_handler.calculate_global_production(self.players[1])
 
 economy_handler = EconomyHandler()

@@ -1,8 +1,6 @@
 import random
-
 import pygame
-
-from source.configuration import global_params
+from source.configuration.game_config import config
 from source.draw.circles import draw_zoomable_circle
 from source.draw.zoomable_rect import draw_zoomable_rect
 from source.editors.editor_base.editor_base import EditorBase
@@ -31,7 +29,7 @@ class LevelEdit(EditorBase):
 
     def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
         EditorBase.__init__(self, win, x, y, width, height, isSubWidget=False, **kwargs)
-        self.level_handler = global_params.app.level_handler
+        self.level_handler = config.app.level_handler
 
         #  widgets
         self.create_inputboxes()
@@ -50,8 +48,10 @@ class LevelEdit(EditorBase):
         self.height_list = [_ for _ in range(5000, 1001000, 1000)]
         self.collectable_item_amount_list = [_ for _ in range(0, 101, 1)]
         self.universe_density_list = [_ for _ in range(0, 110, 10)]
+        self.population_density_list = [_ for _ in range(0, 105, 5)]
         self.lists = ["level_list", "planets_list", "suns_list", "moons_list", "width_list", "height_list",
-                      "collectable_item_amount_list", "universe_density_list", "central_compression_list"]
+                      "collectable_item_amount_list", "universe_density_list", "central_compression_list",
+                      "population_density_list"]
 
         # temp dict
         self.last_created = {}
@@ -65,7 +65,9 @@ class LevelEdit(EditorBase):
         self.create_smoothing_button()
         self.create_update_button()
         self.create_rename_button()
+        self.create_owner_button()
         self.create_explore_button()
+
         self.set_selector_current_value()
 
         # hide initially
@@ -98,7 +100,7 @@ class LevelEdit(EditorBase):
 
     def create_update_button(self):
         update_button = ImageButton(win=self.win,
-            x=self.get_screen_x() + BUTTON_SIZE * 2,
+            x=self.get_screen_x() + BUTTON_SIZE / 2 + BUTTON_SIZE,
             y=self.world_y + TOP_SPACING + BUTTON_SIZE / 2,
             width=BUTTON_SIZE,
             height=BUTTON_SIZE,
@@ -121,9 +123,34 @@ class LevelEdit(EditorBase):
         self.buttons.append(update_button)
         self.widgets.append(update_button)
 
+    def create_owner_button(self):
+        owner_button = ImageButton(win=self.win,
+            x=self.get_screen_x() + BUTTON_SIZE / 2 + BUTTON_SIZE * 2,
+            y=self.world_y + TOP_SPACING + BUTTON_SIZE / 2,
+            width=BUTTON_SIZE,
+            height=BUTTON_SIZE,
+            isSubWidget=False,
+            parent=self,
+            image=pygame.transform.scale(
+                get_image("owner.png"), (BUTTON_SIZE, BUTTON_SIZE)),
+            tooltip="set owners",
+            info_text=info_panel_text_generator.create_create_info_panel_level_text(
+                self.level_handler.data["globals"]["level"], self.level_handler.data),
+            frame_color=self.frame_color,
+            moveable=False,
+            include_text=False,
+            layer=self.layer,
+            onClick=lambda: self.level_handler.set_planet_owners(),
+            )
+
+        owner_button.hide()
+
+        self.buttons.append(owner_button)
+        self.widgets.append(owner_button)
+
     def create_smoothing_button(self):
         smoothing_button = ImageButton(win=self.win,
-            x=self.get_screen_x() + BUTTON_SIZE * 3 + BUTTON_SIZE / 2,
+            x=self.get_screen_x() + BUTTON_SIZE / 2 + BUTTON_SIZE * 3,
             y=self.world_y + TOP_SPACING + BUTTON_SIZE / 2,
             width=BUTTON_SIZE,
             height=BUTTON_SIZE,
@@ -149,7 +176,7 @@ class LevelEdit(EditorBase):
 
     def create_rename_button(self):
         rename_button = ImageButton(win=self.win,
-            x=self.get_screen_x() + BUTTON_SIZE * 4 + BUTTON_SIZE,
+            x=self.get_screen_x() + BUTTON_SIZE / 2 + BUTTON_SIZE * 4,
             y=self.world_y + TOP_SPACING + BUTTON_SIZE / 2,
             width=BUTTON_SIZE,
             height=BUTTON_SIZE,
@@ -173,7 +200,7 @@ class LevelEdit(EditorBase):
 
     def create_explore_button(self):
         explore_button = ImageButton(win=self.win,
-            x=self.get_screen_x() + BUTTON_SIZE * 6 + BUTTON_SIZE / 2,
+            x=self.get_screen_x() + BUTTON_SIZE / 2 + BUTTON_SIZE * 5,
             y=self.world_y + TOP_SPACING + BUTTON_SIZE / 2,
             width=BUTTON_SIZE,
             height=BUTTON_SIZE,
@@ -205,7 +232,11 @@ class LevelEdit(EditorBase):
         # Desired order of keys
         desired_order = ["level", "level_success", "width", "height", "universe_density", "central_compression",
                          "goal", "suns", "planets", "moons", "collectable_item_amount", "spaceship", "spacehunter",
-                         "cargoloader"]
+                         "cargoloader", "population_density"]
+
+        # for key, value in self.level_handler.data["globals"].items():
+        #     if not key in desired_order:
+        #         desired_order.append(key)
 
         # Create a new dictionary with the desired key order
         self.level_handler.data["globals"] = {key: self.level_handler.data["globals"][key] for key in desired_order}
@@ -375,6 +406,7 @@ class LevelEdit(EditorBase):
         self.level_handler.delete_level()
         self.level_handler.generate_level_dict_from_editor()
         planet_factory.create_planets_from_data(data=self.level_handler.data)
+        self.parent.selected_planet = sprite_groups.planets.sprites()[0]
         self.parent.ship_factory.create_ships_from_data(data=self.level_handler.data)
         self.level_handler.create_universe()
 
@@ -386,7 +418,7 @@ class LevelEdit(EditorBase):
         self.level_handler.setup_pan_zoom_handler()
 
     def delete_object(self):
-        selected_ships = global_params.app.box_selection.selected_objects
+        selected_ships = config.app.box_selection.selected_objects
 
         # used for ships
         if len(selected_ships) > 0:
@@ -394,24 +426,25 @@ class LevelEdit(EditorBase):
                 i.__delete__(i)
 
         # used for planets
-        selected_planet = global_params.app.selected_planet
+        selected_planet = config.app.selected_planet
         self.delete_planet(selected_planet)
 
     def listen(self, events):
         """show or hide, navigate to planet on selection"""
-        self.inputbox.handle_events(events)
-        self.handle_hovering()
-        self.drag(events)
+        if not self._hidden and not self._disabled:
+            self.inputbox.handle_events(events)
+            self.handle_hovering()
+            self.drag(events)
 
-        for event in events:
-            # ignore all inputs while any text input is active
-            if global_params.text_input_active:
-                return
+            for event in events:
+                # ignore all inputs while any text input is active
+                if config.text_input_active:
+                    return
 
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_BACKSPACE:
-                    if self.isVisible():
-                        self.delete_object()
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_BACKSPACE:
+                        if self.isVisible():
+                            self.delete_object()
 
     def draw_level_borders(self):
         draw_zoomable_rect(self.win, colors.ui_darker, 0, 0,

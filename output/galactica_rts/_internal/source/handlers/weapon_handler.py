@@ -4,11 +4,11 @@ import time
 
 import pygame
 
-from source.configuration import global_params
+from source.configuration.game_config import config
 from source.draw.circles import draw_transparent_circle
 from source.draw.zigzag_line import draw_zigzag_line
 from source.factories.weapon_factory import weapon_factory
-from source.gui.lod import inside_screen
+from source.gui.lod import level_of_detail
 from source.gui.widgets.moving_image import MovingImage
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.multimedia_library.images import get_image
@@ -55,7 +55,7 @@ class WeaponHandler:
         if actual_time - self.phaser_last_shoot > 1 / shoot_interval:
             self.phaser_last_shoot = actual_time
             self.draw_moving_image(defender, power)
-            global_params.app.player.energy -= self.current_weapon.get("energy_consumtion", 1)
+            config.app.player.energy -= self.current_weapon.get("energy_consumtion", 1)
             color = random.choice(list(pygame.color.THECOLORS.keys()))
             draw_zigzag_line(
                 surface=self.parent.win,
@@ -71,7 +71,7 @@ class WeaponHandler:
         actual_time = time.time()
         if actual_time - self.phaser_last_shoot > 1 / shoot_interval:
             self.phaser_last_shoot = actual_time
-            app = global_params.app
+            app = config.app
             screen = app.win
             x, y = pan_zoom_handler.screen_2_world(self.parent.rect.centerx, self.parent.rect.centery)
             rx = int(self.parent.rect.width / 4)
@@ -96,7 +96,9 @@ class WeaponHandler:
                     explosion_relative_gif_size=1.0,
                     layer=9,
                     debug=False,
-                    target=defender, missile_power=power)
+                    target=defender,
+                    missile_power=power,
+                    appear_at_start=True)
                 # missile.set_target(defender)
 
     def draw_moving_image(self, defender, power):
@@ -120,7 +122,7 @@ class WeaponHandler:
         return value
 
     def attack(self, defender):
-        if not inside_screen(self.parent.get_screen_position()):
+        if not level_of_detail.inside_screen(self.parent.get_screen_position()):
             return
 
         # activate weapon
@@ -140,11 +142,11 @@ class WeaponHandler:
             self.parent.enemy = None
 
     def draw_attack_distance(self):
-        draw_transparent_circle(self.parent.win, self.parent.frame_color, self.parent.rect.center, self.get_current_value("range"), 20)
+        draw_transparent_circle(self.parent.win, self.parent.frame_color, self.parent.rect.center, self.get_current_value("range") * pan_zoom_handler.zoom, 20)
 
 
 def launch_missile(attacker, defender):
-    app = global_params.app
+    app = config.app
     screen = app.win
     x, y = pan_zoom_handler.screen_2_world(attacker.rect.centerx, attacker.rect.centery)
     rx = int(attacker.rect.width / 4)
@@ -168,14 +170,15 @@ def launch_missile(attacker, defender):
             explosion_relative_gif_size=1.0,
             layer=9,
             debug=False,
-            target=defender)
+            target=defender,
+            appear_at_start=True)
         # missile.set_target(defender)
 
 
 def attack(attacker, defender):
     # this might be deleted: should not attacker attack defender even if not on screen ???
-    if not inside_screen(attacker.get_screen_position()):
-        return
+    # if not level_of_detail.inside_screen(attacker.get_screen_position()):
+    #     return
 
     # if attacker is planet
     if attacker.property == "planet":

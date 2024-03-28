@@ -35,7 +35,6 @@ class ScrollBar:
     @value.setter
     def value(self, value):
         self._value = value
-
         self.draw_surface(value)
 
     def draw_surface(self, value):

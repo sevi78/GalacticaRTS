@@ -4,7 +4,7 @@ import sys
 import pygame
 
 # from source.multimedia_library.images import get_image
-from source.configuration import global_params
+from source.configuration.game_config import config
 from source.multimedia_library.images import get_image
 
 resources = ["water", "food", "energy", "technology", "minerals"]
@@ -36,8 +36,8 @@ class Deal:
 
         self.create_friendly_offer()
 
-    def make_deal(self):
-        player = global_params.app.player
+    def make_deal(self, player):
+
         # add offer
         for key, value in self.offer.items():
             setattr(player, key, getattr(player, key) + value)
@@ -46,66 +46,11 @@ class Deal:
         for key, value in self.request.items():
             setattr(player, key, getattr(player, key) - value)
 
-    def create_friendly_offer__(self):# orig
-        """
-        this should create an offer based on the resources of the player, always what you need
-        """
-        if not global_params.app:
-            return
-
-        player = global_params.app.player
-
-        # extract "population" from dict
-        d_raw = player.get_stock()
-        d = {key: max(0, value) for key, value in d_raw.items() if key != "population"}
-
-        # check if any value in the stock is less than 0
-        if any(value < 0 for value in d.values()):
-            # replace negative values with 0
-            d = {key: max(0, value) for key, value in d.items()}
-
-        # get key with lowest value
-        lowest_value_key = min(d, key=d.get)
-
-        # calculate minimum value needed to set lowest value to 25
-        min_value = max(25 - d[lowest_value_key], 0)
-
-        # calculate offer value
-        offer_value = d[lowest_value_key] + min_value + random.randint(25, 250)
-        self.offer = {lowest_value_key: offer_value}
-
-        # calculate request value
-        request_key = max(d, key=d.get)
-        request_value = getattr(player, request_key)
-        request_value -= random.randint(25, 250)
-        self.request = {request_key: request_value}
-
-    def create_friendly_offer__(self):
+    def create_friendly_offer(self, player):
         """This should create an offer based on the resources of the player, always what you need"""
-        if not global_params.app:
+        if not config.app:
             return
-        player = global_params.app.player
-        # extract "population" from dict
-        d_raw = player.get_stock()
-        d = {key: max(0, value) for key, value in d_raw.items() if key != "population"}
 
-        # get key with lowest value
-        lowest_value_key = min(d, key=d.get)
-        # calculate offer value
-        offer_value = d[lowest_value_key] + random.randint(25, 250)
-        self.offer = {lowest_value_key: offer_value}
-
-        # get key with highest value
-        highest_value_key = max(d, key=d.get)
-        # calculate request value
-        request_value = int(d[highest_value_key] * 0.25)
-        self.request = {highest_value_key: request_value}
-
-    def create_friendly_offer(self):
-        """This should create an offer based on the resources of the player, always what you need"""
-        if not global_params.app:
-            return
-        player = global_params.app.player
         # extract "population" from dict
         d_raw = player.get_stock()
         d = {key: max(0, value) for key, value in d_raw.items() if key != "population"}
@@ -148,8 +93,7 @@ class GameEvent:
     - deal: the deal offered by the alien population of a randomly selected planet.
     - event_id: the unique identifier of the event."""
 
-
-    def __init__(self, name, title, body, end_text, functions, condition,id,  **kwargs):
+    def __init__(self, name, title, body, end_text, functions, condition, id, **kwargs):
         self.name = name
         self.title = title
         self.body = body
@@ -161,12 +105,14 @@ class GameEvent:
         self.level = kwargs.get("level", 0)
         self.condition = condition
 
-        #GameEvent.game_events[self.name] = self
+        # GameEvent.game_events[self.name] = self
+
     def __repr__(self):
         return self.name
+
     def set_body(self):
         # check for valid references, otherwise return
-        if not global_params.app:
+        if not config.app:
             return
 
         # check for deal, otherwise don't change the body
@@ -174,7 +120,7 @@ class GameEvent:
             return
 
         # get a random planet from the explored planets
-        explored_planets = global_params.app.explored_planets
+        explored_planets = config.app.explored_planets
         explored_planets_with_aliens = []
 
         # check if has some explored planets
@@ -209,10 +155,7 @@ class GameEvent:
 
     def restart_game__(self):
         print("restart game")
-        global_params.app.restart_game()
-
-
-
+        config.app.restart_game()
 
 # define GameEvents
 # start = GameEvent(
@@ -284,4 +227,3 @@ class GameEvent:
 #     friendly=True
 #     )
 #
-

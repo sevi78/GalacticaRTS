@@ -1,4 +1,4 @@
-from source.configuration import global_params
+from source.configuration.game_config import config
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.pan_zoom_sprites.pan_zoom_ship_classes.pan_zoom_ship import PanZoomShip
@@ -10,7 +10,11 @@ class ShipFactory:
         data = kwargs.get("data", {})
         size_x, size_y = map(int, name.split("_")[1].split(".")[0].split("x"))
         name = name.split("_")[0]
-        ship = PanZoomShip(global_params.win,
+
+        if name == "spacestation":
+            size_x, size_y = 100, 100
+
+        ship = PanZoomShip(config.win,
             x,
             y,
             size_x,
@@ -29,8 +33,9 @@ class ShipFactory:
             name=name,
             weapons=weapons,
             data=data,
-            outline_thickness= 3,
-            outline_threshold = 127)
+            outline_thickness=3,
+            outline_threshold=127,
+            is_spacestation=True if name == "spacestation" else False)
         return ship
 
     def create_ships_from_data(self, data):
@@ -38,7 +43,7 @@ class ShipFactory:
             self.create_ship(
                 data["ships"][key]["name"] + "_30x30.png",
                 data["ships"][key]["world_x"],
-                data["ships"][key]["world_y"], global_params.app, data["ships"][key]["weapons"], data=data)
+                data["ships"][key]["world_y"], config.app, data["ships"][key]["weapons"], data=data["ships"][key])
 
     def delete_ships(self):
         for i in sprite_groups.ships.sprites():

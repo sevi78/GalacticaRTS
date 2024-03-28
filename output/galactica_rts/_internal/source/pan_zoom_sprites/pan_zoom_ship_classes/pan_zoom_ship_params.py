@@ -1,11 +1,13 @@
 import math
 
+import pygame.mouse
+
+from source.configuration.game_config import config
 from source.gui.event_text import event_text
+from source.handlers.pan_zoom_sprite_handler import sprite_groups
+from source.multimedia_library.sounds import sounds
 from source.pan_zoom_sprites.pan_zoom_ship_classes.pan_zoom_ship_state_engine import PanZoomShipStateEngine
 from source.text.info_panel_text_generator import info_panel_text_generator
-from source.configuration import global_params
-from source.multimedia_library.sounds import sounds
-from source.handlers.pan_zoom_sprite_handler import sprite_groups
 
 SHIP_SPEED = 1.5
 SHIP_GUN_POWER = 30
@@ -100,7 +102,12 @@ class PanZoomShipParams:
                           }
 
     def set_info_text(self):
-        if not self == global_params.app.ship:
+        if not self == config.app.ship:
+            if self.rect.collidepoint(pygame.mouse.get_pos()):
+                text = info_panel_text_generator.create_info_panel_ship_text(self)
+                self.parent.info_panel.set_text(text)
+                self.parent.info_panel.set_planet_image(self.image_raw, alpha=self.info_panel_alpha)
+
             return
 
         text = info_panel_text_generator.create_info_panel_ship_text(self)
@@ -113,7 +120,7 @@ class PanZoomShipParams:
     def submit_tooltip(self):
         if self.tooltip:
             if self.tooltip != "":
-                global_params.tooltip_text = self.tooltip
+                config.tooltip_text = self.tooltip
 
     def reload_ship(self):
         if self.energy_reloader:
@@ -124,33 +131,35 @@ class PanZoomShipParams:
             # if reloader is a planet
             if hasattr(self.energy_reloader, "production"):
                 if self.energy_reloader.production["energy"] > 0:
-                    if self.parent.player.energy - self.energy_reload_rate * self.energy_reloader.production[
-                        "energy"] > 0:
-                        if self.energy < self.energy_max:
-                            self.energy += self.energy_reload_rate * self.energy_reloader.production[
-                                "energy"] * global_params.game_speed
-                            self.parent.player.energy -= self.energy_reload_rate * self.energy_reloader.production[
-                                "energy"] * global_params.game_speed
-                            self.flickering()
-                        else:
-                            event_text.text = "PanZoomShip reloaded successfully!!!"
-                            sounds.stop_sound(self.sound_channel)
+                    if self.energy_reloader.owner in self.parent.players.keys():
+                        if self.parent.players[self.energy_reloader.owner].energy - self.energy_reload_rate * \
+                                self.energy_reloader.production[
+                                    "energy"] > 0:
+                            if self.energy < self.energy_max:
+                                self.energy += self.energy_reload_rate * self.energy_reloader.production[
+                                    "energy"] * config.game_speed
+                                self.parent.players[self.energy_reloader.owner].energy -= self.energy_reload_rate * \
+                                                    self.energy_reloader.production["energy"] * config.game_speed
+                                self.flickering()
+                            else:
+                                event_text.set_text("PanZoomShip reloaded successfully!!!", obj=self)
+                                sounds.stop_sound(self.sound_channel)
 
                 if self.energy_reloader.type == "sun":
                     if self.energy < self.energy_max:
-                        self.energy += self.energy_reload_rate * global_params.game_speed
+                        self.energy += self.energy_reload_rate * config.game_speed
                         self.flickering()
 
             # if relaoder is a ship
             elif hasattr(self.energy_reloader, "crew"):
                 if self.energy_reloader.energy > 0:
-                    if self.energy_reloader.energy - self.energy_reload_rate * global_params.game_speed > 0:
+                    if self.energy_reloader.energy - self.energy_reload_rate * config.game_speed > 0:
                         if self.energy < self.energy_max:
                             self.energy += self.energy_reload_rate
-                            self.energy_reloader.energy -= self.energy_reload_rate * global_params.game_speed
+                            self.energy_reloader.energy -= self.energy_reload_rate * config.game_speed
                             self.flickering()
                         else:
-                            event_text.text = "PanZoomShip reloaded sucessfully!!!"
+                            event_text.set_text("PanZoomShip reloaded successfully!!!", obj=self)
                             sounds.stop_sound(self.sound_channel)
         else:
             sounds.stop_sound(self.sound_channel)

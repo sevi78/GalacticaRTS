@@ -2,7 +2,7 @@ import random
 
 import pygame.display
 
-from source.configuration import global_params
+from source.configuration.game_config import config
 from source.handlers.file_handler import load_file
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
@@ -90,17 +90,17 @@ class EnemyHandler(InterfaceData):
                         setattr(self, key, value)
 
     def ufo_limit_reached(self):
-        if global_params.app.player.population < 500:
+        if config.app.player.population < 500:
             return True
 
-        if len(sprite_groups.ufos.sprites()) * 1000 > global_params.app.player.population:
+        if len(sprite_groups.ufos.sprites()) * 1000 > config.app.player.population:
             return True
 
         return False
 
     def set_explored_planets_with_aliens(self):
-        if global_params.app:
-            self.explored_planets_with_aliens = [i for i in global_params.app.explored_planets if
+        if config.app:
+            self.explored_planets_with_aliens = [i for i in config.app.explored_planets if
                                                  i.alien_population != 0]
 
     def update(self):
@@ -116,23 +116,30 @@ class EnemyHandler(InterfaceData):
 
     def spawn_ufo(self, planet):
         x, y = pan_zoom_handler.screen_2_world(planet.screen_x, planet.screen_y)
+
+        attitude = random.randint(0, 100)
+        attitude_bool = 0 if attitude < 50 else 1
+
+
         ufo = PanZoomUfo(self.win,
             x,
             y,
             pan_zoom_ufo_config["enemy handler"]["width"],
             pan_zoom_ufo_config["enemy handler"]["height"],
             pan_zoom=pan_zoom_handler,
-            image_name=random.choice(self.ufo_images),
+            image_name=self.ufo_images[attitude_bool],
             align_image="center",
             group="ufos",
             explosion_name=random.choice(self.explosion_gifs),
             tooltip="",
             infotext="",
-            attitude=0,
+            attitude=attitude,
             lifetime=random.randint(30, 60),
             explosion_relative_gif_size=5.0,
             id=self.ufo_id,
-            layer=0)
+            layer=5,
+            outline_thickness=1,
+            outline_threshold=0)
 
         ufo.tooltip = tooltip_generator.create_ufo_tooltip(ufo)
         ufo.info_text = info_panel_text_generator.create_info_panel_ufo_text(ufo)

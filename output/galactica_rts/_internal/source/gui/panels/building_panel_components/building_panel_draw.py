@@ -1,6 +1,7 @@
 import pygame
 from pygame_widgets.util import drawText
 
+from source.configuration.game_config import config
 from source.factories.building_factory import building_factory
 from source.multimedia_library.images import images, pictures_path, get_image
 from source.text.text_formatter import format_number
@@ -15,7 +16,7 @@ SPECIAL_TEXT_COLOR = "palegreen4"  # "chartreuse3"
 class BuildingPanelDraw:
     def __init__(self):
         self.resource_image_size = (15, 15)
-        self.population_image = pygame.transform.scale(get_image("population_25x25.png"), (25,25))
+        self.population_image = pygame.transform.scale(get_image("population_25x25.png"), (25, 25))
         self.plus_image = pygame.transform.scale(
             get_image("plus_icon.png"), self.resource_image_size)
         self.plus_image_rect = self.plus_image.get_rect()
@@ -30,12 +31,18 @@ class BuildingPanelDraw:
     def draw_planet_params(self, x):
         selected_planet = self.parent.selected_planet
 
+        # draw owner
+        drawText(self.win, f"owner:{selected_planet.owner}", self.frame_color,(
+            x + self.spacing_x, self.world_y, self.get_screen_width(), 20), self.font, "left")
+
+        self.world_y += self.spacing * 3
+
         # draw population text
         # population
         drawText(self.win, "population: " + str(int(selected_planet.population)) + "/" + format_number(selected_planet.population_limit, 1), self.frame_color, (
             x + self.spacing_x, self.world_y, self.get_screen_width(), 20), self.font, "left")
 
-        #print ("selected_planet.specials_dict:", selected_planet.specials_dict)
+        # print ("selected_planet.specials_dict:", selected_planet.specials_dict)
         value = selected_planet.specials_dict["population_grow_factor"]["value"]
         operator = selected_planet.specials_dict["population_grow_factor"]["operator"]
         if float(value) > 0.0:
@@ -46,8 +53,8 @@ class BuildingPanelDraw:
                 x + self.screen_width - SPECIAL_RIGHT_OFFSET, self.world_y - SPECIAL_Y_OFFSET, self.get_screen_width(),
                 20), self.special_font, "left")
 
-        #image = pygame.transform.scale(get_image("population_25x25.png"), (25,25))
-        self.win.blit(self.population_image, (x-4, self.world_y))
+        # image = pygame.transform.scale(get_image("population_25x25.png"), (25,25))
+        self.win.blit(self.population_image, (x - 4, self.world_y))
 
         self.world_y += self.spacing * 3
 
@@ -56,16 +63,14 @@ class BuildingPanelDraw:
         else:
             self.smiley = self.smiley_image_sad
 
-        self.win.blit(self.smiley, (x-1, self.world_y))
+        self.win.blit(self.smiley, (x - 1, self.world_y))
 
         # draw background planet icon
-        name = self.parent.selected_planet.name
-        pic = name + "_150x150.png"
-        if pic in images[pictures_path]["planets"].keys():
-            self.planet_image = get_image(pic)
-        else:
-            self.planet_image = pygame.transform.scale(self.parent.selected_planet.image_raw.copy(), (150, 150))
+        image_name = self.parent.selected_planet.image_name_big
+        # if self.parent.selected_planet.owner != -1:
+        #     image = config.app.players[self.parent.selected_planet.owner].image
 
+        self.planet_image = pygame.transform.scale(self.parent.selected_planet.image_raw, (150, 150))
         self.planet_image.set_alpha(128)
         self.win.blit(self.planet_image, self.surface_rect.midtop)
         self.world_y += self.spacing * 3
@@ -78,7 +83,7 @@ class BuildingPanelDraw:
         #     get_image("plus_icon.png"), self.resource_image_size)
 
         # get rect for storage
-        #plus_image_rect = plus_image.get_rect()
+        # plus_image_rect = plus_image.get_rect()
         self.plus_image_rect.x = x
         self.plus_image_rect.y = self.world_y
         self.plus_button_image["plus_icon"] = self.plus_image_rect
@@ -90,7 +95,7 @@ class BuildingPanelDraw:
         #     get_image("minus_icon.png"), self.resource_image_size)
 
         # get rect for storage
-        #minus_image_rect = minus_image.get_rect()
+        # minus_image_rect = minus_image.get_rect()
         self.minus_image_rect.x = x
         self.minus_image_rect.y = self.world_y
         self.minus_button_image["minus_icon"] = self.minus_image_rect
@@ -103,7 +108,6 @@ class BuildingPanelDraw:
 
         drawText(self.win, "buildings:  " + str(len(civil_buildings)) + "/" + str(int(self.parent.selected_planet.buildings_max)), self.frame_color, (
             x + self.spacing_x, self.world_y, self.get_screen_width(), 20), self.font, "left")
-
 
         # image = pygame.transform.scale(get_image("building_icon.png"),self.resource_image_size)
         #
@@ -168,7 +172,7 @@ class BuildingPanelDraw:
         resources = self.parent.resources
         for r in resources:
             image = pygame.transform.scale(
-                images[pictures_path]["resources"][r + "_25x25.png"], self.resource_image_size)
+                get_image(r + "_25x25.png"), self.resource_image_size)
             self.win.blit(image, (x, self.world_y))
 
             # draw specials
@@ -200,9 +204,14 @@ class BuildingPanelDraw:
         self.world_y += self.spacing * 3
         for r in resources:
             image = pygame.transform.scale(
-                images[pictures_path]["resources"][r + "_25x25.png"], self.resource_image_size)
+                get_image(r + "_25x25.png"), self.resource_image_size)
             self.win.blit(image, (x, self.world_y))
-            value = self.parent.player.production[r]
+
+            if self.parent.selected_planet.owner != -1:
+                value = self.parent.players[self.parent.selected_planet.owner].production[r]
+            else:
+                value = 0
+
             text = self.font.render(r + ": " + str(value), True, self.frame_color)
             self.win.blit(text, (x + self.spacing_x, self.world_y))
 

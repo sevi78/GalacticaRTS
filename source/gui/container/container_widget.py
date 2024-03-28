@@ -1,5 +1,6 @@
 import copy
 import math
+import os
 
 import pygame
 
@@ -7,12 +8,15 @@ from source.configuration.game_config import config
 from source.editors.editor_base.editor_config import TOP_SPACING, TOP_LIMIT
 from source.gui.container.container_config import WIDGET_SIZE
 from source.gui.container.container_widget_item import ContainerWidgetItem
+from source.gui.container.deal_item import DealItem
 from source.gui.widgets.frame import Frame
 from source.gui.widgets.scroll_bar import ScrollBar
 from source.handlers.mouse_handler import mouse_handler
 from source.handlers.widget_handler import WidgetHandler
 from source.interaction.interaction_handler import InteractionHandler
+from source.multimedia_library.images import get_image
 
+SCROLL_STEP = 25
 
 class ContainerWidget(InteractionHandler):
     def __init__(self, win, x, y, width, height, widgets, function, **kwargs):
@@ -32,6 +36,8 @@ class ContainerWidget(InteractionHandler):
         self.widgets = widgets
         self.function = function
 
+        assert len(self.widgets) > 0, f"widgets can not be len 0 !"
+
         # kwargs
         self.parent = kwargs.get("parent", None)
         self.group = kwargs.get("group", None)
@@ -49,6 +55,8 @@ class ContainerWidget(InteractionHandler):
         # surface
         self.surface = pygame.Surface((width, height))
         self.rect = self.surface.get_rect(topleft=(x, y))
+        self.set_x(x)
+        self.set_y(y)
 
         # scrolling
         self.scroll_x = 0
@@ -68,7 +76,7 @@ class ContainerWidget(InteractionHandler):
         # scrollbar
         self.scrollbar = ScrollBar(win, 0, 0, 5, self.world_height, self)
 
-        # initial position ing maybe not needed
+        # initial positioning maybe not needed
         self.reposition_widgets()
 
         # register
@@ -118,9 +126,12 @@ class ContainerWidget(InteractionHandler):
     def get_scroll_step(self) -> int:
         return self.widgets[0].world_height
 
+
     def select(self):
         # call the function
-        getattr(self, "function")(self)
+        if hasattr(self, "function"):
+            if callable(self.function):
+                getattr(self, "function")(self)
 
     def reposition_widgets(self):  # original
         # Adjust the position of each widget relative to the container's current position
@@ -167,9 +178,10 @@ class ContainerWidget(InteractionHandler):
         # scrollbar
         self.scrollbar.update_position()
 
-        # filter wiget
-        self.filter_widget.world_x = self.rect.x + self.rect.width - self.filter_widget.screen_width - 10
-        self.filter_widget.world_y = self.rect.y - TOP_SPACING
+        # filter widget
+        if self.filter_widget:
+            self.filter_widget.world_x = self.rect.x + self.rect.width - self.filter_widget.screen_width - 10
+            self.filter_widget.world_y = self.rect.y - TOP_SPACING
 
     def listen(self, events):
         if self._hidden:
@@ -181,13 +193,16 @@ class ContainerWidget(InteractionHandler):
         # set hovering
         if self.rect.collidepoint(pygame.mouse.get_pos()):
             self.on_hover = True
-            config.app.cursor.set_cursor("scroll")
+            if config.app:
+                config.app.cursor.set_cursor("scroll")
         else:
             self.on_hover = False
 
         # drag
         self.drag(events)
-        self.resize(events)
+
+        # resize does not work yet
+        # self.resize(events)
 
         # handle events
         for event in events:
@@ -206,10 +221,11 @@ class ContainerWidget(InteractionHandler):
                         self.reposition_widgets()
 
                         # set cursor
-                        if event.y > 0:
-                            config.app.cursor.set_cursor("scroll_up")
-                        else:
-                            config.app.cursor.set_cursor("scroll_down")
+                        if config.app:
+                            if event.y > 0:
+                                config.app.cursor.set_cursor("scroll_up")
+                            else:
+                                config.app.cursor.set_cursor("scroll_down")
 
             # select
             if event.type == pygame.MOUSEBUTTONDOWN:
@@ -244,48 +260,80 @@ class ContainerWidget(InteractionHandler):
         # draw scrollbar
         self.scrollbar.draw()
 
-# def main():
-#     pygame.init()
-#     win = pygame.display.set_mode((800, 600))
-#     image = pygame.image.load(r"C:\Users\sever\Documents\Galactica-RTS_zoomable1.107\assets\pictures\icons\alien_face_green.png")
-#
-#     # widgets = []
-#     #
-#     # for index , _ in enumerate(os.listdir(r"C:\Users\sever\Documents\Galactica-RTS_zoomable1.107\assets\pictures\icons")):
-#     #     path = r'C:\Users\sever\Documents\Galactica-RTS_zoomable1.107\assets\pictures\icons' + os.sep + _
-#     #
-#     #     print (f"path: {path}")
-#     #     image = pygame.image.load(path)
-#     #     print (f"image:{image}, _:{_}")
-#     #
-#     #     widget = ImageWidget(win, 0, WIDGET_SIZE * index, WIDGET_SIZE, WIDGET_SIZE, image)
-#     #     widgets.append(widget)
-#     path = r'C:\Users\sever\Documents\Galactica-RTS_zoomable1.107\assets\pictures\icons'
-#     widgets = [
-#         ImageWidget(win, 0, WIDGET_SIZE * index, WIDGET_SIZE, WIDGET_SIZE, pygame.image.load(path + os.sep + _))
-#         for index, _ in enumerate(os.listdir(path))]
-#
-#     # widgets = [ImageWidget(win, 0, WIDGET_SIZE * _, WIDGET_SIZE, WIDGET_SIZE, image) for _ in range(17)]
-#     container = ContainerWidget(win, 280, 0, 200, 300, widgets, print)
-#     container.set_x(50)
-#     container.set_y(130)
-#
-#     path = r'C:\Users\sever\Documents\Galactica-RTS_zoomable1.107\assets\pictures\planets'
-#     container.set_widgets([
-#         ImageWidget(win, 0, WIDGET_SIZE * index, WIDGET_SIZE, WIDGET_SIZE, pygame.image.load(path + os.sep + _))
-#         for index, _ in enumerate(os.listdir(path))])
-#
-#     while True:
-#         events = pygame.event.get()
-#         container.listen(events)
-#         mouse_handler.update_mouse_state()
-#
-#         win.fill((0, 120, 0))
-#
-#         container.draw()
-#
-#         pygame.display.update()
-#
-#
-# if __name__ == "__main__":
-#     main()
+def main():
+    pygame.init()
+    win = pygame.display.set_mode((800, 600))
+
+    widgets = [DealItem(
+            win,
+            0,
+            0,
+            WIDGET_SIZE,
+            WIDGET_SIZE,
+            image=get_image(""),
+            obj=None,
+            index=0,
+            player_index = 0,
+            offer = {"energy":50},
+            request={"food":100})
+            ]
+
+    container = ContainerWidget(win, 280, 0, 200, 300, widgets, print)
+    container.set_visible()
+
+    while True:
+        events = pygame.event.get()
+        container.listen(events)
+        mouse_handler.update_mouse_state()
+        win.fill((0, 0, 0))
+
+        container.draw()
+
+        pygame.display.update()
+
+def main__():
+    pygame.init()
+    win = pygame.display.set_mode((800, 600))
+    image = pygame.image.load(r"C:\Users\sever\Documents\Galactica-RTS_zoomable1.107\assets\pictures\icons\alien_face_green.png")
+
+    # widgets = []
+    #
+    # for index , _ in enumerate(os.listdir(r"C:\Users\sever\Documents\Galactica-RTS_zoomable1.107\assets\pictures\icons")):
+    #     path = r'C:\Users\sever\Documents\Galactica-RTS_zoomable1.107\assets\pictures\icons' + os.sep + _
+    #
+    #     print (f"path: {path}")
+    #     image = pygame.image.load(path)
+    #     print (f"image:{image}, _:{_}")
+    #
+    #     widget = ImageWidget(win, 0, WIDGET_SIZE * index, WIDGET_SIZE, WIDGET_SIZE, image)
+    #     widgets.append(widget)
+    # path = r'C:\Users\sever\Documents\Galactica-RTS_zoomable1.107\assets\pictures\icons'
+    # widgets = [
+    #     ContainerWidgetItem(win, 0, WIDGET_SIZE * index, WIDGET_SIZE, WIDGET_SIZE, pygame.image.load(path + os.sep + _), index)
+    #     for index, _ in enumerate(os.listdir(path))]
+
+    widgets = []
+    # widgets = [ImageWidget(win, 0, WIDGET_SIZE * _, WIDGET_SIZE, WIDGET_SIZE, image) for _ in range(17)]
+    container = ContainerWidget(win, 280, 0, 200, 300, widgets, print)
+
+    container.set_visible()
+
+    # path = r'C:\Users\sever\Documents\Galactica-RTS_zoomable1.107\assets\pictures\planets'
+    # container.set_widgets([
+    #     ImageWidget(win, 0, WIDGET_SIZE * index, WIDGET_SIZE, WIDGET_SIZE, pygame.image.load(path + os.sep + _))
+    #     for index, _ in enumerate(os.listdir(path))])
+
+    while True:
+        events = pygame.event.get()
+        container.listen(events)
+        mouse_handler.update_mouse_state()
+
+        win.fill((0, 0, 0))
+
+        container.draw()
+
+        pygame.display.update()
+
+
+if __name__ == "__main__":
+    main()

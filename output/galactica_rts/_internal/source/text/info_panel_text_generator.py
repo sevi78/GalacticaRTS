@@ -1,10 +1,9 @@
 import math
 from collections import Counter
 
-from source.configuration import global_params
+from source.configuration.game_config import config
 from source.factories.building_factory import building_factory
 from source.handlers.file_handler import load_file
-
 from source.text.text_formatter import format_number
 
 
@@ -191,11 +190,11 @@ class InfoPanelTextGenerator:
         text += "rank: " + ship.rank + "\n"
         text += "speed: " + str(ship.speed) + "\n\n"
         text += "resources loaded: " + "\n\n"
-        text += "    water: " + str(ship.water) + "/" + str(ship.water_max) + "\n"
-        text += "    energy: " + str(int(ship.energy)) + "/" + str(int(ship.energy_max)) + "\n"
-        text += "    food: " + str(ship.food) + "/" + str(ship.food_max) + "\n"
-        text += "    minerals: " + str(ship.minerals) + "/" + str(ship.minerals_max) + "\n"
-        text += "    technology: " + str(ship.technology) + "/" + str(ship.technology_max) + "\n\n"
+        text += "    water: " + format_number(ship.water, 1) + "/" + format_number(ship.water_max, 1) + "\n"
+        text += "    energy: " + format_number(ship.energy, 1) + "/" + format_number(ship.energy_max, 1) + "\n"
+        text += "    food: " + format_number(ship.food, 1) + "/" + format_number(ship.food_max, 1) + "\n"
+        text += "    minerals: " + format_number(ship.minerals, 1) + "/" + format_number(ship.minerals_max, 1) + "\n"
+        text += "    technology: " + format_number(ship.technology, 1) + "/" + format_number(ship.technology_max, 1) + "\n\n"
 
         if ship.specials:
             text += f"    specials:\n"
@@ -212,6 +211,9 @@ class InfoPanelTextGenerator:
 
         # text += "scanner range: " + str(self.fog_of_war_radius) + "\n"
         # text += "crew: " + str(self.crew) + "\n"
+
+        if ship.is_spacestation:
+            text += f"\nspacestation energy production:{format_number(ship.spacestation.production_energy, 3)} \n"
 
         if ship.debug:
             text += "\n\ndebug:\n"
@@ -406,14 +408,14 @@ class InfoPanelTextGenerator:
     #     return infotext + weapon_var
 
     def create_info_panel_mission_text(self):
-        level = global_params.app.level_handler.data.get("globals").get("level")
-        goal = global_params.app.level_handler.data.get("globals").get("goal")
+        level = config.app.level_handler.data.get("globals").get("level")
+        goal = config.app.level_handler.data.get("globals").get("goal")
         infotext = f"your mission in level {level}:\n\n\n\n\n\n"
         infotext += f"goals:\n\n"
 
         for key, value in goal.items():
             infotext += f"  {key}: {value}"
-            if global_params.app.game_event_handler.goal_success[key]:
+            if config.app.game_event_handler.goal_success[key]:
                 infotext += ' \u2713'
             infotext += "\n\n"
 

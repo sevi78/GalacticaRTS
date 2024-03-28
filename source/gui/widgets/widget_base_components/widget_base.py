@@ -116,9 +116,6 @@ class WidgetBase(WidgetBaseMethods, ImageHandler, TextHandler, PositionHandler, 
         image = kwargs.get('image', None)
         rect = kwargs.get('rect', None)
 
-
-
-
         rect_surface = draw_transparent_rounded_rect(self.win, (0, 0, 0), self.surface_rect,
             config.ui_rounded_corner_radius_small, config.ui_panel_alpha)
 
@@ -129,4 +126,3 @@ class WidgetBase(WidgetBaseMethods, ImageHandler, TextHandler, PositionHandler, 
         pygame.draw.rect(self.win, self.frame_color, self.surface_rect,
             config.ui_rounded_corner_small_thickness, config.ui_rounded_corner_radius_small)
         return rect_surface
-

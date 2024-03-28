@@ -1,9 +1,10 @@
 import pygame
 from pygame_widgets.util import drawText
 
-from source.configuration import global_params
 from source.configuration.economy_params import EconomyParams
-from source.configuration.global_params import ui_rounded_corner_small_thickness
+from source.configuration.game_config import config
+from source.factories.building_factory import building_factory
+from source.game_play.navigation import navigate_to
 from source.gui.event_text import event_text
 from source.gui.panels.building_panel_components.building_panel_constructor import BuildingPanelConstructor
 from source.gui.panels.building_panel_components.building_panel_draw import BuildingPanelDraw
@@ -39,7 +40,7 @@ class BuildingPanel(WidgetBase, BuildingPanelConstructor, BuildingSlot, EconomyP
         self.frame_color = colors.frame_color
         self.bg_color = pygame.colordict.THECOLORS["black"]
         self.font_size = 16
-        self.font = pygame.font.SysFont(global_params.font_name, self.font_size)
+        self.font = pygame.font.SysFont(config.font_name, self.font_size)
         self.special_font = pygame.font.SysFont("georgiaproblack", SPECIAL_FONT_SIZE)  # georgiaproblack
 
         self.world_x = 0
@@ -54,7 +55,7 @@ class BuildingPanel(WidgetBase, BuildingPanelConstructor, BuildingSlot, EconomyP
         self.surface_size_y = 600
         self.surface = pygame.surface.Surface((width, self.surface_size_y))
         self.surface.fill((0, 0, 0))
-        self.surface.set_alpha(global_params.ui_panel_alpha)
+        self.surface.set_alpha(config.ui_panel_alpha)
         self.surface_rect = self.surface.get_rect()
         self.surface_rect.x = x
         self.surface_rect.y = y + height
@@ -100,7 +101,7 @@ class BuildingPanel(WidgetBase, BuildingPanelConstructor, BuildingSlot, EconomyP
         self.reposition()
 
     def set_info_text(self):
-        global_params.app.info_panel.set_text(info_panel_text_generator.info_text)
+        config.app.info_panel.set_text(info_panel_text_generator.info_text)
 
     def show_planet_selection_buttons(self):
         if len(self.parent.explored_planets) > 1 and not self._hidden:
@@ -123,7 +124,7 @@ class BuildingPanel(WidgetBase, BuildingPanelConstructor, BuildingSlot, EconomyP
 
         return buildings
 
-    def destroy_building(self, b):
+    def destroy_building__(self, b):
         print("destroy_building", b)
         try:
             self.parent.selected_planet.buildings.remove(b)
@@ -153,31 +154,37 @@ class BuildingPanel(WidgetBase, BuildingPanelConstructor, BuildingSlot, EconomyP
         # check for mouse collision with image
         for building_name, image_rect in self.singleton_buildings_images.items():
             if image_rect.collidepoint(pygame.mouse.get_pos()):
-                global_params.tooltip_text = f"Are you sure you want to destroy this {building_name}? You will probably not get anything back."
+                config.tooltip_text = f"Are you sure you want to destroy this {building_name}? You will probably not get anything back."
 
                 # check for mouse click and destroy building
                 for event in events:
                     if event.type == pygame.MOUSEBUTTONDOWN:
-                        self.destroy_building(building_name)
+                        building_factory.destroy_building(building_name, self.parent.selected_planet)
             else:
-                if global_params.tooltip_text == f"Are you sure you want to destroy this {building_name}? You will probably not get anything back.":
-                    global_params.tooltip_text = ""
+                if config.tooltip_text == f"Are you sure you want to destroy this {building_name}? You will probably not get anything back.":
+                    config.tooltip_text = ""
 
         # building slot upgrade and tooltip
         if self.parent.selected_planet:
             self.set_building_slot_tooltip_plus()
             self.set_building_slot_tooltip_minus()
-            self.upgrade_building_slots(events)
-            self.downgrade_building_slots(events)
+
+            if self.parent.selected_planet.owner in config.app.players.keys():
+                self.upgrade_building_slots(events, config.app.players[self.parent.selected_planet.owner])
+                self.downgrade_building_slots(events, config.app.players[self.parent.selected_planet.owner])
 
         self.reset_building_slot_tooltip()
 
         for event in events:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RIGHT:
-                    global_params.app.set_planet_selection(1)
+                    config.app.set_planet_selection(1)
                 elif event.key == pygame.K_LEFT:
-                    global_params.app.set_planet_selection(-1)
+                    config.app.set_planet_selection(-1)
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if self.surface_rect.collidepoint(pygame.mouse.get_pos()):
+                    navigate_to(self.parent.selected_planet)
 
     def draw(self):
 

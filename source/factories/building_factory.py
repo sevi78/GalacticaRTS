@@ -188,7 +188,7 @@ class BuildingFactory(BuildingFactoryJsonDictReader):
         that overgives the values to the planet if ready
         :param building: string
         """
-        print(f"BuildingFactory.build: building: {building}, receiver: {receiver},receiver.owner:{receiver.owner}, kwargs: {kwargs}")
+        # print(f"BuildingFactory.build: building: {building}, receiver: {receiver},receiver.owner:{receiver.owner}, kwargs: {kwargs}")
         if not building in self.get_all_building_names():
             return
 
@@ -278,7 +278,7 @@ class BuildingFactory(BuildingFactoryJsonDictReader):
         # add building widget to building cue to make shure it can be build only if building_cue is < building_slots_amount
         receiver.building_cue += 1
 
-        print(f"create_building_widget:receiver:{receiver}, receiver.owner:{receiver.owner},widget_name:{widget_name}, widget_key:{widget_key}, widget_value:{widget_value}  ")
+        # print(f"create_building_widget:receiver:{receiver}, receiver.owner:{receiver.owner},widget_name:{widget_name}, widget_key:{widget_key}, widget_value:{widget_value}  ")
 
     def check_if_enough_resources_to_build(self, building: str, prices, player) -> bool:
         check = True
@@ -313,7 +313,7 @@ class BuildingFactory(BuildingFactoryJsonDictReader):
         return check
 
     def destroy_building(self, building, planet):
-        print(f"destroy_building on planet {planet}: {building}")
+        # print(f"destroy_building on planet {planet}: {building}")
         if building in planet.buildings:
             planet.buildings.remove(building)
 

@@ -1,8 +1,10 @@
 import pygame
 from pygame import gfxdraw
-from source.configuration import global_params
+
+from source.configuration.game_config import config
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.handlers.mouse_handler import mouse_handler, MouseState
+from source.handlers.widget_handler import update
 
 
 class Slider(WidgetBase):
@@ -77,11 +79,11 @@ class Slider(WidgetBase):
             if self.contains(x, y):
                 if mouse_state == MouseState.LEFT_CLICK:
                     self.selected = True
-                    global_params.enable_pan = not self.selected
+                    config.enable_pan = not self.selected
 
             if mouse_state == MouseState.LEFT_RELEASE:
                 self.selected = False
-                global_params.enable_pan = not self.selected
+                config.enable_pan = not self.selected
 
             if self.selected:
                 if self.vertical:
@@ -135,7 +137,6 @@ class Slider(WidgetBase):
 
                 gfxdraw.filled_circle(self.win, *circle, int(self.handleRadius), self.handleColour)
                 gfxdraw.aacircle(self.win, *circle, int(self.handleRadius), self.handleColour)
-
 
 
 if __name__ == '__main__':

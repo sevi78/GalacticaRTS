@@ -2,7 +2,7 @@ import copy
 import math
 import random
 
-from source.configuration import global_params
+from source.configuration.game_config import config
 from source.factories.planet_factory import planet_factory
 from source.factories.universe_factory import universe_factory
 from source.game_play.navigation import navigate_to_position
@@ -11,6 +11,7 @@ from source.handlers.economy_handler import economy_handler
 from source.handlers.file_handler import load_file, write_file, get_level_list
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
+from source.handlers.player_handler import player_handler
 from source.multimedia_library.images import get_image_names_from_folder
 from source.multimedia_library.screenshot import capture_screenshot
 from source.text.info_panel_text_generator import info_panel_text_generator
@@ -134,7 +135,9 @@ class LevelDictGenerator:
             orbit_distance = self.parent.data["globals"]["width"] / len(self.sun_names) / 2
             world_x, world_y = self.get_orbit_position(data["celestial_objects"][str(orbit_object_id)], orbit_distance)
             planet_name = f"{self.sun_names[orbit_object_id]} {to_roman(i - self.parent.data['globals']['suns'] + 1)}"
-            self.planet_names[i] = planet_name  # Store planet name in the dictionary
+            self.planet_names[i] = planet_name
+
+            # Store planet name in the dictionary
             data["celestial_objects"][
                 str(i)] = self.create_celestial_object(i, "planet", planet_images, orbit_object_id, world_x, world_y)
 
@@ -148,7 +151,9 @@ class LevelDictGenerator:
             orbit_distance = self.parent.data["globals"]["width"] / len(self.planet_names) / 2
             world_x, world_y = self.get_orbit_position(data["celestial_objects"][str(orbit_object_id)], orbit_distance)
             moon_name = f"{self.planet_names[orbit_object_id]}, {chr(97 + i - self.parent.data['globals']['suns'] + self.parent.data['globals']['planets'])}"
-            self.moon_names[i] = moon_name  # Store moon name in the dictionary
+            self.moon_names[i] = moon_name
+
+            # Store moon name in the dictionary
             data["celestial_objects"][
                 str(i)] = self.create_celestial_object(i, "moon", moon_images, orbit_object_id, world_x, world_y)
 
@@ -284,7 +289,8 @@ class LevelDictGenerator:
                 "energy_reload_rate": self.ship_settings[ship_name]["energy_reload_rate"],
                 "specials": [],
                 "orbit_object_id": -1,
-                "orbit_object_name": ""
+                "orbit_object_name": "",
+                "owner": 0
                 }
 
             self.parent.data["ships"][str(index)] = ship_data
@@ -340,6 +346,10 @@ class LevelDictGenerator:
         else:
             alien_population = 0
 
+        owner = random.randint(-1, config.players)
+        if owner == 0:
+            owner = -1
+
         return {
             "id": i,
             "name": name,
@@ -366,7 +376,8 @@ class LevelDictGenerator:
             "atmosphere_name": random.choice(atmospheres),
             "orbit_angle": None,
             "explored": False,
-            "gif": random.choice(moons)
+            "gif": random.choice(moons),
+            "owner": owner
             }
 
 
@@ -407,10 +418,10 @@ class LevelHandler:
             i.end_object()
 
         # building widgets
-        for i in global_params.app.building_widget_list:
+        for i in config.app.building_widget_list:
             i.delete()
 
-        global_params.app.building_widget_list = []
+        config.app.building_widget_list = []
 
     def create_universe(self):
         universe_factory.amount = int(math.sqrt(math.sqrt(self.data["globals"]["width"])) * self.data["globals"][
@@ -419,10 +430,12 @@ class LevelHandler:
         universe_factory.create_artefacts(0, 0, self.data["globals"]["width"], self.data["globals"]["height"],
             self.data["globals"]["collectable_item_amount"])
 
-    def generate_level_dict_from_scene(self):
+    def generate_level_dict_from_scene__(self):
+        """TODO: different players must be stored"""
         data = self.data
+
         # get player
-        player = global_params.app.player
+        player = config.app.player
         data["player"]["stock"] = player.get_stock()
         data["player"]["population"] = player.population
 
@@ -436,6 +449,71 @@ class LevelHandler:
             for key, value in data["celestial_objects"][str(planet.id)].items():
                 if hasattr(planet, key):
                     value_ = getattr(planet, key)
+                    data["celestial_objects"][str(planet.id)][key] = value_
+                else:
+                    print(f"generate_level_dict_from_scene key error: {planet} has no attribute {key}\n")
+
+        # get ship config, used if ship is created dynamically
+        ship_config = load_file("ship_settings.json", "config")
+
+        # get all ships
+        for ship in sprite_groups.ships.sprites():
+            # initialize data if ship is not in data
+            if not str(ship.id) in data["ships"].keys():
+                print(f"generate_level_dict_from_scene key error: ship.id ({ship.id} not in keys: {data['ships'].keys()}\n")
+                data["ships"][str(ship.id)] = {"name": "", "world_x": 0, "world_y": 0}
+
+            # fill the data from the ship data
+            for key, value in data["ships"][str(ship.id)].items():
+                if hasattr(ship, key):
+                    data["ships"][str(ship.id)][key] = getattr(ship, key)
+
+            # fill rest of the values from ship config
+            for var in ship_config[ship.name].keys():
+                if hasattr(ship, var):
+                    data["ships"][str(ship.id)][var] = getattr(ship, var)
+
+            # get weapons from ship weapon_handler
+            data["ships"][str(ship.id)]["weapons"] = ship.weapon_handler.weapons
+
+            # get specials loaded in ship
+            data["ships"][str(ship.id)]["specials"] = ship.specials
+
+        return data
+
+    def generate_level_dict_from_scene(self, **kwargs):
+        ignore_buildings = kwargs.get("ignore_buildings", False)
+
+        data = self.data
+
+        # get players
+        for key, player_obj in config.app.players.items():
+            if not "players" in data.keys():
+                data["players"] = {}
+
+            data["players"][key] = {}
+            data["players"][key]["stock"] = player_obj.get_stock()
+            data["players"][key]["population"] = player_obj.population
+
+        # this is to set the human player, should maybe be removed and replaced
+        player = config.app.player
+        data["player"]["stock"] = player.get_stock()
+        data["player"]["population"] = player.population
+
+        # get all planets
+        for planet in sprite_groups.planets.sprites():
+            print(f"generate_level_dict_from_scene: {data['globals']['level']}")
+            if not str(planet.id) in data["celestial_objects"].keys():
+                data["celestial_objects"][str(planet.id)] = self.data_default["celestial_objects"]["0"]
+                print(f"generate_level_dict_from_scene key error: planet.id not in data['celestial_objects']: planet.id: {planet.id}\n keys: {data['celestial_objects'].keys()}")
+
+            for key, value in data["celestial_objects"][str(planet.id)].items():
+                if hasattr(planet, key):
+                    value_ = getattr(planet, key)
+
+                    if key == "buildings":
+                        if ignore_buildings:
+                            value_ = []
                     data["celestial_objects"][str(planet.id)][key] = value_
                 else:
                     print(f"generate_level_dict_from_scene key error: {planet} has no attribute {key}\n")
@@ -491,47 +569,117 @@ class LevelHandler:
         # navigate zo center of the level
         navigate_to_position(self.data["globals"]["width"] / 2, self.data["globals"]["height"] / 2)
 
-    def load_level(self, filename, folder):
+    def load_level__(self, filename, folder):
+        """TODO: how to store the ai player??"""
         self.current_game = filename
         self.data = load_file(filename, folder=folder)
-        global_params.app.level_edit.set_selector_current_value()
+        config.app.level_edit.set_selector_current_value()
 
         # delete level
         self.delete_level()
 
         # reset player
-        self.app.player.reset(self.data["player"])
+        # self.app.player.reset(self.data["player"])
+        player_handler.reset_players()
 
-        # create planets
+        # create planets, AND SELECT ONE ! to make ensure no errors are generated!!!
         planet_factory.create_planets_from_data(self.data)
+        self.app.selected_planet = sprite_groups.planets.sprites()[0]
 
         # create ships
         ships = self.data.get("ships")
         for key in ships.keys():
             self.app.ship_factory.create_ship(f"{ships[key]['name']}_30x30.png", int(
                 ships[key]["world_x"]), int(
-                ships[key]["world_y"]), global_params.app, ships[key]["weapons"], data=ships[key])
+                ships[key]["world_y"]), config.app, ships[key]["weapons"], data=ships[key])
 
         # create universe
-        if global_params.draw_universe:
+        if config.draw_universe:
             self.create_universe()
 
         # setup game_event_handler
-        self.app.game_event_handler.level = global_params.app.level_handler.data.get("globals").get("level")
-        self.app.game_event_handler.set_goal(global_params.app.level_handler.data.get("globals").get("goal"))
+        self.app.game_event_handler.level = config.app.level_handler.data.get("globals").get("level")
+        self.app.game_event_handler.set_goal(config.app.level_handler.data.get("globals").get("goal"))
 
         # setup mission
         self.app.resource_panel.mission_icon.info_text = info_panel_text_generator.create_info_panel_mission_text()
-        global_params.edit_mode = False
+        config.edit_mode = False
 
-        self.app.calculate_global_production()
+        economy_handler.calculate_global_production(config.app.player)
 
         # setup pan_zoom_handler
         self.setup_pan_zoom_handler()
 
+        # setup container
+        if hasattr(self.app, "ship_container"):
+            self.app.ship_container.set_widgets(sprite_groups.convert_sprite_groups_to_image_widget_list("ships"))
+
+            # self.app.ship_container.filter_widget.show()
+
+        if hasattr(self.app, "planet_container"):
+            self.app.planet_container.set_widgets(sprite_groups.convert_sprite_groups_to_image_widget_list("planets"))
+            # self.app.ship_container.filter_widget.show()
+
+        # setup event_text
+        event_text.planet_links = planet_factory.get_all_planet_names()
+
+
+    def load_level(self, filename, folder):
+        self.current_game = filename
+        self.data = load_file(filename, folder=folder)
+        config.app.level_edit.set_selector_current_value()
+
+        # delete level
+        self.delete_level()
+
+        # reset player
+        # self.app.player.reset(self.data["player"])
+        player_handler.reset_players()
+        player_handler.set_players_data(self.data)
+
+        # create planets, AND SELECT ONE ! to make ensure no errors are generated!!!
+        planet_factory.create_planets_from_data(self.data)
+        self.app.selected_planet = sprite_groups.planets.sprites()[0]
+
+        # create ships
+        ships = self.data.get("ships")
+        for key in ships.keys():
+            self.app.ship_factory.create_ship(f"{ships[key]['name']}_30x30.png", int(
+                ships[key]["world_x"]), int(
+                ships[key]["world_y"]), config.app, ships[key]["weapons"], data=ships[key])
+
+        # create universe
+        if config.draw_universe:
+            self.create_universe()
+
+        # setup game_event_handler
+        self.app.game_event_handler.level = config.app.level_handler.data.get("globals").get("level")
+        self.app.game_event_handler.set_goal(config.app.level_handler.data.get("globals").get("goal"))
+
+        # setup mission
+        self.app.resource_panel.mission_icon.info_text = info_panel_text_generator.create_info_panel_mission_text()
+        config.edit_mode = False
+
+        economy_handler.calculate_global_production(config.app.player)
+
+        # setup pan_zoom_handler
+        self.setup_pan_zoom_handler()
+
+        # setup container
+        if hasattr(self.app, "ship_container"):
+            self.app.ship_container.set_widgets(sprite_groups.convert_sprite_groups_to_image_widget_list("ships"))
+
+            # self.app.ship_container.filter_widget.show()
+
+        if hasattr(self.app, "planet_container"):
+            self.app.planet_container.set_widgets(sprite_groups.convert_sprite_groups_to_image_widget_list("planets"))
+            # self.app.ship_container.filter_widget.show()
+
+        # setup event_text
+        event_text.planet_links = planet_factory.get_all_planet_names()
 
     def save_level(self, filename, folder):
-        data = self.generate_level_dict_from_scene()
+        data = self.generate_level_dict_from_scene(ignore_buildings=True)
         write_file(filename, folder, data)
 
         # save screenshot
@@ -543,7 +691,6 @@ class LevelHandler:
              self.data["globals"]["height"] * pan_zoom_handler.zoom),
             (360, 360),
             event_text=event_text)
-
 
         # file_handler.get_level_list()
         self.app.level_select.update_icons()
@@ -571,5 +718,79 @@ class LevelHandler:
                 self.level_successes[key] = value
 
         print(f"level_handler.update_level_successes(): self.level_successes: {self.level_successes}")
-        # update the icons of level select to displax the successes
+        # update the icons of level select to display the successes
         self.app.level_select.update_icons()
+
+    def set_planet_owners(self):
+        # self.set_planet_owners_geographically()
+        self.set_celestial_body_owners()
+        player_handler.reset_players()
+        return
+        population_density = int(self.data["globals"]["population_density"])
+        for i in sprite_groups.planets:
+            r = random.randint(0, 100)
+            if r in range(0, population_density):
+                i.owner = random.randint(0, len(config.app.players) - 1)
+            else:
+                i.owner = -1
+
+    def set_planet_owners_geographically(self):
+        player_handler.reset_players()
+        population_density = int(self.data["globals"]["population_density"])
+        num_players = len(config.app.players)
+
+        # Step 1: Divide the planets into clusters
+        clusters = self.divide_planets_into_clusters(num_players)
+
+        # Step 2: Assign each cluster to a player
+        for player_id, cluster in enumerate(clusters):
+            for planet in cluster:
+                # There's a chance based on population_density that a planet will be owned by a player
+                r = random.randint(0, 100)
+                if r < population_density:
+                    planet.owner = player_id
+                else:
+                    planet.owner = -1
+
+    def divide_planets_into_clusters(self, num_clusters):
+        # This is a placeholder for the clustering logic. You might use a simple geometric approach,
+        # or a more complex clustering algorithm like K-means, depending on your game's requirements
+        # and the structure of your planet objects.
+        # For simplicity, let's assume each planet has attributes `x` and `y` for its position.
+
+        # Example simple clustering based on x-coordinate (for illustration purposes only):
+        sorted_planets = sorted(sprite_groups.planets.sprites(), key=lambda p: p.world_x)
+        clusters = [[] for _ in range(num_clusters)]
+        for i, planet in enumerate(sorted_planets):
+            clusters[i % num_clusters].append(planet)
+
+        return clusters
+
+    def set_celestial_body_owners(self):
+        player_handler.reset_players()
+        population_density = int(self.data["globals"]["population_density"])
+        num_players = len(config.app.players)
+
+        # Assuming `sprite_groups.suns` holds all sun objects
+        suns = [i for i in sprite_groups.planets if i.type == "sun"]
+
+        for sun in suns:
+            # There's a chance based on population_density that a celestial body will be owned by a player
+            r = random.randint(0, 100)
+            if r < population_density:
+                owner_id = random.randint(0, num_players - 1)
+            else:
+                owner_id = -1
+
+            # Set owner for the sun
+            sun.owner = owner_id
+
+            # Propagate the owner to all planets of the sun
+            sun_planets = [i for i in sprite_groups.planets if i.type == "planet" and i.orbit_object_id == sun.id]
+            for planet in sun_planets:  # Assuming `sun.planets` holds all planet objects belonging to the sun
+                planet.owner = owner_id
+
+                # Propagate the owner to all moons of the planet
+                planet_moons = [i for i in sprite_groups.planets if i.type == "moon" and i.orbit_object_id == planet.id]
+                for moon in planet_moons:  # Assuming `planet.moons` holds all moon objects belonging to the planet
+                    moon.owner = owner_id

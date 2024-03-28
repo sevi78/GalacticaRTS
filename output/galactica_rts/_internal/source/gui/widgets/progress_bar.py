@@ -3,7 +3,7 @@ from typing import Callable
 import pygame
 from pygame_widgets.util import drawText
 
-from source.configuration import global_params
+from source.configuration.game_config import config
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.handlers.color_handler import calculate_gradient_color
 from source.handlers.position_handler import align_vertical, align_horizontal
@@ -64,7 +64,7 @@ class ProgressBar(WidgetBase):
         self.v_size = kwargs.get("v_size", None)
 
         self.string = kwargs.get("text", None)
-        self.font = pygame.font.SysFont(global_params.font_name, 12)
+        self.font = pygame.font.SysFont(config.font_name, 12)
         self.gradient_color = kwargs.get("gradient_color", True)
         self.disable()
 
@@ -95,7 +95,8 @@ class ProgressBar(WidgetBase):
         #         self.percent = 1
 
         if self.gradient_color:
-            self.completedColour = calculate_gradient_color((200, 0, 0), pygame.color.THECOLORS["darkgreen"], self.percent, ignore_colors=["b"])
+            self.completedColour = calculate_gradient_color((200, 0, 0),
+                pygame.color.THECOLORS["darkgreen"], self.percent, ignore_colors=["b"])
 
         if self.parent:
             if self.parent._disabled:
@@ -130,4 +131,6 @@ class ProgressBar(WidgetBase):
                  int(self.screen_width * (1 - self.percent)), self.screen_height))
 
             if self.string:
-                drawText(self.win, self.string, self.frame_color, (self.screen_x - 40, self.screen_y - self.font.get_height()/6 , 200, self.font.get_height()), self.font, align="left")
+                drawText(self.win, self.string, self.frame_color, (
+                self.screen_x - 40, self.screen_y - self.font.get_height() / 6, 200,
+                self.font.get_height()), self.font, align="left")

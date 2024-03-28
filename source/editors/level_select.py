@@ -14,7 +14,6 @@ from source.text.info_panel_text_generator import info_panel_text_generator
 class LevelSelect(EditorBase):
     def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
         EditorBase.__init__(self, win, x, y, width, height, isSubWidget=False, **kwargs)
-
         self.max_height = width
         # lists
         self.data = file_handler.get_level_list()
@@ -105,12 +104,12 @@ class LevelSelect(EditorBase):
         self.max_height = 900  # self.world_y + 200 + min(y + button_size + self.text_spacing * 3, max_button_height)
 
     def select_level(self, i: str):
-        # convert level string to int and reduce -1 to make shure the previous level gets checked for success
+        # convert level string to int and reduce -1 to make sure the previous level gets checked for success
         level_number = int(i)
         if level_number != 0:
             level_number -= 1
 
-        # check for success of prevoius level
+        # check for success of previous level
         if self.parent.level_handler.level_successes[str(level_number)]:
             # if success, load level
             self.parent.level_handler.load_level(f"level_{i}.json", "levels")
@@ -123,6 +122,9 @@ class LevelSelect(EditorBase):
         # reset tooltip
         config.tooltip_text = ""
 
+        # set config level
+        config.level = int(i)
+
     def listen(self, events):
         if not self._hidden and not self._disabled:
             self.handle_hovering()
@@ -131,4 +133,4 @@ class LevelSelect(EditorBase):
     def draw(self):
         if not self._hidden and not self._disabled:
             self.draw_frame()
-            self.draw_text(self.world_x + self.text_spacing, self.world_y + TOP_SPACING + self.text_spacing, 200, 30, "Select Level:")
+            self.draw_text(self.world_x + self.text_spacing, self.world_y + TOP_SPACING + self.text_spacing, 200, 30, f"Select Level:    (current level: {config.level}) ")

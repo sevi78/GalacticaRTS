@@ -1,11 +1,12 @@
 import pygame
 from pygame import Vector2
 
-from source.configuration import global_params
-from source.gui.lod import inside_screen
+from source.configuration.game_config import config
+from source.gui.lod import level_of_detail
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 
-
+MIN_IMAGE_ZOOM_SIZE = 1
+MAX_IMAGE_ZOOM_SIZE = 1000
 class PositionHandler:
     def __init__(self, x, y, width, height, **kwargs):
         self.world_width = width
@@ -68,7 +69,7 @@ class PositionHandler:
 
     def set_objects_screen_size(self):
         if not self.property == "ship":
-            if not inside_screen(self.get_position(), border=0):
+            if not level_of_detail.inside_screen(self.get_position()):
                 return
 
         panzoom = pan_zoom_handler
@@ -79,10 +80,15 @@ class PositionHandler:
         else:
             new_size = (self.size_x, self.size_y)
 
+        if new_size[0] < MIN_IMAGE_ZOOM_SIZE or new_size[1] < MIN_IMAGE_ZOOM_SIZE:
+            new_size =  (MIN_IMAGE_ZOOM_SIZE, MIN_IMAGE_ZOOM_SIZE)
+        if new_size[0] > MAX_IMAGE_ZOOM_SIZE or new_size[1] > MAX_IMAGE_ZOOM_SIZE:
+            new_size =  (MAX_IMAGE_ZOOM_SIZE, MAX_IMAGE_ZOOM_SIZE)
+
         # set new image size
-        if hasattr(self, "image_raw") and hasattr(self, "image"):
-            if self.image:
-                self.image = pygame.transform.scale(self.image_raw, new_size)
+        #if hasattr(self, "image_raw") and hasattr(self, "image"):
+        if self.image:
+            self.image = pygame.transform.scale(self.image_raw, new_size)
 
         if hasattr(self, "atmosphere"):
             if self.atmosphere:
@@ -93,7 +99,7 @@ class PositionHandler:
         self.setHeight(new_size[1] * panzoom.zoom)
 
     def get_zoom(self):
-        if global_params.app:
+        if config.app:
             return pan_zoom_handler.zoom
         else:
             return 1

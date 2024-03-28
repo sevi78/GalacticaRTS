@@ -561,11 +561,33 @@
       "building_production_time": 50,
       "population_buildings_value": 0,
       "technology_upgrade": {}
+    },
+    "spacestation": {
+      "name": "spacestation",
+      "category": "ship",
+      "production_energy": 0,
+      "production_food": 0,
+      "production_minerals": 0,
+      "production_water": 0,
+      "production_technology": 0,
+      "production_population": 0,
+      "price_energy": 5000,
+      "price_food": 3000,
+      "price_minerals": 3000,
+      "price_water": 1250,
+      "price_technology": 2500,
+      "price_population": 0,
+      "build_population_minimum": 0,
+      "building_production_time_scale": 5,
+      "building_production_time": 50,
+      "population_buildings_value": 0,
+      "technology_upgrade": {}
     }
   },
   "weapons": {
     "laser": {
       "name": "laser",
+      "category": "weapons",
       "level": 0,
       "production_energy": 0,
       "production_food": 0,
@@ -635,6 +657,7 @@
     },
     "phaser": {
       "name": "phaser",
+      "category": "weapons",
       "level": 0,
       "production_energy": 0,
       "production_food": 0,
@@ -704,6 +727,7 @@
     },
     "rocket": {
       "name": "rocket",
+      "category": "weapons",
       "level": 0,
       "production_energy": 0,
       "production_food": 0,

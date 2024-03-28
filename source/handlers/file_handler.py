@@ -230,8 +230,9 @@ def main():
     # update_files("games", "ships", "owner", 0, None)
     # update_files("levels", "celestial_objects", "owner", 0, condition="data[category][k]['explored'] == True" )
     # update_files("levels", "celestial_objects", "owner", 1, condition="data[category][k]['alien_population'] > 0")
-    update_files("levels", "globals", "population_density", 50.0, condition=None)
-
+    #update_files("levels", "globals", "population_density", 50.0, condition=None)
+    # compare_json_files(abs_level_path(), load_file("level_6.json", folder="levels_bk"))
+    update_files("levels", "celestial_objects", "buildings", [], condition="data[category][k]['buildings'] != []")
 if __name__ == "__main__":
     main()
     # print (load_file("level_0.json", folder ="levels"))

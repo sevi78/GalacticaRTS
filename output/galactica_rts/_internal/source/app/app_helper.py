@@ -1,4 +1,4 @@
-from source.handlers.pan_zoom_sprite_handler import sprite_groups
+from source.handlers.economy_handler import economy_handler
 
 
 class AppHelper:
@@ -53,44 +53,8 @@ class AppHelper:
 
         return planetname
 
-    def calculate_global_production(self):
-        for i in sprite_groups.planets.sprites():
-            i.calculate_production()
-            i.add_population()
-        """
-        calculates the production of all planets, sets values to player
-        :return:
-        """
-        self.production = {
-            "energy": 0,
-            "food": 0,
-            "minerals": 0,
-            "water": 0,
-            "technology": 0,
-            "population": 0
-            }
-
-        self.population_limit = 0
-        for planet in sprite_groups.planets:
-            # set population limits
-            self.population_limit += planet.population_limit
-            for key, value in planet.production.items():
-                self.production[key] += getattr(planet, "production_" + key)
-
-        # subtract the building_slot_upgrades ( they cost 1 energy)
-        for planet in sprite_groups.planets:
-            self.production["energy"] -= get_sum_up_to_n(planet.building_slot_upgrade_energy_consumption,
-                planet.building_slot_upgrades + 1)
-
-        self.player.population_limit = self.population_limit
-        self.player.production = self.production
-
-        self.production_water = self.production["water"]
-        self.production_energy = self.production["energy"]
-        self.production_food = self.production["food"]
-        self.production_minerals = self.production["minerals"]
-        self.production_technology = self.production["technology"]
-
+    def calculate_global_production(self, player):
+        economy_handler.calculate_global_production(player)
 
 
 def select_next_item_in_list(my_list: list, current_item: any, value: int):
@@ -141,12 +105,3 @@ def select_next_item_in_list(my_list: list, current_item: any, value: int):
 
     next_index = (current_index + value) % len(my_list)
     return my_list[next_index]
-
-
-def get_sum_up_to_n(dict, n):
-    sum = 0
-    for key, value in dict.items():
-        if key < n:
-            sum += value
-
-    return sum

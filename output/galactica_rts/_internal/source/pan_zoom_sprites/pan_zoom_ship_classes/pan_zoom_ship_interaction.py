@@ -1,16 +1,18 @@
 import random
 
+from source.interaction.interaction_handler import InteractionHandler
 from source.multimedia_library.sounds import sounds
-from source.configuration import global_params
+from source.configuration.game_config import config
 
 
-class PanZoomShipInteraction:
+class PanZoomShipInteraction(InteractionHandler):
     def __init__(self):
+        InteractionHandler.__init__(self)
         # functionality
-        #self.orbiting = False
+        # self.orbiting = False
         self._selected = False
-
         self.target = None
+        self.autopilot = False
 
     # @property
     # def autopilot(self):
@@ -65,4 +67,4 @@ class PanZoomShipInteraction:
         self.selected = value
         if value:
             sounds.play_sound("click", channel=7)
-            global_params.app.ship = self
+            config.app.ship = self

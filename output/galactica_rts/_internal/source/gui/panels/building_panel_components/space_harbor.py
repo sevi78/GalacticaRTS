@@ -1,13 +1,12 @@
 import pygame
 from pygame_widgets.util import drawText
 
-from source.configuration import global_params
-from source.configuration.global_params import ui_rounded_corner_small_thickness
+from source.configuration.game_config import config
 from source.factories.building_factory import building_factory
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.handlers.color_handler import colors
-from source.multimedia_library.images import get_image
+from source.multimedia_library.images import get_image, get_gif, get_gif_frames
 
 
 class SpaceHarbor(WidgetBase):
@@ -51,7 +50,7 @@ class SpaceHarbor(WidgetBase):
 
         # construct surface
         self.surface = pygame.surface.Surface((width, height))
-        self.surface.set_alpha(global_params.ui_panel_alpha)
+        self.surface.set_alpha(config.ui_panel_alpha)
         self.surface_rect = self.surface.get_rect()
         self.surface_rect.x = self.parent.surface_rect.x + self.parent.spacing
         self.surface_rect.y = self.parent.world_y
@@ -59,11 +58,12 @@ class SpaceHarbor(WidgetBase):
 
         # text
         self.font_size = kwargs.get("font_size", 12)
-        self.font = pygame.font.SysFont(global_params.font_name, self.font_size)
+        self.font = pygame.font.SysFont(config.font_name, self.font_size)
         self.info_text = kwargs.get("infotext")
 
         # buttons
-        self.spacehunter_button = ImageButton(win=self.win,
+        self.ship_buttons = []
+        self.ship_buttons.append(ImageButton(win=self.win,
             x=self.get_screen_x(),
             y=self.get_screen_y(),
             width=25,
@@ -73,15 +73,14 @@ class SpaceHarbor(WidgetBase):
             image=pygame.transform.scale(
                 get_image("spacehunter_30x30.png"), (25, 25)),
             tooltip="build spacehunter",
-            info_text="", #info_panel_text_generator.create_info_panel_ship_text("spacehunter"),
+            info_text="",  # info_panel_text_generator.create_info_panel_ship_text("spacehunter"),
             frame_color=self.frame_color,
             moveable=False,
             include_text=True,
             layer=self.layer,
-            onClick=lambda: building_factory.build("spacehunter", global_params.app.selected_planet),
-            )
+            onClick=lambda: building_factory.build("spacehunter", config.app.selected_planet)))
 
-        self.cargoloader_button = ImageButton(win=self.win,
+        self.ship_buttons.append(ImageButton(win=self.win,
             x=self.get_screen_x() + self.get_screen_width() / 2,
             y=self.get_screen_y(),
             width=25,
@@ -91,15 +90,15 @@ class SpaceHarbor(WidgetBase):
             image=pygame.transform.scale(
                 get_image("cargoloader_30x30.png"), (25, 25)),
             tooltip="build cargoloader",
-            info_text="", #info_panel_text_generator.create_info_panel_ship_text("cargoloader"),
+            info_text="",  # info_panel_text_generator.create_info_panel_ship_text("cargoloader"),
             frame_color=self.frame_color,
             moveable=False,
             include_text=True,
             layer=self.layer,
-            onClick=lambda: building_factory.build("cargoloader", global_params.app.selected_planet),
-            )
+            onClick=lambda: building_factory.build("cargoloader", config.app.selected_planet)
+            ))
 
-        self.spaceship_button = ImageButton(win=self.win,
+        self.ship_buttons.append(ImageButton(win=self.win,
             x=self.get_screen_x() + self.get_screen_width(),
             y=self.get_screen_y(),
             width=25,
@@ -109,13 +108,29 @@ class SpaceHarbor(WidgetBase):
             image=pygame.transform.scale(
                 get_image("spaceship_30x30.png"), (25, 25)),
             tooltip="build spaceship",
-            info_text="", #info_panel_text_generator.create_info_panel_ship_text("spaceship"),
+            info_text="",  # info_panel_text_generator.create_info_panel_ship_text("spaceship"),
             frame_color=self.frame_color,
             moveable=False,
             include_text=True,
             layer=self.layer,
-            onClick=lambda: building_factory.build("spaceship", global_params.app.selected_planet),
-            )
+            onClick=lambda: building_factory.build("spaceship", config.app.selected_planet)))
+
+        self.ship_buttons.append(ImageButton(win=self.win,
+            x=self.get_screen_x() + self.get_screen_width() + self.get_screen_width() / 2,
+            y=self.get_screen_y(),
+            width=25,
+            height=25,
+            isSubWidget=False,
+            parent=self,
+            image=pygame.transform.scale(
+                get_image("spacestation.png"), (45, 45)),
+            tooltip="build space station",
+            info_text="",  # info_panel_text_generator.create_info_panel_ship_text("spaceship"),
+            frame_color=self.frame_color,
+            moveable=False,
+            include_text=True,
+            layer=self.layer,
+            onClick=lambda: building_factory.build("spacestation", config.app.selected_planet)))
 
         # initial hide the buttons
         self.parent.widgets.append(self)
@@ -137,14 +152,22 @@ class SpaceHarbor(WidgetBase):
         return visible
 
     def hide_buttons(self):
-        self.spaceship_button.hide()
-        self.cargoloader_button.hide()
-        self.spacehunter_button.hide()
+        for button in self.ship_buttons:
+            button.hide()
 
     def show_buttons(self):
-        self.spaceship_button.show()
-        self.cargoloader_button.show()
-        self.spacehunter_button.show()
+        for button in self.ship_buttons:
+            button.show()
+
+    def set_button_position(self):
+        num_buttons = len(self.ship_buttons)
+        col_width = self.surface_rect.width / num_buttons + 1
+        for index, button in enumerate(self.ship_buttons):
+            # button.rect.x = self.world_x + self.world_width - 10 - (index * 10)
+            # button.rect.y = self.world_y + 10
+
+            button.screen_x = self.surface_rect.x + self.spacing + (index * col_width)
+            button.screen_y = self.surface_rect.y + 30
 
     def draw(self):
         if not self.set_visible():
@@ -160,7 +183,7 @@ class SpaceHarbor(WidgetBase):
         self.surface_rect.x = self.parent.surface_rect.x
         self.surface_rect.y = self.parent.world_y + self.spacing + 5
         self.win.blit(self.surface, self.surface_rect)
-        pygame.draw.rect(self.win, self.frame_color, self.surface_rect, int(ui_rounded_corner_small_thickness), int(global_params.ui_rounded_corner_radius_small))
+        pygame.draw.rect(self.win, self.frame_color, self.surface_rect, config.ui_rounded_corner_small_thickness, config.ui_rounded_corner_radius_small)
 
         # label
         drawText(self.win, "Space Harbor", self.frame_color,
@@ -168,13 +191,14 @@ class SpaceHarbor(WidgetBase):
              self.get_screen_width(),
              20), self.font, "center")
 
-        self.spacehunter_button.set_position((
-            self.surface_rect.x + self.spacing * 3, self.surface_rect.y + self.spacing + 20))
-
-        self.spaceship_button.set_position((
-            self.surface_rect.x + self.get_screen_width() / 2 - self.spaceship_button.get_screen_width() / 2,
-            self.surface_rect.y + self.spacing + 20))
-
-        self.cargoloader_button.set_position((
-            self.surface_rect.x + self.get_screen_width() - self.cargoloader_button.get_screen_width() - self.spacing * 3,
-            self.surface_rect.y + self.spacing + 20))
+        self.set_button_position()
+        # self.spacehunter_button.set_position((
+        #     self.surface_rect.x + self.spacing * 3, self.surface_rect.y + self.spacing + 20))
+        #
+        # self.spaceship_button.set_position((
+        #     self.surface_rect.x + self.get_screen_width() / 2 - self.spaceship_button.get_screen_width() / 2,
+        #     self.surface_rect.y + self.spacing + 20))
+        #
+        # self.cargoloader_button.set_position((
+        #     self.surface_rect.x + self.get_screen_width() - self.cargoloader_button.get_screen_width() - self.spacing * 3,
+        #     self.surface_rect.y + self.spacing + 20))

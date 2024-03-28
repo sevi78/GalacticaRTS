@@ -71,6 +71,7 @@ class EventText(TextWrap):
                     "on this ship. my advice: find a new world for the last dudes from earth!"
 
         self.event_display_text = ''.join([self.prefix, self.text])
+        self.world_x = 0
 
     @property
     def event_text_font_size(self):
@@ -105,7 +106,7 @@ class EventText(TextWrap):
 
         # Remove the square brackets from the string representation of the list
         self.event_display_text = last_texts.replace("[", "").replace("]", "")
-        self.new_bottom = pygame.display.get_surface().get_height() - config.ui_event_text_size * 2 - (
+        self.new_bottom = pygame.display.get_surface().get_height() - config.ui_event_text_size * 5 - (
                 config.ui_event_text_size * len(self.texts))
 
         # set alpha value
@@ -130,12 +131,12 @@ class EventText(TextWrap):
                     self.last_update_time = pygame.time.get_ticks()
 
         # set x position if the map is visible
-        x = config.app.ui_helper.left + config.app.map_panel.world_width if config.app.map_panel.visible else config.app.ui_helper.left
+        self.world_x = config.app.ui_helper.left + config.app.map_panel.world_width if config.app.map_panel.visible else config.app.ui_helper.left
         alarm_links = [self.obj.name] if self.obj else []
         self.wrap_text(
             win=self.win,
             text=self.event_display_text,
-            pos=(x, self.new_bottom),
+            pos=(self.world_x, self.new_bottom),
             size=(config.app.ui_helper.world_width - config.app.building_panel.world_width, config.ui_event_text_size),
             font=self.event_text_font,
             color=colors.ui_dark,

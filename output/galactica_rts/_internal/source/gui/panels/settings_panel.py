@@ -1,7 +1,6 @@
 import pygame
 
-from source.configuration import global_params
-from source.configuration.global_params import ui_rounded_corner_small_thickness
+from source.configuration.game_config import config
 from source.game_play.navigation import navigate_to
 from source.gui.panels.toggle_switch import ToggleSwitch
 from source.gui.widgets.buttons.image_button import ImageButton
@@ -35,9 +34,9 @@ class SettingsPanel(WidgetBase):
         self.size_x = kwargs.get("size_x")
         self.size_y = kwargs.get("size_y")
         self.spacing = kwargs.get("spacing")
-        self.surface_frame = pygame.draw.rect(self.win, self.frame_color, self.surface_rect, int(ui_rounded_corner_small_thickness), int(global_params.ui_rounded_corner_radius_small))
+        self.surface_frame = pygame.draw.rect(self.win, self.frame_color, self.surface_rect, config.ui_rounded_corner_small_thickness, config.ui_rounded_corner_radius_small)
         self.font_size = 18
-        self.font = pygame.font.SysFont(global_params.font_name, self.font_size)
+        self.font = pygame.font.SysFont(config.font_name, self.font_size)
         self.max_height = self.get_screen_y() + self.surface_rect.height
 
         self.create_icons()
@@ -47,7 +46,78 @@ class SettingsPanel(WidgetBase):
         self.init = 0
 
     def create_icons(self):
-        self.economy_overview_icon = ImageButton(win=self.win,
+        # self.economy_overview_icon = ImageButton(win=self.win,
+        #     x=self.get_screen_x(),
+        #     y=self.surface_rect.y + self.spacing,
+        #     width=self.icon_size,
+        #     height=self.icon_size,
+        #     isSubWidget=False,
+        #     parent=self,
+        #     image=pygame.transform.scale(
+        #         get_image("economy_icon.png"), (25, 25)),
+        #     tooltip="navigate to this ship",
+        #     frame_color=self.frame_color,
+        #     moveable=False,
+        #     include_text=True, layer=self.layer,
+        #     onClick=lambda: config.app.economy_overview.set_visible())
+        # self.widgets.append(self.economy_overview_icon)
+        # self.max_width += self.icon_size + self.spacing
+
+        self.player_colors_icon = ImageButton(win=self.win,
+            x=self.get_screen_x() - 50,
+            y=self.surface_rect.y + self.spacing,
+            width=self.icon_size,
+            height=self.icon_size,
+            isSubWidget=False,
+            parent=self,
+            image=pygame.transform.scale(
+                get_image("color_icon.png"), (25, 25)),
+            tooltip="show player colors",
+            frame_color=self.frame_color,
+            moveable=False,
+            include_text=True, layer=self.layer,
+            onClick=lambda: config.set_global_variable("show_player_colors", True, button=self.player_colors_icon))
+
+        self.widgets.append(self.player_colors_icon)
+        self.max_width += self.icon_size + self.spacing
+
+        self.view_explored_planets_icon = ImageButton(win=self.win,
+            x=self.get_screen_x() - 50,
+            y=self.surface_rect.y + self.spacing,
+            width=self.icon_size,
+            height=self.icon_size,
+            isSubWidget=False,
+            parent=self,
+            image=pygame.transform.scale(
+                get_image("view_explored_planets_icon.png"), (25, 25)),
+            tooltip="show explored planets",
+            frame_color=self.frame_color,
+            moveable=False,
+            include_text=True, layer=self.layer,
+            onClick=lambda: config.set_global_variable("view_explored_planets", True, button=self.view_explored_planets_icon))
+
+        self.widgets.append(self.view_explored_planets_icon)
+        self.max_width += self.icon_size + self.spacing
+
+        self.cross_icon = ImageButton(win=self.win,
+            x=self.get_screen_x() - 50,
+            y=self.surface_rect.y + self.spacing,
+            width=self.icon_size,
+            height=self.icon_size,
+            isSubWidget=False,
+            parent=self,
+            image=pygame.transform.scale(
+                get_image("cross.png"), (25, 25)),
+            tooltip="show cross",
+            frame_color=self.frame_color,
+            moveable=False,
+            include_text=True, layer=self.layer,
+            onClick=lambda: config.set_global_variable("enable_cross", True, button=self.cross_icon))
+        self.widgets.append(self.cross_icon)
+        self.max_width += self.icon_size + self.spacing
+
+
+        self.ships_icon = ImageButton(win=self.win,
             x=self.get_screen_x(),
             y=self.surface_rect.y + self.spacing,
             width=self.icon_size,
@@ -55,13 +125,31 @@ class SettingsPanel(WidgetBase):
             isSubWidget=False,
             parent=self,
             image=pygame.transform.scale(
-                get_image("economy_icon.png"), (25, 25)),
-            tooltip="navigate to this ship",
+                get_image("ship_container_icon.png"), (25, 25)),
+            tooltip="ship select",
             frame_color=self.frame_color,
             moveable=False,
             include_text=True, layer=self.layer,
-            onClick=lambda: global_params.app.economy_overview.set_visible())
-        self.widgets.append(self.economy_overview_icon)
+            onClick=lambda: config.app.ship_container.set_visible())
+        self.widgets.append(self.ships_icon)
+        self.max_width += self.icon_size + self.spacing
+
+        self.planets_icon = ImageButton(win=self.win,
+            x=self.get_screen_x(),
+            y=self.surface_rect.y + self.spacing,
+            width=self.icon_size,
+            height=self.icon_size,
+            isSubWidget=False,
+            parent=self,
+            image=pygame.transform.scale(
+                get_image("planet_container_icon.png"), (25, 25)),
+            tooltip="planet select",
+            frame_color=self.frame_color,
+            moveable=False,
+            include_text=True, layer=self.layer,
+            onClick=lambda: config.app.planet_container.set_visible())
+
+        self.widgets.append(self.planets_icon)
         self.max_width += self.icon_size + self.spacing
 
         # ship icon
@@ -115,22 +203,25 @@ class SettingsPanel(WidgetBase):
         # self.widgets.append(self.planet_editor_icon)
         # self.max_width += self.icon_size + self.spacing
 
-        # self.building_editor_icon = ImageButton(win=self.win,
-        #     x=self.planet_editor_icon.get_screen_x() - 50,
-        #     y=self.surface_rect.y + self.spacing,
-        #     width=self.icon_size,
-        #     height=self.icon_size,
-        #     isSubWidget=False,
-        #     parent=self,
-        #     image=pygame.transform.scale(
-        #         get_image("building_icon.png"), (25, 25)),
-        #     tooltip="open building editor",
-        #     frame_color=self.frame_color,
-        #     moveable=False,
-        #     include_text=True, layer=self.layer,
-        #     onClick=lambda: building_editor.main(surface=self.win))
-        # self.widgets.append(self.building_editor_icon)
-        # self.max_width += self.icon_size + self.spacing
+        self.autopilot_icon = ImageButton(win=self.win,
+            x=self.info_icon.get_screen_x() - 50,
+            y=self.surface_rect.y + self.spacing,
+            width=self.icon_size,
+            height=self.icon_size,
+            isSubWidget=False,
+            parent=self,
+            image=pygame.transform.scale(
+                get_image("autopilot.png"), (25, 25)),
+            tooltip="enable autopilot",
+            frame_color=self.frame_color,
+            moveable=False,
+            include_text=True, layer=self.layer,
+            onClick=lambda: self.enebale_autopilot(self.autopilot_icon))
+
+        self.widgets.append(self.autopilot_icon)
+        self.max_width += self.icon_size + self.spacing
+
+
 
         self.orbit_icon = ImageButton(win=self.win,
             x=self.info_icon.get_screen_x() - 50,
@@ -145,7 +236,7 @@ class SettingsPanel(WidgetBase):
             frame_color=self.frame_color,
             moveable=False,
             include_text=True, layer=self.layer,
-            onClick=lambda: self.set_global_variable("show_orbit", True, button=self.orbit_icon))
+            onClick=lambda: config.set_global_variable("show_orbit", True, button=self.orbit_icon))
         self.widgets.append(self.orbit_icon)
         self.max_width += self.icon_size + self.spacing
 
@@ -198,7 +289,7 @@ class SettingsPanel(WidgetBase):
             frame_color=self.frame_color,
             moveable=False,
             include_text=True, layer=self.layer,
-            onClick=lambda: self.set_global_variable("show_overview_buttons", True, button=self.buttons_icon))
+            onClick=lambda: config.set_global_variable("show_overview_buttons", True, button=self.buttons_icon))
         self.widgets.append(self.buttons_icon)
         self.max_width += self.icon_size + self.spacing + self.spacing
 
@@ -215,8 +306,9 @@ class SettingsPanel(WidgetBase):
             frame_color=self.frame_color,
             moveable=False,
             include_text=True, layer=self.layer,
-            onClick=lambda: self.set_global_variable("show_map_panel", True, button=self.map_icon))
+            onClick=lambda: config.set_global_variable("show_map_panel", True, button=self.map_icon))
         self.widgets.append(self.map_icon)
+
         self.max_width += self.icon_size + self.spacing + self.spacing
 
     def show_planet_names(self, button):
@@ -227,9 +319,18 @@ class SettingsPanel(WidgetBase):
 
         overblit_button_image(button, "uncheck.png", value)
 
+    def enebale_autopilot(self, button):
+        value = False
+        for i in sprite_groups.ships.sprites():
+            i.autopilot = not i.autopilot
+            value = i.autopilot
+
+        config.enable_autopilot = value
+        overblit_button_image(button, "uncheck.png", value)
+
     def set_info_text(self):
-        global_params.app.info_panel.set_text(info_panel_text_generator.info_text)
-        global_params.app.info_panel.set_planet_image(get_image("info_30x30.png"), size=(
+        config.app.info_panel.set_text(info_panel_text_generator.info_text)
+        config.app.info_panel.set_planet_image(get_image("info_30x30.png"), size=(
             50, 50), alpha=78, align="center")
 
     def reposition(self):
@@ -239,14 +340,14 @@ class SettingsPanel(WidgetBase):
 
         # reposition
         self.surface_rect.width = self.max_width
-        self.surface_rect.x = width - global_params.app.building_panel.surface.get_width() - self.max_width
+        self.surface_rect.x = width - config.app.building_panel.surface.get_width() - self.max_width
         self.reposition_widgets()
         self.toggle_switch.reposition()
 
     def reposition_widgets(self):
         for icon in self.widgets:
-            icon.screen_x = (self.surface_rect.x + self.spacing) + (
-                    self.icon_size + self.spacing) * self.widgets.index(icon)
+            icon.screen_x = ((self.surface_rect.x + self.spacing)
+                             + (self.icon_size + self.spacing) * self.widgets.index(icon))
 
     def draw(self):
         """
@@ -262,5 +363,5 @@ class SettingsPanel(WidgetBase):
         self.draw_frame()
 
     def show_tooltip(self, button):
-        global_params.app.tooltip_instance.active = not global_params.app.tooltip_instance.active
-        overblit_button_image(button, "uncheck.png", global_params.app.tooltip_instance.active)
+        config.app.tooltip_instance.active = not config.app.tooltip_instance.active
+        overblit_button_image(button, "uncheck.png", config.app.tooltip_instance.active)

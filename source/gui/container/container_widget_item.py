@@ -19,6 +19,7 @@ class ContainerWidgetItem:
         self._hidden = False
         self.obj = kwargs.get("obj", None)
         self.parent = kwargs.get("parent", None)
+        self.widgets = []
 
         # text
         self.text = self.set_text()
@@ -42,6 +43,11 @@ class ContainerWidgetItem:
     def set_position(self, pos):
         self.world_x, self.world_y = pos
         self.rect.topleft = pos
+
+        for widget in self.widgets:
+            widget.win  = self.win
+            widget.set_position(pos)
+            print (widget.world_x, widget.world_y, widget.win)
 
     def hide(self):
         self._hidden = True

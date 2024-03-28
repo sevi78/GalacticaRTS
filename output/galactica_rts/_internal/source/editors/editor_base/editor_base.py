@@ -1,10 +1,12 @@
+import inspect
+
 import pygame
 
-from source.configuration import global_params
-from source.configuration.global_params import ui_rounded_corner_big_thickness
+from source.configuration.game_config import config
 from source.draw.rect import draw_transparent_rounded_rect
-from source.editors.editor_base.editor_config import ARROW_SIZE, SPACING_Y, FONT_SIZE, TOP_SPACING
+from source.editors.editor_base.editor_config import ARROW_SIZE, SPACING_Y, FONT_SIZE, TOP_SPACING, TOP_LIMIT
 from source.gui.widgets.buttons.image_button import ImageButton
+from source.gui.widgets.selector import Selector
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.handlers.color_handler import colors
 from source.multimedia_library.images import get_image
@@ -82,7 +84,8 @@ class EditorBase(WidgetBase):
         self.spacing_y = SPACING_Y
         self.parent = kwargs.get("parent", None)
         self.layer = kwargs.get("layer", 9)
-        self.font = pygame.font.SysFont(global_params.font_name, FONT_SIZE)
+        self.ignore_other_editors = kwargs.get("ignore_other_editors", False)
+        self.font = pygame.font.SysFont(config.font_name, FONT_SIZE)
         self.text_spacing = 20
         self.frame_color = colors.ui_dark
         self.frame = pygame.surface.Surface((self.world_width, self.world_height))
@@ -96,11 +99,21 @@ class EditorBase(WidgetBase):
         self._on_hover = False
 
         # register
+        self.boolean_list = [True, False]
+        self.selector_lists = {}
+        self.default_list = [_ for _ in range(100)]
+
         self.buttons = []
         self.selectors = []
         self.checkboxes = []
         self.checkbox_values = []
-        self.parent.editors.append(self)
+
+        self.editors = []
+        if config.app:
+            config.app.editors.append(self)
+
+        # save
+        self.save = kwargs.get("save", True)
 
     @property
     def on_hover(self):
@@ -110,10 +123,10 @@ class EditorBase(WidgetBase):
     def on_hover(self, value):
         self._on_hover = value
         if value:
-            global_params.hover_object = self
+            config.hover_object = self
         else:
-            if global_params.hover_object == self:
-                global_params.hover_object = None
+            if config.hover_object == self:
+                config.hover_object = None
 
     @property
     def obj(self):
@@ -129,10 +142,12 @@ class EditorBase(WidgetBase):
         self.obj = obj
 
     def set_edit_mode(self):
-        global_params.edit_mode = not self._hidden
-        global_params.enable_orbit = self._hidden
+        config.edit_mode = not self._hidden
+        config.enable_orbit = self._hidden
 
     def hide_other_editors(self):
+        if self.ignore_other_editors:
+            return
         for i in self.parent.editors:
             if not i == self:
                 i.hide()
@@ -143,8 +158,12 @@ class EditorBase(WidgetBase):
         else:
             self.hide()
 
-        # global_params.game_paused = self.game_paused and not self._hidden
-        global_params.edit_mode = not self._hidden
+        # config.game_paused = self.game_paused and not self._hidden
+        config.edit_mode = not self._hidden
+
+        for i in self.editors:
+            i.set_visible()
+
         self.hide_other_editors()
 
     def create_save_button(self, function, tooltip, **kwargs):
@@ -215,6 +234,7 @@ class EditorBase(WidgetBase):
             include_text=False,
             layer=self.layer,
             onClick=lambda: self.close(),
+            name="close_button"
             )
 
         close_icon.hide()
@@ -222,13 +242,40 @@ class EditorBase(WidgetBase):
         self.buttons.append(close_icon)
         self.widgets.append(close_icon)
 
-    def close(self):
-        self.set_global_variable("edit_mode", True)
-        # if self.game_paused:
-        #     global_params.game_paused = False
+    def create_selectors_from_dict(self, x, y, dict_):
+        for key, value in dict_:
+            # booleans
+            if type(value) is bool:
+                self.selector_lists[key] = self.boolean_list
+                self.selectors.append(Selector(self.win, x, self.world_y + y, ARROW_SIZE, self.frame_color, 9,
+                    self.spacing_x, {"list_name": f"{key}_list", "list": self.boolean_list}, self, FONT_SIZE))
 
-        global_params.tooltip_text = ""
+                y += self.spacing_y
+
+            # integers
+            if type(value) is int:
+                if not key in self.selector_lists.keys():
+                    self.selector_lists[key] = self.default_list
+
+                self.selectors.append(Selector(self.win, x, self.world_y + y, ARROW_SIZE, self.frame_color, 9,
+                    self.spacing_x, {"list_name": f"{key}_list", "list": self.selector_lists[key]}, self, FONT_SIZE,
+                    repeat_clicks=False))
+
+                y += self.spacing_y
+
+        # set max height to draw the frame dynamical
+        self.max_height = y + ARROW_SIZE
+
+    def close(self):
+        config.set_global_variable("edit_mode", True)
+        # if self.game_paused:
+        #     config.game_paused = False
+
+        config.tooltip_text = ""
         self.hide()
+
+        for i in self.editors:
+            i.hide()
 
     def handle_hovering(self):
         if self._hidden:
@@ -239,31 +286,84 @@ class EditorBase(WidgetBase):
         else:
             self.on_hover = False
 
-    def drag(self, events):
-        """ drag the widget """
-        if not self.drag_enabled:
-            return
+    # def drag(self, events):
+    #     """ drag the widget """
+    #     if not self.drag_enabled:
+    #         return
+    #
+    #     old_x, old_y = self.world_x, self.world_y  # store old position
+    #     for event in events:
+    #         if event.type == pygame.MOUSEBUTTONDOWN:
+    #             if self.rect.collidepoint(event.pos):
+    #                 self.moving = True
+    #                 self.offset_x = self.world_x - event.pos[0]  # calculate the offset x
+    #                 self.offset_y = self.world_y - event.pos[1]  # calculate the offset y
+    #
+    #         elif event.type == pygame.MOUSEBUTTONUP:
+    #             self.moving = False
+    #
+    #         elif event.type == pygame.MOUSEMOTION and self.moving:
+    #             self.world_x = event.pos[0] + self.offset_x  # apply the offset x
+    #             self.world_y = event.pos[1] + self.offset_y  # apply the offset y
+    #
+    #             # limit y to avoid strange behaviour if close button is at the same spot as the editor open button
+    #
+    #             if self.world_y < TOP_LIMIT: self.world_y = TOP_LIMIT
+    #
+    #             # set rect
+    #             self.rect.x = self.world_x
+    #             self.rect.y = self.world_y
+    #
+    #             # set drag cursor
+    #             config.app.cursor.set_cursor("drag")
+    #
+    #     self.reposition(old_x, old_y)
 
-        old_x, old_y = self.world_x, self.world_y  # store old position
-        for event in events:
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if self.rect.collidepoint(event.pos):
-                    self.moving = True
-                    self.offset_x = self.world_x - event.pos[0]  # calculate the offset x
-                    self.offset_y = self.world_y - event.pos[1]  # calculate the offset y
+    def is_same_or_subclass(self, other_obj):
+        # Check if other_obj is an instance of the same class as self
+        if isinstance(other_obj, self.__class__):
+            return True
 
-            elif event.type == pygame.MOUSEBUTTONUP:
-                self.moving = False
+        # Check if self is an instance of any subclass of other_obj's class
+        if issubclass(self.__class__, other_obj.__class__):
+            return True
 
-            elif event.type == pygame.MOUSEMOTION and self.moving:
-                self.world_x = event.pos[0] + self.offset_x  # apply the offset x
-                self.world_y = event.pos[1] + self.offset_y  # apply the offset y
-                self.rect.x = self.world_x
-                self.rect.y = self.world_y
+        # Check if other_obj is an instance of any subclass of self's class
+        if issubclass(other_obj.__class__, self.__class__):
+            return True
 
+        return False
+
+    def reposition(self, old_x, old_y):
         # calculate the difference
         diff_x = self.world_x - old_x
         diff_y = self.world_y - old_y
+
+        # editors
+        for editor in self.editors:
+            editor.world_x += diff_x
+            editor.world_y += diff_y
+            # apply the difference to each widget
+            for widget in editor.widgets:
+                widget.world_x += diff_x
+                widget.world_y += diff_y
+
+                widget.screen_x += diff_x
+                widget.screen_y += diff_y
+                if hasattr(widget, "reposition"):
+                    # Get the signature of the reposition method
+                    sig = inspect.signature(widget.reposition)
+                    params = sig.parameters
+
+                    # Check if 'old_x' and 'old_y' are in the parameters of the reposition method
+                    if 'old_x' in params and 'old_y' in params:
+                        widget.reposition(old_x, old_y)
+                    else:
+                        widget.reposition()
+
+                if hasattr(widget, "set_center"):
+                    widget.set_center()
+            # editor.reposition( self.world_x,  self.world_y)
 
         # apply the difference to each widget
         for widget in self.widgets:
@@ -273,18 +373,31 @@ class EditorBase(WidgetBase):
             widget.screen_x += diff_x
             widget.screen_y += diff_y
             if hasattr(widget, "reposition"):
-                widget.reposition()
+                # Get the signature of the reposition method
+                sig = inspect.signature(widget.reposition)
+                params = sig.parameters
+
+                # Check if 'old_x' and 'old_y' are in the parameters of the reposition method
+                if 'old_x' in params and 'old_y' in params:
+                    widget.reposition(old_x, old_y)
+                else:
+                    widget.reposition()
+
+            if hasattr(widget, "set_center"):
+                widget.set_center()
 
     def draw_text(self, x, y, width, height, text):
-        font = pygame.font.SysFont(global_params.font_name, height - 1)
+        font = pygame.font.SysFont(config.font_name, height - 1)
         text = font.render(text, 1, self.frame_color)
         self.win.blit(text, (x, y))
 
-    def draw_frame(self):
+    def draw_frame(self, **kwargs):
+        corner_radius = kwargs.get("corner_radius", config.ui_rounded_corner_radius_big)
+        corner_thickness = kwargs.get("corner_thickness", config.ui_rounded_corner_big_thickness)
+
         height = self.max_height
         self.frame = pygame.transform.scale(self.frame, (self.get_screen_width(), height))
-        rect = (self.world_x, self.world_y + 60, self.frame.get_rect().width, self.frame.get_rect().height)
-        draw_transparent_rounded_rect(self.win, (0, 0, 0), rect,
-            int(global_params.ui_rounded_corner_radius_big), global_params.ui_panel_alpha)
-        pygame.draw.rect(self.win, self.frame_color, rect,
-            int(ui_rounded_corner_big_thickness / 2), int(global_params.ui_rounded_corner_radius_big))
+
+        rect = (self.world_x, self.world_y + TOP_SPACING, self.frame.get_rect().width, self.frame.get_rect().height)
+        draw_transparent_rounded_rect(self.win, (0, 0, 0), rect, corner_radius, config.ui_panel_alpha)
+        pygame.draw.rect(self.win, self.frame_color, rect, corner_thickness, corner_radius)

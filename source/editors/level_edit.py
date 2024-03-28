@@ -1,7 +1,5 @@
 import random
-
 import pygame
-
 from source.configuration.game_config import config
 from source.draw.circles import draw_zoomable_circle
 from source.draw.zoomable_rect import draw_zoomable_rect
@@ -50,9 +48,10 @@ class LevelEdit(EditorBase):
         self.height_list = [_ for _ in range(5000, 1001000, 1000)]
         self.collectable_item_amount_list = [_ for _ in range(0, 101, 1)]
         self.universe_density_list = [_ for _ in range(0, 110, 10)]
-        self.population_density_list = [_ for _ in range(0,105, 5)]
+        self.population_density_list = [_ for _ in range(0, 105, 5)]
         self.lists = ["level_list", "planets_list", "suns_list", "moons_list", "width_list", "height_list",
-                      "collectable_item_amount_list", "universe_density_list", "central_compression_list", "population_density_list"]
+                      "collectable_item_amount_list", "universe_density_list", "central_compression_list",
+                      "population_density_list"]
 
         # temp dict
         self.last_created = {}
@@ -126,7 +125,7 @@ class LevelEdit(EditorBase):
 
     def create_owner_button(self):
         owner_button = ImageButton(win=self.win,
-            x=self.get_screen_x() + BUTTON_SIZE / 2 + BUTTON_SIZE *2,
+            x=self.get_screen_x() + BUTTON_SIZE / 2 + BUTTON_SIZE * 2,
             y=self.world_y + TOP_SPACING + BUTTON_SIZE / 2,
             width=BUTTON_SIZE,
             height=BUTTON_SIZE,
@@ -151,7 +150,7 @@ class LevelEdit(EditorBase):
 
     def create_smoothing_button(self):
         smoothing_button = ImageButton(win=self.win,
-            x=self.get_screen_x() + BUTTON_SIZE / 2 + BUTTON_SIZE *3,
+            x=self.get_screen_x() + BUTTON_SIZE / 2 + BUTTON_SIZE * 3,
             y=self.world_y + TOP_SPACING + BUTTON_SIZE / 2,
             width=BUTTON_SIZE,
             height=BUTTON_SIZE,
@@ -177,7 +176,7 @@ class LevelEdit(EditorBase):
 
     def create_rename_button(self):
         rename_button = ImageButton(win=self.win,
-            x=self.get_screen_x() + BUTTON_SIZE / 2 + BUTTON_SIZE *4,
+            x=self.get_screen_x() + BUTTON_SIZE / 2 + BUTTON_SIZE * 4,
             y=self.world_y + TOP_SPACING + BUTTON_SIZE / 2,
             width=BUTTON_SIZE,
             height=BUTTON_SIZE,
@@ -201,7 +200,7 @@ class LevelEdit(EditorBase):
 
     def create_explore_button(self):
         explore_button = ImageButton(win=self.win,
-            x=self.get_screen_x() + BUTTON_SIZE / 2 + BUTTON_SIZE *5,
+            x=self.get_screen_x() + BUTTON_SIZE / 2 + BUTTON_SIZE * 5,
             y=self.world_y + TOP_SPACING + BUTTON_SIZE / 2,
             width=BUTTON_SIZE,
             height=BUTTON_SIZE,

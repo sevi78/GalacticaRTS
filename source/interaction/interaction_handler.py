@@ -41,7 +41,8 @@ class ResizeHandler:
                 self.rect.y = self.world_y
 
                 # set drag cursor
-                config.app.cursor.set_cursor("drag")
+                if config.app:
+                    config.app.cursor.set_cursor("drag")
 
         self.reposition(old_x, old_y)
 

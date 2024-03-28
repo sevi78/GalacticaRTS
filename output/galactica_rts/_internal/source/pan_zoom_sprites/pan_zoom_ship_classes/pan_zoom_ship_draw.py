@@ -2,8 +2,10 @@ import random
 
 import pygame
 
+from source.configuration.game_config import config
+from source.draw.arrow import draw_arrows_on_line_from_start_to_end
 from source.gui.event_text import event_text
-from source.gui.lod import inside_screen
+from source.gui.lod import level_of_detail
 from source.gui.widgets.progress_bar import ProgressBar
 from source.handlers.color_handler import colors
 
@@ -28,7 +30,7 @@ class PanZoomShipDraw:
             )
 
     def flickering(self):
-        if not inside_screen(self.get_screen_position()):
+        if not level_of_detail.inside_screen(self.get_screen_position()):
             return
         # make flickering relaod stream :))
         r0 = random.randint(-4, 5)
@@ -56,19 +58,21 @@ class PanZoomShipDraw:
 
         # pygame.mixer.Channel(2).play (sounds.electricity2)
         # sounds.play_sound(sounds.electricity2, channel=self.sound_channel)
-        event_text.text = "reloading spaceship: --- needs a lot of energy!"
-
-
+        event_text.set_text("reloading spaceship: --- needs a lot of energy!", obj=self)
 
     def draw_selection(self):
-        pygame.draw.circle(self.win, self.frame_color, self.rect.center, self.get_screen_width(), int(6 * self.get_zoom()))
+        if config.show_player_colors:
+            pygame.draw.circle(self.win, self.player_color, self.rect.center, self.get_screen_width(), int(6 * self.get_zoom()))
+        else:
+            pygame.draw.circle(self.win, self.frame_color, self.rect.center, self.get_screen_width(), int(6 * self.get_zoom()))
 
-    def draw_connections(self):
-        if self.target:
-            if hasattr(self.target, "x"):
-                if not self.target.property == "ufo":
-                    pygame.draw.line(surface=self.win,
-                        start_pos=self.rect.center,
-                        end_pos=self.target.center,
-                        color=self.frame_color,
-                        width=5)
+    def draw_connections(self, target):
+        draw_arrows_on_line_from_start_to_end(
+            surf=self.win,
+            color=self.frame_color,
+            start_pos=self.rect.center,
+            end_pos=target.rect.center,
+            width=1,
+            dash_length=30,
+            arrow_size=(0, 6),
+            )

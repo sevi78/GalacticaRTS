@@ -1,7 +1,6 @@
 import pygame
 
-from source.configuration import global_params
-from source.configuration.global_params import ui_rounded_corner_small_thickness
+from source.configuration.game_config import config
 from source.gui.panels.toggle_switch import ToggleSwitch
 from source.gui.widgets.Icon import Icon
 from source.gui.widgets.buttons.image_button import ImageButton
@@ -24,7 +23,7 @@ class ResourcePanel(WidgetBase):
 
         # remove this later
 
-        self.clock_font = pygame.font.SysFont(global_params.font_name, 12)
+        self.clock_font = pygame.font.SysFont(config.font_name, 12)
 
         # construct surface
         self.icon_size = kwargs.get("icon_size", 25)
@@ -38,9 +37,10 @@ class ResourcePanel(WidgetBase):
         self.size_x = kwargs.get("size_x")
         self.size_y = kwargs.get("size_y")
         self.spacing = kwargs.get("spacing")
-        self.surface_frame = pygame.draw.rect(self.win, self.frame_color, self.surface_rect, int(ui_rounded_corner_small_thickness), int(global_params.ui_rounded_corner_radius_small))
+        self.surface_frame = pygame.draw.rect(self.win, self.frame_color, self.surface_rect,
+            config.ui_rounded_corner_small_thickness, config.ui_rounded_corner_radius_small)
         self.font_size = 18
-        self.font = pygame.font.SysFont(global_params.font_name, self.font_size)
+        self.font = pygame.font.SysFont(config.font_name, self.font_size)
         self.max_height = self.get_screen_y() + self.surface_rect.height
 
         self.icons = []
@@ -54,16 +54,41 @@ class ResourcePanel(WidgetBase):
         """
         creates the icons used for displaying the resources on top of the screen
         """
-        start_x = 250
+        start_x = 200
         spacing = 150
-        pos_x = self.world_x + self.icon_size * 2
+        pos_x = 160
         pos_y = 15
+
+        self.players_icon = ImageButton(win=self.win,
+            x=70,
+            y=pos_y,
+            width=self.icon_size,
+            height=self.icon_size,
+            isSubWidget=False,
+            parent=self,
+            image=pygame.transform.scale(get_image("multiplayer.png"), (25, 25)),
+            image_raw=get_image("multiplayer.png"),
+            tooltip="players",
+            frame_color=self.frame_color,
+            moveable=False,
+            include_text=True,
+            layer=self.layer,
+            key="",
+            info_text="players",
+            name="players_icon",
+            textColours=(0, 0, 0),
+            font_size=0,
+            outline_thickness=0,
+            outline_threshold=0,
+            onClick=lambda: config.app.player_edit.set_visible())
+
+        self.widgets.append(self.players_icon)
 
         self.mission_icon = ImageButton(win=self.win,
             x=5,
             y=pos_y,
-            width=25,
-            height=25,
+            width=self.icon_size,
+            height=self.icon_size,
             isSubWidget=False,
             parent=self,
             image=pygame.transform.scale(get_image("mission_512x512.png"), (25, 25)),
@@ -86,8 +111,8 @@ class ResourcePanel(WidgetBase):
         self.save_game_icon = ImageButton(win=self.win,
             x=35,
             y=pos_y,
-            width=25,
-            height=25,
+            width=self.icon_size,
+            height=self.icon_size,
             isSubWidget=False,
             parent=self,
             image=pygame.transform.scale(get_image("save_icon_bk.png"), (25, 25)),
@@ -101,19 +126,43 @@ class ResourcePanel(WidgetBase):
             name="save_game_icon",
             textColours=(0, 0, 0),
             font_size=0,
-            onClick=lambda: global_params.app.save_game_edit.set_visible(),
+            onClick=lambda: config.app.save_game_edit.set_visible(),
             outline_thickness=1,
             outline_threshold=127)
 
         self.widgets.append(self.save_game_icon)
+
+        self.deal_manager_icon = ImageButton(win=self.win,
+            x=100,
+            y=pos_y,
+            width=self.icon_size,
+            height=self.icon_size,
+            isSubWidget=False,
+            parent=self,
+            image=pygame.transform.scale(get_image("deal_icon.png"), (25, 25)),
+            image_raw=get_image("deal_icon.png"),
+            tooltip="open deal manager",
+            frame_color=self.frame_color,
+            moveable=False,
+            include_text=True,
+            layer=self.layer,
+            key="",
+            name="deal_manager_icon",
+            textColours=(0, 0, 0),
+            font_size=0,
+            onClick=lambda: config.app.deal_manager.set_visible(),
+            outline_thickness=1,
+            outline_threshold=127)
+
+        self.widgets.append(self.deal_manager_icon)
         # self.max_width += self.icon_size + self.spacing
         # pos_x += self.spacing
 
         self.water_icon = Icon(win=self.win,
             x=pos_x,
             y=pos_y,
-            width=25,
-            height=25,
+            width=self.icon_size,
+            height=self.icon_size,
             isSubWidget=False,
             parent=self.parent,
             image=get_image("water_25x25.png"),
@@ -132,8 +181,8 @@ class ResourcePanel(WidgetBase):
         self.energy_icon = Icon(win=self.win,
             x=pos_x,
             y=pos_y,
-            width=25,
-            height=25,
+            width=self.icon_size,
+            height=self.icon_size,
             isSubWidget=False,
             parent=self.parent,
             image=get_image("energy_25x25.png"),
@@ -152,8 +201,8 @@ class ResourcePanel(WidgetBase):
         self.food_icon = Icon(win=self.win,
             x=pos_x,
             y=pos_y,
-            width=25,
-            height=25,
+            width=self.icon_size,
+            height=self.icon_size,
             isSubWidget=False,
             parent=self.parent,
             image=get_image("food_25x25.png"),
@@ -172,8 +221,8 @@ class ResourcePanel(WidgetBase):
         self.minerals_icon = Icon(win=self.win,
             x=pos_x,
             y=pos_y,
-            width=25,
-            height=25,
+            width=self.icon_size,
+            height=self.icon_size,
             isSubWidget=False,
             parent=self.parent,
             image=get_image("minerals_25x25.png"),
@@ -184,7 +233,7 @@ class ResourcePanel(WidgetBase):
             include_text=False,
             layer=9,
             outline_thickness=1,
-            outline_threshold=0)
+            outline_threshold=0,)
         self.widgets.append(self.minerals_icon)
         self.max_width += self.icon_size + self.spacing
         pos_x += self.spacing
@@ -192,8 +241,8 @@ class ResourcePanel(WidgetBase):
         self.technology_icon = Icon(win=self.win,
             x=pos_x,
             y=pos_y,
-            width=25,
-            height=25,
+            width=self.icon_size,
+            height=self.icon_size,
             isSubWidget=False,
             parent=self.parent,
             image=get_image("technology_25x25.png"),
@@ -212,8 +261,8 @@ class ResourcePanel(WidgetBase):
         self.population_icon = Icon(win=self.win,
             x=pos_x,
             y=pos_y,
-            width=25,
-            height=25,
+            width=self.icon_size,
+            height=self.icon_size,
             isSubWidget=False,
             parent=self.parent,
             image=get_image("population_25x25.png"),
@@ -259,9 +308,9 @@ class ResourcePanel(WidgetBase):
         self.draw_frame()
 
         # fps, memory usage, this just for debug purposes
-        # self.clock.tick(int(global_params.fps))
-        # fps = f"fps: {str(self.clock.get_fps())}"  # , {sprite_groups.__str__()} hover:{global_params.hover_object}"
+        # self.clock.tick(int(config.fps))
+        # fps = f"fps: {str(self.clock.get_fps())}"  # , {sprite_groups.__str__()} hover:{config.hover_object}"
         fps = f"fps: {str(round(time_handler.fps, 1))}, memory usage: {garbage_handler.get_memory_usage()} MB"
-        # fps = f"fps: {str(self.clock.get_fps())}, {sprite_groups.__str__()} hover:{global_params.hover_object}"
+        # fps = f"fps: {str(self.clock.get_fps())}, {sprite_groups.__str__()} hover:{config.hover_object}"
         text = self.clock_font.render(fps, 0, self.frame_color)
         self.win.blit(text, (0, 0, 30, 30))

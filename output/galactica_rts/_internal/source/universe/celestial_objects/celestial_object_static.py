@@ -1,7 +1,7 @@
 import random
 
-from source.configuration import global_params
-from source.gui.lod import inside_screen
+from source.configuration.game_config import config
+from source.gui.lod import level_of_detail
 from source.handlers.position_handler import rot_center
 from source.universe.celestial_objects.celestial_object import CelestialObject
 
@@ -19,7 +19,7 @@ class CelestialObjectStatic(CelestialObject):
         self.set_screen_position()
         x, y = self.center
 
-        if not inside_screen(self.center):
+        if not level_of_detail.inside_screen(self.center):
             return
 
         if not self._hidden:
@@ -34,5 +34,5 @@ class CelestialObjectStatic(CelestialObject):
                 self.rect.y = self.get_screen_y() + self.image.get_size()[1] / 2 * self.get_zoom()
                 self.win.blit(self.image, self.rect)
 
-            if global_params.debug:
+            if config.debug:
                 self.debug_object()

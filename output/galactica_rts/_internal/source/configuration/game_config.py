@@ -1,36 +1,71 @@
-import ctypes
 import os
 import pygame
-from source.handlers.file_handler import load_file
+
+from source.handlers.file_handler import load_file, get_player_list
+from source.handlers.image_handler import overblit_button_image
+
+
+class ScreenConfig:
+    def set_monitor(self, monitor_index=0):
+        """
+        Sets the monitor at runtime and initializes a Pygame window on the selected monitor.
+        :param monitor_index: The index of the monitor where the window should be displayed. Defaults to 0.
+        this funtion has some problems.
+        some windows are not shown up after calling
+        """
+        # Get the list of available monitors
+        monitors = pygame.display.get_desktop_sizes()
+
+        # Check if the monitor_index is within the range of connected monitors
+        if monitor_index >= len(monitors):
+            print(f"cant choose monitor:{monitor_index}, index out of range")
+            return
+
+        # Get the resolution of the selected monitor
+        monitor_resolution = monitors[monitor_index]
+
+        # set the window position(vertical stack)
+        window_position_x = 0
+        window_position_y = monitor_resolution[1] * monitor_index
+
+        # Set the SDL environment variable to position the window
+        os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (window_position_x, window_position_y)
+
+        # Initialize the window on the selected monitor
+        win = pygame.display.set_mode(monitor_resolution, pygame.HWSURFACE | pygame.DOUBLEBUF, display=monitor_index)
+        return win
 
 class GameConfig:
+    """
+    simply write new elements into settings.json
+    """
+
     def __init__(self):
-        # Load settings from a JSON file
-        self.settings = load_file("settings.json", "config")
+        self.screen_config = ScreenConfig()
 
         # Initialize configuration variables
-        self.font_name = self.settings["font_name"]
-        self.WIDTH = int(self.settings["WIDTH"])
-        self.HEIGHT = int(self.settings["HEIGHT"])
-        self.WIDTH_MINIMIZED = 1920
-        self.HEIGHT_MINIMIZED = 800
-        self.WIDTH_CURRENT = self.WIDTH
-        self.HEIGHT_CURRENT = self.HEIGHT
-        self.moveable = self.settings["moveable"]
+        self.width = 1920
+        self.height = 1080
+        self.width_minimized = 1920
+        self.height_minimized = 800
+        self.width_current = self.width
+        self.height_current = self.height
+        self.moveable = True
         self.app = None
+        self.players = len(get_player_list())
+        self.player = 0
         self.tooltip_text = ""
         self.game_paused = False
-        self.game_speed = int(self.settings["game_speed"])
-        self.fps = int(self.settings["fps"])
-        self.scene_width = int(self.settings["scene_width"])
-        self.scene_height = int(self.settings["scene_height"])
+        self.scene_width = 14000
+        self.scene_height = 14000
         self.quadrant_amount = 1
-        self.building_editor_draw = False
         self.enable_zoom = True
         self.enable_pan = True
-        self.debug = self.settings["debug"]
+        self.enable_cross = True
+        self.cross_view_start = 0.2
+        self.debug = False
         self.enable_orbit = True
-        self.enable_game_events = self.settings["enable_game_events"]
+        self.enable_autopilot = False
         self.show_orbit = True
         self.show_grid = False
         self.show_map_panel = True
@@ -39,30 +74,57 @@ class GameConfig:
         self.hover_object = None
         self.edit_mode = False
         self.show_overview_buttons = True
-        self.ui_rounded_corner_radius_small = int(self.settings["ui_rounded_corner_radius_small"])
-        self.ui_rounded_corner_radius_big = self.settings["ui_rounded_corner_radius_big"]
-        self.ui_rounded_corner_small_thickness = self.settings["ui_rounded_corner_small_thickness"]
-        self.ui_rounded_corner_big_thickness = self.settings["ui_rounded_corner_big_thickness"]
-        self.ui_panel_alpha = self.settings["ui_panel_alpha"]
         self.draw_universe = True
+        self.universe_density = 25
+        self.view_explored_planets = True
+        self.selected_monitor = 1
+
+        # Load settings from a JSON file
+        self.settings = load_file("settings.json", "config")
+        for key, value in self.settings.items():
+            setattr(self, key, value)
 
         # Initialize pygame and window
-        pygame.init()
-        self.init_window()
+        self.win = self.screen_config.set_monitor(self.monitor)
 
-    def init_window(self):
-        # Call the GetSystemMetrics function with index 80 to get the number of monitors
-        number_of_monitors = ctypes.windll.user32.GetSystemMetrics(80)
-        if number_of_monitors > 1:
-            print("Multiple monitors detected")
+    @property
+    def monitor(self):
+        return self._monitor
+
+    @monitor.setter
+    def monitor(self, value):
+        self._monitor = value
+        self.win = self.screen_config.set_monitor(self._monitor)
+
+    @property
+    def enable_autopilot(self):
+        return self._enable_autopilot
+
+    @enable_autopilot.setter
+    def enable_autopilot(self, value):
+        self._enable_autopilot = value
+
+    def set_global_variable(self, key, value, **kwargs):
+        var = kwargs.get("var", None)
+        button = kwargs.get("button", None)
+
+        if var:
+            if getattr(config, var):
+                setattr(config, var, False)
+            else:
+                setattr(config, var, True)
+
+        if not hasattr(config, key):
+            setattr(config, key, value)
+
+        if getattr(config, key):
+            setattr(config, key, False)
+
         else:
-            print("Only one monitor detected")
+            setattr(config, key, True)
 
-        # Set the position of the window to the second monitor
-        os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (0, -1080)
+        overblit_button_image(button, "uncheck.png", getattr(config, key))
 
-        # Set the display mode to full screen on the second monitor
-        self.win = pygame.display.set_mode((self.WIDTH, self.HEIGHT), pygame.FULLSCREEN)
 
 # Usage
 config = GameConfig()

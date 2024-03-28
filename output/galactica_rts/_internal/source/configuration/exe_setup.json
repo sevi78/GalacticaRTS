@@ -1,77 +1,77 @@
 {
- "version": "auto-py-to-exe-configuration_v1",
- "pyinstallerOptions": [
-  {
-   "optionDest": "noconfirm",
-   "value": true
-  },
-  {
-   "optionDest": "filenames",
-   "value": "C:/Users/sever/Documents/Galactica-RTS_zoomable1.107/main.py"
-  },
-  {
-   "optionDest": "onefile",
-   "value": false
-  },
-  {
-   "optionDest": "console",
-   "value": true
-  },
-  {
-   "optionDest": "icon_file",
-   "value": "C:/Users/sever/Documents/Galactica-RTS_zoomable1.107/assets/pictures/icons/Zeta-Bentauri_60x60.ico"
-  },
-  {
-   "optionDest": "name",
-   "value": "galactica_rts"
-  },
-  {
-   "optionDest": "clean_build",
-   "value": false
-  },
-  {
-   "optionDest": "strip",
-   "value": false
-  },
-  {
-   "optionDest": "noupx",
-   "value": false
-  },
-  {
-   "optionDest": "disable_windowed_traceback",
-   "value": false
-  },
-  {
-   "optionDest": "uac_admin",
-   "value": false
-  },
-  {
-   "optionDest": "uac_uiaccess",
-   "value": false
-  },
-  {
-   "optionDest": "argv_emulation",
-   "value": false
-  },
-  {
-   "optionDest": "bootloader_ignore_signals",
-   "value": false
-  },
-  {
-   "optionDest": "datas",
-   "value": "C:/Users/sever/Documents/Galactica-RTS_zoomable1.107/assets;assets/"
-  },
-  {
-   "optionDest": "datas",
-   "value": "C:/Users/sever/Documents/Galactica-RTS_zoomable1.107/database;database/"
-  },
-  {
-   "optionDest": "datas",
-   "value": "C:/Users/sever/Documents/Galactica-RTS_zoomable1.107/source;source/"
+  "version": "auto-py-to-exe-configuration_v1",
+  "pyinstallerOptions": [
+    {
+      "optionDest": "noconfirm",
+      "value": true
+    },
+    {
+      "optionDest": "filenames",
+      "value": "C:/Users/sever/Documents/Galactica-RTS_zoomable1.107/main.py"
+    },
+    {
+      "optionDest": "onefile",
+      "value": false
+    },
+    {
+      "optionDest": "console",
+      "value": true
+    },
+    {
+      "optionDest": "icon_file",
+      "value": "C:/Users/sever/Documents/Galactica-RTS_zoomable1.107/assets/pictures/icons/Zeta-Bentauri_60x60.ico"
+    },
+    {
+      "optionDest": "name",
+      "value": "galactica_rts"
+    },
+    {
+      "optionDest": "clean_build",
+      "value": false
+    },
+    {
+      "optionDest": "strip",
+      "value": false
+    },
+    {
+      "optionDest": "noupx",
+      "value": false
+    },
+    {
+      "optionDest": "disable_windowed_traceback",
+      "value": false
+    },
+    {
+      "optionDest": "uac_admin",
+      "value": false
+    },
+    {
+      "optionDest": "uac_uiaccess",
+      "value": false
+    },
+    {
+      "optionDest": "argv_emulation",
+      "value": false
+    },
+    {
+      "optionDest": "bootloader_ignore_signals",
+      "value": false
+    },
+    {
+      "optionDest": "datas",
+      "value": "C:/Users/sever/Documents/Galactica-RTS_zoomable1.107/assets;assets/"
+    },
+    {
+      "optionDest": "datas",
+      "value": "C:/Users/sever/Documents/Galactica-RTS_zoomable1.107/database;database/"
+    },
+    {
+      "optionDest": "datas",
+      "value": "C:/Users/sever/Documents/Galactica-RTS_zoomable1.107/source;source/"
+    }
+  ],
+  "nonPyinstallerOptions": {
+    "increaseRecursionLimit": true,
+    "manualArguments": ""
   }
- ],
- "nonPyinstallerOptions": {
-  "increaseRecursionLimit": true,
-  "manualArguments": ""
- }
 }

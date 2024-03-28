@@ -14,7 +14,7 @@ class WeaponFactory:
     def get_all_weapons(self):
         return self.weapons
 
-    def save_weapons__(self):# unused
+    def save_weapons__(self):  # unused
         write_file(self.filename, self.weapons)
 
     def load_weapons(self):

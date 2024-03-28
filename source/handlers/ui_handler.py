@@ -21,8 +21,9 @@ class UIHandler:
 
         # for all objects that has "save" attribute, setup two dicts. first with obj second with x,y
         for index, i in enumerate([_ for _ in WidgetHandler.get_all_widgets() if hasattr(_, "save")]):
-            self.ui_elements[str(index)] = i
-            self.ui_elements_dicts[str(index)] = {"world_x": i.world_x, "world_y": i.world_y}
+            if i.save:
+                self.ui_elements[str(index)] = i
+                self.ui_elements_dicts[str(index)] = {"widget_name":i.name, "world_x": i.world_x, "world_y": i.world_y}
 
     def save_ui_elements(self):
         # setup objects to save
@@ -49,8 +50,9 @@ class UIHandler:
 
                 # set the values
                 for i in self.ui_elements_dicts[key]:
-                    setattr(obj, i, self.ui_elements_dicts[key][i])
-                    setattr(obj.rect, i.split("world_")[1], self.ui_elements_dicts[key][i])
+                    if not i == "widget_name":
+                        setattr(obj, i, self.ui_elements_dicts[key][i])
+                        setattr(obj.rect, i.split("world_")[1], self.ui_elements_dicts[key][i])
 
                 # reposition
                 if hasattr(obj, "reposition"):

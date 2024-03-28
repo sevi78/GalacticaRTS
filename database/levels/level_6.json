@@ -14,12 +14,12 @@
             "image_name_small": "sonnenature_110x110.png",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Radiance",
-            "orbit_angle": 321.9228543731134,
+            "orbit_angle": 228.44100081809316,
             "orbit_distance": 0,
             "orbit_object_id": 0,
             "orbit_speed": 0.0027251344217276833,
             "population": 0,
-            "population_grow": 0.2662028776144676,
+            "population_grow": 10.0,
             "possible_resources": [],
             "specials": [],
             "type": "sun",
@@ -27,7 +27,7 @@
             "world_width": 108,
             "world_x": 56337.638415123096,
             "world_y": 67433.49839062565,
-            "owner": -1
+            "owner": 1
         },
         "1": {
             "alien_attitude": 81,
@@ -43,12 +43,12 @@
             "image_name_small": "sonnecomic_110x110.png",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Fornax",
-            "orbit_angle": 286.68910496304625,
+            "orbit_angle": 164.03742560189852,
             "orbit_distance": 0,
             "orbit_object_id": 1,
             "orbit_speed": 0.0024268744441601096,
             "population": 0,
-            "population_grow": 0.37824428762337625,
+            "population_grow": 20.0,
             "possible_resources": [],
             "specials": [],
             "type": "sun",
@@ -56,7 +56,7 @@
             "world_width": 91,
             "world_x": 69430.14904686423,
             "world_y": 27315.303286321265,
-            "owner": -1
+            "owner": 2
         },
         "10": {
             "alien_attitude": 43,
@@ -72,7 +72,7 @@
             "image_name_small": "ur-anus_60x60.png",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Orbiton VI",
-            "orbit_angle": 122.7258640870642,
+            "orbit_angle": 328.73154494847955,
             "orbit_distance": 0,
             "orbit_object_id": 4,
             "orbit_speed": 0.0021063975548199776,
@@ -88,8 +88,8 @@
             "type": "planet",
             "world_height": 78,
             "world_width": 78,
-            "world_x": 33231.07172897842,
-            "world_y": 40665.04830128217,
+            "world_x": 47184.72036355604,
+            "world_y": 54268.20254146893,
             "owner": -1
         },
         "11": {
@@ -106,7 +106,7 @@
             "image_name_small": "P0101_40x40.png",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Orbiton VII",
-            "orbit_angle": 143.06608307442568,
+            "orbit_angle": 221.84715099021133,
             "orbit_distance": 0,
             "orbit_object_id": 4,
             "orbit_speed": 0.004486513986868968,
@@ -124,8 +124,8 @@
             "type": "planet",
             "world_height": 62,
             "world_width": 62,
-            "world_x": 30643.982152033546,
-            "world_y": 43068.781515336515,
+            "world_x": 31188.000765596058,
+            "world_y": 55749.17381100943,
             "owner": -1
         },
         "12": {
@@ -142,12 +142,12 @@
             "image_name_small": "P0101_50x50.png",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Radiance VIII",
-            "orbit_angle": 248.9919692365122,
+            "orbit_angle": 348.0899815722547,
             "orbit_distance": 0,
             "orbit_object_id": 0,
             "orbit_speed": 0.004694253704864498,
             "population": 0,
-            "population_grow": 0.9116677113430903,
+            "population_grow": 20.0,
             "possible_resources": [
                 "water",
                 "food",
@@ -158,8 +158,8 @@
             "type": "planet",
             "world_height": 74,
             "world_width": 74,
-            "world_x": 53888.00692982859,
-            "world_y": 73812.33408318393,
+            "world_x": 63023.56891364753,
+            "world_y": 68843.66596056194,
             "owner": 1
         },
         "13": {
@@ -176,12 +176,12 @@
             "image_name_small": "ur-anus_60x60.png",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Astrovoid IX",
-            "orbit_angle": 251.33468345608006,
+            "orbit_angle": 1.7855174941415666,
             "orbit_distance": 0,
             "orbit_object_id": 2,
             "orbit_speed": 0.004810335726360449,
-            "population": 0,
-            "population_grow": 0.47530791570050734,
+            "population": 1231.0,
+            "population_grow": 5.0,
             "possible_resources": [
                 "technology",
                 "energy",
@@ -193,9 +193,9 @@
             "type": "planet",
             "world_height": 78,
             "world_width": 78,
-            "world_x": 32455.788235908403,
-            "world_y": 66821.32529525446,
-            "owner": -1
+            "world_x": 36767.329022195234,
+            "world_y": 63623.9485921103,
+            "owner": 3
         },
         "14": {
             "alien_attitude": 23,
@@ -211,7 +211,7 @@
             "image_name_small": "Helios 12_60x60.png",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Orbiton X",
-            "orbit_angle": 312.42363588140876,
+            "orbit_angle": 352.9388948773412,
             "orbit_distance": 0,
             "orbit_object_id": 4,
             "orbit_speed": 0.004095248046993161,
@@ -228,8 +228,8 @@
             "type": "planet",
             "world_height": 71,
             "world_width": 71,
-            "world_x": 43229.26254762902,
-            "world_y": 54102.422372014546,
+            "world_x": 45392.55774141563,
+            "world_y": 49914.475195494415,
             "owner": -1
         },
         "15": {
@@ -246,7 +246,7 @@
             "image_name_small": "XKGPRZ 7931_150x150.png",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Radiance XI",
-            "orbit_angle": 359.3345622474944,
+            "orbit_angle": 98.60955465265727,
             "orbit_distance": 0,
             "orbit_object_id": 0,
             "orbit_speed": 0.00469606331702631,
@@ -263,9 +263,9 @@
             "type": "planet",
             "world_height": 63,
             "world_width": 63,
-            "world_x": 57288.17814611185,
-            "world_y": 67444.53853125966,
-            "owner": -1
+            "world_x": 56195.33280460429,
+            "world_y": 66493.60649359252,
+            "owner": 1
         },
         "16": {
             "alien_attitude": 89,
@@ -281,7 +281,7 @@
             "image_name_small": "Kepler-22b_150x150.png",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Radiance XII",
-            "orbit_angle": 250.1009366410605,
+            "orbit_angle": 181.80771741365805,
             "orbit_distance": 0,
             "orbit_object_id": 0,
             "orbit_speed": 0.002982686919965114,
@@ -298,9 +298,9 @@
             "type": "planet",
             "world_height": 78,
             "world_width": 78,
-            "world_x": 55287.79856966055,
-            "world_y": 70333.7970850061,
-            "owner": -1
+            "world_x": 53254.71304609335,
+            "world_y": 67530.79888774101,
+            "owner": 1
         },
         "17": {
             "alien_attitude": 18,
@@ -316,7 +316,7 @@
             "image_name_small": "Kepler-22b_150x150.png",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Lynx XIII",
-            "orbit_angle": 39.74569840361536,
+            "orbit_angle": 206.23917525272557,
             "orbit_distance": 0,
             "orbit_object_id": 3,
             "orbit_speed": 0.0017023872888457796,
@@ -333,9 +333,9 @@
             "type": "planet",
             "world_height": 63,
             "world_width": 63,
-            "world_x": 45415.75452074708,
-            "world_y": 39703.168612610214,
-            "owner": 1
+            "world_x": 28757.293289795074,
+            "world_y": 50518.17377505009,
+            "owner": -1
         },
         "18": {
             "alien_attitude": 100,
@@ -351,7 +351,7 @@
             "image_name_small": "ur-anus_60x60.png",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Fornax XIV",
-            "orbit_angle": 247.86299212032648,
+            "orbit_angle": 114.77207434303175,
             "orbit_distance": 0,
             "orbit_object_id": 1,
             "orbit_speed": 0.0023201337650582397,
@@ -369,9 +369,9 @@
             "type": "planet",
             "world_height": 73,
             "world_width": 73,
-            "world_x": 67968.39962654137,
-            "world_y": 30908.498213086175,
-            "owner": -1
+            "world_x": 67804.75036172023,
+            "world_y": 23793.110749864012,
+            "owner": 2
         },
         "19": {
             "alien_attitude": 78,
@@ -387,7 +387,7 @@
             "image_name_small": "GIN V.S.X.O._80x80.png",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Lynx XV",
-            "orbit_angle": 259.1073141147677,
+            "orbit_angle": 301.1902312634544,
             "orbit_distance": 0,
             "orbit_object_id": 3,
             "orbit_speed": 0.004111277271459038,
@@ -404,9 +404,9 @@
             "type": "planet",
             "world_height": 63,
             "world_width": 63,
-            "world_x": 35837.15525860964,
-            "world_y": 55916.809828328536,
-            "owner": 1
+            "world_x": 42905.667801256845,
+            "world_y": 54651.507086660175,
+            "owner": -1
         },
         "2": {
             "alien_attitude": 70,
@@ -422,7 +422,7 @@
             "image_name_small": "sonnecorona_110x110.png",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Astrovoid",
-            "orbit_angle": 179.06924805887687,
+            "orbit_angle": 327.3196857946034,
             "orbit_distance": 0,
             "orbit_object_id": 2,
             "orbit_speed": 0.001515853146582284,
@@ -435,7 +435,7 @@
             "world_width": 98,
             "world_x": 33501.492727579964,
             "world_y": 63725.75532665037,
-            "owner": -1
+            "owner": 3
         },
         "20": {
             "alien_attitude": 76,
@@ -451,7 +451,7 @@
             "image_name_small": "moon.gif",
             "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
             "name": "Radiance I, a",
-            "orbit_angle": 265.04655421531993,
+            "orbit_angle": 162.5433778724364,
             "orbit_distance": 0,
             "orbit_object_id": 5,
             "orbit_speed": 0.009994855047618722,
@@ -469,8 +469,8 @@
             "type": "moon",
             "world_height": 38,
             "world_width": 38,
-            "world_x": 53835.71948723689,
-            "world_y": 74005.92280970732,
+            "world_x": 50650.921522003555,
+            "world_y": 63580.89608841824,
             "owner": 1
         },
         "21": {
@@ -487,7 +487,7 @@
             "image_name_small": "moon1.gif",
             "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
             "name": "Radiance XII, b",
-            "orbit_angle": 168.49187500391454,
+            "orbit_angle": 239.65275227912383,
             "orbit_distance": 0,
             "orbit_object_id": 16,
             "orbit_speed": 0.01177056111733335,
@@ -503,8 +503,8 @@
             "type": "moon",
             "world_height": 36,
             "world_width": 36,
-            "world_x": 54011.501787100184,
-            "world_y": 70073.94308374991,
+            "world_x": 52353.594031497705,
+            "world_y": 69069.96413212693,
             "owner": 1
         },
         "22": {
@@ -521,7 +521,7 @@
             "image_name_small": "moon.gif",
             "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
             "name": "Radiance XII, c",
-            "orbit_angle": 84.13188162239013,
+            "orbit_angle": 315.7456698952675,
             "orbit_distance": 0,
             "orbit_object_id": 16,
             "orbit_speed": 0.017092165524262504,
@@ -538,8 +538,8 @@
             "type": "moon",
             "world_height": 31,
             "world_width": 31,
-            "world_x": 55753.74398525281,
-            "world_y": 65800.26619640297,
+            "world_x": 56655.56486673735,
+            "world_y": 70844.2630159742,
             "owner": 1
         },
         "23": {
@@ -556,7 +556,7 @@
             "image_name_small": "moon1.gif",
             "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
             "name": "Lynx XV, d",
-            "orbit_angle": 117.17938197848198,
+            "orbit_angle": 291.0538894664605,
             "orbit_distance": 0,
             "orbit_object_id": 19,
             "orbit_speed": 0.005458839544866803,
@@ -572,8 +572,8 @@
             "type": "moon",
             "world_height": 45,
             "world_width": 45,
-            "world_x": 32634.699836707725,
-            "world_y": 49679.98609313532,
+            "world_x": 53133.34427959116,
+            "world_y": 81220.79517533796,
             "owner": -1
         },
         "24": {
@@ -590,7 +590,7 @@
             "image_name_small": "moon.gif",
             "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
             "name": "Fornax IV, e",
-            "orbit_angle": 309.891144273357,
+            "orbit_angle": 42.377191143734194,
             "orbit_distance": 0,
             "orbit_object_id": 8,
             "orbit_speed": 0.019350573076384114,
@@ -605,9 +605,9 @@
             "type": "moon",
             "world_height": 48,
             "world_width": 48,
-            "world_x": 78647.87606308292,
-            "world_y": 26517.92135423267,
-            "owner": 1
+            "world_x": 72005.45987691564,
+            "world_y": 29183.564467340217,
+            "owner": 2
         },
         "25": {
             "alien_attitude": 13,
@@ -623,7 +623,7 @@
             "image_name_small": "moon.gif",
             "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
             "name": "Radiance I, f",
-            "orbit_angle": 66.35005951760947,
+            "orbit_angle": 177.53696061927573,
             "orbit_distance": 0,
             "orbit_object_id": 5,
             "orbit_speed": 0.0232227699499147,
@@ -641,9 +641,9 @@
             "type": "moon",
             "world_height": 43,
             "world_width": 43,
-            "world_x": 56933.63779760742,
-            "world_y": 62068.9898312718,
-            "owner": -1
+            "world_x": 49848.08845789419,
+            "world_y": 65111.37410558995,
+            "owner": 1
         },
         "26": {
             "alien_attitude": 80,
@@ -659,7 +659,7 @@
             "image_name_small": "moon1.gif",
             "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
             "name": "Radiance II, g",
-            "orbit_angle": 174.7103365320431,
+            "orbit_angle": 284.17722018320944,
             "orbit_distance": 0,
             "orbit_object_id": 6,
             "orbit_speed": 0.01952420126432692,
@@ -677,9 +677,9 @@
             "type": "moon",
             "world_height": 45,
             "world_width": 45,
-            "world_x": 41287.798676442355,
-            "world_y": 81458.00493327141,
-            "owner": -1
+            "world_x": 72216.38137998061,
+            "world_y": 70975.28541947716,
+            "owner": 1
         },
         "27": {
             "alien_attitude": 45,
@@ -695,7 +695,7 @@
             "image_name_small": "moon1.gif",
             "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
             "name": "Fornax IV, h",
-            "orbit_angle": 76.74096370524045,
+            "orbit_angle": 223.80683168925316,
             "orbit_distance": 0,
             "orbit_object_id": 8,
             "orbit_speed": 0.0051847225765237195,
@@ -711,9 +711,9 @@
             "type": "moon",
             "world_height": 38,
             "world_width": 38,
-            "world_x": 68011.22197305284,
-            "world_y": 19547.683751040204,
-            "owner": -1
+            "world_x": 59271.99516854297,
+            "world_y": 41106.43999674748,
+            "owner": 2
         },
         "28": {
             "alien_attitude": 91,
@@ -729,7 +729,7 @@
             "image_name_small": "moon1.gif",
             "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
             "name": "Radiance VIII, i",
-            "orbit_angle": 62.041286177642554,
+            "orbit_angle": 211.79553317410117,
             "orbit_distance": 0,
             "orbit_object_id": 12,
             "orbit_speed": 0.012574174304667389,
@@ -744,9 +744,9 @@
             "type": "moon",
             "world_height": 39,
             "world_width": 39,
-            "world_x": 54751.293956709174,
-            "world_y": 72185.90109316507,
-            "owner": -1
+            "world_x": 60441.871494522915,
+            "world_y": 70444.10754606986,
+            "owner": 1
         },
         "29": {
             "alien_attitude": 57,
@@ -762,7 +762,7 @@
             "image_name_small": "moon1.gif",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Orbiton VI, j",
-            "orbit_angle": 330.2857094839784,
+            "orbit_angle": 153.8646997830299,
             "orbit_distance": 0,
             "orbit_object_id": 10,
             "orbit_speed": 0.01660101217074692,
@@ -780,8 +780,8 @@
             "type": "moon",
             "world_height": 49,
             "world_width": 49,
-            "world_x": 34950.50665969288,
-            "world_y": 41646.36513277818,
+            "world_x": 45495.3518373875,
+            "world_y": 53439.298426218375,
             "owner": -1
         },
         "3": {
@@ -798,7 +798,7 @@
             "image_name_small": "sonnenature_110x110.png",
             "info_text": "unknown sun:\n\nresources: ???\nenergy: ???\n",
             "name": "Lynx",
-            "orbit_angle": 198.29143274524637,
+            "orbit_angle": 300.4978148336693,
             "orbit_distance": 0,
             "orbit_object_id": 3,
             "orbit_speed": 0.004726036626671068,
@@ -811,7 +811,7 @@
             "world_width": 95,
             "world_x": 37726.85614993358,
             "world_y": 46096.98139085939,
-            "owner": 1
+            "owner": -1
         },
         "30": {
             "alien_attitude": 53,
@@ -827,7 +827,7 @@
             "image_name_small": "moon1.gif",
             "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
             "name": "Orbiton VII, k",
-            "orbit_angle": 314.8078047354514,
+            "orbit_angle": 20.716003228658202,
             "orbit_distance": 0,
             "orbit_object_id": 11,
             "orbit_speed": 0.011716852745329246,
@@ -843,8 +843,8 @@
             "type": "moon",
             "world_height": 36,
             "world_width": 36,
-            "world_x": 30961.060674217133,
-            "world_y": 43387.99444714082,
+            "world_x": 32298.449947590234,
+            "world_y": 55329.21554944061,
             "owner": -1
         },
         "31": {
@@ -861,7 +861,7 @@
             "image_name_small": "moon1.gif",
             "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
             "name": "Radiance II, l",
-            "orbit_angle": 218.9655772620833,
+            "orbit_angle": 50.13680816275904,
             "orbit_distance": 0,
             "orbit_object_id": 6,
             "orbit_speed": 0.016678642442747332,
@@ -879,9 +879,9 @@
             "type": "moon",
             "world_height": 48,
             "world_width": 48,
-            "world_x": 40988.949552288745,
-            "world_y": 87059.09701542908,
-            "owner": -1
+            "world_x": 76849.66829209738,
+            "world_y": 57508.96555363672,
+            "owner": 1
         },
         "32": {
             "alien_attitude": 0,
@@ -897,12 +897,12 @@
             "image_name_small": "moon1.gif",
             "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
             "name": "Astrovoid III, m",
-            "orbit_angle": 118.04734637217965,
+            "orbit_angle": 205.33141970914895,
             "orbit_distance": 0,
             "orbit_object_id": 7,
             "orbit_speed": 0.019297383162954665,
             "population": 0,
-            "population_grow": 0.8044991763435406,
+            "population_grow": 5.0,
             "possible_resources": [
                 "energy",
                 "minerals",
@@ -913,9 +913,9 @@
             "type": "moon",
             "world_height": 40,
             "world_width": 40,
-            "world_x": 23577.208928189768,
-            "world_y": 36943.62063032027,
-            "owner": -1
+            "world_x": 13185.764621660315,
+            "world_y": 60894.96065752084,
+            "owner": 3
         },
         "33": {
             "alien_attitude": 53,
@@ -931,7 +931,7 @@
             "image_name_small": "moon1.gif",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Orbiton VI, n",
-            "orbit_angle": 336.8324148764674,
+            "orbit_angle": 144.12203688399407,
             "orbit_distance": 0,
             "orbit_object_id": 10,
             "orbit_speed": 0.016434454212755748,
@@ -948,8 +948,8 @@
             "type": "moon",
             "world_height": 40,
             "world_width": 40,
-            "world_x": 35681.17899382566,
-            "world_y": 41713.52524314337,
+            "world_x": 45184.16936026723,
+            "world_y": 52821.21743601848,
             "owner": -1
         },
         "34": {
@@ -966,7 +966,7 @@
             "image_name_small": "moon1.gif",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Radiance I, o",
-            "orbit_angle": 135.90790205840332,
+            "orbit_angle": 343.6626239833097,
             "orbit_distance": 0,
             "orbit_object_id": 5,
             "orbit_speed": 0.02421017098082725,
@@ -981,9 +981,9 @@
             "type": "moon",
             "world_height": 33,
             "world_width": 33,
-            "world_x": 53796.523977215336,
-            "world_y": 67396.11375427121,
-            "owner": -1
+            "world_x": 57003.41848184347,
+            "world_y": 65566.0156183734,
+            "owner": 1
         },
         "35": {
             "alien_attitude": 33,
@@ -999,7 +999,7 @@
             "image_name_small": "moon1.gif",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Orbiton VII, p",
-            "orbit_angle": 30.937531572712683,
+            "orbit_angle": 296.9284968385854,
             "orbit_distance": 0,
             "orbit_object_id": 11,
             "orbit_speed": 0.006400725616215615,
@@ -1017,8 +1017,8 @@
             "type": "moon",
             "world_height": 36,
             "world_width": 36,
-            "world_x": 33262.401253868054,
-            "world_y": 41499.35954175365,
+            "world_x": 33578.38413748375,
+            "world_y": 60455.07447571197,
             "owner": -1
         },
         "36": {
@@ -1035,7 +1035,7 @@
             "image_name_small": "moon.gif",
             "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
             "name": "Radiance VIII, q",
-            "orbit_angle": 74.00458714318135,
+            "orbit_angle": 173.50548279357838,
             "orbit_distance": 0,
             "orbit_object_id": 12,
             "orbit_speed": 0.01574131795143544,
@@ -1052,9 +1052,9 @@
             "type": "moon",
             "world_height": 37,
             "world_width": 37,
-            "world_x": 54825.94350035189,
-            "world_y": 70540.37189955142,
-            "owner": -1
+            "world_x": 59568.30447020726,
+            "world_y": 68450.32323683029,
+            "owner": 1
         },
         "37": {
             "alien_attitude": 58,
@@ -1070,7 +1070,7 @@
             "image_name_small": "moon.gif",
             "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
             "name": "Radiance VIII, r",
-            "orbit_angle": 193.97365487996606,
+            "orbit_angle": 220.67271753857696,
             "orbit_distance": 0,
             "orbit_object_id": 12,
             "orbit_speed": 0.007634959740885572,
@@ -1085,9 +1085,9 @@
             "type": "moon",
             "world_height": 41,
             "world_width": 41,
-            "world_x": 41589.4881421571,
-            "world_y": 58388.26177072486,
-            "owner": -1
+            "world_x": 58706.05252627477,
+            "world_y": 72553.7405160205,
+            "owner": 1
         },
         "38": {
             "alien_attitude": 7,
@@ -1103,7 +1103,7 @@
             "image_name_small": "moon.gif",
             "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
             "name": "Lynx XIII, s",
-            "orbit_angle": 40.95713225878047,
+            "orbit_angle": 213.47417785271344,
             "orbit_distance": 0,
             "orbit_object_id": 17,
             "orbit_speed": 0.020168885946768154,
@@ -1119,8 +1119,8 @@
             "type": "moon",
             "world_height": 36,
             "world_width": 36,
-            "world_x": 50009.74186634795,
-            "world_y": 35715.7068731082,
+            "world_x": 23670.508722546056,
+            "world_y": 53881.74716065573,
             "owner": -1
         },
         "39": {
@@ -1137,7 +1137,7 @@
             "image_name_small": "moon.gif",
             "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
             "name": "Radiance XI, t",
-            "orbit_angle": 353.12423403211073,
+            "orbit_angle": 192.36345026914543,
             "orbit_distance": 0,
             "orbit_object_id": 15,
             "orbit_speed": 0.016761137180337844,
@@ -1153,9 +1153,9 @@
             "type": "moon",
             "world_height": 30,
             "world_width": 30,
-            "world_x": 73144.03036145051,
-            "world_y": 69356.50316887398,
-            "owner": -1
+            "world_x": 40974.56107393247,
+            "world_y": 69829.93273204502,
+            "owner": 1
         },
         "4": {
             "alien_attitude": 26,
@@ -1171,7 +1171,7 @@
             "image_name_small": "sonnecorona_110x110.png",
             "info_text": "unknown sun:\n\nresources: ???\nenergy: ???\n",
             "name": "Orbiton",
-            "orbit_angle": 118.75874886999506,
+            "orbit_angle": 155.12046289499875,
             "orbit_distance": 0,
             "orbit_object_id": 4,
             "orbit_speed": 0.0040527782620144726,
@@ -1184,7 +1184,7 @@
             "world_width": 100,
             "world_x": 38637.27307627343,
             "world_y": 49077.71654581085,
-            "owner": 1
+            "owner": -1
         },
         "40": {
             "alien_attitude": 18,
@@ -1200,7 +1200,7 @@
             "image_name_small": "moon1.gif",
             "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
             "name": "Radiance II, u",
-            "orbit_angle": 55.31194548462692,
+            "orbit_angle": 229.34911085063615,
             "orbit_distance": 0,
             "orbit_object_id": 6,
             "orbit_speed": 0.012822465903537883,
@@ -1217,9 +1217,9 @@
             "type": "moon",
             "world_height": 31,
             "world_width": 31,
-            "world_x": 47868.17371687931,
-            "world_y": 81091.63095858492,
-            "owner": -1
+            "world_x": 69513.32656489269,
+            "world_y": 66256.15755277741,
+            "owner": 1
         },
         "41": {
             "alien_attitude": 40,
@@ -1235,7 +1235,7 @@
             "image_name_small": "moon1.gif",
             "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
             "name": "Radiance XI, v",
-            "orbit_angle": 343.91203295459843,
+            "orbit_angle": 355.7700836219872,
             "orbit_distance": 0,
             "orbit_object_id": 15,
             "orbit_speed": 0.007483211152018219,
@@ -1253,9 +1253,9 @@
             "type": "moon",
             "world_height": 43,
             "world_width": 43,
-            "world_x": 66511.74446962817,
-            "world_y": 70104.68581749665,
-            "owner": -1
+            "world_x": 63871.335043151135,
+            "world_y": 67061.32657317212,
+            "owner": 1
         },
         "42": {
             "alien_attitude": 19,
@@ -1271,7 +1271,7 @@
             "image_name_small": "moon1.gif",
             "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
             "name": "Fornax XIV, w",
-            "orbit_angle": 287.3534641881401,
+            "orbit_angle": 208.0072430644036,
             "orbit_distance": 0,
             "orbit_object_id": 18,
             "orbit_speed": 0.017593596921025134,
@@ -1288,9 +1288,9 @@
             "type": "moon",
             "world_height": 31,
             "world_width": 31,
-            "world_x": 69979.70540654944,
-            "world_y": 37344.8978508876,
-            "owner": -1
+            "world_x": 62276.366551902494,
+            "world_y": 26733.501077731635,
+            "owner": 2
         },
         "43": {
             "alien_attitude": 49,
@@ -1306,7 +1306,7 @@
             "image_name_small": "moon.gif",
             "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
             "name": "Radiance XI, x",
-            "orbit_angle": 12.23302434302222,
+            "orbit_angle": 283.9581098597299,
             "orbit_distance": 0,
             "orbit_object_id": 15,
             "orbit_speed": 0.013821319892808975,
@@ -1322,8 +1322,8 @@
             "type": "moon",
             "world_height": 33,
             "world_width": 33,
-            "world_x": 74910.97881360876,
-            "world_y": 63623.72052285366,
+            "world_x": 60312.3015669461,
+            "world_y": 83057.4475591575,
             "owner": 1
         },
         "44": {
@@ -1340,7 +1340,7 @@
             "image_name_small": "moon.gif",
             "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
             "name": "Lynx XV, y",
-            "orbit_angle": 317.51672362565245,
+            "orbit_angle": 4.448446269056358,
             "orbit_distance": 0,
             "orbit_object_id": 19,
             "orbit_speed": 0.02256576403520879,
@@ -1358,9 +1358,9 @@
             "type": "moon",
             "world_height": 37,
             "world_width": 37,
-            "world_x": 44652.81348533849,
-            "world_y": 63990.13984602113,
-            "owner": 1
+            "world_x": 54720.28004215869,
+            "world_y": 53732.37260820607,
+            "owner": -1
         },
         "45": {
             "alien_attitude": 55,
@@ -1376,7 +1376,7 @@
             "image_name_small": "moon1.gif",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Orbiton VI, z",
-            "orbit_angle": 320.27137287502734,
+            "orbit_angle": 60.93729469681525,
             "orbit_distance": 0,
             "orbit_object_id": 10,
             "orbit_speed": 0.019434211879568453,
@@ -1392,8 +1392,8 @@
             "type": "moon",
             "world_height": 30,
             "world_width": 30,
-            "world_x": 34207.58704159847,
-            "world_y": 41476.59147135519,
+            "world_x": 48386.431809595444,
+            "world_y": 52105.84218729657,
             "owner": -1
         },
         "46": {
@@ -1410,7 +1410,7 @@
             "image_name_small": "moon.gif",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Radiance II, {",
-            "orbit_angle": 57.964011886506775,
+            "orbit_angle": 222.2563176508061,
             "orbit_distance": 0,
             "orbit_object_id": 6,
             "orbit_speed": 0.01272282521231382,
@@ -1427,8 +1427,8 @@
             "type": "moon",
             "world_height": 38,
             "world_width": 38,
-            "world_x": 48012.19341233441,
-            "world_y": 80764.2081801995,
+            "world_x": 69432.28227502487,
+            "world_y": 66030.8175796853,
             "owner": 1
         },
         "47": {
@@ -1445,7 +1445,7 @@
             "image_name_small": "moon1.gif",
             "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
             "name": "Fornax IV, |",
-            "orbit_angle": 355.1068547711959,
+            "orbit_angle": 123.12267120145756,
             "orbit_distance": 0,
             "orbit_object_id": 8,
             "orbit_speed": 0.019713863153683727,
@@ -1460,9 +1460,9 @@
             "type": "moon",
             "world_height": 35,
             "world_width": 35,
-            "world_x": 79841.17047973641,
-            "world_y": 23307.27927913059,
-            "owner": -1
+            "world_x": 61957.38395480917,
+            "world_y": 28986.522111175786,
+            "owner": 2
         },
         "48": {
             "alien_attitude": 97,
@@ -1478,7 +1478,7 @@
             "image_name_small": "moon1.gif",
             "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
             "name": "Astrovoid IX, }",
-            "orbit_angle": 244.01918542231155,
+            "orbit_angle": 312.39965906806896,
             "orbit_distance": 0,
             "orbit_object_id": 13,
             "orbit_speed": 0.008061150037277679,
@@ -1495,9 +1495,9 @@
             "type": "moon",
             "world_height": 49,
             "world_width": 49,
-            "world_x": 35789.907311681396,
-            "world_y": 69698.57185520275,
-            "owner": -1
+            "world_x": 42248.79493396085,
+            "world_y": 69626.99147476278,
+            "owner": 3
         },
         "49": {
             "alien_attitude": 31,
@@ -1513,7 +1513,7 @@
             "image_name_small": "moon.gif",
             "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
             "name": "Radiance II, ~",
-            "orbit_angle": 218.8227254064032,
+            "orbit_angle": 123.17118169305184,
             "orbit_distance": 0,
             "orbit_object_id": 6,
             "orbit_speed": 0.01742687583115176,
@@ -1529,9 +1529,9 @@
             "type": "moon",
             "world_height": 43,
             "world_width": 43,
-            "world_x": 42928.67466076785,
-            "world_y": 85472.54874422491,
-            "owner": -1
+            "world_x": 67869.5077428005,
+            "world_y": 60595.70443333126,
+            "owner": 1
         },
         "5": {
             "alien_attitude": 0,
@@ -1547,7 +1547,7 @@
             "image_name_small": "zork_50x50.png",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Radiance I",
-            "orbit_angle": 194.45942068766075,
+            "orbit_angle": 87.92216323284921,
             "orbit_distance": 0,
             "orbit_object_id": 0,
             "orbit_speed": 0.0025916435843065257,
@@ -1564,9 +1564,9 @@
             "type": "planet",
             "world_height": 75,
             "world_width": 75,
-            "world_x": 54361.179681190006,
-            "world_y": 67943.15221120694,
-            "owner": -1
+            "world_x": 56411.64328937119,
+            "world_y": 65393.728937388005,
+            "owner": 1
         },
         "50": {
             "alien_attitude": 86,
@@ -1582,7 +1582,7 @@
             "image_name_small": "moon.gif",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Astrovoid III, \u007f",
-            "orbit_angle": 353.6370687918487,
+            "orbit_angle": 329.2439119725089,
             "orbit_distance": 0,
             "orbit_object_id": 7,
             "orbit_speed": 0.01815548919407623,
@@ -1597,9 +1597,9 @@
             "type": "moon",
             "world_height": 49,
             "world_width": 49,
-            "world_x": 42053.59256583534,
-            "world_y": 54269.1399921528,
-            "owner": -1
+            "world_x": 30518.288340852527,
+            "world_y": 58700.240203263806,
+            "owner": 3
         },
         "51": {
             "alien_attitude": 22,
@@ -1615,7 +1615,7 @@
             "image_name_small": "moon.gif",
             "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
             "name": "Radiance VIII, \u0080",
-            "orbit_angle": 244.93042901366454,
+            "orbit_angle": 201.878769764227,
             "orbit_distance": 0,
             "orbit_object_id": 12,
             "orbit_speed": 0.014283725365547593,
@@ -1633,9 +1633,9 @@
             "type": "moon",
             "world_height": 40,
             "world_width": 40,
-            "world_x": 46691.76506712198,
-            "world_y": 79411.13504046306,
-            "owner": -1
+            "world_x": 60149.064083602374,
+            "world_y": 69997.9724414225,
+            "owner": 1
         },
         "52": {
             "alien_attitude": 62,
@@ -1651,7 +1651,7 @@
             "image_name_small": "moon1.gif",
             "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
             "name": "Fornax XIV, \u0081",
-            "orbit_angle": 280.55930630823065,
+            "orbit_angle": 92.15677026296578,
             "orbit_distance": 0,
             "orbit_object_id": 18,
             "orbit_speed": 0.005435556891152799,
@@ -1667,9 +1667,9 @@
             "type": "moon",
             "world_height": 33,
             "world_width": 33,
-            "world_x": 70059.9259647371,
-            "world_y": 42128.53733935578,
-            "owner": -1
+            "world_x": 67423.37630967832,
+            "world_y": 13666.486622037019,
+            "owner": 2
         },
         "53": {
             "alien_attitude": 27,
@@ -1685,7 +1685,7 @@
             "image_name_small": "moon1.gif",
             "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
             "name": "Orbiton X, \u0082",
-            "orbit_angle": 190.71537856940455,
+            "orbit_angle": 56.475125339905276,
             "orbit_distance": 0,
             "orbit_object_id": 14,
             "orbit_speed": 0.024394271439371288,
@@ -1702,8 +1702,8 @@
             "type": "moon",
             "world_height": 43,
             "world_width": 43,
-            "world_x": 37911.7867842883,
-            "world_y": 55108.64812589105,
+            "world_x": 49158.625146092425,
+            "world_y": 44229.93164976704,
             "owner": -1
         },
         "54": {
@@ -1720,7 +1720,7 @@
             "image_name_small": "moon1.gif",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Fornax V, \u0083",
-            "orbit_angle": 305.57726711905445,
+            "orbit_angle": 118.44465687468097,
             "orbit_distance": 0,
             "orbit_object_id": 9,
             "orbit_speed": 0.02385344979300221,
@@ -1738,9 +1738,9 @@
             "type": "moon",
             "world_height": 39,
             "world_width": 39,
-            "world_x": 63409.780453346284,
-            "world_y": 26938.342875608014,
-            "owner": -1
+            "world_x": 72244.39710623283,
+            "world_y": 32528.582094012003,
+            "owner": 2
         },
         "55": {
             "alien_attitude": 96,
@@ -1756,7 +1756,7 @@
             "image_name_small": "moon1.gif",
             "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
             "name": "Radiance XI, \u0084",
-            "orbit_angle": 22.407394365154687,
+            "orbit_angle": 233.1924637417529,
             "orbit_distance": 0,
             "orbit_object_id": 15,
             "orbit_speed": 0.016879192938410913,
@@ -1772,8 +1772,8 @@
             "type": "moon",
             "world_height": 36,
             "world_width": 36,
-            "world_x": 69718.75380764212,
-            "world_y": 62319.14808950683,
+            "world_x": 48494.79653977418,
+            "world_y": 76784.30355968923,
             "owner": 1
         },
         "56": {
@@ -1790,7 +1790,7 @@
             "image_name_small": "moon.gif",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Fornax IV, \u0085",
-            "orbit_angle": 52.78733710789525,
+            "orbit_angle": 59.50155329797273,
             "orbit_distance": 0,
             "orbit_object_id": 8,
             "orbit_speed": 0.011111597302556953,
@@ -1808,9 +1808,9 @@
             "type": "moon",
             "world_height": 48,
             "world_width": 48,
-            "world_x": 75598.38499894501,
-            "world_y": 16263.492577054772,
-            "owner": -1
+            "world_x": 66356.98995616981,
+            "world_y": 33889.9344250831,
+            "owner": 2
         },
         "57": {
             "alien_attitude": 19,
@@ -1826,7 +1826,7 @@
             "image_name_small": "moon.gif",
             "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
             "name": "Fornax V, \u0086",
-            "orbit_angle": 193.2715159584642,
+            "orbit_angle": 159.2782853623022,
             "orbit_distance": 0,
             "orbit_object_id": 9,
             "orbit_speed": 0.010695365740325542,
@@ -1843,9 +1843,9 @@
             "type": "moon",
             "world_height": 50,
             "world_width": 50,
-            "world_x": 61401.76625867656,
-            "world_y": 26904.99772750697,
-            "owner": -1
+            "world_x": 72127.78805893642,
+            "world_y": 32804.64220993551,
+            "owner": 2
         },
         "58": {
             "alien_attitude": 16,
@@ -1861,7 +1861,7 @@
             "image_name_small": "moon.gif",
             "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
             "name": "Astrovoid IX, \u0087",
-            "orbit_angle": 317.2543922587979,
+            "orbit_angle": 266.26786796006775,
             "orbit_distance": 0,
             "orbit_object_id": 13,
             "orbit_speed": 0.017883573371178484,
@@ -1879,9 +1879,9 @@
             "type": "moon",
             "world_height": 37,
             "world_width": 37,
-            "world_x": 44253.04770378333,
-            "world_y": 77724.92274060704,
-            "owner": -1
+            "world_x": 35761.902504036516,
+            "world_y": 79037.44365752871,
+            "owner": 3
         },
         "59": {
             "alien_attitude": 72,
@@ -1897,7 +1897,7 @@
             "image_name_small": "moon1.gif",
             "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
             "name": "Lynx XIII, \u0088",
-            "orbit_angle": 15.904557551763503,
+            "orbit_angle": 298.07826978154793,
             "orbit_distance": 0,
             "orbit_object_id": 17,
             "orbit_speed": 0.013928156566766742,
@@ -1913,9 +1913,9 @@
             "type": "moon",
             "world_height": 41,
             "world_width": 41,
-            "world_x": 55882.04089451588,
-            "world_y": 36720.86840290235,
-            "owner": 1
+            "world_x": 33270.0922581508,
+            "world_y": 58977.61547360325,
+            "owner": -1
         },
         "6": {
             "alien_attitude": 55,
@@ -1931,7 +1931,7 @@
             "image_name_small": "Zeta Bentauri_150x150.png",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Radiance II",
-            "orbit_angle": 238.00966955659305,
+            "orbit_angle": 10.098165816007057,
             "orbit_distance": 0,
             "orbit_object_id": 0,
             "orbit_speed": 0.001350598121261606,
@@ -1949,8 +1949,8 @@
             "type": "planet",
             "world_height": 70,
             "world_width": 70,
-            "world_x": 47233.58814824851,
-            "world_y": 82008.49727373126,
+            "world_x": 70677.78496531642,
+            "world_y": 64879.60286716683,
             "owner": 1
         },
         "60": {
@@ -1967,7 +1967,7 @@
             "image_name_small": "moon.gif",
             "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
             "name": "Radiance XII, \u0089",
-            "orbit_angle": 295.2385179959008,
+            "orbit_angle": 330.7998469455737,
             "orbit_distance": 0,
             "orbit_object_id": 16,
             "orbit_speed": 0.022449502340998823,
@@ -1983,8 +1983,8 @@
             "type": "moon",
             "world_height": 33,
             "world_width": 33,
-            "world_x": 56961.93963932303,
-            "world_y": 73885.32863466782,
+            "world_x": 56044.280321571976,
+            "world_y": 69089.84512130947,
             "owner": 1
         },
         "61": {
@@ -2001,7 +2001,7 @@
             "image_name_small": "moon.gif",
             "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
             "name": "Astrovoid III, \u008a",
-            "orbit_angle": 31.91852046173798,
+            "orbit_angle": 165.8365726124224,
             "orbit_distance": 0,
             "orbit_object_id": 7,
             "orbit_speed": 0.012412250021990708,
@@ -2017,9 +2017,9 @@
             "type": "moon",
             "world_height": 31,
             "world_width": 31,
-            "world_x": 34348.74385630081,
-            "world_y": 49180.46450082127,
-            "owner": -1
+            "world_x": 14078.968727112186,
+            "world_y": 52623.83188016731,
+            "owner": 3
         },
         "62": {
             "alien_attitude": 78,
@@ -2035,7 +2035,7 @@
             "image_name_small": "moon1.gif",
             "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
             "name": "Orbiton VII, \u008b",
-            "orbit_angle": 144.86634312909453,
+            "orbit_angle": 256.56675832420194,
             "orbit_distance": 0,
             "orbit_object_id": 11,
             "orbit_speed": 0.01954703901017494,
@@ -2053,8 +2053,8 @@
             "type": "moon",
             "world_height": 39,
             "world_width": 39,
-            "world_x": 20467.15585063455,
-            "world_y": 35165.25554719644,
+            "world_x": 28294.940432548814,
+            "world_y": 67861.79331828018,
             "owner": -1
         },
         "63": {
@@ -2071,7 +2071,7 @@
             "image_name_small": "moon.gif",
             "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
             "name": "Radiance VIII, \u008c",
-            "orbit_angle": 220.56896140389566,
+            "orbit_angle": 106.80650610134416,
             "orbit_distance": 0,
             "orbit_object_id": 12,
             "orbit_speed": 0.01724169268606791,
@@ -2089,9 +2089,9 @@
             "type": "moon",
             "world_height": 49,
             "world_width": 49,
-            "world_x": 41927.69349958366,
-            "world_y": 82729.88742691599,
-            "owner": -1
+            "world_x": 59698.28964217333,
+            "world_y": 57834.32791361664,
+            "owner": 1
         },
         "64": {
             "alien_attitude": 14,
@@ -2107,7 +2107,7 @@
             "image_name_small": "moon1.gif",
             "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
             "name": "Astrovoid IX, \u008d",
-            "orbit_angle": 303.33256014085833,
+            "orbit_angle": 126.38161429752726,
             "orbit_distance": 0,
             "orbit_object_id": 13,
             "orbit_speed": 0.005552648815507912,
@@ -2123,9 +2123,9 @@
             "type": "moon",
             "world_height": 31,
             "world_width": 31,
-            "world_x": 33884.82098107048,
-            "world_y": 68994.12789361145,
-            "owner": -1
+            "world_x": 36762.39605152351,
+            "world_y": 63617.25317635999,
+            "owner": 3
         },
         "7": {
             "alien_attitude": 31,
@@ -2141,7 +2141,7 @@
             "image_name_small": "P0101_150x150.png",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Astrovoid III",
-            "orbit_angle": 114.14374277506339,
+            "orbit_angle": 135.98919268499492,
             "orbit_distance": 0,
             "orbit_object_id": 2,
             "orbit_speed": 0.003904350203577892,
@@ -2156,9 +2156,9 @@
             "type": "planet",
             "world_height": 62,
             "world_width": 62,
-            "world_x": 28589.69282625398,
-            "world_y": 52767.74139167837,
-            "owner": -1
+            "world_x": 24864.88107232769,
+            "world_y": 55382.32756666668,
+            "owner": 3
         },
         "8": {
             "alien_attitude": 67,
@@ -2174,7 +2174,7 @@
             "image_name_small": "Kepler-22b_40x40.png",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Fornax IV",
-            "orbit_angle": 64.99868099520211,
+            "orbit_angle": 244.3104543633649,
             "orbit_distance": 0,
             "orbit_object_id": 1,
             "orbit_speed": 0.0018334537154209222,
@@ -2189,9 +2189,9 @@
             "type": "planet",
             "world_height": 62,
             "world_width": 62,
-            "world_x": 72969.82044035307,
-            "world_y": 19724.909700782555,
-            "owner": -1
+            "world_x": 65799.56075448928,
+            "world_y": 34862.6324171158,
+            "owner": 2
         },
         "9": {
             "alien_attitude": 25,
@@ -2207,7 +2207,7 @@
             "image_name_small": "GIN V.S.X.O._70x70.png",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Fornax V",
-            "orbit_angle": 172.7021206905423,
+            "orbit_angle": 298.43146389087667,
             "orbit_distance": 0,
             "orbit_object_id": 1,
             "orbit_speed": 0.0012855761063427207,
@@ -2222,9 +2222,9 @@
             "type": "planet",
             "world_height": 72,
             "world_width": 72,
-            "world_x": 63099.486117257264,
-            "world_y": 26504.564822523513,
-            "owner": -1
+            "world_x": 72468.83920537222,
+            "world_y": 32927.87418614639,
+            "owner": 2
         }
     },
     "globals": {
@@ -2253,9 +2253,9 @@
             "energy": 1000,
             "food": 1000,
             "minerals": 1000,
-            "population": 0,
+            "water": 1000,
             "technology": 1000,
-            "water": 1000
+            "population": 0
         }
     },
     "ships": {
@@ -2310,12 +2310,12 @@
             "energy_use_max": 10,
             "fog_of_war_radius": 100,
             "fog_of_war_radius_max": 300,
-            "food": 100,
-            "food_max": 200,
+            "food": 0,
+            "food_max": 500,
             "min_dist_to_other_ships": 80,
             "min_dist_to_other_ships_max": 200,
-            "minerals": 100,
-            "minerals_max": 200,
+            "minerals": 0,
+            "minerals_max": 300,
             "name": "spaceship",
             "orbit_object_id": -1,
             "orbit_object_name": "",
@@ -2327,12 +2327,12 @@
             "specials": [],
             "speed": 1.5,
             "speed_max": 2.5,
-            "technology": 100,
-            "technology_max": 200,
+            "technology": 0,
+            "technology_max": 500,
             "upgrade_factor": 1.5,
             "upgrade_factor_max": 3.0,
-            "water": 100,
-            "water_max": 200,
+            "water": 0,
+            "water_max": 400,
             "weapons": {},
             "world_x": 33884.42619065455,
             "world_y": 38972.06312174192,
@@ -2350,12 +2350,12 @@
             "energy_use_max": 10,
             "fog_of_war_radius": 100,
             "fog_of_war_radius_max": 300,
-            "food": 100,
-            "food_max": 200,
+            "food": 0,
+            "food_max": 500,
             "min_dist_to_other_ships": 80,
             "min_dist_to_other_ships_max": 200,
-            "minerals": 100,
-            "minerals_max": 200,
+            "minerals": 0,
+            "minerals_max": 300,
             "name": "spaceship",
             "orbit_object_id": -1,
             "orbit_object_name": "",
@@ -2367,15 +2367,15 @@
             "specials": [],
             "speed": 1.5,
             "speed_max": 2.5,
-            "technology": 100,
-            "technology_max": 200,
+            "technology": 0,
+            "technology_max": 500,
             "upgrade_factor": 1.5,
             "upgrade_factor_max": 3.0,
-            "water": 100,
-            "water_max": 200,
+            "water": 0,
+            "water_max": 400,
             "weapons": {},
-            "world_x": 61561.209217180774,
-            "world_y": 25964.65372549705,
+            "world_x": 33940.99473314875,
+            "world_y": 39028.63166423612,
             "owner": 0
         },
         "3": {
@@ -2406,7 +2406,7 @@
             "reload_max_distance_raw": 300,
             "specials": [],
             "speed": 1.5,
-            "speed_max": 5.0,
+            "speed_max": 2.5,
             "technology": 100,
             "technology_max": 200,
             "upgrade_factor": 1.5,
@@ -2414,8 +2414,8 @@
             "water": 100,
             "water_max": 200,
             "weapons": {},
-            "world_x": 67913.68070288864,
-            "world_y": 57019.302742850385,
+            "world_x": 33827.85764816035,
+            "world_y": 38915.49457924772,
             "owner": 0
         },
         "4": {
@@ -2436,7 +2436,7 @@
             "min_dist_to_other_ships_max": 200,
             "minerals": 100,
             "minerals_max": 200,
-            "name": "spacehunter",
+            "name": "spaceship",
             "orbit_object_id": -1,
             "orbit_object_name": "",
             "orbit_radius": 220,
@@ -2447,6 +2447,83 @@
             "specials": [],
             "speed": 1.5,
             "speed_max": 2.5,
+            "technology": 100,
+            "technology_max": 200,
+            "upgrade_factor": 1.5,
+            "upgrade_factor_max": 3.0,
+            "water": 100,
+            "water_max": 200,
+            "weapons": {},
+            "world_x": 61561.209217180774,
+            "world_y": 25964.65372549705,
+            "owner": 0
+        },
+        "5": {
+            "attack_distance_raw": 200,
+            "crew": 7,
+            "crew_max": 12,
+            "desired_orbit_radius_raw": 100,
+            "energy": 10000.0,
+            "energy_max": 10000,
+            "energy_reload_rate": 0.1,
+            "energy_use": 1,
+            "energy_use_max": 10,
+            "fog_of_war_radius": 100,
+            "fog_of_war_radius_max": 300,
+            "food": 100,
+            "food_max": 200,
+            "min_dist_to_other_ships": 80,
+            "min_dist_to_other_ships_max": 200,
+            "minerals": 100,
+            "minerals_max": 200,
+            "name": "spaceship",
+            "orbit_radius": 250,
+            "orbit_radius_max": 300,
+            "orbit_speed": 0.5,
+            "orbit_speed_max": 0.6,
+            "reload_max_distance_raw": 300,
+            "specials": [],
+            "speed": 1.5,
+            "technology": 100,
+            "technology_max": 200,
+            "upgrade_factor": 1.5,
+            "upgrade_factor_max": 3.0,
+            "water": 100,
+            "water_max": 200,
+            "weapons": {},
+            "world_x": 67913.68070288864,
+            "world_y": 57019.302742850385,
+            "owner": 0,
+            "speed_max": 5.0
+        },
+        "6": {
+            "name": "spacehunter",
+            "world_x": 26965.277404159347,
+            "world_y": 50469.162301419754,
+            "owner": 0,
+            "attack_distance_raw": 200,
+            "crew": 7,
+            "crew_max": 12,
+            "desired_orbit_radius_raw": 100,
+            "energy": 10000.0,
+            "energy_max": 10000,
+            "energy_use": 1,
+            "energy_use_max": 10,
+            "energy_reload_rate": 0.1,
+            "fog_of_war_radius": 100,
+            "fog_of_war_radius_max": 300,
+            "food": 100,
+            "food_max": 200,
+            "min_dist_to_other_ships": 80,
+            "min_dist_to_other_ships_max": 200,
+            "minerals": 100,
+            "minerals_max": 200,
+            "orbit_radius": 280,
+            "orbit_radius_max": 300,
+            "orbit_speed": 0.5,
+            "orbit_speed_max": 0.6,
+            "reload_max_distance_raw": 300,
+            "speed": 1.5,
             "technology": 100,
             "technology_max": 200,
             "upgrade_factor": 1.5,
@@ -2525,20 +2602,23 @@
                     }
                 }
             },
-            "world_x": 26965.277404159347,
-            "world_y": 50469.162301419754,
-            "owner": 0
+            "specials": [],
+            "speed_max": 2.5
         },
-        "5": {
+        "7": {
+            "name": "cargoloader",
+            "world_x": 72638.58238362883,
+            "world_y": 28157.72555599374,
+            "owner": 0,
             "attack_distance_raw": 200,
             "crew": 7,
             "crew_max": 12,
             "desired_orbit_radius_raw": 100,
             "energy": 10000.0,
             "energy_max": 10000,
-            "energy_reload_rate": 0.1,
             "energy_use": 1,
             "energy_use_max": 10,
+            "energy_reload_rate": 0.1,
             "fog_of_war_radius": 100,
             "fog_of_war_radius_max": 300,
             "food": 100,
@@ -2547,13 +2627,11 @@
             "min_dist_to_other_ships_max": 200,
             "minerals": 100,
             "minerals_max": 200,
-            "name": "cargoloader",
-            "orbit_radius": 250,
+            "orbit_radius": 310,
             "orbit_radius_max": 300,
             "orbit_speed": 0.5,
             "orbit_speed_max": 0.6,
             "reload_max_distance_raw": 300,
-            "specials": [],
             "speed": 1.5,
             "technology": 100,
             "technology_max": 200,
@@ -2562,9 +2640,64 @@
             "water": 100,
             "water_max": 200,
             "weapons": {},
-            "world_x": 72638.58238362883,
-            "world_y": 28157.72555599374,
-            "owner": 0
+            "specials": []
+        }
+    },
+    "players": {
+        "0": {
+            "stock": {
+                "energy": 1000,
+                "food": 1000,
+                "minerals": 1000,
+                "water": 1000,
+                "technology": 1000,
+                "population": 0
+            },
+            "population": 0
+        },
+        "1": {
+            "stock": {
+                "energy": 353,
+                "food": 960,
+                "minerals": 391,
+                "water": 656,
+                "technology": 1576,
+                "population": 0
+            },
+            "population": 0
+        },
+        "2": {
+            "stock": {
+                "energy": 1654,
+                "food": 82,
+                "minerals": 535,
+                "water": 1137,
+                "technology": 1432,
+                "population": 0
+            },
+            "population": 0
+        },
+        "3": {
+            "stock": {
+                "energy": 1284,
+                "food": 77,
+                "minerals": 827,
+                "water": 136,
+                "technology": 1570,
+                "population": 1231
+            },
+            "population": 1231
+        },
+        "4": {
+            "stock": {
+                "energy": 1000,
+                "food": 1000,
+                "minerals": 1000,
+                "water": 1000,
+                "technology": 1000,
+                "population": 0
+            },
+            "population": 0
         }
     }
 }

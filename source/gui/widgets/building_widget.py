@@ -4,13 +4,11 @@ import time
 import pygame
 
 from source.configuration.game_config import config
-
 from source.factories.weapon_factory import weapon_factory
 from source.gui.widgets.buttons.button import Button
 from source.gui.widgets.progress_bar import ProgressBar
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.handlers.image_handler import overblit_button_image
-
 from source.handlers.orbit_handler import set_orbit_object_id
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.multimedia_library.images import get_image
@@ -18,6 +16,7 @@ from source.multimedia_library.sounds import sounds
 
 PROGRESSBAR_UPDATE_RATE_IN_SECONDS = 0.1
 FONT_SIZE = 10
+
 
 class BuildingWidget(WidgetBase):
     """
@@ -187,7 +186,7 @@ class BuildingWidget(WidgetBase):
 
         # overblit image
         self.overblit_image_name = None
-        if self.receiver.owner > 0:
+        if self.receiver.owner > -1:
             self.overblit_image_name = config.app.players[self.receiver.owner].image_name
 
         # frame owner coloring
@@ -229,11 +228,6 @@ class BuildingWidget(WidgetBase):
         and plays some nice sound :)
         :return:
         """
-
-        # print(f"set_building_to_receiver:receiver:{self.receiver.name}, self.receiver.owner:{self.receiver.owner},"
-        #       f" self.receiver:{self.receiver}, self.key: {self.key}, self.value: {self.value}")
-        #
-        # print ("________________________________________________________________________________")
         # this should be fixed
         if self.receiver.owner == -1:
             print(f"set_building_to_receiver: You can't build on this planet!: {self.receiver.name}")
@@ -285,10 +279,12 @@ class BuildingWidget(WidgetBase):
 
         # set new value to receivers production
         setattr(self.receiver, self.name, getattr(self.receiver, "production_" + self.key) - self.value)
+
         # set new value to player production
         player = config.app.players[self.receiver.owner]
         setattr(player, self.name, getattr(player, self.key) - self.value)
 
+        # calculate production
         self.receiver.set_population_limit()
         self.receiver.calculate_production()
         config.app.calculate_global_production(player)
@@ -312,7 +308,7 @@ class BuildingWidget(WidgetBase):
         self.button.tooltip = f"are you sure to build this {self.name} immediately? this will cost you {self.immediately_build_cost} technology units?{self.receiver}"
 
     def build_immediately(self):
-        """ !!! make shure the correcz player is adressed!!!"""
+        """ !!! make shure the correct player is adressed!!!"""
         player = config.app.players[self.receiver.owner]
         player.technology -= self.immediately_build_cost
 
@@ -335,10 +331,12 @@ class BuildingWidget(WidgetBase):
         """
 
         # show owner
-        overblit_button_image(self.button, self.overblit_image_name, False, offset_x=5, size=(25, 25), outline=True, color=self.receiver.player_color)
+        overblit_button_image(self.button, self.overblit_image_name, False, offset_x=5, size=(
+        25, 25), outline=True, color=self.receiver.player_color)
 
         # update progress bar
-        self.update_progressbar()
+        if not config.game_speed == 0 and not config.game_paused:
+            self.update_progressbar()
 
         # reposition
         widget_height = self.get_screen_height()

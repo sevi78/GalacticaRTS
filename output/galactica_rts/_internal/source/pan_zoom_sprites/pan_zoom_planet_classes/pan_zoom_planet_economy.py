@@ -1,30 +1,20 @@
 import random
 
-from source.app.app_helper import get_sum_up_to_n
-
 from source.factories.building_factory import building_factory
 from source.handlers.economy_handler import economy_handler
-from source.configuration import global_params
+from source.configuration.game_config import config
 
 
-# class SpecialHandler:#unused
-#     def __init__(self):
-#         pass
-#
-#     def set_specials_icons(self, key, value):
-#         if hasattr(self, key):
-#             print("set_specials_icons:", key, value)
-#
-#     def get_special_string(self, key):
-#         # Specials
-#         specials = eval(self.specials)
-#
-#         for special in specials:
-#             key, operand, value = special.split(" ")
-#             value = float(value)  # Convert the value to a float for arithmetic operations
+def get_sum_up_to_n(dict, n):
+    sum = 0
+    for key, value in dict.items():
+        if key < n:
+            sum += value
+
+    return sum
 
 
-class PanZoomPlanetEconomy():#, SpecialHandler):
+class PanZoomPlanetEconomy():  # , SpecialHandler):
     def __init__(self, kwargs):
         self.population_special = None
         self.technology_special = None
@@ -99,6 +89,7 @@ class PanZoomPlanetEconomy():#, SpecialHandler):
     @property
     def population(self):
         return self._population
+
     @population.setter
     def population(self, value):
         self._population = value
@@ -112,8 +103,9 @@ class PanZoomPlanetEconomy():#, SpecialHandler):
 
     def calculate_production(self):
         self.production = economy_handler.calculate_planet_production(self)
-        self.production[
-            "energy"] -= get_sum_up_to_n(self.building_slot_upgrade_energy_consumption, self.building_slot_upgrades + 1)
+        self.production["energy"] -= get_sum_up_to_n(
+            self.building_slot_upgrade_energy_consumption,
+            self.building_slot_upgrades + 1)
 
         self.production_water = self.production["water"]
         self.production_energy = self.production["energy"]
@@ -121,8 +113,6 @@ class PanZoomPlanetEconomy():#, SpecialHandler):
         self.production_minerals = self.production["minerals"]
         self.production_technology = self.production["technology"]
         self.production_population = self.production["population"]
-
-        # print (self.production_food)
 
         self.calculate_population()
         self.set_thumpsup_status()
@@ -134,13 +124,13 @@ class PanZoomPlanetEconomy():#, SpecialHandler):
         """ calculates population"""
         if self.production["food"] > 0:
             self.population_grow = self.population_grow_factor * self.production[
-                "food"] * global_params.game_speed
+                "food"] * config.game_speed
         if self.population < 0:
             self.population = 0
 
     def set_population_limit(self):
         """
-        sets the population limit for the planet, based on city buildongs:
+        sets the population limit for the planet, based on city buildings:
         "town":1000,  "city":10000, "metropole":100000
         """
         self.population_limit = sum([self.population_buildings_values[i] for i in self.buildings if
@@ -148,13 +138,12 @@ class PanZoomPlanetEconomy():#, SpecialHandler):
 
     def set_technology_upgrades(self, building):
         upgrade = building_factory.get_technology_upgrade(building)
-
         for key, value in upgrade.items():
             setattr(self, key, getattr(self, key) + value)
 
     def add_population(self):
         # check if it can grow
         if self.population_limit > self.population and self.production_food > 0:
-            self.population += self.population_grow * global_params.game_speed
+            self.population += self.population_grow * config.game_speed
         if self.production_food < 0 and self.population > 0:
             self.population += self.production_food

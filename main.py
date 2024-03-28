@@ -1,6 +1,5 @@
 import time
 import traceback
-
 import pygame
 
 from source.app.app_helper import AppHelper, select_next_item_in_list
@@ -8,6 +7,7 @@ from source.app.ui_builder import UIBuilder
 from source.configuration.game_config import config
 from source.draw.cursor import Cursor
 from source.draw.zoom_scale import ZoomScale
+from source.editors.deal_select import DealSelect
 from source.editors.level_edit import LevelEdit
 from source.editors.level_select import LevelSelect
 from source.editors.filter_widget import FilterWidget
@@ -156,7 +156,6 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
         if time.time() > self.start_time + self.wait:
             self.start_time = time.time()
 
-
             economy_handler.update()
 
     def update(self, events):
@@ -255,8 +254,6 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
 
             # pygame update
             # pygame.display.update()
-            # pygame.draw.rect(self.win, self.frame_color, (300,300,300,300), 0, 30)
-
             pygame.display.flip()
 
             # testing
@@ -268,17 +265,17 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
 def main():
     EDITOR_WIDTH = 700
     EDITOR_HEIGHT = 600
+
     # initialize pygame
     pygame.init()
 
     # initialize app
     app = App(config.width, config.height)
 
-    # initialize value_handler
-    # app.value_handler = ValueHandler()
+    # initialize box_selection
+    app.box_selection = BoxSelection(app.win, sprite_groups.ships.sprites() + sprite_groups.planets.sprites())
 
     # initialize editors
-    app.box_selection = BoxSelection(app.win, sprite_groups.ships.sprites() + sprite_groups.planets.sprites())
     app.level_handler = LevelHandler(app)
     app.level_select = LevelSelect(pygame.display.get_surface(),
         pygame.display.get_surface().get_rect().centerx - EDITOR_WIDTH / 2,
@@ -286,10 +283,11 @@ def main():
         EDITOR_WIDTH, EDITOR_WIDTH, parent=app, obj=None)
 
     level_edit_width = EDITOR_WIDTH / 1.6
+
     app.level_edit = LevelEdit(pygame.display.get_surface(),
         pygame.display.get_surface().get_rect().right - level_edit_width,
         pygame.display.get_surface().get_rect().y,
-        level_edit_width, EDITOR_HEIGHT, parent=app,ignore_other_editors= True)
+        level_edit_width, EDITOR_HEIGHT, parent=app, ignore_other_editors=True)
 
     app.game_event_handler = GameEventHandler(data=load_file("game_event_handler.json", "config"), app=app)
 
@@ -355,12 +353,54 @@ def main():
             list_name="planets"
             ))
 
+    # set some deals for testing
+    app.deal_manager.set_deal(DealSelect(
+        app.win,
+        0,
+        30,
+        300,
+        60,
+        False,
+        offer={"energy": 50},
+        request={"food": 30},
+        layer=9,
+        parent=app,
+        player_index=1,
+        save=False))
+
+    app.deal_manager.set_deal(DealSelect(
+        app.win,
+        0,
+        30,
+        300,
+        60,
+        False,
+        offer={"minerals": 500},
+        request={"water": 300},
+        layer=9,
+        parent=app,
+        player_index=2,
+        save=False))
+
+    app.deal_manager.set_deal(DealSelect(
+        app.win,
+        0,
+        30,
+        300,
+        60,
+        False,
+        offer={"food": 400},
+        request={"energy": 250},
+        layer=9,
+        parent=app,
+        player_index=3,
+        save=False))
+
     # cursor object
     app.cursor = Cursor()
 
     # zoom scale
-    app.zoom_scale = ZoomScale(app.win, 250, 55, 180, 5)
-
+    app.zoom_scale = ZoomScale(app.win, 250, app.win.get_size()[1] - 10, 180, 5)
 
     # restore ui elements
     ui_handler.restore_ui_elements()

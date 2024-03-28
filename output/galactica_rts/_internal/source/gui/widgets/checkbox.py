@@ -1,7 +1,8 @@
+import copy
+
 import pygame
 
-
-from source.configuration import global_params
+from source.configuration.game_config import config
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.handlers.mouse_handler import mouse_handler, MouseState
 from source.multimedia_library.images import images, pictures_path, get_image
@@ -35,7 +36,7 @@ class Checkbox(ImageButton):
         if not self.image:
             try:
                 self.image = pygame.transform.scale(
-                    images[pictures_path]["resources"][self.key + "_25x25.png"], (self.button_size, self.button_size))
+                    get_image(self.key + "_25x25.png"), (self.button_size, self.button_size))
             except KeyError:
                 try:
                     self.image = pygame.transform.scale(
@@ -44,11 +45,9 @@ class Checkbox(ImageButton):
                     self.image = pygame.transform.scale(
                         get_image("no_icon.png"), (self.button_size, self.button_size))
 
-        self.image_raw = self.image
+        self.image_raw = copy.copy(self.image)
         self.rect = self.image.get_rect()
-
         self.tooltip = kwargs.get("tooltip")
-
         self.checked = True
 
         self.hide()
@@ -59,13 +58,11 @@ class Checkbox(ImageButton):
             self.world_x, self.world_y, self.button_size, self.button_size), FRAME_THICKNESS, border_radius=BORDER_RADIUS)
 
     def draw_image(self):
+        rect = self.image_check.get_rect()
         if self.checked:
-            rect = self.image_check.get_rect()
             rect.x, rect.y = self.world_x + self.image.get_rect().width / 5, self.world_y
             self.win.blit(self.image_check, rect)
-
         else:
-            rect = self.image_check.get_rect()
             rect.x, rect.y = self.world_x, self.world_y
             self.win.blit(self.image_uncheck, rect)
 
@@ -73,7 +70,7 @@ class Checkbox(ImageButton):
         if not self._hidden and not self._disabled:
             self.draw_frame()
             self.draw_image()
-            global_params.app.tooltip_instance.reset_tooltip(self)
+            config.app.tooltip_instance.reset_tooltip(self)
 
             mouse_state = mouse_handler.get_mouse_state()
             x, y = mouse_handler.get_mouse_pos()
@@ -90,7 +87,7 @@ class Checkbox(ImageButton):
 
                 elif mouse_state == MouseState.HOVER or mouse_state == MouseState.LEFT_DRAG:
                     if self.tooltip != "":
-                        global_params.tooltip_text = self.tooltip
+                        config.tooltip_text = self.tooltip
 
     def update(self, value):
         self.checked = value

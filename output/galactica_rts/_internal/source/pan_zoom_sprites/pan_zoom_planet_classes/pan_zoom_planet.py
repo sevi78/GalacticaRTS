@@ -3,17 +3,17 @@ import time
 import pygame
 from pygame import MOUSEBUTTONDOWN, MOUSEBUTTONUP, MOUSEMOTION
 
-
 from source.draw.circles import draw_transparent_circle
-from source.gui.lod import inside_screen
+from source.gui.lod import level_of_detail
+from source.gui.widgets.widget_base_components.visibilty_handler import VisibilityHandler
 from source.handlers.mouse_handler import mouse_handler, MouseState
 from source.handlers.widget_handler import WidgetHandler
+from source.interaction.interaction_handler import InteractionHandler
 from source.pan_zoom_sprites.pan_zoom_planet_classes.pan_zoom_planet_orbit_draw import draw_orbits
 from source.pan_zoom_sprites.pan_zoom_planet_classes.pan_zoom_planet_position_handler import \
     PanZoomPlanetPositionHandler
-from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_visibility_handler import PanZoomVisibilityHandler
+
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
-from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_mouse_handler import PanZoomMouseHandler
 from source.pan_zoom_sprites.pan_zoom_planet_classes.pan_zoom_planet_overview_buttons import \
     PanZoomPlanetOverviewButtons
 from source.pan_zoom_sprites.pan_zoom_planet_classes.pan_zoom_planet_defence import PanZoomPlanetDefence
@@ -22,13 +22,13 @@ from source.pan_zoom_sprites.pan_zoom_planet_classes.pan_zoom_planet_params impo
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_gif import PanZoomSprite
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.orbit_handler import orbit
-from source.configuration import global_params
+from source.configuration.game_config import config
 from source.handlers.color_handler import colors
 from source.handlers.garbage_handler import garbage_handler
 
 
-class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOverviewButtons, PanZoomPlanetDraw,
-    PanZoomPlanetParams, PanZoomPlanetPositionHandler, PanZoomMouseHandler):
+class PanZoomPlanet(PanZoomSprite, VisibilityHandler, PanZoomPlanetOverviewButtons, PanZoomPlanetDraw,
+    PanZoomPlanetParams, PanZoomPlanetPositionHandler, InteractionHandler):
     """ Main functionalities: """
     __slots__ = PanZoomSprite.__slots__ + (
         'orbit_radius', 'font_size', 'font', '_on_hover', 'on_hover_release', 'size_x',
@@ -48,9 +48,9 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
     def __init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs):
         # inherit the base class
         PanZoomPlanetParams.__init__(self, kwargs)
-        PanZoomVisibilityHandler.__init__(self, **kwargs)
+        VisibilityHandler.__init__(self, **kwargs)
         PanZoomSprite.__init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs)
-        PanZoomMouseHandler.__init__(self)
+        InteractionHandler.__init__(self)
         PanZoomPlanetPositionHandler.__init__(self, x, y, width, height, **kwargs)
         PanZoomPlanetOverviewButtons.__init__(self, **kwargs)
         PanZoomPlanetDraw.__init__(self, **kwargs)
@@ -58,7 +58,7 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
         self.name = kwargs.get("name", "noname_planet")
         self.type = kwargs.get("type", "")
         self.parent = kwargs.get("parent")
-        self.screen_size = (global_params.WIDTH_CURRENT, global_params.HEIGHT_CURRENT)
+        self.screen_size = (config.width_current, config.height_current)
         self.target = None
         self.moving = False
         self.tooltip = kwargs.get("tooltip", "")
@@ -129,8 +129,8 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
         self.children = None
         self.gif_handler = None
 
-        if self in global_params.app.explored_planets:
-            global_params.app.explored_planets.remove(self)
+        if self in config.app.explored_planets:
+            config.app.explored_planets.remove(self)
         self.kill()
 
         del self
@@ -139,31 +139,31 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
         self.selected = value
 
     def move(self, events, child):
-        if not global_params.edit_mode:
+        if not config.edit_mode:
             return
 
         if not self.moveable:
             return
 
-        # if global_params.app.level_edit._hidden:
+        # if config.app.level_edit._hidden:
         #     return
 
         panzoom = pan_zoom_handler
 
         for event in events:
             # ignore all inputs while any text input is active
-            if global_params.text_input_active:
+            if config.text_input_active:
                 return
 
             # handle events
             if event.type == MOUSEBUTTONDOWN and event.button == 1:
                 if self.rect.collidepoint(event.pos):
                     self.moving = True
-                    global_params.enable_pan = not self.moving
+                    config.enable_pan = not self.moving
 
             elif event.type == MOUSEBUTTONUP:
                 self.moving = False
-                global_params.enable_pan = not self.moving
+                config.enable_pan = not self.moving
 
             # now move the object
             elif event.type == MOUSEMOTION and self.moving:
@@ -190,14 +190,12 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
                 # print(self.orbit_angle, self.orbit_distance, self.offset)
 
     def debug_planet(self):
-        if global_params.debug:
-            pygame.draw.circle(self.win, colors.select_color, self.center, 10, 1)
+        if config.debug:
+            pygame.draw.circle(self.win, colors.select_color, self.rect.center, 10, 1)
             pygame.draw.rect(self.win, self.frame_color, self.rect, 1)
 
             if self.gif:
                 pygame.draw.rect(self.win, pygame.color.THECOLORS["red"], self.gif_handler.rect, 1)
-
-
 
     def listen(self, events):
         """ Wait for inputs
@@ -228,40 +226,56 @@ class PanZoomPlanet(PanZoomSprite, PanZoomVisibilityHandler, PanZoomPlanetOvervi
                 elif mouse_state == MouseState.HOVER or mouse_state == MouseState.LEFT_DRAG:
                     self.draw_hover_circle()
                     if self.tooltip != "":
-                        global_params.tooltip_text = self.tooltip
+                        config.tooltip_text = self.tooltip
+                        config.app.info_panel.set_text(self.info_text)
+                        config.app.info_panel.set_planet_image(self.image_raw)
 
-                    draw_transparent_circle(self.win, self.frame_color, self.center, self.planet_defence.attack_distance, 20)
+
+                    draw_transparent_circle(self.win, self.frame_color, self.rect.center, self.planet_defence.attack_distance, 20)
                     self.draw_specials()
                     self.draw_alien_population_icons()
                     self.show_overview_button()
+
+                    # set cursor
+                    config.app.cursor.set_cursor("watch")
             else:
                 self.clicked = False
+
     def update(self):
         self.set_screen_position()
+        # self.set_center()
         self.update_pan_zoom_sprite()
         self.handle_overview_buttons()
 
-        try:
-            global_params.app.tooltip_instance.reset_tooltip(self)
-        except:
-            pass
+        # really needs this ?
+        # try:
+        #     config.app.tooltip_instance.reset_tooltip(self)
+        # except:
+        #     pass
 
         self.planet_defence.update()
-        self.set_planet_name()
 
-        if len([i for i in sprite_groups.planets if i.id == self.orbit_object_id]) > 0:
-            self.orbit_object = [i for i in sprite_groups.planets if i.id == self.orbit_object_id][0]
+        # needs to be at another place
+        # self.set_planet_name()
 
-        if not global_params.game_paused:
+        # setting orbit object every frame??
+        if not self.orbit_object:
+            if len([i for i in sprite_groups.planets if i.id == self.orbit_object_id]) > 0:
+                self.orbit_object = [i for i in sprite_groups.planets if i.id == self.orbit_object_id][0]
+
+        if not config.game_paused:
             orbit(self, self.orbit_object, self.orbit_speed, 1)
 
-        if not inside_screen(self.rect.center):
+        # not needed in update, draw called from sprite_handler
+        if not level_of_detail.inside_screen(self.rect.center):
             return
 
         self.draw()
 
     def draw(self):
         draw_orbits(self)
-
+        self.set_display_color()
+        self.draw_cross()
+        self.draw_player_colors()
         if self.show_text:
             self.draw_text()

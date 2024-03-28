@@ -14,10 +14,7 @@
             "alien_attitude": 39,
             "buildings_max": 8,
             "building_slot_amount": 3,
-            "buildings": [
-                "mine",
-                "solar panel"
-            ],
+            "buildings": [],
             "specials": [],
             "type": "sun",
             "possible_resources": [],
@@ -80,10 +77,7 @@
             "alien_attitude": 48,
             "buildings_max": 16,
             "building_slot_amount": 3,
-            "buildings": [
-                "town",
-                "farm"
-            ],
+            "buildings": [],
             "specials": [],
             "type": "planet",
             "possible_resources": [
@@ -186,10 +180,7 @@
             "alien_attitude": 55,
             "buildings_max": 17,
             "building_slot_amount": 5,
-            "buildings": [
-                "mine",
-                "farm"
-            ],
+            "buildings": [],
             "specials": [],
             "type": "moon",
             "possible_resources": [

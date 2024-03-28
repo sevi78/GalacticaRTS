@@ -1,6 +1,8 @@
-from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_gif import PanZoomSprite
+from source.draw.arrow import ArrowCrossAnimatedArray
 
-from source.configuration import global_params
+from source.handlers.color_handler import colors
+from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_gif import PanZoomSprite
+from source.configuration.game_config import config
 
 
 class PanZoomTargetObject(PanZoomSprite):
@@ -14,13 +16,36 @@ class PanZoomTargetObject(PanZoomSprite):
         self.property = "target_object"
         self.type = "target object"
         self.parent = kwargs.get("parent")
+
+        self.target_cross = ArrowCrossAnimatedArray(
+            self.win,
+            colors.frame_color,
+            (400, 300),
+            60,
+            0,
+            8,
+            1,
+            3,
+            5,
+            0.8,
+            -1)
         self.hide()
 
     def update(self):
-        if global_params.game_paused:
+        # make shure the gif is hidden
+        self.hide()
+
+        # only draw if the target is set
+        if self.parent.target:
+            self.target_cross.set_center_distance(self.parent.target.rect.width)
+            self.target_cross.update(self.parent.target.rect.center)
+            self.target_cross.draw()
+
+        if config.game_paused:
             return
 
         self.update_pan_zoom_sprite()
+
         if not self.parent:
             self.kill()
             return

@@ -1,74 +1,102 @@
 {
     "0": {
-        "world_x": 510.0,
-        "world_y": 240.0
+        "widget_name": "DealManager",
+        "world_x": 245.0,
+        "world_y": 0
     },
     "1": {
+        "widget_name": "event panel",
+        "world_x": 669,
+        "world_y": 296
+    },
+    "2": {
+        "widget_name": "WeaponSelect",
         "world_x": 435.0,
         "world_y": 0
     },
-    "2": {
-        "world_x": 610.0,
-        "world_y": 0
-    },
     "3": {
+        "widget_name": "PlanetEdit",
         "world_x": 610.0,
         "world_y": 0
     },
     "4": {
+        "widget_name": "SaveGameEdit",
         "world_x": 610.0,
         "world_y": 0
     },
     "5": {
+        "widget_name": "BuildingEdit",
         "world_x": 610.0,
         "world_y": 0
     },
     "6": {
-        "world_x": 1213.0,
-        "world_y": 349
+        "widget_name": "EnemyHandlerEdit",
+        "world_x": 610.0,
+        "world_y": 0
     },
     "7": {
+        "widget_name": "ShipEdit",
         "world_x": 610.0,
         "world_y": 0
     },
     "8": {
+        "widget_name": "DebugEdit",
         "world_x": 610.0,
         "world_y": 0
     },
     "9": {
-        "world_x": 1448.0,
-        "world_y": 30
+        "widget_name": "TradeEdit",
+        "world_x": 610.0,
+        "world_y": 0
     },
     "10": {
-        "world_x": 280.0,
-        "world_y": 50
+        "widget_name": "SettingsEdit",
+        "world_x": 1447.0,
+        "world_y": 30
     },
     "11": {
-        "world_x": 673.5,
+        "widget_name": "PlayerEdit",
+        "world_x": 374,
         "world_y": 30
     },
     "12": {
-        "world_x": 1470,
-        "world_y": 322
+        "widget_name": "LevelSelect",
+        "world_x": 610.0,
+        "world_y": 0
     },
     "13": {
-        "world_x": 1593,
-        "world_y": 52
+        "widget_name": "LevelEdit",
+        "world_x": 1477.5,
+        "world_y": 320
     },
     "14": {
+        "widget_name": "container",
         "world_x": 1593,
-        "world_y": 213
+        "world_y": 216
     },
     "15": {
-        "world_x": 366.0,
-        "world_y": 347.0
+        "widget_name": "container",
+        "world_x": 1592,
+        "world_y": 53
     },
-    "16": {
-        "world_x": 384.0,
-        "world_y": 223
+    "19": {
+        "widget_name": "AutoEconomyEdit",
+        "world_x": 374,
+        "world_y": 330.0
     },
-    "17": {
-        "world_x": 1725,
-        "world_y": 298
+    "20": {
+        "widget_name": "EconomyOverview",
+        "world_x": 445,
+        "world_y": 30
+    },
+    "21": {
+        "widget_name": "FilterWidget",
+        "world_x": 1618,
+        "world_y": 156
+    },
+    "22": {
+        "widget_name": "FilterWidget",
+        "world_x": 1602,
+        "world_y": -7
     }
 }

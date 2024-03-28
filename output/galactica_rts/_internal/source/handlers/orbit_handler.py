@@ -1,8 +1,9 @@
 import math
-import pygame
-from source.configuration import global_params
-from source.handlers.pan_zoom_sprite_handler import sprite_groups
 
+import pygame
+
+from source.configuration.game_config import config
+from source.handlers.pan_zoom_sprite_handler import sprite_groups
 
 
 def get_orbit_pos(self):
@@ -56,41 +57,13 @@ def set_orbit_object(self):
         self.orbit_object = self
 
 
-def set_orbit_distance(self, obj):  # unused
-    """ sets orbit distance, used for displaying the orbit
-    """
-    if obj:
-        self.orbit_distance = math.dist(self.center, obj.center)
-    else:
-        print("set_orbit_distance: no obj:", self.name, obj.name)
-
-
-def orbit__(obj, orbit_obj, orbit_speed, direction):  # original
-    if not orbit_obj:
-        return
-
-    if hasattr(obj, "enemy"):
-        orbit_speed = orbit_speed / 5
-
-    # Calculate the position difference between the orbiting object and the object
-    pos_diff = pygame.math.Vector2(orbit_obj.world_x, orbit_obj.world_y) - pygame.math.Vector2(obj.world_x, obj.world_y)
-
-    # Set the orbit radius based on the current distance to the orbiting object
-    obj.orbit_radius = pos_diff.length()
-
-    # If the orbit angle is not set, calculate it based on the current position
-    if not obj.orbit_angle:
-        obj.orbit_angle = pos_diff.angle_to(pygame.math.Vector2(1, 0)) if direction > 0 else pos_diff.angle_to(pygame.math.Vector2(-1, 0))
-
-    # Update the orbit angle based on the orbit speed and game speed
-    obj.orbit_angle += orbit_speed * direction * global_params.game_speed
-
-    # Calculate the new position based on the orbit radius and angle
-    pos = pygame.math.Vector2(obj.orbit_radius, 0).rotate(-obj.orbit_angle)
-
-    # Update the object's world position
-    obj.world_x = orbit_obj.world_x + pos.x
-    obj.world_y = orbit_obj.world_y + pos.y
+# def set_orbit_distance__(self, obj):  # unused
+#     """ sets orbit distance, used for displaying the orbit
+#     """
+#     if obj:
+#         self.orbit_distance = math.dist(self.center, obj.center)
+#     else:
+#         print("set_orbit_distance: no obj:", self.name, obj.name)
 
 
 def orbit(obj, orbit_obj, orbit_speed, direction):
@@ -116,7 +89,7 @@ def orbit(obj, orbit_obj, orbit_speed, direction):
         obj.orbit_angle %= 360
 
     # Update the orbit angle based on the orbit speed and game speed
-    obj.orbit_angle += orbit_speed * direction * global_params.game_speed
+    obj.orbit_angle += orbit_speed * direction * config.game_speed
     obj.orbit_angle %= 360  # Ensure the angle stays within 0-359 degrees
 
     # Calculate the new position based on the orbit radius and angle
@@ -162,7 +135,7 @@ def orbit_ship(obj, orbit_obj, orbit_speed, direction):
         obj.orbit_angle %= 360
 
     # Update the orbit angle based on the orbit speed and game speed
-    obj.orbit_angle += orbit_speed * direction * global_params.game_speed
+    obj.orbit_angle += orbit_speed * direction * config.game_speed
     obj.orbit_angle %= 360  # Ensure the angle stays within 0-359 degrees
 
     # Calculate the new position based on the orbit radius and angle
@@ -190,14 +163,14 @@ def gradually_move_towards(obj, current_pos, target_pos):
 
     # Calculate the displacement vector for each time step
     displacement = (
-        direction[0] * obj.speed * global_params.game_speed, direction[1] * obj.speed * global_params.game_speed)
+        direction[0] * obj.speed * config.game_speed, direction[1] * obj.speed * config.game_speed)
 
     # Move the object towards the target position with a constant speed
     obj.world_x += displacement[0]
     obj.world_y += displacement[1]
 
     # Check if the object has reached the target position
-    if distance <= obj.speed * global_params.game_speed:
+    if distance <= obj.speed * config.game_speed:
         return True  # Object has reached the target position
     else:
         return False  # Object is still moving towards the target position

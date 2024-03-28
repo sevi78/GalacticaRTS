@@ -1,20 +1,19 @@
-from source.configuration import global_params
-from source.gui.lod import inside_screen
-from source.gui.widgets.widget_base_components.interaction_handler import InteractionHandler
+from source.configuration.game_config import config
+from source.gui.lod import level_of_detail
 from source.handlers.position_handler import rot_center
 from source.universe.celestial_objects.celestial_object import CelestialObject
 
 
-class Asteroid(CelestialObject):#, InteractionHandler):
+class Asteroid(CelestialObject):  # , InteractionHandler):
     def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
         CelestialObject.__init__(self, win, x, y, width, height, isSubWidget=False, **kwargs)
-        #InteractionHandler.__init__(self)
+        # InteractionHandler.__init__(self)
 
     def draw(self):
         self.move(self.direction)
         self.set_screen_position()
 
-        if not inside_screen(self.center):
+        if not level_of_detail.inside_screen(self.center):
             if self.gif_handler:
                 self.gif_handler._hidden = True
             return
@@ -34,5 +33,5 @@ class Asteroid(CelestialObject):#, InteractionHandler):
                 self.win.blit(self.image, self.rect)
             self.rotation += self.rotation_speed * self.rotation_direction
 
-            if global_params.debug:
+            if config.debug:
                 self.debug_object()

@@ -1,12 +1,11 @@
-import math
 import random
 
-from source.configuration import global_params
+from source.configuration.game_config import config
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.handlers.position_handler import get_random_pos
 from source.handlers.widget_handler import WidgetHandler
-from source.multimedia_library.images import get_image
+from source.multimedia_library.images import get_image, get_gif
 from source.pan_zoom_sprites.pan_zoom_collectable_item import PanZoomCollectableItem
 from source.text.info_panel_text_generator import info_panel_text_generator
 from source.universe.celestial_objects.asteroid import Asteroid
@@ -25,19 +24,71 @@ FLICKERING_STAR_DIVIDE_FACTOR = 3
 PULSATING_STAR_DIVIDE_FACTOR = 4
 
 
-class UniverseFactory:  # original for WidgedBase Widgets
+class UniverseFactory:
+    """
+    Summary
+    The UniverseFactory class is responsible for creating and managing celestial objects in a universe. It generates stars, galaxies, nebulae, asteroids, and comets based on specified parameters.
+    Example Usage
+    # Create an instance of UniverseFactory
+    factory = UniverseFactory(win, x, y, width, height, layer)
+
+    # Generate the universe with specified dimensions
+    factory.create_universe(x, y, width, height)
+
+    # Delete all celestial objects in the universe
+    factory.delete_universe()
+    Code Analysis
+    Main functionalities
+    Generate celestial objects such as stars, galaxies, nebulae, asteroids, and comets in a universe
+    Delete celestial objects from the universe
+
+    Methods
+    __init__(self, win, x, y, width, height, layer): Initializes the UniverseFactory object with the specified parameters.
+    create_universe(self, x, y, width, height): Generates the universe by creating stars, galaxies, nebulae, asteroids, and comets based on the specified dimensions.
+    delete_universe(self): Deletes all celestial objects in the universe.
+    create_stars(self): Generates stars in the universe.
+    create_galaxys(self): Generates galaxies in the universe.
+    create_nebulaes(self): Generates nebulae in the universe.
+    create_asteroids(self): Generates asteroids in the universe.
+    create_comets(self): Generates comets in the universe.
+
+    Fields
+    central_compression: A parameter that controls the compression of celestial objects in the universe.
+    win: The window object where the universe is displayed.
+    layer: The layer of the universe in the display.
+    amount: The total number of celestial objects in the universe.
+    left_end: The left boundary of the universe.
+    right_end: The right boundary of the universe.
+    top_end: The top boundary of the universe.
+    bottom_end: The bottom boundary of the universe.
+    star_images: A dictionary of star images used for generating stars.
+    asteroid_images: A dictionary of asteroid images used for generating asteroids.
+    comet_images: A dictionary of comet images used for generating comets.
+    nebulae_images: A dictionary of nebulae images used for generating nebulae.
+    galaxy_images: A dictionary of galaxy images used for generating galaxies.
+    star: A list of generated stars.
+    pulsating_star: A list of generated pulsating stars.
+    flickering_star: A list of generated flickering stars.
+    asteroid: A list of generated asteroids.
+    nebulae: A list of generated nebulae.
+    galaxy: A list of generated galaxies.
+    comet: A list of generated comets.
+    universe: A list of all celestial objects in the universe.
+    quadrant: A list of quadrants in the universe.
+    celestial_objects: A dictionary that maps celestial object types to their corresponding lists of objects.
+    """
+
     def __init__(self, win, x, y, width, height, layer):
         self.central_compression = 1
         self.win = win
         self.layer = layer
-        self.amount = int(math.sqrt(math.sqrt(width)) * global_params.settings["universe_density"])
+        self.amount = 0
 
         # define borders
-        self.left_end = x  # -self.get_screen_width()
+        self.left_end = x
         self.right_end = width
-        self.top_end = y  # -self.get_screen_height()
+        self.top_end = y
         self.bottom_end = height
-        self.screen_size = (global_params.WIDTH_CURRENT, global_params.HEIGHT_CURRENT)
 
         # images
         self.star_images = {
@@ -102,33 +153,26 @@ class UniverseFactory:  # original for WidgedBase Widgets
                 total_amount += amount
             return selected_resources
 
-        images_scaled = {0: get_image("artefact1_60x31.png"),
-                         1: get_image("meteor_50x50.png"),
-                         2: get_image("meteor_60x83.png"),
-                         3: get_image("meteor1_50x50.png")
-                         }
-
         image_names = ["artefact1_60x31.png",
                        "meteor_50x50.png",
                        "meteor_60x83.png",
                        "meteor1_50x50.png"
                        ]
 
-        artefact_sizes = {"artefact1_60x31.png":(60,31),
-                          "meteor_50x50.png":(50,50),
-                          "meteor_60x83.png":(int(60) * .5,int(83) * .5),
-                          "meteor1_50x50.png":(50,50)}
+        artefact_sizes = {"artefact1_60x31.png": (60, 31),
+                          "meteor_50x50.png": (50, 50),
+                          "meteor_60x83.png": (int(60) * .5, int(83) * .5),
+                          "meteor1_50x50.png": (50, 50)
+                          }
         for i in range(int(amount / 2)):
             x, y = get_random_pos(self.left_end, self.right_end, self.top_end, self.bottom_end, self.central_compression)
             image_name = random.choice(image_names)
-            #size = image_name.split("_")[1].split(".png")[0]
             size = artefact_sizes[image_name]
-            #width, height = int(size.split("x")[0]), int(size.split("x")[1])
-            width, height =  size
+            width, height = size
             selected_resources = select_resources()
             specials = [random.choice(all_specials)]
 
-            artefact = PanZoomCollectableItem(global_params.win,
+            artefact = PanZoomCollectableItem(config.win,
                 x=x, y=y, width=width, height=height,
                 pan_zoom=pan_zoom_handler,
                 image_name=image_name,
@@ -147,14 +191,14 @@ class UniverseFactory:  # original for WidgedBase Widgets
                 group="collectable_items",
                 gif="sphere.gif",
                 align_image="center",
-                outline_thickness= 1,
-                outline_threshold = 0)
+                outline_thickness=1,
+                outline_threshold=0)
 
         for i in range(int(amount / 2)):
             x, y = get_random_pos(self.left_end, self.right_end, self.top_end, self.bottom_end, self.central_compression)
             selected_resources = select_resources()
             specials = [random.choice(all_specials)]
-            artefact = PanZoomCollectableItem(global_params.win,
+            artefact = PanZoomCollectableItem(config.win,
                 x=x, y=y, width=60, height=60,
                 pan_zoom=pan_zoom_handler,
                 image_name="sphere.gif",
@@ -174,8 +218,8 @@ class UniverseFactory:  # original for WidgedBase Widgets
                 gif="sphere.gif",
                 relative_gif_size=0.4,
                 align_image="center",
-                outline_thickness= 1,
-                outline_threshold = 0)
+                outline_thickness=1,
+                outline_threshold=0)
 
     def create_stars(self):
         # star images
@@ -240,11 +284,12 @@ class UniverseFactory:  # original for WidgedBase Widgets
     def create_comets(self):
         for i in range(max(1, int(self.amount / COMET_DIVIDE_FACTOR))):
             image = random.choice(self.comet_images)
+
             w = image.get_rect().width
             h = image.get_rect().height
             x, y = get_random_pos(self.left_end, self.right_end, self.top_end, self.bottom_end, self.central_compression)
 
-            comet = Comet(self.win, x, y, w, h, image=image, layer=self.layer, parent=self, type="comet")
+            comet = Comet(self.win, x, y, w, h, image=image, layer=self.layer, parent=self, type="comet", gif="comet.gif")
 
     def create_universe(self, x, y, width, height):
         self.left_end = x
@@ -257,11 +302,9 @@ class UniverseFactory:  # original for WidgedBase Widgets
         self.create_nebulaes()
         self.create_comets()
         self.create_asteroids()
-        # self.create_artefacts()
-        # self.create_quadrant()
 
         self.universe = self.star + self.pulsating_star + self.galaxy + self.nebulae + self.comet + self.asteroid  # + self.quadrant
-        # print("Scene Objects: ", len(self.universe))
+
         self.celestial_objects = {
             "star": self.star,
             "pulsating_star": self.pulsating_star,
@@ -282,51 +325,4 @@ class UniverseFactory:  # original for WidgedBase Widgets
             i.end_object()
 
 
-universe_factory = UniverseFactory(global_params.win, 0, 0, global_params.scene_width, global_params.scene_height, layer=0)
-
-
-# universe_factory = UniverseFactory(global_params.win, 0, 0, global_params.app.level_handler.data["globals"]["width"], global_params.app.level_handler.data["globals"]["height"], layer=0)
-
-
-class Universe:
-    """"""
-
-    # __slots__ = WidgetBase.__slots__ + (
-    #     'amount', 'left_end', 'right_end', 'top_end', 'bottom_end', 'screen_size', 'star_images', 'asteroid_images',
-    #     'comet_images', 'nebulae_images', 'galaxy_images', 'star', 'pulsating_star', 'flickering_star', 'asteroid',
-    #     'nebulae', 'galaxy', 'comet', 'universe', 'quadrant', 'celestial_objects', 'average_draw_time', 'min_draw_time',
-    #     'max_draw_time'
-    #     )
-
-    def __init__(self, win, x, y, width, height, **kwargs):
-        self.parent = kwargs.get("parent")
-        self.layer = kwargs.get("layer", 0)
-        self.amount = int(math.sqrt(math.sqrt(width)) * global_params.settings["universe_density"])
-
-        # define borders
-        self.left_end = x  # -self.get_screen_width()
-        self.right_end = width
-        self.top_end = y  # -self.get_screen_height()
-        self.bottom_end = height
-
-        self.celestial_objects = universe_factory.create_universe(x, y, width, height)
-
-#
-# pygame.init()
-# width, height = 1920,1080
-# win = pygame.display.set_mode((width, height), pygame.RESIZABLE)
-# bg =  Background(width, height, win)
-# bg.create_stars(int(width/15))
-# run = True
-#
-# while run:
-#     for e in pygame.event.get():
-#         if e.type == pygame.QUIT:
-#             run = False
-#
-#     bg.draw()
-#     pygame.display.update()
-#
-#
-# pygame.quit()
-# sys.exit()
+universe_factory = UniverseFactory(config.win, 0, 0, config.scene_width, config.scene_height, layer=0)

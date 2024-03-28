@@ -3,17 +3,19 @@ import time
 
 import pygame
 
-from source.configuration import global_params
+from source.configuration.game_config import config
 from source.factories.weapon_factory import weapon_factory
 from source.gui.widgets.buttons.button import Button
 from source.gui.widgets.progress_bar import ProgressBar
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
+from source.handlers.image_handler import overblit_button_image
 from source.handlers.orbit_handler import set_orbit_object_id
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.multimedia_library.images import get_image
 from source.multimedia_library.sounds import sounds
 
 PROGRESSBAR_UPDATE_RATE_IN_SECONDS = 0.1
+FONT_SIZE = 10
 
 
 class BuildingWidget(WidgetBase):
@@ -133,13 +135,14 @@ class BuildingWidget(WidgetBase):
         # get the position and size
         self.win = pygame.display.get_surface()
         height = win.get_height()
-        self.dynamic_x = global_params.app.ui_helper.anchor_right
-        self.cue_id = len(global_params.app.building_widget_list)
+        self.dynamic_x = config.app.ui_helper.anchor_right
+        self.cue_id = len(config.app.building_widget_list)
         self.spacing = 5
         self.dynamic_y = height - self.spacing - self.get_screen_height() - self.get_screen_height() * self.cue_id
-        self.font_size = kwargs.get("fontsize", 15)
-        self.font = pygame.font.SysFont(kwargs.get("fontname", global_params.font_name), kwargs.get("fontsize", 15))
+        self.font_size = kwargs.get("fontsize", FONT_SIZE)
+        self.font = pygame.font.SysFont(kwargs.get("fontname", config.font_name), self.font_size)
         self.spacing = kwargs.get("spacing", 15)
+
         if self.is_building:
             self.image = pygame.transform.scale(get_image(self.name + "_25x25.png"), (25, 25))
         else:
@@ -157,7 +160,7 @@ class BuildingWidget(WidgetBase):
             onClick=lambda: self.function("do nothing"),
             transparent=True,
             image_hover_surface_alpha=255,
-            parent=global_params.app,
+            parent=config.app,
             tooltip=self.tooltip, layer=self.layer)
 
         # text
@@ -179,12 +182,21 @@ class BuildingWidget(WidgetBase):
             curved=True,
             completedColour=self.frame_color, layer=self.layer, ignore_progress=True)
 
+        self.surface_rect = pygame.Rect(self.dynamic_x, self.dynamic_y, self.get_screen_width(), self.get_screen_height())
+
+        # overblit image
+        self.overblit_image_name = None
+        if self.receiver.owner > -1:
+            self.overblit_image_name = config.app.players[self.receiver.owner].image_name
+
+        # frame owner coloring
+        self.frame_color = self.receiver.player_color
         # register
-        global_params.app.building_widget_list.append(self)
+        config.app.building_widget_list.append(self)
 
     def update_progressbar(self) -> None:
         # get game speed
-        game_speed = global_params.game_speed
+        game_speed = config.game_speed
 
         # get current time
         current_time = time.time()
@@ -216,7 +228,12 @@ class BuildingWidget(WidgetBase):
         and plays some nice sound :)
         :return:
         """
-        ships = ["spaceship", "cargoloader", "spacehunter"]
+        # this should be fixed
+        if self.receiver.owner == -1:
+            print(f"set_building_to_receiver: You can't build on this planet!: {self.receiver.name}")
+            return
+
+        ships = ["spaceship", "cargoloader", "spacehunter", "spacestation"]
         # technology_upgrades = ["university"]
         planet_defence_upgrades = ["cannon", "missile"]
         weapons = None
@@ -231,7 +248,7 @@ class BuildingWidget(WidgetBase):
         # if it is a ship, no calculation has to be done, return
         if self.name in ships:
             x, y = pan_zoom_handler.screen_2_world(self.receiver.screen_x, self.receiver.screen_y)
-            ship = global_params.app.ship_factory.create_ship(self.name + "_30x30.png", x, y, global_params.app, {})
+            ship = config.app.ship_factory.create_ship(self.name + "_30x30.png", x, y, config.app, {})
             set_orbit_object_id(ship, self.receiver.id)
             return
 
@@ -241,7 +258,6 @@ class BuildingWidget(WidgetBase):
 
         if weapons:
             if self.name in weapons:
-
                 # upgrade
                 if self.name in self.receiver.weapon_handler.weapons.keys():
                     self.receiver.weapon_handler.weapons[self.name]["level"] += 1
@@ -249,12 +265,12 @@ class BuildingWidget(WidgetBase):
                     # buy it
                     self.receiver.weapon_handler.weapons[
                         self.name] = copy.deepcopy(weapon_factory.get_weapon(self.name))
-                    # if global_params.app.ship == self.receiver:
-                    global_params.app.weapon_select.obj = self.receiver
-                    global_params.app.weapon_select.update()
+                    # if config.app.ship == self.receiver:
+                    config.app.weapon_select.obj = self.receiver
+                    config.app.weapon_select.update()
 
                 print(f"self.receiver: {self.receiver}, self.receiver.weapons({self.name}):{self.receiver.weapon_handler.weapons[self.name]['level']}\n"
-                      f"all_weapons: {global_params.app.weapon_select.all_weapons[self.name]['level']}")
+                      f"all_weapons: {config.app.weapon_select.all_weapons[self.name]['level']}")
                 return
 
         # append to receivers building list
@@ -263,34 +279,42 @@ class BuildingWidget(WidgetBase):
 
         # set new value to receivers production
         setattr(self.receiver, self.name, getattr(self.receiver, "production_" + self.key) - self.value)
-        setattr(global_params.app.player, self.name, getattr(global_params.app.player, self.key) - self.value)
 
+        # set new value to player production
+        player = config.app.players[self.receiver.owner]
+        setattr(player, self.name, getattr(player, self.key) - self.value)
+
+        # calculate production
         self.receiver.set_population_limit()
         self.receiver.calculate_production()
-        global_params.app.calculate_global_production()
-        global_params.app.tooltip_instance.reset_tooltip(self)
+        config.app.calculate_global_production(player)
+        config.app.tooltip_instance.reset_tooltip(self)
 
         # # debug
-        # debug_text = f"lifetime of building widget: {self.name} was: {time.time() - self.start_time}, building_production time is:{self.building_production_time} at game_speed:{global_params.game_speed}"
+        # debug_text = f"lifetime of building widget: {self.name} was: {time.time() - self.start_time}, building_production time is:{self.building_production_time} at game_speed:{config.game_speed}"
         # event_text.text = debug_text
-        # global_params.app.info_panel.set_text(debug_text)
+        # config.app.info_panel.set_text(debug_text)
         # print(debug_text)
 
     def function(self, arg):
-        global_params.tooltip_text = ""
-        self.build_immediately()
-        self.set_building_to_receiver()
-        self.delete()
+        player = config.app.players[self.receiver.owner]
+        config.tooltip_text = ""
+        if self.immediately_build_cost < player.technology:
+            self.build_immediately()
+            self.set_building_to_receiver()
+            self.delete()
 
     def set_tooltip(self):
         self.button.tooltip = f"are you sure to build this {self.name} immediately? this will cost you {self.immediately_build_cost} technology units?{self.receiver}"
 
     def build_immediately(self):
-        global_params.app.player.technology -= self.immediately_build_cost
+        """ !!! make shure the correct player is adressed!!!"""
+        player = config.app.players[self.receiver.owner]
+        player.technology -= self.immediately_build_cost
 
     def delete(self):
-        if self in global_params.app.building_widget_list:
-            global_params.app.building_widget_list.remove(self)
+        if self in config.app.building_widget_list:
+            config.app.building_widget_list.remove(self)
         self.__del__()
         self.progress_bar.__del__()
         self.button.__del__()
@@ -306,11 +330,17 @@ class BuildingWidget(WidgetBase):
         reposition the elements dynamically, draw elements, and finally deletes itself
         """
 
+        # show owner
+        overblit_button_image(self.button, self.overblit_image_name, False, offset_x=5, size=(
+        25, 25), outline=True, color=self.receiver.player_color)
+
         # update progress bar
-        self.update_progressbar()
+        if not config.game_speed == 0 and not config.game_paused:
+            self.update_progressbar()
+
         # reposition
         widget_height = self.get_screen_height()
-        self.dynamic_x = global_params.app.ui_helper.anchor_right
+        self.dynamic_x = config.app.ui_helper.anchor_right
         spacing = 5
 
         # get the position and size
@@ -318,24 +348,28 @@ class BuildingWidget(WidgetBase):
         height = win.get_height()
         y = height - spacing - widget_height - widget_height * self.cue_id
 
+        # frame
+        self.surface_rect = pygame.Rect(self.dynamic_x, y, self.get_screen_width(), self.get_screen_height())
+        self.draw_frame()
+
         # button
         self.button.image_hover_surface.set_alpha(0)
-        self.button.set_position((global_params.app.ui_helper.anchor_right, y))
+        self.button.set_position((config.app.ui_helper.anchor_right, y))
 
         # progress_bar
-        self.progress_bar.setWidth(global_params.app.building_panel.get_screen_width() - self.button.get_screen_width() - 15)
+        self.progress_bar.setWidth(config.app.building_panel.get_screen_width() - self.button.get_screen_width() - 15)
         self.progress_bar.set_position((
             self.dynamic_x + self.button.get_screen_width() + 5, y + self.button.get_screen_height() / 2))
 
         # draw widgets text
-        self.text = self.name + ": " + str(int(self.progress_bar.percent * 100)) + "%/ " + str(global_params.app.ui_helper.hms(self.building_production_time))
+        self.text = self.name + ": " + str(int(self.progress_bar.percent * 100)) + "%/ " + str(config.app.ui_helper.hms(self.building_production_time))
         self.text_render = self.font.render(self.text, True, self.frame_color, self.font_size)
         self.win.blit(self.text_render, (self.dynamic_x + self.button.get_screen_width(), self.button.screen_y + 2))
 
         # move down if place is free
-        for i in range(len(global_params.app.building_widget_list)):
-            if global_params.app.building_widget_list[i] == self:
-                self.cue_id = global_params.app.building_widget_list.index(global_params.app.building_widget_list[i])
+        for i in range(len(config.app.building_widget_list)):
+            if config.app.building_widget_list[i] == self:
+                self.cue_id = config.app.building_widget_list.index(config.app.building_widget_list[i])
 
         # if progress is finished, set building to receiver
         if self.progress_bar.percent == 1:

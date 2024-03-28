@@ -79,6 +79,7 @@ class ImageButton(WidgetBase):
         """
         if config.app:
             config.app.tooltip_instance.reset_tooltip(self)
+
         if not self._hidden and not self._disabled:
             mouse_state = mouse_handler.get_mouse_state()
             x, y = mouse_handler.get_mouse_pos()

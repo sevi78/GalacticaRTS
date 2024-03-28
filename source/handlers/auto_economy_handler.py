@@ -15,6 +15,7 @@ MIN_FOOD_PRODUCTION = 5
 
 class AutoEconomyHandler:
     def __init__(self, player):
+        self.player = player
         self.planet = None
         self.planets = []
         self.buildings = []
@@ -27,21 +28,17 @@ class AutoEconomyHandler:
         self.prefered_building_key = None
         self.prefered_delete_key = None
 
-
         self.max_keys_all = None
         self.min_keys_all = None
         self.max_keys_resources = None
         self.min_keys_resources = None
 
-
         self.buildings_to_delete = None
-
-
+        self.all_buildings = None
         self.building_names = None
         self.building_widget_list = None
         self.current_production = None
         self.building = None
-
 
         self.combined_production = None
 
@@ -52,8 +49,9 @@ class AutoEconomyHandler:
         self.random_factor = RANDOM_FACTOR
         self.update_cycles = 0
 
-    def set_player(self, player_index:int):
+    def set_player(self, player_index: int):
         self.player = config.app.players[player_index]
+
     def ensure_food_production(self, planet):
         """
         Ensure the planet has enough food production to support growth.
@@ -91,8 +89,7 @@ class AutoEconomyHandler:
 
     def set_buildings(self):
         """ sets self.buildings to a list of all buildings in all valid planets"""
-        self.all_buildings  = [i.buildings for i in sprite_groups.planets if i.owner == self.player.owner]
-
+        self.all_buildings = [i.buildings for i in sprite_groups.planets if i.owner == self.player.owner]
 
     def reset_start_time(self):
         # pprint (f"reset start time: interval: {self.build_change_interval}")
@@ -225,15 +222,13 @@ class AutoEconomyHandler:
         # pprint (f"get_building_cue: building_widget_list: {building_widget_list}, building_widget_list_all: {building_widget_list_all}")
         return building_widget_list
 
-    def build_(self):
+    def _build(self):
         if self.update_time_reached():
             self.update_cycles += 1
             self.reset_start_time()
 
             # buildings (all valid buildings from all planets)
             self.set_buildings()
-
-
 
             # planets
             self.planets = [i for i in sprite_groups.planets if i.owner == self.player.owner]
@@ -346,5 +341,8 @@ class AutoEconomyHandler:
                             return
 
     def update(self):
+        if config.game_paused:
+            return
+
         self.build_change_interval = self.build_change_interval_raw / config.game_speed
-        self.build_()
+        self._build()

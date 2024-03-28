@@ -1,7 +1,8 @@
-from source.configuration import global_params
+from source.configuration.game_config import config
 from source.editors.editor_base.editor_base import EditorBase
 from source.editors.editor_base.editor_config import TOP_SPACING, BUTTON_SIZE
 from source.factories.universe_factory import universe_factory
+from source.gui.lod import level_of_detail
 from source.gui.widgets.Icon import Icon
 from source.gui.widgets.buttons.button import Button
 from source.gui.widgets.buttons.image_button import ImageButton
@@ -99,7 +100,7 @@ class DebugEdit(EditorBase):
             self.win, self.world_x - self.spacing_x + x + BUTTON_SIZE * 3, y, 30, 30, isSubWidget=False,
             color=self.frame_color,
             key="debug_icon", tooltip="debug", onClick=lambda: print("debug: ",
-                global_params.debug), layer=9, parent=self)
+                config.debug), layer=9, parent=self)
         x += BUTTON_SIZE * 1.5
         self.checkboxes.append(debug_checkbox)
         self.widgets.append(debug_checkbox)
@@ -133,7 +134,7 @@ class DebugEdit(EditorBase):
                 image_name="layer_icon.png",
                 tooltip=f"show layer:{i}",
                 onClick=lambda: print("not working"),
-                layer=9,
+                layer=10,
                 parent=self,
                 button_size=button_size
                 )
@@ -161,14 +162,19 @@ class DebugEdit(EditorBase):
                 self.set_debug_to_objects(i.key)
 
             if i.key == "debug_icon":
-                global_params.debug = i.checked
+                config.debug = i.checked
+                level_of_detail.debug = i.checked
 
-            # if i.key.startswith("layers"):
-            #     WidgetHandler.show_layer(int(i.key.split(":")[1]))
+            if i.key.startswith("layers"):
+                # i.kex = layers:0  ect...
+                # layer_switch = {"0": 0, "1": 0, "2": 0, "3": 0, "4": 0, "5": 0, "6": 0, "7": 0, "8": 0, "9": 0, "10": 0}
+                layer_str = i.key.split(":")[1]
+                WidgetHandler.layer_switch[layer_str] = int(i.checked)
 
     def update_checkbox_values(self):
         for i in self.layer_checkboxes:
             i.checked = WidgetHandler.layer_switch[str(self.layer_checkboxes.index(i))]
+
     def draw_texts(self, all_widgets, y):
         self.draw_text(self.world_x + self.text_spacing, y, 200, FONT_SIZE,
             f"pan_zoom.zoom: {pan_zoom_handler.zoom}")
@@ -236,8 +242,9 @@ class DebugEdit(EditorBase):
         return y
 
     def listen(self, events):
-        self.handle_hovering()
-        self.drag(events)
+        if not self._hidden and not self._disabled:
+            self.handle_hovering()
+            self.drag(events)
 
     def draw(self):
         if not self._hidden and not self._disabled:
@@ -248,7 +255,7 @@ class DebugEdit(EditorBase):
             all_widgets = WidgetHandler.get_all_widgets()
 
             y += self.text_spacing * 2
-            if not global_params.debug:
+            if not config.debug:
                 y = self.draw_texts(all_widgets, y)
 
             self.max_height = y + self.text_spacing

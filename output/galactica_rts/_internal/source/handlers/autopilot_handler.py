@@ -1,27 +1,34 @@
+import copy
+import math
 import random
 import time
 
-from source.configuration import global_params
-from source.factories.building_factory import building_factory
-from source.handlers.pan_zoom_sprite_handler import sprite_groups, PanZoomLayeredUpdates
+import pygame.sprite
 
+from source.configuration.game_config import config
+from source.factories.building_factory import building_factory
+from source.handlers.pan_zoom_handler import pan_zoom_handler
+from source.handlers.pan_zoom_sprite_handler import PanZoomLayeredUpdates
+from source.pan_zoom_sprites.pan_zoom_planet_classes.pan_zoom_planet import PanZoomPlanet
+
+TASK_CHANGE_INTERVAL = 220
 
 
 class AutopilotHandler:
     def __init__(self, parent):
+        self.reachable_planets = []
         self.parent = parent
-        self.last_task_time = time.time()
-        self.task_change_interval = 5
-        self.tasks = ["set_random_target"]
-        self.task = ""
+        self.last_task_time = time.time() + random.randint(-TASK_CHANGE_INTERVAL, TASK_CHANGE_INTERVAL)
+        self.task_change_interval_raw = TASK_CHANGE_INTERVAL
+        self.task_change_interval = copy.copy(TASK_CHANGE_INTERVAL)
 
     def set_random_target(self, targets: PanZoomLayeredUpdates):
         self.parent.target = random.choice(targets)
         self.parent.orbit_object = None
 
-    def get_nearest_target(self, targets):
+    def get_nearest_target(self, targets: PanZoomLayeredUpdates):
         nearest_target = None
-        nearest_distance = float('inf')  # Initialize with infinity
+        nearest_distance = float("inf")  # Initialize with infinity
 
         for target in targets:
             distance = math.dist(self.parent.rect.center, target.rect.center)  # Replace with actual positions
@@ -35,36 +42,35 @@ class AutopilotHandler:
         self.parent.target = self.get_nearest_target(targets)
         self.parent.orbit_object = None
 
-    def create_economy(self, strategy):
-        player = global_params.app.player
+    def set_target(self):
+        self.reachable_planets = [planet for planet in config.app.sprite_groups.planets.sprites()
+                                  if
+                                  self.parent.get_max_travel_range() > math.dist(self.parent.rect.center, planet.rect.center) / pan_zoom_handler.zoom]
+        if self.reachable_planets:
+            unexplored_planets = [planet for planet in self.reachable_planets if not planet.explored]
+            if unexplored_planets:
+                self.set_nearest_target(unexplored_planets)
+            else:
+                self.set_nearest_target(self.reachable_planets)
+        else:
+            self.set_nearest_target(config.app.sprite_groups.planets.sprites())
 
-        for i in global_params.app.explored_planets:
-            if strategy == "random":
-                building_factory.build(random.choice(building_factory.get_all_building_names()), i)
-
-            elif strategy == "clever":
-                # extract "population" from dict
-                d_raw = player.get_stock()
-                d = {key: max(0, value) for key, value in d_raw.items() if key != "population"}
-
-                # get key with lowest value
-                lowest_value_key = min(d, key=d.get)
-                prior_buildings = building_factory.json_dict.get(lowest_value_key, [])
-                prior_buildings_list = list(prior_buildings.keys())
-                building = random.choice(prior_buildings_list)
-                building_factory.build(building, i)
+    def play(self):
+        self.set_target()
 
     def update(self):
-        actual_time = time.time()
-        if actual_time - self.last_task_time > self.task_change_interval:
-            self.last_task_time = actual_time
-            # set random target if enough energy
-            if self.parent.energy > self.parent.energy_max / 3:
-                self.set_random_target(sprite_groups.planets.sprites())
-            else:
-                # set reloader target
-                self.set_random_target(sprite_groups.ships.sprites())
+        for planet in self.reachable_planets:
+            pygame.draw.line(self.parent.win, (255, 0, 0), self.parent.rect.center, planet.rect.center)
 
-            #self.create_economy("random")
-            self.create_economy("clever")
-            print("autopilot.update:")
+        nearest = self.get_nearest_target(self.reachable_planets)
+        if nearest:
+            pygame.draw.line(self.parent.win, (0, 255, 0), self.parent.rect.center, nearest.rect.center)
+
+        actual_time = time.time()
+        if not config.game_speed == 0:
+            self.task_change_interval = self.task_change_interval_raw / config.game_speed
+
+        if actual_time - self.last_task_time > self.task_change_interval + random.randint(-10, 10):
+            self.last_task_time = actual_time
+            if self.parent.autopilot:
+                self.play()

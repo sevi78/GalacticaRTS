@@ -18,7 +18,7 @@
     "ui_scope_outer_circle_dash_length": 24,
     "ui_event_text_fade": false,
     "ui_event_text_visible": true,
-    "ui_event_text_size": 15,
+    "ui_event_text_size": 11,
     "ui_orbit_color_brightness": 15,
     "ui_planet_orbit_color_brightness": 1,
     "ui_moon_orbit_color_brightness": 12,

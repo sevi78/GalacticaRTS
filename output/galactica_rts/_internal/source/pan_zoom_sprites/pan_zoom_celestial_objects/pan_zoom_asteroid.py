@@ -1,7 +1,7 @@
-from source.gui.lod import inside_screen
+from source.gui.lod import level_of_detail
 from source.pan_zoom_sprites.pan_zoom_celestial_objects.pan_zoom_celestial_object import PanZoomCelestialObject
 
-from source.configuration import global_params
+from source.configuration.game_config import config
 from source.handlers.position_handler import rot_center
 
 
@@ -29,7 +29,7 @@ class PanZoomAsteroid(PanZoomCelestialObject):
     #             self.win.blit(self.image, self.rect)
     #         self.rotation += self.rotation_speed * self.rotation_direction
     #
-    #         if global_params.debug:
+    #         if config.debug:
     #             self.debug_object()
     #
     # def update__(self):

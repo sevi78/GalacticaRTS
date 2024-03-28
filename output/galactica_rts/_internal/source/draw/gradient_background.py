@@ -74,6 +74,7 @@
 # pygame.quit()
 import pygame
 
+
 def draw_gradient(win, x, y, width, height, fade_range, color):
     # Create a surface for the background gradient
     background = pygame.Surface((width, height))
@@ -92,7 +93,6 @@ def draw_gradient(win, x, y, width, height, fade_range, color):
     win.blit(background, (x, y))
 
 
-
 if __name__ == "__main__":
     # Initialize Pygame
     pygame.init()
@@ -101,13 +101,11 @@ if __name__ == "__main__":
     win = pygame.display.set_mode((800, 600))
     pygame.display.set_caption("Background Gradient")
 
-
-
     # Main loop
     running = True
     while running:
 
-        draw_gradient(win, 50, 50, 800, 600, 50, (155,0,0))
+        draw_gradient(win, 50, 50, 800, 600, 50, (155, 0, 0))
 
         # Update the display
         pygame.display.flip()

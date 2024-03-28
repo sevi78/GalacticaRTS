@@ -1,6 +1,6 @@
 import pygame
 
-from source.configuration import global_params
+from source.configuration.game_config import config
 from source.factories.building_factory import building_factory
 from source.gui.widgets.buttons.button import Button
 from source.pan_zoom_sprites.pan_zoom_planet_classes.pan_zoom_planet_economy import PanZoomPlanetEconomy
@@ -19,6 +19,7 @@ class PanZoomPlanetOverviewButtons(PanZoomPlanetEconomy):
         self.thumpsup_button_size = (18, 18)
         self.smiley_button_size = (20, 20)
         self.min_offset_y_to_text = 25
+        self.set_population_limit()
 
     def create_overview_buttons(self):
         """
@@ -194,7 +195,7 @@ class PanZoomPlanetOverviewButtons(PanZoomPlanetEconomy):
     def handle_overview_buttons(self):
         self.set_overview_buttons_position()
 
-        if not global_params.show_overview_buttons:
+        if not config.show_overview_buttons:
             self.hide_overview_button()
 
         elif self.explored:

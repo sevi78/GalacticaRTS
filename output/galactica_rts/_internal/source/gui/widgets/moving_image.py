@@ -4,11 +4,10 @@ import time
 import pygame
 
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
-
 from source.text.text_wrap import TextWrap
 
 # Initialize Pygame
-#pygame.init()
+# pygame.init()
 
 # Define constants for the screen width and height
 SCREEN_WIDTH = 800
@@ -16,12 +15,13 @@ SCREEN_HEIGHT = 800
 SPECIAL_FONT_SIZE = 16
 SPECIAL_TEXT_COLOR = "palegreen4"
 
+
 # # Define the main window
 # win = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 # pygame.display.set_caption("Pygame App")
 
 # Load the image
-#from source.multimedia_library.images import get_image
+# from source.multimedia_library.images import get_image
 
 
 class MovingImage(pygame.sprite.Sprite):
@@ -81,7 +81,9 @@ class MovingImage(pygame.sprite.Sprite):
     alpha: The transparency of the surface.
     loops: The number of times the surface should repeat its movement before disappearing.
     """
-    def __init__(self, win, x, y, width, height, image, lifetime, velocity, text, text_color, fontname, loops, parent, **kwargs):
+
+    def __init__(self, win, x, y, width, height, image, lifetime, velocity, text, text_color, fontname, loops, parent,
+                 **kwargs):
         pygame.sprite.Sprite.__init__(self)
         self.text_wrap = TextWrap()
         self.win = win
@@ -179,7 +181,6 @@ class MovingImage(pygame.sprite.Sprite):
         surface.blit(self.image, self.rect)
         self.text_wrap.wrap_text(self.win, self.text, (self.rect.right - 10, self.rect.top - 40), (250, 20), self.font,
             self.text_color, fade_out=True, alpha=self.alpha)
-
 
 # def main():
 #     # Create an instance of the MovingImage class

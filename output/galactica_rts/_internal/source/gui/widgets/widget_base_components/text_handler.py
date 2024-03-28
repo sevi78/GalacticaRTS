@@ -6,6 +6,7 @@ class TextHandler:
         self.string = text
         self.text = self.font.render(self.string, True, self.textColour)
         self.alignTextRect()
+
     def alignTextRect(self):
 
         self.textRect.center = (self.screen_x + self.screen_width // 2, self.screen_y + self.screen_height // 2)
@@ -29,5 +30,6 @@ class TextHandler:
 
         elif self.textVAlign == 'over_the_top':
             self.textRect.bottom = self.screen_y - self.margin // 2
+
         elif self.textVAlign == 'below_the_bottom':
             self.textRect.bottom = self.center[1] + self.screen_height / 2 + self.font_size

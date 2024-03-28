@@ -60,6 +60,7 @@ class EventPanel(TextWrap, EditorBase):
             image=pygame.transform.scale(get_image("no_icon.png"), (60, 60)),
             transparent=True, parent=self, onClick=lambda: self.decline())
 
+        self.max_height = height
         self.hide()
 
     def accept(self):
@@ -128,6 +129,7 @@ class EventPanel(TextWrap, EditorBase):
             # image
             self.win.blit(self.image_scaled, self.surface_rect)
             # self.draw_frame()
+
             # title
             self.title_surface = self.title_font.render(self.title, self.font, colors.ui_dark)
             self.title_surface_rect = self.title_surface.get_rect()

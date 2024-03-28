@@ -2,6 +2,7 @@ import datetime
 import glob
 import json
 import os
+from pprint import pprint
 
 import send2trash
 
@@ -15,6 +16,8 @@ fix write_file/load_file for make more consitency:
 write_file(folder, filename, data)
 load_file(folder, filename)
 """
+
+
 def update_dict__(data, default_dict):
     for key, value in default_dict.items():
         if key not in data:
@@ -105,6 +108,36 @@ def compare_json_files(folder, default_file):
                 print(f"Comparing file: {file_name}")
                 compare_json(default_file, data, file_name)
 
+
+def update_files(folder, category, key, value, **kwargs):
+    condition = kwargs.get('condition', "1=1")
+    # get path
+    path = os.path.join(abs_database_path() + os.sep + folder)
+
+    # search files
+    for file_name in os.listdir(path):
+        if file_name.endswith('.json'):
+
+            # open file
+            with open(os.path.join(path, file_name)) as json_file:
+                data = json.load(json_file)
+
+                # search for key
+                for k, v in data[category].items():
+                    # add key
+                    if not key in data[category][k]:
+                        data[category][k][key] = value
+
+                    else:
+                        if condition and eval(condition):
+                            data[category][k][key] = value
+                        else:
+                            data[category][k][key] = -1
+
+
+            write_file(file_name, folder, data)
+
+
 def compare_json(default, data, file_name, path=""):
     for key in default:
         if key not in data:
@@ -115,7 +148,9 @@ def compare_json(default, data, file_name, path=""):
             # Check for exact match of nested dictionaries
             elif default[key] != data[key]:
                 pass
-                #print(f"Value of key '{key}' is changed from '{default[key]}' to '{data[key]}' in {file_name} at path {path}")
+                # print(f"Value of key '{key}' is changed from '{default[key]}' to '{data[key]}' in {file_name} at path {path}")
+
+
 def abs_database_path():
     # gets the path to store the files: database at root
     dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -131,9 +166,13 @@ def abs_games_path():
     return (os.path.join(abs_database_path(), "games"))
 
 
+def abs_players_path():
+    return (os.path.join(abs_database_path(), "players"))
+
+
 def write_file(filename, folder, data):
     with open(os.path.join(abs_database_path() + folder + os.sep + filename), 'w') as file:
-        json.dump(data, file, indent=4, sort_keys=True)
+        json.dump(data, file, indent=4, sort_keys=False)
 
 
 def load_file(filename, folder):
@@ -162,11 +201,14 @@ def get_games_list():
     file_list.sort(key=lambda x: os.path.getctime(os.path.join(abs_games_path(), x)), reverse=True)
     return file_list
 
+
 def get_ships_list():
     file = load_file("ship_settings.json", "config")
     return file.keys()
 
-
+def get_player_list():
+    file_list = [file for file in os.listdir(abs_players_path()) if file.startswith("player_")]
+    return file_list
 
 def generate_json_filename_based_on_datetime(prefix):
     current_datetime = datetime.datetime.now().strftime("%Y.%m.%d %Hh%Mm%Ss")
@@ -183,10 +225,14 @@ def move_file_to_trash(file_path):
 
 def main():
     pass
-    #update_json_files(load_file("level_0.json", folder="levels"))
-    compare_json_files(abs_level_path(),load_file("level_0.json", folder="levels"))
-
-
+    # update_json_files(load_file("level_0.json", folder="levels"))
+    # compare_json_files(abs_level_path(), load_file("level_0.json", folder="levels"))
+    # update_files("games", "ships", "owner", 0, None)
+    # update_files("levels", "celestial_objects", "owner", 0, condition="data[category][k]['explored'] == True" )
+    # update_files("levels", "celestial_objects", "owner", 1, condition="data[category][k]['alien_population'] > 0")
+    #update_files("levels", "globals", "population_density", 50.0, condition=None)
+    # compare_json_files(abs_level_path(), load_file("level_6.json", folder="levels_bk"))
+    update_files("levels", "celestial_objects", "buildings", [], condition="data[category][k]['buildings'] != []")
 if __name__ == "__main__":
     main()
     # print (load_file("level_0.json", folder ="levels"))

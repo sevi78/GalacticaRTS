@@ -3,7 +3,7 @@ import math
 import pygame
 from pygame import gfxdraw
 
-from source.gui.lod import inside_screen
+from source.gui.lod import level_of_detail
 from source.pan_zoom_sprites.pan_zoom_celestial_objects.pan_zoom_celestial_object import PanZoomCelestialObject
 
 
@@ -27,7 +27,7 @@ class PanZoomFlickeringStar(PanZoomCelestialObject):
 
     def update(self):
         self.update_pan_zoom_sprite()
-        if not inside_screen(self.rect.center):
+        if not level_of_detail.inside_screen(self.rect.center):
             return
         self.draw()
 
@@ -47,7 +47,7 @@ class PanZoomPulsatingStar(PanZoomCelestialObject):
 
     def update(self):
         self.update_pan_zoom_sprite()
-        if not inside_screen(self.rect.center):
+        if not level_of_detail.inside_screen(self.rect.center):
             return
 
         self.draw()

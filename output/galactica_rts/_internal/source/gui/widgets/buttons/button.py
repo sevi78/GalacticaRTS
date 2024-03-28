@@ -1,7 +1,7 @@
 import pygame
 
-from source.configuration import global_params
-from source.gui.lod import inside_screen
+from source.configuration.game_config import config
+from source.gui.lod import level_of_detail
 from source.gui.widgets.buttons.moveable import Moveable
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.handlers.mouse_handler import mouse_handler, MouseState
@@ -66,7 +66,7 @@ class Button(WidgetBase, Moveable):
         self.textColour = kwargs.get('textColour', (0, 0, 0))
         self.font_size = kwargs.get('font_size', 20)
         self.string = kwargs.get('text', '')
-        self.font = kwargs.get('font', pygame.font.SysFont(global_params.font_name, self.font_size))
+        self.font = kwargs.get('font', pygame.font.SysFont(config.font_name, self.font_size))
         self.text = self.font.render(self.string, True, self.textColour)
         self.textHAlign = kwargs.get('textHAlign', 'centre')
         self.textVAlign = kwargs.get('textVAlign', 'centre')
@@ -119,10 +119,10 @@ class Button(WidgetBase, Moveable):
         :param events: Use pygame.event.get()
         :type events: list of pygame.event.Event
         """
-        if not inside_screen(self.get_position(), border=0):
+        if not level_of_detail.inside_screen(self.get_position()):
             return
 
-        global_params.app.tooltip_instance.reset_tooltip(self)
+        config.app.tooltip_instance.reset_tooltip(self)
 
         if not self._hidden and not self._disabled:
             mouse_state = mouse_handler.get_mouse_state()
@@ -142,7 +142,7 @@ class Button(WidgetBase, Moveable):
                             if self.parent:
                                 if hasattr(self.parent, "property"):
                                     if self.parent.property == "planet":
-                                        global_params.app.set_selected_planet(self.parent)
+                                        config.app.set_selected_planet(self.parent)
 
                                 # set building_edit.input_box value
                                 if hasattr(self.parent, "property"):
@@ -152,7 +152,7 @@ class Button(WidgetBase, Moveable):
                                             self.parent.set_text(str(value))
 
                             if self.string:
-                                global_params.app.build(self.string, global_params.app.selected_planet)
+                                config.app.build(self.string, config.app.selected_planet)
 
                             # If repeat_clicks is True, set a timer to start repeating the click after 1 second
                             if self.repeat_clicks:
@@ -171,6 +171,14 @@ class Button(WidgetBase, Moveable):
                         self.colour = self.pressedColour
                         self.borderColour = self.pressedBorderColour
                         self.drawCircle(self.pressedColour, 128)
+
+                        # set cursor
+                        if self.name == "minus_arrow":
+                            config.app.cursor.set_cursor("left_arrow_repeated")
+
+                        if self.name == "plus_arrow":
+                            config.app.cursor.set_cursor("right_arrow_repeated")
+
 
 
                     elif event.type == pygame.MOUSEBUTTONUP:
@@ -199,14 +207,21 @@ class Button(WidgetBase, Moveable):
                         # set tooltip
                         if self.tooltip:
                             if self.tooltip != "":
-                                global_params.tooltip_text = self.tooltip
+                                config.tooltip_text = self.tooltip
 
                         # set info_panel
                         if self.info_text:
                             if self.info_text != "":
-                                global_params.app.info_panel.set_text(self.info_text)
-                                global_params.app.info_panel.set_planet_image(self.image, size=(
+                                config.app.info_panel.set_text(self.info_text)
+                                config.app.info_panel.set_planet_image(self.image, size=(
                                     85, 85), align="topright")
+
+                        # set cursor
+                        if self.name == "minus_arrow":
+                            config.app.cursor.set_cursor("left_arrow")
+
+                        if self.name == "plus_arrow":
+                            config.app.cursor.set_cursor("right_arrow")
             else:
                 self.image = self.image_raw
                 self.clicked = False
@@ -217,9 +232,9 @@ class Button(WidgetBase, Moveable):
     def draw(self):
         # """ Display to surface """
         self.update_position()
-        if not inside_screen(self.get_position(), border=0):
+        if not level_of_detail.inside_screen(self.get_position()):
             return
-        if not self._hidden:
+        if not self._hidden and not self._disabled:
             if not self.transparent:
                 pygame.draw.rect(
                     self.win, self.shadowColour,

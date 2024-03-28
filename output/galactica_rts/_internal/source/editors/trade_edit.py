@@ -173,8 +173,9 @@ class TradeEdit(EditorBase):
         self.parent.info_panel.draw()
 
     def listen(self, events):
-        self.handle_hovering()
-        self.drag(events)
+        if not self._hidden and not self._disabled:
+            self.handle_hovering()
+            self.drag(events)
 
     def draw(self):
         # pygame.draw.circle(self.win, self.frame_color, self.player_image.get_rect().center, 20,2)

@@ -1,7 +1,5 @@
 import time
 
-import pygame
-
 from source.configuration.game_config import config
 from source.handlers.auto_economy_handler import AutoEconomyHandler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
@@ -69,27 +67,6 @@ class Player:
     def __repr__(self):
         return f"{self.name}: production: {self.production})"
 
-    def reset(self, data) -> None:
-        # self.__init__(
-        #     name="zork",
-        #     color=pygame.Color('red'),
-        #     energy=data["stock"]["energy"],
-        #     food=data["stock"]["food"],
-        #     minerals=data["stock"]["minerals"],
-        #     water=data["stock"]["water"],
-        #     technology=data["stock"]["technology"],
-        #     population=data["stock"]["population"],
-        #     clock=0,
-        #
-        #     )
-        self.__init__(
-            name="zork",
-            color=pygame.Color('red'),
-            stock=data["stock"],
-            clock=0,
-
-            )
-
     def get_stock(self) -> dict:
         stock = {"energy": self.energy,
                  "food": self.food,
@@ -141,21 +118,16 @@ class Player:
         self.population = int(sum([i.population for i in sprite_groups.planets if i.owner == self.owner]))
 
     def update(self) -> None:
-        if config.game_speed == 0:
+        if config.game_speed == 0 or config.game_paused:
             return
 
         self.clock_ += 0.01 * config.game_speed
         self.clock = "Year: " + str(int(self.clock_))
         self.wait = self.start_wait / config.game_speed
         self.produce()
-        # set global population
 
+        # set global population
         self.set_global_population()
 
         if self.owner > 0:
             self.auto_economy_handler.update()
-
-        # print (f"player {self.name}: population: {self.population}, self.stock: {self.stock}")
-
-        # problem: this overwrites the population of player if set from data. but it also makes no sense to have any population if no planets has population.
-        # solution: set population to the planets NOT to player itself!!!

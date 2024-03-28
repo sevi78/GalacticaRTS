@@ -3,7 +3,7 @@ import sys
 
 import pygame
 
-from source.configuration import global_params
+from source.configuration.game_config import config
 from source.factories.planet_factory import planet_factory
 from source.handlers.file_handler import write_file
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
@@ -30,21 +30,21 @@ Fields:
         pass
 
     def pause_game(self):
-        if global_params.game_paused:
-            global_params.game_paused = False
+        if config.game_paused:
+            config.game_paused = False
         else:
-            global_params.game_paused = True
+            config.game_paused = True
 
-        print("pause_game", global_params.game_paused)
-        if global_params.game_speed > 0:
-            self.game_speed = global_params.game_speed
-            global_params.game_speed = 0
+        print("pause_game", config.game_paused)
+        if config.game_speed > 0:
+            self.game_speed = config.game_speed
+            config.game_speed = 0
 
-            # global_params.enable_orbit = False
+            # config.enable_orbit = False
             self.event_text = "Game Paused!"
 
         else:
-            global_params.game_speed = self.game_speed
+            config.game_speed = self.game_speed
             self.event_text = "Game Continued!"
 
     def quit_game(self, events):
@@ -73,7 +73,7 @@ Fields:
 
         for event in events:
             # ignore all inputs while any text input is active
-            if global_params.text_input_active:
+            if config.text_input_active:
                 return
 
             if event.type == pygame.KEYDOWN:
@@ -87,22 +87,22 @@ Fields:
                     # # Set the position of the window to the second monitor
                     # os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (0, -1080)
 
-                    if current_size[0] == global_params.WIDTH:
+                    if current_size[0] == config.width:
                         pygame.display.set_mode(size, pygame.RESIZABLE, pygame.DOUBLEBUF)
-                        global_params.WIDTH_CURRENT = size[0]
-                        global_params.HEIGHT_CURRENT = size[1]
+                        config.width_current = size[0]
+                        config.height_current = size[1]
                     else:
                         pygame.display.set_mode((
-                            global_params.WIDTH, global_params.HEIGHT), pygame.RESIZABLE, pygame.DOUBLEBUF)
-                        global_params.WIDTH_CURRENT = size[0]
-                        global_params.HEIGHT_CURRENT = size[1]
+                            config.width, config.height), pygame.RESIZABLE, pygame.DOUBLEBUF)
+                        config.width_current = size[0]
+                        config.height_current = size[1]
 
     def save_load(self, events):  # unused
         """
         stores the planet positions, use ctrl + S
         """
         # ignore all inputs while any text input is active
-        if global_params.text_input_active:
+        if config.text_input_active:
             return
         # check events for l_ctr +s for saving
         for event in events:

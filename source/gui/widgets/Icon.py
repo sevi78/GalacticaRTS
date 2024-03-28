@@ -73,7 +73,7 @@ class Icon(WidgetBase):
             if event.type == MOUSEBUTTONDOWN:
                 if self.rect.collidepoint(event.pos):
                     if self.function:
-                        print("executing:", self.function)
+                        print("executing:", getattr(self.parent, self.function))
 
     def set_text(self):
         if self.display_value_only:

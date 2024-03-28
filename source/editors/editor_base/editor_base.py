@@ -109,7 +109,8 @@ class EditorBase(WidgetBase):
         self.checkbox_values = []
 
         self.editors = []
-        config.app.editors.append(self)
+        if config.app:
+            config.app.editors.append(self)
 
         # save
         self.save = kwargs.get("save", True)

@@ -1,17 +1,19 @@
+import copy
 import math
 
 from pygame import Vector2
 
-from source.configuration import global_params
+from source.configuration.game_config import config
+from source.handlers.image_handler import outline_image
 from source.handlers.position_handler import rot_center
+from source.interaction.interaction_handler import InteractionHandler
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_gif import PanZoomSprite
 
 GAME_OBJECT_SPEED = 2.0
-screen = global_params.win
+screen = config.win
 
 
-
-class PanZoomGameObject(PanZoomSprite):
+class PanZoomGameObject(PanZoomSprite, InteractionHandler):
     __slots__ = PanZoomSprite.__slots__ + ('moving', 'rotation_smoothing', 'explode_if_target_reached',
                                            'explosion_relative_gif_size', 'exploded',
                                            'attack_distance_raw', 'attack_distance', 'target', 'rotate_to_target',
@@ -20,6 +22,7 @@ class PanZoomGameObject(PanZoomSprite):
 
     def __init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs):
         PanZoomSprite.__init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs)
+        InteractionHandler.__init__(self)
 
         self.initial_rotation = kwargs.get("initial_rotation", 0)
         self.moving = False
@@ -40,6 +43,17 @@ class PanZoomGameObject(PanZoomSprite):
 
         # speed
         self.speed = GAME_OBJECT_SPEED
+
+    @property
+    def image(self):
+        return self._image
+
+    @image.setter
+    def image(self, value):
+        self._image = value
+        if hasattr(self, "on_hover"):
+            if self.on_hover:
+                self.image_outline = outline_image(copy.copy(self.image), self.frame_color, self.outline_threshold, self.outline_thickness)
 
     def set_attack_distance(self):
         self.attack_distance = self.attack_distance_raw * self.pan_zoom.zoom
@@ -116,11 +130,11 @@ class PanZoomGameObject(PanZoomSprite):
                 angle = self.prev_angle + 5 * (diff / abs(diff))
 
         self.prev_angle = angle
-        new_image, new_rect = rot_center(self.image, angle, self.rect.x, self.rect.y, align= "shipalign")
+        new_image, new_rect = rot_center(self.image, angle, self.rect.x, self.rect.y, align="shipalign")
         self.image = new_image
         self.rect = new_rect
 
-    def move_towards_target(self):
+    def move_towards_target__(self):
         self.moving = True
         direction = self.target_position - Vector2(self.world_x, self.world_y)
 
@@ -136,10 +150,10 @@ class PanZoomGameObject(PanZoomSprite):
         try:
             direction.normalize()
         except Exception as e:
-            print (f"move_towards_target error! (direction.normalize()):{e}")
+            print(f"move_towards_target error! (direction.normalize()):{e}")
 
         # Calculate the displacement vector for each time step
-        displacement = direction * self.speed * global_params.game_speed
+        displacement = direction * self.speed * config.game_speed
 
         # Calculate the number of time steps needed to reach the target position
         time_steps = int(distance / self.speed) / self.get_zoom()
@@ -149,10 +163,31 @@ class PanZoomGameObject(PanZoomSprite):
             self.world_x += displacement.x / time_steps
             self.world_y += displacement.y / time_steps
         except ZeroDivisionError as e:
-            print (f"move_towards_target error! (self.world_x += displacement.x / time_steps...):{e}")
+            print(f"move_towards_target error! (self.world_x += displacement.x / time_steps...):{e}")
+
+    def move_towards_target(self):
+        self.moving = True
+        direction = self.target_position - Vector2(self.world_x, self.world_y)
+        distance = direction.length() * self.get_zoom()
+        if distance < self.attack_distance:
+            self.target_reached = True
+            return
+        if direction.length() != 0:
+            direction.normalize()
+        else:
+            print("move_towards_target error! direction vector length is zero.")
+            return
+        displacement = direction * self.speed * config.game_speed
+        time_steps = int(distance / self.speed) / self.get_zoom()
+        if time_steps != 0:
+            self.world_x += displacement.x / time_steps
+            self.world_y += displacement.y / time_steps
+        else:
+            print("move_towards_target error! time_steps is zero.")
+
 
     def explode(self, **kwargs):
-        #self.explode_calls += 1
+        # self.explode_calls += 1
         sound = kwargs.get("sound", None)
         size = kwargs.get("size", (40, 40))
 
@@ -171,10 +206,10 @@ class PanZoomGameObject(PanZoomSprite):
         self.kill()
 
     def update_pan_zoom_game_object(self):
-        # if global_params.game_paused:
+        # if config.game_paused:
         #     return
         self.update_pan_zoom_sprite()
-        if global_params.game_paused:
+        if config.game_paused:
             return
 
         self.set_attack_distance()

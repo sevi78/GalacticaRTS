@@ -1,10 +1,8 @@
 import pygame
 from pygame.event import Event
 
-
-from source.configuration import global_params
+from source.configuration.game_config import config
 from source.gui.event_text import event_text
-
 
 DEFAULT_LAYER = 9
 
@@ -17,8 +15,8 @@ class WidgetHandler:
         layer_switch[key] = 1
 
     def draw_layer(events, layer: int) -> None:
-        if not WidgetHandler.draw_layers:
-            return
+        # if not WidgetHandler.draw_layers:
+        #     return
 
         for key, widgetlist in WidgetHandler.layers.items():
             # if not WidgetHandler.layer_switch[str(layer)]:
@@ -26,7 +24,7 @@ class WidgetHandler:
             if key == layer:
                 for widget in widgetlist:
                     # need to find the correct coordinates, otherwise not all widgets get drawn, specially celestial obj
-                    # if inside_screen((widget.screen_x, widget.screen_y), border=0):
+                    # if level_of_detail.inside_screen((widget.screen_x, widget.screen_y), border=0):
                     widget.draw()
 
                     if widget.isSubWidget:
@@ -65,7 +63,7 @@ class WidgetHandler:
         others = [39]  # ,94]
         key = None
         # ignore all inputs while any text input is active
-        if global_params.text_input_active:
+        if config.text_input_active:
             return
 
         for event in events:
@@ -89,5 +87,4 @@ class WidgetHandler:
 
 
 def update(events: [Event]):
-
     WidgetHandler.set_visible(events)

@@ -1,15 +1,14 @@
 import pygame
 
-from source.configuration import global_params
-from source.configuration.global_params import ui_rounded_corner_big_thickness, ui_rounded_corner_small_thickness
+from source.configuration.game_config import config
 from source.draw.rect import draw_transparent_rounded_rect
 from source.gui.widgets.widget_base_components.image_handler import ImageHandler
-from source.gui.widgets.widget_base_components.interaction_handler import InteractionHandler
 from source.gui.widgets.widget_base_components.position_handler import PositionHandler
 from source.gui.widgets.widget_base_components.text_handler import TextHandler
 from source.gui.widgets.widget_base_components.visibilty_handler import VisibilityHandler
 from source.gui.widgets.widget_base_components.widget_base_methods import WidgetBaseMethods
 from source.handlers.widget_handler import WidgetHandler
+from source.interaction.interaction_handler import InteractionHandler
 
 
 class WidgetBase(WidgetBaseMethods, ImageHandler, TextHandler, PositionHandler, InteractionHandler, VisibilityHandler):
@@ -113,8 +112,17 @@ class WidgetBase(WidgetBaseMethods, ImageHandler, TextHandler, PositionHandler, 
         # # register
         WidgetHandler.addWidget(self)
 
-    def draw_frame(self):
-        draw_transparent_rounded_rect(self.win, (0, 0, 0), self.surface_rect,
-            int(global_params.ui_rounded_corner_radius_small), global_params.ui_panel_alpha)
+    def draw_frame(self, **kwargs):
+        image = kwargs.get('image', None)
+        rect = kwargs.get('rect', None)
+
+        rect_surface = draw_transparent_rounded_rect(self.win, (0, 0, 0), self.surface_rect,
+            config.ui_rounded_corner_radius_small, config.ui_panel_alpha)
+
+        if image and rect:
+            rect_surface.blit(image, rect)
+            self.win.blit(rect_surface, self.surface_rect)
+
         pygame.draw.rect(self.win, self.frame_color, self.surface_rect,
-            int(ui_rounded_corner_small_thickness), int(global_params.ui_rounded_corner_radius_small))
+            config.ui_rounded_corner_small_thickness, config.ui_rounded_corner_radius_small)
+        return rect_surface

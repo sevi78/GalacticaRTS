@@ -14,7 +14,6 @@ TEXT_HEIGHT = 15
 class AutoEconomyEdit(EditorBase):
     def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
         EditorBase.__init__(self, win, x, y, width, height, isSubWidget=False, **kwargs)
-
         self.enabled_input_boxes = []
         self.input_boxes = []
         self.input_boxes_value = []
@@ -36,9 +35,9 @@ class AutoEconomyEdit(EditorBase):
         self.hide()
         self.max_height = 200
 
-    def set_player(self, player_index:int):
+    def set_player(self, player_index: int):
         self.player_id = player_index
-        self.get_player()
+        self.player = self.get_player()
 
     def get_player(self):
         if hasattr(config.app, 'players'):

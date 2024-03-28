@@ -1,8 +1,8 @@
 import pygame
 from pygame.locals import MOUSEMOTION
 
-
-from source.configuration import global_params
+from source.configuration.game_config import config
+from source.gui.widgets.frame import Frame
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.handlers.mouse_handler import mouse_handler
 
@@ -15,12 +15,12 @@ TOOLTIP_ALPHA = 200
 
 class ToolTip(WidgetBase):
     """Main functionalities:
-    The ToolTip class is responsible for creating and displaying a tooltip on the screen. It receives a surface, position, size, color, and text color as parameters, and it can be a subwidget. It moves with the mouse and displays the text passed to it through the global_params module. It draws a filled rectangle with a border and the text passed to it.
+    The ToolTip class is responsible for creating and displaying a tooltip on the screen. It receives a surface, position, size, color, and text color as parameters, and it can be a subwidget. It moves with the mouse and displays the text passed to it through the config module. It draws a filled rectangle with a border and the text passed to it.
 
     Methods:
     - __init__: initializes the ToolTip object with the given parameters and sets some default values.
     - move: moves the tooltip with the mouse and limits its position to the screen size.
-    - get_text: gets the text to be displayed from the global_params module and sets the visibility of the tooltip accordingly.
+    - get_text: gets the text to be displayed from the config module and sets the visibility of the tooltip accordingly.
     - draw_bordered_rect: draws a bordered rectangle around the tooltip.
     - draw: renders the tooltip on the screen with a filled rectangle, border, and text.
     - listen: listens to events, but does not do anything.
@@ -52,19 +52,19 @@ class ToolTip(WidgetBase):
         self.world_x = x
         self.world_y = y
         self.world_width = width
-        self.height = height
-        self.size = (self.world_width, self.height)
-        self.rect_filled = pygame.surface.Surface(self.size)
-        self.rect_filled.set_alpha(TOOLTIP_ALPHA)
+        self.world_height = height
+        self.size = (self.world_width, self.world_height)
         self.parent = parent
 
         # text
         self._text = ""
-        self.font_size = 18
-        self.font = pygame.font.SysFont(global_params.font_name, self.font_size)
+        self.font_size = config.ui_tooltip_size
+        self.font = pygame.font.SysFont(config.font_name, self.font_size)
         self.text_img = None
         self.txt_rect = None
-        self.active = True
+        self.active = config.ui_tooltip_enabled
+
+        self.frame = Frame(self.win, self.world_x, self.world_y, self.world_width, self.world_height)
 
     @property
     def text(self):
@@ -77,7 +77,7 @@ class ToolTip(WidgetBase):
 
     def move(self, event):
         if self.visible and self.text_img:
-
+            cursor_space = 13
             # limit position x
             max_x = pygame.display.get_surface().get_width()
             x = event.pos[0] + self.text_img.get_width() / 2
@@ -102,7 +102,7 @@ class ToolTip(WidgetBase):
             elif y1 < min_y:
                 self.world_y = min_y
             else:
-                self.world_y = event.pos[1] + self.text_img.get_height()
+                self.world_y = event.pos[1] + self.text_img.get_height() + cursor_space
 
         else:
             self.world_x = INVISIBLE_X
@@ -111,16 +111,39 @@ class ToolTip(WidgetBase):
     def get_text(self):
         if not self.active:
             return
-        self._text = global_params.tooltip_text
+        self._text = config.tooltip_text
         if self._text != "":
             self.visible = True
+            # pygame.mouse.set_visible(False)  # hide cursor when tooltip is visible
         else:
             self.visible = False
+            # pygame.mouse.set_visible(True)  # show cursor when tooltip is not visible
+
+    def on_hover_release_callback(self, x, y, obj):
+        # if self._hidden or self._disabled:
+        #     return
+
+        # handle AttributeError: 'NoneType' object has no attribute 'collidepoint'
+        if not obj.rect:
+            return
+
+        if obj.rect.collidepoint(x, y):
+            obj.on_hover = True
+            obj.on_hover_release = False
+        else:
+            obj.on_hover_release = True
+
+        if obj.on_hover and obj.on_hover_release:
+            obj.on_hover = False
+            return True
+
+        return False
 
     def reset_tooltip(self, obj):
         x, y = mouse_handler.get_mouse_pos()
-        if obj.on_hover_release_callback(x, y, obj.rect):
-            global_params.tooltip_text = ""
+        if self.on_hover_release_callback(x, y, obj):
+            config.tooltip_text = ""
+            config.app.cursor.set_cursor("idle")
 
     def listen(self, events):
         if not self.active:
@@ -134,23 +157,24 @@ class ToolTip(WidgetBase):
             return
         self.get_text()
         self.move(events)
-        #self.draw()
 
     def draw(self):
         if not self.active:
             return
+        # render text
         self.text_img = self.font.render(self._text, True, self.text_color)
 
-        self.world_width = self.text_img.get_rect().width + 10
-        self.height = self.text_img.get_rect().height + 7
-        self.size = (self.world_width, self.height)
+        # update pos, size
+        self.world_width = self.text_img.get_rect().width + config.ui_rounded_corner_radius_small * 2
+        self.world_height = self.text_img.get_rect().height + 7
+        self.size = (self.world_width, self.world_height)
 
-        self.rect_filled = pygame.surface.Surface(self.size)
-        self.rect_filled.set_alpha(TOOLTIP_ALPHA)
+        # draw frame
+        self.frame.update(self.world_x, self.world_y, self.world_width, self.world_height)
+        self.frame.draw()
 
-        self.win.blit(self.rect_filled, (self.world_x, self.world_y))
-        self.win.blit(self.text_img, (self.world_x + 5, self.world_y + 5))
+        # draw text
+        self.win.blit(self.text_img, (self.world_x + 5, self.world_y))
 
-        pygame.draw.rect(self.win, self.frame_color, (
-            self.world_x, self.world_y, self.world_width,
-            self.height), 1, int(global_params.ui_rounded_corner_radius_small))
+        # hide mouse cursor if tooltip is visible
+        # pygame.mouse.set_visible(not self.visible)

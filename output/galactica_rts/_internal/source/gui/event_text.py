@@ -1,12 +1,12 @@
 import pygame
 
-from source.configuration import global_params
+from source.configuration.game_config import config
 from source.handlers.color_handler import colors
+
 from source.text.text_wrap import TextWrap
 
 pygame.font.init()
 
-EVENT_TEXT_HEIGHT = 20
 EVENT_TEXT_FADE = True
 TEXT_DISPLAY_UPDATE = 15000
 TEXT_LINES = 4
@@ -55,13 +55,15 @@ class EventText(TextWrap):
 
     def __init__(self, win):
         TextWrap.__init__(self)
+        self.obj = None
+        self.planet_names = []
         self.win = win
         self.alpha = 255
         self.last_update_time = pygame.time.get_ticks()
         self.texts = []
         self._text = None
-        self.event_text_font_size = EVENT_TEXT_HEIGHT
-        self.event_text_font = pygame.font.SysFont(global_params.font_name, self.event_text_font_size)
+        self.event_text_font_size = config.ui_event_text_size
+        self.event_text_font = pygame.font.SysFont(config.font_name, self.event_text_font_size)
         self.text_count = 0
         self.prefix = "GPT-1357: "
         self.text = "hi, i am George Peter Theodor the 1357th, or short: GPT-1357." \
@@ -69,13 +71,23 @@ class EventText(TextWrap):
                     "on this ship. my advice: find a new world for the last dudes from earth!"
 
         self.event_display_text = ''.join([self.prefix, self.text])
+        self.world_x = 0
+
+    @property
+    def event_text_font_size(self):
+        return self._event_text_font_size
+
+    @event_text_font_size.setter
+    def event_text_font_size(self, value):
+        self._event_text_font_size = value
+        self.event_text_font = pygame.font.SysFont(config.font_name, self.event_text_font_size)
 
     @property
     def text(self):
         return self._text
 
     @text.setter
-    def text(self, value):
+    def text(self, value, **kwargs):
         if self._text == value:
             return
 
@@ -94,28 +106,44 @@ class EventText(TextWrap):
 
         # Remove the square brackets from the string representation of the list
         self.event_display_text = last_texts.replace("[", "").replace("]", "")
-        self.new_bottom = pygame.display.get_surface().get_height() - EVENT_TEXT_HEIGHT * 2 - (
-                EVENT_TEXT_HEIGHT * len(self.texts))
+        self.new_bottom = pygame.display.get_surface().get_height() - config.ui_event_text_size * 5 - (
+                config.ui_event_text_size * len(self.texts))
 
         # set alpha value
         self.alpha = 255
 
-    def update(self):
-        if global_params.edit_mode:
-            if global_params.app.weapon_select._hidden:
-                return
+    def set_text(self, text, **kwargs):
+        self.text = text
+        self.obj = kwargs.get("obj", None)
 
-        if pygame.time.get_ticks() > self.last_update_time + TEXT_DISPLAY_UPDATE:
-            if self.alpha > 0:
-                self.alpha -= 1
-            else:
-                self.last_update_time = pygame.time.get_ticks()
+    def update(self):
+        # if config.edit_mode:
+        #     if config.app.weapon_select._hidden:
+        #         return
+        if not config.ui_event_text_visible:
+            return
+
+        if config.ui_event_text_fade:
+            if pygame.time.get_ticks() > self.last_update_time + TEXT_DISPLAY_UPDATE:
+                if self.alpha > 0:
+                    self.alpha -= 1
+                else:
+                    self.last_update_time = pygame.time.get_ticks()
 
         # set x position if the map is visible
-        x = global_params.app.ui_helper.left + global_params.app.map_panel.world_width if global_params.app.map_panel.visible else global_params.app.ui_helper.left
-        self.wrap_text(self.win, self.event_display_text, (x, self.new_bottom),
-            (global_params.app.ui_helper.world_width, EVENT_TEXT_HEIGHT), self.event_text_font, colors.ui_dark,
-            fade_out=EVENT_TEXT_FADE, alpha=self.alpha)
+        self.world_x = config.app.ui_helper.left + config.app.map_panel.world_width if config.app.map_panel.visible else config.app.ui_helper.left
+        alarm_links = [self.obj.name] if self.obj else []
+        self.wrap_text(
+            win=self.win,
+            text=self.event_display_text,
+            pos=(self.world_x, self.new_bottom),
+            size=(config.app.ui_helper.world_width - config.app.building_panel.world_width, config.ui_event_text_size),
+            font=self.event_text_font,
+            color=colors.ui_dark,
+            fade_out=EVENT_TEXT_FADE,
+            alpha=self.alpha,
+            alarm_links=alarm_links,
+            )
 
 
-event_text = EventText(global_params.win)
+event_text = EventText(config.win)

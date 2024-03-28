@@ -8,7 +8,7 @@ from source.handlers.file_handler import load_file, abs_players_path
 class PlayerHandler:
     def __init__(self):
 
-        self.data = load_file("players.json", "")
+        # self.data = load_file("players.json", "")
         self.players = {}
         self.player_colors = {-1: "green", 0: "blue", 1: "red", 2: "orange", 3: "yellow", 4: "pink", 5: "purple"}
         # self.create_players(self.data)
@@ -49,7 +49,7 @@ class PlayerHandler:
         # config.app.player = self.players[0]
 
 
-    def create_players(self, data):# does not work : runtime error
+    def create_players(self, data):
         for key, value  in data.items():
             player_id = data[key]["player"]
             self.players[player_id] = Player(
@@ -76,7 +76,7 @@ class PlayerHandler:
                 )
 
             # set active (human) player
-            self.human_player = self.players[0]
+            # self.human_player = self.players[0]
             config.app.player = self.players[0]
 
     def load_players(self) -> None:
@@ -106,6 +106,16 @@ class PlayerHandler:
         # self.create_players(players)
         setattr(config.app, "auto_economy_edit", None)
         setattr(config.app, "player", config.app.players[0])
+
+    def set_players_data(self, data):
+        if "players" in data.keys():
+            for key, value in data["players"].items():
+                config.app.players[int(key)].stock = value["stock"]
+                config.app.players[int(key)].population = value["population"]
+
+        else:
+            print(f"cuould not found key : 'players' in data!, needs to be in the players dict of the level or game_file!!")
+
 
 
 player_handler = PlayerHandler()

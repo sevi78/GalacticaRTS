@@ -9,6 +9,8 @@ from source.handlers.file_handler import load_file
 from source.multimedia_library.images import get_image
 
 BUTTON_SIZE = 30
+
+
 class EconomyOverview(EditorBase):
     def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
         EditorBase.__init__(self, win, x, y, width, height, isSubWidget=False, **kwargs)
@@ -23,21 +25,40 @@ class EconomyOverview(EditorBase):
         # hide initially
         self.hide()
 
-        #self.create_buttons()
+        # self.create_buttons()
         self.max_height = 1000
 
-    def draw_buildings(self):
+    def draw_buildings__(self):
         data = OrderedDict(self.data)
         for building_name, dict_ in data.items():
-            pos = (self.world_x + (BUTTON_SIZE * 2  * list(data).index(building_name)), self.world_y + 200)
+            pos = (self.world_x + (BUTTON_SIZE * 2 * list(data).index(building_name)), self.world_y + 200)
             size = (BUTTON_SIZE, BUTTON_SIZE)
             image = get_image(f"{building_name}_25x25.png")
             self.draw_image(pos, size, image)
             for key, value in dict_.items():
                 image = get_image(f"{key}_25x25.png")
-                pos = (self.world_x + (BUTTON_SIZE * 2 * list(data[building_name]).index(key)) * list(data[building_name]).index(key) , self.world_y + (BUTTON_SIZE * 2 * list(data[building_name]).index(key)))
+                pos = (self.world_x + (BUTTON_SIZE * 2 * list(data[building_name]).index(key)) * list(
+                    data[building_name]).index(key),
+                       self.world_y + (BUTTON_SIZE * 2 * list(data[building_name]).index(key)))
                 size = (BUTTON_SIZE, BUTTON_SIZE)
                 self.draw_image(pos, size, image)
+    def draw_buildings(self):
+        x_lines = [1920/n for n in range(1, 10)]
+        y_lines = [1080/n for n in range(1, 10)]
+
+        data = OrderedDict(self.data)
+        for index, (building_name, dict_) in enumerate(data.items()):
+            pos = (x_lines[0], y_lines[index])
+            size = (BUTTON_SIZE, BUTTON_SIZE)
+            image = get_image(f"{building_name}_25x25.png")
+            self.draw_image(pos, size, image)
+
+            for key_index, (key, value) in enumerate(dict_.items()):
+                image = get_image(f"{key}_25x25.png")
+                pos = (x_lines[key_index + 1],
+                       y_lines[index])
+                self.draw_image(pos, size, image)
+
 
     # def create_buttons(self):
     #     y = self.world_y
@@ -62,7 +83,6 @@ class EconomyOverview(EditorBase):
     #         self.buttons.append(button)
     #         self.widgets.append(button)
 
-
     def draw_image(self, pos, size, image, **kwargs):
 
         offset_x = kwargs.get("offset_x", 0)
@@ -81,6 +101,7 @@ class EconomyOverview(EditorBase):
 
     def draw(self):
         if not self._hidden and not self._disabled:
-            self.draw_buildings()
+
             self.draw_frame()
+            self.draw_buildings()
             self.draw_text(self.world_x + self.text_spacing, self.world_y + TOP_SPACING + self.text_spacing, 200, 30, "Economy:")

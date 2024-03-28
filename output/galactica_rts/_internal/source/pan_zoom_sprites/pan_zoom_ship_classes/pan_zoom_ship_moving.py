@@ -1,12 +1,11 @@
 import math
 
-
+from source.multimedia_library.sounds import sounds
 from source.pan_zoom_sprites.pan_zoom_ship_classes.pan_zoom_ship_params import SHIP_ORBIT_SPEED, SHIP_ORBIT_SPEED_MAX
 
-from source.multimedia_library.sounds import sounds
-
-
 TRAVEL_EXPERIENCE_FACTOR = 0.1
+
+
 class PanZoomShipMoving:
     def __init__(self, kwargs):
         self.desired_orbit_radius_raw = 100
@@ -51,6 +50,7 @@ class PanZoomShipMoving:
     @property
     def move_stop(self):
         return self._move_stop
+
     @move_stop.setter
     def move_stop(self, value):
         self._move_stop = value
@@ -58,8 +58,6 @@ class PanZoomShipMoving:
         if not hasattr(self, "state_engine"):
             return
         self.state_engine.set_state()
-
-
 
     def set_speed(self):
         # adjust speed if no energy
@@ -102,7 +100,7 @@ class PanZoomShipMoving:
 
         self.set_experience(1000)
         self.parent.info_panel.set_planet_image(self.target.image_raw)
-        self.target.get_explored()
+        self.target.get_explored(self.owner)
 
     def reach_enemy(self):
         self.target_reached = True
@@ -115,8 +113,9 @@ class PanZoomShipMoving:
         self.develop_planet()
 
         # unload_cargo goods
-        if not self.target.type == "sun":
+        if not self.target.type == "sun" and self.target.owner == self.owner or self.target.owner == -1:
             self.unload_cargo()
+
         self.set_energy_reloader(self.target)
 
         sounds.stop_sound(self.sound_channel)

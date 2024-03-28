@@ -1,13 +1,20 @@
+import math
+
 import pygame
 
+from source.configuration.game_config import config
+from source.draw.cross import draw_dashed_cross_in_circle
 from source.gui.widgets.image_widget import ImageSprite
+from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.multimedia_library.images import get_image
 
 STATE_IMAGE_SPACING = 35
 
 STATE_IMAGE_SIZE = 17
+ARC_SIZE = 50
 
-
+CROSS_RADIUS = 24
+DASH_LENGHT =  6
 class PanZoomShipStateEngine:
     def __init__(self, parent: object) -> None:
         # pre-load images
@@ -51,8 +58,13 @@ class PanZoomShipStateEngine:
         #     self.image.setImage(self.autopilot_image)
 
         else:
-            self.state_image.set_image(self.sleep_image)
-            self.state_image.image.set_alpha(130)
+            if hasattr(self.parent, "autopilot"):
+                if self.parent.autopilot:
+                    self.state_image.set_image(self.autopilot_image)
+                    self.state_image.image.set_alpha(255)
+            else:
+                self.state_image.set_image(self.sleep_image)
+                self.state_image.image.set_alpha(130)
 
     def draw_rank_image(self) -> None:
         # set image
@@ -68,9 +80,21 @@ class PanZoomShipStateEngine:
 
     def draw_state_image(self) -> None:
         state_image_position = self.rank_image.rect.x + STATE_IMAGE_SPACING, self.rank_image.rect.y
-        self.state_image.set_position(state_image_position[0], state_image_position[1] - STATE_IMAGE_SIZE / 2, "topright")
+        self.state_image.set_position(
+            state_image_position[0], state_image_position[1] - STATE_IMAGE_SIZE / 2, "topright")
 
     def update(self) -> None:
+        if config.cross_view_start < pan_zoom_handler.zoom:
+            self.rank_image.show()
+            self.state_image.show()
+        else:
+            self.rank_image.hide()
+            self.state_image.hide()
+            draw_dashed_cross_in_circle(self.parent.win, self.parent.frame_color, self.parent.get_screen_position(), config.ui_cross_size, config.ui_cross_thickness, config.ui_cross_dash_length/2)
+            #self.parent.win.blit(self.parent.image_outline, (self.parent.rect.x, self.parent.rect.y, 15,15))
+
+
         self.draw_rank_image()
         self.draw_state_image()
+
         # self._hidden = self.parent._hidden

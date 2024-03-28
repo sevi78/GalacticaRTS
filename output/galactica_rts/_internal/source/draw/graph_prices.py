@@ -70,7 +70,6 @@ G = nx.DiGraph()
 
 
 def show_prices():
-
     # Add nodes for buildings and edges to categories
     for category, buildings in data.items():
         # Add nodes for categories
@@ -93,15 +92,19 @@ def show_production():
         # add nodes for buildings
         for building, attributes in buildings.items():
             G.add_node(building, type='building', category=category)  # Add the category as an attribute
-            for resource in ['production_energy', 'production_food', 'production_minerals', 'production_water', 'production_technology', 'production_population']:
+            for resource in ['production_energy', 'production_food', 'production_minerals', 'production_water',
+                             'production_technology', 'production_population']:
                 if attributes[resource] > 0:  # If a building produces a resource
                     for other_category, other_buildings in data.items():
                         for other_building, other_attributes in other_buildings.items():
-                            if building != other_building and other_attributes[resource] < 0:  # If another building consumes that resource
+                            if building != other_building and other_attributes[
+                                resource] < 0:  # If another building consumes that resource
                                 G.add_edge(building, other_building, category=category)
 
-#show_prices()
+
+# show_prices()
 show_production()
+
 
 # Create an interactive plot
 def plot_graph():
@@ -112,9 +115,10 @@ def plot_graph():
     categories = list(data.keys())
     for i, category in enumerate(categories):
         pos[category] = (i, 0)  # Categories are aligned horizontally at the bottom
-        building_nodes = [node for node, data in G.nodes(data=True) if data['type'] == 'building' and data['category'] == category]
+        building_nodes = [node for node, data in G.nodes(data=True) if
+                          data['type'] == 'building' and data['category'] == category]
         for j, building in enumerate(building_nodes):
-            pos[building] = (i, j+1)  # Other nodes are positioned above their category
+            pos[building] = (i, j + 1)  # Other nodes are positioned above their category
 
     # Draw nodes
     building_nodes = [node for node, data in G.nodes(data=True) if data['type'] == 'building']
@@ -132,7 +136,6 @@ def plot_graph():
     plt.axis('on')
     plt.show()
 
+
 # Display the interactive plot
 plot_graph()
-
-

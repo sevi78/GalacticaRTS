@@ -1,7 +1,4 @@
-# initialize pygame and window
-import ctypes
 import os
-
 import pygame
 
 from source.handlers.file_handler import load_file, get_player_list

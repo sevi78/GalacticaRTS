@@ -15,34 +15,41 @@ for category, buildings in data.items():
     for building, attributes in buildings.items():
         G.add_node(building, **attributes)
 
+
 def show_production():
     # Add edges based on dependencies
     for category, buildings in data.items():
         for building, attributes in buildings.items():
-            for resource in ['production_energy', 'production_food', 'production_minerals', 'production_water', 'production_technology', 'production_population']:
+            for resource in ['production_energy', 'production_food', 'production_minerals', 'production_water',
+                             'production_technology', 'production_population']:
                 if attributes[resource] > 0:  # If a building produces a resource
                     for other_category, other_buildings in data.items():
                         for other_building, other_attributes in other_buildings.items():
-                            if building != other_building and other_attributes[resource] < 0:  # If another building consumes that resource
+                            if building != other_building and other_attributes[
+                                resource] < 0:  # If another building consumes that resource
                                 G.add_edge(building, other_building, category=category)
+
 
 def show_prices():
     # Add edges based on dependencies
     for category, buildings in data.items():
         for building, attributes in buildings.items():
-            for resource in ['production_energy', 'production_food', 'production_minerals', 'production_water', 'production_technology', 'production_population']:
+            for resource in ['production_energy', 'production_food', 'production_minerals', 'production_water',
+                             'production_technology', 'production_population']:
                 if attributes[resource] > 0:  # If a building produces a resource
                     for other_category, other_buildings in data.items():
                         for other_building, other_attributes in other_buildings.items():
-                            if building != other_building and other_attributes[resource] < 0:  # If another building consumes that resource
+                            if building != other_building and other_attributes[
+                                resource] < 0:  # If another building consumes that resource
                                 G.add_edge(building, other_building, category=category)
+
 
 show_production()
 # Step 3: Plot the Dependency Graph with Circular Layout
-pos = nx.circular_layout(G)
-pos = nx.arf_layout(G)# positions for all nodes
-pos = nx.bipartite_layout(G,G.nodes)
-pos = nx.kamada_kawai_layout(G,G.nodes)
+pos = nx.rescale_layout_dict((0.0),1) #planar_layout(G)
+#pos = nx.arf_layout(G)  # positions for all nodes
+#pos = nx.bipartite_layout(G, G.nodes)
+# pos = nx.kamada_kawai_layout(G, G.nodes)
 
 # Draw nodes
 nx.draw_networkx_nodes(G, pos)

@@ -1,4 +1,4 @@
-from source.configuration import global_params
+from source.configuration.game_config import config
 
 
 class Moveable:
@@ -22,7 +22,7 @@ class Moveable:
 
     def set_pos_centered_on_top(self):
         h_offset = 0
-        if not global_params.show_overview_buttons:
+        if not config.show_overview_buttons:
             len_buttons = len(self.ui_parent.planet_button_array.getButtons()) - len(self.ui_parent.overview_buttons)
 
         else:
@@ -39,14 +39,14 @@ class Moveable:
         """
         this sets the position . and also to set building buttons of planet to its panel-position
 
-        why the hell: spacing_x = global_params.app.building_panel.spacing_x, why refer to building pane ???
+        why the hell: spacing_x = config.app.building_panel.spacing_x, why refer to building pane ???
         """
         # set planet_button_array to panel
         if hasattr(self, "ui_parent"):
             if self.ui_parent:
-                if global_params.show_overview_buttons:
-                    if self.parent == global_params.app.selected_planet:
-                        x = global_params.app.building_panel.surface_rect.x
-                        y = global_params.app.building_panel.max_height + self.get_screen_height() * 6
-                        spacing_x = global_params.app.building_panel.spacing_x
+                if config.show_overview_buttons:
+                    if self.parent == config.app.selected_planet:
+                        x = config.app.building_panel.surface_rect.x
+                        y = config.app.building_panel.max_height + self.get_screen_height() * 6
+                        spacing_x = config.app.building_panel.spacing_x
                         self.set_position((x - self.ui_parent_offset_x + spacing_x / 2, y - self.ui_parent_offset_y))

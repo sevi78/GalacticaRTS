@@ -1,11 +1,9 @@
-import random
-
 import pygame
 
 from source.app.scene_builder import SceneBuilder
 from source.configuration.game_config import config
-from source.editors.auto_economy_edit import AutoEconomyEdit
 from source.editors.building_edit import BuildingEdit
+from source.editors.deal_manager import DealManager
 from source.editors.debug_edit import DebugEdit
 from source.editors.economy_overview import EconomyOverview
 from source.editors.enemy_handler_edit import EnemyHandlerEdit
@@ -73,10 +71,6 @@ class UIBuilder(SceneBuilder):
 
         # players
         self.players = {}
-        # d = player_handler.get_players()
-        # k = d.keys()
-        # self.create_players(player_handler.get_players())
-        # self.player = None
 
         # building_panel
         self.create_building_panel()
@@ -104,6 +98,15 @@ class UIBuilder(SceneBuilder):
         spacing_y = 0
 
         # editors
+        self.deal_manager = DealManager(
+            self.win,
+            100,
+            30,
+            500,
+            60,
+            False,
+            layer=8,
+            parent=self, )
 
         self.weapon_select = WeaponSelect(pygame.display.get_surface(),
             pygame.display.get_surface().get_rect().centerx - width * 1.5 / 2,
@@ -158,11 +161,10 @@ class UIBuilder(SceneBuilder):
         self.player_edit = PlayerEdit(pygame.display.get_surface(),
             100,
             pygame.display.get_surface().get_rect().y + spacing_y,
-            int(width * 1.7), height, parent=self, obj=None, layer=9,ignore_other_editors=True)  # , game_paused=True)
-
+            int(width * 1.7), height, parent=self, obj=None, layer=9, ignore_other_editors=True)  # , game_paused=True)
 
     def create_players(self, data):
-        for key, value  in data.items():
+        for key, value in data.items():
             player_id = data[key]["player"]
             self.players[player_id] = Player(
                 name=data[key]["name"],
@@ -185,7 +187,7 @@ class UIBuilder(SceneBuilder):
                     },
                 clock=0,
                 owner=player_id,
-                image_name = data[key]["image_name"]
+                image_name=data[key]["image_name"]
                 )
 
             # set active (human) player
@@ -228,7 +230,9 @@ class UIBuilder(SceneBuilder):
             height=100,
             color=pygame.colordict.THECOLORS["black"],
             text_color=self.frame_color,  # pygame.colordict.THECOLORS["darkslategray1"],
-            isSubWidget=False, parent=self, layer=10)
+            isSubWidget=False,
+            parent=self,
+            layer=10)
 
     def create_building_panel(self):
         # building_panel

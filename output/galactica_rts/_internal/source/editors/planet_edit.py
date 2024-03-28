@@ -1,8 +1,9 @@
+import os
 import random
 
 import pygame
 
-from source.configuration import global_params
+from source.configuration.game_config import config
 from source.editors.editor_base.editor_base import EditorBase
 from source.editors.editor_base.editor_config import ARROW_SIZE, FONT_SIZE, BUTTON_SIZE, TOP_SPACING
 from source.factories.building_factory import building_factory
@@ -129,7 +130,7 @@ class PlanetEdit(EditorBase, PlanetEditBuilder):
 
     Methods:
     - create_inputboxes(): creates an input box for the planet name
-    - create_selectors(): creates selectors for the planet image, atmosphere, and orbit object ID
+    - create_selectors_from_dict(): creates selectors for the planet image, atmosphere, and orbit object ID
     - create_checkboxes(): creates a checkbox for each possible resource
     - set_checkbox_values(): sets the value of each checkbox based on the selected planet's possible resources
     - get_checkbox_values(): gets the values of all checkboxes and updates the selected planet's resources accordingly
@@ -178,8 +179,10 @@ class PlanetEdit(EditorBase, PlanetEditBuilder):
         self.orbit_speed_list = [round(0.001 + _ * 0.001, 3) for _ in range(20)]
         self.atmosphere_name_list = get_image_names_from_folder("gifs")
         self.atmosphere_name_list.append("")
-        self.image_name_small_list = list(images[pictures_path]["planets"].keys()) + list(
-            images[pictures_path]["suns"].keys())
+        # self.image_name_small_list = list(images[pictures_path]["planets"].keys()) + list(
+        #     images[pictures_path]["suns"].keys())
+        self.image_name_small_list = os.listdir(os.path.join(pictures_path, "planets")) + os.listdir(os.path.join(pictures_path, "suns"))
+
         self.orbit_angle_list = [_ for _ in range(0, 360)]
         self.alien_population_list = [_ for _ in range(0, 10000000, 100000)]
 
@@ -197,8 +200,8 @@ class PlanetEdit(EditorBase, PlanetEditBuilder):
         self.create_selectors()
         self.create_inputboxes()
         self.create_save_button(lambda:
-        global_params.app.level_handler.save_level(global_params.app.level_handler.current_game,
-            "levels" if global_params.app.level_handler.current_game.startswith("level_") else "games"), "save level")
+        config.app.level_handler.save_level(config.app.level_handler.current_game,
+            "levels" if config.app.level_handler.current_game.startswith("level_") else "games"), "save level")
         self.create_close_button()
         self.create_randomize_button()
 
@@ -271,9 +274,10 @@ class PlanetEdit(EditorBase, PlanetEditBuilder):
         """this is the selector_callback function called from the selector to return the values to the editor"""
         if key == "type":
             if value == "sun":
-                self.selector_image_name_small.list = list(images[pictures_path]["suns"].keys())
+                os.listdir(os.path.join(pictures_path, "planets")) + os.listdir(os.path.join(pictures_path, "suns"))
+                self.selector_image_name_small.list = os.listdir(os.path.join(pictures_path, "suns"))
             if value == "planet":
-                self.selector_image_name_small.list = list(images[pictures_path]["planets"].keys())
+                self.selector_image_name_small.list = os.listdir(os.path.join(pictures_path, "planets"))
 
         if key == "image_name_small":
             self.selected_planet.image_name_small = value
@@ -320,26 +324,31 @@ class PlanetEdit(EditorBase, PlanetEditBuilder):
 
     def listen(self, events):
         """show or hide, navigate to planet on selection"""
-        self.handle_hovering()
-        self.drag(events)
-        self.inputbox.handle_events(events)
-        self.scale_planet(events)
-        for event in events:
-            # ignore all inputs while any text input is active
-            if global_params.text_input_active:
-                return
+        if not self._hidden and not self._disabled:
+            self.handle_hovering()
+            self.drag(events)
+            self.inputbox.handle_events(events)
+            self.scale_planet(events)
+            for event in events:
+                # ignore all inputs while any text input is active
+                if config.text_input_active:
+                    return
 
-        if not self.parent.selected_planet:
-            if len(sprite_groups.planets.sprites()) > 0:
-                self.parent.set_selected_planet(sprite_groups.planets.sprites()[0])
+            if not self.parent.selected_planet:
+                if len(sprite_groups.planets.sprites()) > 0:
+                    self.parent.set_selected_planet(sprite_groups.planets.sprites()[0])
 
-        if not self._hidden or self._disabled:
-            self.orbit_object_id_list = [_ for _ in range(len(sprite_groups.planets.sprites()))]
+            if not self._hidden or self._disabled:
+                self.orbit_object_id_list = [_ for _ in range(len(sprite_groups.planets.sprites()))]
 
     def draw(self):
         if not self._hidden or self._disabled:
             self.draw_frame()
             self.selected_planet = self.parent.selected_planet
-            text = self.selected_planet.name
+            if self.selected_planet:
+                text = self.selected_planet.name
+            else:
+                text = "No planet selected"
+
             self.inputbox.set_text(text)
             self.inputbox.update()

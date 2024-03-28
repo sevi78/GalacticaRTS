@@ -1,7 +1,5 @@
 import copy
-
 import pygame
-
 from source.handlers.image_handler import outline_image
 
 
@@ -45,7 +43,6 @@ class ImageHandler:
         """
         sets the position of the image, based on the widgetbase recalculation of the coordinates, including pan_zoom
         """
-
         # self.rect = self.image.get_rect(center=self.center)
         self.rect = self.image.get_rect()
         self.rect.x = self.screen_x

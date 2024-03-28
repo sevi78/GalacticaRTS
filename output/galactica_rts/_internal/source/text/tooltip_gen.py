@@ -37,16 +37,13 @@ class ToolTipGenerator:
         text = price_text[:-2] + ". " + production_text[:-2]
 
         return text
+
     def create_ufo_tooltip(self, ufo):
         tooltip = ""
         text = ""
-        #print (f"create_ufo_tooltip")
-
-
-
+        # print (f"create_ufo_tooltip")
 
         text += ufo.name + ":\n\n"
-
 
         text += "speed: " + str(ufo.speed) + "\n\n"
         text += "resources loaded: " + "\n\n"
@@ -66,6 +63,7 @@ class ToolTipGenerator:
 
         tooltip += text
         return tooltip
+
     def create_level_tooltip(self, level, data):
         # get the size of the level
         width, height = (format_number(data["globals"]["width"] * 1000, 1),
