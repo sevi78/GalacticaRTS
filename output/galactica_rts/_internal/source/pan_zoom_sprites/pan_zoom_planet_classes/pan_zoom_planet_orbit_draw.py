@@ -10,8 +10,6 @@ from source.configuration.game_config import config
 from source.handlers.color_handler import colors, dim_color
 
 
-
-
 def draw_orbit_simple(self):
     if not self.orbit_object:
         return
@@ -30,7 +28,7 @@ def draw_orbit_circle(self):
     if not self.orbit_object:
         return
 
-    color =  colors.get_orbit_color(self.type)
+    color = colors.get_orbit_color(self.type)
     if self.orbit_object and config.show_orbit:
         pos = get_orbit_pos(self)
         radius = self.orbit_radius * self.get_zoom()
@@ -44,7 +42,7 @@ def draw_orbit(self):
     if not self.orbit_object or not self.orbit_radius:
         return
 
-    color =  colors.get_orbit_color(self.type)
+    color = colors.get_orbit_color(self.type)
 
     max_points = 25
     min_dist = 1

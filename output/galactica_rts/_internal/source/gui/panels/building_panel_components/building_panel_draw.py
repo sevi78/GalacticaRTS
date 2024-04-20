@@ -32,7 +32,7 @@ class BuildingPanelDraw:
         selected_planet = self.parent.selected_planet
 
         # draw owner
-        drawText(self.win, f"owner:{selected_planet.owner}", self.frame_color,(
+        drawText(self.win, f"owner:{selected_planet.owner}", self.frame_color, (
             x + self.spacing_x, self.world_y, self.get_screen_width(), 20), self.font, "left")
 
         self.world_y += self.spacing * 3

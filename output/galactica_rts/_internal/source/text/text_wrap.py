@@ -244,9 +244,7 @@ class TextWrap:  # original
                 #             pygame.draw.rect(win, colors.ui_darker, (x, y, word_width, word_height), 1, 3)
                 if self.link_found:
                     self.set_click_surfaces(word, word_height, word_width, x, y)
-                    #pygame.draw.rect(win, colors.ui_darker, (x, y, word_width, word_height), 1, 3)
-
-
+                    # pygame.draw.rect(win, colors.ui_darker, (x, y, word_width, word_height), 1, 3)
 
                 x += word_width + space
 
@@ -255,8 +253,6 @@ class TextWrap:  # original
 
             # get the last height value
             self.word_height_sum = y
-
-
 
     def set_click_surfaces(self, word, word_height, word_width, x, y):
         self.click_surfaces_list.append((word, pygame.Rect(x, y, word_width, word_height)))

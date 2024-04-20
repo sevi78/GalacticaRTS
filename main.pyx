@@ -370,7 +370,6 @@ def main():
     # cursor object
     app.cursor = Cursor()
 
-
     # restore ui elements
     ui_handler.restore_ui_elements()
     # start game loop

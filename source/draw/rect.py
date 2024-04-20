@@ -11,7 +11,6 @@ def draw_transparent_rounded_rect(surface, color, rect, radius, alpha):
 
     return rect_surface
 
-
 # def main():
 #     pygame.init()
 #     screen = pygame.display.set_mode((640, 480))

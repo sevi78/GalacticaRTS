@@ -95,7 +95,8 @@ class SpriteGroups:  # original
 
     def get_nearest_obj(self, sprite_group, caller):
         if sprite_group:
-            return min(sprite_group, key=lambda obj: pygame.math.Vector2(obj.rect.center).distance_to(caller.rect.center))
+            return min(sprite_group, key=lambda
+                obj: pygame.math.Vector2(obj.rect.center).distance_to(caller.rect.center))
         return None
 
     def convert_sprite_groups_to_image_widget_list__(self, sprite_group) -> list:  # orig

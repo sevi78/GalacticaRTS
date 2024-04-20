@@ -88,7 +88,7 @@ class PlanetFactory:
             # register
             sprite_groups.planets.add(pan_zoom_planet_button)
 
-    def get_all_planets(self, keys:list):
+    def get_all_planets(self, keys: list):
         """
         returns a list of all planets in the game with the same type as in list
         :param keys: list of planet types

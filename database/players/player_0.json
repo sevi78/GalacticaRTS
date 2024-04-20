@@ -3,6 +3,7 @@
   "image_name": "astronaut.png",
   "color": "blue",
   "name": "zork",
+  "species": "zonkoids",
   "energy": 1000,
   "food": 1000,
   "minerals": 1000,

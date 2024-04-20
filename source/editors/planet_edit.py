@@ -270,7 +270,7 @@ class PlanetEdit(EditorBase, PlanetEditBuilder):
             setattr(self.selected_planet, "name", value)
             setattr(self.selected_planet, "string", value)
 
-    def selector_callback(self, key, value):
+    def selector_callback(self, key, value, selector):
         """this is the selector_callback function called from the selector to return the values to the editor"""
         if key == "type":
             if value == "sun":
@@ -316,7 +316,7 @@ class PlanetEdit(EditorBase, PlanetEditBuilder):
             if not selector.key in ignorables:
                 selector.current_value = random.choice(selector.list)
 
-            self.selector_callback(selector.key, selector.current_value)
+            self.selector_callback(selector.key, selector.current_value, selector)
 
         for checkbox in self.checkboxes:
             checkbox.update(random.choice([0, 1]))

@@ -12,7 +12,6 @@ from source.multimedia_library.images import get_image, get_gif_frames, get_gif,
 from source.multimedia_library.sounds import sounds
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_debug import GameObjectDebug
 
-
 # pygame.init()
 WIDTH = 800
 HEIGHT = 600

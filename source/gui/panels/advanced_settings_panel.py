@@ -208,7 +208,7 @@ class AdvancedSettingsPanel(WidgetBase):
             frame_color=self.frame_color,
             moveable=False,
             include_text=True, layer=self.layer,
-            onClick=lambda: config.app.settings_edit.set_visible()) #settings.main(surface=self.win))
+            onClick=lambda: config.app.settings_edit.set_visible())  # settings.main(surface=self.win))
         self.widgets.append(self.settings_icon)
         self.max_width += self.icon_size + self.spacing + self.spacing
 

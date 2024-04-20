@@ -19,6 +19,7 @@ class PlayerEdit(EditorBase):
     def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
         EditorBase.__init__(self, win, x, y, width, height, isSubWidget=False, **kwargs)
         self.data = player_handler.get_players()
+
         # setup image dict
         self.player_image_names = {}
         for player_name, dict_ in self.data.items():
@@ -141,7 +142,7 @@ class PlayerEdit(EditorBase):
                 moveable=False,
                 include_text=True,
                 layer=self.layer,
-                onClick=lambda player_index_ = player_index:  self.open_auto_economy_edit(player_index_),
+                onClick=lambda player_index_=player_index: self.open_auto_economy_edit(player_index_),
                 name=player,
                 textColour=self.frame_color,
                 font_size=12,
@@ -384,7 +385,7 @@ class PlayerEdit(EditorBase):
                         ships = len(player.get_all_ships())
                         i.set_text(f"{ships}")
 
-    def open_auto_economy_edit(self, player_id:int):
+    def open_auto_economy_edit(self, player_id: int):
         if not hasattr(config.app, "auto_economy_edit") or not config.app.auto_economy_edit:
             editor = AutoEconomyEdit(
                 pygame.display.get_surface(),
@@ -402,11 +403,24 @@ class PlayerEdit(EditorBase):
             config.app.auto_economy_edit.set_visible()
 
             # attach to self.editors
+            self.editors = []
             self.editors.append(editor)
 
         config.app.auto_economy_edit.player_id = player_id
         config.app.auto_economy_edit.set_player(player_id)
-        # config.app.auto_economy_edit.set_visible()
+
+    def close(self):
+        config.set_global_variable("edit_mode", True)
+        if self.auto_economy_edit:
+            self.auto_economy_edit.__del__()
+        self.auto_economy_edit = None
+
+        if config.app.auto_economy_edit:
+            config.app.auto_economy_edit.__del__()
+            config.app.auto_economy_edit = None
+        self.editors = []
+        config.tooltip_text = ""
+        self.hide()
 
     def listen(self, events):
         if not self._hidden and not self._disabled:

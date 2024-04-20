@@ -4,7 +4,6 @@ import pygame.transform
 from source.configuration.game_config import config
 
 
-
 class PanZoomHandler:  # original
     """Main functionalities:
     The PanZoomHandler class is responsible for handling panning and zooming of the screen in a Pygame application.
@@ -91,7 +90,7 @@ class PanZoomHandler:  # original
         self._zoom = value
 
         if hasattr(config.app, "zoom_scale"):
-           config.app.zoom_scale.set_zoom(self.zoom)
+            config.app.zoom_scale.set_zoom(self.zoom)
 
     def __str__(self):
         return f"world_offset_x: {self.world_offset_x}, world_offset_y: {self.world_offset_y}, zoom: {self.zoom}"

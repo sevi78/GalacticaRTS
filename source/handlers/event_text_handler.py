@@ -8,7 +8,7 @@ from source.handlers.pan_zoom_sprite_handler import sprite_groups
 
 def listen(self, events):
     """ called from event_text """
-    # dirty hack to gez the planets
+    # dirty hack to get the planets
     self.planet_names = [i.name for i in sprite_groups.planets.sprites()]
 
     for event in events:

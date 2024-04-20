@@ -46,7 +46,7 @@ class PulsatingStar(CelestialObject):
         if not self._hidden:
             t = pygame.time.get_ticks() % (self.pulse_time * 1000) / (self.pulse_time * 1000)
             s = 2 * math.pi * (t + self.start_pulse)
-            c = int(config.star_brightness/2 * max(0.5, 1 + math.cos(2 * math.pi * t)))
+            c = int(config.star_brightness / 2 * max(0.5, 1 + math.cos(2 * math.pi * t)))
             gfxdraw.filled_circle(
                 self.win,
                 int(self.get_screen_x()),

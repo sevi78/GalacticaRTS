@@ -77,7 +77,6 @@ class Scope:
                 config.app.info_panel.set_text(hit_object.info_text)
                 config.app.info_panel.set_planet_image(hit_object.image_raw)
 
-
         # if distance outside range_
         if not is_inside_range:
             color = self.warn_color

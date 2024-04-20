@@ -35,6 +35,7 @@ class ScreenConfig:
         win = pygame.display.set_mode(monitor_resolution, pygame.HWSURFACE | pygame.DOUBLEBUF, display=monitor_index)
         return win
 
+
 class GameConfig:
     """
     simply write new elements into settings.json

@@ -120,7 +120,6 @@ class EnemyHandler(InterfaceData):
         attitude = random.randint(0, 100)
         attitude_bool = 0 if attitude < 50 else 1
 
-
         ufo = PanZoomUfo(self.win,
             x,
             y,

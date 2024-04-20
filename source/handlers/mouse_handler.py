@@ -3,7 +3,6 @@ from enum import Enum
 import pygame
 
 
-
 class MouseState(Enum):
     HOVER = 0
     LEFT_CLICK = 1
@@ -134,8 +133,6 @@ class MouseHandler:
 
         # update states
         self.update_mouse_state()
-
-
 
 
 mouse_handler = MouseHandler()

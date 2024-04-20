@@ -1,52 +1,52 @@
 {
-    "HEIGHT": [
-        [
-            "1080"
-        ],
+  "HEIGHT": [
+    [
+      "1080"
+    ],
+    0
+  ],
+  "WIDTH": [
+    [
+      "1920"
+    ],
+    0
+  ],
+  "debug": false,
+  "draw_background_image": false,
+  "draw_universe": true,
+  "enable_game_events": true,
+  "enable_orbit": true,
+  "enable_pan": true,
+  "enable_zoom": true,
+  "font_name": "segoeuiemoji",
+  "fps": "600",
+  "game_speed": 1,
+  "moveable": true,
+  "scene_height": 14000,
+  "scene_width": 14000,
+  "todo": "respawn celestials. fix reload bug, fix wrong (old) tooltips, adjust energy usage of ships, university += max buildings",
+  "ui_panel_alpha": 220,
+  "ui_rounded_corner_big_thickness": 3,
+  "ui_rounded_corner_radius_big": 30,
+  "ui_rounded_corner_radius_small": 9,
+  "ui_rounded_corner_small_thickness": 1,
+  "universe_density": 25,
+  "visible_layers": [
+    [
+      [
+        "0",
+        1
+      ],
+      [
+        "1",
         0
+      ]
     ],
-    "WIDTH": [
-        [
-            "1920"
-        ],
-        0
-    ],
-    "debug": false,
-    "draw_background_image": false,
-    "draw_universe": true,
-    "enable_game_events": true,
-    "enable_orbit": true,
-    "enable_pan": true,
-    "enable_zoom": true,
-    "font_name": "segoeuiemoji",
-    "fps": "600",
-    "game_speed": 1,
-    "moveable": true,
-    "scene_height": 14000,
-    "scene_width": 14000,
-    "todo": "respawn celestials. fix reload bug, fix wrong (old) tooltips, adjust energy usage of ships, university += max buildings",
-    "ui_panel_alpha": 220,
-    "ui_rounded_corner_big_thickness": 3,
-    "ui_rounded_corner_radius_big": 30,
-    "ui_rounded_corner_radius_small": 9,
-    "ui_rounded_corner_small_thickness": 1,
-    "universe_density": 25,
-    "visible_layers": [
-        [
-            [
-                "0",
-                1
-            ],
-            [
-                "1",
-                0
-            ]
-        ],
-        [
-            0,
-            1
-        ]
-    ],
-    "zoom_max": 2.0,
-    "zoom_min": 0.005
+    [
+      0,
+      1
+    ]
+  ],
+  "zoom_max": 2.0,
+  "zoom_min": 0.005
 }

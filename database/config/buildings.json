@@ -640,7 +640,8 @@
           "level": 0,
           "range": 1.0,
           "power": 1.0,
-          "shoot_interval": 1.0},
+          "shoot_interval": 1.0
+        },
         "level_1": {
           "level": 1,
           "range": 1.5,
@@ -710,7 +711,8 @@
           "level": 0,
           "range": 1.0,
           "power": 1.0,
-          "shoot_interval": 1.0},
+          "shoot_interval": 1.0
+        },
         "level_1": {
           "level": 1,
           "range": 1.5,
@@ -780,7 +782,8 @@
           "level": 0,
           "range": 1.0,
           "power": 1.0,
-          "shoot_interval": 1.0},
+          "shoot_interval": 1.0
+        },
         "level_1": {
           "level": 1,
           "range": 1.5,
@@ -795,6 +798,5 @@
         }
       }
     }
-
   }
 }

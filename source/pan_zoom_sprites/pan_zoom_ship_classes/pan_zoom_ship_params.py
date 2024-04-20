@@ -139,7 +139,8 @@ class PanZoomShipParams:
                                 self.energy += self.energy_reload_rate * self.energy_reloader.production[
                                     "energy"] * config.game_speed
                                 self.parent.players[self.energy_reloader.owner].energy -= self.energy_reload_rate * \
-                                                    self.energy_reloader.production["energy"] * config.game_speed
+                                                                                          self.energy_reloader.production[
+                                                                                              "energy"] * config.game_speed
                                 self.flickering()
                             else:
                                 event_text.set_text("PanZoomShip reloaded successfully!!!", obj=self)

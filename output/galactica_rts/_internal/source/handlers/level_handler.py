@@ -623,7 +623,6 @@ class LevelHandler:
         # setup event_text
         event_text.planet_links = planet_factory.get_all_planet_names()
 
-
     def load_level(self, filename, folder):
         self.current_game = filename
         self.data = load_file(filename, folder=folder)

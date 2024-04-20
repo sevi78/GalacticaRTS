@@ -271,7 +271,7 @@ class LevelEdit(EditorBase):
                 print(f"missing {i.key} in level_handler.data['globals'], (level_{self.level_handler.data['globals']['level']}, adding to data!)")
                 self.level_handler.data["globals"][i.key] = i.current_value
 
-    def selector_callback(self, key, value):
+    def selector_callback(self, key, value, selector):
         """this is the selector_callback function called from the selector to return the values to the editor"""
 
         if key in self.level_handler.data["globals"].keys():
@@ -399,7 +399,7 @@ class LevelEdit(EditorBase):
         for selector in self.selectors:
             if not selector.key in ignorables:
                 selector.current_value = random.choice(selector.list)
-                self.selector_callback(selector.key, selector.current_value)
+                self.selector_callback(selector.key, selector.current_value, selector)
         self.refresh_level()
 
     def refresh_level(self):

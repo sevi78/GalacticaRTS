@@ -2,6 +2,8 @@ import pygame
 
 MIN_IMAGE_ZOOM_SIZE = 1
 MAX_IMAGE_ZOOM_SIZE = 1000
+
+
 class PanZoomPlanetPositionHandler:
     def __init__(self, x, y, width, height, **kwargs):
         self.size_x = width
@@ -23,10 +25,9 @@ class PanZoomPlanetPositionHandler:
         # get new_size size
         new_size = (self.size_x * self.get_zoom(), self.size_y * self.get_zoom())
         if new_size[0] < MIN_IMAGE_ZOOM_SIZE or new_size[1] < MIN_IMAGE_ZOOM_SIZE:
-            new_size =  (MIN_IMAGE_ZOOM_SIZE, MIN_IMAGE_ZOOM_SIZE)
+            new_size = (MIN_IMAGE_ZOOM_SIZE, MIN_IMAGE_ZOOM_SIZE)
         if new_size[0] > MAX_IMAGE_ZOOM_SIZE or new_size[1] > MAX_IMAGE_ZOOM_SIZE:
-            new_size =  (MAX_IMAGE_ZOOM_SIZE, MAX_IMAGE_ZOOM_SIZE)
-
+            new_size = (MAX_IMAGE_ZOOM_SIZE, MAX_IMAGE_ZOOM_SIZE)
 
         # set new image size
         self.image = pygame.transform.scale(self.image_raw, new_size)

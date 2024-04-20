@@ -116,7 +116,6 @@ class SettingsPanel(WidgetBase):
         self.widgets.append(self.cross_icon)
         self.max_width += self.icon_size + self.spacing
 
-
         self.ships_icon = ImageButton(win=self.win,
             x=self.get_screen_x(),
             y=self.surface_rect.y + self.spacing,
@@ -220,8 +219,6 @@ class SettingsPanel(WidgetBase):
 
         self.widgets.append(self.autopilot_icon)
         self.max_width += self.icon_size + self.spacing
-
-
 
         self.orbit_icon = ImageButton(win=self.win,
             x=self.info_icon.get_screen_x() - 50,

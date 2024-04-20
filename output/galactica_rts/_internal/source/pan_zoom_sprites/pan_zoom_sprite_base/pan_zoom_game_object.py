@@ -185,7 +185,6 @@ class PanZoomGameObject(PanZoomSprite, InteractionHandler):
         else:
             print("move_towards_target error! time_steps is zero.")
 
-
     def explode(self, **kwargs):
         # self.explode_calls += 1
         sound = kwargs.get("sound", None)

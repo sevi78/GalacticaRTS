@@ -21,11 +21,11 @@ def draw_dashed_cross_in_circle__(win, color, center, radius, width, dash_length
 
     # Draw the vertical line of the cross
     draw_dashed_line(win, color, (center[0], center[1] - cross_length), (
-    center[0], center[1] + cross_length), width, dash_length)
+        center[0], center[1] + cross_length), width, dash_length)
 
     # Draw the horizontal line of the cross
     draw_dashed_line(win, color, (center[0] - cross_length, center[1]), (
-    center[0] + cross_length, center[1]), width, dash_length)
+        center[0] + cross_length, center[1]), width, dash_length)
 
 
 def draw_dashed_cross_in_circle(win, color, center, radius, width, dash_length):
@@ -34,19 +34,15 @@ def draw_dashed_cross_in_circle(win, color, center, radius, width, dash_length):
 
     # Draw the vertical line of the cross
     draw_dashed_line(win, color, (center[0], center[1] - cross_length), (
-    center[0], center[1] - third_length), width, dash_length)
+        center[0], center[1] - third_length), width, dash_length)
     draw_dashed_line(win, color, (center[0], center[1] + third_length), (
-    center[0], center[1] + cross_length), width, dash_length)
+        center[0], center[1] + cross_length), width, dash_length)
 
     # Draw the horizontal line of the cross
     draw_dashed_line(win, color, (center[0] - cross_length, center[1]), (
-    center[0] - third_length, center[1]), width, dash_length)
+        center[0] - third_length, center[1]), width, dash_length)
     draw_dashed_line(win, color, (center[0] + third_length, center[1]), (
-    center[0] + cross_length, center[1]), width, dash_length)
-
-
-
-
+        center[0] + cross_length, center[1]), width, dash_length)
 
 
 def main():
@@ -78,7 +74,6 @@ def main():
         arrow_pos += 0.01
         if arrow_pos > radius:
             arrow_pos = 0
-
 
         # Update the display
         pygame.display.flip()

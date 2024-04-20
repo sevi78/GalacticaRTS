@@ -7,6 +7,7 @@ class UIHandler:
     writes the positions of all widgets with the attribute "save" into a json file
     reads the positions of all widgets with the attribute "save" from a json file and sets the positions of the widgets
     """
+
     def __init__(self):
         # all widgets
         self.ui_elements = {}
@@ -23,7 +24,7 @@ class UIHandler:
         for index, i in enumerate([_ for _ in WidgetHandler.get_all_widgets() if hasattr(_, "save")]):
             if i.save:
                 self.ui_elements[str(index)] = i
-                self.ui_elements_dicts[str(index)] = {"widget_name":i.name, "world_x": i.world_x, "world_y": i.world_y}
+                self.ui_elements_dicts[str(index)] = {"widget_name": i.name, "world_x": i.world_x, "world_y": i.world_y}
 
     def save_ui_elements(self):
         # setup objects to save

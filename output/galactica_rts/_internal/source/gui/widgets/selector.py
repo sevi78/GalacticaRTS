@@ -112,7 +112,7 @@ class Selector(WidgetBase):
                 return
 
         self.current_value = select_next_item_in_list(self.list, self.current_value, value)
-        self.parent.selector_callback(self.key, self.current_value)
+        self.parent.selector_callback(self.key, self.current_value, self)
 
     def draw_texts(self):
         """

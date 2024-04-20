@@ -13,7 +13,6 @@ class PanZoomMissile(PanZoomGameObject):
         self.speed = MISSILE_SPEED
         self.missile_power = kwargs.get("missile_power", MISSILE_POWER)
 
-
     def damage(self):
         if not self.target:
             return

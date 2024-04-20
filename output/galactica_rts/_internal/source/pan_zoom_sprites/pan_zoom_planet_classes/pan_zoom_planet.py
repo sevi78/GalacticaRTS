@@ -230,7 +230,6 @@ class PanZoomPlanet(PanZoomSprite, VisibilityHandler, PanZoomPlanetOverviewButto
                         config.app.info_panel.set_text(self.info_text)
                         config.app.info_panel.set_planet_image(self.image_raw)
 
-
                     draw_transparent_circle(self.win, self.frame_color, self.rect.center, self.planet_defence.attack_distance, 20)
                     self.draw_specials()
                     self.draw_alien_population_icons()

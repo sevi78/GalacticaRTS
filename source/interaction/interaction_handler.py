@@ -2,6 +2,7 @@ import pygame
 
 from source.configuration.game_config import config
 
+
 class ResizeHandler:
     def __init__(self):
         self.resize_side = "top"
@@ -46,7 +47,7 @@ class ResizeHandler:
 
         self.reposition(old_x, old_y)
 
-        #self.resize(events)
+        # self.resize(events)
 
     def set_resize_side(self):
         # Calculate the rectangles for detecting cursor position
@@ -170,6 +171,3 @@ class InteractionHandler(ResizeHandler):
         else:
             if config.hover_object == self:
                 config.hover_object = None
-
-
-

@@ -37,15 +37,14 @@ def profile_events(events):
         event_counts[event.type] += 1
     return event_counts
 
-# print (f"event count {profile_events(events)}")
 
+# print (f"event count {profile_events(events)}")
 
 
 """
 
 use pygount to get a summary of the code
-
-PS C:\Users\sever\Documents\Galactica-RTS_zoomable1.107> pygount --format=summary                                                       
+                                                  
 ┏━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━┳━━━━━━━━━┳━━━━━━┓
 ┃ Language      ┃ Files ┃     % ┃   Code ┃    % ┃ Comment ┃    % ┃
 ┡━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━╇━━━━━━━━━╇━━━━━━┩

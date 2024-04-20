@@ -155,6 +155,30 @@ class ResourcePanel(WidgetBase):
             outline_threshold=127)
 
         self.widgets.append(self.deal_manager_icon)
+
+        self.add_deal_icon = ImageButton(win=self.win,
+            x=130,
+            y=pos_y,
+            width=self.icon_size,
+            height=self.icon_size,
+            isSubWidget=False,
+            parent=self,
+            image=pygame.transform.scale(get_image("add_deal_icon.png"), (25, 25)),
+            image_raw=get_image("deal_icon.png"),
+            tooltip="add deal",
+            frame_color=self.frame_color,
+            moveable=False,
+            include_text=True,
+            layer=self.layer,
+            key="",
+            name="add_deal_icon",
+            textColours=(0, 0, 0),
+            font_size=0,
+            onClick=lambda: config.app.add_deal_edit.set_visible(),
+            outline_thickness=1,
+            outline_threshold=127)
+
+        self.widgets.append(self.add_deal_icon)
         # self.max_width += self.icon_size + self.spacing
         # pos_x += self.spacing
 
@@ -233,7 +257,7 @@ class ResourcePanel(WidgetBase):
             include_text=False,
             layer=9,
             outline_thickness=1,
-            outline_threshold=0,)
+            outline_threshold=0, )
         self.widgets.append(self.minerals_icon)
         self.max_width += self.icon_size + self.spacing
         pos_x += self.spacing

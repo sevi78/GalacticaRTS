@@ -15,6 +15,9 @@ class DefaultEdit(EditorBase):
 
         # hide initially
         self.hide()
+
+        # set max_height, important to remove the default value of 200 after create_widgets() !!!
+        # otherwise the display is terribly wrong !!
         self.max_height = 200
 
     def listen(self, events):

@@ -45,9 +45,9 @@ class ContainerWidgetItem:
         self.rect.topleft = pos
 
         for widget in self.widgets:
-            widget.win  = self.win
+            widget.win = self.win
             widget.set_position(pos)
-            print (widget.world_x, widget.world_y, widget.win)
+            # print (widget.world_x, widget.world_y, widget.win)
 
     def hide(self):
         self._hidden = True

@@ -77,6 +77,15 @@ class Player:
                  }
         return stock
 
+    def remove_population_key_from_stock(self, stock: dict) -> dict:
+        new_stock = {key: value for key, value in stock.items() if key != "population"}
+        return new_stock
+
+    def get_resource_stock(self) -> dict:
+        stock = self.get_stock()
+        new_stock = self.remove_population_key_from_stock(stock)
+        return new_stock
+
     def get_all_buildings(self) -> list:
         buildings = []
         for i in sprite_groups.planets:

@@ -569,59 +569,6 @@ class LevelHandler:
         # navigate zo center of the level
         navigate_to_position(self.data["globals"]["width"] / 2, self.data["globals"]["height"] / 2)
 
-    def load_level__(self, filename, folder):
-        """TODO: how to store the ai player??"""
-        self.current_game = filename
-        self.data = load_file(filename, folder=folder)
-        config.app.level_edit.set_selector_current_value()
-
-        # delete level
-        self.delete_level()
-
-        # reset player
-        # self.app.player.reset(self.data["player"])
-        player_handler.reset_players()
-
-        # create planets, AND SELECT ONE ! to make ensure no errors are generated!!!
-        planet_factory.create_planets_from_data(self.data)
-        self.app.selected_planet = sprite_groups.planets.sprites()[0]
-
-        # create ships
-        ships = self.data.get("ships")
-        for key in ships.keys():
-            self.app.ship_factory.create_ship(f"{ships[key]['name']}_30x30.png", int(
-                ships[key]["world_x"]), int(
-                ships[key]["world_y"]), config.app, ships[key]["weapons"], data=ships[key])
-
-        # create universe
-        if config.draw_universe:
-            self.create_universe()
-
-        # setup game_event_handler
-        self.app.game_event_handler.level = config.app.level_handler.data.get("globals").get("level")
-        self.app.game_event_handler.set_goal(config.app.level_handler.data.get("globals").get("goal"))
-
-        # setup mission
-        self.app.resource_panel.mission_icon.info_text = info_panel_text_generator.create_info_panel_mission_text()
-        config.edit_mode = False
-
-        economy_handler.calculate_global_production(config.app.player)
-
-        # setup pan_zoom_handler
-        self.setup_pan_zoom_handler()
-
-        # setup container
-        if hasattr(self.app, "ship_container"):
-            self.app.ship_container.set_widgets(sprite_groups.convert_sprite_groups_to_image_widget_list("ships"))
-
-            # self.app.ship_container.filter_widget.show()
-
-        if hasattr(self.app, "planet_container"):
-            self.app.planet_container.set_widgets(sprite_groups.convert_sprite_groups_to_image_widget_list("planets"))
-            # self.app.ship_container.filter_widget.show()
-
-        # setup event_text
-        event_text.planet_links = planet_factory.get_all_planet_names()
 
 
     def load_level(self, filename, folder):

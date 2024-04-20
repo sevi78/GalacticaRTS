@@ -194,6 +194,9 @@ class BuildingWidget(WidgetBase):
         # register
         config.app.building_widget_list.append(self)
 
+    def __repr__(self):
+        return f"{self.name}: {self.receiver}"
+
     def update_progressbar(self) -> None:
         # get game speed
         game_speed = config.game_speed
@@ -332,7 +335,7 @@ class BuildingWidget(WidgetBase):
 
         # show owner
         overblit_button_image(self.button, self.overblit_image_name, False, offset_x=5, size=(
-        25, 25), outline=True, color=self.receiver.player_color)
+            25, 25), outline=True, color=self.receiver.player_color)
 
         # update progress bar
         if not config.game_speed == 0 and not config.game_paused:

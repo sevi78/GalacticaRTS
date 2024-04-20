@@ -83,7 +83,7 @@ class PanZoomPlanetParams:
         self.parent.info_panel.set_planet_image(self.image_raw)
         return
 
-    def get_explored(self,owner):
+    def get_explored(self, owner):
 
         """
         called only once when the planet gets explored

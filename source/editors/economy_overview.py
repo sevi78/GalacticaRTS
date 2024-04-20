@@ -42,9 +42,10 @@ class EconomyOverview(EditorBase):
                        self.world_y + (BUTTON_SIZE * 2 * list(data[building_name]).index(key)))
                 size = (BUTTON_SIZE, BUTTON_SIZE)
                 self.draw_image(pos, size, image)
+
     def draw_buildings(self):
-        x_lines = [1920/n for n in range(1, 10)]
-        y_lines = [1080/n for n in range(1, 10)]
+        x_lines = [1920 / n for n in range(1, 10)]
+        y_lines = [1080 / n for n in range(1, 10)]
 
         data = OrderedDict(self.data)
         for index, (building_name, dict_) in enumerate(data.items()):
@@ -58,7 +59,6 @@ class EconomyOverview(EditorBase):
                 pos = (x_lines[key_index + 1],
                        y_lines[index])
                 self.draw_image(pos, size, image)
-
 
     # def create_buttons(self):
     #     y = self.world_y
@@ -101,7 +101,6 @@ class EconomyOverview(EditorBase):
 
     def draw(self):
         if not self._hidden and not self._disabled:
-
             self.draw_frame()
             self.draw_buildings()
             self.draw_text(self.world_x + self.text_spacing, self.world_y + TOP_SPACING + self.text_spacing, 200, 30, "Economy:")

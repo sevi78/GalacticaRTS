@@ -95,7 +95,7 @@ class PanZoomPlanetDefence:
 
         # Interpolate the color from green to red based on the elapsed time percentage
         green_to_red = (
-                                   1 - elapsed_time_percentage) * pygame.color.THECOLORS.get("green") + elapsed_time_percentage * pygame.color.THECOLORS.get("red")
+                               1 - elapsed_time_percentage) * pygame.color.THECOLORS.get("green") + elapsed_time_percentage * pygame.color.THECOLORS.get("red")
 
         # Update the progress bar color
         self.emp_progress_display.completedColour = green_to_red

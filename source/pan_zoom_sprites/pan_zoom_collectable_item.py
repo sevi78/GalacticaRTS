@@ -64,6 +64,7 @@ class PanZoomCollectableItem(PanZoomSprite, InteractionHandler):
                 if self.info_text:
                     config.app.info_panel.set_text(self.info_text)
                     config.app.info_panel.set_planet_image(self.image_raw, size=self.image_raw.get_size())
+
     def update(self):
         self.update_pan_zoom_sprite()
         self.listen()

@@ -132,5 +132,5 @@ class ProgressBar(WidgetBase):
 
             if self.string:
                 drawText(self.win, self.string, self.frame_color, (
-                self.screen_x - 40, self.screen_y - self.font.get_height() / 6, 200,
-                self.font.get_height()), self.font, align="left")
+                    self.screen_x - 40, self.screen_y - self.font.get_height() / 6, 200,
+                    self.font.get_height()), self.font, align="left")

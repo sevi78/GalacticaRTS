@@ -18,6 +18,7 @@ from source.multimedia_library.images import get_image
 
 SCROLL_STEP = 25
 
+
 class ContainerWidget(InteractionHandler):
     def __init__(self, win, x, y, width, height, widgets, function, **kwargs):
         InteractionHandler.__init__(self)
@@ -125,7 +126,6 @@ class ContainerWidget(InteractionHandler):
 
     def get_scroll_step(self) -> int:
         return self.widgets[0].world_height
-
 
     def select(self):
         # call the function
@@ -260,23 +260,24 @@ class ContainerWidget(InteractionHandler):
         # draw scrollbar
         self.scrollbar.draw()
 
+
 def main():
     pygame.init()
     win = pygame.display.set_mode((800, 600))
 
     widgets = [DealItem(
-            win,
-            0,
-            0,
-            WIDGET_SIZE,
-            WIDGET_SIZE,
-            image=get_image(""),
-            obj=None,
-            index=0,
-            player_index = 0,
-            offer = {"energy":50},
-            request={"food":100})
-            ]
+        win,
+        0,
+        0,
+        WIDGET_SIZE,
+        WIDGET_SIZE,
+        image=get_image(""),
+        obj=None,
+        index=0,
+        player_index=0,
+        offer={"energy": 50},
+        request={"food": 100})
+        ]
 
     container = ContainerWidget(win, 280, 0, 200, 300, widgets, print)
     container.set_visible()
@@ -290,6 +291,7 @@ def main():
         container.draw()
 
         pygame.display.update()
+
 
 def main__():
     pygame.init()

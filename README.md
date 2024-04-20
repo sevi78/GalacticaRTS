@@ -22,7 +22,7 @@ build cities, metrolopes to enhance your population.
 
 - building system, building editor, several editors for many purposes
 - solar systems (levels) incl. level editor
-- ship moving mechanics, ship energy reloading, ship attacking 
+- ship moving mechanics, ship energy reloading, ship attacking
 - planet editor, planet orbit around sun
 - box selection (perplexity.ai)
 
@@ -32,8 +32,10 @@ build cities, metrolopes to enhance your population.
 - extendable layer system for bliting the images in the right order
 
 **work in progress:**
+
 - event system: feedbacks from the game for the user about what is happening
-- 
+-
+
 **TODO:**
 
 - a lot !!!

@@ -46,9 +46,9 @@ def show_prices():
 
 show_production()
 # Step 3: Plot the Dependency Graph with Circular Layout
-pos = nx.rescale_layout_dict((0.0),1) #planar_layout(G)
-#pos = nx.arf_layout(G)  # positions for all nodes
-#pos = nx.bipartite_layout(G, G.nodes)
+pos = nx.rescale_layout_dict((0.0), 1)  # planar_layout(G)
+# pos = nx.arf_layout(G)  # positions for all nodes
+# pos = nx.bipartite_layout(G, G.nodes)
 # pos = nx.kamada_kawai_layout(G, G.nodes)
 
 # Draw nodes

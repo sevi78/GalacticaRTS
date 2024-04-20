@@ -1,5 +1,6 @@
 import random
 
+from source.configuration.game_config import config
 from source.factories.building_factory import building_factory
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 
@@ -159,7 +160,10 @@ class EconomyHandler:
             self.calculate_planet_production(planet)
             self.setup_planet_specials_dict(planet)
 
-        # economy_handler.calculate_global_production(self.player)
-        # economy_handler.calculate_global_production(self.players[1])
+        for key, value in config.app.players.items():
+            # config.app.calculate_global_production(config.players[key])
+            # print ("player: ", key, value)
+            economy_handler.calculate_global_production(value)
+
 
 economy_handler = EconomyHandler()

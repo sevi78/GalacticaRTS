@@ -35,11 +35,11 @@ class BackgroundGradient(WidgetBase):  # bad performance
         # set images
         self.image_left = pygame.transform.scale(get_image("gradient_transparent_left.png"), (self.fade_range, height))
         self.image_right = pygame.transform.scale(get_image("gradient_transparent_right.png"), (
-        self.fade_range, height))
+            self.fade_range, height))
         self.image_top = pygame.transform.scale(get_image("gradient_transparent_top.png"), (
-        width - (self.fade_range * 2), self.fade_range))
+            width - (self.fade_range * 2), self.fade_range))
         self.image_bottom = pygame.transform.scale(get_image("gradient_transparent_bottom.png"), (
-        width - (self.fade_range * 2), self.fade_range))
+            width - (self.fade_range * 2), self.fade_range))
 
         # set image positions
         self.image_left_pos = (x, y)

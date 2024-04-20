@@ -21,7 +21,6 @@
       "technology": 1000,
       "population": 0
     }
-
   },
   "celestial_objects": {
     "0": {
@@ -242,6 +241,5 @@
       "orbit_object_id": -1,
       "orbit_object_name": ""
     }
-
   }
 }

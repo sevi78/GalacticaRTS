@@ -130,7 +130,7 @@ class TradeEdit(EditorBase):
         for selector in self.selectors:
             selector.set_current_value(0)
 
-    def selector_callback(self, key, value):
+    def selector_callback(self, key, value, selector):
         self.get_checkbox_values()
         self.set_resources(key, value)
 

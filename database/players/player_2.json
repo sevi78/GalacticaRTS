@@ -3,6 +3,7 @@
   "image_name": "alien2.png",
   "color": "orange",
   "name": "bolk",
+  "species": "hungoldonts",
   "energy": 1000,
   "food": 1000,
   "minerals": 1000,

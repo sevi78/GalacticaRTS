@@ -38,7 +38,7 @@ class Cursor:
                         "left_arrow_repeated": pygame.transform.rotate(pygame.transform.scale(get_image(f"crosshair023.png"), self.cursor_size), 90),
                         "right_arrow_repeated": pygame.transform.rotate(pygame.transform.flip(pygame.transform.scale(get_image(f"crosshair023.png"), self.cursor_size), False, True), 90),
                         "close": pygame.transform.scale(get_image(f"crosshair005.png"), self.cursor_size),
-                        "resize_0":pygame.transform.rotate(pygame.transform.scale(get_image(f"crosshair015.png"), self.cursor_size), 0),
+                        "resize_0": pygame.transform.rotate(pygame.transform.scale(get_image(f"crosshair015.png"), self.cursor_size), 0),
                         "resize_45": pygame.transform.rotate(pygame.transform.scale(get_image(f"crosshair015.png"), self.cursor_size), 45),
                         "resize_90": pygame.transform.rotate(pygame.transform.scale(get_image(f"crosshair015.png"), self.cursor_size), 90),
                         "resize_135": pygame.transform.rotate(pygame.transform.scale(get_image(f"crosshair015.png"), self.cursor_size), 135),
@@ -76,6 +76,7 @@ class Cursor:
             return self.resize_cursor_orientations[resize_side]
         else:
             return self.resize_cursor_orientations["top"]
+
     def get_resize_cursor(self, angle):
         return f"resize_{angle}"
 

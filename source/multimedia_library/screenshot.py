@@ -43,5 +43,3 @@ def capture_screenshot(screen: pygame.Surface, filename: str, area: tuple, targe
     if event_text:
         print(f"screenshot created: {filename}")
         event_text.text = f"screenshot created: {filename}"
-
-

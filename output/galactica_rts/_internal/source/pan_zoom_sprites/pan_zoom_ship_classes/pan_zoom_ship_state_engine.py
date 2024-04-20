@@ -14,7 +14,9 @@ STATE_IMAGE_SIZE = 17
 ARC_SIZE = 50
 
 CROSS_RADIUS = 24
-DASH_LENGHT =  6
+DASH_LENGHT = 6
+
+
 class PanZoomShipStateEngine:
     def __init__(self, parent: object) -> None:
         # pre-load images
@@ -90,9 +92,8 @@ class PanZoomShipStateEngine:
         else:
             self.rank_image.hide()
             self.state_image.hide()
-            draw_dashed_cross_in_circle(self.parent.win, self.parent.frame_color, self.parent.get_screen_position(), config.ui_cross_size, config.ui_cross_thickness, config.ui_cross_dash_length/2)
-            #self.parent.win.blit(self.parent.image_outline, (self.parent.rect.x, self.parent.rect.y, 15,15))
-
+            draw_dashed_cross_in_circle(self.parent.win, self.parent.frame_color, self.parent.get_screen_position(), config.ui_cross_size, config.ui_cross_thickness, config.ui_cross_dash_length / 2)
+            # self.parent.win.blit(self.parent.image_outline, (self.parent.rect.x, self.parent.rect.y, 15,15))
 
         self.draw_rank_image()
         self.draw_state_image()

@@ -3,6 +3,7 @@
   "image_name": "alien1.png",
   "color": "red",
   "name": "Bauz",
+  "species": "barabarians",
   "energy": 1000,
   "food": 1000,
   "minerals": 1000,

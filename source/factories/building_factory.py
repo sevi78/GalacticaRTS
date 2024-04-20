@@ -3,6 +3,7 @@ import pygame
 from source.configuration.game_config import config
 from source.gui.event_text import event_text
 from source.gui.widgets.building_widget import BuildingWidget
+
 from source.handlers.file_handler import load_file
 from source.multimedia_library.sounds import sounds
 
@@ -22,7 +23,6 @@ class BuildingFactoryJsonDictReader:
                 for item, value in building_names[building].items():
                     building_dict[item] = value
         return building_dict
-
 
     def get_prices_from_buildings_json(self, building: str) -> dict:
         prices = {}
@@ -97,7 +97,8 @@ class BuildingFactoryJsonDictReader:
                             list_.append(building_name)
         return list_
 
-    def get_a_list_of_building_names_from_category_with_build_population_minimum_bigger_than(self, minimum:int, category:str) -> list:
+    def get_a_list_of_building_names_from_category_with_build_population_minimum_bigger_than(self, minimum: int,
+                                                                                             category: str) -> list:
         list_ = []
         for i in self.get_resource_categories():
             if i == category:
@@ -140,8 +141,6 @@ class BuildingFactoryJsonDictReader:
                 building_names.append(building['name'])
         return building_names
 
-
-
     def add_production(self, production, production1):
         d = {
             "energy": 0,
@@ -176,6 +175,28 @@ class BuildingFactoryJsonDictReader:
                 if building['name'] == building_name:
                     return building
         return None
+
+    def get_all_resource_buildings(self) -> list:
+        builings = []
+        for key, value in self.json_dict.items():
+            if key in self.get_resource_categories():
+                if not key == "population":
+                    if not key == "technology":
+                        builings.extend(value.keys())
+
+        return builings
+
+    def get_fitting_building(self, planet, preferred_building_key):
+        building_names = building_factory.get_building_names(preferred_building_key)
+
+        if planet.population < 1000:
+            return building_names[0]
+        elif planet.population in range(1000, 10000):
+            return building_names[1]
+        elif planet.population in range(10000, 100000):
+            return building_names[2]
+
+        return building_names
 
 
 class BuildingFactory(BuildingFactoryJsonDictReader):
@@ -321,6 +342,8 @@ class BuildingFactory(BuildingFactoryJsonDictReader):
         planet.calculate_population()
         planet.set_population_limit()
 
+        config.app.calculate_global_production(config.app.players[planet.owner])
+
         event_text.text = f"you destroyed one {building}! You will not get anything back from it! ... what a waste ..."
         sounds.play_sound(sounds.destroy_building)
 
@@ -333,8 +356,13 @@ def main():
     # write_file("buildings.json", building_factory.json_dict)
 
     # print(building_factory.get_all_building_names())
-    print (building_factory.get_most_consuming_building(building_factory.get_all_building_names(), "energy"))
-    print(building_factory.get_most_consuming_building(building_factory.get_all_building_names(), "food"))
+    # print (building_factory.get_most_consuming_building(building_factory.get_all_building_names(), "energy"))
+    # print(building_factory.get_most_consuming_building(building_factory.get_all_building_names(), "food"))
+    # print (building_factory.get_resource_categories())
+    # print (building_factory.get_all_resource_buildings())
+    building_factory = BuildingFactory()
+    print(building_factory.get_fitting_building(None, "energy"))
+
 
 if __name__ == "__main__":
     main()

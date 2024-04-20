@@ -20,7 +20,7 @@ class ShipEdit(Interface):
 
         self.selectors.append(self.selector_ship)
 
-    def selector_callback(self, key, value):
+    def selector_callback(self, key, value, selector):
         """this is the selector_callback function called from the selector to return the values to the editor"""
         if key == "ships":
             self.parent.ship = value

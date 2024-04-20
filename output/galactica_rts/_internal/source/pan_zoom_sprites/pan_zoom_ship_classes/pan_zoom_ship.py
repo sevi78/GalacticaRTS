@@ -34,7 +34,7 @@ from source.pan_zoom_sprites.pan_zoom_target_object import PanZoomTargetObject
 from source.text.text_formatter import format_number
 
 
-class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZoomShipRanking, PanZoomShipDraw, PanZoomShipInteraction,  InterfaceData):
+class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZoomShipRanking, PanZoomShipDraw, PanZoomShipInteraction, InterfaceData):
     # __slots__ = PanZoomGameObject.__slots__ + ('item_collect_distance', 'orbit_direction', 'speed', 'id', 'property',
     #                                            'rotate_correction_angle', 'orbit_object', 'orbit_angle', 'collect_text',
     #                                            'target_object', 'target_object_reset_distance_raw',
@@ -97,7 +97,7 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         # PanZoomShipButtons.__init__(self)
         PanZoomShipDraw.__init__(self, kwargs)
 
-        #InteractionHandler.__init__(self)
+        # InteractionHandler.__init__(self)
         PanZoomShipInteraction.__init__(self)
 
         # init vars
@@ -371,7 +371,7 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         self.set_info_text()
         sounds.play_sound(sounds.collect_success)
 
-        event_text.set_text(f"You are a Lucky Guy! you just found some resources: {special_text}, " + self.collect_text,obj=self)
+        event_text.set_text(f"You are a Lucky Guy! you just found some resources: {special_text}, " + self.collect_text, obj=self)
         self.target.collected = True
 
     def add_moving_image(self, key, operand, value, velocity, lifetime, width, height, parent, target):
@@ -643,7 +643,6 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
             # reload ship
             self.reload_ship()
 
-
         if self.autopilot:
             self.autopilot_handler.update()
 
@@ -662,9 +661,5 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         # make shure this is the last task, otherwise it would work(propbably)
         self.previous_position = (self.world_x, self.world_y)
 
-
     def draw(self):  # unused
         print("drawing ---")
-
-
-

@@ -6,7 +6,6 @@ from source.gui.widgets.buttons.button import Button
 from source.multimedia_library.images import get_image
 
 
-
 class DealItem(ContainerWidgetItem):
     def __init__(self, win, x, y, width, height, image, index, **kwargs):
         self.player_index = kwargs.get('player_index', 0)
@@ -22,16 +21,15 @@ class DealItem(ContainerWidgetItem):
             self.world_y,
             self.world_height,
             self.world_height,
-            isSubWidget = False,
-            image = pygame.transform.scale(get_image("yes_icon.png"),
+            isSubWidget=False,
+            image=pygame.transform.scale(get_image("yes_icon.png"),
                 (self.world_height, self.world_height)),
-            transparent = True,
-            parent = self,
-            onClick = lambda: self.accept(),
-            layer= 10)
+            transparent=True,
+            parent=self,
+            onClick=lambda: self.accept(),
+            layer=10)
 
         self.widgets.append(self.accept_button)
-
 
         # self.accept_button.show()
 
@@ -40,8 +38,7 @@ class DealItem(ContainerWidgetItem):
         #     image=pygame.transform.scale(get_image("no_icon.png"), (60, 60)),
         #     transparent=True, parent=self, onClick=lambda: self.decline())
 
-        self.set_position((x,y))
-
+        self.set_position((x, y))
 
     def set_text(self):
         text = f"offer: {self.offer} request: {self.request}"
@@ -49,6 +46,3 @@ class DealItem(ContainerWidgetItem):
 
     def accept(self):
         pass
-
-
-

@@ -80,14 +80,15 @@ def draw_transparent_circle__(surface, color, position, radius, alpha):
     pygame.draw.circle(circle_surface, color + (alpha,), (radius, radius), radius)
     surface.blit(circle_surface, (position[0] - radius, position[1] - radius))
 
+
 def draw_transparent_circle(surface, color, position, radius, alpha, **kwargs):
-    special_flags=kwargs.get('special_flags', 0)
+    special_flags = kwargs.get('special_flags', 0)
 
     if len(color) == 4:
         color = color[:3]  # Ignore the original alpha value
     circle_surface = pygame.Surface((radius * 2, radius * 2), pygame.SRCALPHA)
     pygame.draw.circle(circle_surface, color + (alpha,), (radius, radius), radius)
-    surface.blit(circle_surface, (position[0] - radius, position[1] - radius),special_flags=special_flags)
+    surface.blit(circle_surface, (position[0] - radius, position[1] - radius), special_flags=special_flags)
 
 
 def draw_dashed_circle(surf, color, center, radius, dash_length=10, width=1):
@@ -102,9 +103,9 @@ def main():
     pygame.init()
     win = pygame.display.set_mode((900, 600))
 
-    run= True
+    run = True
     while run:
-        win.fill((0,0,0))
+        win.fill((0, 0, 0))
         x = 100
         size = 60
         for i in range(10):
@@ -112,5 +113,7 @@ def main():
             # draw_transparent_circle(win, (255, 255, 255), (x, 300), size, 20)
             x += size
         pygame.display.update()
+
+
 if __name__ == "__main__":
     main()

@@ -10,11 +10,10 @@ from source.gui.widgets.selector import Selector
 from source.gui.widgets.slider import Slider
 from source.handlers.color_handler import colors
 from source.handlers.file_handler import write_file
-from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.handlers.ui_handler import ui_handler
 from source.handlers.widget_handler import WidgetHandler
 
-ARROW_SIZE = 20
+ARROW_SIZE = 25
 FONT_SIZE = int(ARROW_SIZE * .8)
 
 
@@ -41,7 +40,7 @@ class SettingsEdit(EditorBase):
                                "ui_cross_size": [_ for _ in range(3, 50)],
                                "ui_cross_dash_length": [_ for _ in range(1, 20)],
                                "ui_cross_thickness": [_ for _ in range(1, 10)],
-                               "game_speed": [_ for _ in range(1, 10)],
+                               "game_speed": [_ for _ in range(1, 101)],
                                "ui_tooltip_size": [_ for _ in range(10, 50)],
                                "monitor": [0, 1],
                                "star_brightness": [_ for _ in range(1, 256)]
@@ -132,7 +131,7 @@ class SettingsEdit(EditorBase):
         for i in self.selectors:
             i.set_current_value(getattr(config, i.key))
 
-    def selector_callback(self, key, value):
+    def selector_callback(self, key, value, selector):
         if key == "font_name":
             self.current_font = value
             config.font_name = value
@@ -190,4 +189,4 @@ class SettingsEdit(EditorBase):
         for i in WidgetHandler.get_all_widgets():
             if i.__class__.__name__ in ["FlickeringStar", "PulsatingStar"]:
                 i.colors = [(random.randint(0, config.star_brightness), random.randint(0, config.star_brightness),
-                                random.randint(0, config.star_brightness)) for _ in range(10)]
+                             random.randint(0, config.star_brightness)) for _ in range(10)]

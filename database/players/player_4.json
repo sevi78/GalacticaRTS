@@ -3,6 +3,7 @@
   "image_name": "alien.png",
   "color": "pink",
   "name": "baal",
+  "species": "b'aalidians",
   "energy": 1000,
   "food": 1000,
   "minerals": 1000,

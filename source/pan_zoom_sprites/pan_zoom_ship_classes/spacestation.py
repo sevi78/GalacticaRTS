@@ -17,7 +17,6 @@ class Spacestation:
     def set_production_energy(self):
         # update timer
         if time.time() > self.produce_start + self.update_interval:
-
             self.produce_start = time.time()
 
             #
@@ -27,10 +26,6 @@ class Spacestation:
             self.production_energy = max_production / (dist * pan_zoom_handler.zoom)
 
     def produce_energy(self):
-        print (f"produce_energy:")
+        # print (f"produce_energy:")
         self.set_production_energy()
         self.parent.energy += self.production_energy
-
-
-
-

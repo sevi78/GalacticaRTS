@@ -196,7 +196,7 @@ class BoxSelection:
                     # set cursor
                     config.app.cursor.set_cursor("box_select")
 
-            elif  event.type == pygame.KEYDOWN:
+            elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_p:
                     rect_pos = (min(self.start_pos[0], self.end_pos[0]), min(self.start_pos[1], self.end_pos[1]))
                     rect_size = (abs(self.end_pos[0] - self.start_pos[0]), abs(self.end_pos[1] - self.start_pos[1]))

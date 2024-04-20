@@ -75,8 +75,8 @@ class Cheat:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_c and not pygame.key.get_mods() & pygame.KMOD_CTRL:
                     # self.cheat_resources_and_population(100)
-                    self.cheat_resources(10000)
-                    self.cheat_population(1000)
+                    # self.cheat_resources(10000)
+                    # self.cheat_population(1000)
                     # self.cheat_planetary_defence("electro magnetic impulse")
                     self.cheat_ship()
                     # self.cheat_missile()

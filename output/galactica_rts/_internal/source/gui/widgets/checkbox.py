@@ -83,7 +83,7 @@ class Checkbox(ImageButton):
                         self.checked = True
 
                     # selector_callback to parent
-                    self.parent.get_checkbox_values()
+                    self.parent.get_checkbox_values(checkbox=self, value=self.checked)
 
                 elif mouse_state == MouseState.HOVER or mouse_state == MouseState.LEFT_DRAG:
                     if self.tooltip != "":

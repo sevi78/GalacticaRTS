@@ -5,4 +5,4 @@ setup(
     name='galactica app',
     ext_modules=cythonize("main.pyx")
     ,
-)
+    )

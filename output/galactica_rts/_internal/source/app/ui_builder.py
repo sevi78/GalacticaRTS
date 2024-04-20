@@ -2,6 +2,7 @@ import pygame
 
 from source.app.scene_builder import SceneBuilder
 from source.configuration.game_config import config
+from source.editors.add_deal_edit import AddDealEdit
 from source.editors.building_edit import BuildingEdit
 from source.editors.deal_manager import DealManager
 from source.editors.debug_edit import DebugEdit
@@ -148,6 +149,11 @@ class UIBuilder(SceneBuilder):
             pygame.display.get_surface().get_rect().y + spacing_y,
             width, height, parent=self, obj=None, layer=9)  # , game_paused=True)
 
+        self.add_deal_edit = AddDealEdit(pygame.display.get_surface(),
+            pygame.display.get_surface().get_width() / 2,
+            pygame.display.get_surface().get_rect().y + spacing_y,
+            width, height, parent=self, obj=None, layer=9)  # , game_paused=True)
+
         self.economy_overview = EconomyOverview(pygame.display.get_surface(),
             0,
             0,
@@ -192,27 +198,6 @@ class UIBuilder(SceneBuilder):
 
             # set active (human) player
             self.player = self.players[0]
-
-    def create_players__(self, players):
-        # setup player
-        for i in range(len(players)):
-            self.players[i] = Player(
-                name=players[i],
-                color=player_handler.get_player_color(i),
-                stock={
-                    "energy": 1000,
-                    "food": 1000,
-                    "minerals": 1000,
-                    "water": 1000,
-                    "technology": 1000,
-                    "population": 0
-                    },
-                clock=0,
-                owner=i
-                )
-
-        # set active (human) player
-        self.player = self.players[0]
 
     def create_event_panel(self):
         w, h = 900, 600

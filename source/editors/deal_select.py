@@ -33,6 +33,9 @@ class DealSelect(EditorBase, TextWrap):
         self.hide()
         self.max_height = 25
 
+    def __repr__(self):
+        return f"DealSelect: provider: {config.app.players[self.provider_index].name}, {self.offer} for {self.request}"
+
     def create_buttons(self):
         agree_button = ImageButton(win=self.win,
             x=self.get_screen_x() + self.get_screen_width() - BUTTON_SIZE * 3,
@@ -87,15 +90,28 @@ class DealSelect(EditorBase, TextWrap):
         """
         transfers resources from provider to buyer and vise versa
         """
+
         # get provider stuff
         provider = config.app.players[self.provider_index]
         provider_resource = list(self.offer.keys())[0]
         provider_value = list(self.offer.values())[0]
 
+        # # check if enough resources to buy the deal:
+        # if getattr(provider, provider_resource) < provider_value:
+        #     return
+
         # get buyer stuff
+        self.buyer_index = buyer
         buyer = config.app.players[self.buyer_index]
         buyer_resource = list(self.request.keys())[0]
         buyer_value = list(self.request.values())[0]
+
+        # Check if the buyer has enough resources to buy the deal:
+        buyer_resource_amount = getattr(buyer, buyer_resource, 0)  # Default to 0 if attribute does not exist
+        remaining_resources = buyer_resource_amount - buyer_value
+        if buyer_resource_amount - buyer_value < 0:
+            event_text.set_text(f"You don't have enough resources to make this deal! you are missing: {remaining_resources} of {buyer_resource}")
+            return
 
         # set the values
         # subtract from provider
@@ -115,7 +131,7 @@ class DealSelect(EditorBase, TextWrap):
         self.clean_up_references()
 
     def decline(self):
-        print("deal_select: decline!!!")
+        # print("deal_select: decline!!!")
         self.clean_up_references()
 
     def clean_up_references(self):
@@ -126,7 +142,7 @@ class DealSelect(EditorBase, TextWrap):
         self.__del__()
 
     def generate_deal_text(self):
-        text = f"{config.app.players[self.provider_index].name} offers {config.app.players[self.buyer_index].name} "
+        text = f"{config.app.players[self.provider_index].name} offers:  "
 
         for key, value in self.offer.items():
             text += f"{value} {key} "

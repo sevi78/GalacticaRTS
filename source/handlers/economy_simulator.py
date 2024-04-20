@@ -97,7 +97,7 @@ class EconomySimulator:
         if self.population in range(0, 999):
             fit_buildings = [i for i in all if i not in ignoreable and i not in limit_1000 and i not in limit_10000]
 
-        elif self.population in range(1000,9999):
+        elif self.population in range(1000, 9999):
             fit_buildings = [i for i in all if i not in ignoreable and i not in limit_10000]
 
         else:
@@ -105,15 +105,13 @@ class EconomySimulator:
 
         return fit_buildings
 
-
-
     def run_economy(self):
         self.cycle_count += 1
         building = random.choice(self.get_building_fit_to_population())
-        if building in ["town","city", "metropole"]:
-            if self.population in range(0,999):
+        if building in ["town", "city", "metropole"]:
+            if self.population in range(0, 999):
                 building = "town"
-            elif self.population in range(1000,9999):
+            elif self.population in range(1000, 9999):
                 building = "city"
             else:
                 building = "metropole"
@@ -151,7 +149,6 @@ class EconomySimulator:
             self.reset()
 
 
-
 def main():
     simulator = EconomySimulator()
     run = True
@@ -169,7 +166,6 @@ def main():
             pprint(simulator.simulations)
 
         simulator.run_economy()
-
 
 
 if __name__ == "__main__":
