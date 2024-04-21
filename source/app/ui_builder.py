@@ -6,6 +6,7 @@ from source.editors.add_deal_edit import AddDealEdit
 from source.editors.building_edit import BuildingEdit
 from source.editors.deal_manager import DealManager
 from source.editors.debug_edit import DebugEdit
+from source.editors.declare_war_edit import DeclareWarEdit
 from source.editors.economy_overview import EconomyOverview
 from source.editors.enemy_handler_edit import EnemyHandlerEdit
 from source.editors.planet_edit import PlanetEdit
@@ -99,6 +100,18 @@ class UIBuilder(SceneBuilder):
         spacing_y = 0
 
         # editors
+
+        self.declare_war_edit = DeclareWarEdit(
+            self.win,
+            100,
+            30,
+            460,
+            60,
+            False,
+            obj=None,
+            layer=9,
+            parent=self)
+
         self.deal_manager = DealManager(
             self.win,
             100,
@@ -107,7 +120,7 @@ class UIBuilder(SceneBuilder):
             60,
             False,
             layer=8,
-            parent=self, )
+            parent=self)
 
         self.weapon_select = WeaponSelect(pygame.display.get_surface(),
             pygame.display.get_surface().get_rect().centerx - width * 1.5 / 2,

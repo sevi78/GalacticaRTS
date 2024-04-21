@@ -1,5 +1,6 @@
 import math
 
+from source.configuration.game_config import config
 from source.multimedia_library.sounds import sounds
 from source.pan_zoom_sprites.pan_zoom_ship_classes.pan_zoom_ship_params import SHIP_ORBIT_SPEED, SHIP_ORBIT_SPEED_MAX
 
@@ -120,6 +121,15 @@ class PanZoomShipMoving:
 
         sounds.stop_sound(self.sound_channel)
         self.hum_playing = False
+
+        if self.target.owner != self.owner:
+            self.declare_war()
+
+
+    def declare_war(self):
+        config.app.declare_war_edit.set_enemy_and_player(self.target.owner, self.owner)
+        config.app.declare_war_edit.set_visible()
+
 
     def consume_energy_if_traveling(self):
         # only subtract energy if some energy is left

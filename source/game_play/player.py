@@ -65,6 +65,9 @@ class Player:
         # auto economy
         self.auto_economy_handler = AutoEconomyHandler(self)
 
+        # politics
+        self.enemies = []
+
     def __repr__(self):
         return f"{self.name}: production: {self.production})"
 
