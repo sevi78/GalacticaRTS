@@ -103,7 +103,7 @@ class UIBuilder(SceneBuilder):
             self.win,
             100,
             30,
-            500,
+            460,
             60,
             False,
             layer=8,

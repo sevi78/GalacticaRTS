@@ -47,6 +47,7 @@ class Player:
         self.wait = kwargs.get("wait", 5.0)
         self.start_time = time.time()
         self.game_start_time = time.time()
+        self.score = 0
 
         self.production = {
             "energy": 0,
@@ -126,6 +127,13 @@ class Player:
     def set_global_population(self) -> None:
         self.population = int(sum([i.population for i in sprite_groups.planets if i.owner == self.owner]))
 
+
+    def set_score(self):
+        """ this sets the score of the player, not shure how to calculate it :)"""
+        building_count = len(self.get_all_buildings())
+        all_buildings = building_count if building_count > 0  else 1
+        self.score = int(self.population / all_buildings)
+
     def update(self) -> None:
         if config.game_speed == 0 or config.game_paused:
             return
@@ -140,3 +148,4 @@ class Player:
 
         if self.owner > 0:
             self.auto_economy_handler.update()
+            self.set_score()

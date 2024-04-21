@@ -1,3 +1,5 @@
+import time
+
 import pygame
 
 from source.configuration.game_config import config
@@ -9,6 +11,8 @@ from source.multimedia_library.images import get_image
 from source.text.text_wrap import TextWrap
 
 BUTTON_SIZE = 12
+DEAL_LIFETIME = 120  # seconds
+
 
 
 class DealSelect(EditorBase, TextWrap):
@@ -24,10 +28,21 @@ class DealSelect(EditorBase, TextWrap):
         self.buyer_index = kwargs.get("buyer_index", 0)
         self.provider_image = pygame.transform.scale(get_image(config.app.players[self.provider_index].image_name),
             (20, 20))
-        self.deal_text = self.generate_deal_text()
+
+        # timing to delete after some time
+        self.life_time = DEAL_LIFETIME
+        self.start_time = time.time()
+        self.end_time = self.start_time + self.life_time
+        self.remaining_time = DEAL_LIFETIME
 
         # create widgets
         self.create_buttons()
+
+        # generate text
+        self.font = pygame.font.SysFont(config.font_name, 12)
+        self.deal_text = ""
+        self.time_text = ""
+        self.generate_deal_text()
 
         # hide initially
         self.hide()
@@ -142,6 +157,7 @@ class DealSelect(EditorBase, TextWrap):
         self.__del__()
 
     def generate_deal_text(self):
+        # offer and requet text
         text = f"{config.app.players[self.provider_index].name} offers:  "
 
         for key, value in self.offer.items():
@@ -151,17 +167,32 @@ class DealSelect(EditorBase, TextWrap):
         for key, value in self.request.items():
             text += f"{value} {key} "
 
-        return text
+        self.deal_text = text
 
-    def draw_deal_text(self, text):
+    def generate_time_text(self):
+        # remaining time text
+        current_time = time.time()
+        self.remaining_time = self.end_time - current_time
+        self.time_text = f" deal end in: {int(self.remaining_time)} s"
+
+
+    def draw_deal_text(self):
         self.wrap_text(
             win=self.win,
-            text=text,
+            text=self.deal_text,
             pos=(self.world_x + 10, self.world_y + TOP_SPACING - 3),
-            font=pygame.font.SysFont(config.font_name, 12),
+            font=self.font,
             size=(3000, self.world_height),
             color=self.frame_color,
             iconize=["food", "energy", "water", "minerals", "technology"])
+    def draw_time_text(self):
+        self.wrap_text(
+            win=self.win,
+            text=self.time_text,
+            pos=(self.world_x + 280, self.world_y + TOP_SPACING - 3),
+            font=self.font,
+            size=(3000, self.world_height),
+            color=self.frame_color)
 
     def draw_buttons(self):
         for i in self.buttons:
@@ -185,10 +216,16 @@ class DealSelect(EditorBase, TextWrap):
                 i.screen_y = self.world_y + TOP_SPACING + 5
 
     def draw(self):
+        # end the deal after some time: DEAL_LIFETIME
+        if self.remaining_time <= 0.0:
+            self.clean_up_references()
+
         if not self._hidden and not self._disabled:
             self.draw_frame(corner_radius=3, corner_thickness=1)
             self.draw_provider_image()
-            self.draw_deal_text(self.deal_text)
+            self.draw_deal_text()
+            self.generate_time_text()
+            self.draw_time_text()
             self.reposition_buttons()
             self.draw_buttons()
 

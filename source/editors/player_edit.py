@@ -336,6 +336,62 @@ class PlayerEdit(EditorBase):
             self.widgets.append(icon)
             x += spacing_x
 
+
+            # score
+            self.widgets.append(
+                InputBox(
+                    self.win,
+                    self.world_x + x,
+                    self.world_y + TOP_SPACING + y,
+                    self.spacing_x * 2,
+                    h,
+                    text=f"{'score:'}",
+                    parent=self,
+                    key="score",
+                    draw_frame=False,
+                    player=player)
+                )
+
+            self.widgets.append(
+                InputBox(
+                    self.win,
+                    self.world_x + x,
+                    self.world_y + TOP_SPACING + y + h,
+                    self.spacing_x * 2,
+                    h,
+                    text="",
+                    parent=self,
+                    key="score_count",
+                    draw_frame=False,
+                    player=player)
+                )
+            icon = ImageButton(win=self.win,
+                x=self.world_x + x,
+                y=self.world_y + TOP_SPACING + 20,
+                width=button_size,
+                height=button_size,
+                isSubWidget=False,
+                parent=self,
+                image=pygame.transform.scale(get_image("score_icon.png"), (button_size, button_size)),
+                tooltip="score_icon",
+                frame_color=self.frame_color,
+                moveable=False,
+                include_text=True,
+                layer=self.layer,
+                onClick=lambda: print("no function"),
+                name="score_icon",
+                textColour=self.frame_color,
+                font_size=12,
+                info_text="",  # info_panel_text_generator.create_info_panel_weapon_text(key),
+                textHAlign="right_outside",
+                outline_thickness=0,
+                outline_threshold=1
+                )
+
+            self.buttons.append(icon)
+            self.widgets.append(icon)
+
+            x += spacing_x
             x = 0
             y += h * 3
 
@@ -384,6 +440,9 @@ class PlayerEdit(EditorBase):
                         # planet_count = len([i for i in sprite_groups.planets.sprites() if i.owner == player_index])
                         ships = len(player.get_all_ships())
                         i.set_text(f"{ships}")
+
+                    if i.key == "score_count":
+                        i.set_text(f"{player.score}")
 
     def open_auto_economy_edit(self, player_id: int):
         if not hasattr(config.app, "auto_economy_edit") or not config.app.auto_economy_edit:
