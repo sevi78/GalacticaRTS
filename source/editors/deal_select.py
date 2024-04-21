@@ -12,10 +12,75 @@ from source.text.text_wrap import TextWrap
 
 BUTTON_SIZE = 12
 DEAL_LIFETIME = 120  # seconds
-
+PROVIDER_TEXT_X_OFFSET = 10
+OFFER_TEXT_X_OFFSET = 100
+REQUEST_TEXT_X_OFFSET = 200
+TIME_TEXT_X_OFFSET = 315
+ICONIZE_RESOURCES = ["food", "energy", "water", "minerals", "technology"]
 
 
 class DealSelect(EditorBase, TextWrap):
+    """
+    Summary
+
+    The DealSelect class is a subclass of EditorBase and TextWrap. It represents a deal between two players in a game.
+    The class handles the creation of buttons, the agreement or decline of the deal, and the display of relevant
+    information such as the provider, offer, request, and remaining time.
+
+    Example Usage:
+    deal = DealSelect(win, x, y, width, height, offer=offer, request=request, player_index=provider_index, buyer_index=buyer_index)
+    deal.agree(buyer)
+    deal.decline()
+    deal.draw()
+
+    Code Analysis
+    Main functionalities
+
+    Creation of buttons for agreeing or declining the deal
+    Handling the agreement or decline of the deal, including resource transfers between the provider and buyer
+    Displaying the provider, offer, request, and remaining time of the deal
+    Hiding and showing the deal
+    Cleaning up references and deleting the deal object
+
+    Methods:
+    __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs): Initializes the DealSelect object with the
+    given parameters and optional keyword arguments.
+    create_buttons(self): Creates the buttons for agreeing or declining the deal.
+    agree(self, buyer): Transfers resources from the provider to the buyer and vice versa.
+    decline(self): Declines the deal.
+    clean_up_references(self): Removes the deal from lists and deletes it.
+    generate_provider_text(self): Generates the text for the provider.
+    generate_offer_text(self): Generates the text for the offer.
+    generate_request_text(self): Generates the text for the request.
+    generate_time_text(self): Generates the text for the remaining time.
+    draw_provider_text(self): Draws the provider text on the screen.
+    draw_offer_text(self): Draws the offer text on the screen.
+    draw_request_text(self): Draws the request text on the screen.
+    draw_time_text(self): Draws the remaining time text on the screen.
+    draw_buttons(self): Draws the buttons on the screen.
+    draw_provider_image(self): Draws the provider image on the screen.
+    reposition_buttons(self): Repositions the buttons on the screen.
+    draw(self): Draws the deal on the screen.
+
+    Fields:
+    offer: The offer of the deal.
+    request: The request of the deal.
+    widgets: The widgets associated with the deal.
+    provider_index: The index of the provider player.
+    buyer_index: The index of the buyer player.
+    provider_image: The image of the provider player.
+    life_time: The lifetime of the deal.
+    start_time: The start time of the deal.
+    end_time: The end time of the deal.
+    remaining_time: The remaining time of the deal.
+    font: The font used for text rendering.
+    provider_text: The text for the provider.
+    offer_text: The text for the offer.
+    request_text: The text for the request.
+    time_text: The text for the remaining time.
+    buttons: The buttons associated with the deal.
+    """
+
     def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
         EditorBase.__init__(self, win, x, y, width, height, isSubWidget=False, **kwargs)
         TextWrap.__init__(self)
@@ -40,9 +105,13 @@ class DealSelect(EditorBase, TextWrap):
 
         # generate text
         self.font = pygame.font.SysFont(config.font_name, 12)
-        self.deal_text = ""
+        self.provider_text = ""
+        self.offer_text = ""
+        self.request_text = ""
         self.time_text = ""
-        self.generate_deal_text()
+        self.generate_provider_text()
+        self.generate_offer_text()
+        self.generate_request_text()
 
         # hide initially
         self.hide()
@@ -150,46 +219,69 @@ class DealSelect(EditorBase, TextWrap):
         self.clean_up_references()
 
     def clean_up_references(self):
+        # remove from lists and delete it
         if self in config.app.deal_manager.deals:
             config.app.deal_manager.deals.remove(self)
 
         config.app.deal_manager.reposition_deals()
         self.__del__()
 
-    def generate_deal_text(self):
-        # offer and requet text
+    def generate_provider_text(self):
         text = f"{config.app.players[self.provider_index].name} offers:  "
+        self.provider_text = text
 
+    def generate_offer_text(self):
+        text = ""
         for key, value in self.offer.items():
             text += f"{value} {key} "
+        self.offer_text = text
 
-        text += f" for: "
+    def generate_request_text(self):
+        text = f" for: "
         for key, value in self.request.items():
             text += f"{value} {key} "
-
-        self.deal_text = text
+        self.request_text = text
 
     def generate_time_text(self):
         # remaining time text
         current_time = time.time()
         self.remaining_time = self.end_time - current_time
-        self.time_text = f" deal end in: {int(self.remaining_time)} s"
+        self.time_text = f"deal ends in: {int(self.remaining_time)} s"
 
-
-    def draw_deal_text(self):
+    def draw_provider_text(self):
         self.wrap_text(
             win=self.win,
-            text=self.deal_text,
-            pos=(self.world_x + 10, self.world_y + TOP_SPACING - 3),
+            text=self.provider_text,
+            pos=(self.world_x + PROVIDER_TEXT_X_OFFSET, self.world_y + TOP_SPACING - 3),
+            font=self.font,
+            size=(3000, self.world_height),
+            color=self.frame_color)
+
+    def draw_offer_text(self):
+        self.wrap_text(
+            win=self.win,
+            text=self.offer_text,
+            pos=(self.world_x + OFFER_TEXT_X_OFFSET, self.world_y + TOP_SPACING - 3),
             font=self.font,
             size=(3000, self.world_height),
             color=self.frame_color,
-            iconize=["food", "energy", "water", "minerals", "technology"])
+            **{"iconize": ICONIZE_RESOURCES})
+
+    def draw_request_text(self):
+        self.wrap_text(
+            win=self.win,
+            text=self.request_text,
+            pos=(self.world_x + REQUEST_TEXT_X_OFFSET, self.world_y + TOP_SPACING - 3),
+            font=self.font,
+            size=(3000, self.world_height),
+            color=self.frame_color,
+            **{"iconize": ICONIZE_RESOURCES})
+
     def draw_time_text(self):
         self.wrap_text(
             win=self.win,
             text=self.time_text,
-            pos=(self.world_x + 280, self.world_y + TOP_SPACING - 3),
+            pos=(self.world_x + TIME_TEXT_X_OFFSET, self.world_y + TOP_SPACING - 3),
             font=self.font,
             size=(3000, self.world_height),
             color=self.frame_color)
@@ -223,7 +315,9 @@ class DealSelect(EditorBase, TextWrap):
         if not self._hidden and not self._disabled:
             self.draw_frame(corner_radius=3, corner_thickness=1)
             self.draw_provider_image()
-            self.draw_deal_text()
+            self.draw_provider_text()
+            self.draw_offer_text()
+            self.draw_request_text()
             self.generate_time_text()
             self.draw_time_text()
             self.reposition_buttons()
