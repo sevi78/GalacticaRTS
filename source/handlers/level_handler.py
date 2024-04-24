@@ -604,7 +604,7 @@ class LevelHandler:
         self.app.game_event_handler.set_goal(config.app.level_handler.data.get("globals").get("goal"))
 
         # setup mission
-        self.app.resource_panel.mission_icon.info_text = info_panel_text_generator.create_info_panel_mission_text()
+        self.app.settings_panel.mission_icon.info_text = info_panel_text_generator.create_info_panel_mission_text()
         config.edit_mode = False
 
         economy_handler.calculate_global_production(config.app.player)

@@ -176,7 +176,7 @@ class GameEventHandler():
         body += f"event_cue: {self.event_cue}, obsolete_events: {self.obsolete_events}, goal_success: {self.goal_success}"
 
         # set mission text
-        self.app.resource_panel.mission_icon.info_text = info_panel_text_generator.create_info_panel_mission_text()
+        self.app.settings_panel.mission_icon.info_text = info_panel_text_generator.create_info_panel_mission_text()
 
         # create event if succeeded
         all_values_are_true = all(value for value in self.goal_success.values())

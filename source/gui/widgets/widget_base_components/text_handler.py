@@ -1,3 +1,8 @@
+import pygame
+
+from source.configuration.game_config import config
+
+
 class TextHandler:
     def __init__(self, **kwargs):
         pass
@@ -33,3 +38,11 @@ class TextHandler:
 
         elif self.textVAlign == 'below_the_bottom':
             self.textRect.bottom = self.center[1] + self.screen_height / 2 + self.font_size
+
+
+    def draw_text(self, x, y, width, height, text, **kwargs):
+        win = kwargs.get("win", self.win)
+        font = kwargs.get("font", pygame.font.SysFont(config.font_name, height - 1))
+
+        text = font.render(text, 1, self.frame_color)
+        win.blit(text, (x, y))

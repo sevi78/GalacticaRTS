@@ -85,6 +85,10 @@ class PanZoomPlanet(PanZoomSprite, VisibilityHandler, PanZoomPlanetOverviewButto
         self.wait = kwargs.get("wait", 1.0)
         self.selected = False
 
+        # energy, only used for beeing attacked
+        self.energy = 100000
+
+
         # load_from_db Game variables___________________________________________________________________________________
         self.info_text = kwargs.get("info_text")
         self.info_text_raw = kwargs.get("info_text")
@@ -205,11 +209,15 @@ class PanZoomPlanet(PanZoomSprite, VisibilityHandler, PanZoomPlanetOverviewButto
         """
         self.move(events, None)
 
+
+
         if not self._hidden and not self._disabled:
             mouse_state = mouse_handler.get_mouse_state()
             x, y = mouse_handler.get_mouse_pos()
 
             if self.rect.collidepoint(x, y):
+                # if mouse_handler.double_clicks == 1:
+                #     config.app.diplomacy_edit.open(self.owner, 0)
                 if mouse_state == MouseState.RIGHT_CLICK:
                     self.parent.set_selected_planet(self)
 

@@ -38,8 +38,9 @@ class AdvancedSettingsPanel(WidgetBase):
         self.create_icons()
 
         # toggle switch to pop in or out
-        self.toggle_switch = ToggleSwitch(self, 15)
+        # self.toggle_switch = ToggleSwitch(self, 15)
         self.init = 0
+        self.hide()
 
     def create_icons(self):
         # level select
@@ -110,22 +111,6 @@ class AdvancedSettingsPanel(WidgetBase):
         self.widgets.append(self.building_edit_icon)
         self.max_width += self.icon_size + self.spacing
 
-        # self.event_panel_edit_icon = ImageButton(win=self.win,
-        #     x=self.get_screen_x(),
-        #     y=self.surface_rect.y + self.spacing,
-        #     width=self.icon_size,
-        #     height=self.icon_size,
-        #     isSubWidget=False,
-        #     parent=self,
-        #     image=pygame.transform.scale(get_image("game_play_icon.png"), (25, 25)),
-        #     tooltip="open event panel edit",
-        #     frame_color=self.frame_color,
-        #     moveable=False,
-        #     include_text=True, layer=self.layer,
-        #     onClick=lambda: config.app.event_panel_edit.set_visible())
-        # self.widgets.append(self.event_panel_edit_icon)
-        # self.max_width += self.icon_size + self.spacing
-
         # debug edit icon
         self.debug_edit_icon = ImageButton(win=self.win,
             x=self.get_screen_x(),
@@ -178,23 +163,6 @@ class AdvancedSettingsPanel(WidgetBase):
         self.widgets.append(self.ship_edit_icon)
         self.max_width += self.icon_size + self.spacing
 
-        # self.font_edit_icon = ImageButton(win=self.win,
-        #     x=self.ship_edit_icon.get_screen_x() + 25,
-        #     y=self.surface_rect.y + self.spacing,
-        #     width=self.icon_size,
-        #     height=self.icon_size,
-        #     isSubWidget=False,
-        #     parent=self,
-        #     image=pygame.transform.scale(get_image("font_icon.png"), (25, 25)),
-        #     tooltip="open font select",
-        #     frame_color=self.frame_color,
-        #     moveable=False,
-        #     include_text=True, layer=self.layer,
-        #     onClick=lambda: config.app.font_edit.set_visible())
-        # self.widgets.append(self.font_edit_icon)
-        #
-        # self.max_width += self.icon_size + self.spacing + self.spacing
-
         # settings icon
         self.settings_icon = ImageButton(win=self.win,
             x=self.get_screen_x(),
@@ -208,7 +176,7 @@ class AdvancedSettingsPanel(WidgetBase):
             frame_color=self.frame_color,
             moveable=False,
             include_text=True, layer=self.layer,
-            onClick=lambda: config.app.settings_edit.set_visible())  # settings.main(surface=self.win))
+            onClick=lambda: config.app.settings_edit.set_visible())   # settings.main(surface=self.win))
         self.widgets.append(self.settings_icon)
         self.max_width += self.icon_size + self.spacing + self.spacing
 
@@ -222,9 +190,10 @@ class AdvancedSettingsPanel(WidgetBase):
 
         # reposition
         self.surface_rect.width = self.max_width
-        self.surface_rect.x = width - config.app.building_panel.surface_rect.width - config.app.settings_panel.surface_rect.width - self.max_width
+        # self.surface_rect.x = width - config.app.building_panel.surface_rect.width - config.app.settings_panel.surface_rect.width - self.max_width
+        self.surface_rect.x = config.app.settings_panel.surface_rect.right - self.surface_rect.width
         self.reposition_widgets()
-        self.toggle_switch.reposition()
+        # self.toggle_switch.reposition()
 
     def reposition_widgets(self):
         for icon in self.widgets:

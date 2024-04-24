@@ -59,126 +59,126 @@ class ResourcePanel(WidgetBase):
         pos_x = 160
         pos_y = 15
 
-        self.players_icon = ImageButton(win=self.win,
-            x=70,
-            y=pos_y,
-            width=self.icon_size,
-            height=self.icon_size,
-            isSubWidget=False,
-            parent=self,
-            image=pygame.transform.scale(get_image("multiplayer.png"), (25, 25)),
-            image_raw=get_image("multiplayer.png"),
-            tooltip="players",
-            frame_color=self.frame_color,
-            moveable=False,
-            include_text=True,
-            layer=self.layer,
-            key="",
-            info_text="players",
-            name="players_icon",
-            textColours=(0, 0, 0),
-            font_size=0,
-            outline_thickness=0,
-            outline_threshold=0,
-            onClick=lambda: config.app.player_edit.set_visible())
-
-        self.widgets.append(self.players_icon)
-
-        self.mission_icon = ImageButton(win=self.win,
-            x=5,
-            y=pos_y,
-            width=self.icon_size,
-            height=self.icon_size,
-            isSubWidget=False,
-            parent=self,
-            image=pygame.transform.scale(get_image("mission_512x512.png"), (25, 25)),
-            image_raw=get_image("mission_512x512.png"),
-            tooltip="this is your mission",
-            frame_color=self.frame_color,
-            moveable=False,
-            include_text=True,
-            layer=self.layer,
-            key="",
-            info_text="mission",
-            name="mission_icon",
-            textColours=(0, 0, 0),
-            font_size=0,
-            outline_thickness=0,
-            outline_threshold=0)
-
-        self.widgets.append(self.mission_icon)
-
-        self.save_game_icon = ImageButton(win=self.win,
-            x=35,
-            y=pos_y,
-            width=self.icon_size,
-            height=self.icon_size,
-            isSubWidget=False,
-            parent=self,
-            image=pygame.transform.scale(get_image("save_icon_bk.png"), (25, 25)),
-            image_raw=get_image("save_icon_bk.png"),
-            tooltip="save game",
-            frame_color=self.frame_color,
-            moveable=False,
-            include_text=True,
-            layer=self.layer,
-            key="",
-            name="save_game_icon",
-            textColours=(0, 0, 0),
-            font_size=0,
-            onClick=lambda: config.app.save_game_edit.set_visible(),
-            outline_thickness=1,
-            outline_threshold=127)
-
-        self.widgets.append(self.save_game_icon)
-
-        self.deal_manager_icon = ImageButton(win=self.win,
-            x=100,
-            y=pos_y,
-            width=self.icon_size,
-            height=self.icon_size,
-            isSubWidget=False,
-            parent=self,
-            image=pygame.transform.scale(get_image("deal_icon.png"), (25, 25)),
-            image_raw=get_image("deal_icon.png"),
-            tooltip="open deal manager",
-            frame_color=self.frame_color,
-            moveable=False,
-            include_text=True,
-            layer=self.layer,
-            key="",
-            name="deal_manager_icon",
-            textColours=(0, 0, 0),
-            font_size=0,
-            onClick=lambda: config.app.deal_manager.set_visible(),
-            outline_thickness=1,
-            outline_threshold=127)
-
-        self.widgets.append(self.deal_manager_icon)
-
-        self.add_deal_icon = ImageButton(win=self.win,
-            x=130,
-            y=pos_y,
-            width=self.icon_size,
-            height=self.icon_size,
-            isSubWidget=False,
-            parent=self,
-            image=pygame.transform.scale(get_image("add_deal_icon.png"), (25, 25)),
-            image_raw=get_image("deal_icon.png"),
-            tooltip="add deal",
-            frame_color=self.frame_color,
-            moveable=False,
-            include_text=True,
-            layer=self.layer,
-            key="",
-            name="add_deal_icon",
-            textColours=(0, 0, 0),
-            font_size=0,
-            onClick=lambda: config.app.add_deal_edit.set_visible(),
-            outline_thickness=1,
-            outline_threshold=127)
-
-        self.widgets.append(self.add_deal_icon)
+        # self.players_icon = ImageButton(win=self.win,
+        #     x=70,
+        #     y=pos_y,
+        #     width=self.icon_size,
+        #     height=self.icon_size,
+        #     isSubWidget=False,
+        #     parent=self,
+        #     image=pygame.transform.scale(get_image("multiplayer.png"), (25, 25)),
+        #     image_raw=get_image("multiplayer.png"),
+        #     tooltip="players",
+        #     frame_color=self.frame_color,
+        #     moveable=False,
+        #     include_text=True,
+        #     layer=self.layer,
+        #     key="",
+        #     info_text="players",
+        #     name="players_icon",
+        #     textColours=(0, 0, 0),
+        #     font_size=0,
+        #     outline_thickness=0,
+        #     outline_threshold=0,
+        #     onClick=lambda: config.app.player_edit.set_visible())
+        #
+        # self.widgets.append(self.players_icon)
+        #
+        # self.mission_icon = ImageButton(win=self.win,
+        #     x=5,
+        #     y=pos_y,
+        #     width=self.icon_size,
+        #     height=self.icon_size,
+        #     isSubWidget=False,
+        #     parent=self,
+        #     image=pygame.transform.scale(get_image("mission_512x512.png"), (25, 25)),
+        #     image_raw=get_image("mission_512x512.png"),
+        #     tooltip="this is your mission",
+        #     frame_color=self.frame_color,
+        #     moveable=False,
+        #     include_text=True,
+        #     layer=self.layer,
+        #     key="",
+        #     info_text="mission",
+        #     name="mission_icon",
+        #     textColours=(0, 0, 0),
+        #     font_size=0,
+        #     outline_thickness=0,
+        #     outline_threshold=0)
+        #
+        # self.widgets.append(self.mission_icon)
+        #
+        # self.save_game_icon = ImageButton(win=self.win,
+        #     x=35,
+        #     y=pos_y,
+        #     width=self.icon_size,
+        #     height=self.icon_size,
+        #     isSubWidget=False,
+        #     parent=self,
+        #     image=pygame.transform.scale(get_image("save_icon_bk.png"), (25, 25)),
+        #     image_raw=get_image("save_icon_bk.png"),
+        #     tooltip="save game",
+        #     frame_color=self.frame_color,
+        #     moveable=False,
+        #     include_text=True,
+        #     layer=self.layer,
+        #     key="",
+        #     name="save_game_icon",
+        #     textColours=(0, 0, 0),
+        #     font_size=0,
+        #     onClick=lambda: config.app.save_game_edit.set_visible(),
+        #     outline_thickness=1,
+        #     outline_threshold=127)
+        #
+        # self.widgets.append(self.save_game_icon)
+        #
+        # self.deal_manager_icon = ImageButton(win=self.win,
+        #     x=100,
+        #     y=pos_y,
+        #     width=self.icon_size,
+        #     height=self.icon_size,
+        #     isSubWidget=False,
+        #     parent=self,
+        #     image=pygame.transform.scale(get_image("deal_icon.png"), (25, 25)),
+        #     image_raw=get_image("deal_icon.png"),
+        #     tooltip="open deal manager",
+        #     frame_color=self.frame_color,
+        #     moveable=False,
+        #     include_text=True,
+        #     layer=self.layer,
+        #     key="",
+        #     name="deal_manager_icon",
+        #     textColours=(0, 0, 0),
+        #     font_size=0,
+        #     onClick=lambda: config.app.deal_manager.set_visible(),
+        #     outline_thickness=1,
+        #     outline_threshold=127)
+        #
+        # self.widgets.append(self.deal_manager_icon)
+        #
+        # self.add_deal_icon = ImageButton(win=self.win,
+        #     x=130,
+        #     y=pos_y,
+        #     width=self.icon_size,
+        #     height=self.icon_size,
+        #     isSubWidget=False,
+        #     parent=self,
+        #     image=pygame.transform.scale(get_image("add_deal_icon.png"), (25, 25)),
+        #     image_raw=get_image("deal_icon.png"),
+        #     tooltip="add deal",
+        #     frame_color=self.frame_color,
+        #     moveable=False,
+        #     include_text=True,
+        #     layer=self.layer,
+        #     key="",
+        #     name="add_deal_icon",
+        #     textColours=(0, 0, 0),
+        #     font_size=0,
+        #     onClick=lambda: config.app.add_deal_edit.set_visible(),
+        #     outline_thickness=1,
+        #     outline_threshold=127)
+        #
+        # self.widgets.append(self.add_deal_icon)
         # self.max_width += self.icon_size + self.spacing
         # pos_x += self.spacing
 
@@ -309,7 +309,7 @@ class ResourcePanel(WidgetBase):
         self.max_height = self.get_screen_y() + self.surface_rect.height
 
         # reposition
-        self.max_width = self.app.advanced_settings_panel.surface_rect.left  # - self.app.info_panel.surface_rect.right
+        self.max_width = self.app.settings_panel.surface_rect.left  # - self.app.info_panel.surface_rect.right
         self.surface_rect.width = self.max_width
         self.surface_rect.left = self.app.info_panel.surface_rect.left
 

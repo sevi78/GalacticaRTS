@@ -40,6 +40,7 @@ class WeaponHandler:
             r = random.randint(-3, 4)
             startpos = (self.parent.rect.centerx, self.parent.rect.centery)
             endpos = (defender.rect.centerx + r0, defender.rect.centery + r0)
+
             defender.energy -= power
 
             # shoot laser
@@ -80,6 +81,7 @@ class WeaponHandler:
             y += random.randint(-ry, ry)
             power = self.get_current_value("power")
 
+            # if defender.property in ["ship", "ufo"]:
             if defender.energy >= 0:
                 missile = PanZoomMissile(
                     screen,
@@ -101,6 +103,28 @@ class WeaponHandler:
                     appear_at_start=True)
                 # missile.set_target(defender)
 
+            # if defender.property == "planet":
+            #
+            #     missile = PanZoomMissile(
+            #         screen,
+            #         x,
+            #         y,
+            #         42,
+            #         17,
+            #         pan_zoom_handler,
+            #         "missile_42x17.gif",
+            #         group="missiles",
+            #         loop_gif=True,
+            #         move_to_target=True,
+            #         align_image="topleft",
+            #         explosion_relative_gif_size=1.0,
+            #         layer=9,
+            #         debug=False,
+            #         target=defender,
+            #         missile_power=power,
+            #         appear_at_start=True)
+            #     # missile.set_target(defender)
+
     def draw_moving_image(self, defender, power):
         MovingImage(
             self.parent.win,
@@ -121,58 +145,45 @@ class WeaponHandler:
         value = weapon_value * upgrade_value
         return value
 
-    def attack(self, defender):
-        if not level_of_detail.inside_screen(self.parent.get_screen_position()):
-            return
+    def draw_attack_distance(self):
+        draw_transparent_circle(self.parent.win, self.parent.frame_color, self.parent.rect.center, self.get_current_value("range") * pan_zoom_handler.zoom, 20)
 
-        # activate weapon
+    def attack(self, defender):
+        # if not level_of_detail.inside_screen(self.parent.get_screen_position()):
+        #     return
+
+        # activate weapons
+        power = None
         if self.current_weapon["name"] in self.weapons.keys():
             power = self.get_current_value("power")
             shoot_interval = self.get_current_value("shoot_interval")
             getattr(self, self.current_weapon["name"])(defender, power, shoot_interval)
 
-        # make enemy attack you
-        if defender.energy <= defender.energy_max / 2:
-            defender.target = self.parent
+        if defender.property in ["ship", "ufo"]:
+            # make enemy attack you
+            if defender.energy <= defender.energy_max / 2:
+                defender.target = self.parent
 
-        # kill enemy
-        if defender.energy <= 0:
-            # explode
-            defender.end_object()
-            self.parent.enemy = None
+            # kill enemy
+            if defender.energy <= 0:
+                # explode
+                defender.end_object()
+                self.parent.enemy = None
 
-    def draw_attack_distance(self):
-        draw_transparent_circle(self.parent.win, self.parent.frame_color, self.parent.rect.center, self.get_current_value("range") * pan_zoom_handler.zoom, 20)
+        if defender.property == "planet" and power:
+            attack_planet(self.parent, defender, power)
 
 
-def launch_missile(attacker, defender):
-    app = config.app
-    screen = app.win
-    x, y = pan_zoom_handler.screen_2_world(attacker.rect.centerx, attacker.rect.centery)
-    rx = int(attacker.rect.width / 4)
-    ry = int(attacker.rect.height / 4)
-    x += random.randint(-rx, rx)
-    y += random.randint(-ry, ry)
+def attack_planet(attacker, defender, power):
+    if defender.population >= 0:
+        defender.population -= power / 100
+    else:
+        defender.owner = attacker.owner
+        defender.get_explored(attacker.owner)
+        defender.set_display_color()
+        attacker.enemy = None
 
-    if defender.energy - MISSILE_POWER >= 0:
-        missile = PanZoomMissile(
-            screen,
-            x,
-            y,
-            42,
-            17,
-            pan_zoom_handler,
-            "missile_42x17.gif",
-            group="missiles",
-            loop_gif=True,
-            move_to_target=True,
-            align_image="topleft",
-            explosion_relative_gif_size=1.0,
-            layer=9,
-            debug=False,
-            target=defender,
-            appear_at_start=True)
-        # missile.set_target(defender)
+        attacker.orbit_object = defender
 
 
 def attack(attacker, defender):
@@ -204,3 +215,32 @@ def attack(attacker, defender):
 
     if defender.energy <= defender.energy_max / 2:
         defender.target = attacker
+
+
+def launch_missile(attacker, defender):
+    app = config.app
+    screen = app.win
+    x, y = pan_zoom_handler.screen_2_world(attacker.rect.centerx, attacker.rect.centery)
+    rx = int(attacker.rect.width / 4)
+    ry = int(attacker.rect.height / 4)
+    x += random.randint(-rx, rx)
+    y += random.randint(-ry, ry)
+
+    if defender.energy - MISSILE_POWER >= 0:
+        missile = PanZoomMissile(
+            screen,
+            x,
+            y,
+            42,
+            17,
+            pan_zoom_handler,
+            "missile_42x17.gif",
+            group="missiles",
+            loop_gif=True,
+            move_to_target=True,
+            align_image="topleft",
+            explosion_relative_gif_size=1.0,
+            layer=9,
+            debug=False,
+            target=defender,
+            appear_at_start=True)

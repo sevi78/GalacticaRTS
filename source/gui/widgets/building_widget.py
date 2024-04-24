@@ -302,10 +302,8 @@ class BuildingWidget(WidgetBase):
     def function(self, arg):
         player = config.app.players[self.receiver.owner]
         config.tooltip_text = ""
-        if self.immediately_build_cost < player.technology:
+        if self.immediately_build_cost < player.technology and self.receiver.owner == config.player:
             self.build_immediately()
-            self.set_building_to_receiver()
-            self.delete()
 
     def set_tooltip(self):
         self.button.tooltip = f"are you sure to build this {self.name} immediately? this will cost you {self.immediately_build_cost} technology units?{self.receiver}"
@@ -314,6 +312,8 @@ class BuildingWidget(WidgetBase):
         """ !!! make shure the correct player is adressed!!!"""
         player = config.app.players[self.receiver.owner]
         player.technology -= self.immediately_build_cost
+        self.set_building_to_receiver()
+        self.delete()
 
     def delete(self):
         if self in config.app.building_widget_list:

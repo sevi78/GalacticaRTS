@@ -82,14 +82,14 @@ class DealManager(EditorBase):
     def overblit_deal_icon(self):
         # store the image for overblitting
         if not self.overblit_image:
-            self.overblit_image = copy.copy(config.app.resource_panel.deal_manager_icon.image)
+            self.overblit_image = copy.copy(config.app.settings_panel.deal_manager_icon.image)
 
         # check if there are any deals
         if len(self.deals) > 0:
-            overblit_button_image(config.app.resource_panel.deal_manager_icon, "warning.png", False)
+            overblit_button_image(config.app.settings_panel.deal_manager_icon, "warning.png", False)
         else:
             # reset the image
-            config.app.resource_panel.deal_manager_icon.image = self.overblit_image
+            config.app.settings_panel.deal_manager_icon.image = self.overblit_image
 
     def reposition_deals(self):
         for i in self.deals:

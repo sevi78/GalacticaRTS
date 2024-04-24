@@ -11,6 +11,7 @@ from source.editors.deal_select import DealSelect
 from source.editors.level_edit import LevelEdit
 from source.editors.level_select import LevelSelect
 from source.editors.filter_widget import FilterWidget
+from source.editors.player_edit import PlayerEdit
 from source.factories.ship_factory import ShipFactory
 from source.game_play.cheat import Cheat
 from source.game_play.enemy_handler import enemy_handler
@@ -28,6 +29,7 @@ from source.handlers.level_handler import LevelHandler
 from source.handlers.mouse_handler import mouse_handler
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
+from source.handlers.score_plotter_handler import score_plotter_handler
 from source.handlers.time_handler import time_handler
 from source.handlers.ui_handler import ui_handler
 from source.interaction.box_selection import BoxSelection
@@ -157,6 +159,7 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
             self.start_time = time.time()
 
             economy_handler.update()
+            score_plotter_handler.update()
 
     def update(self, events):
         """
@@ -353,6 +356,8 @@ def main():
             list_name="planets"
             ))
 
+
+
     # set some deals for testing
     app.deal_manager.set_deal(DealSelect(
         app.win,
@@ -395,6 +400,14 @@ def main():
         parent=app,
         player_index=3,
         save=False))
+
+
+    # player edit
+    width = 1200
+    app.player_edit = PlayerEdit(pygame.display.get_surface(),
+        int(pygame.display.get_surface().get_width()/2 -width/2),
+        pygame.display.get_surface().get_rect().y ,
+        width, height, parent=app, obj=None, layer=9, ignore_other_editors=True)  # , game_paused=True)
 
     # cursor object
     app.cursor = Cursor()

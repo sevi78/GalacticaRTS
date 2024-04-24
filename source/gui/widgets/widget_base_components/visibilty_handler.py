@@ -12,6 +12,11 @@ class VisibilityHandler:
         if isSubWidget:
             self.hide()
 
+    def set_visible(self):
+        if self._hidden:
+            self.show()
+        else:
+            self.hide()
     def hide(self):
         """hides self and its widgets
         """
@@ -19,12 +24,20 @@ class VisibilityHandler:
         for i in self.widgets:
             i.hide()
 
+        # if hasattr(self, "selectors"):
+        #     for i in self.selectors:
+        #         i.hide()
+
     def show(self):
         """shows self and its widgets
         """
         self._hidden = False
         for i in self.widgets:
             i.show()
+
+        # if hasattr(self, "selectors"):
+        #     for i in self.selectors:
+        #         i.show()
 
     def disable(self):
         self._disabled = True

@@ -6,39 +6,89 @@ from source.editors.editor_base.editor_base import EditorBase
 from source.editors.editor_base.editor_config import TOP_SPACING
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.gui.widgets.inputbox import InputBox
-from source.handlers.file_handler import write_file
+from source.gui.widgets.score_plotter import ScorePlotter
+from source.handlers.diplomacy_handler import diplomacy_handler
+from source.handlers.image_handler import overblit_button_image
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.handlers.player_handler import player_handler
 from source.multimedia_library.images import get_image
 
 ARROW_SIZE = 20
 FONT_SIZE = int(ARROW_SIZE * .8)
+DIPLOMACY_BUTTON_SIZE = 25
+SELECTOR_SPACING = 100
+
+PLOTTER_SURFACE_HEIGHT = 500
+PLOTTER_SURFACE_GAP = 10
 
 
 class PlayerEdit(EditorBase):
     def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
         EditorBase.__init__(self, win, x, y, width, height, isSubWidget=False, **kwargs)
+
         self.data = player_handler.get_players()
 
-        # setup image dict
-        self.player_image_names = {}
-        for player_name, dict_ in self.data.items():
-            for key, value in dict_.items():
-                if key == 'image_name':
-                    self.player_image_names[player_name] = value
+        # images
+        self.peace_image = pygame.transform.scale(get_image("peace_icon.png"), (
+            DIPLOMACY_BUTTON_SIZE, DIPLOMACY_BUTTON_SIZE))
+        self.war_image = pygame.transform.scale(get_image("war_icon.png"), (
+            DIPLOMACY_BUTTON_SIZE, DIPLOMACY_BUTTON_SIZE))
 
         #  widgets
         self.widgets = []
         self.create_close_button()
         self.create_inputboxes()
-        self.create_save_button(lambda: self.save_settings(), "save settings")
 
-        # editor
+        # score plotter
+        self.max_height = 960
+        self.score_plotter = None
+        self.score_plotter = ScorePlotter(self.win, self.world_x + PLOTTER_SURFACE_GAP, self.world_y + 400, self.rect.width - PLOTTER_SURFACE_GAP, PLOTTER_SURFACE_HEIGHT, parent=self, save=False)
+        self.show_plotter = True
+
+
         # auto_economy_edit
-        self.auto_economy_edit = None
+        self.auto_economy_edit = AutoEconomyEdit(
+            pygame.display.get_surface(),
+            self.world_x,
+            self.world_y + self.world_y + 400 -TOP_SPACING,
+            900, 300,
+            parent=self,
+            obj=None,
+            layer=9,
+            ignore_other_editors=True,
+            save=False
+            )
+
+        self.show_auto_economy_edit = True
+
+        # dirty hack to make attached editors hide at startup
+        self.enable_plotter()
+        self.enable_auto_economy_edit(0)
 
         # hide initially
         self.hide()
+
+    def enable_plotter(self):
+        self.show_plotter = not self.show_plotter
+
+        if self.show_plotter:
+            self.score_plotter.enable()
+            self.score_plotter.show()
+        else:
+            self.score_plotter.disable()
+            self.score_plotter.hide()
+
+    def enable_auto_economy_edit(self, player_id: int):
+        self.show_auto_economy_edit = not self.show_auto_economy_edit
+        self.auto_economy_edit.player_id = player_id
+        self.auto_economy_edit.set_player(player_id)
+
+        if self.show_auto_economy_edit:
+            self.auto_economy_edit.enable()
+            self.auto_economy_edit.show()
+        else:
+            self.auto_economy_edit.disable()
+            self.auto_economy_edit.hide()
 
     def create_variable_boxes(self, h, key, ordered_data, player, value, x, y):
         text = f"{value}"
@@ -127,7 +177,7 @@ class PlayerEdit(EditorBase):
             player_index = int(player.split("_")[1])
 
             # create player image button
-            image_name = self.player_image_names[player]
+            image_name = player_handler.player_image_names[player]
             button_size = 40
             icon = ImageButton(win=self.win,
                 x=self.world_x + x + int(spacing_x / 2),
@@ -142,7 +192,7 @@ class PlayerEdit(EditorBase):
                 moveable=False,
                 include_text=True,
                 layer=self.layer,
-                onClick=lambda player_index_=player_index: self.open_auto_economy_edit(player_index_),
+                onClick=lambda player_index_=player_index: self.enable_auto_economy_edit(player_index_),
                 name=player,
                 textColour=self.frame_color,
                 font_size=12,
@@ -155,6 +205,34 @@ class PlayerEdit(EditorBase):
             self.buttons.append(icon)
             self.widgets.append(icon)
             x += spacing_x
+
+            # diplomacy
+            icon = ImageButton(win=self.win,
+                x=self.world_x + x + int(spacing_x / 2),
+                y=self.world_y + TOP_SPACING + y + DIPLOMACY_BUTTON_SIZE / 3,
+                width=DIPLOMACY_BUTTON_SIZE,
+                height=DIPLOMACY_BUTTON_SIZE,
+                isSubWidget=False,
+                parent=self,
+                image=pygame.transform.scale(get_image("peace_icon.png"), (
+                    DIPLOMACY_BUTTON_SIZE, DIPLOMACY_BUTTON_SIZE)),
+                tooltip="set diplomacy",
+                frame_color=self.frame_color,
+                moveable=False,
+                include_text=True,
+                layer=self.layer,
+                onClick=lambda player_index_=player_index: config.app.diplomacy_edit.open(player_index_, config.player),
+                name=f"diplomacy{player_index}",
+                textColour=self.frame_color,
+                font_size=12,
+                info_text="",  # info_panel_text_generator.create_info_panel_weapon_text(key),
+                textHAlign="right_outside",
+                outline_thickness=0,
+                outline_threshold=1
+                )
+
+            self.buttons.append(icon)
+            self.widgets.append(icon)
 
             # set data boxes from file
             x += spacing_x
@@ -336,7 +414,6 @@ class PlayerEdit(EditorBase):
             self.widgets.append(icon)
             x += spacing_x
 
-
             # score
             self.widgets.append(
                 InputBox(
@@ -365,6 +442,8 @@ class PlayerEdit(EditorBase):
                     draw_frame=False,
                     player=player)
                 )
+
+            # score icon
             icon = ImageButton(win=self.win,
                 x=self.world_x + x,
                 y=self.world_y + TOP_SPACING + 20,
@@ -373,12 +452,12 @@ class PlayerEdit(EditorBase):
                 isSubWidget=False,
                 parent=self,
                 image=pygame.transform.scale(get_image("score_icon.png"), (button_size, button_size)),
-                tooltip="score_icon",
+                tooltip="open score plotter",
                 frame_color=self.frame_color,
                 moveable=False,
                 include_text=True,
                 layer=self.layer,
-                onClick=lambda: print("no function"),
+                onClick=lambda: self.enable_plotter(),
                 name="score_icon",
                 textColour=self.frame_color,
                 font_size=12,
@@ -397,11 +476,15 @@ class PlayerEdit(EditorBase):
 
         self.max_height = self.world_y + self.world_height + y
 
-    def save_settings(self):
-        data = {}
-        for i in self.selectors:
-            data[i.key] = i.current_value
-        write_file("players.json", "config", data)
+    def update_diplomacy_button_image(self):
+        for i in self.buttons:
+            if i.name.startswith("diplomacy"):
+                player_index = int(i.name.split("diplomacy")[1])
+
+                if not diplomacy_handler.is_in_peace(player_index, config.player):
+                    i.setImage(self.war_image)
+                else:
+                    i.setImage(self.peace_image)
 
     def update_inputboxes(self):
         for i in self.widgets:
@@ -436,6 +519,11 @@ class PlayerEdit(EditorBase):
                         slots = player.get_all_building_slots()
                         i.set_text(f"{buildings}/{slots}")
 
+                        if player.busted:
+                            self.overblit_player_image(player_index, False)
+                        else:
+                            self.overblit_player_image(player_index, True)
+
                     if i.key == "ships_count":
                         # planet_count = len([i for i in sprite_groups.planets.sprites() if i.owner == player_index])
                         ships = len(player.get_all_ships())
@@ -444,42 +532,9 @@ class PlayerEdit(EditorBase):
                     if i.key == "score_count":
                         i.set_text(f"{player.score}")
 
-    def open_auto_economy_edit(self, player_id: int):
-        if not hasattr(config.app, "auto_economy_edit") or not config.app.auto_economy_edit:
-            editor = AutoEconomyEdit(
-                pygame.display.get_surface(),
-                self.world_x,
-                self.world_y + self.world_height / 2,
-                900, 300,
-                parent=self,
-                obj=None,
-                layer=9,
-                ignore_other_editors=True
-                )
-
-            # attach to app
-            setattr(config.app, "auto_economy_edit", editor)
-            config.app.auto_economy_edit.set_visible()
-
-            # attach to self.editors
-            self.editors = []
-            self.editors.append(editor)
-
-        config.app.auto_economy_edit.player_id = player_id
-        config.app.auto_economy_edit.set_player(player_id)
-
-    def close(self):
-        config.set_global_variable("edit_mode", True)
-        if self.auto_economy_edit:
-            self.auto_economy_edit.__del__()
-        self.auto_economy_edit = None
-
-        if config.app.auto_economy_edit:
-            config.app.auto_economy_edit.__del__()
-            config.app.auto_economy_edit = None
-        self.editors = []
-        config.tooltip_text = ""
-        self.hide()
+    def overblit_player_image(self, player_index, value):
+        button = [i for i in self.buttons if i.name == f"player_{player_index}"][0]
+        overblit_button_image(button, "busted.png", value, offset_x=-8, offset_y=-5, size=(56, 56), outline=True)
 
     def listen(self, events):
         if not self._hidden and not self._disabled:

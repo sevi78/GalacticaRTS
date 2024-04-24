@@ -48,6 +48,7 @@ class Player:
         self.start_time = time.time()
         self.game_start_time = time.time()
         self.score = 0
+        self.busted = False
 
         self.production = {
             "energy": 0,
@@ -90,6 +91,8 @@ class Player:
         new_stock = self.remove_population_key_from_stock(stock)
         return new_stock
 
+    def get_all_planets(self):
+        return [i for i in sprite_groups.planets if i.owner == self.owner]
     def get_all_buildings(self) -> list:
         buildings = []
         for i in sprite_groups.planets:
@@ -134,6 +137,8 @@ class Player:
     def set_score(self):
         """ this sets the score of the player, not shure how to calculate it :)"""
         building_count = len(self.get_all_buildings())
+        planets = len(self.get_all_planets())
+        self.busted = planets == 0
         all_buildings = building_count if building_count > 0  else 1
         self.score = int(self.population / all_buildings)
 
@@ -151,4 +156,5 @@ class Player:
 
         if self.owner > 0:
             self.auto_economy_handler.update()
-            self.set_score()
+
+        self.set_score()

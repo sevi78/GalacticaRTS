@@ -6,12 +6,13 @@ from source.editors.add_deal_edit import AddDealEdit
 from source.editors.building_edit import BuildingEdit
 from source.editors.deal_manager import DealManager
 from source.editors.debug_edit import DebugEdit
-from source.editors.declare_war_edit import DeclareWarEdit
+from source.editors.diplomacy_edit import DiplomacyEdit
 from source.editors.economy_overview import EconomyOverview
 from source.editors.enemy_handler_edit import EnemyHandlerEdit
 from source.editors.planet_edit import PlanetEdit
 from source.editors.player_edit import PlayerEdit
 from source.editors.save_game_edit import SaveGameEdit
+# from source.editors.score_plotter import ScorePlotter
 from source.editors.settings_edit import SettingsEdit
 from source.editors.ship_edit import ShipEdit
 from source.editors.trade_edit import TradeEdit
@@ -101,7 +102,19 @@ class UIBuilder(SceneBuilder):
 
         # editors
 
-        self.declare_war_edit = DeclareWarEdit(
+        # self.score_plotter = ScorePlotter(
+        #     self.win,
+        #     100,
+        #     30,
+        #     1000,
+        #     700,
+        #     False,
+        #     obj=None,
+        #     layer=10,
+        #     parent=self,
+        #     ignore_other_editors=True)
+
+        self.diplomacy_edit = DiplomacyEdit(
             self.win,
             100,
             30,
@@ -109,8 +122,9 @@ class UIBuilder(SceneBuilder):
             60,
             False,
             obj=None,
-            layer=9,
-            parent=self)
+            layer=10,
+            parent=self,
+            ignore_other_editors=True)
 
         self.deal_manager = DealManager(
             self.win,
@@ -177,10 +191,10 @@ class UIBuilder(SceneBuilder):
             pygame.display.get_surface().get_rect().y + spacing_y,
             int(width / 1.5), height, parent=self, obj=None, layer=9)  # , game_paused=True)
 
-        self.player_edit = PlayerEdit(pygame.display.get_surface(),
-            100,
-            pygame.display.get_surface().get_rect().y + spacing_y,
-            int(width * 1.7), height, parent=self, obj=None, layer=9, ignore_other_editors=True)  # , game_paused=True)
+        # self.player_edit = PlayerEdit(pygame.display.get_surface(),
+        #     100,
+        #     pygame.display.get_surface().get_rect().y + spacing_y,
+        #     int(width * 1.7), height, parent=self, obj=None, layer=9, ignore_other_editors=True)  # , game_paused=True)
 
     def create_players(self, data):
         # for some stupid reason, i ant move this to player_handler: RuntimeError: dictionary changed size during iteration
@@ -283,8 +297,8 @@ class UIBuilder(SceneBuilder):
             anchor_right=self.building_panel.get_screen_x())
 
         self.advanced_settings_panel = AdvancedSettingsPanel(self.win,
-            x=self.world_width - size_x * 2,
-            y=spacing * 2,
+            x=self.settings_panel.surface_frame.right,
+            y=self.settings_panel.surface_frame.bottom,
             width=size_x - spacing,
             height=size_y,
             isSubWidget=False,

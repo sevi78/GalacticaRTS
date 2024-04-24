@@ -1,6 +1,7 @@
 import math
 
 from source.configuration.game_config import config
+from source.handlers.diplomacy_handler import diplomacy_handler
 from source.multimedia_library.sounds import sounds
 from source.pan_zoom_sprites.pan_zoom_ship_classes.pan_zoom_ship_params import SHIP_ORBIT_SPEED, SHIP_ORBIT_SPEED_MAX
 
@@ -123,13 +124,11 @@ class PanZoomShipMoving:
         self.hum_playing = False
 
         if self.target.owner != self.owner:
-            self.declare_war()
+            config.app.diplomacy_edit.open(self.target.owner, self.owner)
 
-
-    def declare_war(self):
-        config.app.declare_war_edit.set_enemy_and_player(self.target.owner, self.owner)
-        config.app.declare_war_edit.set_visible()
-
+        # attack if hostile planet
+        if not diplomacy_handler.is_in_peace(self.target.owner, config.player):
+            self.reach_enemy()
 
     def consume_energy_if_traveling(self):
         # only subtract energy if some energy is left

@@ -277,7 +277,12 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
             direction.normalize()
 
             # Get the speed of the obj
-            speed = (speed_ + obj.speed)
+            speed = 0.1
+            if obj.property in ["ship", "ufo"]:
+                speed = (speed_ + obj.speed)
+            if obj.property == "planet":
+                speed = obj.orbit_speed
+
             if speed > self.set_speed():
                 speed = self.set_speed()
 
@@ -624,17 +629,20 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
 
         if self.enemy:
             orbit_ship(self, self.enemy, self.orbit_speed, self.orbit_direction)
+            # if self.enemy.property in ["ship", "ufo"]:
             self.follow_target(self.enemy)
 
-            if self.enemy.attitude < 50:
-                self.weapon_handler.attack(self.enemy)
-            else:
-                config.app.trade_edit.setup_trader(self, self.enemy)
-                config.app.trade_edit.set_visible()
-                self.enemy = None
-                # self.target = None
-                # self.moving = False
-                print("here to setup trader")
+            self.weapon_handler.attack(self.enemy)
+
+            # if self.enemy.attitude < 50:
+            #     self.weapon_handler.attack(self.enemy)
+            # else:
+            #     config.app.trade_edit.setup_trader(self, self.enemy)
+            #     config.app.trade_edit.set_visible()
+            #     self.enemy = None
+            #     # self.target = None
+            #     # self.moving = False
+            #     print("here to setup trader")
 
         if self.orbit_object:
             orbit_ship(self, self.orbit_object, self.orbit_speed, self.orbit_direction)

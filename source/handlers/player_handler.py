@@ -11,12 +11,22 @@ class PlayerHandler:
         # self.data = load_file("players.json", "")
         self.players = {}
         self.player_colors = {-1: "green", 0: "blue", 1: "red", 2: "orange", 3: "yellow", 4: "pink", 5: "purple"}
+        self.player_image_names = {}
         # self.create_players(self.data)
+        self.get_player_image_names()
 
     def get_player_colors(self, data):
         self.player_colors = {"-1": "green"}
         for key, value in data.items():
             self.player_colors[key] = value["color"]
+
+    def get_player_image_names(self):
+        # setup image dict
+        self.player_image_names = {}
+        for player_name, dict_ in self.get_players().items():
+            for key, value in dict_.items():
+                if key == 'image_name':
+                    self.player_image_names[player_name] = value
 
     def create_players(self, data):
         for key, value in list(data.items()):
@@ -66,7 +76,7 @@ class PlayerHandler:
     def get_current_stock(self, player):
         return config.app.players[player].get_stock()
 
-    def get_player_color(self, value):
+    def get_player_color(self, value: int) -> str:
         return self.player_colors[value]
 
     def reset_players(self):
