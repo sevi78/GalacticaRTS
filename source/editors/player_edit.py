@@ -39,8 +39,12 @@ class PlayerEdit(EditorBase):
         self.create_close_button()
         self.create_inputboxes()
 
+        # max_height
+        self.max_height_raw = 960
+        self.max_height = self.max_height_raw
+        self.max_height_if_editors_closed = 460
+
         # score plotter
-        self.max_height = 960
         self.score_plotter = None
         self.score_plotter = ScorePlotter(
             self.win,
@@ -53,13 +57,12 @@ class PlayerEdit(EditorBase):
             drag_enabled=False)
         self.show_plotter = True
 
-
         # auto_economy_edit
         self.auto_economy_edit = AutoEconomyEdit(
             pygame.display.get_surface(),
             self.world_x,
-            self.world_y + self.world_y + 400 -TOP_SPACING,
-            900, 300,
+            self.world_y + self.world_y + 400 - TOP_SPACING,
+            900, PLOTTER_SURFACE_HEIGHT,
             parent=self,
             obj=None,
             layer=9,
@@ -77,6 +80,13 @@ class PlayerEdit(EditorBase):
         # hide initially
         self.hide()
 
+    def set_max_height(self):
+        """ sets the editors max_height based on the enabled sub editors, if any of them is enabled or not"""
+        if self.score_plotter.isEnabled() or self.auto_economy_edit.isEnabled():
+            self.max_height = self.max_height_raw
+        else:
+            self.max_height = self.max_height_if_editors_closed
+
     def enable_plotter(self):
         self.show_plotter = not self.show_plotter
 
@@ -86,6 +96,8 @@ class PlayerEdit(EditorBase):
         else:
             self.score_plotter.disable()
             self.score_plotter.hide()
+
+        self.set_max_height()
 
     def enable_auto_economy_edit(self, player_id: int):
         self.show_auto_economy_edit = not self.show_auto_economy_edit
@@ -98,6 +110,8 @@ class PlayerEdit(EditorBase):
         else:
             self.auto_economy_edit.disable()
             self.auto_economy_edit.hide()
+
+        self.set_max_height()
 
     def create_variable_boxes(self, h, key, ordered_data, player, value, x, y):
         text = f"{value}"
