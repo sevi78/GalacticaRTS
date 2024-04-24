@@ -407,7 +407,7 @@ def main():
     app.player_edit = PlayerEdit(pygame.display.get_surface(),
         int(pygame.display.get_surface().get_width()/2 -width/2),
         pygame.display.get_surface().get_rect().y ,
-        width, height, parent=app, obj=None, layer=9, ignore_other_editors=True)  # , game_paused=True)
+        width, height, parent=app, obj=None, layer=9, ignore_other_editors=True, drag_enabled=False)  # , game_paused=True)
 
     # cursor object
     app.cursor = Cursor()

@@ -95,7 +95,7 @@ class EditorBase(WidgetBase):
 
         # drag/move
         self.moving = False
-        self.drag_enabled = True
+        self.drag_enabled = kwargs.get("drag_enabled", True)
         self._on_hover = False
 
         # register

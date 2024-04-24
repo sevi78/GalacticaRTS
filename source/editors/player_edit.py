@@ -42,7 +42,15 @@ class PlayerEdit(EditorBase):
         # score plotter
         self.max_height = 960
         self.score_plotter = None
-        self.score_plotter = ScorePlotter(self.win, self.world_x + PLOTTER_SURFACE_GAP, self.world_y + 400, self.rect.width - PLOTTER_SURFACE_GAP, PLOTTER_SURFACE_HEIGHT, parent=self, save=False)
+        self.score_plotter = ScorePlotter(
+            self.win,
+            self.world_x + PLOTTER_SURFACE_GAP,
+            self.world_y + 400,
+            self.rect.width - PLOTTER_SURFACE_GAP,
+            PLOTTER_SURFACE_HEIGHT,
+            parent=self,
+            save=False,
+            drag_enabled=False)
         self.show_plotter = True
 
 
@@ -56,7 +64,8 @@ class PlayerEdit(EditorBase):
             obj=None,
             layer=9,
             ignore_other_editors=True,
-            save=False
+            save=False,
+            drag_enabled=False
             )
 
         self.show_auto_economy_edit = True
