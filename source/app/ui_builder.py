@@ -10,9 +10,7 @@ from source.editors.diplomacy_edit import DiplomacyEdit
 from source.editors.economy_overview import EconomyOverview
 from source.editors.enemy_handler_edit import EnemyHandlerEdit
 from source.editors.planet_edit import PlanetEdit
-from source.editors.player_edit import PlayerEdit
 from source.editors.save_game_edit import SaveGameEdit
-# from source.editors.score_plotter import ScorePlotter
 from source.editors.settings_edit import SettingsEdit
 from source.editors.ship_edit import ShipEdit
 from source.editors.trade_edit import TradeEdit
@@ -51,7 +49,13 @@ class UIBuilder(SceneBuilder):
         SceneBuilder.__init__(self, width, height)
         self.win = config.win
 
-        # event panel
+        # panels
+        self.building_panel = None
+        self.game_time = None
+        self.advanced_settings_panel = None
+        self.resource_panel = None
+        self.settings_panel = None
+        self.event_panel = None
         self.create_event_panel()
 
         # editors
@@ -61,10 +65,22 @@ class UIBuilder(SceneBuilder):
         self.enemy_handler_edit = None
         self.font_edit = None
         self.planet_edit = None
+        self.settings_edit = None
+        self.economy_overview = None
+        self.add_deal_edit = None
+        self.trade_edit = None
+        self.building_edit = None
+        self.save_game_edit = None
+        self.weapon_select = None
+        self.deal_manager = None
+        self.diplomacy_edit = None
+        self.player_edit = None
+
         self.create_editors()
 
         # box selection
         self.box_selection = None
+        self.tooltip_instance = None
 
         # set args
         self.world_width = width
@@ -73,6 +89,7 @@ class UIBuilder(SceneBuilder):
         self.selected_planet = None
 
         # players
+        self.player = None  # this is the human player, default index 0
         self.players = {}
 
         # building_panel
@@ -88,12 +105,27 @@ class UIBuilder(SceneBuilder):
         self.create_resource_panel()
 
         # Info_panel
-        self.info_panel = InfoPanel(self.win, x=0, y=self.settings_panel.surface_rect.bottom, width=240, height=300,
-            isSubWidget=False, parent=self.resource_panel, layer=9)
+        self.info_panel = InfoPanel(
+            self.win,
+            x=0,
+            y=self.settings_panel.surface_rect.bottom,
+            width=240,
+            height=300,
+            isSubWidget=False,
+            parent=self.resource_panel,
+            layer=9)
 
         # background image (gradient)
-        self.background_gradient = BackgroundGradient(self.win, 0, 0, 1920, 1080, isSubWidget=False,
-            layer=8, draw_gradient=BACKGROUND_GRADIENT_DRAW, fade_range=BACKGROUND_GRADIENT_FADE_RANGE)
+        self.background_gradient = BackgroundGradient(
+            self.win,
+            0,
+            0,
+            1920,
+            1080,
+            isSubWidget=False,
+            layer=8,
+            draw_gradient=BACKGROUND_GRADIENT_DRAW,
+            fade_range=BACKGROUND_GRADIENT_FADE_RANGE)
 
     def create_editors(self):
         width = EDITOR_WIDTH
@@ -101,72 +133,87 @@ class UIBuilder(SceneBuilder):
         spacing_y = 0
 
         # editors
-
-        # self.score_plotter = ScorePlotter(
-        #     self.win,
-        #     100,
-        #     30,
-        #     1000,
-        #     700,
-        #     False,
-        #     obj=None,
-        #     layer=10,
-        #     parent=self,
-        #     ignore_other_editors=True)
-
+        diplomacy_edit_width = 460
         self.diplomacy_edit = DiplomacyEdit(
             self.win,
-            100,
-            30,
-            460,
+            int(pygame.display.get_surface().get_width() / 2 - diplomacy_edit_width / 2),
+            int(pygame.display.get_surface().get_height() / 2),
+            diplomacy_edit_width,
             60,
             False,
             obj=None,
             layer=10,
             parent=self,
-            ignore_other_editors=True)
+            ignore_other_editors=True,
+            save=False)
 
         self.deal_manager = DealManager(
             self.win,
-            100,
+            240,
             30,
             460,
             60,
             False,
-            layer=8,
-            parent=self)
+            layer=10,
+            parent=self,
+            ignore_other_editors=True,
+            save=False)
 
-        self.weapon_select = WeaponSelect(pygame.display.get_surface(),
+        self.weapon_select = WeaponSelect(
+            pygame.display.get_surface(),
             pygame.display.get_surface().get_rect().centerx - width * 1.5 / 2,
             pygame.display.get_surface().get_rect().y + spacing_y,
-            width, height, parent=self)
+            width,
+            height,
+            parent=self)
 
-        self.planet_edit = PlanetEdit(pygame.display.get_surface(),
+        self.planet_edit = PlanetEdit(
+            pygame.display.get_surface(),
             pygame.display.get_surface().get_rect().centerx - width / 2,
             pygame.display.get_surface().get_rect().y + spacing_y,
-            width, height, parent=self, obj=None)
+            width,
+            height,
+            parent=self,
+            obj=None)
 
-        self.save_game_edit = SaveGameEdit(pygame.display.get_surface(),
+        self.save_game_edit = SaveGameEdit(
+            pygame.display.get_surface(),
             pygame.display.get_surface().get_rect().centerx - width / 2,
             pygame.display.get_surface().get_rect().y + spacing_y,
-            800, height, parent=self, obj=None)
+            800,
+            height,
+            parent=self,
+            obj=None)
 
-        self.building_edit = BuildingEdit(pygame.display.get_surface(),
+        self.building_edit = BuildingEdit(
+            pygame.display.get_surface(),
             pygame.display.get_surface().get_rect().centerx - width / 2,
             pygame.display.get_surface().get_rect().y,
-            width, height, parent=self)
+            width,
+            height,
+            parent=self)
 
-        self.enemy_handler_edit = EnemyHandlerEdit(pygame.display.get_surface(),
+        self.enemy_handler_edit = EnemyHandlerEdit(
+            pygame.display.get_surface(),
             pygame.display.get_surface().get_rect().centerx - width / 2,
             pygame.display.get_surface().get_rect().y + spacing_y,
-            width, height, parent=self, obj=enemy_handler)
+            width,
+            height,
+            parent=self,
+            obj=enemy_handler)
 
-        self.ship_edit = ShipEdit(pygame.display.get_surface(),
+        self.ship_edit = ShipEdit(
+            pygame.display.get_surface(),
             pygame.display.get_surface().get_rect().centerx - width / 2,
             pygame.display.get_surface().get_rect().y + spacing_y,
-            width, height, parent=self, obj=self.ship, layer=9)
+            width,
+            height,
+            parent=self,
+            obj=self.ship,
+            layer=9)
 
-        self.debug_edit = DebugEdit(pygame.display.get_surface(),
+        self.debug_edit = DebugEdit(
+            pygame.display.get_surface(),
             pygame.display.get_surface().get_rect().centerx - width / 2,
             pygame.display.get_surface().get_rect().y + spacing_y,
             width, height, parent=self, obj=debugger, layer=9)
@@ -174,27 +221,41 @@ class UIBuilder(SceneBuilder):
         self.trade_edit = TradeEdit(pygame.display.get_surface(),
             pygame.display.get_surface().get_rect().centerx - width / 2,
             pygame.display.get_surface().get_rect().y + spacing_y,
-            width, height, parent=self, obj=None, layer=9)  # , game_paused=True)
+            width,
+            height,
+            parent=self,
+            obj=None,
+            layer=9)  # , game_paused=True)
 
-        self.add_deal_edit = AddDealEdit(pygame.display.get_surface(),
-            pygame.display.get_surface().get_width() / 2,
+        self.add_deal_edit = AddDealEdit(
+            pygame.display.get_surface(),
+            int(pygame.display.get_surface().get_width() / 2),
             pygame.display.get_surface().get_rect().y + spacing_y,
-            width, height, parent=self, obj=None, layer=9)  # , game_paused=True)
+            width,
+            height,
+            parent=self,
+            obj=None,
+            layer=9)  # , game_paused=True)
 
-        self.economy_overview = EconomyOverview(pygame.display.get_surface(),
+        self.economy_overview = EconomyOverview(
+            pygame.display.get_surface(),
             0,
             0,
-            1920, 800, parent=self, obj=None, layer=10)  # , game_paused=True)
+            1920,
+            800,
+            parent=self,
+            obj=None,
+            layer=10)  # , game_paused=True)
 
-        self.settings_edit = SettingsEdit(pygame.display.get_surface(),
+        self.settings_edit = SettingsEdit(
+            pygame.display.get_surface(),
             pygame.display.get_surface().get_rect().centerx - width / 2,
             pygame.display.get_surface().get_rect().y + spacing_y,
-            int(width / 1.5), height, parent=self, obj=None, layer=9)  # , game_paused=True)
-
-        # self.player_edit = PlayerEdit(pygame.display.get_surface(),
-        #     100,
-        #     pygame.display.get_surface().get_rect().y + spacing_y,
-        #     int(width * 1.7), height, parent=self, obj=None, layer=9, ignore_other_editors=True)  # , game_paused=True)
+            int(width / 1.5),
+            height,
+            parent=self,
+            obj=None,
+            layer=9)  # , game_paused=True)
 
     def create_players(self, data):
         # for some stupid reason, i ant move this to player_handler: RuntimeError: dictionary changed size during iteration
@@ -222,7 +283,8 @@ class UIBuilder(SceneBuilder):
                     },
                 clock=0,
                 owner=player_id,
-                image_name=data[key]["image_name"]
+                image_name=data[key]["image_name"],
+                enemies=data[key]["enemies"]
                 )
 
             # set active (human) player
@@ -232,8 +294,17 @@ class UIBuilder(SceneBuilder):
         w, h = 900, 600
         x = pygame.display.get_surface().get_width() / 2 - w / 2
         y = pygame.display.get_surface().get_height() / 2 - h / 2
-        self.event_panel = EventPanel(win=self.win, x=x, y=y, width=w, height=h, center=True, parent=self, layer=9,
-            interface_variables=load_file("event_panel.json", "config"), game_paused=True)
+        self.event_panel = EventPanel(
+            win=self.win,
+            x=x,
+            y=y,
+            width=w,
+            height=h,
+            center=True,
+            parent=self,
+            layer=9,
+            interface_variables=load_file("event_panel.json", "config"),
+            game_paused=True)
 
     def create_tooltip(self):
         # tooltip
@@ -331,4 +402,5 @@ class UIBuilder(SceneBuilder):
             parent=self,
             layer=9,
             icon_size=icon_size,
-            anchor_right=self.advanced_settings_panel.get_screen_x(), app=self)
+            anchor_right=self.advanced_settings_panel.get_screen_x(),
+            app=self)

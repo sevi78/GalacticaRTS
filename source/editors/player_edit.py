@@ -13,11 +13,7 @@ from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.handlers.player_handler import player_handler
 from source.multimedia_library.images import get_image
 
-ARROW_SIZE = 20
-FONT_SIZE = int(ARROW_SIZE * .8)
 DIPLOMACY_BUTTON_SIZE = 25
-SELECTOR_SPACING = 100
-
 PLOTTER_SURFACE_HEIGHT = 500
 PLOTTER_SURFACE_GAP = 10
 
@@ -230,6 +226,14 @@ class PlayerEdit(EditorBase):
             x += spacing_x
 
             # diplomacy
+            peace = diplomacy_handler.is_in_peace(player_index, config.player)
+            if peace:
+                diplomacy_image = pygame.transform.scale(get_image("peace_icon.png"), (
+                    DIPLOMACY_BUTTON_SIZE, DIPLOMACY_BUTTON_SIZE))
+            else:
+                diplomacy_image = pygame.transform.scale(get_image("war_icon.png"), (
+                    DIPLOMACY_BUTTON_SIZE, DIPLOMACY_BUTTON_SIZE))
+
             icon = ImageButton(win=self.win,
                 x=self.world_x + x + int(spacing_x / 2),
                 y=self.world_y + TOP_SPACING + y + DIPLOMACY_BUTTON_SIZE / 3,
@@ -237,8 +241,7 @@ class PlayerEdit(EditorBase):
                 height=DIPLOMACY_BUTTON_SIZE,
                 isSubWidget=False,
                 parent=self,
-                image=pygame.transform.scale(get_image("peace_icon.png"), (
-                    DIPLOMACY_BUTTON_SIZE, DIPLOMACY_BUTTON_SIZE)),
+                image=diplomacy_image,
                 tooltip="set diplomacy",
                 frame_color=self.frame_color,
                 moveable=False,

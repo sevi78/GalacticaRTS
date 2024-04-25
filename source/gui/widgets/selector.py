@@ -9,6 +9,40 @@ from source.multimedia_library.images import get_image
 
 class Selector(WidgetBase):
     def __init__(self, win, x, y, buttonsize, color, layer, spacing, data, parent, font_size, **kwargs):
+        """
+        Initializes a new instance of the Selector class.
+
+        Args:
+            win (pygame.Surface): The game window surface.
+            x (int): The x-coordinate of the selector's position.
+            y (int): The y-coordinate of the selector's position.
+            buttonsize (int): The size of the selector's buttons.
+            color (tuple): The color of the selector's frame.
+            layer (int): The layer of the selector.
+            spacing (int): The spacing between the selector's buttons.
+            data (dict): A dictionary containing the list name and the list of values.
+            parent (WidgetBase): The parent widget of the selector.
+            font_size (int): The size of the selector's font.
+            **kwargs: Additional keyword arguments.
+
+            repeat_clicks (bool): Whether to repeat clicks on the selector's buttons. Defaults to False.
+            restrict_list_jump (bool): Whether to restrict the selector from jumping to the beginning or end of the list
+            when selecting. Defaults to False.
+            text_adds (str): Additional text to display next to the selector's text. Defaults to an empty string.
+
+
+        Returns:
+            None
+
+        Description:
+            Initializes the Selector instance with the provided arguments.
+            Creates the necessary widgets and registers the selector at the parent.
+            Hides the selector initially.
+
+        Note:
+            The list_name key in the data dictionary should be in the format 'list_name'.
+            The list key in the data dictionary should be a list of values.
+        """
         WidgetBase.__init__(self, win, x, y, buttonsize, buttonsize, isSubWidget=False)
         # args
         self.win = win
@@ -28,7 +62,8 @@ class Selector(WidgetBase):
         self.buttons = []
         self.font_size = font_size
         self.font = pygame.font.SysFont(config.font_name, self.font_size)
-        self.text_adds = ""
+        self.text_adds = kwargs.get("text_adds", "")
+        self.display_text = None
 
         #  lists, data
         self.list_name = data["list_name"]
@@ -44,6 +79,9 @@ class Selector(WidgetBase):
 
     def register(self):
         """
+        Register the selector widget at the parent.
+
+        This function appends the selector widget to the parent's widgets and selectors lists.
         """
         self.parent.widgets.append(self)
         self.parent.selectors.append(self)
@@ -98,6 +136,19 @@ class Selector(WidgetBase):
         self.widgets.append(self.plus_arrow)
 
     def reposition(self):
+        """
+        Repositions the minus_arrow and plus_arrow buttons based on the current world_x and world_y coordinates.
+
+        This function updates the screen_x and screen_y attributes of the minus_arrow and plus_arrow buttons to position
+        them relative to the current world_x and world_y coordinates.
+        The buttons are positioned with a spacing of self.spacing pixels between them.
+
+        Parameters:
+            self (Selector): The current instance of the Selector class.
+
+        Returns:
+            None
+        """
         self.minus_arrow.screen_x = self.world_x - self.spacing
         self.minus_arrow.screen_y = self.world_y
         self.plus_arrow.screen_x = self.world_x + self.spacing
@@ -105,6 +156,16 @@ class Selector(WidgetBase):
 
     def select(self, value):
         """
+        Selects the next item in the list based on the given value.
+        This function updates the current_value attribute of the Selector class based on the given value.
+        It also calls the selector_callback function of the parent class with the current_value, key, and
+        self as arguments.
+
+        Parameters:
+            value (int): The value to determine the next item in the list.
+
+        Returns:
+            None
         """
         if (self.current_value == min(self.list) and value == -1) or (
                 self.current_value == max(self.list) and value == 1):
@@ -116,6 +177,18 @@ class Selector(WidgetBase):
 
     def draw_texts(self):
         """
+        Draws the text on the screen based on the current state of the selector.
+
+        This function first calls the `set_text` method to update the display text based on the current value.
+        Then, it renders the text using the `font` attribute and the display text.
+        The text is then positioned on the screen based on the position of the minus arrow and the spacing.
+        Finally, the text is blitted onto the window using the `blit` method of the `win` attribute.
+
+        Parameters:
+            None
+
+        Returns:
+            None
         """
         self.set_text()
 
@@ -126,6 +199,12 @@ class Selector(WidgetBase):
         self.win.blit(text, text_rect)
 
     def set_text(self):
+        """
+        Sets the text to be displayed based on the current value.
+        If the current value has a 'name' attribute, the display text is constructed using that.
+        Otherwise, the display text is constructed using the current value.
+        The resulting display text is stored in the display_text attribute of the Selector instance.
+        """
         if hasattr(self.current_value, "name"):
             display_text = f"{self.list_name.split('_list')[0]} : {self.current_value.name}"
         else:

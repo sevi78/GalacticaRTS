@@ -78,7 +78,7 @@ class SettingsPanel(WidgetBase):
             include_text=True,
             layer=self.layer,
             key="",
-            info_text="players",
+            info_text="",
             name="players_icon",
             textColours=(0, 0, 0),
             font_size=0,

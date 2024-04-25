@@ -212,15 +212,39 @@ class DealSelect(EditorBase, TextWrap):
         event_text.text = text
 
         # finally delete the object
-        self.clean_up_references()
+        self.clean_up_references(accepted=True)
 
     def decline(self) -> None:
         # print("deal_select: decline!!!")
-        self.clean_up_references()
+        self.clean_up_references(accepted=False)
 
-    def clean_up_references(self) -> None:
+    def clean_up_references(self, accepted) -> None:
+        """
+        Removes the instance from the deal manager lists and deletes it.
+
+        Args:
+            accepted (bool): Whether the deal was accepted or declined.
+
+        Returns:
+            None
+
+        Raises:
+            None
+
+        This function removes the instance from the deal manager lists and deletes it. It first checks if the instance is
+        present in the `deals` list of the deal manager. If it is, it appends the instance to the `accepted_deals` list
+        if `accepted` is True, or to the `declined_deals` list if `accepted` is False. Then, it removes the instance from
+        the `deals` list. After that, it calls the `reposition_deals` method of the deal manager to reposition the deals.
+        Finally, it calls the `__del__` method of the instance to delete it.
+        """
         # remove from lists and delete it
         if self in config.app.deal_manager.deals:
+
+            if accepted:
+                config.app.deal_manager.accepted_deals.append(self)
+            else:
+                config.app.deal_manager.declined_deals.append(self)
+
             config.app.deal_manager.deals.remove(self)
 
         config.app.deal_manager.reposition_deals()
@@ -296,6 +320,18 @@ class DealSelect(EditorBase, TextWrap):
         self.win.blit(self.provider_image, (self.world_x, self.world_y + TOP_SPACING))
 
     def reposition_buttons(self) -> None:
+        """
+        Repositions the buttons in the GUI.
+
+        This function iterates over each button in the `buttons` list and repositions them based on their name.
+        The buttons are repositioned using their `screen_x` and `screen_y` attributes.
+
+        Parameters:
+            None
+
+        Returns:
+            None
+        """
         for i in self.buttons:
             i._hidden = False
             i._disabled = False
@@ -310,7 +346,7 @@ class DealSelect(EditorBase, TextWrap):
     def draw(self) -> None:
         # end the deal after some time: DEAL_LIFETIME
         if self.remaining_time <= 0.0:
-            self.clean_up_references()
+            self.clean_up_references(accepted=False)
 
         if not self._hidden and not self._disabled:
             self.draw_frame(corner_radius=3, corner_thickness=1)

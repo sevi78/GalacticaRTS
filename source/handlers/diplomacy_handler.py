@@ -7,6 +7,25 @@ class DiplpmacyHandler:
         self.player_index = None
 
     def set_enemy_and_player(self, enemy_index: int, player_index: int) -> None:
+        """
+        Sets the enemy and player indices for the diplomacy handler.
+
+        Args:
+            enemy_index (int): The index of the enemy player.
+            player_index (int): The index of the player.
+
+        Returns:
+            None: This function does not return anything.
+
+        This function updates the enemy and player indices for the diplomacy handler. It also updates the text and image
+        of the diplomacy edit based on the current peace or war status between the enemy and player.
+        Finally, it updates the diplomacy button image in the player edit.
+
+        Note:
+            - This function assumes that the `config` module is imported and that the `app` attribute of the `config`
+             module contains the necessary objects for updating the diplomacy edit and player edit.
+
+        """
         diplomacy_edit = config.app.diplomacy_edit
         self.player_index = player_index
         self.enemy_index = enemy_index

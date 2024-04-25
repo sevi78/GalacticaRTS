@@ -6,10 +6,9 @@ import time
 import pygame.sprite
 
 from source.configuration.game_config import config
-from source.factories.building_factory import building_factory
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import PanZoomLayeredUpdates
-from source.pan_zoom_sprites.pan_zoom_planet_classes.pan_zoom_planet import PanZoomPlanet
+
 
 TASK_CHANGE_INTERVAL = 220
 

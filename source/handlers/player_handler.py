@@ -2,17 +2,14 @@ import os
 
 from source.configuration.game_config import config
 from source.game_play.player import Player
-from source.handlers.file_handler import load_file, abs_players_path
+from source.handlers.file_handler import load_file
 
 
 class PlayerHandler:
     def __init__(self):
-
-        # self.data = load_file("players.json", "")
         self.players = {}
         self.player_colors = {-1: "green", 0: "blue", 1: "red", 2: "orange", 3: "yellow", 4: "pink", 5: "purple"}
         self.player_image_names = {}
-        # self.create_players(self.data)
         self.get_player_image_names()
 
     def get_player_colors(self, data):
@@ -52,16 +49,18 @@ class PlayerHandler:
                     "population": 0
                     },
                 clock=0,
-                owner=player_id
+                owner=player_id,
+                enemies=data[key]["enemies"],
                 )
 
             # set active (human) player
-            # self.human_player = self.players[0]
             config.app.player = self.players[0]
 
     def load_players(self) -> None:
-        for file in os.listdir(abs_players_path()):
-            self.players[file.split('.')[0]] = load_file(file, "players")
+        file = load_file("players.json", "config")
+
+        for key, value in file.items():
+            self.players["player_" + key] = value
 
     def get_players(self) -> dict:
         if not self.players:
@@ -85,8 +84,8 @@ class PlayerHandler:
         # players = self.get_players()
         #
         # self.create_players(players)
-        setattr(config.app, "auto_economy_edit", None)
-        setattr(config.app, "player", config.app.players[0])
+        # setattr(config.app, "auto_economy_edit", None)
+        # setattr(config.app, "player", config.app.players[0])
 
     def set_players_data(self, data):
         if "players" in data.keys():
@@ -95,7 +94,7 @@ class PlayerHandler:
                 config.app.players[int(key)].population = value["population"]
 
         else:
-            print(f"cuould not found key : 'players' in data!, needs to be in the players dict of the level or game_file!!")
+            print(f"could not found key : 'players' in data!, needs to be in the players dict of the level or game_file!!")
 
 
 player_handler = PlayerHandler()

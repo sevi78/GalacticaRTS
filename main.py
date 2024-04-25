@@ -7,7 +7,6 @@ from source.app.ui_builder import UIBuilder
 from source.configuration.game_config import config
 from source.draw.cursor import Cursor
 from source.draw.zoom_scale import ZoomScale
-from source.editors.deal_select import DealSelect
 from source.editors.level_edit import LevelEdit
 from source.editors.level_select import LevelSelect
 from source.editors.filter_widget import FilterWidget
@@ -319,6 +318,7 @@ def main():
         function=navigate_to_game_object_by_index,
         layer=9,
         list_name="ships",
+        name="ships_container",
 
         filter_widget=FilterWidget(
             app.win,
@@ -329,7 +329,8 @@ def main():
             ["energy", "speed", "experience"],
             parent=app,
             layer=10,
-            list_name="ships"
+            list_name="ships",
+            name="ships_container_filter"
             )
         )
 
@@ -344,6 +345,7 @@ def main():
         function=navigate_to_game_object_by_index,
         layer=9,
         list_name="planets",
+        name="planets_container",
         filter_widget=FilterWidget(
             app.win,
             260,
@@ -353,61 +355,16 @@ def main():
             ["population", "population_limit", "buildings", "explored"],
             parent=app,
             layer=10,
-            list_name="planets"
+            list_name="planets",
+            name="planets_container_filter"
             ))
-
-
-
-    # set some deals for testing
-    app.deal_manager.set_deal(DealSelect(
-        app.win,
-        0,
-        30,
-        300,
-        60,
-        False,
-        offer={"energy": 50},
-        request={"food": 30},
-        layer=9,
-        parent=app,
-        player_index=1,
-        save=False))
-
-    app.deal_manager.set_deal(DealSelect(
-        app.win,
-        0,
-        30,
-        300,
-        60,
-        False,
-        offer={"minerals": 500},
-        request={"water": 300},
-        layer=9,
-        parent=app,
-        player_index=2,
-        save=False))
-
-    app.deal_manager.set_deal(DealSelect(
-        app.win,
-        0,
-        30,
-        300,
-        60,
-        False,
-        offer={"food": 400},
-        request={"energy": 250},
-        layer=9,
-        parent=app,
-        player_index=3,
-        save=False))
-
 
     # player edit
     width = 1200
     app.player_edit = PlayerEdit(pygame.display.get_surface(),
-        int(pygame.display.get_surface().get_width()/2 -width/2),
-        pygame.display.get_surface().get_rect().y ,
-        width, height, parent=app, obj=None, layer=9, ignore_other_editors=True, drag_enabled=False)  # , game_paused=True)
+        int(pygame.display.get_surface().get_width() / 2 - width / 2),
+        pygame.display.get_surface().get_rect().y,
+        width, height, parent=app, obj=None, layer=9, ignore_other_editors=True, drag_enabled=False, save=False)  # , game_paused=True)
 
     # cursor object
     app.cursor = Cursor()

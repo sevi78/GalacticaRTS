@@ -67,7 +67,7 @@ class Player:
         self.auto_economy_handler = AutoEconomyHandler(self)
 
         # politics
-        self.enemies = []
+        # self.enemies = []
 
     def __repr__(self):
         return f"{self.name}: production: {self.production})"
@@ -93,6 +93,7 @@ class Player:
 
     def get_all_planets(self):
         return [i for i in sprite_groups.planets if i.owner == self.owner]
+
     def get_all_buildings(self) -> list:
         buildings = []
         for i in sprite_groups.planets:
@@ -133,14 +134,22 @@ class Player:
     def set_global_population(self) -> None:
         self.population = int(sum([i.population for i in sprite_groups.planets if i.owner == self.owner]))
 
-
     def set_score(self):
         """ this sets the score of the player, not shure how to calculate it :)"""
+        # get building count
         building_count = len(self.get_all_buildings())
-        planets = len(self.get_all_planets())
-        self.busted = planets == 0
-        all_buildings = building_count if building_count > 0  else 1
-        self.score = int(self.population / all_buildings)
+
+        # get planet count
+        planets_count = len(self.get_all_planets())
+
+        # set busted if no planet left
+        self.busted = planets_count == 0
+
+        # calculate score
+        if building_count == 0:
+            self.score = 0
+        else:
+            self.score = int(self.population / building_count)
 
     def update(self) -> None:
         if config.game_speed == 0 or config.game_paused:

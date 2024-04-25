@@ -3,14 +3,12 @@ import pygame
 from source.configuration.game_config import config
 from source.editors.editor_base.editor_base import EditorBase
 from source.gui.widgets.selector import Selector
-
 from source.handlers.player_handler import player_handler
 from source.handlers.score_plotter_handler import score_plotter_handler
 
 ARROW_SIZE = 20
 FONT_SIZE = int(ARROW_SIZE * .8)
 SELECTOR_SPACING = 100
-
 PLOTTER_SURFACE_HEIGHT = 500
 PLOTTER_SURFACE_GAP = 10
 

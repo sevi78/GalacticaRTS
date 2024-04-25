@@ -487,18 +487,21 @@ class LevelHandler:
         data = self.data
 
         # get players
+        data["players"] = {}
         for key, player_obj in config.app.players.items():
-            if not "players" in data.keys():
-                data["players"] = {}
+            # if not "players" in data.keys():
+
 
             data["players"][key] = {}
             data["players"][key]["stock"] = player_obj.get_stock()
             data["players"][key]["population"] = player_obj.population
+            data["players"][key]["enemies"] = player_obj.enemies
 
         # this is to set the human player, should maybe be removed and replaced
         player = config.app.player
         data["player"]["stock"] = player.get_stock()
         data["player"]["population"] = player.population
+        data["player"]["enemies"] = player.enemies
 
         # get all planets
         for planet in sprite_groups.planets.sprites():
