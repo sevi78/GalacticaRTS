@@ -241,13 +241,11 @@ class DealSelect(EditorBase, TextWrap):
         if self in config.app.deal_manager.deals:
 
             if accepted:
-                config.app.deal_manager.accepted_deals.append(self)
+                config.app.deal_manager.add_accepted_deal(self)
             else:
-                config.app.deal_manager.declined_deals.append(self)
+                config.app.deal_manager.add_declined_deal(self)
 
-            config.app.deal_manager.deals.remove(self)
 
-        config.app.deal_manager.reposition_deals()
         self.__del__()
 
     def generate_provider_text(self) -> None:

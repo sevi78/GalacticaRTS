@@ -3,10 +3,12 @@ import copy
 from source.configuration.game_config import config
 from source.editors.deal_select import DealSelect
 from source.editors.editor_base.editor_base import EditorBase
+from source.gui.event_text import event_text
 from source.handlers.image_handler import overblit_button_image
 
 OFFER_DEAL_PERCENT = 25
 MAX_DEALS_PER_PLAYERS = 3
+MAX_DEALS_PER_LIST = 25
 
 
 class DealManager(EditorBase):  # new
@@ -24,6 +26,25 @@ class DealManager(EditorBase):  # new
         # hide initially
         self.hide()
 
+    def __repr__(self):
+        return f"DealManager:\n deals: {len(self.deals)}\n self.accepted_deals: {len(self.accepted_deals)}\n self.declined_deals:{len(self.declined_deals)} "
+
+    def add_accepted_deal(self, deal: DealSelect) -> None:
+        if len(self.accepted_deals) >= MAX_DEALS_PER_LIST:
+            self.accepted_deals.pop(0)
+        self.accepted_deals.append(deal)
+        self.deals.remove(deal)
+        self.reposition_deals()
+        self.overblit_deal_icon()
+
+    def add_declined_deal(self, deal: DealSelect) -> None:
+        if len(self.declined_deals) >= MAX_DEALS_PER_LIST:
+            self.declined_deals.pop(0)
+        self.declined_deals.append(deal)
+        self.deals.remove(deal)
+        self.reposition_deals()
+        self.overblit_deal_icon()
+
     def set_deal(self, deal) -> None:
         """
         Sets a deal for the current editor, updating various data structures and triggering a repositioning of deals.
@@ -34,11 +55,25 @@ class DealManager(EditorBase):  # new
         Returns:
             None
         """
+        if self.deals_per_player_limit_reached(deal):
+            return
+
         deal.world_x = self.world_x
         self.last_deals[deal.provider_index] = deal
         self.deals.append(deal)
         self.widgets.append(deal)
         self.reposition_deals()
+        self.overblit_deal_icon()
+
+    def deals_per_player_limit_reached(self, deal):
+        # limit deals per player
+        player = config.app.players[deal.provider_index]
+        player_deals = self.get_deals_from_player(player)
+        deal_amount = len(player_deals)
+        if deal_amount >= MAX_DEALS_PER_PLAYERS:
+            event_text.set_text(f"Sorry {player.name}, you can't make anymore deals at the moment, you have reached the maximum({MAX_DEALS_PER_PLAYERS}) of deals!")
+            return True
+        return False
 
     def get_deals(self) -> list:
         return self.deals
@@ -51,48 +86,21 @@ class DealManager(EditorBase):  # new
 
         return player_deals
 
-    def add_fitting_deal(self, player, lowest_value_key, highest_value_key) -> None:
-        """
-        Adds a fitting deal for a given player.
-
-        Parameters:
-            player (Player): The player for whom the deal is being added.
-            lowest_value_key (str): The key representing the lowest value in the deal.
-            highest_value_key (str): The key representing the highest value in the deal.
-
-        Returns:
-            None
-
-        This function adds a fitting deal for a given player. It first checks if the player has reached the maximum
-        number of deals allowed. If not, it calculates the value to offer based on the highest value key and the offer
-        deal percentage. The offer and request dictionaries are then created.
-        Finally, a DealSelect object is created with the necessary parameters and added to the deals list.
-        """
-        # limit deals per player
-        player_deals = self.get_deals_from_player(player)
-        deal_amount = len(player_deals)
-        if deal_amount > MAX_DEALS_PER_PLAYERS:
-            return
-
-        # calculate the value to offer, this case 25 percent
-        offer_value = int(player.get_stock()[highest_value_key] / 100 * OFFER_DEAL_PERCENT)
-        offer = {highest_value_key: offer_value}
-        request = {lowest_value_key: offer_value}
-
+    def add_fitting_deal(self, data: dict) -> None:
         deal = DealSelect(
-            config.app.win,
-            0,
-            30,
-            300,
-            60,
-            False,
-            offer=offer,
-            request=request,
-            layer=9,
-            parent=config.app,
-            player_index=player.owner,
-            save=False
-            )
+                config.app.win,
+                0,
+                30,
+                300,
+                60,
+                False,
+                offer=data["offer"],
+                request=data["request"],
+                layer=9,
+                parent=config.app,
+                player_index=data["player_index"],
+                save=False
+                )
         self.set_deal(deal)
 
     def get_fitting_deal(self, player) -> None:
@@ -177,6 +185,7 @@ class DealManager(EditorBase):  # new
             self.drag(events)
 
     def draw(self):
-        self.overblit_deal_icon()
+        # print(self)
+
         if not self._hidden and not self._disabled:
             self.reposition_deals()

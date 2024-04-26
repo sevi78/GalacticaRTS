@@ -97,8 +97,10 @@ class BuildingFactoryJsonDictReader:
                             list_.append(building_name)
         return list_
 
-    def get_a_list_of_building_names_from_category_with_build_population_minimum_bigger_than(self, minimum: int,
-                                                                                             category: str) -> list:
+    def get_a_list_of_building_names_from_category_with_build_population_minimum_bigger_than(
+            self, minimum: int,
+            category: str
+            ) -> list:
         list_ = []
         for i in self.get_resource_categories():
             if i == category:
@@ -110,8 +112,12 @@ class BuildingFactoryJsonDictReader:
         return list_
 
     def get_resource_categories(self) -> list[str]:
-        not_resource = ['planetary_defence', 'ship', 'weapons']
-        return [_ for _ in self.json_dict.keys() if not _ in not_resource]
+        ignore_resources = ['planetary_defence', 'ship', 'weapons']
+        return [_ for _ in self.json_dict.keys() if not _ in ignore_resources]
+
+    def get_resource_categories_except_technology_and_population(self):
+        ignore_resources = ['planetary_defence', 'ship', 'weapons', "technology", "population"]
+        return [_ for _ in self.json_dict.keys() if not _ in ignore_resources]
 
     def get_technology_upgrade(self, building) -> dict:
         for category, building_names in self.json_dict.items():
@@ -280,21 +286,21 @@ class BuildingFactory(BuildingFactoryJsonDictReader):
             is_building = False
 
         building_widget = BuildingWidget(win=config.app.win,
-            x=config.app.building_panel.screen_x,
-            y=y,
-            width=widget_width,
-            height=widget_height,
-            name=widget_name,
-            fontsize=14,
-            progress_time=5,
-            key=widget_key,
-            value=widget_value,
-            receiver=receiver,
-            tooltip="building widget",
-            layer=4,
-            building_production_time=self.get_progress_time_from_buildings_json(widget_name),
-            is_building=is_building
-            )
+                x=config.app.building_panel.screen_x,
+                y=y,
+                width=widget_width,
+                height=widget_height,
+                name=widget_name,
+                fontsize=14,
+                progress_time=5,
+                key=widget_key,
+                value=widget_value,
+                receiver=receiver,
+                tooltip="building widget",
+                layer=4,
+                building_production_time=self.get_progress_time_from_buildings_json(widget_name),
+                is_building=is_building
+                )
 
         # add building widget to building cue to make shure it can be build only if building_cue is < building_slots_amount
         receiver.building_cue += 1

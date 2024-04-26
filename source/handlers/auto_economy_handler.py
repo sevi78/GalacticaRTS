@@ -56,6 +56,8 @@ class AutoEconomyHandlerSetters:
         self.build_change_interval = copy.copy(BUILD_CHANGE_INTERVAL)
         self.planets = []
         self.planet = None
+        self.resource_categories = building_factory.get_resource_categories()
+        self.resource_categories_except_technology_and_population = building_factory.get_resource_categories_except_technology_and_population()
 
         # keys
         self.preferred_building_key = None
@@ -81,6 +83,10 @@ class AutoEconomyHandlerSetters:
         self.fit_building = None
         self.buildings_to_delete = None
         self.most_consuming_building = None
+
+        print(f"resource_categories: {self.resource_categories}")
+        print(f"player.get_resource_stock:{self.player.get_resource_stock()}")
+        print(f"self.resource_categories_except_technology_and_population:  {self.resource_categories_except_technology_and_population}")
 
     def set_player(self, player_index: int) -> None:
         self.player = config.app.players[player_index]
@@ -109,22 +115,28 @@ class AutoEconomyHandlerSetters:
             self.max_keys_all[0]
 
     def set_min_keys_resources(self) -> None:
-        self.min_keys_resources = [key for key, value in self.combined_production.items() if
-                                   value == min(self.combined_production.values()) and key in building_factory.get_resource_categories()
-                                   and not key in ["technology", "population"]]
+        resource_stock = {key: value for key, value in self.player.get_resource_stock().items() if
+                          key in self.resource_categories_except_technology_and_population}
+
+        self.min_keys_resources = [key for key in resource_stock if
+                                   all(resource_stock[temp] >= resource_stock[key] for temp in resource_stock)]
+
+        print(f"set_min_keys_resources:\n    self.player: {self.player.name}, resource_stock: {resource_stock}, self.min_keys_resources: {self.min_keys_resources}")
 
     def set_max_keys_resources(self) -> None:
-        self.max_keys_resources = [key for key, value in self.combined_production.items() if
-                                   value == max(self.combined_production.values()) and key in building_factory.get_resource_categories()
-                                   and not key in ["technology", "population"]]
+        resource_stock = {key: value for key, value in self.player.get_resource_stock().items() if
+                          key in self.resource_categories_except_technology_and_population}
+        self.max_keys_resources = [key for key in resource_stock if
+                                   all(resource_stock[temp] <= resource_stock[key] for temp in resource_stock)]
 
     def set_min_keys_all(self) -> None:
-        self.max_keys_all = [key for key, value in self.combined_production.items() if
-                             value == min(self.combined_production.values())]
+        stock = self.player.get_stock()
+        self.min_keys_all = [key for key in stock if all(stock[temp] >= stock[key] for temp in stock)]
+        # print (f"set_min_keys_all of {self.player.name}: stock: {stock}, self.min_keys_all: {self.min_keys_all}")
 
     def set_max_keys_all(self) -> None:
-        self.max_keys_all = [key for key, value in self.combined_production.items() if
-                             value == max(self.combined_production.values())]
+        stock = self.player.get_stock()
+        self.max_keys_all = [key for key in stock if all(stock[temp] <= stock[key] for temp in stock)]
 
     def set_current_production(self) -> None:
         self.current_production = self.player.production
@@ -300,6 +312,8 @@ class AutoEconomyHandler(AutoEconomyHandlerSetters):
             # build a first town
             if not "town" in self.planet.buildings:
                 building_factory.build("town", self.planet)
+                building_factory.build("farm", self.planet)
+                building_factory.build("farm", self.planet)
 
             # check if population is > 1000 to ensure it needs population building upgrades
             if population >= 1000:
@@ -307,29 +321,35 @@ class AutoEconomyHandler(AutoEconomyHandlerSetters):
                 if population >= self.planet.population_limit:
                     # check if population is between 1000 and 10000
                     if population in range(1000, 10000):
-
                         # upgrade population building
                         if not "city" in self.planet.buildings:
                             if "town" in self.planet.buildings:
                                 # delete town
                                 building_factory.destroy_building("town", self.planet)
-                            # build city
                             building_factory.build("city", self.planet)
+
+                            # upgrade farm
+                            if "farm" in self.planet.buildings:
+                                building_factory.destroy_building("farm", self.planet)
+                            building_factory.build("ranch", self.planet)
 
                     # check if population is between 10000 and 100000
                     if population in range(10000, 100000):
-
                         # upgrade population building
                         if not "metropole" in self.planet.buildings:
                             if "city" in self.planet.buildings:
                                 # delete city
                                 building_factory.destroy_building("city", self.planet)
-                            # build metropole
+                            building_factory.build("metropole", self.planet)
+
+                            if "ranch" in self.planet.buildings:
+                                building_factory.destroy_building("ranch", self.planet)
                             building_factory.build("metropole", self.planet)
 
                     # build more metropoles
                     if population in range(100000, 1000000):
                         building_factory.build("metropole", self.planet)
+                        building_factory.destroy_building("agriculture complex", self.planet)
 
     def get_current_production(self):
         return self.current_production
@@ -340,7 +360,17 @@ class AutoEconomyHandler(AutoEconomyHandlerSetters):
         planet = random.choice(planets)
         return planet
 
+    # !!! this might be wrong, mmaybe we need random choice of all lowest keys?
     def get_highest_value_key(self, stock: dict) -> str:
+        """
+        Returns the key with the lowest value in the given stock dictionary.
+
+        Parameters:
+            stock (dict): A dictionary representing a stock, where the keys are the stock names and the values are their corresponding prices.
+
+        Returns:
+            str: The key with the lowest value in the stock dictionary.
+        """
         """
         Returns the key with the highest value in the given stock dictionary.
 
@@ -357,6 +387,7 @@ class AutoEconomyHandler(AutoEconomyHandlerSetters):
                 highest_key = key
         return highest_key
 
+    # !!! this might be wrong, mmaybe we need random choice of all lowest keys?
     def get_lowest_value_key(self, stock: dict) -> str:
         """
         Returns the key with the lowest value in the given stock dictionary.
@@ -373,6 +404,42 @@ class AutoEconomyHandler(AutoEconomyHandlerSetters):
             if value == lowest_value:
                 lowest_key = key
         return lowest_key
+
+    def build_food_buildings(self, planet):
+        """
+        builds population buildings to planet
+        checks for fitting building based on population of the planet
+        """
+        if planet.population <= 1000:
+            building_factory.build("farm", planet)
+
+        elif planet.population >= 1000:
+            building_factory.build("ranch", planet)
+
+        elif planet.population >= 10000:
+            building_factory.build("agriculture complex", planet)
+
+    def maximize_population_grow(self):
+        # check if planet is able to grow population
+        if "food" in self.planet.possible_resources and "population" in self.planet.possible_resources:
+
+            # check if planets food production is negative
+            if self.planet.production["food"] < 2:
+                # create a list of all buildings that can beleted on this planet,
+                # because they do not support population growth:
+                buildings_to_delete = []
+
+                # check all buildings if they support population growth:
+                for building in self.planet.buildings:
+                    building_category = building_factory.get_category_by_building(building)
+                    if building_category not in ["food", "population"]:
+                        buildings_to_delete.append(building)
+
+                # delete a random building
+                if buildings_to_delete:
+                    building_factory.destroy_building(random.choice(buildings_to_delete), self.planet)
+
+                self.build_food_buildings(self.planet)
 
     def build_immediately(self) -> None:
         """
@@ -397,53 +464,6 @@ class AutoEconomyHandler(AutoEconomyHandlerSetters):
                     if i.immediately_build_cost < self.player.technology and i.receiver.owner == self.player.owner:
                         i.build_immediately()
                         print(f"building immediately !: {self.player.technology}")
-
-    def build__(self):  # refactored
-        if self.update_time_reached():
-            self.update_cycles += 1
-            self.reset_start_time()
-            self.set_economy_values()
-
-            for planet in self.planets:
-                self.set_planet(planet)
-                self.set_building_widget_list()
-
-                if len(self.building_widget_list) >= self.building_cue_max:
-                    return
-
-                # Ensure food production after building population buildings
-                # self.ensure_food_production(self.planet)
-
-                # build population buildings if needed
-                self.build_population_buildings()
-
-                # get the building fitting to the population level of the planet
-                # self.fit_building = self.get_fitting_building_based_on_population_limit(self.planet, self.prefered_building_key)
-
-                self.set_fit_building()
-
-                # choose a random building to build
-
-                if self.fit_building:
-                    self.building = self.fit_building
-                else:
-                    print("no fiiting building found, recommend to delete anything ! ")
-                    # self.building = random.choice(self.building_names)
-                # if len(self.fit_building) > 0:
-                #     self.building = random.choice(list(self.fit_building))
-                # else:
-                #     self.building = random.choice(list(self.building_names))
-
-                # finally build the building
-                building_factory.build(self.building, self.planet)
-
-                # delete buildings
-                if self.combined_production:
-                    stock = self.player.get_stock()
-                    for key, value in stock.items():
-                        if not key == "population":
-                            if value < DELETE_BUILDING_THRESHOLD:
-                                self.delete_buildings()
 
     def build(self):
         """
@@ -484,6 +504,7 @@ class AutoEconomyHandler(AutoEconomyHandlerSetters):
                 # build immediately if possible and some random factor
                 self.build_immediately()
 
+            self.maximize_population_grow()
             # build population buildings if needed
             self.build_population_buildings()
 
@@ -498,12 +519,8 @@ class AutoEconomyHandler(AutoEconomyHandlerSetters):
         if resource_stock[self.get_lowest_value_key(resource_stock)] < DELETE_BUILDING_THRESHOLD:
             self.delete_buildings()
 
-            # add deal
-            config.app.deal_manager.add_fitting_deal(
-                self.player,
-                self.get_lowest_value_key(self.player.get_resource_stock()),
-                self.get_highest_value_key(self.player.get_resource_stock())
-                )
+        # add deals
+        config.app.deal_manager.add_fitting_deal(self.player.trade_assistant.generate_fitting_deal())
 
     def update(self):
         """
@@ -530,6 +547,169 @@ class AutoEconomyHandler(AutoEconomyHandlerSetters):
             self.reset_start_time()
             self.set_economy_values()
             self.build()
+
             config.app.deal_manager.get_fitting_deal(self.player)
 
         # print (config.app.deal_manager.get_deals_from_player(self.player))
+
+        pass
+
+
+"""TODO:
+fix min_keys / max_keys functions, so they return the correct values !!! 
+class dummy:
+    def __init__(self):
+        self.resource_categories = ["energy", "food", "minerals", "water"]
+        self.production = {
+            "energy": -1000,
+            "food": 100000000,
+            "minerals": -1000,
+            "water": 2343444,
+            "population": -78324898270,
+            "technology": 0
+        }
+        self.min_keys_resources = self.set_min_keys_resources()
+
+    def get_min_keys(self, resource_dict):
+        min_value = min(resource_dict.values())
+        return [key for key in resource_dict if resource_dict[key] == min_value]
+
+    def set_min_keys_resources(self) -> list:
+        min_keys = self.get_min_keys({key: value for key, value in self.production.items() if key in self.resource_categories})
+        return min_keys
+
+# Example usage
+obj = dummy()
+print(obj.min_keys_resources)  # Output: ['energy']
+"""
+
+
+class dummy:
+    def __init__(self):
+        self.min_keys_all = None
+        self.max_keys_resources = None
+        self.min_keys_resources = None
+        self.max_keys_all = None
+        self.resource_categories = ["energy", "food", "minerals", "water"]
+        self.stock = {
+            "energy": -1000,
+            "food": -1000,
+            "minerals": 1000,
+            "water": 1000,
+            "population": -2000,
+            "technology": 2000
+            }
+
+    def get_min_keys(self, resource_dict):
+        min_value = min(resource_dict.values())
+        return [key for key in resource_dict if resource_dict[key] == min_value]
+
+    def set_min_keys_resources1(self) -> list:
+        min_keys = self.get_min_keys({key: value for key, value in self.stock.items() if
+                                      key in self.resource_categories})
+        return min_keys
+
+    def get_highest_value_key(self, stock: dict) -> str:
+        """
+        Returns the key with the highest value in the given stock dictionary.
+
+        Parameters:
+            stock (dict): A dictionary representing a stock, where the keys are the stock names and the values are their corresponding prices.
+
+        Returns:
+            str: The key with the highest value in the stock dictionary.
+        """
+        highest_value = max(stock.values())
+        highest_key = None
+        for key, value in stock.items():
+            if value == highest_value:
+                highest_key = key
+        return highest_key
+
+    def get_lowest_value_key(self, stock: dict) -> str:
+        """
+        Returns the key with the lowest value in the given stock dictionary.
+
+        Parameters:
+            stock (dict): A dictionary representing a stock, where the keys are the stock names and the values are their corresponding prices.
+
+        Returns:
+            str: The key with the lowest value in the stock dictionary.
+        """
+        lowest_value = min(stock.values())
+        lowest_key = None
+        for key, value in stock.items():
+            if value == lowest_value:
+                lowest_key = key
+        return lowest_key
+
+    def set_min_keys_resources(self, stock) -> None:
+        # self.min_keys_resources = [key for key, value in stock.items() if
+        #                            value == min(stock.values()) and key in building_factory.get_resource_categories()
+        #                            and not key in ["technology", "population"]]
+
+        min_keys_resources = []
+        highest_value = None
+        highest_key = None
+
+        for key, value in stock.items():
+            if value == highest_value:
+                highest_key = key
+
+    def set_max_keys_resources(self, stock) -> None:  # returns also the max negaitve value ;(
+        self.max_keys_resources = [key for key, value in stock.items() if
+                                   value == max(stock.values()) and key in building_factory.get_resource_categories()
+                                   and not key in ["technology", "population"]]
+
+    def set_min_keys_all(self, stock) -> None:
+        self.min_keys_all = [key for key, value in stock.items() if
+                             value == min(stock.values())]
+
+    def set_max_keys_all(self, stock) -> None:
+        self.max_keys_all = [key for key, value in stock.items() if
+                             value == max(stock.values())]
+
+
+def main():
+    obj = dummy()
+    stock = {
+        "energy": -1000,
+        "food": -1000,
+        "minerals": 1000,
+        "water": 1000,
+        "population": -2000,
+        "technology": 2000
+        }
+
+    print(f"get_lowest_value_key: {obj.get_lowest_value_key(obj.stock)}")
+    print(f"get_highest_value_key: {obj.get_highest_value_key(obj.stock)}")
+    obj.set_min_keys_resources(obj.stock)
+    obj.set_max_keys_resources(obj.stock)
+    obj.set_min_keys_all(obj.stock)
+    obj.set_max_keys_all(obj.stock)
+    print(f"min_keys_resources: {obj.min_keys_resources}")
+    print(f"max_keys_resources: {obj.max_keys_resources}")
+    print(f"min_keys_all: {obj.min_keys_all}")
+
+    print(f"max: {max(obj.stock.keys())}")
+
+    stock = {
+        "energy": -1000,
+        "food": -1000,
+        "minerals": 1000,
+        "water": 1000,
+        "population": -2000,
+        "technology": 2000
+        }
+
+    resource_stock = {key: value for key, value in obj.stock.items() if key in obj.resource_categories}
+    max_keys = [key for key in resource_stock if
+                all(resource_stock[temp] <= resource_stock[key] for temp in resource_stock)]
+    min_keys = [key for key in resource_stock if
+                all(resource_stock[temp] >= resource_stock[key] for temp in resource_stock)]
+    print(f"max_keys: {max_keys}, ressource_stock: {resource_stock}")
+    print(f"min_keys: {min_keys}, ressource_stock: {resource_stock}")
+
+
+if __name__ == "__main__":
+    main()

@@ -12,6 +12,7 @@ from source.handlers.image_handler import overblit_button_image
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.handlers.player_handler import player_handler
 from source.multimedia_library.images import get_image
+from source.text.text_formatter import format_number
 
 DIPLOMACY_BUTTON_SIZE = 25
 PLOTTER_SURFACE_HEIGHT = 500
@@ -175,7 +176,7 @@ class PlayerEdit(EditorBase):
         h = 18
         x = 0
         y = TOP_SPACING
-        spacing_x = 80
+        spacing_x = 90
 
         # Define the desired order of keys including 'name' and 'color'
         order = ["name", "color", "water", "energy", "food", "minerals", "technology", "population"]
@@ -199,7 +200,7 @@ class PlayerEdit(EditorBase):
             image_name = player_handler.player_image_names[player]
             button_size = 40
             icon = ImageButton(win=self.win,
-                x=self.world_x + x + int(spacing_x / 2),
+                x=self.world_x + x + int(spacing_x / 6),
                 y=self.world_y + TOP_SPACING + y,
                 width=button_size,
                 height=button_size,
@@ -223,7 +224,7 @@ class PlayerEdit(EditorBase):
 
             self.buttons.append(icon)
             self.widgets.append(icon)
-            x += spacing_x
+            x += button_size + int(spacing_x / 6)
 
             # diplomacy
             peace = diplomacy_handler.is_in_peace(player_index, config.player)
@@ -235,7 +236,7 @@ class PlayerEdit(EditorBase):
                     DIPLOMACY_BUTTON_SIZE, DIPLOMACY_BUTTON_SIZE))
 
             icon = ImageButton(win=self.win,
-                x=self.world_x + x + int(spacing_x / 2),
+                x=self.world_x + x + int(spacing_x / 6),
                 y=self.world_y + TOP_SPACING + y + DIPLOMACY_BUTTON_SIZE / 3,
                 width=DIPLOMACY_BUTTON_SIZE,
                 height=DIPLOMACY_BUTTON_SIZE,
@@ -261,7 +262,7 @@ class PlayerEdit(EditorBase):
             self.widgets.append(icon)
 
             # set data boxes from file
-            x += spacing_x
+            x += DIPLOMACY_BUTTON_SIZE + int(spacing_x / 3)
             for key, value in ordered_data[player].items():
                 if not key.startswith("production_"):
                     # images
@@ -523,7 +524,7 @@ class PlayerEdit(EditorBase):
                         # print(f"i.text:{i.text}, i.key:{i.key}, i.kwargs:{i.kwargs}")
                         if i.key == "population":
                             i.set_text(f"{int(player_handler.get_current_stock(player_index)[i.key])}"
-                                       f"/{int(config.app.players[player_index].population_limit)}")
+                                       f"/{format_number(int(config.app.players[player_index].population_limit))}")
                         else:
                             if i.key in ["energy", "food", "minerals", "water", "technology"]:
                                 i.set_text(f"{int(player_handler.get_current_stock(player_index)[i.key])}"

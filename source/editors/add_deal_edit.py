@@ -3,12 +3,14 @@ import pygame
 from source.configuration.game_config import config
 from source.editors.deal_select import DealSelect
 from source.editors.editor_base.editor_base import EditorBase
-from source.editors.editor_base.editor_config import ARROW_SIZE, FONT_SIZE, TOP_SPACING
+from source.editors.editor_base.editor_config import TOP_SPACING
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.gui.widgets.checkbox import Checkbox
 from source.gui.widgets.selector import Selector
-from source.handlers.trade_assistant import trade_assistant
 from source.multimedia_library.images import get_image
+
+ARROW_SIZE = 20
+FONT_SIZE = int(ARROW_SIZE * .8)
 
 
 class AddDealEdit(EditorBase):
@@ -32,12 +34,13 @@ class AddDealEdit(EditorBase):
         self.player_resources = dict.fromkeys(self.resources, 0)
         self.value_list_offer = list(range(0, 1000, 10))
         self.value_list_request = list(range(0, 1000, 10))
-        self.percent_list = list(range(0, 100, 5))
+        self.percent_list = list(range(1, 10, 1)) + list(range(10, 30, 5)) + list(range(30, 100, 10))
 
         # create widgets
         self.create_close_button()
         self.create_selectors()
         self.create_percent_selectors()
+
         self.create_buttons()
 
         # hide initially
@@ -50,32 +53,34 @@ class AddDealEdit(EditorBase):
         selector_gap = 40
 
         self.selector_offer_percent = Selector(
-            self.win,
-            x + selector_spacing + selector_gap,
-            self.max_height + selector_gap,
-            ARROW_SIZE,
-            self.frame_color,
-            9,
-            selector_spacing,
-            {"list_name": "% offer_list", "list": self.percent_list},
-            self,
-            FONT_SIZE,
-            repeat_clicks=False)
+                self.win,
+                x + selector_spacing + selector_gap,
+                self.max_height + selector_gap,
+                ARROW_SIZE,
+                self.frame_color,
+                9,
+                selector_spacing,
+                {"list_name": "% offer_list", "list": self.percent_list},
+                self,
+                FONT_SIZE,
+                repeat_clicks=False,
+                restrict_list_jump=True)
         self.selector_offer_percent.current_value = 20
 
         x = self.world_x + self.world_width * 0.5
         self.selector_request_percent = Selector(
-            self.win,
-            x + selector_spacing + selector_gap,
-            self.max_height + selector_gap,
-            ARROW_SIZE,
-            self.frame_color,
-            9,
-            selector_spacing,
-            {"list_name": "% request_list", "list": self.percent_list},
-            self,
-            FONT_SIZE,
-            repeat_clicks=False)
+                self.win,
+                x + selector_spacing + selector_gap,
+                self.max_height + selector_gap,
+                ARROW_SIZE,
+                self.frame_color,
+                9,
+                selector_spacing,
+                {"list_name": "% request_list", "list": self.percent_list},
+                self,
+                FONT_SIZE,
+                repeat_clicks=False,
+                restrict_list_jump=True)
         self.selector_request_percent.current_value = 15
 
     def create_selectors(self) -> None:
@@ -87,14 +92,14 @@ class AddDealEdit(EditorBase):
         # offer
         for key, value in self.player_resources.items():
             setattr(self, f"selector_offer_{key}", Selector(self.win, x + selector_spacing + selector_gap, self.world_y + y, ARROW_SIZE, self.frame_color, 9,
-                selector_spacing, {"list_name": key + "_list", "list": self.value_list_offer}, self, FONT_SIZE, repeat_clicks=True))
+                    selector_spacing, {"list_name": key + "_list", "list": self.value_list_offer}, self, FONT_SIZE, repeat_clicks=True))
 
             self.selectors_offer.append(getattr(self, f"selector_offer_{key}"))
 
             checkbox = Checkbox(
-                self.win, x, self.world_y + y, 30, 30, isSubWidget=False,
-                color=self.frame_color,
-                key=key, tooltip=key, onClick=lambda: print("OKOKOK"), layer=9, parent=self)
+                    self.win, x, self.world_y + y, 30, 30, isSubWidget=False,
+                    color=self.frame_color,
+                    key=key, tooltip=key, onClick=lambda: print("OKOKOK"), layer=9, parent=self)
             checkbox.checked = False
 
             self.checkboxes.append(checkbox)
@@ -108,14 +113,14 @@ class AddDealEdit(EditorBase):
         # request
         for key, value in self.player_resources.items():
             setattr(self, f"selector_request_{key}", Selector(self.win, x + selector_spacing + selector_gap, self.world_y + y, ARROW_SIZE, self.frame_color, 9,
-                selector_spacing, {"list_name": key + "_list", "list": self.value_list_request}, self, FONT_SIZE, repeat_clicks=True))
+                    selector_spacing, {"list_name": key + "_list", "list": self.value_list_request}, self, FONT_SIZE, repeat_clicks=True))
 
             self.selectors_request.append(getattr(self, f"selector_request_{key}"))
 
             checkbox = Checkbox(
-                self.win, x, self.world_y + y, 30, 30, isSubWidget=False,
-                color=self.frame_color,
-                key=key, tooltip=key, onClick=lambda: print("OKOKOK"), layer=9, parent=self)
+                    self.win, x, self.world_y + y, 30, 30, isSubWidget=False,
+                    color=self.frame_color,
+                    key=key, tooltip=key, onClick=lambda: print("OKOKOK"), layer=9, parent=self)
             checkbox.checked = False
 
             self.checkboxes.append(checkbox)
@@ -139,22 +144,22 @@ class AddDealEdit(EditorBase):
     def create_buttons(self) -> None:
         button_size = 32
         agree_button = ImageButton(win=self.win,
-            x=self.get_screen_x() + self.get_screen_width() / 2 - button_size / 2,
-            y=self.max_height + button_size,
-            width=button_size,
-            height=button_size,
-            isSubWidget=False,
-            parent=self,
-            image=pygame.transform.scale(
-                get_image("thumps_up.png"), (button_size, button_size)),
-            tooltip="agree!",
-            frame_color=self.frame_color,
-            moveable=False,
-            include_text=False,
-            layer=self.layer,
-            onClick=lambda: self.agree(),
-            name="agree_button"
-            )
+                x=self.get_screen_x() + self.get_screen_width() / 2,
+                y=self.max_height + button_size,
+                width=button_size,
+                height=button_size,
+                isSubWidget=False,
+                parent=self,
+                image=pygame.transform.scale(
+                        get_image("thumps_up.png"), (button_size, button_size)),
+                tooltip="agree!",
+                frame_color=self.frame_color,
+                moveable=False,
+                include_text=False,
+                layer=self.layer,
+                onClick=lambda: self.agree(),
+                name="agree_button"
+                )
 
         agree_button.hide()
 
@@ -163,22 +168,22 @@ class AddDealEdit(EditorBase):
 
         # calculate_button
         calculate_button = ImageButton(win=self.win,
-            x=self.get_screen_x() + button_size / 2,
-            y=self.max_height + button_size,
-            width=button_size,
-            height=button_size,
-            isSubWidget=False,
-            parent=self,
-            image=pygame.transform.scale(
-                get_image("brain.png"), (button_size, button_size)),
-            tooltip="calculate deal!",
-            frame_color=self.frame_color,
-            moveable=False,
-            include_text=False,
-            layer=self.layer,
-            onClick=lambda: self.calculate_deal(),
-            name="calculate_button"
-            )
+                x=self.get_screen_x() + button_size,
+                y=self.max_height + button_size,
+                width=button_size,
+                height=button_size,
+                isSubWidget=False,
+                parent=self,
+                image=pygame.transform.scale(
+                        get_image("brain.png"), (button_size, button_size)),
+                tooltip="calculate deal!",
+                frame_color=self.frame_color,
+                moveable=False,
+                include_text=False,
+                layer=self.layer,
+                onClick=lambda: self.calculate_deal(),
+                name="calculate_button"
+                )
 
         calculate_button.hide()
 
@@ -247,18 +252,18 @@ class AddDealEdit(EditorBase):
 
         # create deal
         config.app.deal_manager.set_deal(DealSelect(
-            config.app.win,
-            0,
-            30,
-            300,
-            60,
-            False,
-            offer=offer,
-            request=request,
-            layer=9,
-            parent=config.app,
-            player_index=config.player,
-            save=False))
+                config.app.win,
+                0,
+                30,
+                300,
+                60,
+                False,
+                offer=offer,
+                request=request,
+                layer=9,
+                parent=config.app,
+                player_index=config.player,
+                save=False))
 
     def agree(self) -> None:
         self.create_deal()
@@ -276,9 +281,10 @@ class AddDealEdit(EditorBase):
 
     def calculate_deal(self) -> None:
         """ calculates a deal based on the current offer and request values """
+        trade_assistant = config.app.players[config.player].trade_assistant
         percentage_offer = self.selector_offer_percent.current_value
         percentage_request = self.selector_request_percent.current_value
-        deal = trade_assistant.generate_deal_based_resource_maximum_and_minimum(config.player, percentage_offer, percentage_request)
+        deal = trade_assistant.generate_deal_based_resource_maximum_and_minimum(percentage_offer, percentage_request)
 
         # set deal values
         if deal:

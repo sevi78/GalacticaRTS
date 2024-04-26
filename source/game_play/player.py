@@ -3,6 +3,7 @@ import time
 from source.configuration.game_config import config
 from source.handlers.auto_economy_handler import AutoEconomyHandler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
+from source.handlers.trade_assistant import TradeAssistant
 
 
 class Player:
@@ -66,11 +67,14 @@ class Player:
         # auto economy
         self.auto_economy_handler = AutoEconomyHandler(self)
 
+        # trade assistant
+        self.trade_assistant = TradeAssistant(self)
+
         # politics
         # self.enemies = []
 
     def __repr__(self):
-        return f"{self.name}: production: {self.production})"
+        return f"{self.name}: production: {self.production}, stock:{self.get_stock()})"
 
     def get_stock(self) -> dict:
         stock = {"energy": self.energy,
@@ -87,6 +91,7 @@ class Player:
         return new_stock
 
     def get_resource_stock(self) -> dict:
+        """ returns a dict from players.stock, without population """
         stock = self.get_stock()
         new_stock = self.remove_population_key_from_stock(stock)
         return new_stock
