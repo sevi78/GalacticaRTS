@@ -52,7 +52,7 @@
     "10": {
         "widget_name": "SettingsEdit",
         "world_x": 610.0,
-        "world_y": 0
+        "world_y": 30
     },
     "11": {
         "widget_name": "LevelSelect",
@@ -65,33 +65,28 @@
         "world_y": 0
     },
     "13": {
-        "widget_name": "container",
+        "widget_name": "ships_container",
         "world_x": 1595,
         "world_y": 85
     },
     "14": {
-        "widget_name": "container",
+        "widget_name": "planets_container",
         "world_x": 1595,
         "world_y": 248
     },
-    "20": {
-        "widget_name": "DealManager",
-        "world_x": 240,
-        "world_y": 25
-    },
-    "21": {
+    "22": {
         "widget_name": "EconomyOverview",
+        "world_x": 354,
+        "world_y": 129
+    },
+    "23": {
+        "widget_name": "ships_container_filter",
         "world_x": 1619,
         "world_y": 213
     },
-    "22": {
-        "widget_name": "FilterWidget",
+    "24": {
+        "widget_name": "planets_container_filter",
         "world_x": 1620,
         "world_y": 25
-    },
-    "23": {
-        "widget_name": "FilterWidget",
-        "world_x": 1604,
-        "world_y": 188
     }
 }

@@ -25,10 +25,11 @@ from source.handlers.orbit_handler import orbit
 from source.configuration.game_config import config
 from source.handlers.color_handler import colors
 from source.handlers.garbage_handler import garbage_handler
+from source.path_finding.a_star_node_path_finding import Node
 
 
 class PanZoomPlanet(PanZoomSprite, VisibilityHandler, PanZoomPlanetOverviewButtons, PanZoomPlanetDraw,
-    PanZoomPlanetParams, PanZoomPlanetPositionHandler, InteractionHandler):
+        PanZoomPlanetParams, PanZoomPlanetPositionHandler, InteractionHandler):
     """ Main functionalities: """
     __slots__ = PanZoomSprite.__slots__ + (
         'orbit_radius', 'font_size', 'font', '_on_hover', 'on_hover_release', 'size_x',
@@ -88,7 +89,6 @@ class PanZoomPlanet(PanZoomSprite, VisibilityHandler, PanZoomPlanetOverviewButto
         # energy, only used for beeing attacked
         self.energy = 100000
 
-
         # load_from_db Game variables___________________________________________________________________________________
         self.info_text = kwargs.get("info_text")
         self.info_text_raw = kwargs.get("info_text")
@@ -98,6 +98,9 @@ class PanZoomPlanet(PanZoomSprite, VisibilityHandler, PanZoomPlanetOverviewButto
 
         # planet defence
         self.planet_defence = PanZoomPlanetDefence(self)
+
+        # pathfinding
+        self.node = Node(self.world_x, self.world_y)
 
         # setup loaded data
         self.data = kwargs.get("data", {})
@@ -209,8 +212,6 @@ class PanZoomPlanet(PanZoomSprite, VisibilityHandler, PanZoomPlanetOverviewButto
         """
         self.move(events, None)
 
-
-
         if not self._hidden and not self._disabled:
             mouse_state = mouse_handler.get_mouse_state()
             x, y = mouse_handler.get_mouse_pos()
@@ -250,6 +251,8 @@ class PanZoomPlanet(PanZoomSprite, VisibilityHandler, PanZoomPlanetOverviewButto
 
     def update(self):
         self.set_screen_position()
+        self.node.update(self.world_x, self.world_y)
+
         # self.set_center()
         self.update_pan_zoom_sprite()
         self.handle_overview_buttons()

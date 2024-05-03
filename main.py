@@ -33,6 +33,7 @@ from source.handlers.time_handler import time_handler
 from source.handlers.ui_handler import ui_handler
 from source.interaction.box_selection import BoxSelection
 from source.multimedia_library.images import get_image
+from source.path_finding.pathfinding_manager import pathfinding_manager
 
 ECONOMY_UPDATE_INTERVAL = 2.0
 
@@ -203,6 +204,9 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
         # update event_text
         event_text.update()
         event_text_handler.listen(event_text, events)
+
+        # pathfinding
+        pathfinding_manager.draw_path()
 
     def loop(self):
         """

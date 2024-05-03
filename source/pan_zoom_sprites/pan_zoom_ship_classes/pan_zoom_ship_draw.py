@@ -61,6 +61,7 @@ class PanZoomShipDraw:
         event_text.set_text("reloading spaceship: --- needs a lot of energy!", obj=self)
 
     def draw_selection(self):
+        """ this handles how the ship is displayed on screen"""
         if config.show_player_colors:
             pygame.draw.circle(self.win, self.player_color, self.rect.center, self.get_screen_width(), int(6 * self.get_zoom()))
         else:

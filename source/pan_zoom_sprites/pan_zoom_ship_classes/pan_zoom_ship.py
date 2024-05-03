@@ -31,6 +31,8 @@ from source.pan_zoom_sprites.pan_zoom_ship_classes.pan_zoom_ship_ranking import 
 from source.pan_zoom_sprites.pan_zoom_ship_classes.spacestation import Spacestation
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_game_object import PanZoomGameObject
 from source.pan_zoom_sprites.pan_zoom_target_object import PanZoomTargetObject
+from source.path_finding.a_star_node_path_finding import Node
+from source.path_finding.pathfinding_manager import pathfinding_manager
 from source.text.text_formatter import format_number
 
 
@@ -120,9 +122,9 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
 
         # target object
         self.target_object = PanZoomTargetObject(config.win,
-            pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1],
-            25, 25, pan_zoom_handler, "target.gif", align_image="center", debug=False,
-            group="target_objects", parent=self, zoomable=False, relative_gif_size=2.0)
+                pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1],
+                25, 25, pan_zoom_handler, "target.gif", align_image="center", debug=False,
+                group="target_objects", parent=self, zoomable=False, relative_gif_size=2.0)
         self.target_object_reset_distance_raw = SHIP_TARGET_OBJECT_RESET_DISTANCE
         self.target_object_reset_distance = self.target_object_reset_distance_raw
 
@@ -167,6 +169,9 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
 
         # init interface data
         InterfaceData.__init__(self, self.interface_variable_names)
+
+        # pathfinding
+        self.node = Node(self.world_x, self.world_y)
 
         # setup the ship
         self.setup()
@@ -390,16 +395,16 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
 
         image = get_image(image_name)
         MovingImage(
-            self.win,
-            self.get_screen_x(),
-            self.get_screen_y(),
-            width,
-            height,
-            image,
-            lifetime,
-            velocity,
-            f" {value}{operand}", SPECIAL_TEXT_COLOR,
-            "georgiaproblack", 1, parent, target=target)
+                self.win,
+                self.get_screen_x(),
+                self.get_screen_y(),
+                width,
+                height,
+                image,
+                lifetime,
+                velocity,
+                f" {value}{operand}", SPECIAL_TEXT_COLOR,
+                "georgiaproblack", 1, parent, target=target)
 
     def unload_cargo(self):
         text = ""
@@ -413,7 +418,7 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
                     if hasattr(config.app.resource_panel, key + "_icon"):
                         target_icon = getattr(config.app.resource_panel, key + "_icon").rect.center
                         self.add_moving_image(key, "", value, (random.uniform(-10.8, 10.8), random.uniform(-1.0, -1.9)),
-                            4, 30, 30, self.target, target_icon)
+                                4, 30, 30, self.target, target_icon)
 
         special_text = ""
         for i in self.specials:
@@ -555,6 +560,17 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
                         if sprite_groups.get_hit_object():
                             self.set_energy_reloader(sprite_groups.get_hit_object())
 
+                # draw path
+                if self == config.app.ship:
+                    hit_object = sprite_groups.get_hit_object(lists=["planets", "ships"])
+                    if hit_object:
+                        pathfinding_manager.update_nodes()
+
+                        pathfinding_manager.generate_path(self.node, hit_object.node, self.get_max_travel_range())
+
+
+
+
     def open_weapon_select(self):
         self.set_info_text()
         if config.app.weapon_select.obj == self:
@@ -563,6 +579,8 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
             config.app.weapon_select.obj = self
 
     def update(self):
+        self.node.update(self.world_x, self.world_y)
+
         self.state_engine.update()
         self.update_pan_zoom_game_object()
         self.progress_bar.set_progressbar_position()
@@ -601,7 +619,7 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
             self.draw_selection()
             if self.orbit_object:
                 self.draw_connections(self.orbit_object)
-            # why  setting the info text again ???
+            # why setting the info text again ???
             self.set_info_text()
 
         if self == config.app.ship:
@@ -666,7 +684,7 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
             self.spacestation.produce_energy()
 
         # set previous position, used for energy consumation calculation
-        # make shure this is the last task, otherwise it would work(propbably)
+        # make shure this is the last task, otherwise it would work(probably)
         self.previous_position = (self.world_x, self.world_y)
 
     def draw(self):  # unused

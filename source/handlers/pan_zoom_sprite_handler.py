@@ -74,8 +74,21 @@ class SpriteGroups:  # original
         self.state_images = PanZoomLayeredUpdates(default_layer=8)
 
     def get_hit_object(self, **kwargs: {list}) -> object or None:
+        """ returns an object that is at mouse position
+
+            optional(kwargs):
+
+            use 'filter' to filter out the sprite_groups that are not involved
+            or use 'lists' as parameter to get only the objects in these lists
+
+            default lists are:
+            ["planets", "ships", "ufos", "collectable_items", "celestial_objects"]
+
+
+        """
         filter = kwargs.get("filter", [])
-        lists = ["planets", "ships", "ufos", "collectable_items", "celestial_objects"]
+        lists = kwargs.get("lists", ["planets", "ships", "ufos", "collectable_items", "celestial_objects"])
+
         if filter:
             lists -= filter
 
@@ -99,17 +112,6 @@ class SpriteGroups:  # original
                 obj: pygame.math.Vector2(obj.rect.center).distance_to(caller.rect.center))
         return None
 
-    def convert_sprite_groups_to_image_widget_list__(self, sprite_group) -> list:  # orig
-        return [ContainerWidgetItem(
-            config.app.win,
-            0,
-            WIDGET_SIZE * index,
-            WIDGET_SIZE,
-            WIDGET_SIZE,
-            image=get_image(_.image_name) if not _.image_name.endswith(".gif") else get_gif_frames(_.image_name)[0],
-            obj=_,
-            index=index + 1)
-            for index, _ in enumerate(sprite_group)]
 
     def convert_sprite_groups_to_image_widget_list(self, sprite_group_name, sort_by=None, reverse=True) -> list:
         # If a sort_by attribute is provided, sort the sprite_group by that attribute
