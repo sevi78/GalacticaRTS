@@ -100,7 +100,7 @@ class PanZoomPlanet(PanZoomSprite, VisibilityHandler, PanZoomPlanetOverviewButto
         self.planet_defence = PanZoomPlanetDefence(self)
 
         # pathfinding
-        self.node = Node(self.world_x, self.world_y)
+        self.node = Node(self.world_x, self.world_y, self)
 
         # setup loaded data
         self.data = kwargs.get("data", {})
@@ -164,7 +164,7 @@ class PanZoomPlanet(PanZoomSprite, VisibilityHandler, PanZoomPlanetOverviewButto
 
             # handle events
             if event.type == MOUSEBUTTONDOWN and event.button == 1:
-                if self.rect.collidepoint(event.pos):
+                if self.collide_rect.collidepoint(event.pos):
                     self.moving = True
                     config.enable_pan = not self.moving
 
@@ -216,7 +216,7 @@ class PanZoomPlanet(PanZoomSprite, VisibilityHandler, PanZoomPlanetOverviewButto
             mouse_state = mouse_handler.get_mouse_state()
             x, y = mouse_handler.get_mouse_pos()
 
-            if self.rect.collidepoint(x, y):
+            if self.collide_rect.collidepoint(x, y):
                 # if mouse_handler.double_clicks == 1:
                 #     config.app.diplomacy_edit.open(self.owner, 0)
                 if mouse_state == MouseState.RIGHT_CLICK:
@@ -251,7 +251,7 @@ class PanZoomPlanet(PanZoomSprite, VisibilityHandler, PanZoomPlanetOverviewButto
 
     def update(self):
         self.set_screen_position()
-        self.node.update(self.world_x, self.world_y)
+        # self.node.update(self.world_x, self.world_y)
 
         # self.set_center()
         self.update_pan_zoom_sprite()
@@ -283,6 +283,7 @@ class PanZoomPlanet(PanZoomSprite, VisibilityHandler, PanZoomPlanetOverviewButto
         self.draw()
 
     def draw(self):
+        # pygame.draw.rect(self.win, self.frame_color, self.collide_rect, 1)
         draw_orbits(self)
         self.set_display_color()
         self.draw_cross()

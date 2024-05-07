@@ -84,9 +84,9 @@ class AutoEconomyHandlerSetters:
         self.buildings_to_delete = None
         self.most_consuming_building = None
 
-        print(f"resource_categories: {self.resource_categories}")
-        print(f"player.get_resource_stock:{self.player.get_resource_stock()}")
-        print(f"self.resource_categories_except_technology_and_population:  {self.resource_categories_except_technology_and_population}")
+        # print(f"resource_categories: {self.resource_categories}")
+        # print(f"player.get_resource_stock:{self.player.get_resource_stock()}")
+        # print(f"self.resource_categories_except_technology_and_population:  {self.resource_categories_except_technology_and_population}")
 
     def set_player(self, player_index: int) -> None:
         self.player = config.app.players[player_index]
@@ -121,7 +121,7 @@ class AutoEconomyHandlerSetters:
         self.min_keys_resources = [key for key in resource_stock if
                                    all(resource_stock[temp] >= resource_stock[key] for temp in resource_stock)]
 
-        print(f"set_min_keys_resources:\n    self.player: {self.player.name}, resource_stock: {resource_stock}, self.min_keys_resources: {self.min_keys_resources}")
+        # print(f"set_min_keys_resources:\n    self.player: {self.player.name}, resource_stock: {resource_stock}, self.min_keys_resources: {self.min_keys_resources}")
 
     def set_max_keys_resources(self) -> None:
         resource_stock = {key: value for key, value in self.player.get_resource_stock().items() if
@@ -463,7 +463,7 @@ class AutoEconomyHandler(AutoEconomyHandlerSetters):
                 if self.building_widget_list.index(i) == r:
                     if i.immediately_build_cost < self.player.technology and i.receiver.owner == self.player.owner:
                         i.build_immediately()
-                        print(f"building immediately !: {self.player.technology}")
+                        # print(f"building immediately !: {self.player.technology}")
 
     def build(self):
         """

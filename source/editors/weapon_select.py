@@ -154,7 +154,9 @@ class WeaponSelect(EditorBase):
         self.checkboxes.append(self.auto_pilot_checkbox)
         self.widgets.append(self.auto_pilot_checkbox)
 
-    def get_checkbox_values(self):
+    def get_checkbox_values(self, **kwargs) -> None:
+        checkbox = kwargs.get("checkbox", None)
+        value = kwargs.get("value", None)
         """ gets the values from the checkboxes """
         self.obj.autopilot = self.auto_pilot_checkbox.checked
 

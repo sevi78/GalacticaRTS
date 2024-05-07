@@ -2,6 +2,7 @@ import heapq
 import math
 
 
+
 # Node class to represent a node in the graph
 class Node:
     """
@@ -12,13 +13,10 @@ class Node:
         y (float or int): The y-coordinate of the node.
     """
 
-    def __init__(self, x: [float, int], y: [float, int], owner: object) -> None:
+    def __init__(self, x: [float, int], y: [float, int], owner:object) -> None:
         self.x = x
         self.y = y
         self.owner = owner
-
-    def __repr__(self):
-        return f"x,y : {self.x},{self.y}, owner:{self.owner}"
 
     def update(self, x, y):
         """ updates the node x,y position """
@@ -113,7 +111,7 @@ def astar(
                         if node not in open_list:
                             heapq.heappush(open_list, (f_score[node], node))
         except TypeError as e:
-            print("astar error: ", e)
+            print ("astar error: ", e)
 
     # If no path is found, return None
     return None

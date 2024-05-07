@@ -33,7 +33,7 @@ from source.handlers.time_handler import time_handler
 from source.handlers.ui_handler import ui_handler
 from source.interaction.box_selection import BoxSelection
 from source.multimedia_library.images import get_image
-from source.path_finding.pathfinding_manager import pathfinding_manager
+
 
 ECONOMY_UPDATE_INTERVAL = 2.0
 
@@ -95,7 +95,7 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
         self.run = 1
 
         self._selected_planet = None
-        self.select_image = ImageSprite(0, 0, 25, 25, get_image("check.png"), "state_images", parent=self)
+        self.select_image = ImageSprite(self.win, 0, 0, 25, 25, get_image("check.png"), parent=self, hidden=True)
         self.sprite_groups = sprite_groups
 
     @property
@@ -107,15 +107,11 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
         self._selected_planet = value
         if value:
             self.update_building_button_widgets()
-            # self.planet_edit.selected_planet = value
-            # self.planet_edit.get_selected_planet()
-            # self.planet_edit.selected_planet = value
-
-        # print (f"main: selected_planet.setter:{value}")
 
     def set_selected_planet(self, planet):
         """ planet must be a PanZoomPlanet"""
         if planet:
+            self.select_image.show()
             self.selected_planet = planet
             self.selected_planet.set_info_text()
             self.info_panel.set_text(planet.info_text)
@@ -170,6 +166,8 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
         # update select image
         if self.selected_planet:
             self.select_image.set_position(self.selected_planet.rect.centerx, self.selected_planet.rect.centery, "center")
+            # self.select_image.show()
+            self.select_image.draw()
 
         # update game_events
         self.game_event_handler.update()
@@ -206,7 +204,7 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
         event_text_handler.listen(event_text, events)
 
         # pathfinding
-        pathfinding_manager.draw_path()
+        # pathfinding_manager.draw_path()
 
     def loop(self):
         """

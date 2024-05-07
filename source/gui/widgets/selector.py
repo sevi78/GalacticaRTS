@@ -91,6 +91,7 @@ class Selector(WidgetBase):
         """
         self.current_value = value
 
+
     def create_buttons(self):
         """
         """

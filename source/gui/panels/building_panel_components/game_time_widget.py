@@ -162,6 +162,22 @@ class GameTime(WidgetBase):
                                        self.clock_icon.get_screen_height() - self.year_text.get_height() + 6))
         self.game_speed = self.clock_slider.getValue()
 
+    def listen(self, events):
+        for event in events:
+            if event.type == pygame.KEYDOWN:
+                print (event.key, pygame.K_PLUS, pygame.K_MINUS)
+                if event.key == 1073741911:#pygame.K_PLUS:
+                    self.clock_slider.setValue(self.clock_slider.getValue() + 1)
+                elif event.key == 1073741910:#pygame.K_MINUS:
+                    self.clock_slider.setValue(self.clock_slider.getValue() - 1)
+
+                if self.clock_slider.getValue() < 1:
+                    self.clock_slider.setValue(1)
+                if self.clock_slider.getValue() > 100:
+                    self.clock_slider.setValue(100)
+
+
+
     def draw(self):
         """
         draws the ui elements

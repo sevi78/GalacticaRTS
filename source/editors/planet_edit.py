@@ -251,7 +251,9 @@ class PlanetEdit(EditorBase, PlanetEditBuilder):
             else:
                 i.update(False)
 
-    def get_checkbox_values(self):
+    def get_checkbox_values(self, **kwargs) -> None:
+        checkbox = kwargs.get("checkbox", None)
+        value = kwargs.get("value", None)
         """gets the values from the checkboxes and calls update_planet_resources()"""
         self.checkbox_values = [i.key for i in self.checkboxes if i.checked]
         self.update_planet_resources()

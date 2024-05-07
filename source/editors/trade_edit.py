@@ -142,7 +142,9 @@ class TradeEdit(EditorBase):
             self.player_resources[key] = 0
             self.trader_resources[key] = 0
 
-    def get_checkbox_values(self):
+    def get_checkbox_values(self, **kwargs) -> None:
+        checkbox = kwargs.get("checkbox", None)
+        value = kwargs.get("value", None)
         self.checkbox_values = [checkbox.key for checkbox in self.checkboxes if checkbox.checked]
         for selector in self.selectors:
             self.set_resources(selector.key, selector.current_value)

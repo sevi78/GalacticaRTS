@@ -103,7 +103,7 @@ class PanZoomShipParams:
 
     def set_info_text(self):
         if not self == config.app.ship:
-            if self.rect.collidepoint(pygame.mouse.get_pos()):
+            if self.collide_rect.collidepoint(pygame.mouse.get_pos()):
                 text = info_panel_text_generator.create_info_panel_ship_text(self)
                 self.parent.info_panel.set_text(text)
                 self.parent.info_panel.set_planet_image(self.image_raw, alpha=self.info_panel_alpha)
@@ -123,6 +123,7 @@ class PanZoomShipParams:
                 config.tooltip_text = self.tooltip
 
     def reload_ship(self):
+        """ this reloads the ships energy"""
         if self.energy_reloader:
             dist = math.dist(self.rect.center, self.energy_reloader.rect.center)
             if dist > self.reload_max_distance:

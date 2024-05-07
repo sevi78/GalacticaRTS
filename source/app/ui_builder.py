@@ -237,15 +237,15 @@ class UIBuilder(SceneBuilder):
             obj=None,
             layer=9)  # , game_paused=True)
 
-        self.economy_overview = EconomyOverview(
-            pygame.display.get_surface(),
-            0,
-            0,
-            1920,
-            800,
-            parent=self,
-            obj=None,
-            layer=10)  # , game_paused=True)
+        # self.economy_overview = EconomyOverview(
+        #     pygame.display.get_surface(),
+        #     0,
+        #     0,
+        #     1920,
+        #     800,
+        #     parent=self,
+        #     obj=None,
+        #     layer=10)  # , game_paused=True)
 
         self.settings_edit = SettingsEdit(
             pygame.display.get_surface(),
@@ -341,7 +341,7 @@ class UIBuilder(SceneBuilder):
             y=spacing,
             width=size_x - spacing,
             height=size_y,
-            isSubWidget=False,
+            isSubWidget=True,
             size_x=size_x,
             size_y=size_y,
             spacing=spacing,

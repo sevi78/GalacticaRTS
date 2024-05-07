@@ -1,7 +1,3 @@
-import math
-
-import pygame
-
 from source.configuration.game_config import config
 from source.draw.cross import draw_dashed_cross_in_circle
 from source.gui.widgets.image_widget import ImageSprite
@@ -9,64 +5,92 @@ from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.multimedia_library.images import get_image
 
 STATE_IMAGE_SPACING = 35
-
 STATE_IMAGE_SIZE = 17
 ARC_SIZE = 50
-
 CROSS_RADIUS = 24
 DASH_LENGHT = 6
 
 
 class PanZoomShipStateEngine:
     def __init__(self, parent: object) -> None:
-        # pre-load images
         self.parent = parent
-        self.noenergy_image = get_image("noenergy_25x25.png")
-        self.moving_image = pygame.transform.scale(get_image("moving.png"), (
-            STATE_IMAGE_SIZE - 5, STATE_IMAGE_SIZE - 5))
-        self.sleep_image = pygame.transform.scale(get_image("sleep.png"), (STATE_IMAGE_SIZE, STATE_IMAGE_SIZE))
-        self.sleep_image.set_alpha(130)
-        self.orbit_image = pygame.transform.scale(get_image("orbit_icon.png"), (STATE_IMAGE_SIZE, STATE_IMAGE_SIZE))
-        self.autopilot_image = pygame.transform.scale(get_image("autopilot.png"), (STATE_IMAGE_SIZE, STATE_IMAGE_SIZE))
-
-        # very bloody hack to ensure the rank imageis not drawn at initial position, no idea why this its there
-        self.rank_image = ImageSprite(-200, -200, 25, 25, get_image("warning_icon.png"), "state_images", parent=self)
-
-        # set up image
-        x, y = self.parent.get_screen_position()
-
-        self.state_image = ImageSprite(x, y,
-            STATE_IMAGE_SIZE,
-            STATE_IMAGE_SIZE, get_image("sleep.png"), "state_images")
+        self.image_drawer = PanZoomShipStateEngineDraw(self.parent, self)
+        self.state = "sleeping"
 
     def __del__(self) -> None:
-        self.state_image.kill()
-        self.rank_image.kill()
+        """ seems to be unused, state and rank image are getting deleted somehow :)"""
+        if hasattr(self, "image_drawer"):
+            return
+            self.image_drawer.state_image.kill()
+            self.image_drawer.rank_image.kill()
 
     def set_state(self) -> None:
+
         if self.parent.move_stop > 0:
-            self.state_image.set_image(self.noenergy_image)
-            self.state_image.image.set_alpha(255)
+            self.state = "move_stop"
 
         if self.parent.moving:
-            self.state_image.set_image(self.moving_image)
-            self.state_image.image.set_alpha(255)
+            self.state = "moving"
 
-        elif self.parent.orbiting:
-            self.state_image.set_image(self.orbit_image)
-            self.state_image.image.set_alpha(255)
+        if self.parent.following_path:
+            self.state = "following_path"
 
-        # elif self.parent.autopilot:
-        #     self.image.setImage(self.autopilot_image)
-
+        if self.parent.orbiting:
+            self.state = "orbiting"
         else:
             if hasattr(self.parent, "autopilot"):
                 if self.parent.autopilot:
-                    self.state_image.set_image(self.autopilot_image)
-                    self.state_image.image.set_alpha(255)
+                    self.state = "autopilot"
             else:
-                self.state_image.set_image(self.sleep_image)
-                self.state_image.image.set_alpha(130)
+                self.state = "sleeping"
+
+        self.image_drawer.set_state_image()
+
+    def update(self) -> None:
+        if config.cross_view_start < pan_zoom_handler.zoom:
+            self.image_drawer.show()
+            self.image_drawer.draw_rank_image()
+            self.image_drawer.draw_state_image()
+        else:
+            self.image_drawer.hide()
+            draw_dashed_cross_in_circle(self.parent.win, self.parent.frame_color, self.parent.get_screen_position(), config.ui_cross_size, config.ui_cross_thickness, config.ui_cross_dash_length / 2)
+
+
+class PanZoomShipStateEngineDraw:
+    def __init__(self, parent: object, engine: PanZoomShipStateEngine):
+        self.parent = parent  # the ship
+        self.win = self.parent.win
+        self.engine = engine  # the engine that holds the states
+
+        # set up images
+        x, y = self.parent.get_screen_position()
+        self.state_images = {
+            "move_stop": ImageSprite(self.parent.win, x, y, STATE_IMAGE_SIZE, STATE_IMAGE_SIZE, get_image("noenergy_25x25.png"), parent=self.parent),
+            "following_path": ImageSprite(self.parent.win, x, y, STATE_IMAGE_SIZE, STATE_IMAGE_SIZE, get_image("follow_path_icon.png"), parent=self.parent),
+            "moving": ImageSprite(self.parent.win, x, y, STATE_IMAGE_SIZE - 5, STATE_IMAGE_SIZE - 5, get_image("moving.png"), parent=self.parent),
+            "sleeping": ImageSprite(self.parent.win, x, y, STATE_IMAGE_SIZE, STATE_IMAGE_SIZE, get_image("sleep.png"), parent=self.parent),
+            "orbiting": ImageSprite(self.parent.win, x, y, STATE_IMAGE_SIZE, STATE_IMAGE_SIZE, get_image("orbit_icon.png"), parent=self.parent),
+            "autopilot": ImageSprite(self.parent.win, x, y, STATE_IMAGE_SIZE, STATE_IMAGE_SIZE, get_image("autopilot.png"), parent=self.parent)
+            }
+
+        # very bloody hack to ensure the rank image is not drawn at initial position, no idea why this its there
+        self.rank_image = ImageSprite(self.parent.win, -200, -200, 25, 25, get_image("warning_icon.png"), parent=self.parent)
+        self.state_image = ImageSprite(self.parent.win, -200, -200, STATE_IMAGE_SIZE, STATE_IMAGE_SIZE, get_image("sleep.png"), parent=self.parent)
+
+        self.hide()
+
+    def show(self):
+        self.state_image.show()
+        self.rank_image.show()
+
+    def hide(self):
+        self.state_image.hide()
+        self.rank_image.hide()
+
+    def set_state_image(self):
+        for key, value in self.state_images.items():
+            if key == self.engine.state:
+                self.state_image = value
 
     def draw_rank_image(self) -> None:
         # set image
@@ -80,22 +104,16 @@ class PanZoomShipStateEngine:
         # set position
         self.rank_image.set_position(rank_image_pos[0], rank_image_pos[1], "topright")
 
+        # draw
+        self.rank_image.draw()
+
     def draw_state_image(self) -> None:
+        # calculate position
         state_image_position = self.rank_image.rect.x + STATE_IMAGE_SPACING, self.rank_image.rect.y
+
+        # set position
         self.state_image.set_position(
-            state_image_position[0], state_image_position[1] - STATE_IMAGE_SIZE / 2, "topright")
+                state_image_position[0], state_image_position[1] - STATE_IMAGE_SIZE / 2, "topright")
 
-    def update(self) -> None:
-        if config.cross_view_start < pan_zoom_handler.zoom:
-            self.rank_image.show()
-            self.state_image.show()
-        else:
-            self.rank_image.hide()
-            self.state_image.hide()
-            draw_dashed_cross_in_circle(self.parent.win, self.parent.frame_color, self.parent.get_screen_position(), config.ui_cross_size, config.ui_cross_thickness, config.ui_cross_dash_length / 2)
-            # self.parent.win.blit(self.parent.image_outline, (self.parent.rect.x, self.parent.rect.y, 15,15))
-
-        self.draw_rank_image()
-        self.draw_state_image()
-
-        # self._hidden = self.parent._hidden
+        # draw
+        self.state_image.draw()
