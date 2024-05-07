@@ -57,10 +57,10 @@ class ContainerWidgetItem:
 
     def draw_text(self):
         self.win.blit(self.font.render(
-            self.text,
-            True,
-            colors.frame_color),
-            (self.world_x + WIDGET_SIZE + TEXT_SPACING, self.world_y + WIDGET_SIZE / 2))
+                self.text,
+                True,
+                colors.frame_color),
+                (self.world_x + WIDGET_SIZE + TEXT_SPACING, self.world_y + WIDGET_SIZE / 2))
 
     def draw_hover_rect(self):
         if self.parent:

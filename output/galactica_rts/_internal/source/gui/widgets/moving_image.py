@@ -82,8 +82,10 @@ class MovingImage(pygame.sprite.Sprite):
     loops: The number of times the surface should repeat its movement before disappearing.
     """
 
-    def __init__(self, win, x, y, width, height, image, lifetime, velocity, text, text_color, fontname, loops, parent,
-                 **kwargs):
+    def __init__(
+            self, win, x, y, width, height, image, lifetime, velocity, text, text_color, fontname, loops, parent,
+            **kwargs
+            ):
         pygame.sprite.Sprite.__init__(self)
         self.text_wrap = TextWrap()
         self.win = win
@@ -180,7 +182,37 @@ class MovingImage(pygame.sprite.Sprite):
     def draw(self, surface):
         surface.blit(self.image, self.rect)
         self.text_wrap.wrap_text(self.win, self.text, (self.rect.right - 10, self.rect.top - 40), (250, 20), self.font,
-            self.text_color, fade_out=True, alpha=self.alpha)
+                self.text_color, fade_out=True, alpha=self.alpha)
+
+# def draw_moving_image():
+#
+#     pass
+#
+#  def draw_moving_image(self, defender: object, power: int, velocity: tuple):
+#         MovingImage(
+#             self.parent.win,
+#             defender.rect.top,
+#             defender.rect.right,
+#             18,
+#             18,
+#             get_image("energy_25x25.png"),
+#             1,
+#             velocity,
+#             f"-{power}", pygame.color.THECOLORS["red"],
+#             "georgiaproblack", 1, defender, target=None)
+#
+# def draw_moving_image(self, win, x, y, width,  defender, power):
+#     MovingImage(
+#         self.parent.win,
+#         defender.rect.top,
+#         defender.rect.right,
+#         18,
+#         18,
+#         get_image("energy_25x25.png"),
+#         1,
+#         (random.randint(-1, 1), 2),
+#         f"-{power}", pygame.color.THECOLORS["red"],
+#         "georgiaproblack", 1, defender, target=None)
 
 # def main():
 #     # Create an instance of the MovingImage class

@@ -10,7 +10,7 @@ class ResizeHandler:
         self.resize_clicked = False
 
     # should be outside this class: only editors should use it
-    def drag(self, events):
+    def drag__(self, events):
         """ drag the widget """
         if not self.drag_enabled:
             return
@@ -152,11 +152,12 @@ class ResizeHandler:
 
 
 # the resize handler should be outside
-class InteractionHandler(ResizeHandler):
+class InteractionHandler():  # (ResizeHandler):
     def __init__(self):
-        ResizeHandler.__init__(self)
+        # ResizeHandler.__init__(self)
         self._on_hover = False
         self.on_hover_release = False
+        self.clicked = False
 
     @property
     def on_hover(self):
@@ -171,3 +172,40 @@ class InteractionHandler(ResizeHandler):
         else:
             if config.hover_object == self:
                 config.hover_object = None
+
+    def drag(self, events):
+        """ drag the widget """
+        if not self.drag_enabled:
+            return
+
+        # if self.resize_side:
+        #     return
+
+        old_x, old_y = self.world_x, self.world_y  # store old position
+        for event in events:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if self.rect.collidepoint(event.pos):
+                    self.moving = True
+                    self.offset_x = self.world_x - event.pos[0]  # calculate the offset x
+                    self.offset_y = self.world_y - event.pos[1]  # calculate the offset y
+
+            elif event.type == pygame.MOUSEBUTTONUP:
+                self.moving = False
+
+            elif event.type == pygame.MOUSEMOTION and self.moving:
+                self.world_x = event.pos[0] + self.offset_x  # apply the offset x
+                self.world_y = event.pos[1] + self.offset_y  # apply the offset y
+
+                # limit y to avoid strange behaviour if close button is at the same spot as the editor open button
+
+                if self.world_y < config.ui_top_limit: self.world_y = config.ui_top_limit
+
+                # set rect
+                self.rect.x = self.world_x
+                self.rect.y = self.world_y
+
+                # set drag cursor
+                if config.app:
+                    config.app.cursor.set_cursor("drag")
+
+        self.reposition(old_x, old_y)

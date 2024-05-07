@@ -5,7 +5,7 @@ import pygame
 from source.configuration.game_config import config
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.handlers.mouse_handler import mouse_handler, MouseState
-from source.multimedia_library.images import images, pictures_path, get_image
+from source.multimedia_library.images import get_image
 
 BUTTON_SIZE = 30
 FRAME_THICKNESS = 2
@@ -26,9 +26,9 @@ class Checkbox(ImageButton):
         self.button_size = kwargs.get("button_size", BUTTON_SIZE)
 
         self.image_check = pygame.transform.scale(
-            get_image("check.png"), (self.button_size * .7, self.button_size * .7))
+                get_image("check.png"), (self.button_size * .7, self.button_size * .7))
         self.image_uncheck = pygame.transform.scale(
-            get_image("uncheck.png"), (self.button_size, self.button_size))
+                get_image("uncheck.png"), (self.button_size, self.button_size))
 
         if self.image_name:
             self.image = pygame.transform.scale(get_image(self.image_name), (self.button_size, self.button_size))
@@ -36,14 +36,14 @@ class Checkbox(ImageButton):
         if not self.image:
             try:
                 self.image = pygame.transform.scale(
-                    get_image(self.key + "_25x25.png"), (self.button_size, self.button_size))
+                        get_image(self.key + "_25x25.png"), (self.button_size, self.button_size))
             except KeyError:
                 try:
                     self.image = pygame.transform.scale(
-                        get_image(self.key + ".png"), (self.button_size, self.button_size))
+                            get_image(self.key + ".png"), (self.button_size, self.button_size))
                 except KeyError:
                     self.image = pygame.transform.scale(
-                        get_image("no_icon.png"), (self.button_size, self.button_size))
+                            get_image("no_icon.png"), (self.button_size, self.button_size))
 
         self.image_raw = copy.copy(self.image)
         self.rect = self.image.get_rect()
@@ -55,7 +55,7 @@ class Checkbox(ImageButton):
     def draw_frame(self):
         # Drawing Rectangle
         pygame.draw.rect(self.win, self.color, pygame.Rect(
-            self.world_x, self.world_y, self.button_size, self.button_size), FRAME_THICKNESS, border_radius=BORDER_RADIUS)
+                self.world_x, self.world_y, self.button_size, self.button_size), FRAME_THICKNESS, border_radius=BORDER_RADIUS)
 
     def draw_image(self):
         rect = self.image_check.get_rect()

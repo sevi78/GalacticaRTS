@@ -108,8 +108,8 @@ class Button(WidgetBase, Moveable):
             self.circle = pygame.surface.Surface((self.get_screen_width(), self.get_screen_height()), 0, self.win)
             self.circle.set_alpha(0)
             circle = pygame.draw.circle(surface=self.circle, color=color,
-                center=self.rect.center,
-                radius=(self.get_screen_width() * 1.5))
+                    center=self.rect.center,
+                    radius=(self.get_screen_width() * 1.5))
 
             self.win.blit(self.circle, self.rect)
 
@@ -239,23 +239,25 @@ class Button(WidgetBase, Moveable):
         if not self._hidden and not self._disabled:
             if not self.transparent:
                 pygame.draw.rect(
-                    self.win, self.shadowColour,
-                    (self.screen_x + self.shadowDistance, self.screen_y + self.shadowDistance, self.screen_width,
-                     self.screen_height),
-                    border_radius=self.radius
-                    )
+                        self.win, self.shadowColour,
+                        (self.screen_x + self.shadowDistance, self.screen_y + self.shadowDistance, self.screen_width,
+                         self.screen_height),
+                        border_radius=self.radius
+                        )
 
                 pygame.draw.rect(
-                    self.win, self.borderColour, (self.screen_x, self.screen_y, self.screen_width, self.screen_height),
-                    border_radius=self.radius
-                    )
+                        self.win, self.borderColour, (
+                        self.screen_x, self.screen_y, self.screen_width, self.screen_height),
+                        border_radius=self.radius
+                        )
 
                 pygame.draw.rect(
-                    self.win, self.colour, (self.screen_x + self.borderThickness, self.screen_y + self.borderThickness,
-                                            self.screen_width - self.borderThickness * 2,
-                                            self.screen_height - self.borderThickness * 2),
-                    border_radius=self.radius
-                    )
+                        self.win, self.colour, (
+                        self.screen_x + self.borderThickness, self.screen_y + self.borderThickness,
+                        self.screen_width - self.borderThickness * 2,
+                        self.screen_height - self.borderThickness * 2),
+                        border_radius=self.radius
+                        )
 
             if self.image:
                 self.rect = self.image.get_rect()

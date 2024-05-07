@@ -96,7 +96,7 @@ class ProgressBar(WidgetBase):
 
         if self.gradient_color:
             self.completedColour = calculate_gradient_color((200, 0, 0),
-                pygame.color.THECOLORS["darkgreen"], self.percent, ignore_colors=["b"])
+                    pygame.color.THECOLORS["darkgreen"], self.percent, ignore_colors=["b"])
 
         if self.parent:
             if self.parent._disabled:
@@ -106,29 +106,29 @@ class ProgressBar(WidgetBase):
             if self.curved:
                 if self.percent == 0:
                     pygame.draw.circle(self.win, self.incompletedColour,
-                        (self.screen_x, self.screen_y + self.screen_height // 2), self.radius)
+                            (self.screen_x, self.screen_y + self.screen_height // 2), self.radius)
                     pygame.draw.circle(self.win, self.incompletedColour,
-                        (self.screen_x + self.screen_width, self.screen_y + self.screen_height // 2),
-                        self.radius)
+                            (self.screen_x + self.screen_width, self.screen_y + self.screen_height // 2),
+                            self.radius)
                 elif self.percent == 1:
                     pygame.draw.circle(self.win, self.completedColour,
-                        (self.screen_x, self.screen_y + self.screen_height // 2), self.radius)
+                            (self.screen_x, self.screen_y + self.screen_height // 2), self.radius)
                     pygame.draw.circle(self.win, self.completedColour,
-                        (self.screen_x + self.screen_width, self.screen_y + self.screen_height // 2),
-                        self.radius)
+                            (self.screen_x + self.screen_width, self.screen_y + self.screen_height // 2),
+                            self.radius)
                 else:
                     pygame.draw.circle(self.win, self.completedColour, (
                         self.screen_x, self.screen_y + self.screen_height // 2),
-                        self.radius)
+                            self.radius)
                     pygame.draw.circle(self.win, self.incompletedColour,
-                        (self.screen_x + self.screen_width, self.screen_y + self.screen_height // 2),
-                        self.radius)
+                            (self.screen_x + self.screen_width, self.screen_y + self.screen_height // 2),
+                            self.radius)
 
             pygame.draw.rect(self.win, self.completedColour,
-                (self.screen_x, self.screen_y, int(self.screen_width * self.percent), self.screen_height))
+                    (self.screen_x, self.screen_y, int(self.screen_width * self.percent), self.screen_height))
             pygame.draw.rect(self.win, self.incompletedColour,
-                (self.screen_x + int(self.screen_width * self.percent), self.screen_y,
-                 int(self.screen_width * (1 - self.percent)), self.screen_height))
+                    (self.screen_x + int(self.screen_width * self.percent), self.screen_y,
+                     int(self.screen_width * (1 - self.percent)), self.screen_height))
 
             if self.string:
                 drawText(self.win, self.string, self.frame_color, (

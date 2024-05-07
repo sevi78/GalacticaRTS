@@ -18,16 +18,16 @@ class PanZoomShipDraw:
 
         # energy progress bar
         self.progress_bar = ProgressBar(win=self.win,
-            x=self.get_screen_x(),
-            y=self.get_screen_y() + self.get_screen_height() + self.get_screen_height() / 5,
-            width=self.get_screen_width(),
-            height=5,
-            progress=lambda: 1 / self.energy_max * self.energy,
-            curved=True,
-            completedColour=self.frame_color,
-            layer=self.layer,
-            parent=self
-            )
+                x=self.get_screen_x(),
+                y=self.get_screen_y() + self.get_screen_height() + self.get_screen_height() / 5,
+                width=self.get_screen_width(),
+                height=5,
+                progress=lambda: 1 / self.energy_max * self.energy,
+                curved=True,
+                completedColour=self.frame_color,
+                layer=self.layer,
+                parent=self
+                )
 
     def flickering(self):
         if not level_of_detail.inside_screen(self.get_screen_position()):
@@ -46,21 +46,22 @@ class PanZoomShipDraw:
 
         if r == 3:
             pygame.draw.line(surface=self.win, start_pos=startpos, end_pos=endpos,
-                color=pygame.color.THECOLORS["yellow"], width=r2)
+                    color=pygame.color.THECOLORS["yellow"], width=r2)
 
         if r == 7:
             pygame.draw.line(surface=self.win, start_pos=startpos, end_pos=endpos,
-                color=pygame.color.THECOLORS["red"], width=r1)
+                    color=pygame.color.THECOLORS["red"], width=r1)
 
         if r == 2:
             pygame.draw.line(surface=self.win, start_pos=startpos, end_pos=endpos,
-                color=pygame.color.THECOLORS["white"], width=r * 2)
+                    color=pygame.color.THECOLORS["white"], width=r * 2)
 
         # pygame.mixer.Channel(2).play (sounds.electricity2)
         # sounds.play_sound(sounds.electricity2, channel=self.sound_channel)
         event_text.set_text("reloading spaceship: --- needs a lot of energy!", obj=self)
 
     def draw_selection(self):
+        """ this handles how the ship is displayed on screen"""
         if config.show_player_colors:
             pygame.draw.circle(self.win, self.player_color, self.rect.center, self.get_screen_width(), int(6 * self.get_zoom()))
         else:
@@ -68,11 +69,11 @@ class PanZoomShipDraw:
 
     def draw_connections(self, target):
         draw_arrows_on_line_from_start_to_end(
-            surf=self.win,
-            color=self.frame_color,
-            start_pos=self.rect.center,
-            end_pos=target.rect.center,
-            width=1,
-            dash_length=30,
-            arrow_size=(0, 6),
-            )
+                surf=self.win,
+                color=self.frame_color,
+                start_pos=self.rect.center,
+                end_pos=target.rect.center,
+                width=1,
+                dash_length=30,
+                arrow_size=(0, 6),
+                )

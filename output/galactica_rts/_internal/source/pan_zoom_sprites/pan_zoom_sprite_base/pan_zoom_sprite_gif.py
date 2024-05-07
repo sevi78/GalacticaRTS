@@ -104,6 +104,7 @@ class PanZoomSprite(pygame.sprite.Sprite, VisibilityHandler, GameObjectDebug):
 
         self.align_image = kwargs.get("align_image", "topleft")
         self.rect = self.image.get_rect()
+        self.collide_rect = pygame.Rect(x, y, 20, 20)
         self.rect.x = x
         self.rect.y = y
 
@@ -211,6 +212,8 @@ class PanZoomSprite(pygame.sprite.Sprite, VisibilityHandler, GameObjectDebug):
 
         elif self.align_image == "bottomright":
             self.rect.bottomright = self.screen_position
+
+        self.collide_rect.center = self.rect.center
 
     def update_gif_index(self):
         if not self.gif:

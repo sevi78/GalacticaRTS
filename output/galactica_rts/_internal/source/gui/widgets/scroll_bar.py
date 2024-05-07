@@ -43,8 +43,8 @@ class ScrollBar:
 
         # draw rounded rect
         pygame.draw.rect(self.surface, colors.ui_darker,
-            (0, 0, self.world_width, self.world_height), config.get("ui_rounded_corner_small_thickness"),
-            config.get("ui_rounded_corner_radius_small"))
+                (0, 0, self.world_width, self.world_height), config.get("ui_rounded_corner_small_thickness"),
+                config.get("ui_rounded_corner_radius_small"))
 
         height = self.world_height / len(self.parent.widgets)
         y = self.world_height * self.value

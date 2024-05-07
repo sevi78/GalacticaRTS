@@ -114,73 +114,30 @@ class InfoPanelTextGenerator:
         #             text += f"The population grow rate is increased by{special_value}!\n"
         return text
 
-    def create_info_panel_planet_text(self, obj):
-        # text_keys = ["name", "possible_resources", "specials", "buildings_max", "alien_population", "orbit_speed",
-        #             "orbit_distance", "type"]
-        # orbit_object = [i for i in sprite_groups.planets if i.id == obj.orbit_object_id]
-        # for i in text_keys:
-        #
-        #     print (f"{i}:{getattr(obj, i)}")
-        # #print ("data:", data)
-        # return
-        #
-        # info = {}
-        # for key, value in data["celestial_objects"][str(obj.id)].items():
-        #     if key in text_keys:
-        #         if "[" in str(value):
-        #             value = eval(value)
-        #         info[key] = value
-        #
-        # name = info['name']
-        # alien_population = info['alien_population']
-        # buildings_max = info['buildings_max']
-        # specials = info['specials']
-        # possible_resources = info['possible_resources']
-        # orbit_speed = info['orbit_speed']
-        # orbit_distance = str(round(info['orbit_distance'] / 1000, 1)) + " million kilometers"
-        # type = info['type']
-        #
-        # text = f"Welcome to {name}!\n\n"
-        # if alien_population == 0:
-        #     text += f"You are the first to arrive on this {type}. It's a blank slate waiting for you to make your mark.\n"
-        # else:
-        #     text += f"You are not alone on this {type}. There are {alien_population} aliens living here already.\n"
-        #
-        # text += f"You can build up to {buildings_max} buildings on this planet.\n"
-        # if specials:
-        #     text += f"There are special buildings available: {specials}.\n"
-        # else:
-        #     text += "There are no special buildings available on this planet.\n"
-        #
-        # text += "Possible resources on this planet include:\n\n"
-        # for resource in possible_resources:
-        #     text += f"- {resource}\n"
-        #
-        # text += f"\nThe planet's orbits around its sun at a distance of {orbit_distance} with a speed of {orbit_speed}.\n"
-        #
-        # return text
-
-        text = f"Welcome to {obj.name}!\n\n"
-        if obj.alien_population == 0:
-            text += f"You are the first to arrive on this {obj.type}. It's a blank slate waiting for you to make your mark.\n"
+    def create_info_panel_planet_text(self, planet):
+        text = f"Welcome to {planet.name}!\n\n"
+        if planet.owner == -1:
+            text += f"You are the first to arrive on this {planet.type}. It's a blank slate waiting for you to make your mark.\n"
         else:
-            text += f"You are not alone on this {obj.type}. There are {obj.alien_population} aliens living here already.\n"
+            text += f"This planet belongs to the mighty {config.app.players[planet.owner].name}, ruler of the {config.app.players[planet.owner].species}."
+            # text += f"You are not alone on this {planet.type}. There are {planet.alien_population} aliens living here already.\n"
 
-        text += f"You can build up to {obj.buildings_max} buildings on this planet.\n"
-        if obj.specials:
+        text += f"You can build up to {planet.buildings_max} buildings on this planet.\n"
+        if planet.specials:
 
-            text += f"This planet has some special properties:\n\n {self.create_special_info_panel_string(obj)}.\n"
+            text += f"This planet has some special properties:\n\n {self.create_special_info_panel_string(planet)}.\n"
         else:
             text += "There are no special buildings available on this planet.\n"
 
         text += "Possible resources on this planet include:\n\n"
-        for resource in obj.possible_resources:
+        for resource in planet.possible_resources:
             text += f"- {resource}\n"
 
-        if obj.orbit_object:
-            distance = math.dist((obj.world_x, obj.world_y), (obj.orbit_object.world_x, obj.orbit_object.world_y))
+        if planet.orbit_object:
+            distance = math.dist((planet.world_x, planet.world_y), (
+            planet.orbit_object.world_x, planet.orbit_object.world_y))
             text += (f"\nThe planet's orbits around its sun at a distance of {format_number(distance * 1000, 1)}"
-                     f" km with a speed of {format_number(obj.orbit_speed * 1000, 1)}km/s.\n")
+                     f" km with a speed of {format_number(planet.orbit_speed * 1000, 1)}km/s.\n")
 
         return text
 
@@ -345,7 +302,8 @@ class InfoPanelTextGenerator:
 
         # Count the alien_population of all planets and moons
         alien_population_count = sum(
-            obj["alien_population"] for obj in data["celestial_objects"].values() if obj["type"] in ["planet", "moon"])
+                obj["alien_population"] for obj in data["celestial_objects"].values() if
+                obj["type"] in ["planet", "moon"])
 
         # Create the tooltip strings
         area_text = f"{width} x {height} km"

@@ -1,5 +1,5 @@
 from source.editors.editor_base.editor_base import EditorBase
-from source.editors.editor_base.editor_config import ARROW_SIZE, FONT_SIZE, TOP_SPACING
+from source.editors.editor_base.editor_config import TOP_SPACING
 
 
 class DefaultEdit(EditorBase):
@@ -19,6 +19,10 @@ class DefaultEdit(EditorBase):
         # set max_height, important to remove the default value of 200 after create_widgets() !!!
         # otherwise the display is terribly wrong !!
         self.max_height = 200
+
+        # attach to parent
+        # self.parent.editors.append(self)
+        # use this if its a sûb widget, it will be repositions automatically!
 
     def listen(self, events):
         if not self._hidden and not self._disabled:

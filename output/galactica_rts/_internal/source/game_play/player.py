@@ -3,6 +3,7 @@ import time
 from source.configuration.game_config import config
 from source.handlers.auto_economy_handler import AutoEconomyHandler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
+from source.handlers.trade_assistant import TradeAssistant
 
 
 class Player:
@@ -47,6 +48,8 @@ class Player:
         self.wait = kwargs.get("wait", 5.0)
         self.start_time = time.time()
         self.game_start_time = time.time()
+        self.score = 0
+        self.busted = False
 
         self.production = {
             "energy": 0,
@@ -64,17 +67,24 @@ class Player:
         # auto economy
         self.auto_economy_handler = AutoEconomyHandler(self)
 
+        # trade assistant
+        self.trade_assistant = TradeAssistant(self)
+
+        # politics
+        # self.enemies = []
+
     def __repr__(self):
-        return f"{self.name}: production: {self.production})"
+        return f"{self.name}: production: {self.production}, stock:{self.get_stock()})"
 
     def get_stock(self) -> dict:
-        stock = {"energy": self.energy,
-                 "food": self.food,
-                 "minerals": self.minerals,
-                 "water": self.water,
-                 "technology": self.technology,
-                 "population": self.population
-                 }
+        stock = {
+            "energy": self.energy,
+            "food": self.food,
+            "minerals": self.minerals,
+            "water": self.water,
+            "technology": self.technology,
+            "population": self.population
+            }
         return stock
 
     def remove_population_key_from_stock(self, stock: dict) -> dict:
@@ -82,9 +92,13 @@ class Player:
         return new_stock
 
     def get_resource_stock(self) -> dict:
+        """ returns a dict from players.stock, without population """
         stock = self.get_stock()
         new_stock = self.remove_population_key_from_stock(stock)
         return new_stock
+
+    def get_all_planets(self):
+        return [i for i in sprite_groups.planets if i.owner == self.owner]
 
     def get_all_buildings(self) -> list:
         buildings = []
@@ -126,6 +140,62 @@ class Player:
     def set_global_population(self) -> None:
         self.population = int(sum([i.population for i in sprite_groups.planets if i.owner == self.owner]))
 
+    def set_score__(self):
+        """ this sets the score of the player, not shure how to calculate it :)"""
+        # get building count
+        building_count = len(self.get_all_buildings())
+
+        # get planet count
+        planets_count = len(self.get_all_planets())
+
+        # set busted if no planet left
+        self.busted = planets_count == 0
+
+        # calculate score
+        if building_count == 0:
+            self.score = 0
+        else:
+            self.score = int(self.population / building_count)
+
+    def set_score(self):
+        """ this sets the score of the player, not shure how to calculate it :)"""
+        # Constants for weights
+        WEIGHT_PLANET = 2
+        WEIGHT_BUILDING = 1
+        WEIGHT_RESOURCES = 0.5
+        WEIGHT_PRODUCTION = 0.3
+
+        # Get counts and stocks
+        building_count = len(self.get_all_buildings())
+        planets_count = len(self.get_all_planets())
+        resource_stock = self.get_resource_stock()  # Assuming this sums up all resources
+        production = self.production
+
+        # Check if any stock or production values are negative
+        negative_stock = any(value < 0 for value in resource_stock.values())
+        negative_production = any(value < 0 for value in production.values())
+
+        # Calculate resource score
+        total_resources = sum(resource_stock.values())
+        resource_score = total_resources * WEIGHT_RESOURCES
+        if negative_stock:
+            resource_score /= 2
+
+        # calculate production score
+        total_production = sum(production.values())
+        production_score = total_production * WEIGHT_PRODUCTION
+        if negative_production:
+            production_score /= 2
+
+        # Calculate base score from planets and buildings
+        base_score = (planets_count * WEIGHT_PLANET) + (building_count * WEIGHT_BUILDING)
+
+        # Set busted if no planet left
+        self.busted = planets_count == 0
+
+        # Final score calculation
+        self.score = int(base_score + resource_score + production_score)
+
     def update(self) -> None:
         if config.game_speed == 0 or config.game_paused:
             return
@@ -140,3 +210,5 @@ class Player:
 
         if self.owner > 0:
             self.auto_economy_handler.update()
+
+        self.set_score()

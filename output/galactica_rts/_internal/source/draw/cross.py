@@ -3,7 +3,6 @@ import sys
 import pygame
 
 from source.draw.dashed_line import draw_dashed_line
-from source.draw.arrow import draw_arrows_on_line_from_start_to_end
 
 
 def draw_cross_in_circle(win, color, center, radius):

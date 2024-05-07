@@ -27,76 +27,76 @@ class PanZoomPlanetOverviewButtons(PanZoomPlanetEconomy):
         """
         # thumpsup button
         self.thumpsup_button = Button(self.win,
-            x=0,
-            y=0,
-            width=self.thumpsup_button_size[0],
-            height=self.thumpsup_button_size[1],
-            isSubWidget=False,
-            onClick=lambda: print("no function"),
-            transparent=True,
-            image_hover_surface_alpha=255,
-            parent=self.parent,
-            ui_parent=self,
-            tooltip="indicates whether the production is in plus ",
-            image=pygame.transform.flip(pygame.transform.scale(get_image(
-                "thumps_up.png"), self.thumpsup_button_size), True, False),
-            layer=7)
+                x=0,
+                y=0,
+                width=self.thumpsup_button_size[0],
+                height=self.thumpsup_button_size[1],
+                isSubWidget=False,
+                onClick=lambda: print("no function"),
+                transparent=True,
+                image_hover_surface_alpha=255,
+                parent=self.parent,
+                ui_parent=self,
+                tooltip="indicates whether the production is in plus ",
+                image=pygame.transform.flip(pygame.transform.scale(get_image(
+                        "thumps_up.png"), self.thumpsup_button_size), True, False),
+                layer=7)
 
         self.overview_buttons.append(self.thumpsup_button)
 
         # smiley
         self.smiley_button = Button(self.win,
-            x=0,
-            y=0,
-            width=self.smiley_button_size[0],
-            height=self.smiley_button_size[1],
-            isSubWidget=False,
-            onClick=lambda: print("no function"),
-            transparent=True,
-            image_hover_surface_alpha=255,
-            parent=self.parent,
-            ui_parent=self,
-            tooltip="indicates the satisfaction of the population", image=get_image(
-                "smile.png"),
-            layer=7,
-            zoomable=False)
+                x=0,
+                y=0,
+                width=self.smiley_button_size[0],
+                height=self.smiley_button_size[1],
+                isSubWidget=False,
+                onClick=lambda: print("no function"),
+                transparent=True,
+                image_hover_surface_alpha=255,
+                parent=self.parent,
+                ui_parent=self,
+                tooltip="indicates the satisfaction of the population", image=get_image(
+                        "smile.png"),
+                layer=7,
+                zoomable=False)
 
         self.overview_buttons.append(self.smiley_button)
         # technology_level
         self.technology_level_button = Button(self.win,
-            x=0,
-            y=0,
-            width=self.smiley_button_size[0],
-            height=self.smiley_button_size[1],
-            isSubWidget=False,
-            onClick=lambda: print("no function"),
-            transparent=True,
-            image_hover_surface_alpha=255,
-            parent=self.parent,
-            ui_parent=self,
-            tooltip="indicates the technology_level of the population", image=get_image(
-                "badge1.png"),
-            layer=7,
-            zoomable=False)
+                x=0,
+                y=0,
+                width=self.smiley_button_size[0],
+                height=self.smiley_button_size[1],
+                isSubWidget=False,
+                onClick=lambda: print("no function"),
+                transparent=True,
+                image_hover_surface_alpha=255,
+                parent=self.parent,
+                ui_parent=self,
+                tooltip="indicates the technology_level of the population", image=get_image(
+                        "badge1.png"),
+                layer=7,
+                zoomable=False)
 
         self.overview_buttons.append(self.technology_level_button)
 
         self.planetary_defence_button = Button(self.win,
-            x=0,
-            y=0,
-            width=self.smiley_button_size[0],
-            height=self.smiley_button_size[1],
-            isSubWidget=False,
-            onClick=lambda: print("no function"),
-            transparent=True,
-            image_hover_surface_alpha=255,
-            parent=self.parent,
-            ui_parent=self,
-            tooltip="indicates if planetary defence is built", image=get_image(
-                "planet defence.png"),
-            layer=7,
-            zoomable=False,
-            name="planetary_defence_button")
+                x=0,
+                y=0,
+                width=self.smiley_button_size[0],
+                height=self.smiley_button_size[1],
+                isSubWidget=False,
+                onClick=lambda: print("no function"),
+                transparent=True,
+                image_hover_surface_alpha=255,
+                parent=self.parent,
+                ui_parent=self,
+                tooltip="indicates if planetary defence is built", image=get_image(
+                        "planet defence.png"),
+                layer=7,
+                zoomable=False,
+                name="planetary_defence_button")
 
         self.overview_buttons.append(self.planetary_defence_button)
 
@@ -160,12 +160,12 @@ class PanZoomPlanetOverviewButtons(PanZoomPlanetEconomy):
         try:
             if self.thumpsup_status:
                 self.thumpsup_button.image_raw = pygame.transform.flip(pygame.transform.scale(
-                    get_image(
-                        "thumps_upred.png"), self.thumpsup_button_size), True, True)
+                        get_image(
+                                "thumps_upred.png"), self.thumpsup_button_size), True, True)
             else:
                 self.thumpsup_button.image_raw = pygame.transform.flip(pygame.transform.scale(
-                    get_image(
-                        "thumps_up.png"), self.thumpsup_button_size), True, False)
+                        get_image(
+                                "thumps_up.png"), self.thumpsup_button_size), True, False)
 
             if self.smiley_status:
                 self.smiley_button.image_raw = get_image("smile.png")

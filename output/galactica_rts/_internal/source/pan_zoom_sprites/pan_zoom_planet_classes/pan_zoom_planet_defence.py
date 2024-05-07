@@ -40,19 +40,19 @@ class PanZoomPlanetDefence:
         self.emp_active = False
         self.slider_height = 100
         self.emp_progress_display = ProgressBar(win=self.parent.win,
-            x=self.parent.get_screen_x(),
-            y=self.parent.get_screen_y() + self.parent.get_screen_height() + self.parent.get_screen_height() / 5,
-            width=self.parent.get_screen_width(),
-            height=5,
-            progress=lambda: 0.0,
-            curved=True,
-            completedColour=colors.frame_color,
-            layer=self.parent.layer,
-            parent=self.parent,
-            h_align="right_outside",
-            v_align="over_the_top",
-            h_size=25, orientation=1, text="E.M.P."
-            )
+                x=self.parent.get_screen_x(),
+                y=self.parent.get_screen_y() + self.parent.get_screen_height() + self.parent.get_screen_height() / 5,
+                width=self.parent.get_screen_width(),
+                height=5,
+                progress=lambda: 0.0,
+                curved=True,
+                completedColour=colors.frame_color,
+                layer=self.parent.layer,
+                parent=self.parent,
+                h_align="right_outside",
+                v_align="over_the_top",
+                h_size=25, orientation=1, text="E.M.P."
+                )
         self.emp_progress_display.hide()
 
     def __delete____(self, instance):  # unused ?
@@ -72,11 +72,11 @@ class PanZoomPlanetDefence:
         if time.time() - pulse_time < self.emp_pulse_time:
 
             draw_electromagnetic_impulse(
-                self.parent.win,
-                self.parent.rect.center,
-                15,
-                self.attack_distance,
-                1, pulse_time * 1000, circles=5)
+                    self.parent.win,
+                    self.parent.rect.center,
+                    15,
+                    self.attack_distance,
+                    1, pulse_time * 1000, circles=5)
 
             # gif_handler = GifHandler(self.parent, "emp.gif", loop=False, relative_gif_size=5.0)
 
@@ -105,16 +105,16 @@ class PanZoomPlanetDefence:
 
     def draw_moving_image(self, defender: object, power: int, velocity: tuple):
         MovingImage(
-            self.parent.win,
-            defender.rect.top,
-            defender.rect.right,
-            18,
-            18,
-            get_image("energy_25x25.png"),
-            1,
-            velocity,
-            f"-{power}", pygame.color.THECOLORS["red"],
-            "georgiaproblack", 1, defender, target=None)
+                self.parent.win,
+                defender.rect.top,
+                defender.rect.right,
+                18,
+                18,
+                get_image("energy_25x25.png"),
+                1,
+                velocity,
+                f"-{power}", pygame.color.THECOLORS["red"],
+                "georgiaproblack", 1, defender, target=None)
 
     def activate_energy_blast(self):
         if not scope.draw_scope(self.parent.rect.center, self.attack_distance / pan_zoom_handler.zoom, {}):
@@ -131,11 +131,11 @@ class PanZoomPlanetDefence:
                     color = random.choice(list(pygame.color.THECOLORS.keys()))
 
                     draw_zigzag_line(
-                        surface=self.parent.win,
-                        color=color,
-                        start_pos=self.parent.rect.center,
-                        end_pos=hit_obj.rect.center,
-                        num_segments=24)
+                            surface=self.parent.win,
+                            color=color,
+                            start_pos=self.parent.rect.center,
+                            end_pos=hit_obj.rect.center,
+                            num_segments=24)
                     sounds.play_sound(sounds.laser)
                     sounds.play_sound(sounds.electricity2)
 

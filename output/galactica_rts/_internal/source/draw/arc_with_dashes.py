@@ -4,8 +4,10 @@ import time
 import pygame
 
 
-def draw_arc_with_dashes_original(surf, color, rect, start_angle, stop_angle, radius, dash_length=10,
-                                  width=1):  # original
+def draw_arc_with_dashes_original(
+        surf, color, rect, start_angle, stop_angle, radius, dash_length=10,
+        width=1
+        ):  # original
     # Calculate the total angle and the number of dashes
     total_angle = stop_angle - start_angle
     circumference = 2 * math.pi * radius

@@ -25,10 +25,11 @@ from source.handlers.orbit_handler import orbit
 from source.configuration.game_config import config
 from source.handlers.color_handler import colors
 from source.handlers.garbage_handler import garbage_handler
+from source.path_finding.a_star_node_path_finding import Node
 
 
 class PanZoomPlanet(PanZoomSprite, VisibilityHandler, PanZoomPlanetOverviewButtons, PanZoomPlanetDraw,
-    PanZoomPlanetParams, PanZoomPlanetPositionHandler, InteractionHandler):
+        PanZoomPlanetParams, PanZoomPlanetPositionHandler, InteractionHandler):
     """ Main functionalities: """
     __slots__ = PanZoomSprite.__slots__ + (
         'orbit_radius', 'font_size', 'font', '_on_hover', 'on_hover_release', 'size_x',
@@ -85,6 +86,9 @@ class PanZoomPlanet(PanZoomSprite, VisibilityHandler, PanZoomPlanetOverviewButto
         self.wait = kwargs.get("wait", 1.0)
         self.selected = False
 
+        # energy, only used for beeing attacked
+        self.energy = 100000
+
         # load_from_db Game variables___________________________________________________________________________________
         self.info_text = kwargs.get("info_text")
         self.info_text_raw = kwargs.get("info_text")
@@ -94,6 +98,9 @@ class PanZoomPlanet(PanZoomSprite, VisibilityHandler, PanZoomPlanetOverviewButto
 
         # planet defence
         self.planet_defence = PanZoomPlanetDefence(self)
+
+        # pathfinding
+        self.node = Node(self.world_x, self.world_y, self)
 
         # setup loaded data
         self.data = kwargs.get("data", {})
@@ -157,7 +164,7 @@ class PanZoomPlanet(PanZoomSprite, VisibilityHandler, PanZoomPlanetOverviewButto
 
             # handle events
             if event.type == MOUSEBUTTONDOWN and event.button == 1:
-                if self.rect.collidepoint(event.pos):
+                if self.collide_rect.collidepoint(event.pos):
                     self.moving = True
                     config.enable_pan = not self.moving
 
@@ -209,7 +216,9 @@ class PanZoomPlanet(PanZoomSprite, VisibilityHandler, PanZoomPlanetOverviewButto
             mouse_state = mouse_handler.get_mouse_state()
             x, y = mouse_handler.get_mouse_pos()
 
-            if self.rect.collidepoint(x, y):
+            if self.collide_rect.collidepoint(x, y):
+                # if mouse_handler.double_clicks == 1:
+                #     config.app.diplomacy_edit.open(self.owner, 0)
                 if mouse_state == MouseState.RIGHT_CLICK:
                     self.parent.set_selected_planet(self)
 
@@ -242,6 +251,8 @@ class PanZoomPlanet(PanZoomSprite, VisibilityHandler, PanZoomPlanetOverviewButto
 
     def update(self):
         self.set_screen_position()
+        # self.node.update(self.world_x, self.world_y)
+
         # self.set_center()
         self.update_pan_zoom_sprite()
         self.handle_overview_buttons()
@@ -272,6 +283,7 @@ class PanZoomPlanet(PanZoomSprite, VisibilityHandler, PanZoomPlanetOverviewButto
         self.draw()
 
     def draw(self):
+        # pygame.draw.rect(self.win, self.frame_color, self.collide_rect, 1)
         draw_orbits(self)
         self.set_display_color()
         self.draw_cross()

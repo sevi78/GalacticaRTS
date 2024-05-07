@@ -16,7 +16,7 @@ class ShipEdit(Interface):
         x = self.world_x - ARROW_SIZE / 2 + self.world_width / 2
         y = self.world_y + self.text_spacing + TOP_SPACING * 2
         self.selector_ship = Selector(self.win, x, self.world_y + y, ARROW_SIZE, self.frame_color, 9,
-            self.spacing_x, {"list_name": "ships_list", "list": sprite_groups.ships.sprites()}, self, FONT_SIZE)
+                self.spacing_x, {"list_name": "ships_list", "list": sprite_groups.ships.sprites()}, self, FONT_SIZE)
 
         self.selectors.append(self.selector_ship)
 

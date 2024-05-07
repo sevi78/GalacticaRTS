@@ -88,49 +88,49 @@ class BuildingEdit(EditorBase):
 
         for key, value in self.building_dict.items():
             input_box_key = InputBox(self.win, x, y, input_box_key_width, text_height,
-                text=key, parent=self, key=key, disabled=True, text_input_type=str, draw_frame=False)
+                    text=key, parent=self, key=key, disabled=True, text_input_type=str, draw_frame=False)
             self.input_boxes_key.append(input_box_key)
 
             disabled = False
             if type(value) == str:
                 disabled = True
             input_box_value = InputBox(self.win, x + input_box_key_width / 2 + self.buttonsize * 2, y, input_box_value_width, text_height,
-                text=str(value), parent=self, key=key, text_input_type=type(value), disabled=disabled)
+                    text=str(value), parent=self, key=key, text_input_type=type(value), disabled=disabled)
 
             self.input_boxes_value.append(input_box_value)
 
             if type(value) == int:
                 minus_arrow = Button(win=pygame.display.get_surface(),
-                    x=input_box_value.world_x - self.buttonsize,
-                    y=input_box_value.world_y,
-                    width=self.buttonsize,
-                    height=self.buttonsize,
-                    isSubWidget=False,
-                    image=pygame.transform.scale(
-                        get_image("arrow-left.png"), (self.buttonsize, self.buttonsize)),
-                    frame_color=self.frame_color,
-                    transparent=True,
-                    parent=input_box_value,
-                    layer=self.layer,
-                    name="minus_arrow",
-                    addition_value=1
-                    )
+                        x=input_box_value.world_x - self.buttonsize,
+                        y=input_box_value.world_y,
+                        width=self.buttonsize,
+                        height=self.buttonsize,
+                        isSubWidget=False,
+                        image=pygame.transform.scale(
+                                get_image("arrow-left.png"), (self.buttonsize, self.buttonsize)),
+                        frame_color=self.frame_color,
+                        transparent=True,
+                        parent=input_box_value,
+                        layer=self.layer,
+                        name="minus_arrow",
+                        addition_value=1
+                        )
 
                 plus_arrow = Button(win=pygame.display.get_surface(),
-                    x=input_box_value.world_x + input_box_value_width / 2,
-                    y=input_box_value.world_y,
-                    width=self.buttonsize,
-                    height=self.buttonsize,
-                    isSubWidget=False,
-                    image=pygame.transform.scale(
-                        get_image("arrow-right.png"), (self.buttonsize, self.buttonsize)),
-                    frame_color=self.frame_color,
-                    transparent=True,
-                    parent=input_box_value,
-                    layer=self.layer,
-                    name="plus_arrow",
-                    addition_value=-1
-                    )
+                        x=input_box_value.world_x + input_box_value_width / 2,
+                        y=input_box_value.world_y,
+                        width=self.buttonsize,
+                        height=self.buttonsize,
+                        isSubWidget=False,
+                        image=pygame.transform.scale(
+                                get_image("arrow-right.png"), (self.buttonsize, self.buttonsize)),
+                        frame_color=self.frame_color,
+                        transparent=True,
+                        parent=input_box_value,
+                        layer=self.layer,
+                        name="plus_arrow",
+                        addition_value=-1
+                        )
 
                 self.buttons.append(minus_arrow)
                 self.buttons.append(plus_arrow)
@@ -193,7 +193,7 @@ class BuildingEdit(EditorBase):
         if not self._hidden and not self._disabled:
             self.draw_frame()
             self.draw_text(self.world_x + self.text_spacing, self.world_y + TOP_SPACING + self.text_spacing, 200,
-                TEXT_HEIGHT, f"Building Edit: {self.category}")
+                    TEXT_HEIGHT, f"Building Edit: {self.category}")
 
     def save_buildings(self):
         self.data[self.category][self.building] = self.building_dict

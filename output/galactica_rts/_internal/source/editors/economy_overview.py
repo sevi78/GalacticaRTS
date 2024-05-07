@@ -38,7 +38,7 @@ class EconomyOverview(EditorBase):
             for key, value in dict_.items():
                 image = get_image(f"{key}_25x25.png")
                 pos = (self.world_x + (BUTTON_SIZE * 2 * list(data[building_name]).index(key)) * list(
-                    data[building_name]).index(key),
+                        data[building_name]).index(key),
                        self.world_y + (BUTTON_SIZE * 2 * list(data[building_name]).index(key)))
                 size = (BUTTON_SIZE, BUTTON_SIZE)
                 self.draw_image(pos, size, image)

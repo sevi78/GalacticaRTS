@@ -2,7 +2,6 @@ import datetime
 import glob
 import json
 import os
-from pprint import pprint
 
 import send2trash
 

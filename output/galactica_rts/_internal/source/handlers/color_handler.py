@@ -52,10 +52,11 @@ class Colors:
         self.set_orbit_colors()
 
     def set_orbit_colors(self):
-        self.orbit_colors = {"orbit_color": dim_color(self.orbit_color, -config.ui_orbit_color_brightness * 2.55, 0, maximize=False),
-                             "planet_orbit_color": dim_color(self.orbit_color_planet, -config.ui_planet_orbit_color_brightness * 2.55, 0, maximize=False),
-                             "moon_orbit_color": dim_color(self.orbit_color_moon, -config.ui_moon_orbit_color_brightness * 2.55, 0, maximize=False)
-                             }
+        self.orbit_colors = {
+            "orbit_color": dim_color(self.orbit_color, -config.ui_orbit_color_brightness * 2.55, 0, maximize=False),
+            "planet_orbit_color": dim_color(self.orbit_color_planet, -config.ui_planet_orbit_color_brightness * 2.55, 0, maximize=False),
+            "moon_orbit_color": dim_color(self.orbit_color_moon, -config.ui_moon_orbit_color_brightness * 2.55, 0, maximize=False)
+            }
 
     def get_orbit_color(self, type_):
         if type_ == "sun":
@@ -142,11 +143,11 @@ def calculate_gradient_color___(start_color, end_color, percent, **kwargs):
 
     # Calculate the gradient color
     r = int(start_color[0] + (end_color[0] - start_color[0]) * percent) if not str(
-        start_color[0]) in ignore_colors else 0
+            start_color[0]) in ignore_colors else 0
     g = int(start_color[1] + (end_color[1] - start_color[1]) * percent) if not str(
-        start_color[1]) in ignore_colors else 0
+            start_color[1]) in ignore_colors else 0
     b = int(start_color[2] + (end_color[2] - start_color[2]) * percent) if not str(
-        start_color[2]) in ignore_colors else 0
+            start_color[2]) in ignore_colors else 0
 
     # Ensure the sum of the colors is always 255
     sum_rgb = r + g + b
@@ -166,11 +167,11 @@ def calculate_gradient_color(start_color, end_color, percent, **kwargs):
 
     # Calculate the gradient color
     r = int(start_color[0] + (end_color[0] - start_color[0]) * percent) if not str(
-        start_color[0]) in ignore_colors else 0
+            start_color[0]) in ignore_colors else 0
     g = int(start_color[1] + (end_color[1] - start_color[1]) * percent) if not str(
-        start_color[1]) in ignore_colors else 0
+            start_color[1]) in ignore_colors else 0
     b = int(start_color[2] + (end_color[2] - start_color[2]) * percent) if not str(
-        start_color[2]) in ignore_colors else 0
+            start_color[2]) in ignore_colors else 0
 
     # Ensure the maximum RGB value matches the maximum value in the end color
     max_rgb = max(r, g, b)

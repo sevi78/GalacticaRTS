@@ -1,6 +1,7 @@
 import copy
 import math
 
+import pygame
 from pygame import Vector2
 
 from source.configuration.game_config import config
@@ -134,37 +135,6 @@ class PanZoomGameObject(PanZoomSprite, InteractionHandler):
         self.image = new_image
         self.rect = new_rect
 
-    def move_towards_target__(self):
-        self.moving = True
-        direction = self.target_position - Vector2(self.world_x, self.world_y)
-
-        # Calculate the distance between the current position and the target position
-        distance = direction.length() * self.get_zoom()
-
-        # Check if the distance is zero (bullet is already at the target position)
-        if distance < self.attack_distance:
-            self.target_reached = True
-            return
-
-        # Normalize the direction vector
-        try:
-            direction.normalize()
-        except Exception as e:
-            print(f"move_towards_target error! (direction.normalize()):{e}")
-
-        # Calculate the displacement vector for each time step
-        displacement = direction * self.speed * config.game_speed
-
-        # Calculate the number of time steps needed to reach the target position
-        time_steps = int(distance / self.speed) / self.get_zoom()
-
-        # Move the obj towards the target position with a constant speed
-        try:
-            self.world_x += displacement.x / time_steps
-            self.world_y += displacement.y / time_steps
-        except ZeroDivisionError as e:
-            print(f"move_towards_target error! (self.world_x += displacement.x / time_steps...):{e}")
-
     def move_towards_target(self):
         self.moving = True
         direction = self.target_position - Vector2(self.world_x, self.world_y)
@@ -193,10 +163,10 @@ class PanZoomGameObject(PanZoomSprite, InteractionHandler):
         x, y = self.world_x, self.world_y
         if not self.exploded:
             explosion = PanZoomSprite(
-                screen, x, y, size[0], size[1], self.pan_zoom, self.explosion_name,
-                loop_gif=False, kill_after_gif_loop=True, align_image="center",
-                relative_gif_size=self.explosion_relative_gif_size,
-                layer=10, sound=sound, group="explosions", name="explosion")
+                    screen, x, y, size[0], size[1], self.pan_zoom, self.explosion_name,
+                    loop_gif=False, kill_after_gif_loop=True, align_image="center",
+                    relative_gif_size=self.explosion_relative_gif_size,
+                    layer=10, sound=sound, group="explosions", name="explosion")
 
             self.exploded = True
 
@@ -205,6 +175,7 @@ class PanZoomGameObject(PanZoomSprite, InteractionHandler):
         self.kill()
 
     def update_pan_zoom_game_object(self):
+        # pygame.draw.rect(self.win, self.frame_color, self.collide_rect, 1)
         # if config.game_paused:
         #     return
         self.update_pan_zoom_sprite()

@@ -70,26 +70,26 @@ class LevelSelect(EditorBase):
             infotext = info_panel_text_generator.create_create_info_panel_level_text(level, level_dict)
 
             icon = ImageButton(win=self.win,
-                x=self.get_screen_x() + x,
-                y=self.get_screen_y() + y + TOP_SPACING,
-                width=button_size,
-                height=button_size,
-                isSubWidget=False,
-                parent=self,
-                image=pygame.transform.scale(get_image(f"{i.split('.json')[0]}.png"), (button_size, button_size)),
-                tooltip=tooltip,
-                frame_color=self.frame_color,
-                moveable=False,
-                include_text=True,
-                layer=self.layer,
-                onClick=lambda level_=level: self.select_level(level_),
-                name=i,
-                text=level,
-                textColour=self.frame_color,
-                font_size=50,
-                info_text=infotext,
-                info_panel_alpha=255
-                )
+                    x=self.get_screen_x() + x,
+                    y=self.get_screen_y() + y + TOP_SPACING,
+                    width=button_size,
+                    height=button_size,
+                    isSubWidget=False,
+                    parent=self,
+                    image=pygame.transform.scale(get_image(f"{i.split('.json')[0]}.png"), (button_size, button_size)),
+                    tooltip=tooltip,
+                    frame_color=self.frame_color,
+                    moveable=False,
+                    include_text=True,
+                    layer=self.layer,
+                    onClick=lambda level_=level: self.select_level(level_),
+                    name=i,
+                    text=level,
+                    textColour=self.frame_color,
+                    font_size=50,
+                    info_text=infotext,
+                    info_panel_alpha=255
+                    )
             self.buttons.append(icon)
             self.widgets.append(icon)
 

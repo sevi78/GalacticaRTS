@@ -1,6 +1,5 @@
 import pygame
 
-from source.handlers.color_handler import colors
 from source.multimedia_library.images import get_image
 
 TEXTBORDER = 10
@@ -17,114 +16,6 @@ class TextWrap:  # original
         self.border = TEXTBORDER
         self.word_height_sum = 0
         self.link_found = False
-
-    def wrap_text__(self, win, text, pos, size, font, color=pygame.Color('white'), **kwargs):
-        """ text wrapper function:
-            Parameters
-            ----------
-            win : pygame.Surface
-                surface to draw text on
-            text : str
-                text to draw
-            pos : tuple
-                (x, y) position of text
-            size : tuple
-                (width, height) size of text
-            font : pygame.font.Font
-                font to use
-            color : pygame.Color
-                color of text
-            kwargs : dict
-                keyword arguments to pass to wrap_text
-
-                fade_out = kwargs.get("fade_out", False)
-                alpha = kwargs.get("alpha", 255)
-
-                # this creates an icon for every word in the text that is in zhe list:
-                  example : resources = ["water", "energy", "food", "minerals", "technology", "population"]
-
-                iconize = kwargs.get("iconize", [])
-         """
-        if not text: return
-        fade_out = kwargs.get("fade_out", False)
-        alpha = kwargs.get("alpha", 255)
-        iconize = kwargs.get("iconize", [])
-        alarm_links = ["attack"]
-        links = ["attack"]  # kwargs.get("links", ["attack"])
-        self.color = color
-
-        words = [word.split(' ') for word in text.splitlines()]  # 2D array where each row is a list of words.
-        space = font.size(' ')[0]  # The width of a space.
-        max_width, max_height = size  # Use self instead of undefined surface variable
-        x, y = pos
-        x += self.border
-        y += self.border
-
-        # store the sum of all words to get the max height of all text to resize the panel
-        self.word_height_sum = 0
-
-        resources = ["water", "energy", "food", "minerals", "technology", "population"]
-
-        for line in words:
-            for word in line:
-
-                # alarm links
-                if word in alarm_links:
-                    color = self.alarm_color
-                    # create a surface on x,y and store somewhere that from outside the mouse can recognise it
-                else:
-                    color = self.color
-
-                word_surface = font.render(word, True, color)
-                word_width, word_height = word_surface.get_size()
-                # pygame.draw.rect(win, colors.ui_darker,(x,y,word_width, word_height),1 )
-
-                if iconize:
-                    if word[-1:] == ":":
-                        image_name = word.split(":")[0]
-                    else:
-                        image_name = word
-
-                    if image_name in iconize:
-                        if image_name in resources:
-                            image_name = word.split(":")[0] + "_25x25.png"
-                        else:
-                            image_name = word.split(":")[0] + ".png"
-
-                            # if image_name == "✓.png":
-                            #     image_name = "check.png"
-
-                        img = pygame.transform.scale(get_image(image_name), (word_height, word_height))
-                        win.blit(img, (x, y))
-                        x += word_height + space
-
-                self.word_height_sum += word_height
-
-                if x + word_width >= max_width:
-                    x = pos[0] + self.border  # Reset the x.
-                    y += word_height  # Start on new row.
-
-                if fade_out:
-                    # Create a copy of the original text surface.
-                    txt_surf = word_surface.copy()
-                    # Fill alpha_surf with this color to set its alpha value.
-                    alpha_surf = pygame.Surface(txt_surf.get_size(), pygame.SRCALPHA)
-                    alpha_surf.fill((255, 255, 255, alpha))
-                    # To make the text surface transparent, blit the transparent
-                    # alpha_surf onto it with the BLEND_RGBA_MULT flag.
-                    txt_surf.blit(alpha_surf, (0, 0), special_flags=pygame.BLEND_RGBA_MULT)
-                    win.blit(txt_surf, (x, y))
-
-                else:
-                    win.blit(word_surface, (x, y))
-
-                x += word_width + space
-
-            x = pos[0] + self.border  # Reset the x.
-            y += word_height  # Start on new row.
-
-            # get the last height value
-            self.word_height_sum = y
 
     def wrap_text(self, win, text, pos, size, font, color=pygame.Color('white'), **kwargs):
         """ text wrapper function:
@@ -152,7 +43,7 @@ class TextWrap:  # original
                   example : resources = ["water", "energy", "food", "minerals", "technology", "population"]
 
                 iconize = kwargs.get("iconize", [])
-         """
+        """
         if not text: return
 
         fade_out = kwargs.get("fade_out", False)
@@ -267,17 +158,17 @@ def main():
         win.fill((0, 0, 0))
 
         text_wrap.wrap_text(
-            win=win,
-            text="Hello World! attack ",
-            pos=(255, 255),
-            size=(150, 30),
-            font=pygame.font.SysFont(None, 38),
-            color=pygame.color.THECOLORS.get("orange"),
-            fade_out=False,
-            alpha=255,
-            iconize=[],
-            alarm_links=["attack"]
-            )
+                win=win,
+                text="Hello World! attack ",
+                pos=(255, 255),
+                size=(150, 30),
+                font=pygame.font.SysFont(None, 38),
+                color=pygame.color.THECOLORS.get("orange"),
+                fade_out=False,
+                alpha=255,
+                iconize=[],
+                alarm_links=["attack"]
+                )
 
         pygame.display.update()
         events = pygame.event.get()

@@ -7,6 +7,7 @@ from source.draw.cross import draw_cross_in_circle, draw_dashed_cross_in_circle
 from source.gui.lod import level_of_detail
 from source.gui.panels.building_panel_components.building_panel import SPECIAL_FONT_SIZE
 from source.gui.panels.building_panel_components.building_panel_draw import SPECIAL_TEXT_COLOR
+from source.handlers.diplomacy_handler import diplomacy_handler
 from source.handlers.player_handler import player_handler
 from source.multimedia_library.gif_handler import GifHandler
 from source.multimedia_library.images import get_image
@@ -78,7 +79,7 @@ class PanZoomPlanetDraw:
     def draw_hover_circle(self):
         panzoom = pan_zoom_handler
         pygame.draw.circle(self.win, self.frame_color, self.rect.center,
-            (self.rect.height / 2) + 4, int(6 * panzoom.zoom))
+                (self.rect.height / 2) + 4, int(6 * panzoom.zoom))
 
     def draw_specials(self):
         # print ("draw_specials:", self.specials)
@@ -101,11 +102,11 @@ class PanZoomPlanetDraw:
                             operator = "x"
 
                         drawText(self.win, f"{operator}{str(value)}", SPECIAL_TEXT_COLOR,
-                            (x + 25, y, 50, 20), font, "left")
+                                (x + 25, y, 50, 20), font, "left")
                         count += 1
                         y += 20  # Increment y for the next draw
 
-    def draw_alien_population_icons(self):
+    def draw_alien_population_icons__(self):  # old
         if self.get_zoom() > IMAGE_ZOOM:
             if self.alien_population > 0:
                 x = self.screen_position[0] - self.screen_width / 2 - 60
@@ -115,3 +116,16 @@ class PanZoomPlanetDraw:
                     alien_image = pygame.transform.scale(get_image("alien_face_green.png"), (25, 25))
                 self.win.blit(alien_image, (
                     x, self.rect.centery))
+
+    def draw_alien_population_icons(self):
+        if self.get_zoom() > IMAGE_ZOOM:
+            # check if hostile or friendly
+            if not diplomacy_handler.is_in_peace(self.owner, config.player):
+                alien_image = pygame.transform.scale(get_image("alien_face_orange.png"), (25, 25))
+            else:
+                alien_image = pygame.transform.scale(get_image("alien_face_green.png"), (25, 25))
+
+            # only draw if occupied by alien
+            if self.owner != -1:
+                x = self.screen_position[0] - self.screen_width / 2 - 60
+                self.win.blit(alien_image, (x, self.rect.centery))

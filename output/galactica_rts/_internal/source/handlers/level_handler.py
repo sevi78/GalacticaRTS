@@ -323,8 +323,10 @@ class LevelDictGenerator:
             print("generate_name error: ", e)
             return "no name generated"
 
-    def create_celestial_object(self, i: int, body_type: str, images: list, orbit_object_id: int, world_x: int,
-                                world_y: int):
+    def create_celestial_object(
+            self, i: int, body_type: str, images: list, orbit_object_id: int, world_x: int,
+            world_y: int
+            ):
         name = self.generate_name(i, body_type, orbit_object_id)
         gifs = get_image_names_from_folder("gifs")
         atmospheres = []
@@ -428,7 +430,7 @@ class LevelHandler:
             "universe_density"])
         universe_factory.create_universe(0, 0, self.data["globals"]["width"], self.data["globals"]["height"])
         universe_factory.create_artefacts(0, 0, self.data["globals"]["width"], self.data["globals"]["height"],
-            self.data["globals"]["collectable_item_amount"])
+                self.data["globals"]["collectable_item_amount"])
 
     def generate_level_dict_from_scene__(self):
         """TODO: different players must be stored"""
@@ -487,18 +489,20 @@ class LevelHandler:
         data = self.data
 
         # get players
+        data["players"] = {}
         for key, player_obj in config.app.players.items():
-            if not "players" in data.keys():
-                data["players"] = {}
+            # if not "players" in data.keys():
 
             data["players"][key] = {}
             data["players"][key]["stock"] = player_obj.get_stock()
             data["players"][key]["population"] = player_obj.population
+            data["players"][key]["enemies"] = player_obj.enemies
 
         # this is to set the human player, should maybe be removed and replaced
         player = config.app.player
         data["player"]["stock"] = player.get_stock()
         data["player"]["population"] = player.population
+        data["player"]["enemies"] = player.enemies
 
         # get all planets
         for planet in sprite_groups.planets.sprites():
@@ -569,60 +573,6 @@ class LevelHandler:
         # navigate zo center of the level
         navigate_to_position(self.data["globals"]["width"] / 2, self.data["globals"]["height"] / 2)
 
-    def load_level__(self, filename, folder):
-        """TODO: how to store the ai player??"""
-        self.current_game = filename
-        self.data = load_file(filename, folder=folder)
-        config.app.level_edit.set_selector_current_value()
-
-        # delete level
-        self.delete_level()
-
-        # reset player
-        # self.app.player.reset(self.data["player"])
-        player_handler.reset_players()
-
-        # create planets, AND SELECT ONE ! to make ensure no errors are generated!!!
-        planet_factory.create_planets_from_data(self.data)
-        self.app.selected_planet = sprite_groups.planets.sprites()[0]
-
-        # create ships
-        ships = self.data.get("ships")
-        for key in ships.keys():
-            self.app.ship_factory.create_ship(f"{ships[key]['name']}_30x30.png", int(
-                ships[key]["world_x"]), int(
-                ships[key]["world_y"]), config.app, ships[key]["weapons"], data=ships[key])
-
-        # create universe
-        if config.draw_universe:
-            self.create_universe()
-
-        # setup game_event_handler
-        self.app.game_event_handler.level = config.app.level_handler.data.get("globals").get("level")
-        self.app.game_event_handler.set_goal(config.app.level_handler.data.get("globals").get("goal"))
-
-        # setup mission
-        self.app.resource_panel.mission_icon.info_text = info_panel_text_generator.create_info_panel_mission_text()
-        config.edit_mode = False
-
-        economy_handler.calculate_global_production(config.app.player)
-
-        # setup pan_zoom_handler
-        self.setup_pan_zoom_handler()
-
-        # setup container
-        if hasattr(self.app, "ship_container"):
-            self.app.ship_container.set_widgets(sprite_groups.convert_sprite_groups_to_image_widget_list("ships"))
-
-            # self.app.ship_container.filter_widget.show()
-
-        if hasattr(self.app, "planet_container"):
-            self.app.planet_container.set_widgets(sprite_groups.convert_sprite_groups_to_image_widget_list("planets"))
-            # self.app.ship_container.filter_widget.show()
-
-        # setup event_text
-        event_text.planet_links = planet_factory.get_all_planet_names()
-
     def load_level(self, filename, folder):
         self.current_game = filename
         self.data = load_file(filename, folder=folder)
@@ -644,8 +594,8 @@ class LevelHandler:
         ships = self.data.get("ships")
         for key in ships.keys():
             self.app.ship_factory.create_ship(f"{ships[key]['name']}_30x30.png", int(
-                ships[key]["world_x"]), int(
-                ships[key]["world_y"]), config.app, ships[key]["weapons"], data=ships[key])
+                    ships[key]["world_x"]), int(
+                    ships[key]["world_y"]), config.app, ships[key]["weapons"], data=ships[key])
 
         # create universe
         if config.draw_universe:
@@ -656,7 +606,7 @@ class LevelHandler:
         self.app.game_event_handler.set_goal(config.app.level_handler.data.get("globals").get("goal"))
 
         # setup mission
-        self.app.resource_panel.mission_icon.info_text = info_panel_text_generator.create_info_panel_mission_text()
+        self.app.settings_panel.mission_icon.info_text = info_panel_text_generator.create_info_panel_mission_text()
         config.edit_mode = False
 
         economy_handler.calculate_global_production(config.app.player)
@@ -684,12 +634,12 @@ class LevelHandler:
         # save screenshot
         screen_x, screen_y = pan_zoom_handler.world_2_screen(0, 0)
         capture_screenshot(
-            self.win,
-            f"level_{self.data['globals']['level']}.png",
-            (screen_x, screen_y, self.data["globals"]["width"] * pan_zoom_handler.zoom,
-             self.data["globals"]["height"] * pan_zoom_handler.zoom),
-            (360, 360),
-            event_text=event_text)
+                self.win,
+                f"level_{self.data['globals']['level']}.png",
+                (screen_x, screen_y, self.data["globals"]["width"] * pan_zoom_handler.zoom,
+                 self.data["globals"]["height"] * pan_zoom_handler.zoom),
+                (360, 360),
+                event_text=event_text)
 
         # file_handler.get_level_list()
         self.app.level_select.update_icons()

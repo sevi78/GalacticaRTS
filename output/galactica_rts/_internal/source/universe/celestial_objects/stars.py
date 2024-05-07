@@ -48,10 +48,10 @@ class PulsatingStar(CelestialObject):
             s = 2 * math.pi * (t + self.start_pulse)
             c = int(config.star_brightness / 2 * max(0.5, 1 + math.cos(2 * math.pi * t)))
             gfxdraw.filled_circle(
-                self.win,
-                int(self.get_screen_x()),
-                int(self.get_screen_y()),
-                int(self.pulsating_star_size * self.get_zoom()),
-                (c, c, c))
+                    self.win,
+                    int(self.get_screen_x()),
+                    int(self.get_screen_y()),
+                    int(self.pulsating_star_size * self.get_zoom()),
+                    (c, c, c))
 
             # self.debug_object()

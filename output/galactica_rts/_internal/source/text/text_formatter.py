@@ -3,14 +3,26 @@ import locale
 SUFFIXES = ['', 'k', 'M', 'B', 'T']
 
 
-def format_number(n, digits=0):
+def format_number(n: int, digits: int = 0) -> str:
+    """ formats a number (int) based on suffixes:
+        ['', 'k', 'M', 'B', 'T']
+
+        if n <=:
+        1000 returns 1k
+        1'000'000 returns 1M
+        ect ...
+    """
+    if n == 0:
+        return "0"
     if n < 0:
-        return str(n)
+        return "-" + format_number(-n, digits)
     magnitude = 0
-    while n >= 1000 and magnitude < len(SUFFIXES) - 1:
+    while n >= 1000:
+        if magnitude == len(SUFFIXES) - 1:
+            break
         magnitude += 1
         n /= 1000
-    if isinstance(n, float) and n % 1 == 0:
+    if digits == 0:
         formatted_number = locale.format_string(f'%.0f', n, grouping=True)
     else:
         formatted_number = locale.format_string(f'%.{digits}f', n, grouping=True)
@@ -25,7 +37,13 @@ def get_reduced_number(number) -> float:
     return reduced_number
 
 
-def to_roman(num: int):
+def to_roman(num: int) -> str:
+    """ converts a number (int) into a roman number:
+    10      = 'X'
+    1000    = 'M'
+    ect...
+    """
+
     val = [
         1000, 900, 500, 400,
         100, 90, 50, 40,
@@ -44,3 +62,24 @@ def to_roman(num: int):
         roman_num += syb[i] * count
         num -= val[i] * count
     return roman_num
+
+
+if __name__ == "__main__":
+    print(format_number(0))
+    print(format_number(1100))
+    print(format_number(10100))
+    print(format_number(100010))
+    print(format_number(1010000))
+    print(format_number(10010000))
+
+    print(format_number(1100, 0))
+    print(format_number(10100, 1))
+    print(format_number(100010, 2))
+    print(format_number(1010000, 4))
+    print(format_number(10010000, 5))
+
+    print(format_number(-1100, 0))
+    print(format_number(-10100, 1))
+    print(format_number(-100010, 2))
+    print(format_number(-1010000, 4))
+    print(format_number(-10010000, 5))

@@ -5,7 +5,7 @@ from PIL.Image import Image
 from source.multimedia_library.images import get_image
 
 
-def change_non_transparent_pixels(image, new_color):
+def change_non_transparent_pixels(image: pygame.surface, new_color) -> pygame.surface:
     """
     Changes all non-transparent pixels of the given image to the specified color,
     while preserving the transparency of each pixel.
@@ -39,7 +39,7 @@ def change_non_transparent_pixels(image, new_color):
     return image
 
 
-def blur_image(surf, radius):
+def blur_image(surf: pygame.surface, radius):  # unused
     pil_string_image = pygame.image.tostring(surf, "RGBA", False)
     pil_image = Image.frombuffer("RGBA", surf.get_size(), pil_string_image)
     pil_blurred = pil_image.filter(ImageFilter.GaussianBlur(radius=radius))
@@ -47,7 +47,15 @@ def blur_image(surf, radius):
     return blurred_image.convert_alpha()
 
 
-def overblit_button_image(button, image_name: str, value: bool, **kwargs):
+def overblit_button_image(button, image_name: str, value: bool, **kwargs) -> None:
+    """
+    Overblits an image on top of a button's image.
+
+    :param button: The button to overblit the image on.
+    :param image_name: The name of the image to overblit.
+    :param value: The value of the button.
+    :param kwargs: Additional keyword arguments for customizing the overblit.
+    """
     if not button:
         return
 
@@ -71,29 +79,24 @@ def overblit_button_image(button, image_name: str, value: bool, **kwargs):
         button.image.blit(button.image_raw, (0, 0))  # Blit the original image
 
 
-def outline_image(image, color=(0, 0, 0), threshold=127, thickness=0):
+def outline_image(image, color=(0, 0, 0), threshold=127, thickness=0) -> pygame.surface:
     image.blit(get_outline(image, color, threshold, thickness), (0, 0))
     return image
 
 
-def get_outline__(image, color=(0, 0, 0), threshold=127):
+def get_outline(image, color=(0, 0, 0), threshold=127, thickness=0) -> pygame.surface:
     """Returns an outlined image of the same size.  The image argument must
     either be a convert surface with a set colorkey, or a convert_alpha
     surface. The color argument is the color which the outline will be drawn.
     In surfaces with alpha, only pixels with an alpha higher than threshold will
     be drawn.  Colorkeyed surfaces will ignore threshold."""
+
+    # Convert the image to a mask
     mask = pygame.mask.from_surface(image, threshold)
     outline_image = pygame.Surface(image.get_size()).convert_alpha()
     outline_image.fill((0, 0, 0, 0))
-    for point in mask.outline():
-        outline_image.set_at(point, color)
-    return outline_image
 
-
-def get_outline(image, color=(0, 0, 0), threshold=127, thickness=0):
-    mask = pygame.mask.from_surface(image, threshold)
-    outline_image = pygame.Surface(image.get_size()).convert_alpha()
-    outline_image.fill((0, 0, 0, 0))
+    # If the thickness is greater than 0, draw the outline with a thickness
     if thickness > 0:
         for point in mask.outline():
             for x in range(-thickness, thickness + 1):

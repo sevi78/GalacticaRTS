@@ -92,7 +92,8 @@ class ToolTipGenerator:
 
         # Count the alien_population of all planets and moons
         alien_population_count = sum(
-            obj["alien_population"] for obj in data["celestial_objects"].values() if obj["type"] in ["planet", "moon"])
+                obj["alien_population"] for obj in data["celestial_objects"].values() if
+                obj["type"] in ["planet", "moon"])
 
         # Create the tooltip strings
         area_text = f"{width} x{height} km"

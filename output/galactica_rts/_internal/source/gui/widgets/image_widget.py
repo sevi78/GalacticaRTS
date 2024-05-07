@@ -3,15 +3,13 @@ import copy
 import pygame
 import pygame.sprite
 
-from source.handlers.pan_zoom_sprite_handler import sprite_groups
 
-
-class ImageSprite(pygame.sprite.Sprite):
+class ImageSprite:
     """ simplest class to display an image on screen"""
 
-    def __init__(self, x, y, width, height, image, group, **kwargs):
-        pygame.sprite.Sprite.__init__(self)
+    def __init__(self, win, x, y, width, height, image, **kwargs):
         # define image_raw, to ensure scaling does not pixelize the image
+        self.win = win
         self.image_raw = image
 
         # scale image
@@ -27,10 +25,7 @@ class ImageSprite(pygame.sprite.Sprite):
         self.image_alpha = kwargs.pop("image_alpha", None)
 
         # set _hidden variable to ensure objet can be hidden
-        self._hidden = False
-
-        # register at sprite group
-        getattr(sprite_groups, group).add(self)
+        self._hidden = kwargs.get("hidden", False)
 
     def show(self):
         self._hidden = False
@@ -44,3 +39,7 @@ class ImageSprite(pygame.sprite.Sprite):
 
     def set_position(self, x, y, align):
         setattr(self.rect, align, (x, y))
+
+    def draw(self):
+        if not self._hidden:
+            self.win.blit(self.image, self.rect)

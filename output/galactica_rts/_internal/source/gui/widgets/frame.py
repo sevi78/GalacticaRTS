@@ -43,15 +43,15 @@ class Frame:
         self.surface = pygame.transform.scale(self.surface, (self.world_width, self.world_height))
         rect = (self.world_x, self.world_y, self.surface.get_rect().width, self.surface.get_rect().height)
         draw_transparent_rounded_rect(
-            self.win,
-            (0, 0, 0),
-            rect,
-            self.ui_rounded_corner_radius,
-            self.ui_panel_alpha)
+                self.win,
+                (0, 0, 0),
+                rect,
+                self.ui_rounded_corner_radius,
+                self.ui_panel_alpha)
 
         pygame.draw.rect(
-            self.win,
-            self.frame_color,
-            rect,
-            self.ui_rounded_corner_thickness,
-            self.ui_rounded_corner_radius)
+                self.win,
+                self.frame_color,
+                rect,
+                self.ui_rounded_corner_thickness,
+                self.ui_rounded_corner_radius)

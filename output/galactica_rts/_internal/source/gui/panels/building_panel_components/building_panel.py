@@ -76,9 +76,9 @@ class BuildingPanel(WidgetBase, BuildingPanelConstructor, BuildingSlot, EconomyP
 
         self.thumps_up_size = 20
         self.thumps_up_image_red = pygame.transform.scale(pygame.transform.flip(get_image("thumps_upred.png"),
-            True, True), (self.thumps_up_size, self.thumps_up_size))
+                True, True), (self.thumps_up_size, self.thumps_up_size))
         self.thumps_up_image_green = pygame.transform.scale(pygame.transform.flip(get_image("thumps_up.png"),
-            True, False), (self.thumps_up_size, self.thumps_up_size))
+                True, False), (self.thumps_up_size, self.thumps_up_size))
         self.thumps_up = self.thumps_up_image_green
 
         self.sub_widget_height = 70
@@ -86,15 +86,15 @@ class BuildingPanel(WidgetBase, BuildingPanelConstructor, BuildingSlot, EconomyP
 
         # space harbor
         self.space_harbor = SpaceHarbor(self.win, self.world_x, self.world_y, self.get_screen_width(), self.sub_widget_height,
-            isSubWidget=False, parent=self, layer=9, font_size=font_size)
+                isSubWidget=False, parent=self, layer=9, font_size=font_size)
 
         # planetary defence
         self.planetary_defence = PlanetaryDefenceWidget(self.win, self.world_x, self.world_y, self.get_screen_width(), self.sub_widget_height,
-            isSubWidget=False, parent=self, layer=9, spacing=5, icon_size=25, font_size=font_size)
+                isSubWidget=False, parent=self, layer=9, spacing=5, icon_size=25, font_size=font_size)
 
         # building_button_widget
         self.building_button_widget = BuildingButtonWidget(win, 200, 100, 300, 200, self.parent,
-            False, layer=9, parent=self, fixed_parent=True)
+                False, layer=9, parent=self, fixed_parent=True)
 
         # toggle switch to pop in or out
         self.toggle_switch = ToggleSwitch(self, 15, zero_y=self.surface_rect.y)
@@ -201,7 +201,7 @@ class BuildingPanel(WidgetBase, BuildingPanelConstructor, BuildingSlot, EconomyP
 
         # planet text
         self.planet_text = drawText(self.win, self.parent.get_planet_name(), self.frame_color,
-            (x, self.world_y, self.get_screen_width(), self.surface.get_height()), self.font, "center")
+                (x, self.world_y, self.get_screen_width(), self.surface.get_height()), self.font, "center")
 
         if self.parent.get_planet_name() == "???":
             self.surface_rect.height = self.planet_minus_arrow_button.get_screen_height() + self.spacing

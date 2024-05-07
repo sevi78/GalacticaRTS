@@ -16,18 +16,18 @@ class DealItem(ContainerWidgetItem):
 
         # Buttons
         self.accept_button = Button(
-            win,
-            self.world_x,
-            self.world_y,
-            self.world_height,
-            self.world_height,
-            isSubWidget=False,
-            image=pygame.transform.scale(get_image("yes_icon.png"),
-                (self.world_height, self.world_height)),
-            transparent=True,
-            parent=self,
-            onClick=lambda: self.accept(),
-            layer=10)
+                win,
+                self.world_x,
+                self.world_y,
+                self.world_height,
+                self.world_height,
+                isSubWidget=False,
+                image=pygame.transform.scale(get_image("yes_icon.png"),
+                        (self.world_height, self.world_height)),
+                transparent=True,
+                parent=self,
+                onClick=lambda: self.accept(),
+                layer=10)
 
         self.widgets.append(self.accept_button)
 

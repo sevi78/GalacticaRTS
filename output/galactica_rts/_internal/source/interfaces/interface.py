@@ -199,17 +199,17 @@ class Interface(EditorBase):
                 step = 0.001
 
             slider = Slider(win=self.win,
-                x=x,
-                y=y,
-                width=width,
-                height=self.slider_height,
-                min=var.value_min,
-                max=var.value_max,
-                step=step,
-                initial=value,
-                handleColour=colors.ui_dark,
-                layer=self.layer,
-                parent=self)
+                    x=x,
+                    y=y,
+                    width=width,
+                    height=self.slider_height,
+                    min=var.value_min,
+                    max=var.value_max,
+                    step=step,
+                    initial=value,
+                    handleColour=colors.ui_dark,
+                    layer=self.layer,
+                    parent=self)
 
             slider.colour = colors.ui_darker
 

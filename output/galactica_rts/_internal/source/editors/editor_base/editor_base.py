@@ -4,7 +4,7 @@ import pygame
 
 from source.configuration.game_config import config
 from source.draw.rect import draw_transparent_rounded_rect
-from source.editors.editor_base.editor_config import ARROW_SIZE, SPACING_Y, FONT_SIZE, TOP_SPACING, TOP_LIMIT
+from source.editors.editor_base.editor_config import ARROW_SIZE, SPACING_Y, FONT_SIZE, TOP_SPACING
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.gui.widgets.selector import Selector
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
@@ -95,7 +95,7 @@ class EditorBase(WidgetBase):
 
         # drag/move
         self.moving = False
-        self.drag_enabled = True
+        self.drag_enabled = kwargs.get("drag_enabled", True)
         self._on_hover = False
 
         # register
@@ -153,16 +153,24 @@ class EditorBase(WidgetBase):
                 i.hide()
 
     def set_visible(self):
+        # toggle visibility of the editor
         if self._hidden:
             self.show()
         else:
             self.hide()
 
-        # config.game_paused = self.game_paused and not self._hidden
+        # toggle edit_mode
         config.edit_mode = not self._hidden
 
+        # toggle editors attached the editor itself
         for i in self.editors:
-            i.set_visible()
+            # hide if the editor is hidden
+            if self._hidden:
+                i.hide()
+            else:
+                # only show if the attached editor is enabled!
+                if i.isEnabled():
+                    i.show()
 
         self.hide_other_editors()
 
@@ -170,22 +178,22 @@ class EditorBase(WidgetBase):
         name = kwargs.get("name", "no_name")
         button_size = 32
         save_icon = ImageButton(win=self.win,
-            x=self.get_screen_x() + self.get_screen_width() / 2 - button_size,
-            y=self.max_height + button_size / 2,
-            width=button_size,
-            height=button_size,
-            isSubWidget=False,
-            parent=self,
-            image=pygame.transform.scale(
-                get_image("save_icon.png"), (button_size, button_size)),
-            tooltip=tooltip,
-            frame_color=self.frame_color,
-            moveable=False,
-            include_text=True,
-            layer=self.layer,
-            onClick=function,
-            name=name
-            )
+                x=self.get_screen_x() + self.get_screen_width() / 2 - button_size,
+                y=self.max_height + button_size / 2,
+                width=button_size,
+                height=button_size,
+                isSubWidget=False,
+                parent=self,
+                image=pygame.transform.scale(
+                        get_image("save_icon.png"), (button_size, button_size)),
+                tooltip=tooltip,
+                frame_color=self.frame_color,
+                moveable=False,
+                include_text=True,
+                layer=self.layer,
+                onClick=function,
+                name=name
+                )
         save_icon.hide()
 
         self.buttons.append(save_icon)
@@ -195,22 +203,22 @@ class EditorBase(WidgetBase):
         name = kwargs.get("name", "no_name")
         button_size = 32
         load_button = ImageButton(win=self.win,
-            x=self.get_screen_x() + self.get_screen_width() / 2 + button_size,
-            y=self.max_height + button_size / 2,
-            width=button_size,
-            height=button_size,
-            isSubWidget=False,
-            parent=self,
-            image=pygame.transform.scale(
-                get_image("load_icon.png"), (button_size, button_size)),
-            tooltip=tooltip,
-            frame_color=self.frame_color,
-            moveable=False,
-            include_text=False,
-            layer=self.layer,
-            onClick=function,
-            name=name
-            )
+                x=self.get_screen_x() + self.get_screen_width() / 2 + button_size,
+                y=self.max_height + button_size / 2,
+                width=button_size,
+                height=button_size,
+                isSubWidget=False,
+                parent=self,
+                image=pygame.transform.scale(
+                        get_image("load_icon.png"), (button_size, button_size)),
+                tooltip=tooltip,
+                frame_color=self.frame_color,
+                moveable=False,
+                include_text=False,
+                layer=self.layer,
+                onClick=function,
+                name=name
+                )
 
         load_button.hide()
 
@@ -220,22 +228,22 @@ class EditorBase(WidgetBase):
     def create_close_button(self):
         button_size = 32
         close_icon = ImageButton(win=self.win,
-            x=self.get_screen_x() + self.get_screen_width() - button_size - button_size / 2,
-            y=self.world_y + TOP_SPACING + button_size / 2,
-            width=button_size,
-            height=button_size,
-            isSubWidget=False,
-            parent=self,
-            image=pygame.transform.scale(
-                get_image("close_icon.png"), (button_size / 2, button_size / 2)),
-            tooltip="close editor",
-            frame_color=self.frame_color,
-            moveable=False,
-            include_text=False,
-            layer=self.layer,
-            onClick=lambda: self.close(),
-            name="close_button"
-            )
+                x=self.get_screen_x() + self.get_screen_width() - button_size - button_size / 2,
+                y=self.world_y + TOP_SPACING + button_size / 2,
+                width=button_size,
+                height=button_size,
+                isSubWidget=False,
+                parent=self,
+                image=pygame.transform.scale(
+                        get_image("close_icon.png"), (button_size / 2, button_size / 2)),
+                tooltip="close editor",
+                frame_color=self.frame_color,
+                moveable=False,
+                include_text=False,
+                layer=self.layer,
+                onClick=lambda: self.close(),
+                name="close_button"
+                )
 
         close_icon.hide()
 
@@ -248,7 +256,7 @@ class EditorBase(WidgetBase):
             if type(value) is bool:
                 self.selector_lists[key] = self.boolean_list
                 self.selectors.append(Selector(self.win, x, self.world_y + y, ARROW_SIZE, self.frame_color, 9,
-                    self.spacing_x, {"list_name": f"{key}_list", "list": self.boolean_list}, self, FONT_SIZE))
+                        self.spacing_x, {"list_name": f"{key}_list", "list": self.boolean_list}, self, FONT_SIZE))
 
                 y += self.spacing_y
 
@@ -258,8 +266,8 @@ class EditorBase(WidgetBase):
                     self.selector_lists[key] = self.default_list
 
                 self.selectors.append(Selector(self.win, x, self.world_y + y, ARROW_SIZE, self.frame_color, 9,
-                    self.spacing_x, {"list_name": f"{key}_list", "list": self.selector_lists[key]}, self, FONT_SIZE,
-                    repeat_clicks=False))
+                        self.spacing_x, {"list_name": f"{key}_list", "list": self.selector_lists[key]}, self, FONT_SIZE,
+                        repeat_clicks=False))
 
                 y += self.spacing_y
 
@@ -267,12 +275,13 @@ class EditorBase(WidgetBase):
         self.max_height = y + ARROW_SIZE
 
     def close(self):
-        config.set_global_variable("edit_mode", True)
+        config.set_global_variable("edit_mode", False)
         # if self.game_paused:
         #     config.game_paused = False
 
         config.tooltip_text = ""
-        self.hide()
+        # self.hide()
+        self.set_visible()
 
         for i in self.editors:
             i.hide()
@@ -285,39 +294,6 @@ class EditorBase(WidgetBase):
             self.on_hover = True
         else:
             self.on_hover = False
-
-    # def drag(self, events):
-    #     """ drag the widget """
-    #     if not self.drag_enabled:
-    #         return
-    #
-    #     old_x, old_y = self.world_x, self.world_y  # store old position
-    #     for event in events:
-    #         if event.type == pygame.MOUSEBUTTONDOWN:
-    #             if self.rect.collidepoint(event.pos):
-    #                 self.moving = True
-    #                 self.offset_x = self.world_x - event.pos[0]  # calculate the offset x
-    #                 self.offset_y = self.world_y - event.pos[1]  # calculate the offset y
-    #
-    #         elif event.type == pygame.MOUSEBUTTONUP:
-    #             self.moving = False
-    #
-    #         elif event.type == pygame.MOUSEMOTION and self.moving:
-    #             self.world_x = event.pos[0] + self.offset_x  # apply the offset x
-    #             self.world_y = event.pos[1] + self.offset_y  # apply the offset y
-    #
-    #             # limit y to avoid strange behaviour if close button is at the same spot as the editor open button
-    #
-    #             if self.world_y < TOP_LIMIT: self.world_y = TOP_LIMIT
-    #
-    #             # set rect
-    #             self.rect.x = self.world_x
-    #             self.rect.y = self.world_y
-    #
-    #             # set drag cursor
-    #             config.app.cursor.set_cursor("drag")
-    #
-    #     self.reposition(old_x, old_y)
 
     def is_same_or_subclass(self, other_obj):
         # Check if other_obj is an instance of the same class as self
@@ -386,12 +362,7 @@ class EditorBase(WidgetBase):
             if hasattr(widget, "set_center"):
                 widget.set_center()
 
-    def draw_text(self, x, y, width, height, text):
-        font = pygame.font.SysFont(config.font_name, height - 1)
-        text = font.render(text, 1, self.frame_color)
-        self.win.blit(text, (x, y))
-
-    def draw_frame(self, **kwargs):
+    def draw_frame(self, **kwargs):  # old, working but weird, because the frame rect is not set correctly
         corner_radius = kwargs.get("corner_radius", config.ui_rounded_corner_radius_big)
         corner_thickness = kwargs.get("corner_thickness", config.ui_rounded_corner_big_thickness)
 

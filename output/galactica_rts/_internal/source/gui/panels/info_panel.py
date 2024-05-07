@@ -70,7 +70,7 @@ class InfoPanel(WidgetBase, TextWrap):
         self.world_y = self.pos[1]
         self.set_colors(self.frame_color, (12, 10, 1))
         self.surface_rect = pygame.draw.rect(self.win, self.frame_color, pygame.Rect(self.world_x, self.world_y, self.world_width,
-            self.world_height + 10), 1, config.ui_rounded_corner_radius_small)
+                self.world_height + 10), 1, config.ui_rounded_corner_radius_small)
         self.planet_image = None
         self.planet_image_size = [PLANET_IMAGE_SIZE, PLANET_IMAGE_SIZE]
         self.planet_rect = None
@@ -87,9 +87,15 @@ class InfoPanel(WidgetBase, TextWrap):
 
     def update_text(self):
         # Wrap text before rendering onto surface
-        self.wrap_text(self.win, self.text, self.pos, self.size, self.font, self.color,
-            iconize=["water", "energy", "food", "minerals", "technology", "population", "phaser", "laser", "rocket",
-                     "\u2713"])
+        self.wrap_text(
+                self.win,
+                self.text,
+                self.pos,
+                self.size,
+                self.font,
+                self.color,
+                iconize=["water", "energy", "food", "minerals", "technology", "population", "phaser", "laser", "rocket",
+                         "\u2713"])
         self.set_size_from_text()
         if self.planet_image:
             self.set_planet_image(self.planet_image, size=self.planet_image.get_size(), align="topright")

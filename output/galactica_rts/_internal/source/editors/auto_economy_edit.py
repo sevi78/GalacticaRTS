@@ -16,19 +16,18 @@ class AutoEconomyEdit(EditorBase):
         self.buttonsize = 25
         self.player_id = 1
         self.player = self.get_player()
-        self.is_attached = True
-        self.drag_enabled = False
 
-        # print("self.player:", self.player.auto_economy_handler.__dict__)
         #  widgets
         self.widgets = []
 
         # create widgets
         self.create_input_boxes()
 
+        # register
+        self.parent.editors.append(self)
+
         # hide initially
         self.hide()
-        self.max_height = 200
 
     def set_player(self, player_index: int):
         self.player_id = player_index
@@ -40,6 +39,8 @@ class AutoEconomyEdit(EditorBase):
         return None
 
     def create_input_boxes(self):
+        # pprint(f"debug: {self.player},{config.app.__dict__}")
+
         x = self.world_x + self.text_spacing
         y = self.world_y + TOP_SPACING + self.text_spacing + TEXT_HEIGHT + self.text_spacing
         input_box_key_width = self.screen_width - self.text_spacing * 6
@@ -47,37 +48,39 @@ class AutoEconomyEdit(EditorBase):
 
         for key, value in self.player.auto_economy_handler.__dict__.items():
             input_box_key = InputBox(
-                self.win,
-                x,
-                y,
-                input_box_key_width,
-                TEXT_HEIGHT,
-                text=key,
-                parent=self,
-                key=key,
-                disabled=True,
-                text_input_type=str,
-                draw_frame=False)
+                    self.win,
+                    x,
+                    y,
+                    input_box_key_width,
+                    TEXT_HEIGHT,
+                    text=key,
+                    parent=self,
+                    key=key,
+                    disabled=True,
+                    text_input_type=str,
+                    draw_frame=False)
             self.input_boxes_key.append(input_box_key)
 
             input_box_value = InputBox(
-                self.win,
-                x + input_box_value_width,
-                y,
-                input_box_value_width,
-                TEXT_HEIGHT,
-                text=str(value),
-                parent=self,
-                key=key + "_value",
-                text_input_type=type(value),
-                disabled=True,
-                draw_frame=False)
+                    self.win,
+                    x + input_box_value_width,
+                    y,
+                    input_box_value_width,
+                    TEXT_HEIGHT,
+                    text=str(value),
+                    parent=self,
+                    key=key + "_value",
+                    text_input_type=type(value),
+                    disabled=True,
+                    draw_frame=False)
 
             self.input_boxes_value.append(input_box_value)
+
             self.widgets.append(input_box_key)
+            self.input_boxes.append(input_box_value)
             self.input_boxes.append(input_box_key)
             self.widgets.append(input_box_value)
-            self.input_boxes.append(input_box_value)
+
             y += TEXT_HEIGHT
 
         self.max_height = y + TOP_SPACING + TEXT_HEIGHT
@@ -91,7 +94,6 @@ class AutoEconomyEdit(EditorBase):
                 text = i.key
 
             i.set_text(text)
-            # setattr(i,"value",getattr(self.player.auto_economy_handler,i.key))
             i.update()
             i.handle_events(events)
 

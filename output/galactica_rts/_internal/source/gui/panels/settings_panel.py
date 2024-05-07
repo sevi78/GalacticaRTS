@@ -63,125 +63,251 @@ class SettingsPanel(WidgetBase):
         # self.widgets.append(self.economy_overview_icon)
         # self.max_width += self.icon_size + self.spacing
 
+        self.players_icon = ImageButton(win=self.win,
+                x=self.get_screen_x() - 50,
+                y=self.surface_rect.y + self.spacing,
+                width=self.icon_size,
+                height=self.icon_size,
+                isSubWidget=False,
+                parent=self,
+                image=pygame.transform.scale(get_image("multiplayer.png"), (25, 25)),
+                image_raw=get_image("multiplayer.png"),
+                tooltip="players",
+                frame_color=self.frame_color,
+                moveable=False,
+                include_text=True,
+                layer=self.layer,
+                key="",
+                info_text="",
+                name="players_icon",
+                textColours=(0, 0, 0),
+                font_size=0,
+                outline_thickness=0,
+                outline_threshold=0,
+                onClick=lambda: config.app.player_edit.set_visible())
+
+        self.widgets.append(self.players_icon)
+        self.max_width += self.icon_size + self.spacing
+
+        self.mission_icon = ImageButton(win=self.win,
+                x=self.get_screen_x() - 50,
+                y=self.surface_rect.y + self.spacing,
+                width=self.icon_size,
+                height=self.icon_size,
+                isSubWidget=False,
+                parent=self,
+                image=pygame.transform.scale(get_image("mission_512x512.png"), (25, 25)),
+                image_raw=get_image("mission_512x512.png"),
+                tooltip="this is your mission",
+                frame_color=self.frame_color,
+                moveable=False,
+                include_text=True,
+                layer=self.layer,
+                key="",
+                info_text="mission",
+                name="mission_icon",
+                textColours=(0, 0, 0),
+                font_size=0,
+                outline_thickness=0,
+                outline_threshold=0)
+
+        self.widgets.append(self.mission_icon)
+        self.max_width += self.icon_size + self.spacing
+
+        self.save_game_icon = ImageButton(win=self.win,
+                x=self.get_screen_x() - 50,
+                y=self.surface_rect.y + self.spacing,
+                width=self.icon_size,
+                height=self.icon_size,
+                isSubWidget=False,
+                parent=self,
+                image=pygame.transform.scale(get_image("save_icon_bk.png"), (25, 25)),
+                image_raw=get_image("save_icon_bk.png"),
+                tooltip="save game",
+                frame_color=self.frame_color,
+                moveable=False,
+                include_text=True,
+                layer=self.layer,
+                key="",
+                name="save_game_icon",
+                textColours=(0, 0, 0),
+                font_size=0,
+                onClick=lambda: config.app.save_game_edit.set_visible(),
+                outline_thickness=1,
+                outline_threshold=127)
+
+        self.widgets.append(self.save_game_icon)
+        self.max_width += self.icon_size + self.spacing
+
+        self.deal_manager_icon = ImageButton(win=self.win,
+                x=self.get_screen_x() - 50,
+                y=self.surface_rect.y + self.spacing,
+                width=self.icon_size,
+                height=self.icon_size,
+                isSubWidget=False,
+                parent=self,
+                image=pygame.transform.scale(get_image("deal_icon.png"), (25, 25)),
+                image_raw=get_image("deal_icon.png"),
+                tooltip="open deal manager",
+                frame_color=self.frame_color,
+                moveable=False,
+                include_text=True,
+                layer=self.layer,
+                key="",
+                name="deal_manager_icon",
+                textColours=(0, 0, 0),
+                font_size=0,
+                onClick=lambda: config.app.deal_manager.set_visible(),
+                outline_thickness=1,
+                outline_threshold=127)
+
+        self.widgets.append(self.deal_manager_icon)
+        self.max_width += self.icon_size + self.spacing
+
+        self.add_deal_icon = ImageButton(win=self.win,
+                x=self.get_screen_x() - 50,
+                y=self.surface_rect.y + self.spacing,
+                width=self.icon_size,
+                height=self.icon_size,
+                isSubWidget=False,
+                parent=self,
+                image=pygame.transform.scale(get_image("add_deal_icon.png"), (25, 25)),
+                image_raw=get_image("deal_icon.png"),
+                tooltip="add deal",
+                frame_color=self.frame_color,
+                moveable=False,
+                include_text=True,
+                layer=self.layer,
+                key="",
+                name="add_deal_icon",
+                textColours=(0, 0, 0),
+                font_size=0,
+                onClick=lambda: config.app.add_deal_edit.set_visible(),
+                outline_thickness=1,
+                outline_threshold=127)
+
+        self.widgets.append(self.add_deal_icon)
+        self.max_width += self.icon_size + self.spacing
+
         self.player_colors_icon = ImageButton(win=self.win,
-            x=self.get_screen_x() - 50,
-            y=self.surface_rect.y + self.spacing,
-            width=self.icon_size,
-            height=self.icon_size,
-            isSubWidget=False,
-            parent=self,
-            image=pygame.transform.scale(
-                get_image("color_icon.png"), (25, 25)),
-            tooltip="show player colors",
-            frame_color=self.frame_color,
-            moveable=False,
-            include_text=True, layer=self.layer,
-            onClick=lambda: config.set_global_variable("show_player_colors", True, button=self.player_colors_icon))
+                x=self.get_screen_x() - 50,
+                y=self.surface_rect.y + self.spacing,
+                width=self.icon_size,
+                height=self.icon_size,
+                isSubWidget=False,
+                parent=self,
+                image=pygame.transform.scale(
+                        get_image("color_icon.png"), (25, 25)),
+                tooltip="show player colors",
+                frame_color=self.frame_color,
+                moveable=False,
+                include_text=True, layer=self.layer,
+                onClick=lambda: config.set_global_variable("show_player_colors", True, button=self.player_colors_icon))
 
         self.widgets.append(self.player_colors_icon)
         self.max_width += self.icon_size + self.spacing
 
         self.view_explored_planets_icon = ImageButton(win=self.win,
-            x=self.get_screen_x() - 50,
-            y=self.surface_rect.y + self.spacing,
-            width=self.icon_size,
-            height=self.icon_size,
-            isSubWidget=False,
-            parent=self,
-            image=pygame.transform.scale(
-                get_image("view_explored_planets_icon.png"), (25, 25)),
-            tooltip="show explored planets",
-            frame_color=self.frame_color,
-            moveable=False,
-            include_text=True, layer=self.layer,
-            onClick=lambda: config.set_global_variable("view_explored_planets", True, button=self.view_explored_planets_icon))
+                x=self.get_screen_x() - 50,
+                y=self.surface_rect.y + self.spacing,
+                width=self.icon_size,
+                height=self.icon_size,
+                isSubWidget=False,
+                parent=self,
+                image=pygame.transform.scale(
+                        get_image("view_explored_planets_icon.png"), (25, 25)),
+                tooltip="show explored planets",
+                frame_color=self.frame_color,
+                moveable=False,
+                include_text=True, layer=self.layer,
+                onClick=lambda: config.set_global_variable("view_explored_planets", True, button=self.view_explored_planets_icon))
 
         self.widgets.append(self.view_explored_planets_icon)
         self.max_width += self.icon_size + self.spacing
 
         self.cross_icon = ImageButton(win=self.win,
-            x=self.get_screen_x() - 50,
-            y=self.surface_rect.y + self.spacing,
-            width=self.icon_size,
-            height=self.icon_size,
-            isSubWidget=False,
-            parent=self,
-            image=pygame.transform.scale(
-                get_image("cross.png"), (25, 25)),
-            tooltip="show cross",
-            frame_color=self.frame_color,
-            moveable=False,
-            include_text=True, layer=self.layer,
-            onClick=lambda: config.set_global_variable("enable_cross", True, button=self.cross_icon))
+                x=self.get_screen_x() - 50,
+                y=self.surface_rect.y + self.spacing,
+                width=self.icon_size,
+                height=self.icon_size,
+                isSubWidget=False,
+                parent=self,
+                image=pygame.transform.scale(
+                        get_image("cross.png"), (25, 25)),
+                tooltip="show cross",
+                frame_color=self.frame_color,
+                moveable=False,
+                include_text=True, layer=self.layer,
+                onClick=lambda: config.set_global_variable("enable_cross", True, button=self.cross_icon))
         self.widgets.append(self.cross_icon)
         self.max_width += self.icon_size + self.spacing
 
         self.ships_icon = ImageButton(win=self.win,
-            x=self.get_screen_x(),
-            y=self.surface_rect.y + self.spacing,
-            width=self.icon_size,
-            height=self.icon_size,
-            isSubWidget=False,
-            parent=self,
-            image=pygame.transform.scale(
-                get_image("ship_container_icon.png"), (25, 25)),
-            tooltip="ship select",
-            frame_color=self.frame_color,
-            moveable=False,
-            include_text=True, layer=self.layer,
-            onClick=lambda: config.app.ship_container.set_visible())
+                x=self.get_screen_x(),
+                y=self.surface_rect.y + self.spacing,
+                width=self.icon_size,
+                height=self.icon_size,
+                isSubWidget=False,
+                parent=self,
+                image=pygame.transform.scale(
+                        get_image("ship_container_icon.png"), (25, 25)),
+                tooltip="ship select",
+                frame_color=self.frame_color,
+                moveable=False,
+                include_text=True, layer=self.layer,
+                onClick=lambda: config.app.ship_container.set_visible())
         self.widgets.append(self.ships_icon)
         self.max_width += self.icon_size + self.spacing
 
         self.planets_icon = ImageButton(win=self.win,
-            x=self.get_screen_x(),
-            y=self.surface_rect.y + self.spacing,
-            width=self.icon_size,
-            height=self.icon_size,
-            isSubWidget=False,
-            parent=self,
-            image=pygame.transform.scale(
-                get_image("planet_container_icon.png"), (25, 25)),
-            tooltip="planet select",
-            frame_color=self.frame_color,
-            moveable=False,
-            include_text=True, layer=self.layer,
-            onClick=lambda: config.app.planet_container.set_visible())
+                x=self.get_screen_x(),
+                y=self.surface_rect.y + self.spacing,
+                width=self.icon_size,
+                height=self.icon_size,
+                isSubWidget=False,
+                parent=self,
+                image=pygame.transform.scale(
+                        get_image("planet_container_icon.png"), (25, 25)),
+                tooltip="planet select",
+                frame_color=self.frame_color,
+                moveable=False,
+                include_text=True, layer=self.layer,
+                onClick=lambda: config.app.planet_container.set_visible())
 
         self.widgets.append(self.planets_icon)
         self.max_width += self.icon_size + self.spacing
 
         # ship icon
         self.spacehunter_icon = ImageButton(win=self.win,
-            x=self.get_screen_x(),
-            y=self.surface_rect.y + self.spacing,
-            width=self.icon_size,
-            height=self.icon_size,
-            isSubWidget=False,
-            parent=self,
-            image=pygame.transform.scale(
-                get_image("spacehunter_30x30.png"), (25, 25)),
-            tooltip="navigate to this ship",
-            frame_color=self.frame_color,
-            moveable=False,
-            include_text=True, layer=self.layer,
-            onClick=lambda: navigate_to(None, ship="spacehunter"))
+                x=self.get_screen_x(),
+                y=self.surface_rect.y + self.spacing,
+                width=self.icon_size,
+                height=self.icon_size,
+                isSubWidget=False,
+                parent=self,
+                image=pygame.transform.scale(
+                        get_image("spacehunter_30x30.png"), (25, 25)),
+                tooltip="navigate to this ship",
+                frame_color=self.frame_color,
+                moveable=False,
+                include_text=True, layer=self.layer,
+                onClick=lambda: navigate_to(None, ship="spacehunter"))
         self.widgets.append(self.spacehunter_icon)
         self.max_width += self.icon_size + self.spacing
 
         self.info_icon = ImageButton(win=self.win,
-            x=self.spacehunter_icon.get_screen_x() + 25,
-            y=self.surface_rect.y + self.spacing,
-            width=self.icon_size,
-            height=self.icon_size,
-            isSubWidget=False,
-            parent=self,
-            image=pygame.transform.scale(get_image("info_30x30.png"), (25, 25)),
-            tooltip="information about game controls",
-            frame_color=self.frame_color,
-            moveable=False,
-            include_text=True, layer=self.layer,
-            onClick=lambda: self.set_info_text())
+                x=self.spacehunter_icon.get_screen_x() + 25,
+                y=self.surface_rect.y + self.spacing,
+                width=self.icon_size,
+                height=self.icon_size,
+                isSubWidget=False,
+                parent=self,
+                image=pygame.transform.scale(get_image("info_30x30.png"), (25, 25)),
+                tooltip="information about game controls",
+                frame_color=self.frame_color,
+                moveable=False,
+                include_text=True, layer=self.layer,
+                onClick=lambda: self.set_info_text())
         self.widgets.append(self.info_icon)
         self.max_width += self.icon_size + self.spacing
 
@@ -203,109 +329,125 @@ class SettingsPanel(WidgetBase):
         # self.max_width += self.icon_size + self.spacing
 
         self.autopilot_icon = ImageButton(win=self.win,
-            x=self.info_icon.get_screen_x() - 50,
-            y=self.surface_rect.y + self.spacing,
-            width=self.icon_size,
-            height=self.icon_size,
-            isSubWidget=False,
-            parent=self,
-            image=pygame.transform.scale(
-                get_image("autopilot.png"), (25, 25)),
-            tooltip="enable autopilot",
-            frame_color=self.frame_color,
-            moveable=False,
-            include_text=True, layer=self.layer,
-            onClick=lambda: self.enebale_autopilot(self.autopilot_icon))
+                x=self.info_icon.get_screen_x() - 50,
+                y=self.surface_rect.y + self.spacing,
+                width=self.icon_size,
+                height=self.icon_size,
+                isSubWidget=False,
+                parent=self,
+                image=pygame.transform.scale(
+                        get_image("autopilot.png"), (25, 25)),
+                tooltip="enable autopilot",
+                frame_color=self.frame_color,
+                moveable=False,
+                include_text=True, layer=self.layer,
+                onClick=lambda: self.enebale_autopilot(self.autopilot_icon))
 
         self.widgets.append(self.autopilot_icon)
         self.max_width += self.icon_size + self.spacing
 
         self.orbit_icon = ImageButton(win=self.win,
-            x=self.info_icon.get_screen_x() - 50,
-            y=self.surface_rect.y + self.spacing,
-            width=self.icon_size,
-            height=self.icon_size,
-            isSubWidget=False,
-            parent=self,
-            image=pygame.transform.scale(
-                get_image("orbit_icon.png"), (25, 25)),
-            tooltip="show orbit",
-            frame_color=self.frame_color,
-            moveable=False,
-            include_text=True, layer=self.layer,
-            onClick=lambda: config.set_global_variable("show_orbit", True, button=self.orbit_icon))
+                x=self.info_icon.get_screen_x() - 50,
+                y=self.surface_rect.y + self.spacing,
+                width=self.icon_size,
+                height=self.icon_size,
+                isSubWidget=False,
+                parent=self,
+                image=pygame.transform.scale(
+                        get_image("orbit_icon.png"), (25, 25)),
+                tooltip="show orbit",
+                frame_color=self.frame_color,
+                moveable=False,
+                include_text=True, layer=self.layer,
+                onClick=lambda: config.set_global_variable("show_orbit", True, button=self.orbit_icon))
         self.widgets.append(self.orbit_icon)
         self.max_width += self.icon_size + self.spacing
 
         # self.set_global_variable("show_orbit", True,var="enable_orbit" ))
         self.show_planet_names_icon = ImageButton(win=self.win,
-            x=self.info_icon.get_screen_x() - 50,
-            y=self.surface_rect.y + self.spacing,
-            width=self.icon_size,
-            height=self.icon_size,
-            isSubWidget=False,
-            parent=self,
-            image=pygame.transform.scale(
-                get_image("planet_text_icon.png"), (25, 25)),
-            tooltip="show planet names",
-            frame_color=self.frame_color,
-            moveable=False,
-            include_text=True, layer=self.layer,
-            onClick=lambda: self.show_planet_names(button=self.show_planet_names_icon))
+                x=self.info_icon.get_screen_x() - 50,
+                y=self.surface_rect.y + self.spacing,
+                width=self.icon_size,
+                height=self.icon_size,
+                isSubWidget=False,
+                parent=self,
+                image=pygame.transform.scale(
+                        get_image("planet_text_icon.png"), (25, 25)),
+                tooltip="show planet names",
+                frame_color=self.frame_color,
+                moveable=False,
+                include_text=True, layer=self.layer,
+                onClick=lambda: self.show_planet_names(button=self.show_planet_names_icon))
         self.widgets.append(self.show_planet_names_icon)
         self.max_width += self.icon_size + self.spacing
 
         self.show_tooltip_icon = ImageButton(win=self.win,
-            x=self.info_icon.get_screen_x() - 50,
-            y=self.surface_rect.y + self.spacing,
-            width=self.icon_size,
-            height=self.icon_size,
-            isSubWidget=False,
-            parent=self,
-            image=pygame.transform.scale(
-                get_image("text_icon.png"), (25, 25)),
-            tooltip="show tooltips",
-            frame_color=self.frame_color,
-            moveable=False,
-            include_text=True, layer=self.layer,
-            onClick=lambda: self.show_tooltip(button=self.show_tooltip_icon))
+                x=self.info_icon.get_screen_x() - 50,
+                y=self.surface_rect.y + self.spacing,
+                width=self.icon_size,
+                height=self.icon_size,
+                isSubWidget=False,
+                parent=self,
+                image=pygame.transform.scale(
+                        get_image("text_icon.png"), (25, 25)),
+                tooltip="show tooltips",
+                frame_color=self.frame_color,
+                moveable=False,
+                include_text=True, layer=self.layer,
+                onClick=lambda: self.show_tooltip(button=self.show_tooltip_icon))
 
         self.widgets.append(self.show_tooltip_icon)
         self.max_width += self.icon_size + self.spacing
 
         self.buttons_icon = ImageButton(win=self.win,
-            x=self.info_icon.get_screen_x() - 50,
-            y=self.surface_rect.y + self.spacing,
-            width=self.icon_size,
-            height=self.icon_size,
-            isSubWidget=False,
-            parent=self,
-            image=pygame.transform.scale(
-                get_image("smile.png"), (25, 25)),
-            tooltip="show planet overview",
-            frame_color=self.frame_color,
-            moveable=False,
-            include_text=True, layer=self.layer,
-            onClick=lambda: config.set_global_variable("show_overview_buttons", True, button=self.buttons_icon))
+                x=self.info_icon.get_screen_x() - 50,
+                y=self.surface_rect.y + self.spacing,
+                width=self.icon_size,
+                height=self.icon_size,
+                isSubWidget=False,
+                parent=self,
+                image=pygame.transform.scale(
+                        get_image("smile.png"), (25, 25)),
+                tooltip="show planet overview",
+                frame_color=self.frame_color,
+                moveable=False,
+                include_text=True, layer=self.layer,
+                onClick=lambda: config.set_global_variable("show_overview_buttons", True, button=self.buttons_icon))
         self.widgets.append(self.buttons_icon)
-        self.max_width += self.icon_size + self.spacing + self.spacing
+        self.max_width += self.icon_size + self.spacing
 
         self.map_icon = ImageButton(win=self.win,
-            x=self.info_icon.get_screen_x() - 50,
-            y=self.surface_rect.y + self.spacing,
-            width=self.icon_size,
-            height=self.icon_size,
-            isSubWidget=False,
-            parent=self,
-            image=pygame.transform.scale(
-                get_image("map_icon.png"), (25, 25)),
-            tooltip="show map",
-            frame_color=self.frame_color,
-            moveable=False,
-            include_text=True, layer=self.layer,
-            onClick=lambda: config.set_global_variable("show_map_panel", True, button=self.map_icon))
+                x=self.info_icon.get_screen_x() - 50,
+                y=self.surface_rect.y + self.spacing,
+                width=self.icon_size,
+                height=self.icon_size,
+                isSubWidget=False,
+                parent=self,
+                image=pygame.transform.scale(
+                        get_image("map_icon.png"), (25, 25)),
+                tooltip="show map",
+                frame_color=self.frame_color,
+                moveable=False,
+                include_text=True, layer=self.layer,
+                onClick=lambda: config.set_global_variable("show_map_panel", True, button=self.map_icon))
         self.widgets.append(self.map_icon)
+        self.max_width += self.icon_size + self.spacing
 
+        # settings icon
+        self.settings_icon = ImageButton(win=self.win,
+                x=self.info_icon.get_screen_x() - 50,
+                y=self.surface_rect.y + self.spacing,
+                width=self.icon_size,
+                height=self.icon_size,
+                isSubWidget=False,
+                parent=self,
+                image=pygame.transform.scale(get_image("settings_40x40.png"), (25, 25)),
+                tooltip="open advanced settings panel",
+                frame_color=self.frame_color,
+                moveable=False,
+                include_text=True, layer=self.layer,
+                onClick=lambda: config.app.advanced_settings_panel.set_visible())  # settings.main(surface=self.win))
+        self.widgets.append(self.settings_icon)
         self.max_width += self.icon_size + self.spacing + self.spacing
 
     def show_planet_names(self, button):

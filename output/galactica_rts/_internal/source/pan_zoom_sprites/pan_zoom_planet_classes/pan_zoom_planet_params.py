@@ -70,7 +70,7 @@ class PanZoomPlanetParams:
         sets the text used for the info_panel
         """
 
-        if self.explored:
+        if self.explored or self.owner != -1:
             gen_text = info_panel_text_generator.create_info_panel_planet_text(self)
             self.info_text = gen_text
         else:

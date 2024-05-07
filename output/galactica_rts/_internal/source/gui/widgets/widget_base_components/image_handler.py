@@ -1,5 +1,7 @@
 import copy
+
 import pygame
+
 from source.handlers.image_handler import outline_image
 
 
@@ -10,14 +12,16 @@ class ImageHandler:
         self.outline_thickness = kwargs.get("outline_thickness", 0)
         self.outline_threshold = kwargs.get("outline_threshold", 0)
         if self.image:
-            # self.image_outline = get_outline(copy.copy(self.image), self.frame_color, 1)
-            self.image_outline = outline_image(copy.copy(self.image), self.frame_color, self.outline_threshold, self.outline_thickness)
+            self.set_image_outline()
         self.rect = None
         self._image_name_small = kwargs.get("image_name_small")
         self.image_name_big = kwargs.get("image_name_big")
         self.image_alpha = kwargs.get("image_alpha", None)
         if self.image_alpha:
             self.image.set_alpha(self.image_alpha)
+
+    def set_image_outline(self):
+        self.image_outline = outline_image(copy.copy(self.image), self.frame_color, self.outline_threshold, self.outline_thickness)
 
     def alignImageRect(self):
         self.rect.center = (self.screen_x + self.screen_width // 2, self.screen_y + self.screen_height // 2)
@@ -38,6 +42,7 @@ class ImageHandler:
             image.set_alpha(self.image_alpha)
         self.image = image
         self.alignImageRect()
+        self.set_image_outline()
 
     def set_image_position(self):
         """

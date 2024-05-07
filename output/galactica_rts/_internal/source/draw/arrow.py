@@ -1,4 +1,5 @@
 import math
+
 import pygame
 
 
@@ -115,8 +116,10 @@ def draw_arrowed_cross(win, pos, color, size, width=1, center_distance=20.0):
 
 
 class ArrowCrossAnimated:
-    def __init__(self, win, color, pos=(100, 100), size=60, center_distance=30, arrow_size=15, width=1, steps=0.5,
-                 direction=-1):
+    def __init__(
+            self, win, color, pos=(100, 100), size=60, center_distance=30, arrow_size=15, width=1, steps=0.5,
+            direction=-1
+            ):
         # args
         self.win = win
         self.color = color
@@ -161,8 +164,10 @@ class ArrowCrossAnimated:
 
 
 class ArrowCrossAnimatedArray(ArrowCrossAnimated):
-    def __init__(self, win, color, pos=(100, 100), size=60, center_distance=30, arrow_size=15, width=1, array=3,
-                 array_distance=10, steps=0.5, direction=-1):
+    def __init__(
+            self, win, color, pos=(100, 100), size=60, center_distance=30, arrow_size=15, width=1, array=3,
+            array_distance=10, steps=0.5, direction=-1
+            ):
         ArrowCrossAnimated.__init__(self, win, color, pos, size, center_distance, arrow_size, width, steps, direction)
         self.array = array
         self.array_distance = array_distance
@@ -185,17 +190,17 @@ def main():
     color = (55, 130, 157)
 
     array = ArrowCrossAnimatedArray(
-        screen,
-        color,
-        (400, 300),
-        60,
-        10,
-        8,
-        1,
-        3,
-        5,
-        0.5,
-        -1)
+            screen,
+            color,
+            (400, 300),
+            60,
+            10,
+            8,
+            1,
+            3,
+            5,
+            0.5,
+            -1)
 
     # arrowed_cross = ArrowCrossAnimated(
     #     screen,
