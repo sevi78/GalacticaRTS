@@ -232,7 +232,6 @@ class ScorePlotter(EditorBase):
                     # Check if the previous cycle and player index exist in the data
                     if ((cycle - 1) in score_plotter_handler.data_history_display
                             and player_index in score_plotter_handler.data_history_display[cycle - 1]):
-
                         # calculate y position
                         start_pos_y = y - score_plotter_handler.data_history_display[cycle - 1][
                             player_index] * self.y_factor
@@ -251,7 +250,6 @@ class ScorePlotter(EditorBase):
                         # self.adjust_x_pos(endpos_x)
                         # self.adjust_step_x(endpos_x)
                         self.adjust_y_factor(endpos_y)
-
 
             # draw grid
             if cycle % 5 == 0:

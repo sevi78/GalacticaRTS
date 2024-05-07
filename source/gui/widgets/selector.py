@@ -91,45 +91,44 @@ class Selector(WidgetBase):
         """
         self.current_value = value
 
-
     def create_buttons(self):
         """
         """
         self.minus_arrow = Button(win=pygame.display.get_surface(),
-            x=self.world_x - self.spacing,
-            y=self.world_y,
-            width=self.buttonsize,
-            height=self.buttonsize,
-            isSubWidget=False,
-            image=pygame.transform.scale(
-                get_image("arrow-left.png"), (self.buttonsize, self.buttonsize)),
-            tooltip=f"choose {self.list_name.split('_list')[0]}",
-            frame_color=self.color,
-            transparent=True,
-            onClick=lambda: self.select(-1),
-            parent=self.parent,
-            layer=self.layer,
-            name="minus_arrow",
-            repeat_clicks=self.repeat_clicks
-            )
+                x=self.world_x - self.spacing,
+                y=self.world_y,
+                width=self.buttonsize,
+                height=self.buttonsize,
+                isSubWidget=False,
+                image=pygame.transform.scale(
+                        get_image("arrow-left.png"), (self.buttonsize, self.buttonsize)),
+                tooltip=f"choose {self.list_name.split('_list')[0]}",
+                frame_color=self.color,
+                transparent=True,
+                onClick=lambda: self.select(-1),
+                parent=self.parent,
+                layer=self.layer,
+                name="minus_arrow",
+                repeat_clicks=self.repeat_clicks
+                )
 
         self.plus_arrow = Button(win=pygame.display.get_surface(),
-            x=self.world_x + self.spacing,
-            y=self.world_y,
-            width=self.buttonsize,
-            height=self.buttonsize,
-            isSubWidget=False,
-            image=pygame.transform.scale(
-                get_image("arrow-right.png"), (self.buttonsize, self.buttonsize)),
-            tooltip=f"choose {self.list_name.split('_list')[0]}",
-            frame_color=self.color,
-            transparent=True,
-            onClick=lambda: self.select(1),
-            parent=self.parent,
-            layer=self.layer,
-            name="plus_arrow",
-            repeat_clicks=self.repeat_clicks
-            )
+                x=self.world_x + self.spacing,
+                y=self.world_y,
+                width=self.buttonsize,
+                height=self.buttonsize,
+                isSubWidget=False,
+                image=pygame.transform.scale(
+                        get_image("arrow-right.png"), (self.buttonsize, self.buttonsize)),
+                tooltip=f"choose {self.list_name.split('_list')[0]}",
+                frame_color=self.color,
+                transparent=True,
+                onClick=lambda: self.select(1),
+                parent=self.parent,
+                layer=self.layer,
+                name="plus_arrow",
+                repeat_clicks=self.repeat_clicks
+                )
 
         self.buttons.append(self.minus_arrow)
         self.buttons.append(self.plus_arrow)

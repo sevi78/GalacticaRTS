@@ -134,16 +134,17 @@ class EventText(TextWrap):
         self.world_x = config.app.ui_helper.left + config.app.map_panel.world_width if config.app.map_panel.visible else config.app.ui_helper.left
         alarm_links = [self.obj.name] if self.obj else []
         self.wrap_text(
-            win=self.win,
-            text=self.event_display_text,
-            pos=(self.world_x, self.new_bottom),
-            size=(config.app.ui_helper.world_width - config.app.building_panel.world_width, config.ui_event_text_size),
-            font=self.event_text_font,
-            color=colors.ui_dark,
-            fade_out=EVENT_TEXT_FADE,
-            alpha=self.alpha,
-            alarm_links=alarm_links,
-            )
+                win=self.win,
+                text=self.event_display_text,
+                pos=(self.world_x, self.new_bottom),
+                size=(
+                config.app.ui_helper.world_width - config.app.building_panel.world_width, config.ui_event_text_size),
+                font=self.event_text_font,
+                color=colors.ui_dark,
+                fade_out=EVENT_TEXT_FADE,
+                alpha=self.alpha,
+                alarm_links=alarm_links,
+                )
 
 
 event_text = EventText(config.win)

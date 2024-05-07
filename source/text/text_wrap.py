@@ -159,17 +159,17 @@ def main():
         win.fill((0, 0, 0))
 
         text_wrap.wrap_text(
-            win=win,
-            text="Hello World! attack ",
-            pos=(255, 255),
-            size=(150, 30),
-            font=pygame.font.SysFont(None, 38),
-            color=pygame.color.THECOLORS.get("orange"),
-            fade_out=False,
-            alpha=255,
-            iconize=[],
-            alarm_links=["attack"]
-            )
+                win=win,
+                text="Hello World! attack ",
+                pos=(255, 255),
+                size=(150, 30),
+                font=pygame.font.SysFont(None, 38),
+                color=pygame.color.THECOLORS.get("orange"),
+                fade_out=False,
+                alpha=255,
+                iconize=[],
+                alarm_links=["attack"]
+                )
 
         pygame.display.update()
         events = pygame.event.get()

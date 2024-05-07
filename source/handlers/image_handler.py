@@ -39,7 +39,7 @@ def change_non_transparent_pixels(image: pygame.surface, new_color) -> pygame.su
     return image
 
 
-def blur_image(surf:pygame.surface, radius):  # unused
+def blur_image(surf: pygame.surface, radius):  # unused
     pil_string_image = pygame.image.tostring(surf, "RGBA", False)
     pil_image = Image.frombuffer("RGBA", surf.get_size(), pil_string_image)
     pil_blurred = pil_image.filter(ImageFilter.GaussianBlur(radius=radius))

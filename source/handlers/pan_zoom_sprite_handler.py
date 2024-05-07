@@ -135,7 +135,6 @@ class SpriteGroups:  # original
         self.target_objects.update(*args)
         self.moving_images.update()
 
-
     def draw(self, surface, **kwargs):
         events = kwargs.get("events")
         widget_handler.update(events)

@@ -323,8 +323,10 @@ class LevelDictGenerator:
             print("generate_name error: ", e)
             return "no name generated"
 
-    def create_celestial_object(self, i: int, body_type: str, images: list, orbit_object_id: int, world_x: int,
-                                world_y: int):
+    def create_celestial_object(
+            self, i: int, body_type: str, images: list, orbit_object_id: int, world_x: int,
+            world_y: int
+            ):
         name = self.generate_name(i, body_type, orbit_object_id)
         gifs = get_image_names_from_folder("gifs")
         atmospheres = []
@@ -428,7 +430,7 @@ class LevelHandler:
             "universe_density"])
         universe_factory.create_universe(0, 0, self.data["globals"]["width"], self.data["globals"]["height"])
         universe_factory.create_artefacts(0, 0, self.data["globals"]["width"], self.data["globals"]["height"],
-            self.data["globals"]["collectable_item_amount"])
+                self.data["globals"]["collectable_item_amount"])
 
     def generate_level_dict_from_scene__(self):
         """TODO: different players must be stored"""
@@ -490,7 +492,6 @@ class LevelHandler:
         data["players"] = {}
         for key, player_obj in config.app.players.items():
             # if not "players" in data.keys():
-
 
             data["players"][key] = {}
             data["players"][key]["stock"] = player_obj.get_stock()
@@ -572,8 +573,6 @@ class LevelHandler:
         # navigate zo center of the level
         navigate_to_position(self.data["globals"]["width"] / 2, self.data["globals"]["height"] / 2)
 
-
-
     def load_level(self, filename, folder):
         self.current_game = filename
         self.data = load_file(filename, folder=folder)
@@ -595,8 +594,8 @@ class LevelHandler:
         ships = self.data.get("ships")
         for key in ships.keys():
             self.app.ship_factory.create_ship(f"{ships[key]['name']}_30x30.png", int(
-                ships[key]["world_x"]), int(
-                ships[key]["world_y"]), config.app, ships[key]["weapons"], data=ships[key])
+                    ships[key]["world_x"]), int(
+                    ships[key]["world_y"]), config.app, ships[key]["weapons"], data=ships[key])
 
         # create universe
         if config.draw_universe:
@@ -635,12 +634,12 @@ class LevelHandler:
         # save screenshot
         screen_x, screen_y = pan_zoom_handler.world_2_screen(0, 0)
         capture_screenshot(
-            self.win,
-            f"level_{self.data['globals']['level']}.png",
-            (screen_x, screen_y, self.data["globals"]["width"] * pan_zoom_handler.zoom,
-             self.data["globals"]["height"] * pan_zoom_handler.zoom),
-            (360, 360),
-            event_text=event_text)
+                self.win,
+                f"level_{self.data['globals']['level']}.png",
+                (screen_x, screen_y, self.data["globals"]["width"] * pan_zoom_handler.zoom,
+                 self.data["globals"]["height"] * pan_zoom_handler.zoom),
+                (360, 360),
+                event_text=event_text)
 
         # file_handler.get_level_list()
         self.app.level_select.update_icons()

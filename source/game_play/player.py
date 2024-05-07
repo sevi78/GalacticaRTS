@@ -77,13 +77,14 @@ class Player:
         return f"{self.name}: production: {self.production}, stock:{self.get_stock()})"
 
     def get_stock(self) -> dict:
-        stock = {"energy": self.energy,
-                 "food": self.food,
-                 "minerals": self.minerals,
-                 "water": self.water,
-                 "technology": self.technology,
-                 "population": self.population
-                 }
+        stock = {
+            "energy": self.energy,
+            "food": self.food,
+            "minerals": self.minerals,
+            "water": self.water,
+            "technology": self.technology,
+            "population": self.population
+            }
         return stock
 
     def remove_population_key_from_stock(self, stock: dict) -> dict:
@@ -155,7 +156,6 @@ class Player:
             self.score = 0
         else:
             self.score = int(self.population / building_count)
-
 
     def set_score(self):
         """ this sets the score of the player, not shure how to calculate it :)"""

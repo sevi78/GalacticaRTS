@@ -79,7 +79,7 @@ class PanZoomPlanetDraw:
     def draw_hover_circle(self):
         panzoom = pan_zoom_handler
         pygame.draw.circle(self.win, self.frame_color, self.rect.center,
-            (self.rect.height / 2) + 4, int(6 * panzoom.zoom))
+                (self.rect.height / 2) + 4, int(6 * panzoom.zoom))
 
     def draw_specials(self):
         # print ("draw_specials:", self.specials)
@@ -102,11 +102,11 @@ class PanZoomPlanetDraw:
                             operator = "x"
 
                         drawText(self.win, f"{operator}{str(value)}", SPECIAL_TEXT_COLOR,
-                            (x + 25, y, 50, 20), font, "left")
+                                (x + 25, y, 50, 20), font, "left")
                         count += 1
                         y += 20  # Increment y for the next draw
 
-    def draw_alien_population_icons__(self):# old
+    def draw_alien_population_icons__(self):  # old
         if self.get_zoom() > IMAGE_ZOOM:
             if self.alien_population > 0:
                 x = self.screen_position[0] - self.screen_width / 2 - 60

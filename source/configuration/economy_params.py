@@ -14,13 +14,14 @@ class EconomyParams:
         self.population_buildings = ["town", "city", "metropole"]
         self.population_buildings = ["town", "city", "metropole"]
 
-        self.buildings = {"water": self.water_buildings,
-                          "energy": self.energy_buildings,
-                          "food": self.food_buildings,
-                          "minerals": self.mineral_buildings,
-                          "technology": self.technology_buildings,
-                          "population": self.population_buildings
-                          }
+        self.buildings = {
+            "water": self.water_buildings,
+            "energy": self.energy_buildings,
+            "food": self.food_buildings,
+            "minerals": self.mineral_buildings,
+            "technology": self.technology_buildings,
+            "population": self.population_buildings
+            }
 
         self.buildings_list = self.water_buildings + self.energy_buildings + self.food_buildings + \
                               self.mineral_buildings + self.technology_buildings + self.population_buildings

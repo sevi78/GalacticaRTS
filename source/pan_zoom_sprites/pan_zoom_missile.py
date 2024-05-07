@@ -27,19 +27,19 @@ class PanZoomMissile(PanZoomGameObject):
             self.target.energy -= self.missile_power
             self.target.weapon_handler.draw_moving_image(self.target, self.missile_power)
         if self.target.property == "planet":
-            print ("attacking planet")
+            print("attacking planet")
 
             MovingImage(
-                config.app.win,
-                self.target.rect.top,
-                self.target.rect.right,
-                18,
-                18,
-                get_image("energy_25x25.png"),
-                1,
-                (random.randint(-2, 2), random.randint(-2, 2)),
-                f"-{self.missile_power}", pygame.color.THECOLORS["red"],
-                "georgiaproblack", 1, self.target, target=None)
+                    config.app.win,
+                    self.target.rect.top,
+                    self.target.rect.right,
+                    18,
+                    18,
+                    get_image("energy_25x25.png"),
+                    1,
+                    (random.randint(-2, 2), random.randint(-2, 2)),
+                    f"-{self.missile_power}", pygame.color.THECOLORS["red"],
+                    "georgiaproblack", 1, self.target, target=None)
 
         # if self.target.energy <= 0:
         #     self.explode()

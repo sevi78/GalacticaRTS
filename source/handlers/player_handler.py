@@ -29,29 +29,29 @@ class PlayerHandler:
         for key, value in list(data.items()):
             player_id = data[key]["player"]
             self.players[player_id] = Player(
-                name=data[key]["name"],
-                species=data[key]["species"],
-                color=player_handler.get_player_color(player_id),
-                stock={
-                    "energy": 1000,
-                    "food": 1000,
-                    "minerals": 1000,
-                    "water": 1000,
-                    "technology": 1000,
-                    "population": 0
-                    },
-                production={
-                    "energy": 0,
-                    "food": 0,
-                    "minerals": 0,
-                    "water": 0,
-                    "technology": 0,
-                    "population": 0
-                    },
-                clock=0,
-                owner=player_id,
-                enemies=data[key]["enemies"],
-                )
+                    name=data[key]["name"],
+                    species=data[key]["species"],
+                    color=player_handler.get_player_color(player_id),
+                    stock={
+                        "energy": 1000,
+                        "food": 1000,
+                        "minerals": 1000,
+                        "water": 1000,
+                        "technology": 1000,
+                        "population": 0
+                        },
+                    production={
+                        "energy": 0,
+                        "food": 0,
+                        "minerals": 0,
+                        "water": 0,
+                        "technology": 0,
+                        "population": 0
+                        },
+                    clock=0,
+                    owner=player_id,
+                    enemies=data[key]["enemies"],
+                    )
 
             # set active (human) player
             config.app.player = self.players[0]

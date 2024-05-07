@@ -9,7 +9,6 @@ from source.configuration.game_config import config
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import PanZoomLayeredUpdates
 
-
 TASK_CHANGE_INTERVAL = 220
 
 

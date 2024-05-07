@@ -131,7 +131,7 @@ class EconomyHandler:
 
                 # subtract the building_slot_upgrades ( they cost 1 energy)
                 self.production["energy"] -= get_sum_up_to_n(planet.building_slot_upgrade_energy_consumption,
-                    planet.building_slot_upgrades + 1)
+                        planet.building_slot_upgrades + 1)
 
         player.population_limit = self.population_limit
         player.production = self.production

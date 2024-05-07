@@ -181,172 +181,172 @@ class MapPanel:
         x = self.world_x
 
         self.checkbox_ships = ImageButton(win=self.win,
-            x=self.world_x + x,
-            y=y - BUTTON_SIZE,
-            width=BUTTON_SIZE,
-            height=BUTTON_SIZE,
-            isSubWidget=False,
-            parent=self,
-            image=pygame.transform.scale(
-                get_image("ships_25x25.png"), (BUTTON_SIZE, BUTTON_SIZE)),
-            tooltip="",  # "show ships",
-            frame_color=self.frame_color,
-            moveable=False,
-            include_text=True, layer=10,
-            onClick=lambda: self.show_objects("ships"),
-            name="ships")
+                x=self.world_x + x,
+                y=y - BUTTON_SIZE,
+                width=BUTTON_SIZE,
+                height=BUTTON_SIZE,
+                isSubWidget=False,
+                parent=self,
+                image=pygame.transform.scale(
+                        get_image("ships_25x25.png"), (BUTTON_SIZE, BUTTON_SIZE)),
+                tooltip="",  # "show ships",
+                frame_color=self.frame_color,
+                moveable=False,
+                include_text=True, layer=10,
+                onClick=lambda: self.show_objects("ships"),
+                name="ships")
 
         x += BUTTON_SIZE * 1.5
         self.checkboxes.append(self.checkbox_ships)
 
         self.checkbox_planets = ImageButton(win=self.win,
-            x=self.world_x + x,
-            y=y - BUTTON_SIZE,
-            width=BUTTON_SIZE,
-            height=BUTTON_SIZE,
-            isSubWidget=False,
-            parent=self,
-            image=pygame.transform.scale(
-                get_image("Zeta Bentauri_60x60.png"), (BUTTON_SIZE, BUTTON_SIZE)),
-            tooltip="",  # "show planets",
-            frame_color=self.frame_color,
-            moveable=False,
-            include_text=True, layer=10,
-            onClick=lambda: self.show_objects("planets"),
-            name="planets")
+                x=self.world_x + x,
+                y=y - BUTTON_SIZE,
+                width=BUTTON_SIZE,
+                height=BUTTON_SIZE,
+                isSubWidget=False,
+                parent=self,
+                image=pygame.transform.scale(
+                        get_image("Zeta Bentauri_60x60.png"), (BUTTON_SIZE, BUTTON_SIZE)),
+                tooltip="",  # "show planets",
+                frame_color=self.frame_color,
+                moveable=False,
+                include_text=True, layer=10,
+                onClick=lambda: self.show_objects("planets"),
+                name="planets")
 
         x += BUTTON_SIZE * 1.5
         self.checkboxes.append(self.checkbox_planets)
 
         self.checkbox_orbits = ImageButton(win=self.win,
-            x=self.world_x + x,
-            y=y - BUTTON_SIZE,
-            width=BUTTON_SIZE,
-            height=BUTTON_SIZE,
-            isSubWidget=False,
-            parent=self,
-            image=pygame.transform.scale(
-                get_image("orbit_icon.png"), (BUTTON_SIZE, BUTTON_SIZE)),
-            tooltip="",  # "show planets",
-            frame_color=self.frame_color,
-            moveable=False,
-            include_text=True, layer=10,
-            onClick=lambda: self.show_objects("orbits"),
-            name="orbits")
+                x=self.world_x + x,
+                y=y - BUTTON_SIZE,
+                width=BUTTON_SIZE,
+                height=BUTTON_SIZE,
+                isSubWidget=False,
+                parent=self,
+                image=pygame.transform.scale(
+                        get_image("orbit_icon.png"), (BUTTON_SIZE, BUTTON_SIZE)),
+                tooltip="",  # "show planets",
+                frame_color=self.frame_color,
+                moveable=False,
+                include_text=True, layer=10,
+                onClick=lambda: self.show_objects("orbits"),
+                name="orbits")
 
         x += BUTTON_SIZE * 1.5
         self.checkboxes.append(self.checkbox_orbits)
 
         self.checkbox_items = ImageButton(win=self.win,
-            x=self.world_x + x,
-            y=y - BUTTON_SIZE,
-            width=BUTTON_SIZE,
-            height=BUTTON_SIZE,
-            isSubWidget=False,
-            parent=self,
-            image=pygame.transform.scale(
-                get_image("artefact1_60x31.png"), (BUTTON_SIZE, BUTTON_SIZE)),
-            tooltip="",  # "show collectable items",
-            frame_color=self.frame_color,
-            moveable=False,
-            include_text=True, layer=10,
-            onClick=lambda: self.show_objects("items"),
-            name="items")
+                x=self.world_x + x,
+                y=y - BUTTON_SIZE,
+                width=BUTTON_SIZE,
+                height=BUTTON_SIZE,
+                isSubWidget=False,
+                parent=self,
+                image=pygame.transform.scale(
+                        get_image("artefact1_60x31.png"), (BUTTON_SIZE, BUTTON_SIZE)),
+                tooltip="",  # "show collectable items",
+                frame_color=self.frame_color,
+                moveable=False,
+                include_text=True, layer=10,
+                onClick=lambda: self.show_objects("items"),
+                name="items")
 
         x += BUTTON_SIZE * 1.5
         self.checkboxes.append(self.checkbox_items)
 
         self.checkbox_ufos = ImageButton(win=self.win,
-            x=self.world_x + x,
-            y=y - BUTTON_SIZE,
-            width=BUTTON_SIZE,
-            height=BUTTON_SIZE,
-            isSubWidget=False,
-            parent=self,
-            image=pygame.transform.scale(
-                get_image("ufo_74x30.png"), (BUTTON_SIZE, BUTTON_SIZE)),
-            tooltip="",  # "show collectable items",
-            frame_color=self.frame_color,
-            moveable=False,
-            include_text=True, layer=10,
-            onClick=lambda: self.show_objects("ufos"),
-            name="ufos")
+                x=self.world_x + x,
+                y=y - BUTTON_SIZE,
+                width=BUTTON_SIZE,
+                height=BUTTON_SIZE,
+                isSubWidget=False,
+                parent=self,
+                image=pygame.transform.scale(
+                        get_image("ufo_74x30.png"), (BUTTON_SIZE, BUTTON_SIZE)),
+                tooltip="",  # "show collectable items",
+                frame_color=self.frame_color,
+                moveable=False,
+                include_text=True, layer=10,
+                onClick=lambda: self.show_objects("ufos"),
+                name="ufos")
 
         x += BUTTON_SIZE * 1.5
         self.checkboxes.append(self.checkbox_ufos)
 
         self.checkbox_camera = ImageButton(win=self.win,
-            x=self.world_x + x,
-            y=y - BUTTON_SIZE,
-            width=BUTTON_SIZE,
-            height=BUTTON_SIZE,
-            isSubWidget=False,
-            parent=self,
-            image=pygame.transform.scale(
-                get_image("camera_icon.png"), (BUTTON_SIZE, BUTTON_SIZE)),
-            tooltip="",  # "show collectable items",
-            frame_color=self.frame_color,
-            moveable=False,
-            include_text=True, layer=10,
-            onClick=lambda: self.show_objects("camera"),
-            name="camera")
+                x=self.world_x + x,
+                y=y - BUTTON_SIZE,
+                width=BUTTON_SIZE,
+                height=BUTTON_SIZE,
+                isSubWidget=False,
+                parent=self,
+                image=pygame.transform.scale(
+                        get_image("camera_icon.png"), (BUTTON_SIZE, BUTTON_SIZE)),
+                tooltip="",  # "show collectable items",
+                frame_color=self.frame_color,
+                moveable=False,
+                include_text=True, layer=10,
+                onClick=lambda: self.show_objects("camera"),
+                name="camera")
 
         x += BUTTON_SIZE * 1.5
         self.checkboxes.append(self.checkbox_camera)
 
         self.checkbox_warnings = ImageButton(win=self.win,
-            x=self.world_x + x,
-            y=y - BUTTON_SIZE,
-            width=BUTTON_SIZE,
-            height=BUTTON_SIZE,
-            isSubWidget=False,
-            parent=self,
-            image=pygame.transform.scale(
-                get_image("warning.png"), (BUTTON_SIZE, BUTTON_SIZE)),
-            tooltip="",  # "show collectable items",
-            frame_color=self.frame_color,
-            moveable=False,
-            include_text=True, layer=10,
-            onClick=lambda: self.show_objects("warnings"),
-            name="warnings")
+                x=self.world_x + x,
+                y=y - BUTTON_SIZE,
+                width=BUTTON_SIZE,
+                height=BUTTON_SIZE,
+                isSubWidget=False,
+                parent=self,
+                image=pygame.transform.scale(
+                        get_image("warning.png"), (BUTTON_SIZE, BUTTON_SIZE)),
+                tooltip="",  # "show collectable items",
+                frame_color=self.frame_color,
+                moveable=False,
+                include_text=True, layer=10,
+                onClick=lambda: self.show_objects("warnings"),
+                name="warnings")
 
         x += BUTTON_SIZE * 1.5
         self.checkboxes.append(self.checkbox_warnings)
 
         self.checkbox_images = ImageButton(win=self.win,
-            x=self.world_x + x,
-            y=y - BUTTON_SIZE,
-            width=BUTTON_SIZE,
-            height=BUTTON_SIZE,
-            isSubWidget=False,
-            parent=self,
-            image=pygame.transform.scale(
-                get_image("paint.png"), (BUTTON_SIZE, BUTTON_SIZE)),
-            tooltip="",  # "show collectable items",
-            frame_color=self.frame_color,
-            moveable=False,
-            include_text=True, layer=10,
-            onClick=lambda: self.show_objects("images"),
-            name="images")
+                x=self.world_x + x,
+                y=y - BUTTON_SIZE,
+                width=BUTTON_SIZE,
+                height=BUTTON_SIZE,
+                isSubWidget=False,
+                parent=self,
+                image=pygame.transform.scale(
+                        get_image("paint.png"), (BUTTON_SIZE, BUTTON_SIZE)),
+                tooltip="",  # "show collectable items",
+                frame_color=self.frame_color,
+                moveable=False,
+                include_text=True, layer=10,
+                onClick=lambda: self.show_objects("images"),
+                name="images")
 
         x += BUTTON_SIZE * 1.5
         self.checkboxes.append(self.checkbox_images)
 
         self.checkbox_alpha = ImageButton(win=self.win,
-            x=self.world_x + x,
-            y=y - BUTTON_SIZE,
-            width=BUTTON_SIZE,
-            height=BUTTON_SIZE,
-            isSubWidget=False,
-            parent=self,
-            image=pygame.transform.scale(
-                get_image("alpha.png"), (BUTTON_SIZE, BUTTON_SIZE)),
-            tooltip="",  # "show collectable items",
-            frame_color=self.frame_color,
-            moveable=False,
-            include_text=True, layer=10,
-            onClick=lambda: self.show_objects("alpha"),
-            name="alpha")
+                x=self.world_x + x,
+                y=y - BUTTON_SIZE,
+                width=BUTTON_SIZE,
+                height=BUTTON_SIZE,
+                isSubWidget=False,
+                parent=self,
+                image=pygame.transform.scale(
+                        get_image("alpha.png"), (BUTTON_SIZE, BUTTON_SIZE)),
+                tooltip="",  # "show collectable items",
+                frame_color=self.frame_color,
+                moveable=False,
+                include_text=True, layer=10,
+                onClick=lambda: self.show_objects("alpha"),
+                name="alpha")
 
         x += BUTTON_SIZE * 1.5
         self.checkboxes.append(self.checkbox_alpha)
@@ -475,11 +475,11 @@ class MapPanel:
         # draw object
         pos = ((sprite.world_x / self.factor), (sprite.world_y / self.factor))
         pygame.draw.circle(
-            surface=surface,
-            color=color,
-            center=pos,
-            radius=radius,
-            width=width)
+                surface=surface,
+                color=color,
+                center=pos,
+                radius=radius,
+                width=width)
 
     def draw_camera_focus(self, pan_zoom_handler) -> None:
         if not self.show_camera:
@@ -505,7 +505,7 @@ class MapPanel:
         #     draw_dashed_rounded_rectangle(self.background_surface, colors.ui_darker, pygame.Rect(x, y, width, height), 1, 15, 10)
 
         draw_dashed_rounded_rectangle(self.background_surface,
-            pygame.color.THECOLORS["gray31"], pygame.Rect(x, y, width, height), 1, 15, 10)
+                pygame.color.THECOLORS["gray31"], pygame.Rect(x, y, width, height), 1, 15, 10)
 
     def reposition(self) -> None:
         self.world_y = self.win.get_size()[1] - self.world_height
@@ -566,9 +566,9 @@ class MapPanel:
 
     def draw_frame(self):
         draw_transparent_rounded_rect(self.win, (0, 0, 0), self.frame_rect,
-            config.ui_rounded_corner_radius_small, config.ui_panel_alpha)
+                config.ui_rounded_corner_radius_small, config.ui_panel_alpha)
         pygame.draw.rect(self.win, self.frame_color, self.frame_rect,
-            config.ui_rounded_corner_small_thickness, config.ui_rounded_corner_radius_small)
+                config.ui_rounded_corner_small_thickness, config.ui_rounded_corner_radius_small)
 
     def draw(self) -> None:
         self.set_visible()
@@ -581,10 +581,10 @@ class MapPanel:
         # generate rect
         self.frame_rect = pygame.Rect(self.world_x, self.world_y, self.world_width, self.world_height)
         self.background_surface_rect = pygame.Rect(
-            self.world_x + config.ui_rounded_corner_radius_small,
-            self.world_y + config.ui_rounded_corner_radius_small,
-            self.world_width - (config.ui_rounded_corner_radius_small * 2),
-            self.world_height - (config.ui_rounded_corner_radius_small * 2))
+                self.world_x + config.ui_rounded_corner_radius_small,
+                self.world_y + config.ui_rounded_corner_radius_small,
+                self.world_width - (config.ui_rounded_corner_radius_small * 2),
+                self.world_height - (config.ui_rounded_corner_radius_small * 2))
 
         # draw the panel, dont set aplha to 255 !!! inperformant, replace it is much better !!!
         if self.show_alpha:
@@ -617,7 +617,7 @@ class MapPanel:
 
         # draw button frame
         draw_transparent_rounded_rect(self.win, (0, 0, 0), self.checkbox_frame,
-            config.ui_rounded_corner_radius_small, config.ui_panel_alpha)
+                config.ui_rounded_corner_radius_small, config.ui_panel_alpha)
 
         pygame.draw.rect(self.win, self.frame_color, self.checkbox_frame, config.ui_rounded_corner_small_thickness,
-            config.ui_rounded_corner_radius_small)
+                config.ui_rounded_corner_radius_small)

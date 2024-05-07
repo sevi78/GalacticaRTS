@@ -15,35 +15,35 @@ class ShipFactory:
             size_x, size_y = 100, 100
 
         ship = PanZoomShip(config.win,
-            x,
-            y,
-            size_x,
-            size_y,
-            pan_zoom_handler,
-            f"{name}_30x30.png",
-            debug=False,
-            group="ships",
-            parent=parent,
-            rotate_to_target=True,
-            move_to_target=True,
-            align_image="center",
-            layer=5,
-            info_panel_alpha=80,
-            current_weapon="laser",
-            name=name,
-            weapons=weapons,
-            data=data,
-            outline_thickness=3,
-            outline_threshold=127,
-            is_spacestation=True if name == "spacestation" else False)
+                x,
+                y,
+                size_x,
+                size_y,
+                pan_zoom_handler,
+                f"{name}_30x30.png",
+                debug=False,
+                group="ships",
+                parent=parent,
+                rotate_to_target=True,
+                move_to_target=True,
+                align_image="center",
+                layer=5,
+                info_panel_alpha=80,
+                current_weapon="laser",
+                name=name,
+                weapons=weapons,
+                data=data,
+                outline_thickness=3,
+                outline_threshold=127,
+                is_spacestation=True if name == "spacestation" else False)
         return ship
 
     def create_ships_from_data(self, data):
         for key, value in data["ships"].items():
             self.create_ship(
-                data["ships"][key]["name"] + "_30x30.png",
-                data["ships"][key]["world_x"],
-                data["ships"][key]["world_y"], config.app, data["ships"][key]["weapons"], data=data["ships"][key])
+                    data["ships"][key]["name"] + "_30x30.png",
+                    data["ships"][key]["world_x"],
+                    data["ships"][key]["world_y"], config.app, data["ships"][key]["weapons"], data=data["ships"][key])
 
     def delete_ships(self):
         for i in sprite_groups.ships.sprites():

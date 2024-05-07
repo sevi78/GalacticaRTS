@@ -152,16 +152,16 @@ class BuildingWidget(WidgetBase):
 
         # button
         self.button = Button(self.win,
-            x=self.dynamic_x + self.get_screen_height() / 2,
-            y=self.dynamic_y,
-            width=self.get_screen_height(),
-            height=self.get_screen_height(),
-            image=self.image,
-            onClick=lambda: self.function("do nothing"),
-            transparent=True,
-            image_hover_surface_alpha=255,
-            parent=config.app,
-            tooltip=self.tooltip, layer=self.layer)
+                x=self.dynamic_x + self.get_screen_height() / 2,
+                y=self.dynamic_y,
+                width=self.get_screen_height(),
+                height=self.get_screen_height(),
+                image=self.image,
+                onClick=lambda: self.function("do nothing"),
+                transparent=True,
+                image_hover_surface_alpha=255,
+                parent=config.app,
+                tooltip=self.tooltip, layer=self.layer)
 
         # text
         self.text_render = self.font.render(self.text, True, self.frame_color, self.font_size)
@@ -174,13 +174,13 @@ class BuildingWidget(WidgetBase):
         self.start_time = time.time()
 
         self.progress_bar = ProgressBar(win=self.win,
-            x=self.dynamic_x + self.button.get_screen_width(),
-            y=self.button.screen_y + self.progress_bar_height / 2,
-            width=self.progress_bar_width,
-            height=self.progress_bar_height,
-            progress=lambda: 0,
-            curved=True,
-            completedColour=self.frame_color, layer=self.layer, ignore_progress=True)
+                x=self.dynamic_x + self.button.get_screen_width(),
+                y=self.button.screen_y + self.progress_bar_height / 2,
+                width=self.progress_bar_width,
+                height=self.progress_bar_height,
+                progress=lambda: 0,
+                curved=True,
+                completedColour=self.frame_color, layer=self.layer, ignore_progress=True)
 
         self.surface_rect = pygame.Rect(self.dynamic_x, self.dynamic_y, self.get_screen_width(), self.get_screen_height())
 

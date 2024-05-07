@@ -101,7 +101,7 @@ class BoxSelection:
 
         if self.start_pos is not None and self.end_pos is not None:
             rect = pygame.Rect(min(self.start_pos[0], self.end_pos[0]), min(self.start_pos[1], self.end_pos[1]),
-                abs(self.end_pos[0] - self.start_pos[0]), abs(self.end_pos[1] - self.start_pos[1]))
+                    abs(self.end_pos[0] - self.start_pos[0]), abs(self.end_pos[1] - self.start_pos[1]))
             selected_objects = [obj for obj in self.selectable_objects if rect.collidepoint(obj.screen_position)]
             return selected_objects
         else:

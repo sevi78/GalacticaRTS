@@ -52,13 +52,13 @@ class EventPanel(TextWrap, EditorBase):
         # Buttons
         self.yes_button = Button(self.win, self.get_screen_x() + self.get_screen_width() / 2 - 30,
                                            self.world_y + self.get_screen_height(), 60, 60, isSubWidget=False,
-            image=pygame.transform.scale(get_image("yes_icon.png"), (60, 60)),
-            transparent=True, parent=self, onClick=lambda: self.accept())
+                image=pygame.transform.scale(get_image("yes_icon.png"), (60, 60)),
+                transparent=True, parent=self, onClick=lambda: self.accept())
 
         self.no_button = Button(self.win, self.get_screen_x() + self.get_screen_width() / 2 + 30,
                                           self.world_y + self.get_screen_height(), 60, 60, isSubWidget=False,
-            image=pygame.transform.scale(get_image("no_icon.png"), (60, 60)),
-            transparent=True, parent=self, onClick=lambda: self.decline())
+                image=pygame.transform.scale(get_image("no_icon.png"), (60, 60)),
+                transparent=True, parent=self, onClick=lambda: self.decline())
 
         self.max_height = height
         self.hide()

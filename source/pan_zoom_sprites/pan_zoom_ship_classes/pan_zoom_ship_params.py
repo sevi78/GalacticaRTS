@@ -58,12 +58,13 @@ class PanZoomShipParams:
         self.energy_max = SHIP_ENERGY_MAX
         self.energy = SHIP_ENERGY
 
-        self.resources = {"minerals": self.minerals,
-                          "food": self.food,
-                          "energy": self.energy,
-                          "water": self.water,
-                          "technology": self.technology
-                          }
+        self.resources = {
+            "minerals": self.minerals,
+            "food": self.food,
+            "energy": self.energy,
+            "water": self.water,
+            "technology": self.technology
+            }
         self.specials = []
 
         self.energy_reloader = None
@@ -94,12 +95,13 @@ class PanZoomShipParams:
         self.state_engine = PanZoomShipStateEngine(self)
 
     def set_resources(self):
-        self.resources = {"minerals": self.minerals,
-                          "food": self.food,
-                          "population": self.population,
-                          "water": self.water,
-                          "technology": self.technology
-                          }
+        self.resources = {
+            "minerals": self.minerals,
+            "food": self.food,
+            "population": self.population,
+            "water": self.water,
+            "technology": self.technology
+            }
 
     def set_info_text(self):
         if not self == config.app.ship:

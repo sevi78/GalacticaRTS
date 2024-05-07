@@ -47,8 +47,8 @@ class CelestialObject(WidgetBase):
         self.pulse_time = random.uniform(0.5, 3.0)
         self.pulsating_star_size = random.randint(1, 3)
         self.pulsating_star_color = (
-        random.randint(0, config.star_brightness), random.randint(0, config.star_brightness),
-        random.randint(0, config.star_brightness))
+            random.randint(0, config.star_brightness), random.randint(0, config.star_brightness),
+            random.randint(0, config.star_brightness))
 
         # Initialize the color index
         self.color_index = 0

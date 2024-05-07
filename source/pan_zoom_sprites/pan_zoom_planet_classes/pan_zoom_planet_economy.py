@@ -78,11 +78,12 @@ class PanZoomPlanetEconomy():  # , SpecialHandler):
         self.building_buttons_food = []
         self.building_buttons_minerals = []
 
-        self.building_buttons = {"energy": self.building_buttons_energy,
-                                 "food": self.building_buttons_food,
-                                 "minerals": self.building_buttons_minerals,
-                                 "water": self.building_buttons_water
-                                 }
+        self.building_buttons = {
+            "energy": self.building_buttons_energy,
+            "food": self.building_buttons_food,
+            "minerals": self.building_buttons_minerals,
+            "water": self.building_buttons_water
+            }
         self.building_buttons_list = self.building_buttons_energy + self.building_buttons_food + \
                                      self.building_buttons_minerals + self.building_buttons_water
 
@@ -104,8 +105,8 @@ class PanZoomPlanetEconomy():  # , SpecialHandler):
     def calculate_production(self):
         self.production = economy_handler.calculate_planet_production(self)
         self.production["energy"] -= get_sum_up_to_n(
-            self.building_slot_upgrade_energy_consumption,
-            self.building_slot_upgrades + 1)
+                self.building_slot_upgrade_energy_consumption,
+                self.building_slot_upgrades + 1)
 
         self.production_water = self.production["water"]
         self.production_energy = self.production["energy"]

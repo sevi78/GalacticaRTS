@@ -18,11 +18,11 @@ class BuildingPanelDraw:
         self.resource_image_size = (15, 15)
         self.population_image = pygame.transform.scale(get_image("population_25x25.png"), (25, 25))
         self.plus_image = pygame.transform.scale(
-            get_image("plus_icon.png"), self.resource_image_size)
+                get_image("plus_icon.png"), self.resource_image_size)
         self.plus_image_rect = self.plus_image.get_rect()
 
         self.minus_image = pygame.transform.scale(
-            get_image("minus_icon.png"), self.resource_image_size)
+                get_image("minus_icon.png"), self.resource_image_size)
         self.minus_image_rect = self.minus_image.get_rect()
 
         self.building_image = pygame.transform.scale(get_image("building_icon.png"), self.resource_image_size)
@@ -130,7 +130,7 @@ class BuildingPanelDraw:
             # and performance problems - so we just blit an image and get its rect as button surface
 
             image = pygame.transform.scale(get_image(b + "_25x25.png"),
-                self.resource_image_size)
+                    self.resource_image_size)
 
             # get rect for storage
             image_rect = image.get_rect()
@@ -172,7 +172,7 @@ class BuildingPanelDraw:
         resources = self.parent.resources
         for r in resources:
             image = pygame.transform.scale(
-                get_image(r + "_25x25.png"), self.resource_image_size)
+                    get_image(r + "_25x25.png"), self.resource_image_size)
             self.win.blit(image, (x, self.world_y))
 
             # draw specials
@@ -184,7 +184,7 @@ class BuildingPanelDraw:
             if not str(value_special) == "0":
                 text_ += f"  special: ({operator}{value_special})"
                 text = self.special_font.render(operator + str(value_special), True,
-                    pygame.color.THECOLORS[SPECIAL_TEXT_COLOR], )
+                        pygame.color.THECOLORS[SPECIAL_TEXT_COLOR], )
                 self.win.blit(text, (x + self.screen_width - SPECIAL_RIGHT_OFFSET, self.world_y - SPECIAL_Y_OFFSET))
 
             # draw resource
@@ -204,7 +204,7 @@ class BuildingPanelDraw:
         self.world_y += self.spacing * 3
         for r in resources:
             image = pygame.transform.scale(
-                get_image(r + "_25x25.png"), self.resource_image_size)
+                    get_image(r + "_25x25.png"), self.resource_image_size)
             self.win.blit(image, (x, self.world_y))
 
             if self.parent.selected_planet.owner != -1:

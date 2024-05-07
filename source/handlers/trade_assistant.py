@@ -183,7 +183,3 @@ class TradeAssistant:
             self.request_percentage = max(self.request_percentage * 0.85, 5)
 
         # print (f"adjust_percentages:\n self.offer_percentage:{self.offer_percentage}\nself.request_percentage:{self.request_percentage}")
-
-
-
-

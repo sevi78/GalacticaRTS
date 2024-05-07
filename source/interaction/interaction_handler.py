@@ -152,7 +152,7 @@ class ResizeHandler:
 
 
 # the resize handler should be outside
-class InteractionHandler():#(ResizeHandler):
+class InteractionHandler():  # (ResizeHandler):
     def __init__(self):
         # ResizeHandler.__init__(self)
         self._on_hover = False
@@ -172,7 +172,6 @@ class InteractionHandler():#(ResizeHandler):
         else:
             if config.hover_object == self:
                 config.hover_object = None
-
 
     def drag(self, events):
         """ drag the widget """

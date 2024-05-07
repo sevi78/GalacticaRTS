@@ -29,7 +29,6 @@ class ImageSprite:
         # set _hidden variable to ensure objet can be hidden
         self._hidden = kwargs.get("hidden", False)
 
-
     def show(self):
         self._hidden = False
 

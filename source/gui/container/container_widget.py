@@ -66,9 +66,9 @@ class ContainerWidget(InteractionHandler):
         # frame
         self.frame_border = 10
         self.frame = Frame(self.win,
-            0, 0,
-            self.world_width + self.frame_border,
-            self.world_height + self.frame_border)
+                0, 0,
+                self.world_width + self.frame_border,
+                self.world_height + self.frame_border)
 
         # scrollbar
         self.scrollbar = ScrollBar(win, 0, 0, 5, self.world_height, self)
@@ -86,7 +86,8 @@ class ContainerWidget(InteractionHandler):
         if widgets:
             if not isinstance(widgets[0], ContainerWidgetItem):
                 self.set_widgets([ContainerWidgetItem(self.win, 0, WIDGET_SIZE * index, WIDGET_SIZE, WIDGET_SIZE,
-                    image=copy.copy(_.image_raw), index=index, obj=_, parent=self) for index, _ in enumerate(widgets)])
+                        image=copy.copy(_.image_raw), index=index, obj=_, parent=self) for index, _ in
+                                  enumerate(widgets)])
             else:
                 self.widgets = widgets
 

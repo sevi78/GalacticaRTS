@@ -64,73 +64,73 @@ class SpaceHarbor(WidgetBase):
         # buttons
         self.ship_buttons = []
         self.ship_buttons.append(ImageButton(win=self.win,
-            x=self.get_screen_x(),
-            y=self.get_screen_y(),
-            width=25,
-            height=25,
-            isSubWidget=False,
-            parent=self,
-            image=pygame.transform.scale(
-                get_image("spacehunter_30x30.png"), (25, 25)),
-            tooltip="build spacehunter",
-            info_text="",  # info_panel_text_generator.create_info_panel_ship_text("spacehunter"),
-            frame_color=self.frame_color,
-            moveable=False,
-            include_text=True,
-            layer=self.layer,
-            onClick=lambda: building_factory.build("spacehunter", config.app.selected_planet)))
+                x=self.get_screen_x(),
+                y=self.get_screen_y(),
+                width=25,
+                height=25,
+                isSubWidget=False,
+                parent=self,
+                image=pygame.transform.scale(
+                        get_image("spacehunter_30x30.png"), (25, 25)),
+                tooltip="build spacehunter",
+                info_text="",  # info_panel_text_generator.create_info_panel_ship_text("spacehunter"),
+                frame_color=self.frame_color,
+                moveable=False,
+                include_text=True,
+                layer=self.layer,
+                onClick=lambda: building_factory.build("spacehunter", config.app.selected_planet)))
 
         self.ship_buttons.append(ImageButton(win=self.win,
-            x=self.get_screen_x() + self.get_screen_width() / 2,
-            y=self.get_screen_y(),
-            width=25,
-            height=25,
-            isSubWidget=False,
-            parent=self,
-            image=pygame.transform.scale(
-                get_image("cargoloader_30x30.png"), (25, 25)),
-            tooltip="build cargoloader",
-            info_text="",  # info_panel_text_generator.create_info_panel_ship_text("cargoloader"),
-            frame_color=self.frame_color,
-            moveable=False,
-            include_text=True,
-            layer=self.layer,
-            onClick=lambda: building_factory.build("cargoloader", config.app.selected_planet)
-            ))
+                x=self.get_screen_x() + self.get_screen_width() / 2,
+                y=self.get_screen_y(),
+                width=25,
+                height=25,
+                isSubWidget=False,
+                parent=self,
+                image=pygame.transform.scale(
+                        get_image("cargoloader_30x30.png"), (25, 25)),
+                tooltip="build cargoloader",
+                info_text="",  # info_panel_text_generator.create_info_panel_ship_text("cargoloader"),
+                frame_color=self.frame_color,
+                moveable=False,
+                include_text=True,
+                layer=self.layer,
+                onClick=lambda: building_factory.build("cargoloader", config.app.selected_planet)
+                ))
 
         self.ship_buttons.append(ImageButton(win=self.win,
-            x=self.get_screen_x() + self.get_screen_width(),
-            y=self.get_screen_y(),
-            width=25,
-            height=25,
-            isSubWidget=False,
-            parent=self,
-            image=pygame.transform.scale(
-                get_image("spaceship_30x30.png"), (25, 25)),
-            tooltip="build spaceship",
-            info_text="",  # info_panel_text_generator.create_info_panel_ship_text("spaceship"),
-            frame_color=self.frame_color,
-            moveable=False,
-            include_text=True,
-            layer=self.layer,
-            onClick=lambda: building_factory.build("spaceship", config.app.selected_planet)))
+                x=self.get_screen_x() + self.get_screen_width(),
+                y=self.get_screen_y(),
+                width=25,
+                height=25,
+                isSubWidget=False,
+                parent=self,
+                image=pygame.transform.scale(
+                        get_image("spaceship_30x30.png"), (25, 25)),
+                tooltip="build spaceship",
+                info_text="",  # info_panel_text_generator.create_info_panel_ship_text("spaceship"),
+                frame_color=self.frame_color,
+                moveable=False,
+                include_text=True,
+                layer=self.layer,
+                onClick=lambda: building_factory.build("spaceship", config.app.selected_planet)))
 
         self.ship_buttons.append(ImageButton(win=self.win,
-            x=self.get_screen_x() + self.get_screen_width() + self.get_screen_width() / 2,
-            y=self.get_screen_y(),
-            width=25,
-            height=25,
-            isSubWidget=False,
-            parent=self,
-            image=pygame.transform.scale(
-                get_image("spacestation.png"), (45, 45)),
-            tooltip="build space station",
-            info_text="",  # info_panel_text_generator.create_info_panel_ship_text("spaceship"),
-            frame_color=self.frame_color,
-            moveable=False,
-            include_text=True,
-            layer=self.layer,
-            onClick=lambda: building_factory.build("spacestation", config.app.selected_planet)))
+                x=self.get_screen_x() + self.get_screen_width() + self.get_screen_width() / 2,
+                y=self.get_screen_y(),
+                width=25,
+                height=25,
+                isSubWidget=False,
+                parent=self,
+                image=pygame.transform.scale(
+                        get_image("spacestation.png"), (45, 45)),
+                tooltip="build space station",
+                info_text="",  # info_panel_text_generator.create_info_panel_ship_text("spaceship"),
+                frame_color=self.frame_color,
+                moveable=False,
+                include_text=True,
+                layer=self.layer,
+                onClick=lambda: building_factory.build("spacestation", config.app.selected_planet)))
 
         # initial hide the buttons
         self.parent.widgets.append(self)
@@ -187,9 +187,9 @@ class SpaceHarbor(WidgetBase):
 
         # label
         drawText(self.win, "Space Harbor", self.frame_color,
-            (self.surface_rect.x + self.parent.spacing_x - 36, self.surface_rect.y + self.spacing,
-             self.get_screen_width(),
-             20), self.font, "center")
+                (self.surface_rect.x + self.parent.spacing_x - 36, self.surface_rect.y + self.spacing,
+                 self.get_screen_width(),
+                 20), self.font, "center")
 
         self.set_button_position()
         # self.spacehunter_button.set_position((

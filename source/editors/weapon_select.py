@@ -51,55 +51,56 @@ class WeaponSelect(EditorBase):
         for key in self.all_weapons.keys():
             button_size = BUTTON_SIZE
             icon = ImageButton(win=self.win,
-                x=self.get_screen_x() + x + TOP_SPACING,
-                y=self.get_screen_y() + y + TOP_SPACING * 3,
-                width=button_size,
-                height=button_size,
-                isSubWidget=False,
-                parent=self,
-                image=pygame.transform.scale(get_image(f"{key}.png"), (button_size, button_size)),
-                tooltip=key,
-                frame_color=self.frame_color,
-                moveable=False,
-                include_text=True,
-                layer=self.layer,
-                onClick=lambda weapon_=key: self.select_weapon(weapon_),
-                name=key,
-                text=key + " ",  # dirty hack to ensure its not building something
-                textColour=self.frame_color,
-                font_size=BUTTON_FONT_SIZE,
-                info_text="",  # info_panel_text_generator.create_info_panel_weapon_text(key),
-                textHAlign="right_outside",
-                outline_thickness=0,
-                outline_threshold=1
-                )
+                    x=self.get_screen_x() + x + TOP_SPACING,
+                    y=self.get_screen_y() + y + TOP_SPACING * 3,
+                    width=button_size,
+                    height=button_size,
+                    isSubWidget=False,
+                    parent=self,
+                    image=pygame.transform.scale(get_image(f"{key}.png"), (button_size, button_size)),
+                    tooltip=key,
+                    frame_color=self.frame_color,
+                    moveable=False,
+                    include_text=True,
+                    layer=self.layer,
+                    onClick=lambda weapon_=key: self.select_weapon(weapon_),
+                    name=key,
+                    text=key + " ",  # dirty hack to ensure its not building something
+                    textColour=self.frame_color,
+                    font_size=BUTTON_FONT_SIZE,
+                    info_text="",  # info_panel_text_generator.create_info_panel_weapon_text(key),
+                    textHAlign="right_outside",
+                    outline_thickness=0,
+                    outline_threshold=1
+                    )
 
             self.buttons.append(icon)
             self.widgets.append(icon)
             y += button_size
 
         self.current_weapon_icon = ImageButton(win=self.win,
-            x=self.get_screen_x() + self.get_screen_width() / 3 - button_size / 2,
-            y=self.get_screen_y() + y + TOP_SPACING * 4,
-            width=button_size,
-            height=button_size,
-            isSubWidget=False,
-            parent=self,
-            image=pygame.transform.scale(get_image(f"{self.current_weapon['name']}.png"), (button_size, button_size)),
-            tooltip=key,
-            frame_color=self.frame_color,
-            moveable=False,
-            include_text=True,
-            layer=self.layer,
-            onClick=lambda: print("current weapon"),
-            name=key + ":",
-            text="current weapon:",
-            textColour=self.frame_color,
-            font_size=BUTTON_FONT_SIZE,
-            info_text="not set yet",
-            textVAlign="over_the_top",
-            textHAlign="left",
-            )
+                x=self.get_screen_x() + self.get_screen_width() / 3 - button_size / 2,
+                y=self.get_screen_y() + y + TOP_SPACING * 4,
+                width=button_size,
+                height=button_size,
+                isSubWidget=False,
+                parent=self,
+                image=pygame.transform.scale(get_image(f"{self.current_weapon['name']}.png"), (
+                button_size, button_size)),
+                tooltip=key,
+                frame_color=self.frame_color,
+                moveable=False,
+                include_text=True,
+                layer=self.layer,
+                onClick=lambda: print("current weapon"),
+                name=key + ":",
+                text="current weapon:",
+                textColour=self.frame_color,
+                font_size=BUTTON_FONT_SIZE,
+                info_text="not set yet",
+                textVAlign="over_the_top",
+                textHAlign="left",
+                )
         self.current_weapon_icon.disable()
         self.buttons.append(self.current_weapon_icon)
         self.widgets.append(self.current_weapon_icon)
@@ -107,49 +108,49 @@ class WeaponSelect(EditorBase):
 
         button_size = BUTTON_SIZE
         self.upgrade_button = ImageButton(win=self.win,
-            x=self.get_screen_x() + self.get_screen_width() / 2 - button_size / 2,
-            y=self.get_screen_y() + y + TOP_SPACING * 5,
-            width=button_size,
-            height=button_size,
-            isSubWidget=False,
-            parent=self,
-            image=pygame.transform.rotate(pygame.transform.scale(get_image(f"arrow-left.png"), (
-                button_size, button_size)), -90),
-            tooltip="upgrade",
-            frame_color=self.frame_color,
-            moveable=False,
-            include_text=True,
-            layer=self.layer,
-            onClick=lambda: self.upgrade(),
-            name="upgrade_button",
-            text="upgrade",
-            textColour=self.frame_color,
-            font_size=BUTTON_FONT_SIZE,
-            info_text="",
-            textVAlign="below_the_bottom"
-            )
+                x=self.get_screen_x() + self.get_screen_width() / 2 - button_size / 2,
+                y=self.get_screen_y() + y + TOP_SPACING * 5,
+                width=button_size,
+                height=button_size,
+                isSubWidget=False,
+                parent=self,
+                image=pygame.transform.rotate(pygame.transform.scale(get_image(f"arrow-left.png"), (
+                    button_size, button_size)), -90),
+                tooltip="upgrade",
+                frame_color=self.frame_color,
+                moveable=False,
+                include_text=True,
+                layer=self.layer,
+                onClick=lambda: self.upgrade(),
+                name="upgrade_button",
+                text="upgrade",
+                textColour=self.frame_color,
+                font_size=BUTTON_FONT_SIZE,
+                info_text="",
+                textVAlign="below_the_bottom"
+                )
 
         self.buttons.append(self.upgrade_button)
         self.widgets.append(self.upgrade_button)
 
         self.auto_pilot_checkbox = Checkbox(
-            self.win,
-            self.upgrade_button.get_screen_x() + button_size * 3,
-            self.upgrade_button.get_screen_y(),
-            CHECKBOX_SIZE,
-            CHECKBOX_SIZE,
-            isSubWidget=False,
-            color=self.frame_color,
-            key="auto_pilot",
-            image_name="autopilot.png",
-            tooltip="auto_pilot",
-            onClick=lambda: print("OKOKOK"),
-            layer=9,
-            parent=self,
-            button_size=CHECKBOX_SIZE,
-            text="auto pilot",
-            textHAlign="left_outside",
-            textColour=self.frame_color)
+                self.win,
+                self.upgrade_button.get_screen_x() + button_size * 3,
+                self.upgrade_button.get_screen_y(),
+                CHECKBOX_SIZE,
+                CHECKBOX_SIZE,
+                isSubWidget=False,
+                color=self.frame_color,
+                key="auto_pilot",
+                image_name="autopilot.png",
+                tooltip="auto_pilot",
+                onClick=lambda: print("OKOKOK"),
+                layer=9,
+                parent=self,
+                button_size=CHECKBOX_SIZE,
+                text="auto pilot",
+                textHAlign="left_outside",
+                textColour=self.frame_color)
         self.auto_pilot_checkbox.checked = False
         self.checkboxes.append(self.auto_pilot_checkbox)
         self.widgets.append(self.auto_pilot_checkbox)
@@ -177,10 +178,10 @@ class WeaponSelect(EditorBase):
         # if obj has selected weapon already, upgrade it
         if self.obj.weapon_handler.current_weapon_select in self.obj.weapon_handler.weapons.keys():
             self.obj.weapon_handler.current_weapon = copy.deepcopy(
-                self.obj.weapon_handler.weapons[self.obj.weapon_handler.current_weapon_select])
+                    self.obj.weapon_handler.weapons[self.obj.weapon_handler.current_weapon_select])
             self.current_weapon = copy.deepcopy(self.all_weapons[self.current_weapon_select])
             self.current_weapon["level"] = copy.deepcopy(
-                self.obj.weapon_handler.weapons[self.obj.weapon_handler.current_weapon_select]["level"])
+                    self.obj.weapon_handler.weapons[self.obj.weapon_handler.current_weapon_select]["level"])
             self.upgrade_button.set_text("upgrade")
             self.upgrade_button.tooltip = "upgrade"
         else:
@@ -199,7 +200,7 @@ class WeaponSelect(EditorBase):
         if self.current_weapon["level"] < self.max_weapons_upgrade_level:
             # prices = self.current_weapon["upgrade cost"]["level_" + str(self.current_weapon['level'])]
             prices = building_factory.get_prices_from_weapons_dict(
-                self.current_weapon["name"], self.current_weapon["level"])
+                    self.current_weapon["name"], self.current_weapon["level"])
             building_factory.build(self.current_weapon["name"], self.obj, prices=prices)
             self.update_obj()
         else:

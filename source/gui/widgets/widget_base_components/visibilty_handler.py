@@ -17,6 +17,7 @@ class VisibilityHandler:
             self.show()
         else:
             self.hide()
+
     def hide(self):
         """hides self and its widgets
         """

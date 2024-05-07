@@ -529,7 +529,6 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
             self.move_stop = 1
             sounds.stop_sound(self.sound_channel)
 
-
         # reach target
         if self.target_reached:
             self.moving = False

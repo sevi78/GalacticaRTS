@@ -44,22 +44,22 @@ class SaveGameEdit(EditorBase):
         name = kwargs.get("name", "no_name")
         button_size = 32
         delete_icon = ImageButton(win=self.win,
-            x=self.get_screen_x() + self.get_screen_width() / 2 + button_size * 3,
-            y=self.max_height + button_size / 2,
-            width=button_size,
-            height=button_size,
-            isSubWidget=False,
-            parent=self,
-            image=pygame.transform.scale(
-                get_image("uncheck.png"), (button_size, button_size)),
-            tooltip=tooltip,
-            frame_color=self.frame_color,
-            moveable=False,
-            include_text=True,
-            layer=self.layer,
-            onClick=function,
-            name="delete_button"
-            )
+                x=self.get_screen_x() + self.get_screen_width() / 2 + button_size * 3,
+                y=self.max_height + button_size / 2,
+                width=button_size,
+                height=button_size,
+                isSubWidget=False,
+                parent=self,
+                image=pygame.transform.scale(
+                        get_image("uncheck.png"), (button_size, button_size)),
+                tooltip=tooltip,
+                frame_color=self.frame_color,
+                moveable=False,
+                include_text=True,
+                layer=self.layer,
+                onClick=function,
+                name="delete_button"
+                )
 
         self.buttons.append(delete_icon)
         self.widgets.append(delete_icon)
@@ -84,24 +84,24 @@ class SaveGameEdit(EditorBase):
             button_size = 32
 
             icon = ImageButton(win=self.win,
-                x=self.get_screen_x() + button_size,
-                y=self.get_screen_y() + TOP_SPACING + button_size * 3 + y,
-                width=button_size,
-                height=button_size,
-                isSubWidget=False,
-                parent=self,
-                image=pygame.transform.scale(
-                    get_image("load_icon.png"), (button_size, button_size)),
-                frame_color=self.frame_color,
-                moveable=False,
-                include_text=True,
-                layer=self.layer,
-                onClick=lambda name_=name: self.set_current_game(name_),
-                text=i,
-                textColour=self.frame_color,
-                textHAlign="left_outside",
-                name=name
-                )
+                    x=self.get_screen_x() + button_size,
+                    y=self.get_screen_y() + TOP_SPACING + button_size * 3 + y,
+                    width=button_size,
+                    height=button_size,
+                    isSubWidget=False,
+                    parent=self,
+                    image=pygame.transform.scale(
+                            get_image("load_icon.png"), (button_size, button_size)),
+                    frame_color=self.frame_color,
+                    moveable=False,
+                    include_text=True,
+                    layer=self.layer,
+                    onClick=lambda name_=name: self.set_current_game(name_),
+                    text=i,
+                    textColour=self.frame_color,
+                    textHAlign="left_outside",
+                    name=name
+                    )
             y += button_size
             # icon.hide()
             self.max_height = self.get_screen_y() + TOP_SPACING + button_size * 3 + y

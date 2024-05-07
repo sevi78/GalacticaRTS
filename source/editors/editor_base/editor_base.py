@@ -178,22 +178,22 @@ class EditorBase(WidgetBase):
         name = kwargs.get("name", "no_name")
         button_size = 32
         save_icon = ImageButton(win=self.win,
-            x=self.get_screen_x() + self.get_screen_width() / 2 - button_size,
-            y=self.max_height + button_size / 2,
-            width=button_size,
-            height=button_size,
-            isSubWidget=False,
-            parent=self,
-            image=pygame.transform.scale(
-                get_image("save_icon.png"), (button_size, button_size)),
-            tooltip=tooltip,
-            frame_color=self.frame_color,
-            moveable=False,
-            include_text=True,
-            layer=self.layer,
-            onClick=function,
-            name=name
-            )
+                x=self.get_screen_x() + self.get_screen_width() / 2 - button_size,
+                y=self.max_height + button_size / 2,
+                width=button_size,
+                height=button_size,
+                isSubWidget=False,
+                parent=self,
+                image=pygame.transform.scale(
+                        get_image("save_icon.png"), (button_size, button_size)),
+                tooltip=tooltip,
+                frame_color=self.frame_color,
+                moveable=False,
+                include_text=True,
+                layer=self.layer,
+                onClick=function,
+                name=name
+                )
         save_icon.hide()
 
         self.buttons.append(save_icon)
@@ -203,22 +203,22 @@ class EditorBase(WidgetBase):
         name = kwargs.get("name", "no_name")
         button_size = 32
         load_button = ImageButton(win=self.win,
-            x=self.get_screen_x() + self.get_screen_width() / 2 + button_size,
-            y=self.max_height + button_size / 2,
-            width=button_size,
-            height=button_size,
-            isSubWidget=False,
-            parent=self,
-            image=pygame.transform.scale(
-                get_image("load_icon.png"), (button_size, button_size)),
-            tooltip=tooltip,
-            frame_color=self.frame_color,
-            moveable=False,
-            include_text=False,
-            layer=self.layer,
-            onClick=function,
-            name=name
-            )
+                x=self.get_screen_x() + self.get_screen_width() / 2 + button_size,
+                y=self.max_height + button_size / 2,
+                width=button_size,
+                height=button_size,
+                isSubWidget=False,
+                parent=self,
+                image=pygame.transform.scale(
+                        get_image("load_icon.png"), (button_size, button_size)),
+                tooltip=tooltip,
+                frame_color=self.frame_color,
+                moveable=False,
+                include_text=False,
+                layer=self.layer,
+                onClick=function,
+                name=name
+                )
 
         load_button.hide()
 
@@ -228,22 +228,22 @@ class EditorBase(WidgetBase):
     def create_close_button(self):
         button_size = 32
         close_icon = ImageButton(win=self.win,
-            x=self.get_screen_x() + self.get_screen_width() - button_size - button_size / 2,
-            y=self.world_y + TOP_SPACING + button_size / 2,
-            width=button_size,
-            height=button_size,
-            isSubWidget=False,
-            parent=self,
-            image=pygame.transform.scale(
-                get_image("close_icon.png"), (button_size / 2, button_size / 2)),
-            tooltip="close editor",
-            frame_color=self.frame_color,
-            moveable=False,
-            include_text=False,
-            layer=self.layer,
-            onClick=lambda: self.close(),
-            name="close_button"
-            )
+                x=self.get_screen_x() + self.get_screen_width() - button_size - button_size / 2,
+                y=self.world_y + TOP_SPACING + button_size / 2,
+                width=button_size,
+                height=button_size,
+                isSubWidget=False,
+                parent=self,
+                image=pygame.transform.scale(
+                        get_image("close_icon.png"), (button_size / 2, button_size / 2)),
+                tooltip="close editor",
+                frame_color=self.frame_color,
+                moveable=False,
+                include_text=False,
+                layer=self.layer,
+                onClick=lambda: self.close(),
+                name="close_button"
+                )
 
         close_icon.hide()
 
@@ -256,7 +256,7 @@ class EditorBase(WidgetBase):
             if type(value) is bool:
                 self.selector_lists[key] = self.boolean_list
                 self.selectors.append(Selector(self.win, x, self.world_y + y, ARROW_SIZE, self.frame_color, 9,
-                    self.spacing_x, {"list_name": f"{key}_list", "list": self.boolean_list}, self, FONT_SIZE))
+                        self.spacing_x, {"list_name": f"{key}_list", "list": self.boolean_list}, self, FONT_SIZE))
 
                 y += self.spacing_y
 
@@ -266,8 +266,8 @@ class EditorBase(WidgetBase):
                     self.selector_lists[key] = self.default_list
 
                 self.selectors.append(Selector(self.win, x, self.world_y + y, ARROW_SIZE, self.frame_color, 9,
-                    self.spacing_x, {"list_name": f"{key}_list", "list": self.selector_lists[key]}, self, FONT_SIZE,
-                    repeat_clicks=False))
+                        self.spacing_x, {"list_name": f"{key}_list", "list": self.selector_lists[key]}, self, FONT_SIZE,
+                        repeat_clicks=False))
 
                 y += self.spacing_y
 
@@ -361,8 +361,6 @@ class EditorBase(WidgetBase):
 
             if hasattr(widget, "set_center"):
                 widget.set_center()
-
-
 
     def draw_frame(self, **kwargs):  # old, working but weird, because the frame rect is not set correctly
         corner_radius = kwargs.get("corner_radius", config.ui_rounded_corner_radius_big)

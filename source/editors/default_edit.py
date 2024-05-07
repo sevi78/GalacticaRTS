@@ -21,7 +21,7 @@ class DefaultEdit(EditorBase):
         self.max_height = 200
 
         # attach to parent
-        #self.parent.editors.append(self)
+        # self.parent.editors.append(self)
         # use this if its a sûb widget, it will be repositions automatically!
 
     def listen(self, events):

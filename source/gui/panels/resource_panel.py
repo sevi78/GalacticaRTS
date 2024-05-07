@@ -38,7 +38,7 @@ class ResourcePanel(WidgetBase):
         self.size_y = kwargs.get("size_y")
         self.spacing = kwargs.get("spacing")
         self.surface_frame = pygame.draw.rect(self.win, self.frame_color, self.surface_rect,
-            config.ui_rounded_corner_small_thickness, config.ui_rounded_corner_radius_small)
+                config.ui_rounded_corner_small_thickness, config.ui_rounded_corner_radius_small)
         self.font_size = 18
         self.font = pygame.font.SysFont(config.font_name, self.font_size)
         self.max_height = self.get_screen_y() + self.surface_rect.height
@@ -183,121 +183,121 @@ class ResourcePanel(WidgetBase):
         # pos_x += self.spacing
 
         self.water_icon = Icon(win=self.win,
-            x=pos_x,
-            y=pos_y,
-            width=self.icon_size,
-            height=self.icon_size,
-            isSubWidget=False,
-            parent=self.parent,
-            image=get_image("water_25x25.png"),
-            key="water",
-            tooltip="water is good to drink and for washing aswell",
-            frame_color=self.frame_color,
-            moveable=False,
-            include_text=False,
-            layer=9,
-            outline_thickness=1,
-            outline_threshold=0)
+                x=pos_x,
+                y=pos_y,
+                width=self.icon_size,
+                height=self.icon_size,
+                isSubWidget=False,
+                parent=self.parent,
+                image=get_image("water_25x25.png"),
+                key="water",
+                tooltip="water is good to drink and for washing aswell",
+                frame_color=self.frame_color,
+                moveable=False,
+                include_text=False,
+                layer=9,
+                outline_thickness=1,
+                outline_threshold=0)
         self.widgets.append(self.water_icon)
         self.max_width += self.icon_size + self.spacing
         pos_x += self.spacing
 
         self.energy_icon = Icon(win=self.win,
-            x=pos_x,
-            y=pos_y,
-            width=self.icon_size,
-            height=self.icon_size,
-            isSubWidget=False,
-            parent=self.parent,
-            image=get_image("energy_25x25.png"),
-            key="energy",
-            tooltip="energy is needed for almost everything",
-            frame_color=self.frame_color,
-            moveable=False,
-            include_text=False,
-            layer=9,
-            outline_thickness=1,
-            outline_threshold=0)
+                x=pos_x,
+                y=pos_y,
+                width=self.icon_size,
+                height=self.icon_size,
+                isSubWidget=False,
+                parent=self.parent,
+                image=get_image("energy_25x25.png"),
+                key="energy",
+                tooltip="energy is needed for almost everything",
+                frame_color=self.frame_color,
+                moveable=False,
+                include_text=False,
+                layer=9,
+                outline_thickness=1,
+                outline_threshold=0)
         self.widgets.append(self.energy_icon)
         self.max_width += self.icon_size + self.spacing
         pos_x += self.spacing
 
         self.food_icon = Icon(win=self.win,
-            x=pos_x,
-            y=pos_y,
-            width=self.icon_size,
-            height=self.icon_size,
-            isSubWidget=False,
-            parent=self.parent,
-            image=get_image("food_25x25.png"),
-            key="food",
-            tooltip="this is food, you want to eat!!! Don't you?!??",
-            frame_color=self.frame_color,
-            moveable=False,
-            include_text=False,
-            layer=9,
-            outline_thickness=1,
-            outline_threshold=0)
+                x=pos_x,
+                y=pos_y,
+                width=self.icon_size,
+                height=self.icon_size,
+                isSubWidget=False,
+                parent=self.parent,
+                image=get_image("food_25x25.png"),
+                key="food",
+                tooltip="this is food, you want to eat!!! Don't you?!??",
+                frame_color=self.frame_color,
+                moveable=False,
+                include_text=False,
+                layer=9,
+                outline_thickness=1,
+                outline_threshold=0)
         self.widgets.append(self.food_icon)
         self.max_width += self.icon_size + self.spacing
         pos_x += self.spacing
 
         self.minerals_icon = Icon(win=self.win,
-            x=pos_x,
-            y=pos_y,
-            width=self.icon_size,
-            height=self.icon_size,
-            isSubWidget=False,
-            parent=self.parent,
-            image=get_image("minerals_25x25.png"),
-            key="minerals",
-            tooltip="some of the minerals look really nice in the sun!",
-            frame_color=self.frame_color,
-            moveable=False,
-            include_text=False,
-            layer=9,
-            outline_thickness=1,
-            outline_threshold=0, )
+                x=pos_x,
+                y=pos_y,
+                width=self.icon_size,
+                height=self.icon_size,
+                isSubWidget=False,
+                parent=self.parent,
+                image=get_image("minerals_25x25.png"),
+                key="minerals",
+                tooltip="some of the minerals look really nice in the sun!",
+                frame_color=self.frame_color,
+                moveable=False,
+                include_text=False,
+                layer=9,
+                outline_thickness=1,
+                outline_threshold=0, )
         self.widgets.append(self.minerals_icon)
         self.max_width += self.icon_size + self.spacing
         pos_x += self.spacing
 
         self.technology_icon = Icon(win=self.win,
-            x=pos_x,
-            y=pos_y,
-            width=self.icon_size,
-            height=self.icon_size,
-            isSubWidget=False,
-            parent=self.parent,
-            image=get_image("technology_25x25.png"),
-            key="technology",
-            tooltip="technology is bad! but we need some things to build and evolve technology",
-            frame_color=self.frame_color,
-            moveable=False,
-            include_text=False,
-            layer=9,
-            outline_thickness=1,
-            outline_threshold=0)
+                x=pos_x,
+                y=pos_y,
+                width=self.icon_size,
+                height=self.icon_size,
+                isSubWidget=False,
+                parent=self.parent,
+                image=get_image("technology_25x25.png"),
+                key="technology",
+                tooltip="technology is bad! but we need some things to build and evolve technology",
+                frame_color=self.frame_color,
+                moveable=False,
+                include_text=False,
+                layer=9,
+                outline_thickness=1,
+                outline_threshold=0)
         self.widgets.append(self.technology_icon)
         self.max_width += self.icon_size + self.spacing
         pos_x += self.spacing
 
         self.population_icon = Icon(win=self.win,
-            x=pos_x,
-            y=pos_y,
-            width=self.icon_size,
-            height=self.icon_size,
-            isSubWidget=False,
-            parent=self.parent,
-            image=get_image("population_25x25.png"),
-            key="population",
-            tooltip="population; produce food and water to make it grow!",
-            frame_color=self.frame_color,
-            moveable=False,
-            include_text=False,
-            layer=9,
-            outline_thickness=1,
-            outline_threshold=0)
+                x=pos_x,
+                y=pos_y,
+                width=self.icon_size,
+                height=self.icon_size,
+                isSubWidget=False,
+                parent=self.parent,
+                image=get_image("population_25x25.png"),
+                key="population",
+                tooltip="population; produce food and water to make it grow!",
+                frame_color=self.frame_color,
+                moveable=False,
+                include_text=False,
+                layer=9,
+                outline_thickness=1,
+                outline_threshold=0)
         self.widgets.append(self.population_icon)
         self.max_width += self.icon_size + self.spacing
         pos_x += self.spacing

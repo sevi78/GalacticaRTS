@@ -23,21 +23,21 @@ class PlanetEditBuilder:
     def create_randomize_button(self):
         button_size = 32
         randomize_button = ImageButton(win=self.win,
-            x=self.get_screen_x() + button_size / 2,
-            y=self.world_y + TOP_SPACING + button_size / 2,
-            width=button_size,
-            height=button_size,
-            isSubWidget=False,
-            parent=self,
-            image=pygame.transform.scale(
-                get_image("randomize_icon.png"), (button_size, button_size)),
-            tooltip="randomize planet",
-            frame_color=self.frame_color,
-            moveable=False,
-            include_text=False,
-            layer=self.layer,
-            onClick=lambda: self.randomize(),
-            )
+                x=self.get_screen_x() + button_size / 2,
+                y=self.world_y + TOP_SPACING + button_size / 2,
+                width=button_size,
+                height=button_size,
+                isSubWidget=False,
+                parent=self,
+                image=pygame.transform.scale(
+                        get_image("randomize_icon.png"), (button_size, button_size)),
+                tooltip="randomize planet",
+                frame_color=self.frame_color,
+                moveable=False,
+                include_text=False,
+                layer=self.layer,
+                onClick=lambda: self.randomize(),
+                )
 
         randomize_button.hide()
 
@@ -47,9 +47,9 @@ class PlanetEditBuilder:
     def create_inputboxes(self):
         """"""
         self.inputbox = InputBox(self.win,
-            self.world_x - self.spacing_x / 2 + self.world_width / 2, self.world_y + TOP_SPACING + 16, self.spacing_x * 2,
-            32,
-            text="", parent=self, key="name")
+                self.world_x - self.spacing_x / 2 + self.world_width / 2, self.world_y + TOP_SPACING + 16, self.spacing_x * 2,
+                32,
+                text="", parent=self, key="name")
         self.widgets.append(self.inputbox)
 
     def create_selectors(self):
@@ -58,47 +58,47 @@ class PlanetEditBuilder:
         y = 156
 
         self.type_planet = Selector(self.win, x, self.world_y + y, ARROW_SIZE, self.frame_color, 9, self.spacing_x,
-            {"list_name": "type_list", "list": self.type_list}, self, FONT_SIZE)
+                {"list_name": "type_list", "list": self.type_list}, self, FONT_SIZE)
         y += self.spacing_y
 
         self.selector_world_width = Selector(self.win, x, self.world_y + y, ARROW_SIZE, self.frame_color, 9, self.spacing_x,
-            {"list_name": "world_width_list", "list": self.world_width_list}, self, FONT_SIZE, repeat_clicks=True)
+                {"list_name": "world_width_list", "list": self.world_width_list}, self, FONT_SIZE, repeat_clicks=True)
         y += self.spacing_y
 
         self.selector_world_height = Selector(self.win, x, self.world_y + y, ARROW_SIZE, self.frame_color, 9, self.spacing_x,
-            {"list_name": "world_height_list", "list": self.world_height_list}, self, FONT_SIZE, repeat_clicks=True)
+                {"list_name": "world_height_list", "list": self.world_height_list}, self, FONT_SIZE, repeat_clicks=True)
         y += self.spacing_y
 
         self.selector_image_name_small = Selector(self.win, x, self.world_y + y, ARROW_SIZE, self.frame_color, 9,
-            self.spacing_x, {"list_name": "image_name_small_list", "list": self.image_name_small_list}, self, FONT_SIZE)
+                self.spacing_x, {"list_name": "image_name_small_list", "list": self.image_name_small_list}, self, FONT_SIZE)
         y += self.spacing_y
 
         self.selector_atmosphere_name = Selector(self.win, x, self.world_y + y, ARROW_SIZE, self.frame_color, 9,
-            self.spacing_x, {"list_name": "atmosphere_name_list", "list": self.atmosphere_name_list}, self, FONT_SIZE)
+                self.spacing_x, {"list_name": "atmosphere_name_list", "list": self.atmosphere_name_list}, self, FONT_SIZE)
         y += self.spacing_y
 
         self.selector_orbit_object_id = Selector(self.win, x, self.world_y + y, ARROW_SIZE, self.frame_color, 9,
-            self.spacing_x, {"list_name": "orbit_object_id_list", "list": self.orbit_object_id_list}, self, FONT_SIZE)
+                self.spacing_x, {"list_name": "orbit_object_id_list", "list": self.orbit_object_id_list}, self, FONT_SIZE)
         y += self.spacing_y
 
         self.selector_orbit_speed = Selector(self.win, x, self.world_y + y, ARROW_SIZE, self.frame_color, 9,
-            self.spacing_x, {"list_name": "orbit_speed_list", "list": self.orbit_speed_list}, self, FONT_SIZE, repeat_clicks=True)
+                self.spacing_x, {"list_name": "orbit_speed_list", "list": self.orbit_speed_list}, self, FONT_SIZE, repeat_clicks=True)
         y += self.spacing_y
 
         self.selector_buildings_max = Selector(self.win, x, self.world_y + y, ARROW_SIZE, self.frame_color, 9,
-            self.spacing_x, {"list_name": "buildings_max_list", "list": self.buildings_max_list}, self, FONT_SIZE)
+                self.spacing_x, {"list_name": "buildings_max_list", "list": self.buildings_max_list}, self, FONT_SIZE)
         y += self.spacing_y
 
         self.selector_building_slot_amount = Selector(self.win, x, self.world_y + y, ARROW_SIZE, self.frame_color, 9,
-            self.spacing_x, {"list_name": "building_slot_amount_list", "list": self.building_slot_amount_list}, self, FONT_SIZE)
+                self.spacing_x, {"list_name": "building_slot_amount_list", "list": self.building_slot_amount_list}, self, FONT_SIZE)
         y += self.spacing_y
 
         self.selector_orbit_angle = Selector(self.win, x, self.world_y + y, ARROW_SIZE, self.frame_color, 9,
-            self.spacing_x, {"list_name": "orbit_angle_list", "list": self.orbit_angle_list}, self, FONT_SIZE, repeat_clicks=True)
+                self.spacing_x, {"list_name": "orbit_angle_list", "list": self.orbit_angle_list}, self, FONT_SIZE, repeat_clicks=True)
         y += self.spacing_y
 
         self.selector_alien_population = Selector(self.win, x, self.world_y + y, ARROW_SIZE, self.frame_color, 9,
-            self.spacing_x, {"list_name": "alien_population", "list": self.alien_population_list}, self, FONT_SIZE, repeat_clicks=True)
+                self.spacing_x, {"list_name": "alien_population", "list": self.alien_population_list}, self, FONT_SIZE, repeat_clicks=True)
 
         y += self.spacing_y
         self.max_height = y
@@ -111,9 +111,9 @@ class PlanetEditBuilder:
 
         for i in all_possible_resources:
             checkbox = Checkbox(
-                self.win, self.world_x - self.spacing_x + x + BUTTON_SIZE * 4, y, 30, 30, isSubWidget=False,
-                color=self.frame_color,
-                key=i, tooltip=i, onClick=lambda: print("OKOKOK"), layer=9, parent=self)
+                    self.win, self.world_x - self.spacing_x + x + BUTTON_SIZE * 4, y, 30, 30, isSubWidget=False,
+                    color=self.frame_color,
+                    key=i, tooltip=i, onClick=lambda: print("OKOKOK"), layer=9, parent=self)
             x += BUTTON_SIZE * 1.5
 
             self.checkboxes.append(checkbox)
@@ -201,7 +201,7 @@ class PlanetEdit(EditorBase, PlanetEditBuilder):
         self.create_inputboxes()
         self.create_save_button(lambda:
         config.app.level_handler.save_level(config.app.level_handler.current_game,
-            "levels" if config.app.level_handler.current_game.startswith("level_") else "games"), "save level")
+                "levels" if config.app.level_handler.current_game.startswith("level_") else "games"), "save level")
         self.create_close_button()
         self.create_randomize_button()
 

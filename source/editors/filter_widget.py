@@ -33,27 +33,27 @@ class FilterWidget(EditorBase):
         button_size = 15
         for key in keys:
             icon = ImageButton(win=self.win,
-                x=self.get_screen_x() + x,
-                y=self.get_screen_y() + y + TOP_SPACING,
-                width=button_size,
-                height=button_size,
-                isSubWidget=False,
-                parent=self,
-                image=pygame.transform.scale(get_image(f"{key}_icon.png"), (button_size, button_size)),
-                tooltip=key,
-                frame_color=self.frame_color,
-                moveable=False,
-                include_text=True,
-                layer=self.layer,
-                onClick=lambda key_=key: self.select_filter(key_),
-                name=key,
-                textColour=self.frame_color,
-                font_size=BUTTON_FONT_SIZE,
-                info_text="",  # info_panel_text_generator.create_info_panel_weapon_text(key),
-                textHAlign="right_outside",
-                outline_thickness=0,
-                outline_threshold=1
-                )
+                    x=self.get_screen_x() + x,
+                    y=self.get_screen_y() + y + TOP_SPACING,
+                    width=button_size,
+                    height=button_size,
+                    isSubWidget=False,
+                    parent=self,
+                    image=pygame.transform.scale(get_image(f"{key}_icon.png"), (button_size, button_size)),
+                    tooltip=key,
+                    frame_color=self.frame_color,
+                    moveable=False,
+                    include_text=True,
+                    layer=self.layer,
+                    onClick=lambda key_=key: self.select_filter(key_),
+                    name=key,
+                    textColour=self.frame_color,
+                    font_size=BUTTON_FONT_SIZE,
+                    info_text="",  # info_panel_text_generator.create_info_panel_weapon_text(key),
+                    textHAlign="right_outside",
+                    outline_thickness=0,
+                    outline_threshold=1
+                    )
 
             self.buttons.append(icon)
             self.widgets.append(icon)
@@ -97,9 +97,9 @@ class FilterWidget(EditorBase):
 
         # Sort the list of widgets based on the specified key (attribute) in descending order
         sorted_widgets = sprite_groups.convert_sprite_groups_to_image_widget_list(
-            self.list_name,
-            sort_by=key,
-            reverse=getattr(self, key))
+                self.list_name,
+                sort_by=key,
+                reverse=getattr(self, key))
 
         # Update the parent's widgets list with the sorted list
         self.parent.set_widgets(sorted_widgets)

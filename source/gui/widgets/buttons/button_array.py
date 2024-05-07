@@ -115,8 +115,8 @@ class ButtonArray(WidgetBase):
                 y = self.screen_y + j * (height + self.separationThickness) + self.topBorder
                 kwargs = {k: v[count] for k, v in self.buttonAttributes.items() if v is not None}
                 self.buttons.append(Button(self.win, x, y, width, height, isSubWidget=True,
-                    **kwargs)
-                    )
+                        **kwargs)
+                        )
 
                 count += 1
 

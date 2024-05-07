@@ -92,7 +92,7 @@ class DealSelect(EditorBase, TextWrap):
         self.provider_index = kwargs.get("player_index", 0)
         self.buyer_index = kwargs.get("buyer_index", 0)
         self.provider_image = pygame.transform.scale(get_image(config.app.players[self.provider_index].image_name),
-            (20, 20))
+                (20, 20))
 
         # timing to delete after some time
         self.life_time = DEAL_LIFETIME
@@ -122,47 +122,47 @@ class DealSelect(EditorBase, TextWrap):
 
     def create_buttons(self) -> None:
         agree_button = ImageButton(win=self.win,
-            x=self.get_screen_x() + self.get_screen_width() - BUTTON_SIZE * 3,
-            y=self.world_y + TOP_SPACING + 5,
-            width=BUTTON_SIZE,
-            height=BUTTON_SIZE,
-            isSubWidget=False,
-            parent=self,
-            image=pygame.transform.scale(
-                get_image("thumps_up.png"), (BUTTON_SIZE, BUTTON_SIZE)),
-            image_raw=pygame.transform.scale(
-                get_image("thumps_up.png"), (BUTTON_SIZE, BUTTON_SIZE)),
-            tooltip="agree!",
-            frame_color=self.frame_color,
-            moveable=False,
-            include_text=False,
-            layer=9,
-            onClick=lambda: self.agree(self.buyer_index),
-            name="agree_button"
-            )
+                x=self.get_screen_x() + self.get_screen_width() - BUTTON_SIZE * 3,
+                y=self.world_y + TOP_SPACING + 5,
+                width=BUTTON_SIZE,
+                height=BUTTON_SIZE,
+                isSubWidget=False,
+                parent=self,
+                image=pygame.transform.scale(
+                        get_image("thumps_up.png"), (BUTTON_SIZE, BUTTON_SIZE)),
+                image_raw=pygame.transform.scale(
+                        get_image("thumps_up.png"), (BUTTON_SIZE, BUTTON_SIZE)),
+                tooltip="agree!",
+                frame_color=self.frame_color,
+                moveable=False,
+                include_text=False,
+                layer=9,
+                onClick=lambda: self.agree(self.buyer_index),
+                name="agree_button"
+                )
 
         self.buttons.append(agree_button)
         self.widgets.append(agree_button)
 
         decline_button = ImageButton(win=self.win,
-            x=self.get_screen_x() + self.get_screen_width() - BUTTON_SIZE - BUTTON_SIZE / 2,
-            y=self.world_y + TOP_SPACING + 5,
-            width=BUTTON_SIZE,
-            height=BUTTON_SIZE,
-            isSubWidget=False,
-            parent=self,
-            image=pygame.transform.flip(
-                pygame.transform.scale(get_image("thumps_upred.png"), (BUTTON_SIZE, BUTTON_SIZE)), 1, 1),
-            image_raw=pygame.transform.flip(
-                pygame.transform.scale(get_image("thumps_upred.png"), (BUTTON_SIZE, BUTTON_SIZE)), 1, 1),
-            tooltip="decline!",
-            frame_color=self.frame_color,
-            moveable=False,
-            include_text=False,
-            layer=9,
-            onClick=lambda: self.decline(),
-            name="decline_button"
-            )
+                x=self.get_screen_x() + self.get_screen_width() - BUTTON_SIZE - BUTTON_SIZE / 2,
+                y=self.world_y + TOP_SPACING + 5,
+                width=BUTTON_SIZE,
+                height=BUTTON_SIZE,
+                isSubWidget=False,
+                parent=self,
+                image=pygame.transform.flip(
+                        pygame.transform.scale(get_image("thumps_upred.png"), (BUTTON_SIZE, BUTTON_SIZE)), 1, 1),
+                image_raw=pygame.transform.flip(
+                        pygame.transform.scale(get_image("thumps_upred.png"), (BUTTON_SIZE, BUTTON_SIZE)), 1, 1),
+                tooltip="decline!",
+                frame_color=self.frame_color,
+                moveable=False,
+                include_text=False,
+                layer=9,
+                onClick=lambda: self.decline(),
+                name="decline_button"
+                )
 
         self.buttons.append(decline_button)
         self.widgets.append(decline_button)
@@ -245,7 +245,6 @@ class DealSelect(EditorBase, TextWrap):
             else:
                 config.app.deal_manager.add_declined_deal(self)
 
-
         self.__del__()
 
     def generate_provider_text(self) -> None:
@@ -272,41 +271,41 @@ class DealSelect(EditorBase, TextWrap):
 
     def draw_provider_text(self) -> None:
         self.wrap_text(
-            win=self.win,
-            text=self.provider_text,
-            pos=(self.world_x + PROVIDER_TEXT_X_OFFSET, self.world_y + TOP_SPACING - 3),
-            font=self.font,
-            size=(3000, self.world_height),
-            color=self.frame_color)
+                win=self.win,
+                text=self.provider_text,
+                pos=(self.world_x + PROVIDER_TEXT_X_OFFSET, self.world_y + TOP_SPACING - 3),
+                font=self.font,
+                size=(3000, self.world_height),
+                color=self.frame_color)
 
     def draw_offer_text(self) -> None:
         self.wrap_text(
-            win=self.win,
-            text=self.offer_text,
-            pos=(self.world_x + OFFER_TEXT_X_OFFSET, self.world_y + TOP_SPACING - 3),
-            font=self.font,
-            size=(3000, self.world_height),
-            color=self.frame_color,
-            **{"iconize": ICONIZE_RESOURCES})
+                win=self.win,
+                text=self.offer_text,
+                pos=(self.world_x + OFFER_TEXT_X_OFFSET, self.world_y + TOP_SPACING - 3),
+                font=self.font,
+                size=(3000, self.world_height),
+                color=self.frame_color,
+                **{"iconize": ICONIZE_RESOURCES})
 
     def draw_request_text(self) -> None:
         self.wrap_text(
-            win=self.win,
-            text=self.request_text,
-            pos=(self.world_x + REQUEST_TEXT_X_OFFSET, self.world_y + TOP_SPACING - 3),
-            font=self.font,
-            size=(3000, self.world_height),
-            color=self.frame_color,
-            **{"iconize": ICONIZE_RESOURCES})
+                win=self.win,
+                text=self.request_text,
+                pos=(self.world_x + REQUEST_TEXT_X_OFFSET, self.world_y + TOP_SPACING - 3),
+                font=self.font,
+                size=(3000, self.world_height),
+                color=self.frame_color,
+                **{"iconize": ICONIZE_RESOURCES})
 
     def draw_time_text(self) -> None:
         self.wrap_text(
-            win=self.win,
-            text=self.time_text,
-            pos=(self.world_x + TIME_TEXT_X_OFFSET, self.world_y + TOP_SPACING - 3),
-            font=self.font,
-            size=(3000, self.world_height),
-            color=self.frame_color)
+                win=self.win,
+                text=self.time_text,
+                pos=(self.world_x + TIME_TEXT_X_OFFSET, self.world_y + TOP_SPACING - 3),
+                font=self.font,
+                size=(3000, self.world_height),
+                color=self.frame_color)
 
     def draw_buttons(self) -> None:
         for i in self.buttons:

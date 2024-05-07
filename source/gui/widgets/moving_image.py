@@ -82,8 +82,10 @@ class MovingImage(pygame.sprite.Sprite):
     loops: The number of times the surface should repeat its movement before disappearing.
     """
 
-    def __init__(self, win, x, y, width, height, image, lifetime, velocity, text, text_color, fontname, loops, parent,
-                 **kwargs):
+    def __init__(
+            self, win, x, y, width, height, image, lifetime, velocity, text, text_color, fontname, loops, parent,
+            **kwargs
+            ):
         pygame.sprite.Sprite.__init__(self)
         self.text_wrap = TextWrap()
         self.win = win
@@ -180,7 +182,7 @@ class MovingImage(pygame.sprite.Sprite):
     def draw(self, surface):
         surface.blit(self.image, self.rect)
         self.text_wrap.wrap_text(self.win, self.text, (self.rect.right - 10, self.rect.top - 40), (250, 20), self.font,
-            self.text_color, fade_out=True, alpha=self.alpha)
+                self.text_color, fade_out=True, alpha=self.alpha)
 
 # def draw_moving_image():
 #

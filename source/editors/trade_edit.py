@@ -52,22 +52,22 @@ class TradeEdit(EditorBase):
     def create_buttons(self):
         button_size = 32
         agree_button = ImageButton(win=self.win,
-            x=self.get_screen_x() + self.get_screen_width() / 2 + button_size / 2,
-            y=self.max_height + button_size / 2,
-            width=button_size,
-            height=button_size,
-            isSubWidget=False,
-            parent=self,
-            image=pygame.transform.scale(
-                get_image("thumps_up.png"), (button_size, button_size)),
-            tooltip="agree!",
-            frame_color=self.frame_color,
-            moveable=False,
-            include_text=False,
-            layer=self.layer,
-            onClick=lambda: self.agree(),
-            name="agree_button"
-            )
+                x=self.get_screen_x() + self.get_screen_width() / 2 + button_size / 2,
+                y=self.max_height + button_size / 2,
+                width=button_size,
+                height=button_size,
+                isSubWidget=False,
+                parent=self,
+                image=pygame.transform.scale(
+                        get_image("thumps_up.png"), (button_size, button_size)),
+                tooltip="agree!",
+                frame_color=self.frame_color,
+                moveable=False,
+                include_text=False,
+                layer=self.layer,
+                onClick=lambda: self.agree(),
+                name="agree_button"
+                )
 
         agree_button.hide()
 
@@ -80,13 +80,13 @@ class TradeEdit(EditorBase):
 
         for key, value in self.player_resources.items():
             setattr(self, f"selector_player_{key}", Selector(self.win, x, self.world_y + y, ARROW_SIZE, self.frame_color, 9,
-                100, {"list_name": key + "_list", "list": self.value_list}, self, FONT_SIZE, repeat_clicks=True))
+                    100, {"list_name": key + "_list", "list": self.value_list}, self, FONT_SIZE, repeat_clicks=True))
 
             button_size = 32
             checkbox = Checkbox(
-                self.win, self.get_screen_x() + self.trader_image.get_width() * 4.7, self.world_y + y, 30, 30, isSubWidget=False,
-                color=self.frame_color,
-                key=key, tooltip=key, onClick=lambda: print("OKOKOK"), layer=9, parent=self)
+                    self.win, self.get_screen_x() + self.trader_image.get_width() * 4.7, self.world_y + y, 30, 30, isSubWidget=False,
+                    color=self.frame_color,
+                    key=key, tooltip=key, onClick=lambda: print("OKOKOK"), layer=9, parent=self)
 
             self.checkboxes.append(checkbox)
             self.widgets.append(checkbox)
@@ -156,20 +156,20 @@ class TradeEdit(EditorBase):
             setattr(self.trader, resource, player_resource - self.player_resources[resource])
 
             MovingImage(
-                win=self.win,
-                x=self.player_image.get_rect().x,
-                y=self.player_image.get_rect().y,
-                width=25,
-                height=25,
-                image=get_image(f"{resource}_25x25.png"),
-                lifetime=1,
-                velocity=(-0.1, 0.1),
-                text=str(self.trader_resources[resource]),
-                text_color=SPECIAL_TEXT_COLOR,
-                fontname="georgiaproblack",
-                loops=1,
-                parent=self.trader_image_pos,
-                target=self.player_image_pos)
+                    win=self.win,
+                    x=self.player_image.get_rect().x,
+                    y=self.player_image.get_rect().y,
+                    width=25,
+                    height=25,
+                    image=get_image(f"{resource}_25x25.png"),
+                    lifetime=1,
+                    velocity=(-0.1, 0.1),
+                    text=str(self.trader_resources[resource]),
+                    text_color=SPECIAL_TEXT_COLOR,
+                    fontname="georgiaproblack",
+                    loops=1,
+                    parent=self.trader_image_pos,
+                    target=self.player_image_pos)
 
         self.player.set_info_text()
         self.parent.info_panel.draw()

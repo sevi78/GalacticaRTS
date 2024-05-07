@@ -27,24 +27,25 @@ class SettingsEdit(EditorBase):
         self.current_font = None
         self.font_name_list = pygame.sysfont.get_fonts()
 
-        self.selector_lists = {"player": [_ for _ in range(0, config.players)],
-                               "players": [_ for _ in range(0, config.players)],
-                               "fps": [25, 60, 90, 120, 1000],
-                               "enable_game_events": self.boolean_list,
-                               "draw_universe": self.boolean_list,
-                               "ui_panel_alpha": [_ for _ in range(256)],
-                               "ui_rounded_corner_radius_small": [_ for _ in range(11)],
-                               "ui_rounded_corner_radius_big": [_ for _ in range(3, 25)],
-                               "ui_rounded_corner_small_thickness": [_ for _ in range(0, 5)],
-                               "ui_rounded_corner_big_thickness": [_ for _ in range(0, 15)],
-                               "ui_cross_size": [_ for _ in range(3, 50)],
-                               "ui_cross_dash_length": [_ for _ in range(1, 20)],
-                               "ui_cross_thickness": [_ for _ in range(1, 10)],
-                               "game_speed": [_ for _ in range(1, 101)],
-                               "ui_tooltip_size": [_ for _ in range(10, 50)],
-                               "monitor": [0, 1],
-                               "star_brightness": [_ for _ in range(1, 256)]
-                               }
+        self.selector_lists = {
+            "player": [_ for _ in range(0, config.players)],
+            "players": [_ for _ in range(0, config.players)],
+            "fps": [25, 60, 90, 120, 1000],
+            "enable_game_events": self.boolean_list,
+            "draw_universe": self.boolean_list,
+            "ui_panel_alpha": [_ for _ in range(256)],
+            "ui_rounded_corner_radius_small": [_ for _ in range(11)],
+            "ui_rounded_corner_radius_big": [_ for _ in range(3, 25)],
+            "ui_rounded_corner_small_thickness": [_ for _ in range(0, 5)],
+            "ui_rounded_corner_big_thickness": [_ for _ in range(0, 15)],
+            "ui_cross_size": [_ for _ in range(3, 50)],
+            "ui_cross_dash_length": [_ for _ in range(1, 20)],
+            "ui_cross_thickness": [_ for _ in range(1, 10)],
+            "game_speed": [_ for _ in range(1, 101)],
+            "ui_tooltip_size": [_ for _ in range(10, 50)],
+            "monitor": [0, 1],
+            "star_brightness": [_ for _ in range(1, 256)]
+            }
 
         #  widgets
         self.widgets = []
@@ -52,22 +53,22 @@ class SettingsEdit(EditorBase):
 
         # create widgets
         self.create_selectors_from_dict(
-            x=self.world_x - ARROW_SIZE / 2 + self.world_width / 2,
-            y=130,
-            dict_=config.settings.items())
+                x=self.world_x - ARROW_SIZE / 2 + self.world_width / 2,
+                y=130,
+                dict_=config.settings.items())
 
         # fonts
         self.selector_font_name = Selector(
-            self.win,
-            self.world_x - ARROW_SIZE / 2 + self.world_width / 2,
-            self.max_height - self.spacing_y,
-            ARROW_SIZE,
-            self.frame_color,
-            9,
-            self.spacing_x,
-            {"list_name": "font_name_list", "list": self.font_name_list},
-            self,
-            FONT_SIZE)
+                self.win,
+                self.world_x - ARROW_SIZE / 2 + self.world_width / 2,
+                self.max_height - self.spacing_y,
+                ARROW_SIZE,
+                self.frame_color,
+                9,
+                self.spacing_x,
+                {"list_name": "font_name_list", "list": self.font_name_list},
+                self,
+                FONT_SIZE)
 
         # self.create_color_sliders()
         self.create_close_button()
@@ -90,17 +91,17 @@ class SettingsEdit(EditorBase):
                 step = 0.001
 
             slider = Slider(win=self.win,
-                x=x,
-                y=y,
-                width=width,
-                height=height,
-                min=0,
-                max=255,
-                step=step,
-                initial=value,
-                handleColour=colors.ui_dark,
-                layer=self.layer,
-                parent=self)
+                    x=x,
+                    y=y,
+                    width=width,
+                    height=height,
+                    min=0,
+                    max=255,
+                    step=step,
+                    initial=value,
+                    handleColour=colors.ui_dark,
+                    layer=self.layer,
+                    parent=self)
 
             slider.colour = colors.ui_darker
 

@@ -121,24 +121,24 @@ class EnemyHandler(InterfaceData):
         attitude_bool = 0 if attitude < 50 else 1
 
         ufo = PanZoomUfo(self.win,
-            x,
-            y,
-            pan_zoom_ufo_config["enemy handler"]["width"],
-            pan_zoom_ufo_config["enemy handler"]["height"],
-            pan_zoom=pan_zoom_handler,
-            image_name=self.ufo_images[attitude_bool],
-            align_image="center",
-            group="ufos",
-            explosion_name=random.choice(self.explosion_gifs),
-            tooltip="",
-            infotext="",
-            attitude=attitude,
-            lifetime=random.randint(30, 60),
-            explosion_relative_gif_size=5.0,
-            id=self.ufo_id,
-            layer=5,
-            outline_thickness=1,
-            outline_threshold=0)
+                x,
+                y,
+                pan_zoom_ufo_config["enemy handler"]["width"],
+                pan_zoom_ufo_config["enemy handler"]["height"],
+                pan_zoom=pan_zoom_handler,
+                image_name=self.ufo_images[attitude_bool],
+                align_image="center",
+                group="ufos",
+                explosion_name=random.choice(self.explosion_gifs),
+                tooltip="",
+                infotext="",
+                attitude=attitude,
+                lifetime=random.randint(30, 60),
+                explosion_relative_gif_size=5.0,
+                id=self.ufo_id,
+                layer=5,
+                outline_thickness=1,
+                outline_threshold=0)
 
         ufo.tooltip = tooltip_generator.create_ufo_tooltip(ufo)
         ufo.info_text = info_panel_text_generator.create_info_panel_ufo_text(ufo)

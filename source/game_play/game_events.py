@@ -147,4 +147,3 @@ class GameEvent:
             self.body = f"the alien population of the planet {planet.name} offers you a deal: they want {request_text} for {offer_text}."
         else:
             self.body = f"some aliens offer you a deal: they want {request_text} for {offer_text}"
-

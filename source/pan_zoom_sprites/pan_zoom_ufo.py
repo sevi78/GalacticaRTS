@@ -63,12 +63,13 @@ class PanZoomUfo(PanZoomGameObject):  # , InteractionHandler):
         self.technology = kwargs.get("technology", 100)
         self.technology_max = 200
 
-        self.resources = {"minerals": self.minerals,
-                          "food": self.food,
-                          "population": self.population,
-                          "water": self.water,
-                          "technology": self.technology
-                          }
+        self.resources = {
+            "minerals": self.minerals,
+            "food": self.food,
+            "population": self.population,
+            "water": self.water,
+            "technology": self.technology
+            }
         self.specials = []
         self.attitude = kwargs.get("attitude", random.randint(0, 100))
         self.attitude_text = "friendly" if self.attitude > 50 else "hostile"
@@ -86,17 +87,17 @@ class PanZoomUfo(PanZoomGameObject):  # , InteractionHandler):
 
         # energy progress bar
         self.progress_bar = ProgressBar(
-            win=self.win,
-            x=self.screen_x,
-            y=self.screen_y + self.screen_height + self.screen_height / 5,
-            width=self.screen_width,
-            height=5,
-            progress=lambda: 1 / self.energy_max * self.energy,
-            curved=True,
-            completedColour=self.frame_color,
-            layer=self.layer,
-            parent=self
-            )
+                win=self.win,
+                x=self.screen_x,
+                y=self.screen_y + self.screen_height + self.screen_height / 5,
+                width=self.screen_width,
+                height=5,
+                progress=lambda: 1 / self.energy_max * self.energy,
+                curved=True,
+                completedColour=self.frame_color,
+                layer=self.layer,
+                parent=self
+                )
 
         # gun
         self.weapon_handler = WeaponHandler(self, kwargs.get("current_weapon", "laser"))
@@ -142,10 +143,10 @@ class PanZoomUfo(PanZoomGameObject):  # , InteractionHandler):
 
         if r == 3:
             pygame.draw.line(surface=self.win, start_pos=startpos, end_pos=endpos,
-                color=random.choice(colors), width=r2)
+                    color=random.choice(colors), width=r2)
         if r == 2:
             pygame.draw.line(surface=self.win, start_pos=startpos, end_pos=endpos,
-                color=random.choice(colors), width=r * 2)
+                    color=random.choice(colors), width=r * 2)
 
         self.damage()
 

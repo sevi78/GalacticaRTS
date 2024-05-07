@@ -39,8 +39,6 @@ class WidgetBaseMethods(ABC, WidgetBaseParams):
         for i in self.widgets:
             i.__del__()
 
-
-
     def set_screen_size(self, screen_size):
         self.screen_size = screen_size
 

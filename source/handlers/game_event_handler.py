@@ -43,27 +43,27 @@ class GameEventHandler():
 
         # add game events
         self.game_events["start"] = GameEvent(
-            name="start",
-            title="Welcome !!!",
-            body="... after 75000 years of darkness, you finally reached the the solar system " \
-                 "of ExoPrime I.\nYou are the last survivors from PlanetEarth.Mankind is " \
-                 "counting on you, so don't mess it up!!!\nYour goal is to get at least 500 people " \
-                 "surviving ! ",
-            end_text="GOOD LUCK !",
-            functions=None,
-            condition=None,
-            id=len(self.game_events.keys())
-            )
+                name="start",
+                title="Welcome !!!",
+                body="... after 75000 years of darkness, you finally reached the the solar system " \
+                     "of ExoPrime I.\nYou are the last survivors from PlanetEarth.Mankind is " \
+                     "counting on you, so don't mess it up!!!\nYour goal is to get at least 500 people " \
+                     "surviving ! ",
+                end_text="GOOD LUCK !",
+                functions=None,
+                condition=None,
+                id=len(self.game_events.keys())
+                )
 
         self.game_events["end"] = GameEvent(
-            name="end",
-            title="GAME OVER !!!",
-            body="... Bad Luck !!! ... ",
-            end_text="make it better next time!  RESTART?!",
-            functions={"yes": "restart_game", "no": "end_game"},
-            condition=None,
-            id=len(self.game_events.keys())
-            )
+                name="end",
+                title="GAME OVER !!!",
+                body="... Bad Luck !!! ... ",
+                end_text="make it better next time!  RESTART?!",
+                functions={"yes": "restart_game", "no": "end_game"},
+                condition=None,
+                id=len(self.game_events.keys())
+                )
 
         self.event_cue.append(self.game_events["start"])
 
@@ -184,14 +184,14 @@ class GameEventHandler():
             # print(self.data)
             if not f"goal{self.level}" in self.obsolete_events.keys():
                 self.game_events[f"goal{self.level}"] = GameEvent(
-                    name=f"goal{self.level}",
-                    title="Congratulation!",
-                    body=f"{body}. Well Done! move to next level !",
-                    end_text="",
-                    functions={"yes": "load_next_level", "no": "update_level_success"},
-                    condition="",
-                    id=len(self.game_events.keys())
-                    )
+                        name=f"goal{self.level}",
+                        title="Congratulation!",
+                        body=f"{body}. Well Done! move to next level !",
+                        end_text="",
+                        functions={"yes": "load_next_level", "no": "update_level_success"},
+                        condition="",
+                        id=len(self.game_events.keys())
+                        )
                 self.event_cue.append(self.game_events[f"goal{self.level}"])
                 self.app.event_panel.set_game_event(self.game_events[f"goal{self.level}"])
 

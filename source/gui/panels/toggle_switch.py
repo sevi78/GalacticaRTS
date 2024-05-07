@@ -17,21 +17,21 @@ class ToggleSwitch:
 
     def create_icons(self):
         image = pygame.transform.scale(
-            get_image("arrow-right.png"), (self.toggle_size, self.toggle_size))
+                get_image("arrow-right.png"), (self.toggle_size, self.toggle_size))
 
         self.toggle_panel_icon = ImageButton(win=self.parent.win,
-            x=self.parent.surface_rect.centerx - self.toggle_size / 2,
-            y=self.parent.max_height,
-            width=self.toggle_size,
-            height=self.toggle_size,
-            isSubWidget=False,
-            parent=self,
-            image=pygame.transform.rotate(image, 90),
-            tooltip=f"close {self.parent.name}",
-            frame_color=self.frame_color,
-            moveable=False,
-            include_text=True, layer=self.layer,
-            onClick=lambda: self.toggle_panel())
+                x=self.parent.surface_rect.centerx - self.toggle_size / 2,
+                y=self.parent.max_height,
+                width=self.toggle_size,
+                height=self.toggle_size,
+                isSubWidget=False,
+                parent=self,
+                image=pygame.transform.rotate(image, 90),
+                tooltip=f"close {self.parent.name}",
+                frame_color=self.frame_color,
+                moveable=False,
+                include_text=True, layer=self.layer,
+                onClick=lambda: self.toggle_panel())
 
     def toggle_panel(self):
         if not self.parent._hidden:
@@ -42,7 +42,7 @@ class ToggleSwitch:
 
         else:
             image = pygame.transform.scale(
-                get_image("arrow-right.png"), (self.toggle_size, self.toggle_size))
+                    get_image("arrow-right.png"), (self.toggle_size, self.toggle_size))
             self.toggle_panel_icon.image = pygame.transform.rotate(image, 90)
             self.toggle_panel_icon.tooltip = f"close {self.parent.name}"
             self.parent.show()

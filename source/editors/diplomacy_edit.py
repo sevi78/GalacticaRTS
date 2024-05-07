@@ -33,45 +33,45 @@ class DiplomacyEdit(EditorBase):
 
     def create_buttons(self) -> None:
         agree_button = ImageButton(win=self.win,
-            x=self.get_screen_x() + self.get_screen_width() - BUTTON_SIZE * 3,
-            y=self.world_y + TOP_SPACING + BUTTON_SIZE / 2,
-            width=BUTTON_SIZE,
-            height=BUTTON_SIZE,
-            isSubWidget=False,
-            parent=self,
-            image=pygame.transform.scale(
-                get_image("peace_icon.png"), (BUTTON_SIZE, BUTTON_SIZE)),
-            image_raw=pygame.transform.scale(
-                get_image("peace_icon.png"), (BUTTON_SIZE, BUTTON_SIZE)),
-            tooltip="lets be friends!",
-            frame_color=self.frame_color,
-            moveable=False,
-            include_text=False,
-            layer=10,
-            onClick=lambda: diplomacy_handler.update_diplomacy_status("peace"),
-            name="agree_button"
-            )
+                x=self.get_screen_x() + self.get_screen_width() - BUTTON_SIZE * 3,
+                y=self.world_y + TOP_SPACING + BUTTON_SIZE / 2,
+                width=BUTTON_SIZE,
+                height=BUTTON_SIZE,
+                isSubWidget=False,
+                parent=self,
+                image=pygame.transform.scale(
+                        get_image("peace_icon.png"), (BUTTON_SIZE, BUTTON_SIZE)),
+                image_raw=pygame.transform.scale(
+                        get_image("peace_icon.png"), (BUTTON_SIZE, BUTTON_SIZE)),
+                tooltip="lets be friends!",
+                frame_color=self.frame_color,
+                moveable=False,
+                include_text=False,
+                layer=10,
+                onClick=lambda: diplomacy_handler.update_diplomacy_status("peace"),
+                name="agree_button"
+                )
 
         self.buttons.append(agree_button)
         self.widgets.append(agree_button)
 
         decline_button = ImageButton(win=self.win,
-            x=self.get_screen_x() + self.get_screen_width() - BUTTON_SIZE - BUTTON_SIZE / 2,
-            y=self.world_y + TOP_SPACING + BUTTON_SIZE / 2,
-            width=BUTTON_SIZE,
-            height=BUTTON_SIZE,
-            isSubWidget=False,
-            parent=self,
-            image=pygame.transform.scale(get_image("war_icon.png"), (BUTTON_SIZE, BUTTON_SIZE)),
-            image_raw=pygame.transform.scale(get_image("war_icon.png"), (BUTTON_SIZE, BUTTON_SIZE)),
-            tooltip="f@ck iu!!!",
-            frame_color=self.frame_color,
-            moveable=False,
-            include_text=False,
-            layer=10,
-            onClick=lambda: diplomacy_handler.update_diplomacy_status("war"),
-            name="decline_button"
-            )
+                x=self.get_screen_x() + self.get_screen_width() - BUTTON_SIZE - BUTTON_SIZE / 2,
+                y=self.world_y + TOP_SPACING + BUTTON_SIZE / 2,
+                width=BUTTON_SIZE,
+                height=BUTTON_SIZE,
+                isSubWidget=False,
+                parent=self,
+                image=pygame.transform.scale(get_image("war_icon.png"), (BUTTON_SIZE, BUTTON_SIZE)),
+                image_raw=pygame.transform.scale(get_image("war_icon.png"), (BUTTON_SIZE, BUTTON_SIZE)),
+                tooltip="f@ck iu!!!",
+                frame_color=self.frame_color,
+                moveable=False,
+                include_text=False,
+                layer=10,
+                onClick=lambda: diplomacy_handler.update_diplomacy_status("war"),
+                name="decline_button"
+                )
 
         self.buttons.append(decline_button)
         self.widgets.append(decline_button)
@@ -82,7 +82,7 @@ class DiplomacyEdit(EditorBase):
 
     def set_enemy_image(self):
         self.enemy_image = pygame.transform.scale(get_image(
-            config.app.players[diplomacy_handler.enemy_index].image_name), (IMAGE_SIZE, IMAGE_SIZE))
+                config.app.players[diplomacy_handler.enemy_index].image_name), (IMAGE_SIZE, IMAGE_SIZE))
 
     def open(self, enemy_index: int, player_index: int) -> None:
         if enemy_index == -1:
@@ -91,7 +91,6 @@ class DiplomacyEdit(EditorBase):
         diplomacy_handler.set_enemy_and_player(enemy_index, player_index)
         self.set_visible()
         # self.opening_time = time.time()
-
 
     def listen(self, events):
         if not self._hidden and not self._disabled:

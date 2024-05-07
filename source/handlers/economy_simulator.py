@@ -9,52 +9,58 @@ class EconomySimulator:
     def __init__(self):
         self.buildings = load_file("buildings.json", "config")
         self.all_building_names = building_factory.get_all_building_names()
-        self.stock = {'energy': 1000,
-                      'food': 1000,
-                      'minerals': 1000,
-                      'water': 1000,
-                      'technology': 1000,
-                      'population': 1000
-                      }
-        self.production = {'energy': 0,
-                           'food': 0,
-                           'minerals': 0,
-                           'water': 0,
-                           'technology': 0,
-                           'population': 0
-                           }
+        self.stock = {
+            'energy': 1000,
+            'food': 1000,
+            'minerals': 1000,
+            'water': 1000,
+            'technology': 1000,
+            'population': 1000
+            }
+        self.production = {
+            'energy': 0,
+            'food': 0,
+            'minerals': 0,
+            'water': 0,
+            'technology': 0,
+            'population': 0
+            }
         self.population = 0
         self.cycle_count = 0
 
         # this is the generated list of buildings to use 
         self.building_plan = []
-        self.simulations = {0: {"cycle_count": self.cycle_count,
-                                "production": self.production,
-                                "building_plan": self.building_plan,
-                                "population": self.population
-                                }
-                            }
+        self.simulations = {
+            0: {
+                "cycle_count": self.cycle_count,
+                "production": self.production,
+                "building_plan": self.building_plan,
+                "population": self.population
+                }
+            }
 
     def __str__(self):
         return f"EconomySimulator:\n stock: {self.stock}\n self.production:{self.production}\n, building_plan: {self.building_plan}\n,population: {self.population}\n Cycle Count: {self.cycle_count}\n EconomySimulator:\n simulations: {self.simulations}\n"
 
     def reset_stock(self):
-        self.stock = {'energy': 1000,
-                      'food': 1000,
-                      'minerals': 1000,
-                      'water': 1000,
-                      'technology': 1000,
-                      'population': 1000
-                      }
+        self.stock = {
+            'energy': 1000,
+            'food': 1000,
+            'minerals': 1000,
+            'water': 1000,
+            'technology': 1000,
+            'population': 1000
+            }
 
     def reset_production(self):
-        self.production = {'energy': 0,
-                           'food': 0,
-                           'minerals': 0,
-                           'water': 0,
-                           'technology': 0,
-                           'population': 0
-                           }
+        self.production = {
+            'energy': 0,
+            'food': 0,
+            'minerals': 0,
+            'water': 0,
+            'technology': 0,
+            'population': 0
+            }
 
     def reset(self):
         self.reset_stock()
@@ -129,22 +135,24 @@ class EconomySimulator:
 
         # store simulation
         if ruined:
-            self.simulations[self.cycle_count] = {"cycle_count": self.cycle_count,
-                                                  "production": self.production,
-                                                  "building_plan": self.building_plan,
-                                                  "stock": self.stock,
-                                                  "population": self.population
-                                                  }
+            self.simulations[self.cycle_count] = {
+                "cycle_count": self.cycle_count,
+                "production": self.production,
+                "building_plan": self.building_plan,
+                "stock": self.stock,
+                "population": self.population
+                }
             # reset
             self.reset()
 
         if self.population > 1000:
-            self.simulations[self.cycle_count] = {"cycle_count": self.cycle_count,
-                                                  "production": self.production,
-                                                  "building_plan": self.building_plan,
-                                                  "stock": self.stock,
-                                                  "population": self.population
-                                                  }
+            self.simulations[self.cycle_count] = {
+                "cycle_count": self.cycle_count,
+                "production": self.production,
+                "building_plan": self.building_plan,
+                "stock": self.stock,
+                "population": self.population
+                }
             # reset
             self.reset()
 

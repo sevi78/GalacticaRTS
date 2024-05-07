@@ -46,7 +46,7 @@ class WeaponHandler:
             # shoot laser
             if defender.energy > 0:
                 pygame.draw.line(surface=self.parent.win, start_pos=startpos, end_pos=endpos,
-                    color=pygame.color.THECOLORS["white"], width=2)
+                        color=pygame.color.THECOLORS["white"], width=2)
 
                 self.draw_moving_image(defender, power)
                 sounds.play_sound(sounds.laser)
@@ -59,11 +59,11 @@ class WeaponHandler:
             config.app.player.energy -= self.current_weapon.get("energy_consumtion", 1)
             color = random.choice(list(pygame.color.THECOLORS.keys()))
             draw_zigzag_line(
-                surface=self.parent.win,
-                color=color,
-                start_pos=self.parent.rect.center,
-                end_pos=defender.rect.center,
-                num_segments=24)
+                    surface=self.parent.win,
+                    color=color,
+                    start_pos=self.parent.rect.center,
+                    end_pos=defender.rect.center,
+                    num_segments=24)
             sounds.play_sound(sounds.laser)
             sounds.play_sound(sounds.electricity2)
             defender.energy -= power
@@ -84,23 +84,23 @@ class WeaponHandler:
             # if defender.property in ["ship", "ufo"]:
             if defender.energy >= 0:
                 missile = PanZoomMissile(
-                    screen,
-                    x,
-                    y,
-                    42,
-                    17,
-                    pan_zoom_handler,
-                    "missile_42x17.gif",
-                    group="missiles",
-                    loop_gif=True,
-                    move_to_target=True,
-                    align_image="topleft",
-                    explosion_relative_gif_size=1.0,
-                    layer=9,
-                    debug=False,
-                    target=defender,
-                    missile_power=power,
-                    appear_at_start=True)
+                        screen,
+                        x,
+                        y,
+                        42,
+                        17,
+                        pan_zoom_handler,
+                        "missile_42x17.gif",
+                        group="missiles",
+                        loop_gif=True,
+                        move_to_target=True,
+                        align_image="topleft",
+                        explosion_relative_gif_size=1.0,
+                        layer=9,
+                        debug=False,
+                        target=defender,
+                        missile_power=power,
+                        appear_at_start=True)
                 # missile.set_target(defender)
 
             # if defender.property == "planet":
@@ -127,16 +127,16 @@ class WeaponHandler:
 
     def draw_moving_image(self, defender, power):
         MovingImage(
-            self.parent.win,
-            defender.rect.top,
-            defender.rect.right,
-            18,
-            18,
-            get_image("energy_25x25.png"),
-            1,
-            (random.randint(-1, 1), 2),
-            f"-{power}", pygame.color.THECOLORS["red"],
-            "georgiaproblack", 1, defender, target=None)
+                self.parent.win,
+                defender.rect.top,
+                defender.rect.right,
+                18,
+                18,
+                get_image("energy_25x25.png"),
+                1,
+                (random.randint(-1, 1), 2),
+                f"-{power}", pygame.color.THECOLORS["red"],
+                "georgiaproblack", 1, defender, target=None)
 
     def get_current_value(self, var):
         level = self.current_weapon.get("level")
@@ -207,7 +207,7 @@ def attack(attacker, defender):
     # shoot laser
     if r == 2 and defender.energy > 0:
         pygame.draw.line(surface=attacker.win, start_pos=startpos, end_pos=endpos,
-            color=pygame.color.THECOLORS["white"], width=2)
+                color=pygame.color.THECOLORS["white"], width=2)
 
         # make damage to target
         defender.energy -= gun_power
@@ -228,19 +228,19 @@ def launch_missile(attacker, defender):
 
     if defender.energy - MISSILE_POWER >= 0:
         missile = PanZoomMissile(
-            screen,
-            x,
-            y,
-            42,
-            17,
-            pan_zoom_handler,
-            "missile_42x17.gif",
-            group="missiles",
-            loop_gif=True,
-            move_to_target=True,
-            align_image="topleft",
-            explosion_relative_gif_size=1.0,
-            layer=9,
-            debug=False,
-            target=defender,
-            appear_at_start=True)
+                screen,
+                x,
+                y,
+                42,
+                17,
+                pan_zoom_handler,
+                "missile_42x17.gif",
+                group="missiles",
+                loop_gif=True,
+                move_to_target=True,
+                align_image="topleft",
+                explosion_relative_gif_size=1.0,
+                layer=9,
+                debug=False,
+                target=defender,
+                appear_at_start=True)

@@ -18,17 +18,17 @@ class PanZoomTargetObject(PanZoomSprite):
         self.parent = kwargs.get("parent")
 
         self.target_cross = ArrowCrossAnimatedArray(
-            self.win,
-            colors.frame_color,
-            (400, 300),
-            60,
-            0,
-            8,
-            1,
-            3,
-            5,
-            0.8,
-            -1)
+                self.win,
+                colors.frame_color,
+                (400, 300),
+                60,
+                0,
+                8,
+                1,
+                3,
+                5,
+                0.8,
+                -1)
         self.hide()
 
     def update(self):

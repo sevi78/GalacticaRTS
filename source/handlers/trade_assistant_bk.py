@@ -4,7 +4,7 @@ from source.configuration.game_config import config
 from source.editors.deal_select import DealSelect
 
 
-class TradeAssistant:# old
+class TradeAssistant:  # old
     def __init__(self, player):
         pass
 
@@ -77,8 +77,10 @@ class TradeAssistant:# old
                 return deal_manager.last_deals[player_index]
         return None
 
-    def adjust_deal_offer_and_request_based_on_reference_deal(self, player_index: int, offer_key: str, request_key: str,
-                                                              last_deal: DealSelect) -> dict:
+    def adjust_deal_offer_and_request_based_on_reference_deal(
+            self, player_index: int, offer_key: str, request_key: str,
+            last_deal: DealSelect
+            ) -> dict:
         # create a new deal dict
         new_deal_dict = {"offer": {}, "request": {}}
 
@@ -101,8 +103,10 @@ class TradeAssistant:# old
 
         return new_deal_dict
 
-    def generate_deal_based_resource_maximum_and_minimum(self, player_index: int, percentage_offer: float,
-                                                         percentage_request: float) -> dict:
+    def generate_deal_based_resource_maximum_and_minimum(
+            self, player_index: int, percentage_offer: float,
+            percentage_request: float
+            ) -> dict:
         # create a new deal dict
         player = config.app.players[player_index]
         new_deal_dict = {"offer": {}, "request": {}}
@@ -122,7 +126,7 @@ class TradeAssistant:# old
         return new_deal_dict
 
 
-class TradeAssistant:# old
+class TradeAssistant:  # old
     def __init__(self, player):
         self.player = player
 
@@ -195,8 +199,10 @@ class TradeAssistant:# old
                 return deal_manager.last_deals[player_index]
         return None
 
-    def adjust_deal_offer_and_request_based_on_reference_deal(self, player_index: int, offer_key: str, request_key: str,
-                                                              last_deal: DealSelect) -> dict:
+    def adjust_deal_offer_and_request_based_on_reference_deal(
+            self, player_index: int, offer_key: str, request_key: str,
+            last_deal: DealSelect
+            ) -> dict:
         # create a new deal dict
         new_deal_dict = {"offer": {}, "request": {}}
 
@@ -219,8 +225,10 @@ class TradeAssistant:# old
 
         return new_deal_dict
 
-    def generate_deal_based_resource_maximum_and_minimum(self, player_index: int, percentage_offer: float,
-                                                         percentage_request: float) -> dict:
+    def generate_deal_based_resource_maximum_and_minimum(
+            self, player_index: int, percentage_offer: float,
+            percentage_request: float
+            ) -> dict:
         # create a new deal dict
         player = config.app.players[player_index]
         new_deal_dict = {"offer": {}, "request": {}}
@@ -238,4 +246,3 @@ class TradeAssistant:# old
         new_deal_dict["request"][min_key] = int(max_value / 100 * percentage_request)
 
         return new_deal_dict
-
