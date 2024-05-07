@@ -13,7 +13,7 @@ from source.gui.widgets.inputbox import InputBox
 from source.gui.widgets.selector import Selector
 from source.handlers.orbit_handler import set_orbit_object_id
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
-from source.multimedia_library.images import images, pictures_path, get_image, get_image_names_from_folder
+from source.multimedia_library.images import pictures_path, get_image, get_image_names_from_folder
 
 PLANET_MAX_SIZE = 200.0
 PLANET_MIN_SIZE = 10.0

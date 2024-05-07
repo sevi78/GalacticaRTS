@@ -1,6 +1,8 @@
 import random
 from pprint import pprint
+
 import pygame.event
+
 from source.factories.building_factory import building_factory
 from source.handlers.file_handler import load_file
 

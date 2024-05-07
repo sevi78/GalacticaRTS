@@ -6,7 +6,7 @@ from source.factories.building_factory import building_factory
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.handlers.color_handler import colors
-from source.multimedia_library.images import get_image, get_gif, get_gif_frames
+from source.multimedia_library.images import get_image
 
 
 class SpaceHarbor(WidgetBase):

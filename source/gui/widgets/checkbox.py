@@ -5,7 +5,7 @@ import pygame
 from source.configuration.game_config import config
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.handlers.mouse_handler import mouse_handler, MouseState
-from source.multimedia_library.images import images, pictures_path, get_image
+from source.multimedia_library.images import get_image
 
 BUTTON_SIZE = 30
 FRAME_THICKNESS = 2

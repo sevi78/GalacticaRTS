@@ -3,7 +3,6 @@ import pygame
 from source.configuration.game_config import config
 from source.gui.panels.toggle_switch import ToggleSwitch
 from source.gui.widgets.Icon import Icon
-from source.gui.widgets.buttons.image_button import ImageButton
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.handlers.color_handler import colors
 from source.handlers.garbage_handler import garbage_handler

@@ -1,4 +1,5 @@
-import pygame, math
+import math
+import pygame
 
 
 class Crucifix(pygame.sprite.Sprite):

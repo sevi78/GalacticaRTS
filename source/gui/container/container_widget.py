@@ -1,5 +1,6 @@
 import copy
 import math
+
 import pygame
 
 from source.configuration.game_config import config

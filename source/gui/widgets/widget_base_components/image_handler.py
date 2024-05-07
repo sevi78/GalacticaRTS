@@ -1,5 +1,7 @@
 import copy
+
 import pygame
+
 from source.handlers.image_handler import outline_image
 
 

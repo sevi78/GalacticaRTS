@@ -1,5 +1,3 @@
-import os
-
 from source.configuration.game_config import config
 from source.game_play.player import Player
 from source.handlers.file_handler import load_file

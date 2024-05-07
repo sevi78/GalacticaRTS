@@ -1,5 +1,7 @@
 import random
+
 import pygame
+
 from source.configuration.game_config import config
 from source.draw.circles import draw_zoomable_circle
 from source.draw.zoomable_rect import draw_zoomable_rect

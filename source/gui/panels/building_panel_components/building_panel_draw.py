@@ -3,7 +3,7 @@ from pygame_widgets.util import drawText
 
 from source.configuration.game_config import config
 from source.factories.building_factory import building_factory
-from source.multimedia_library.images import images, pictures_path, get_image
+from source.multimedia_library.images import get_image
 from source.text.text_formatter import format_number
 
 SPECIAL_RIGHT_OFFSET = 60

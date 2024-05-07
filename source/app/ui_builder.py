@@ -7,7 +7,6 @@ from source.editors.building_edit import BuildingEdit
 from source.editors.deal_manager import DealManager
 from source.editors.debug_edit import DebugEdit
 from source.editors.diplomacy_edit import DiplomacyEdit
-from source.editors.economy_overview import EconomyOverview
 from source.editors.enemy_handler_edit import EnemyHandlerEdit
 from source.editors.planet_edit import PlanetEdit
 from source.editors.save_game_edit import SaveGameEdit

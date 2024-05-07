@@ -20,7 +20,7 @@ to show the output file, run this script.
 p = pstats.Stats(r'C:\Users\sever\Documents\Galactica-RTS_zoomable1.107\output_file')
 
 p.calc_callees()
-p.strip_dirs().sort_stats(2).print_stats()
+p.strip_dirs().sort_stats(1).print_stats()
 # get screen info
 # pygame.init()
 # print (pygame.display.Info())

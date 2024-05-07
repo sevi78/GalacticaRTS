@@ -1,7 +1,6 @@
 import pygame.mouse
 
 from source.configuration.game_config import config
-from source.handlers.color_handler import colors
 from source.handlers.image_handler import change_non_transparent_pixels
 from source.handlers.widget_handler import WidgetHandler
 from source.multimedia_library.images import get_image

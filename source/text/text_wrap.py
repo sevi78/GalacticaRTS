@@ -1,6 +1,5 @@
 import pygame
 
-from source.handlers.color_handler import colors
 from source.multimedia_library.images import get_image
 
 TEXTBORDER = 10
