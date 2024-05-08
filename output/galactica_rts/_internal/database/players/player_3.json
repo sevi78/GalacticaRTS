@@ -3,6 +3,7 @@
   "image_name": "alien3.png",
   "color": "yellow",
   "name": "volvolvol",
+  "species": "volvolvoloids",
   "energy": 1000,
   "food": 1000,
   "minerals": 1000,

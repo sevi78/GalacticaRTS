@@ -23,6 +23,7 @@ from source.gui.panels.event_panel import EventPanel
 from source.gui.panels.info_panel import InfoPanel
 from source.gui.panels.resource_panel import ResourcePanel
 from source.gui.panels.settings_panel import SettingsPanel
+from source.gui.panels.view_panel import ViewPanel
 from source.gui.tool_tip import ToolTip
 from source.gui.widgets.background_image import BackgroundGradient
 from source.handlers.debug_handler import debugger
@@ -50,6 +51,7 @@ class UIBuilder(SceneBuilder):
 
         # panels
         self.building_panel = None
+        self.view_panel = None
         self.game_time = None
         self.advanced_settings_panel = None
         self.resource_panel = None
@@ -367,6 +369,20 @@ class UIBuilder(SceneBuilder):
                 anchor_right=self.building_panel.get_screen_x())
 
         self.advanced_settings_panel = AdvancedSettingsPanel(self.win,
+                x=self.settings_panel.surface_frame.right,
+                y=self.settings_panel.surface_frame.bottom,
+                width=size_x - spacing,
+                height=size_y,
+                isSubWidget=False,
+                size_x=size_x,
+                size_y=size_y,
+                spacing=spacing,
+                parent=self,
+                layer=9,
+                icon_size=icon_size,
+                anchor_right=self.building_panel.get_screen_x())
+
+        self.view_panel = ViewPanel(self.win,
                 x=self.settings_panel.surface_frame.right,
                 y=self.settings_panel.surface_frame.bottom,
                 width=size_x - spacing,
