@@ -121,30 +121,6 @@ class ContainerWidgetItem(TextWrap):
         self.state_image_rect = None
         self.set_state_image()
 
-    def set_text(self) -> str:
-        """
-        Sets the text of the widget based on the object it represents.
-
-        Returns:
-            str: The text to be displayed on the widget. It can be one of the following:
-                - "unknown planet" if the object is a PanZoomPlanet and it has not been explored.
-                - The name of the object if it is a PanZoomPlanet and it has been explored.
-                - The name and energy of the object if it is a PanZoomShip.
-                - The index of the object if it is None.
-        """
-        text = ""
-        if self.obj:
-            if self.obj.__class__.__name__ == "PanZoomPlanet":
-                if not self.obj.explored:
-                    text = "unknown planet"
-                else:
-                    text = self.obj.name
-            elif self.obj.__class__.__name__ == "PanZoomShip":
-                text += f"{self.obj.name}, energy: {format_number(self.obj.energy, 1)}"
-        else:
-            text += f", index: {self.index}"
-        return text
-
     def set_state_image(self) -> None:
         """
         Sets the state image of the object.
@@ -216,15 +192,46 @@ class ContainerWidgetItem(TextWrap):
     def show(self) -> None:
         self._hidden = False
 
+    def set_text(self) -> str:
+        """
+        Sets the text of the widget based on the object it represents.
+
+        Returns:
+            str: The text to be displayed on the widget. It can be one of the following:
+                - "unknown planet" if the object is a PanZoomPlanet and it has not been explored.
+                - The name of the object if it is a PanZoomPlanet and it has been explored.
+                - The name and energy of the object if it is a PanZoomShip.
+                - The index of the object if it is None.
+        """
+        text = ""
+        if self.obj:
+            if self.obj.__class__.__name__ == "PanZoomPlanet":
+                if self.obj.owner == -1:
+                    text = "unknown planet"
+                else:
+                    text = (f"{self.obj.name} belongs to {config.app.players[self.obj.owner].name}, population:"
+                            f" {format_number(self.obj.population, 1)}/{format_number(self.obj.population_limit, 1)}, buildings: {len(self.obj.buildings)}")
+
+            elif self.obj.__class__.__name__ == "PanZoomShip":
+                text += f"{self.obj.name}, energy: {format_number(self.obj.energy, 1)}"
+        else:
+            text += f", index: {self.index}"
+        return text
+
     def draw_text(self) -> None:
+        if self.parent:
+            text_width = self.parent.world_width - (WIDGET_SIZE * 2)
+        else:
+            text_width = 400
+
         self.wrap_text(
                 self.win,
                 self.text,
                 (self.world_x + WIDGET_SIZE + TEXT_SPACING, self.world_y),
-                (300, FONT_SIZE),
+                (text_width, FONT_SIZE),
                 self.font,
                 colors.frame_color,
-                iconize=["energy"])
+                iconize=["energy", "population", "buildings"])
 
     def draw_hover_rect(self) -> None:
         """

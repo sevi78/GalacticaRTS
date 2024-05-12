@@ -6,7 +6,7 @@ from source.app.app_helper import AppHelper, select_next_item_in_list
 from source.app.ui_builder import UIBuilder
 from source.configuration.game_config import config
 from source.draw.cursor import Cursor
-from source.draw.zoom_scale import ZoomScale
+from source.gui.widgets.zoom_scale import ZoomScale
 from source.editors.level_edit import LevelEdit
 from source.editors.level_select import LevelSelect
 from source.editors.filter_widget import FilterWidget
@@ -341,7 +341,7 @@ def main():
         app.win,
         app.advanced_settings_panel.screen_x + 320,
         60,
-        container_width,
+        container_width * 2,
         container_height,
         sprite_groups.convert_sprite_groups_to_image_widget_list("planets"),
         function=navigate_to_game_object_by_index,
@@ -354,7 +354,7 @@ def main():
             60,
             container_width,
             150,
-            ["population", "population_limit", "buildings", "explored"],
+            ["population", "population_limit", "buildings", "explored", "owner"],
             parent=app,
             layer=10,
             list_name="planets",
@@ -372,7 +372,7 @@ def main():
     app.cursor = Cursor()
 
     # zoom scale
-    app.zoom_scale = ZoomScale(app.win, 250, app.win.get_size()[1] - 10, 180, 5)
+    app.zoom_scale = ZoomScale(app.win, 250, app.win.get_size()[1] - 10, 180, 5, anchor_left = app.map_panel)
 
     # restore ui elements
     ui_handler.restore_ui_elements()

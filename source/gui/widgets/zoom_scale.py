@@ -13,7 +13,7 @@ class ZoomScale(WidgetBase):
     shows the zoom factor and the world width in km as a line thing with edges
     """
 
-    def __init__(self, win, x, y, width, height):
+    def __init__(self, win, x, y, width, height, **kwargs):
         WidgetBase.__init__(self, win, x, y, width, height)
         # set world_width_raw used for scaling
         self.world_width_raw = width
@@ -32,6 +32,7 @@ class ZoomScale(WidgetBase):
         self.font = pygame.font.SysFont(config.font_name, self.font_size)
         self.text_spacing = self.font_size / 3
         self.dist_str = ""
+        self.anchor_left = kwargs.get("anchor_left", None)
         self.update()
 
     def get_screen_dist(self) -> int:
@@ -67,7 +68,19 @@ class ZoomScale(WidgetBase):
             new_width = pan_zoom_handler.zoom * self.reduced_number / 1000
             self.world_width = new_width
 
+    def set_positions(self):
+        if self.anchor_left:
+            if self.anchor_left.visible:
+                self.world_x = self.anchor_left.world_x + self.anchor_left.world_width + 20
+            else:
+                self.world_x = 20
+
+        self.start_pos = (self.world_x, self.world_y + self.world_height)
+        self.end_pos = (self.world_x + self.world_width, self.world_y + self.world_height)
+
     def draw(self) -> None:
+        self.set_positions()
+
         # draw horizontal line
         pygame.draw.line(self.win, self.frame_color, self.start_pos, self.end_pos, 1)
 
