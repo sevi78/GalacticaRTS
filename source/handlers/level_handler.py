@@ -7,7 +7,7 @@ from source.factories.planet_factory import planet_factory
 from source.factories.universe_factory import universe_factory
 from source.game_play.navigation import navigate_to_position
 from source.gui.event_text import event_text
-from source.handlers.economy_handler import economy_handler
+from source.economy.economy_handler import economy_handler
 from source.handlers.file_handler import load_file, write_file, get_level_list
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups

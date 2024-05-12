@@ -141,7 +141,9 @@ class InfoPanelTextGenerator:
 
         return text
 
-    def create_info_panel_ship_text(self, ship):
+    def create_info_panel_ship_text(self, ship):#
+
+
         text = ship.name + ":\n\n"
         text += f"experience: {int(ship.experience)}\n"
         text += "rank: " + ship.rank + "\n"
@@ -162,9 +164,13 @@ class InfoPanelTextGenerator:
         text += "\n"
 
         # if ship.weapon_handler.weapons:
-        text += "weapons:\n\n"
-        for key in ship.weapon_handler.weapons.keys():
-            text += f"    {key} level {ship.weapon_handler.weapons[key]['level']}\n"
+        try:
+            text += "weapons:\n\n"
+            for key in ship.weapon_handler.weapons.keys():
+                text += f"    {key} level {ship.weapon_handler.weapons[key]['level']}\n"
+
+        except TypeError as e:
+            print (f"create_info_panel_ship_text error: {e},key: {key},weapons: {ship.weapon_handler.weapons} ")
 
         # text += "scanner range: " + str(self.fog_of_war_radius) + "\n"
         # text += "crew: " + str(self.crew) + "\n"

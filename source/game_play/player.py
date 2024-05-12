@@ -1,7 +1,7 @@
 import time
 
 from source.configuration.game_config import config
-from source.handlers.auto_economy_handler import AutoEconomyHandler
+from source.economy.auto_economy_handler import AutoEconomyHandler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.handlers.trade_assistant import TradeAssistant
 

@@ -5,8 +5,10 @@ from source.pan_zoom_sprites.pan_zoom_ship_classes.pan_zoom_ship import PanZoomS
 
 
 class ShipFactory:
-    def create_ship(self, name, x, y, parent, weapons, **kwargs):
-        """ creates a ship from the image name like: schiff1_30x30"""
+    def create_ship(self, name: str, x: int, y: int, parent: object, weapons: dict, **kwargs: dict) -> PanZoomShip:
+        """ creates a ship from the image name like: schiff1_30x30
+            name, x, y, parent, weapons, **kwargs
+        """
         data = kwargs.get("data", {})
         size_x, size_y = map(int, name.split("_")[1].split(".")[0].split("x"))
         name = name.split("_")[0]
@@ -48,3 +50,6 @@ class ShipFactory:
     def delete_ships(self):
         for i in sprite_groups.ships.sprites():
             i.__delete__(i)
+
+
+ship_factory = ShipFactory()

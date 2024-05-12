@@ -17,6 +17,7 @@ from source.text.text_formatter import format_number
 DIPLOMACY_BUTTON_SIZE = 25
 PLOTTER_SURFACE_HEIGHT = 500
 PLOTTER_SURFACE_GAP = 10
+SPACING_X = 90
 
 
 class PlayerEdit(EditorBase):
@@ -192,6 +193,12 @@ class PlayerEdit(EditorBase):
         # define filter
         resources = ["water", "energy", "food", "minerals", "technology", "population"]
 
+        resource_images_built = False
+        planet_icon_built = False
+        buildings_icon_built = False
+        ships_icon_built = False
+        score_icon_built = False
+
         # create items
         for player in ordered_data.keys():
             player_index = int(player.split("_")[1])
@@ -262,16 +269,23 @@ class PlayerEdit(EditorBase):
             self.buttons.append(icon)
             self.widgets.append(icon)
 
-            # set data boxes from file
+            # set resource images
             x += DIPLOMACY_BUTTON_SIZE + int(spacing_x / 3)
+            tmp_x = x
+            if not resource_images_built:
+                for key, value in ordered_data[player].items():
+                    if not key.startswith("production_"):
+                        # images
+                        self.create_resource_images(key, resources, x)
+                        x += spacing_x
+            resource_images_built = True
+
+            # set data boxes from file
+            x = tmp_x
             for key, value in ordered_data[player].items():
                 if not key.startswith("production_"):
-                    # images
-                    self.create_resource_images(key, resources, x)
-
                     # input boxes
                     self.create_variable_boxes(h, key, ordered_data, player, value, x, y)
-
                     x += spacing_x
 
             # set others
@@ -304,32 +318,34 @@ class PlayerEdit(EditorBase):
                             draw_frame=False,
                             player=player)
                     )
+            if not planet_icon_built:
+                icon = ImageButton(win=self.win,
+                        x=self.world_x + x,
+                        y=self.world_y + TOP_SPACING + 20,
+                        width=button_size,
+                        height=button_size,
+                        isSubWidget=False,
+                        parent=self,
+                        image=pygame.transform.scale(get_image("Zeta Bentauri_60x60.png"), (button_size, button_size)),
+                        tooltip="planet_icon",
+                        frame_color=self.frame_color,
+                        moveable=False,
+                        include_text=True,
+                        layer=self.layer,
+                        onClick=lambda: print("no function"),
+                        name="planet_icon",
+                        textColour=self.frame_color,
+                        font_size=12,
+                        info_text="",  # info_panel_text_generator.create_info_panel_weapon_text(key),
+                        textHAlign="right_outside",
+                        outline_thickness=0,
+                        outline_threshold=1
+                        )
 
-            icon = ImageButton(win=self.win,
-                    x=self.world_x + x,
-                    y=self.world_y + TOP_SPACING + 20,
-                    width=button_size,
-                    height=button_size,
-                    isSubWidget=False,
-                    parent=self,
-                    image=pygame.transform.scale(get_image("Zeta Bentauri_60x60.png"), (button_size, button_size)),
-                    tooltip="planet_icon",
-                    frame_color=self.frame_color,
-                    moveable=False,
-                    include_text=True,
-                    layer=self.layer,
-                    onClick=lambda: print("no function"),
-                    name="planet_icon",
-                    textColour=self.frame_color,
-                    font_size=12,
-                    info_text="",  # info_panel_text_generator.create_info_panel_weapon_text(key),
-                    textHAlign="right_outside",
-                    outline_thickness=0,
-                    outline_threshold=1
-                    )
+                self.buttons.append(icon)
+                self.widgets.append(icon)
+                planet_icon_built = True
 
-            self.buttons.append(icon)
-            self.widgets.append(icon)
             x += spacing_x
 
             # buildings
@@ -360,31 +376,33 @@ class PlayerEdit(EditorBase):
                             draw_frame=False,
                             player=player)
                     )
-            icon = ImageButton(win=self.win,
-                    x=self.world_x + x,
-                    y=self.world_y + TOP_SPACING + 20,
-                    width=button_size,
-                    height=button_size,
-                    isSubWidget=False,
-                    parent=self,
-                    image=pygame.transform.scale(get_image("buildings_icon.png"), (button_size, button_size)),
-                    tooltip="buildings_icon",
-                    frame_color=self.frame_color,
-                    moveable=False,
-                    include_text=True,
-                    layer=self.layer,
-                    onClick=lambda: print("no function"),
-                    name="buildings_icon",
-                    textColour=self.frame_color,
-                    font_size=12,
-                    info_text="",  # info_panel_text_generator.create_info_panel_weapon_text(key),
-                    textHAlign="right_outside",
-                    outline_thickness=0,
-                    outline_threshold=1
-                    )
+            if not buildings_icon_built:
+                icon = ImageButton(win=self.win,
+                        x=self.world_x + x,
+                        y=self.world_y + TOP_SPACING + 20,
+                        width=button_size,
+                        height=button_size,
+                        isSubWidget=False,
+                        parent=self,
+                        image=pygame.transform.scale(get_image("buildings_icon.png"), (button_size, button_size)),
+                        tooltip="buildings_icon",
+                        frame_color=self.frame_color,
+                        moveable=False,
+                        include_text=True,
+                        layer=self.layer,
+                        onClick=lambda: print("no function"),
+                        name="buildings_icon",
+                        textColour=self.frame_color,
+                        font_size=12,
+                        info_text="",  # info_panel_text_generator.create_info_panel_weapon_text(key),
+                        textHAlign="right_outside",
+                        outline_thickness=0,
+                        outline_threshold=1
+                        )
 
-            self.buttons.append(icon)
-            self.widgets.append(icon)
+                self.buttons.append(icon)
+                self.widgets.append(icon)
+                buildings_icon_built = True
             x += spacing_x
 
             # ships
@@ -415,21 +433,51 @@ class PlayerEdit(EditorBase):
                             draw_frame=False,
                             player=player)
                     )
+            if not ships_icon_built:
+                icon = ImageButton(win=self.win,
+                        x=self.world_x + x,
+                        y=self.world_y + TOP_SPACING + 20,
+                        width=button_size,
+                        height=button_size,
+                        isSubWidget=False,
+                        parent=self,
+                        image=pygame.transform.scale(get_image("spacehunter_30x30.png"), (button_size, button_size)),
+                        tooltip="ships_icon",
+                        frame_color=self.frame_color,
+                        moveable=False,
+                        include_text=True,
+                        layer=self.layer,
+                        onClick=lambda: print("no function"),
+                        name="ships_icon",
+                        textColour=self.frame_color,
+                        font_size=12,
+                        info_text="",  # info_panel_text_generator.create_info_panel_weapon_text(key),
+                        textHAlign="right_outside",
+                        outline_thickness=0,
+                        outline_threshold=1
+                        )
+
+                self.buttons.append(icon)
+                self.widgets.append(icon)
+                ships_icon_built = True
+
+            # space harbor icon
+            button_size_ = int(button_size / 2)
             icon = ImageButton(win=self.win,
-                    x=self.world_x + x,
-                    y=self.world_y + TOP_SPACING + 20,
-                    width=button_size,
-                    height=button_size,
+                    x=self.world_x + x + 46,
+                    y=self.world_y + TOP_SPACING + y,
+                    width=button_size_,
+                    height=button_size_,
                     isSubWidget=False,
                     parent=self,
-                    image=pygame.transform.scale(get_image("spacehunter_30x30.png"), (button_size, button_size)),
-                    tooltip="ships_icon",
+                    image=pygame.transform.scale(get_image("space harbor_25x25.png"), (button_size_, button_size_)),
+                    tooltip="space harbor_icon",
                     frame_color=self.frame_color,
                     moveable=False,
                     include_text=True,
                     layer=self.layer,
                     onClick=lambda: print("no function"),
-                    name="ships_icon",
+                    name=f"space harbor_icon{player_index}",
                     textColour=self.frame_color,
                     font_size=12,
                     info_text="",  # info_panel_text_generator.create_info_panel_weapon_text(key),
@@ -438,8 +486,10 @@ class PlayerEdit(EditorBase):
                     outline_threshold=1
                     )
 
+
             self.buttons.append(icon)
             self.widgets.append(icon)
+
             x += spacing_x
 
             # score
@@ -472,31 +522,33 @@ class PlayerEdit(EditorBase):
                     )
 
             # score icon
-            icon = ImageButton(win=self.win,
-                    x=self.world_x + x,
-                    y=self.world_y + TOP_SPACING + 20,
-                    width=button_size,
-                    height=button_size,
-                    isSubWidget=False,
-                    parent=self,
-                    image=pygame.transform.scale(get_image("score_icon.png"), (button_size, button_size)),
-                    tooltip="open score plotter",
-                    frame_color=self.frame_color,
-                    moveable=False,
-                    include_text=True,
-                    layer=self.layer,
-                    onClick=lambda: self.enable_plotter(),
-                    name="score_icon",
-                    textColour=self.frame_color,
-                    font_size=12,
-                    info_text="",  # info_panel_text_generator.create_info_panel_weapon_text(key),
-                    textHAlign="right_outside",
-                    outline_thickness=0,
-                    outline_threshold=1
-                    )
+            if not score_icon_built:
+                icon = ImageButton(win=self.win,
+                        x=self.world_x + x,
+                        y=self.world_y + TOP_SPACING + 20,
+                        width=button_size,
+                        height=button_size,
+                        isSubWidget=False,
+                        parent=self,
+                        image=pygame.transform.scale(get_image("score_icon.png"), (button_size, button_size)),
+                        tooltip="open score plotter",
+                        frame_color=self.frame_color,
+                        moveable=False,
+                        include_text=True,
+                        layer=self.layer,
+                        onClick=lambda: self.enable_plotter(),
+                        name="score_icon",
+                        textColour=self.frame_color,
+                        font_size=12,
+                        info_text="",  # info_panel_text_generator.create_info_panel_weapon_text(key),
+                        textHAlign="right_outside",
+                        outline_thickness=0,
+                        outline_threshold=1
+                        )
 
-            self.buttons.append(icon)
-            self.widgets.append(icon)
+                self.buttons.append(icon)
+                self.widgets.append(icon)
+                score_icon_built = True
 
             x += spacing_x
             x = 0
@@ -513,6 +565,13 @@ class PlayerEdit(EditorBase):
                     i.setImage(self.war_image)
                 else:
                     i.setImage(self.peace_image)
+
+    def update_space_harbor_icon(self):
+        for player in config.app.players:
+            space_harbor_icon = [i for i in self.widgets if i.name == f'space harbor_icon{player}'][0]
+            space_harbor_icon._hidden = "space harbor" not in config.app.players[player].get_all_buildings()
+
+
 
     def update_inputboxes(self):
         for i in self.widgets:
@@ -569,6 +628,7 @@ class PlayerEdit(EditorBase):
             self.handle_hovering()
             self.drag(events)
             self.update_inputboxes()
+            self.update_space_harbor_icon()
 
     def draw(self):
         if not self._hidden and not self._disabled:

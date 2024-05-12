@@ -4,6 +4,7 @@ import time
 import pygame
 
 from source.configuration.game_config import config
+# from source.factories.ship_factory import ship_factory
 from source.factories.weapon_factory import weapon_factory
 from source.gui.widgets.buttons.button import Button
 from source.gui.widgets.progress_bar import ProgressBar
@@ -248,10 +249,17 @@ class BuildingWidget(WidgetBase):
         # remove self from planets building cue:
         self.receiver.building_cue -= 1
 
-        # if it is a ship, no calculation has to be done, return
+        # if it is a ship, no calculation has to be done, return : name, x, y, parent, weapons, **kwargs):
         if self.name in ships:
             x, y = pan_zoom_handler.screen_2_world(self.receiver.screen_x, self.receiver.screen_y)
-            ship = config.app.ship_factory.create_ship(self.name + "_30x30.png", x, y, config.app, {})
+            ship = config.app.ship_factory.create_ship(
+                    self.name + "_30x30.png",
+                    x,
+                    y,
+                    config.app,
+                    {},
+                    data={"owner":self.receiver.owner})
+
             set_orbit_object_id(ship, self.receiver.id)
             return
 

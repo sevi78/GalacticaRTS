@@ -192,17 +192,18 @@ class BuildingFactoryJsonDictReader:
 
         return builings
 
-    def get_fitting_building(self, planet, preferred_building_key):
+    def get_fitting_building(self, population: int, preferred_building_key: str) -> str:
         building_names = building_factory.get_building_names(preferred_building_key)
+        fit_building = None
+        population = int(population)
+        if population < 1000:
+            fit_building = building_names[0]
+        elif population in range(1000, 10000):
+            fit_building = building_names[1]
+        elif population >= 10000:
+            fit_building = building_names[2]
 
-        if planet.population < 1000:
-            return building_names[0]
-        elif planet.population in range(1000, 10000):
-            return building_names[1]
-        elif planet.population in range(10000, 100000):
-            return building_names[2]
-
-        return building_names
+        return fit_building
 
 
 class BuildingFactory(BuildingFactoryJsonDictReader):
@@ -367,7 +368,8 @@ def main():
     # print (building_factory.get_resource_categories())
     # print (building_factory.get_all_resource_buildings())
     building_factory = BuildingFactory()
-    print(building_factory.get_fitting_building(None, "energy"))
+    # print (f"building_factory.main: {building_factory.get_fitting_building(89999, 'energy')}")
+
 
 
 if __name__ == "__main__":

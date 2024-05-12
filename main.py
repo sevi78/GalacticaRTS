@@ -21,7 +21,7 @@ from source.gui.event_text import event_text
 from source.gui.panels.map_panel import MapPanel
 from source.gui.widgets.image_widget import ImageSprite
 from source.handlers import event_text_handler
-from source.handlers.economy_handler import economy_handler
+from source.economy.economy_handler import economy_handler
 from source.handlers.file_handler import load_file
 from source.handlers.game_event_handler import GameEventHandler
 from source.handlers.level_handler import LevelHandler
@@ -314,7 +314,7 @@ def main():
         app.win,
         app.advanced_settings_panel.screen_x,
         60,
-        container_width,
+        container_width * 3,
         container_height,
         sprite_groups.convert_sprite_groups_to_image_widget_list("ships"),
         function=navigate_to_game_object_by_index,

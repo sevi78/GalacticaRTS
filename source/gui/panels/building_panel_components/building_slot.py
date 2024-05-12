@@ -2,7 +2,7 @@ import pygame
 
 from source.configuration.game_config import config
 from source.gui.event_text import event_text
-from source.handlers.economy_handler import economy_handler
+from source.economy.economy_handler import economy_handler
 
 
 class BuildingSlot:

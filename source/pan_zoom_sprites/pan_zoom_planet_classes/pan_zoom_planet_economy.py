@@ -1,7 +1,7 @@
 import random
 
 from source.factories.building_factory import building_factory
-from source.handlers.economy_handler import economy_handler
+from source.economy.economy_handler import economy_handler
 from source.configuration.game_config import config
 
 

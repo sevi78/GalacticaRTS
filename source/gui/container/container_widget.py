@@ -17,7 +17,104 @@ SCROLL_STEP = 25
 
 
 class ContainerWidget(InteractionHandler):
+    """
+    The ContainerWidget class is a subclass of the InteractionHandler class and represents a container widget that can
+    hold multiple child widgets. It provides functionalities for scrolling, dragging, and selecting widgets.
+    Example Usage
+    # Create a container widget
+    container = ContainerWidget(win, x, y, width, height, widgets, function, parent=parent_widget)
+
+    # Set the widgets of the container
+    container.set_widgets(widgets)
+
+    # Listen for events and update the container
+    container.listen(events)
+
+    # Draw the container and its widgets
+    container.draw()
+    Code Analysis
+    Main functionalities
+    Manages the position and size of the container and its child widgets
+    Allows scrolling through the widgets using a scrollbar
+    Enables dragging of the container and its child widgets
+    Handles selection of widgets and executes a specified function when selected
+
+    Methods
+    __init__(self, win, x, y, width, height, widgets, function, **kwargs): Initializes the container widget with the
+    specified parameters and optional keyword arguments.
+    set_widgets(self, widgets): Sets the widgets of the container and resets offset values.
+    set_x(self, value): Sets the x-coordinate of the container.
+    set_y(self, value): Sets the y-coordinate of the container.
+    get_max_scroll_y(self) -> int: Calculates and returns the maximum scroll position in the y-direction.
+    get_scroll_step(self) -> int: Returns the scroll step size.
+    select(self): Executes the specified function when a widget is selected.
+    reposition_widgets(self): Repositions the child widgets based on the current scroll offset.
+    draw_widgets(self): Draws the child widgets onto the container's surface.
+    set_visible(self): Toggles the visibility of the container and its child widgets.
+    reposition(self, x, y): Repositions the container and its components.
+    update_scroll_position_from_scrollbar(self, scrollbar_value): Updates the scroll position based on the scrollbar value.
+    listen(self, events): Listens for events and handles scrolling, hovering, dragging, and selection.
+    draw(self): Draws the container and its components onto the window.
+
+    Fields
+    win: The window surface on which the container is drawn.
+    world_x: The x-coordinate of the container in the world space.
+    world_y: The y-coordinate of the container in the world space.
+    world_width: The width of the container in the world space.
+    world_height: The height of the container in the world space.
+    widgets: The list of child widgets contained in the container.
+    function: The function to be executed when a widget is selected.
+    parent: The parent widget of the container.
+    group: The group to which the container belongs.
+    layer: The layer of the container.
+    name: The name of the container.
+    list_name: The name of the container in a list.
+    filters: The list of filters applied to the container.
+    filter_widget: The filter widget associated with the container.
+    isSubWidget: A flag indicating if the container is a sub-widget.
+    _hidden: A flag indicating if the container is hidden.
+    surface: The surface on which the container and its child widgets are drawn.
+    rect: The rectangle representing the position and size of the container.
+    scroll_x: The current scroll position in the x-direction.
+    scroll_y: The current scroll position in the y-direction.
+    scroll_factor: The scroll step size.
+    scroll_offset_x: The offset of the scroll position in the x-direction.
+    scroll_offset_y: The offset of the scroll position in the y-direction.
+    max_scroll_y: The maximum scroll position in the y-direction.
+    frame_border: The border size of the container frame.
+    frame: The frame widget that surrounds the container.
+    scrollbar: The scrollbar widget associated with the container.
+    save: A flag indicating if the container should be saved.
+    """
+
     def __init__(self, win, x, y, width, height, widgets, function, **kwargs):
+        """
+        Initializes a new instance of the ContainerWidget class.
+
+        Parameters:
+            win (pygame.Surface): The surface on which the container will be drawn.
+            x (int): The x-coordinate of the container's position.
+            y (int): The y-coordinate of the container's position.
+            width (int): The width of the container.
+            height (int): The height of the container.
+            widgets (list): The list of widgets to be added to the container.
+            function (callable): The function to be executed when a widget is selected.
+            **kwargs: Optional keyword arguments.
+                parent (ContainerWidget): The parent container widget.
+                group (str): The group to which the container belongs.
+                layer (int): The layer of the container.
+                name (str): The name of the container.
+                list_name (str): The name of the container's list.
+                filters (list): The list of filters to be applied to the container.
+                filter_widget (WidgetBase): The widget used for filtering.
+                save (bool): Whether to save the container.
+
+        Raises:
+            AssertionError: If the widgets list is empty.
+
+        Returns:
+            None
+        """
         InteractionHandler.__init__(self)
         self.offset_index = 0
         self.offset_y = 0
@@ -63,6 +160,7 @@ class ContainerWidget(InteractionHandler):
         self.scroll_offset_x = 0
         self.scroll_offset_y = 0
         self.max_scroll_y = self.get_max_scroll_y()
+        self.visible_index_range = 0
 
         # frame
         self.frame_border = 10
@@ -84,6 +182,7 @@ class ContainerWidget(InteractionHandler):
         self.save = kwargs.get("save", True)
 
     def set_widgets(self, widgets):
+        """ sets the widgets and resets offset values """
         if widgets:
             if not isinstance(widgets[0], ContainerWidgetItem):
                 self.set_widgets([ContainerWidgetItem(self.win, 0, WIDGET_SIZE * index, WIDGET_SIZE, WIDGET_SIZE,
@@ -93,6 +192,7 @@ class ContainerWidget(InteractionHandler):
                 self.widgets = widgets
 
         self.offset_index = 0
+        self.visible_index_range = 0
         # set offset_y to minus 1 !!!
         self.offset_y = -1
         self.scrollbar.value = 0.0
@@ -117,12 +217,25 @@ class ContainerWidget(InteractionHandler):
         self.rect.y = value
 
     def get_max_scroll_y(self) -> int:
+        """
+        Get the number of child widgets and the width of the first child widget.
+        Calculate the visible index range by dividing the height of the container by the width of the first child widget
+        (self.rect.height) and rounding down (math.floor(self.rect.height / size)).
+        Calculate the maximum scroll position in the y-direction by subtracting the visible index range from the total
+        number of child widgets multiplied by the width of the first child widget ((len_ * size) - self.visible_index_range).
+        Return the maximum scroll position.
+        """
         len_ = len(self.widgets)
         size = self.widgets[0].world_width
-        max_scroll_y = len_ * size
+        self.visible_index_range = math.floor(self.rect.height / size)
+        max_scroll_y = (len_ * size) - self.visible_index_range
         return max_scroll_y
 
     def get_scroll_step(self) -> int:
+        """
+        The method retrieves the first child widget from the widgets list.
+        It returns the height of the first child widget.
+        """
         return self.widgets[0].world_height
 
     def select(self):
@@ -131,17 +244,21 @@ class ContainerWidget(InteractionHandler):
             if callable(self.function):
                 getattr(self, "function")(self)
 
-    def reposition_widgets(self):  # original
-        # Adjust the position of each widget relative to the container's current position
+    def reposition_widgets(self):
+        """
+        The reposition_widgets method is responsible for repositioning the child widgets of the container based on the
+        current scroll offset.
+        """
+        # Check if the scroll offset is within the range of the number of widgets
         if not self.scroll_offset_y in range(-len(self.widgets), len(self.widgets)):
             return
 
         for widget in self.widgets:
-            widget.win = self.surface  # self.surface
+            widget.win = self.surface
             widget.x = self.surface.get_rect().x
-            widget.y = self.world_y + widget.rect.y - self.rect.y
-            widget.y = widget.y + self.scroll_y * self.scroll_factor
+            widget.y = (self.widgets.index(widget) + self.scroll_offset_y) * widget.world_height
 
+            # Apply the calculated position
             widget.set_position((widget.x, widget.y))
 
     def draw_widgets(self):
@@ -159,6 +276,10 @@ class ContainerWidget(InteractionHandler):
                 self.filter_widget.show()
 
     def reposition(self, x, y):
+        """
+        The reposition method is responsible for repositioning the container and its components based on the specified
+        x and y coordinates.
+        """
         # set rect position
         self.rect.x = self.world_x
         self.rect.y = self.world_y
@@ -181,6 +302,15 @@ class ContainerWidget(InteractionHandler):
             self.filter_widget.world_x = self.rect.x + self.rect.width - self.filter_widget.screen_width - 10
             self.filter_widget.world_y = self.rect.y - TOP_SPACING
 
+    def update_scroll_position_from_scrollbar(self, scrollbar_value):
+        """
+        The update_scroll_position_from_scrollbar method is responsible for updating the scroll position of the
+        container based on the value of the scrollbar. It calculates the new scroll offset in the y-direction and
+        repositions the child widgets accordingly.
+        """
+        self.scroll_offset_y = math.floor((len(self.widgets) - self.visible_index_range + 1) * scrollbar_value) * -1
+        self.reposition_widgets()  # Reposition widgets based on the new scroll offset
+
     def listen(self, events):
         if self._hidden:
             return
@@ -199,22 +329,18 @@ class ContainerWidget(InteractionHandler):
         # drag
         self.drag(events)
 
-        # resize does not work yet
-        # self.resize(events)
-
         # handle events
         for event in events:
-            if event.type == pygame.QUIT:
-                exit()
-
             # scroll
             if event.type == pygame.MOUSEWHEEL:
                 if self.rect.collidepoint(pygame.mouse.get_pos()):
-                    self.scroll_y = event.y
-                    if self.scroll_offset_y + self.scroll_y in range(-(len(self.widgets) - 1), 1):
+                    self.scroll_y = event.y  # -1 , 0 , 1
+
+                    if self.scroll_offset_y + self.scroll_y in range(-(
+                            len(self.widgets) - self.visible_index_range), 1):
                         self.scroll_offset_y += self.scroll_y
-                        self.scrollbar.value = abs(1 / len(self.widgets) * self.scroll_offset_y)
-                        print(f"self.scroll_offset_y: {self.scroll_offset_y},self.scrollbar.value: {self.scrollbar.value}")
+                        self.scrollbar.value = abs(1 / (
+                                len(self.widgets) - self.visible_index_range + 1) * self.scroll_offset_y)
 
                         self.reposition_widgets()
 
@@ -231,8 +357,9 @@ class ContainerWidget(InteractionHandler):
                     if self.rect.collidepoint(event.pos):
                         offset_y = mouse_handler.get_mouse_pos()[1] - self.world_y
                         rel_offset_y = offset_y - (self.scroll_offset_y * WIDGET_SIZE)
+                        offset_index = math.floor(rel_offset_y / WIDGET_SIZE)
 
-                        self.offset_index = math.floor(rel_offset_y / WIDGET_SIZE)
+                        self.offset_index = offset_index
                         self.select()
 
         # hover

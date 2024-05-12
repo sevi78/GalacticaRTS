@@ -138,6 +138,9 @@ class PanZoomShipMoving:
         self.target.get_explored(self.owner)
 
     def reach_target(self, distance):
+        if not self.target:
+            return
+
         if self.target.property == "ufo":
             if distance <= self.attack_distance:
                 self.moving = False

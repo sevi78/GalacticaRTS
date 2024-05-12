@@ -64,6 +64,14 @@ class PanZoomShipStateEngineDraw:
 
         # set up images
         x, y = self.parent.get_screen_position()
+        self.state_image_names = {
+            "move_stop": "noenergy_25x25.png",
+            "following_path": "follow_path_icon.png",
+            "moving": "moving.png",
+            "sleeping": "sleep.png",
+            "orbiting": "orbit_icon.png",
+            "autopilot": "autopilot.png"
+            }
         self.state_images = {
             "move_stop": ImageSprite(self.parent.win, x, y, STATE_IMAGE_SIZE, STATE_IMAGE_SIZE, get_image("noenergy_25x25.png"), parent=self.parent),
             "following_path": ImageSprite(self.parent.win, x, y, STATE_IMAGE_SIZE, STATE_IMAGE_SIZE, get_image("follow_path_icon.png"), parent=self.parent),
