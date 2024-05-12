@@ -1,12 +1,15 @@
 import pygame
 
+from source.configuration.game_config import config
 from source.draw.rect import draw_transparent_rounded_rect
 from source.gui.container.container_config import FONT_SIZE, WIDGET_SIZE, TEXT_SPACING
 from source.handlers.color_handler import colors
 from source.multimedia_library.images import get_image
+from source.text.text_formatter import format_number
+from source.text.text_wrap import TextWrap
 
 
-class ContainerWidgetItem:
+class ContainerWidgetItem(TextWrap):
     """
     The ContainerWidgetItem class is a class that represents an item in a container. It is responsible for managing the
     position, size, image, and text of the item, as well as handling user interactions such as hiding, showing, and
@@ -91,6 +94,7 @@ class ContainerWidgetItem:
         Returns:
             None
         """
+        TextWrap.__init__(self)
         self.win = win
         self.world_x = x
         self.world_y = y
@@ -109,16 +113,11 @@ class ContainerWidgetItem:
         # text
         self.text = self.set_text()
         self.font_size = FONT_SIZE
-        self.font = pygame.sysfont.SysFont(None, 15)
+        self.font = pygame.sysfont.SysFont(None, FONT_SIZE)
 
         # state image
-        if self.obj:
-            if hasattr(self.obj, "state_engine"):
-                self.state_image = pygame.transform.scale(get_image(
-                        self.obj.state_engine.image_drawer.state_image_names[self.obj.state_engine.state]), (
-                    width, height))
-        else:
-            self.state_image = None
+
+        self.state_image = None
         self.state_image_rect = None
         self.set_state_image()
 
@@ -141,7 +140,7 @@ class ContainerWidgetItem:
                 else:
                     text = self.obj.name
             elif self.obj.__class__.__name__ == "PanZoomShip":
-                text += f"{self.obj.name}, {self.obj.energy}"
+                text += f"{self.obj.name}, energy: {format_number(self.obj.energy, 1)}"
         else:
             text += f", index: {self.index}"
         return text
@@ -162,8 +161,17 @@ class ContainerWidgetItem:
         """
         if self.obj:
             if self.obj.__class__.__name__ == "PanZoomShip":
-                self.state_image = pygame.transform.scale(get_image(self.obj.state_engine.image_drawer.state_images[
-                    self.obj.state_engine.state]), (WIDGET_SIZE, WIDGET_SIZE))
+                self.state_image = pygame.transform.scale(get_image(
+                        self.obj.state_engine.image_drawer.state_image_names[self.obj.state_engine.state]), (
+                    WIDGET_SIZE / 3, WIDGET_SIZE / 3))
+                self.state_image_rect = self.state_image.get_rect()
+
+            if self.obj.__class__.__name__ == "PanZoomPlanet":
+                if self.obj.owner != -1:
+                    image_name = config.app.players[self.obj.owner].image_name
+                    self.state_image = pygame.transform.scale(get_image(image_name), (
+                        WIDGET_SIZE, WIDGET_SIZE))
+                    self.state_image_rect = self.state_image.get_rect()
 
     def set_position(self, pos) -> None:
         """
@@ -197,12 +205,10 @@ class ContainerWidgetItem:
             widget.set_position(self.rect.topleft)
 
         if hasattr(self, "state_image"):
-            self.state_image = pygame.transform.scale(get_image(
-                    self.obj.state_engine.image_drawer.state_image_names[self.obj.state_engine.state]), (
-                WIDGET_SIZE / 3, WIDGET_SIZE / 3))
-            self.state_image_rect = self.state_image.get_rect()
-            self.state_image_rect.x = self.rect.x + 25
-            self.state_image_rect.y = self.rect.y
+            if self.state_image is not None:
+                self.state_image_rect = self.state_image.get_rect()
+                self.state_image_rect.x = self.rect.x + 25
+                self.state_image_rect.y = self.rect.y
 
     def hide(self) -> None:
         self._hidden = True
@@ -211,11 +217,14 @@ class ContainerWidgetItem:
         self._hidden = False
 
     def draw_text(self) -> None:
-        self.win.blit(self.font.render(
+        self.wrap_text(
+                self.win,
                 self.text,
-                True,
-                colors.frame_color),
-                (self.world_x + WIDGET_SIZE + TEXT_SPACING, self.world_y + WIDGET_SIZE / 2))
+                (self.world_x + WIDGET_SIZE + TEXT_SPACING, self.world_y),
+                (300, FONT_SIZE),
+                self.font,
+                colors.frame_color,
+                iconize=["energy"])
 
     def draw_hover_rect(self) -> None:
         """
@@ -260,7 +269,8 @@ class ContainerWidgetItem:
         """
         self.win.blit(self.image, self.rect)
         if hasattr(self, "state_image"):
-            self.win.blit(self.state_image, self.state_image_rect)
+            if self.state_image is not None:
+                self.win.blit(self.state_image, self.state_image_rect)
 
     def draw(self) -> None:
         self.rect.topleft = (self.world_x, self.world_y)

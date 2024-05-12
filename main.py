@@ -306,7 +306,7 @@ def main():
     app.map_panel = MapPanel(app.win, app.info_panel.world_x, app.win.get_size()[1] - width, width, height)
 
     # containers:
-    container_width = 80
+    container_width = 300
     container_height = 150
 
     # ship container
@@ -314,7 +314,7 @@ def main():
         app.win,
         app.advanced_settings_panel.screen_x,
         60,
-        container_width * 3,
+        container_width,
         container_height,
         sprite_groups.convert_sprite_groups_to_image_widget_list("ships"),
         function=navigate_to_game_object_by_index,

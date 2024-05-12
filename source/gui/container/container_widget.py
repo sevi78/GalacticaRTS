@@ -159,8 +159,8 @@ class ContainerWidget(InteractionHandler):
         self.scroll_factor = self.get_scroll_step()
         self.scroll_offset_x = 0
         self.scroll_offset_y = 0
-        # self.max_scroll_y = self.get_max_scroll_y()
         self.visible_index_range = 0
+        self.max_scroll_y = self.get_max_scroll_y()
 
         # frame
         self.frame_border = 10
@@ -244,28 +244,6 @@ class ContainerWidget(InteractionHandler):
             if callable(self.function):
                 getattr(self, "function")(self)
 
-    def reposition_widgets(self):
-        """
-        The reposition_widgets method is responsible for repositioning the child widgets of the container based on the
-        current scroll offset.
-        """
-        self.get_max_scroll_y()
-        # Check if the scroll offset is within the range of the number of widgets
-        if not self.scroll_offset_y in range(-len(self.widgets), len(self.widgets)):
-            return
-
-        for widget in self.widgets:
-            widget.win = self.surface
-            widget.x = self.surface.get_rect().x
-            widget.y = (self.widgets.index(widget) + self.scroll_offset_y) * widget.world_height
-
-            # Apply the calculated position
-            widget.set_position((widget.x, widget.y))
-
-    def draw_widgets(self):
-        for widget in self.widgets:
-            widget.draw()
-
     def set_visible(self):
         self._hidden = not self._hidden
         # self.world_x, self.world_y = pygame.mouse.get_pos()[0], TOP_SPACING
@@ -303,6 +281,23 @@ class ContainerWidget(InteractionHandler):
             self.filter_widget.world_x = self.rect.x + self.rect.width - self.filter_widget.screen_width - 10
             self.filter_widget.world_y = self.rect.y - TOP_SPACING
 
+    def reposition_widgets(self):
+        """
+        The reposition_widgets method is responsible for repositioning the child widgets of the container based on the
+        current scroll offset.
+        """
+        # Check if the scroll offset is within the range of the number of widgets
+        if not self.scroll_offset_y in range(-len(self.widgets), len(self.widgets)):
+            return
+
+        for widget in self.widgets:
+            widget.win = self.surface
+            widget.x = self.surface.get_rect().x
+            widget.y = (self.widgets.index(widget) + self.scroll_offset_y) * widget.world_height
+
+            # Apply the calculated position
+            widget.set_position((widget.x, widget.y))
+
     def update_scroll_position_from_scrollbar(self, scrollbar_value):
         """
         The update_scroll_position_from_scrollbar method is responsible for updating the scroll position of the
@@ -311,6 +306,10 @@ class ContainerWidget(InteractionHandler):
         """
         self.scroll_offset_y = math.floor((len(self.widgets) - self.visible_index_range + 1) * scrollbar_value) * -1
         self.reposition_widgets()  # Reposition widgets based on the new scroll offset
+
+    def draw_widgets(self):
+        for widget in self.widgets:
+            widget.draw()
 
     def listen(self, events):
         if self._hidden:
