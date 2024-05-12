@@ -159,7 +159,7 @@ class ContainerWidget(InteractionHandler):
         self.scroll_factor = self.get_scroll_step()
         self.scroll_offset_x = 0
         self.scroll_offset_y = 0
-        self.max_scroll_y = self.get_max_scroll_y()
+        # self.max_scroll_y = self.get_max_scroll_y()
         self.visible_index_range = 0
 
         # frame
@@ -249,6 +249,7 @@ class ContainerWidget(InteractionHandler):
         The reposition_widgets method is responsible for repositioning the child widgets of the container based on the
         current scroll offset.
         """
+        self.get_max_scroll_y()
         # Check if the scroll offset is within the range of the number of widgets
         if not self.scroll_offset_y in range(-len(self.widgets), len(self.widgets)):
             return
