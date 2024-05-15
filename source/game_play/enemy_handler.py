@@ -6,7 +6,7 @@ from source.configuration.game_config import config
 from source.handlers.file_handler import load_file
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
-from source.interfaces.interface import InterfaceData
+from source.gui.interfaces.interface import InterfaceData
 from source.multimedia_library.images import get_image_names_from_folder
 from source.pan_zoom_sprites.pan_zoom_ufo import PanZoomUfo
 from source.text.info_panel_text_generator import info_panel_text_generator

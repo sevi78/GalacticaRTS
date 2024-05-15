@@ -4,7 +4,6 @@ import time
 import pygame
 
 from source.configuration.game_config import config
-# from source.factories.ship_factory import ship_factory
 from source.factories.weapon_factory import weapon_factory
 from source.gui.widgets.buttons.button import Button
 from source.gui.widgets.progress_bar import ProgressBar
@@ -132,6 +131,7 @@ class BuildingWidget(WidgetBase):
         self.immediately_build_cost = 0
         self.tooltip = kwargs.get("tooltip", "no tooltip set yet!")
         self.is_building = kwargs.get("is_building", True)
+        self.ship_names = kwargs.get("ship_names", [])
 
         # get the position and size
         self.win = pygame.display.get_surface()
@@ -237,7 +237,6 @@ class BuildingWidget(WidgetBase):
             print(f"set_building_to_receiver: You can't build on this planet!: {self.receiver.name}")
             return
 
-        ships = ["spaceship", "cargoloader", "spacehunter", "spacestation"]
         # technology_upgrades = ["university"]
         planet_defence_upgrades = ["cannon", "missile"]
         weapons = None
@@ -250,15 +249,15 @@ class BuildingWidget(WidgetBase):
         self.receiver.building_cue -= 1
 
         # if it is a ship, no calculation has to be done, return : name, x, y, parent, weapons, **kwargs):
-        if self.name in ships:
+        if self.name in self.ship_names:
             x, y = pan_zoom_handler.screen_2_world(self.receiver.screen_x, self.receiver.screen_y)
             ship = config.app.ship_factory.create_ship(
-                    self.name + "_30x30.png",
+                    self.name,
                     x,
                     y,
                     config.app,
                     {},
-                    data={"owner":self.receiver.owner})
+                    data={"owner": self.receiver.owner})
 
             set_orbit_object_id(ship, self.receiver.id)
             return

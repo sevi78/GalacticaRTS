@@ -68,21 +68,7 @@ class FilterWidget(EditorBase):
             icon.screen_y = self.world_y + TOP_SPACING
 
     def select_filter(self, key):
-        # print ("key:", key)
-        # print ("dict: ", self.parent.widgets)
-
-        for i in self.parent.widgets:
-            print(getattr(i.obj, key))
-
-        # Sort the list of widgets based on the specified key (attribute) in ascending order
-        sorted_widgets = sorted(copy.copy(self.parent.widgets), key=lambda
-            widget: getattr(widget.obj, key), reverse=False)
-
-        # Update the parent's widgets list with the sorted list
-        self.parent.set_widgets(sorted_widgets)
-
-    def select_filter(self, key):
-        # store the last key to for toggling
+        # store the last key to self for toggling
         if not hasattr(self, key):
             setattr(self, key, False)
 

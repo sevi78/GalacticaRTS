@@ -40,12 +40,19 @@ def navigate_to(obj, **kwargs):  # should not be used !! use navigate_to_positio
 
 
 def navigate_to_position(x, y):  # use for ships
+    """
+        use obj.world_x, obj.world_y  as input for navigation
+    """
+
     panzoom = pan_zoom_handler
     screen_x, screen_y = panzoom.world_2_screen(x, y)
     panzoom.world_offset_x, panzoom.world_offset_y = panzoom.screen_2_world(screen_x - panzoom.screen_width / 2, screen_y - panzoom.screen_height / 2)
 
 
 def navigate_to_game_object_by_index(self):
+    """
+    use obj.world_x, obj.world_y  as input for navigation
+    """
     if self.offset_index < len(self.widgets):
         obj = self.widgets[self.offset_index].obj
         if obj:
@@ -55,7 +62,7 @@ def navigate_to_game_object_by_index(self):
                 config.app.set_selected_planet(obj)
 
             if obj.__class__.__name__ == 'PanZoomShip':
-                navigate_to_position(obj.screen_x, obj.screen_y)
+                navigate_to_position(obj.world_x, obj.world_y)
                 # select
                 config.app.ship = obj
                 selected = [i.selected for i in sprite_groups.ships.sprites() if not i == obj]

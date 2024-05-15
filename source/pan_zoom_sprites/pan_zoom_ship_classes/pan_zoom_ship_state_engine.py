@@ -29,24 +29,30 @@ class PanZoomShipStateEngine:
         if self.parent.move_stop > 0:
             self.state = "move_stop"
 
-        if self.parent.moving:
+        elif self.parent.moving:
             self.state = "moving"
 
-        if self.parent.following_path:
+        elif self.parent.following_path:
             self.state = "following_path"
 
-        if self.parent.orbiting:
+        elif self.parent.orbiting:
             self.state = "orbiting"
-        else:
-            if hasattr(self.parent, "autopilot"):
-                if self.parent.autopilot:
-                    self.state = "autopilot"
+
+        elif hasattr(self.parent, "autopilot"):
+            if self.parent.autopilot:
+                self.state = "autopilot"
             else:
                 self.state = "sleeping"
+
+
+
+        else:
+            self.state = "sleeping"
 
         self.image_drawer.set_state_image()
 
     def update(self) -> None:
+        self.set_state()
         if config.cross_view_start < pan_zoom_handler.zoom:
             self.image_drawer.show()
             self.image_drawer.draw_rank_image()

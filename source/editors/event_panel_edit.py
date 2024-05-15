@@ -1,4 +1,4 @@
-from source.interfaces.interface import Interface
+from source.gui.interfaces.interface import Interface
 
 
 class EventPanelEdit(Interface):

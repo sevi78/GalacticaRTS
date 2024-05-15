@@ -259,7 +259,7 @@ class SettingsPanel(WidgetBase):
                 isSubWidget=False,
                 parent=self,
                 image=pygame.transform.scale(
-                        get_image("spacehunter_30x30.png"), (25, 25)),
+                        get_image("spacehunter.png"), (25, 25)),
                 tooltip="navigate to this ship",
                 frame_color=self.frame_color,
                 moveable=False,

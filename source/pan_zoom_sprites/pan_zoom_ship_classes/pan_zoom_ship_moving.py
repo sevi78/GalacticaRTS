@@ -43,7 +43,7 @@ class PanZoomShipMoving:
             if self.target:
                 self.set_orbit_object_id(self.target.id)
 
-        self.state_engine.set_state()
+        # self.state_engine.set_state()
 
     @property
     def moving(self):
@@ -55,7 +55,7 @@ class PanZoomShipMoving:
         if value == True:
             self.orbiting = False
 
-        self.state_engine.set_state()
+        # self.state_engine.set_state()
 
     @property
     def move_stop(self):
@@ -67,7 +67,7 @@ class PanZoomShipMoving:
 
         if not hasattr(self, "state_engine"):
             return
-        self.state_engine.set_state()
+        # self.state_engine.set_state()
 
     def set_speed(self):
         # adjust speed if no energy
@@ -78,16 +78,16 @@ class PanZoomShipMoving:
         return speed
 
     def set_attack_distance(self):
-        self.attack_distance = self.attack_distance_raw * self.get_zoom()
+        self.attack_distance = self.attack_distance_raw# * self.get_zoom()
 
     def set_desired_orbit_radius(self):
-        self.desired_orbit_radius = self.desired_orbit_radius_raw * self.get_zoom()
+        self.desired_orbit_radius = self.desired_orbit_radius_raw# * self.get_zoom()
 
     def set_target_object_reset_distance(self):
-        self.target_object_reset_distance = self.target_object_reset_distance_raw * self.get_zoom()
+        self.target_object_reset_distance = self.target_object_reset_distance_raw# * self.get_zoom()
 
     def set_reload_max_distance(self):
-        self.reload_max_distance = self.reload_max_distance_raw * self.get_zoom()
+        self.reload_max_distance = self.reload_max_distance_raw# * self.get_zoom()
 
     def set_distances(self):
         self.set_attack_distance()
@@ -258,6 +258,7 @@ class PanZoomShipMoving:
             # Move the obj towards the target position with a constant speed
             self.world_x += displacement.x
             self.world_y += displacement.y
+            self.set_world_position((self.world_x, self.world_y))
 
     def consume_energy_if_traveling(self):
         # only subtract energy if some energy is left
@@ -269,5 +270,6 @@ class PanZoomShipMoving:
         self.energy -= traveled_distance * self.energy_use
         self.set_experience(traveled_distance * TRAVEL_EXPERIENCE_FACTOR)
 
-    def get_max_travel_range(self):
+    def get_max_travel_range(self)->float:
+        """ returns the max distance in world coordinates the ship can move based on its energy """
         return self.energy / self.energy_use

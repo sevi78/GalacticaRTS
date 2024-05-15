@@ -1,6 +1,7 @@
 import pygame
 
 from source.configuration.game_config import config
+from source.gui.event_text import event_text
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.handlers.color_handler import colors
@@ -130,6 +131,24 @@ class ViewPanel(WidgetBase):
         self.widgets.append(self.show_tooltip_icon)
         self.max_width += self.icon_size + self.spacing
 
+        self.show_event_text_icon = ImageButton(win=self.win,
+                x=self.get_screen_x() - 50,
+                y=self.surface_rect.y + self.spacing,
+                width=self.icon_size,
+                height=self.icon_size,
+                isSubWidget=False,
+                parent=self,
+                image=pygame.transform.scale(
+                        get_image("text_icon.png"), (25, 25)),
+                tooltip="show event text",
+                frame_color=self.frame_color,
+                moveable=False,
+                include_text=True, layer=self.layer,
+                onClick=lambda: self.show_event_text(button=self.show_event_text_icon))
+
+        self.widgets.append(self.show_event_text_icon)
+        self.max_width += self.icon_size + self.spacing
+
         self.map_icon = ImageButton(win=self.win,
                 x=self.get_screen_x() - 50,
                 y=self.surface_rect.y + self.spacing,
@@ -193,6 +212,10 @@ class ViewPanel(WidgetBase):
     def show_tooltip(self, button):
         config.app.tooltip_instance.active = not config.app.tooltip_instance.active
         overblit_button_image(button, "uncheck.png", config.app.tooltip_instance.active)
+
+    def show_event_text(self, button):
+        config.ui_event_text_visible = not config.ui_event_text_visible
+        overblit_button_image(button, "uncheck.png", config.ui_event_text_visible)
 
     def set_info_text(self):
         config.app.info_panel.set_text(info_panel_text_generator.info_text)

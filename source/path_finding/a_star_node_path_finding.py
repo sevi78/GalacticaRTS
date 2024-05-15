@@ -25,6 +25,9 @@ class Node:
         self.x = x
         self.y = y
 
+    def get_position(self):
+        return [self.x, self.y]
+
 
 # Function to calculate the Euclidean distance between two nodes
 def distance(

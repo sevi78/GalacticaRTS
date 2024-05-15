@@ -53,7 +53,7 @@ class SceneBuilder(EconomyParams, GameObjectStorage):
         spacing = 100
 
         self._ship = None
-        self.ship = self.ship_factory.create_ship("spaceship_30x30.png", center_x, center_y + 300, self, {})
+        self.ship = self.ship_factory.create_ship("spaceship", center_x, center_y + 300, self, {})
 
     @property
     def ship(self):

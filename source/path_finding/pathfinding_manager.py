@@ -1,7 +1,10 @@
+import math
+
 import pygame
 
 from source.configuration.game_config import config
 from source.draw.arrow import draw_arrows_on_line_from_start_to_end
+from source.gui.event_text import event_text
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.path_finding.a_star_node_path_finding import Node, astar
@@ -154,6 +157,12 @@ class PathFindingManager:
         if self.start_node and self.end_node:
             self.path = astar(self.start_node, self.end_node, self.nodes, self.max_distance)
 
+    def next_node_inside_max_distance(self, node1_pos: tuple, node2_pos: tuple, max_distance: float) -> bool:
+        dist = math.dist(node1_pos, node2_pos)
+        if max_distance > dist:
+            return True
+        return False
+
     def move_to_next_node(self):
         """
         The move_to_next_node method is responsible for moving to the next node in the path. It updates the orbit_object
@@ -161,16 +170,42 @@ class PathFindingManager:
         to the next node in the path. If there are no more nodes in the path, it calls the reach_target method on the
         parent object with the desired orbit radius.
         """
+        # reset orbit object, because we only want to orbit if target is reached
         orbit_object = None
-        if self.path:
-            orbit_object = self.path[0].owner
-            self.path.pop(0)
-            self.parent.moving = True
 
+        # check if it has a path already
         if self.path:
-            self.parent.target = self.path[0].owner
+            # if any nodes left
+            if len(self.path) > 1:
+                # check if node is reachable
+                if self.next_node_inside_max_distance(self.path[0].get_position(), self.path[1].get_position(), self.parent.get_max_travel_range()):
+                    # if it can reach its next node, then set new target and move on
 
-        elif orbit_object:
+                    self.path.pop(0)
+                    self.parent.moving = True
+
+                else:
+                    # if next node not reachable, set reloader and orbit around the planet
+                    event_text.set_text(f"{self.parent} has not enough energy to travel further!", obj=self.parent)
+                    self.parent.set_energy_reloader(self.path[0].owner)
+                    orbit_object = self.path[0].owner
+
+                    # generat new path
+                    self.generate_path(self.parent.node, self.path[-1], self.parent.get_max_travel_range())
+
+
+        # if still has a path
+        if self.path:
+            #  and any nodes left
+            if not self.path[0].owner == self.parent.target:
+                self.parent.target = self.path[0].owner
+            else:
+                # set orbit object and reset path
+                orbit_object = self.path[0].owner
+                self.reset()
+
+        # if has an orbit object, orbit around and reach target
+        if orbit_object:
             self.parent.reach_target(self.parent.desired_orbit_radius)
 
     def follow_path(self, hit_object):
@@ -197,12 +232,23 @@ class PathFindingManager:
         """ draws the path """
         if self.path:
             for i in range(len(self.path) - 1):
-                start_pos = pan_zoom_handler.world_2_screen(self.path[i].x, self.path[i].y)
-                end_pos = pan_zoom_handler.world_2_screen(self.path[i + 1].x, self.path[i + 1].y)
+                # get nodes to draw
+                current_node = self.path[i]
+                next_node = self.path[i + 1]
 
+                # get positions
+                start_pos = pan_zoom_handler.world_2_screen(current_node.x, current_node.y)
+                end_pos = pan_zoom_handler.world_2_screen(next_node.x, next_node.y)
+
+                # set color: green if target can be reached, else red
+                color = pygame.color.THECOLORS["green"]
+                if self.next_node_inside_max_distance(current_node.get_position(), next_node.get_position(), self.parent.get_max_travel_range()):
+                    color = pygame.color.THECOLORS["red"]
+
+                # draw the arrows
                 draw_arrows_on_line_from_start_to_end(
                         surf=config.app.win,
-                        color=pygame.color.THECOLORS["green"],
+                        color=color,
                         start_pos=start_pos,
                         end_pos=end_pos,
                         width=1,
@@ -234,6 +280,7 @@ class PathFindingManager:
             if hit_object:
                 if not self.parent.following_path:
                     self.generate_path(self.start_node, hit_object.node, self.parent.get_max_travel_range())
+                    self.draw_path()
 
             # draw path
             self.draw_path()

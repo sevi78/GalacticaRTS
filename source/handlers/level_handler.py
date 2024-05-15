@@ -372,7 +372,7 @@ class LevelDictGenerator:
             "possible_resources": economy_handler.randomize_planet_resources() if body_type != "sun" else [],
             "image_name_small": random.choice(images),
             "image_name_big": random.choice(images),
-            "orbit_speed": random.uniform(0.001, 0.005) * (5 if body_type == "moon" else 1),
+            "orbit_speed": random.uniform(0.0001, 0.001) * (5 if body_type == "moon" else 1),
             "orbit_object_id": orbit_object_id,
             "orbit_distance": 0,
             "atmosphere_name": random.choice(atmospheres),
@@ -431,57 +431,6 @@ class LevelHandler:
         universe_factory.create_universe(0, 0, self.data["globals"]["width"], self.data["globals"]["height"])
         universe_factory.create_artefacts(0, 0, self.data["globals"]["width"], self.data["globals"]["height"],
                 self.data["globals"]["collectable_item_amount"])
-
-    def generate_level_dict_from_scene__(self):
-        """TODO: different players must be stored"""
-        data = self.data
-
-        # get player
-        player = config.app.player
-        data["player"]["stock"] = player.get_stock()
-        data["player"]["population"] = player.population
-
-        # get all planets
-        for planet in sprite_groups.planets.sprites():
-            print(f"generate_level_dict_from_scene: {data['globals']['level']}")
-            if not str(planet.id) in data["celestial_objects"].keys():
-                data["celestial_objects"][str(planet.id)] = self.data_default["celestial_objects"]["0"]
-                print(f"generate_level_dict_from_scene key error: planet.id not in data['celestial_objects']: planet.id: {planet.id}\n keys: {data['celestial_objects'].keys()}")
-
-            for key, value in data["celestial_objects"][str(planet.id)].items():
-                if hasattr(planet, key):
-                    value_ = getattr(planet, key)
-                    data["celestial_objects"][str(planet.id)][key] = value_
-                else:
-                    print(f"generate_level_dict_from_scene key error: {planet} has no attribute {key}\n")
-
-        # get ship config, used if ship is created dynamically
-        ship_config = load_file("ship_settings.json", "config")
-
-        # get all ships
-        for ship in sprite_groups.ships.sprites():
-            # initialize data if ship is not in data
-            if not str(ship.id) in data["ships"].keys():
-                print(f"generate_level_dict_from_scene key error: ship.id ({ship.id} not in keys: {data['ships'].keys()}\n")
-                data["ships"][str(ship.id)] = {"name": "", "world_x": 0, "world_y": 0}
-
-            # fill the data from the ship data
-            for key, value in data["ships"][str(ship.id)].items():
-                if hasattr(ship, key):
-                    data["ships"][str(ship.id)][key] = getattr(ship, key)
-
-            # fill rest of the values from ship config
-            for var in ship_config[ship.name].keys():
-                if hasattr(ship, var):
-                    data["ships"][str(ship.id)][var] = getattr(ship, var)
-
-            # get weapons from ship weapon_handler
-            data["ships"][str(ship.id)]["weapons"] = ship.weapon_handler.weapons
-
-            # get specials loaded in ship
-            data["ships"][str(ship.id)]["specials"] = ship.specials
-
-        return data
 
     def generate_level_dict_from_scene(self, **kwargs):
         ignore_buildings = kwargs.get("ignore_buildings", False)
@@ -593,7 +542,7 @@ class LevelHandler:
         # create ships
         ships = self.data.get("ships")
         for key in ships.keys():
-            self.app.ship_factory.create_ship(f"{ships[key]['name']}_30x30.png", int(
+            self.app.ship_factory.create_ship(f"{ships[key]['name']}", int(
                     ships[key]["world_x"]), int(
                     ships[key]["world_y"]), config.app, ships[key]["weapons"], data=ships[key])
 

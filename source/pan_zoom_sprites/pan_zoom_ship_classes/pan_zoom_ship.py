@@ -19,7 +19,7 @@ from source.handlers.player_handler import player_handler
 from source.handlers.position_handler import prevent_object_overlap
 from source.handlers.weapon_handler import WeaponHandler
 from source.handlers.widget_handler import WidgetHandler
-from source.interfaces.interface import InterfaceData
+from source.gui.interfaces.interface import InterfaceData
 from source.multimedia_library.images import get_image
 from source.multimedia_library.sounds import sounds
 from source.pan_zoom_sprites.pan_zoom_ship_classes.pan_zoom_ship_draw import PanZoomShipDraw
@@ -392,8 +392,9 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         if time_steps:
             self.world_x += displacement.x / time_steps
             self.world_y += displacement.y / time_steps
+            self.set_world_position((self.world_x, self.world_y))
 
-        self.reach_target(distance)
+        self.reach_target(distance/self.get_zoom())
 
     def listen(self):
         config.app.tooltip_instance.reset_tooltip(self)
@@ -476,8 +477,8 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
             pre_calculated_energy_use = self.energy_use * math.dist(self.rect.center, pygame.mouse.get_pos()) / pan_zoom_handler.zoom
             if config.app.weapon_select._hidden:
                 scope.draw_scope(self.rect.center, self.get_max_travel_range(), {"energy use": format_number(pre_calculated_energy_use, 1)})
-
                 scope.draw_range(self)
+
         self.set_distances()
 
         # also setting the info text is questionable every frame
@@ -506,7 +507,7 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
             # why setting the info text again ???
             self.set_info_text()
 
-        # ??? agan setting drawing the selection ?
+        # ??? again setting drawing the selection ?
         if self == config.app.ship:
             self.draw_selection()
 
