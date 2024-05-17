@@ -176,10 +176,10 @@ class TradeAssistant:
 
         # Adjust the percentages based on the status of the last deal
         if last_deal in self.get_accepted_deals_from_player():
-            self.offer_percentage = max(self.offer_percentage * 0.85, 5)
-            self.request_percentage = max(self.request_percentage * 0.9, 5)
+            self.offer_percentage = max(self.offer_percentage * 0.85, 0.1)
+            self.request_percentage = max(self.request_percentage * 0.9, 0.1)
         elif last_deal in self.get_declined_deals_from_player():
-            self.offer_percentage = max(self.offer_percentage * 0.9, 5)
-            self.request_percentage = max(self.request_percentage * 0.85, 5)
+            self.offer_percentage = max(self.offer_percentage * 0.9, 0.1)
+            self.request_percentage = max(self.request_percentage * 0.85, 0.1)
 
         # print (f"adjust_percentages:\n self.offer_percentage:{self.offer_percentage}\nself.request_percentage:{self.request_percentage}")

@@ -620,9 +620,11 @@ class LevelHandler:
         self.app.level_select.update_icons()
 
     def set_planet_owners(self):
-        # self.set_planet_owners_geographically()
-        self.set_celestial_body_owners()
+
         player_handler.reset_players()
+        self.set_planet_owners_geographically()
+        # self.set_celestial_body_owners()
+
         return
         population_density = int(self.data["globals"]["population_density"])
         for i in sprite_groups.planets:
@@ -664,7 +666,7 @@ class LevelHandler:
 
         return clusters
 
-    def set_celestial_body_owners(self):
+    def set_celestial_body_owners_(self):# oroginal
         player_handler.reset_players()
         population_density = int(self.data["globals"]["population_density"])
         num_players = len(config.app.players)
@@ -692,3 +694,532 @@ class LevelHandler:
                 planet_moons = [i for i in sprite_groups.planets if i.type == "moon" and i.orbit_object_id == planet.id]
                 for moon in planet_moons:  # Assuming `planet.moons` holds all moon objects belonging to the planet
                     moon.owner = owner_id
+
+    def set_celestial_body_owners___(self):
+        player_handler.reset_players()
+        population_density = int(self.data["globals"]["population_density"])
+        num_players = len(config.app.players)
+
+        # Collect all celestial bodies
+        celestial_bodies = sprite_groups.planets.sprites()  # Assuming this includes suns, planets, and moons
+
+        # Shuffle the list to ensure random distribution
+        random.shuffle(celestial_bodies)
+
+        # Assign each celestial body to a player based on population density
+        for index, body in enumerate(celestial_bodies):
+            if random.randint(0, 100) < population_density:
+                owner_id = index % num_players  # This ensures a more even distribution
+            else:
+                owner_id = -1
+            body.owner = owner_id
+
+        # Optionally, you can propagate ownership from suns to their planets and moons
+        for sun in [b for b in celestial_bodies if b.type == "sun"]:
+            sun_planets = [p for p in celestial_bodies if p.type == "planet" and p.orbit_object_id == sun.id]
+            for planet in sun_planets:
+                planet.owner = sun.owner  # Propagate sun's owner to its planets
+                planet_moons = [m for m in celestial_bodies if m.type == "moon" and m.orbit_object_id == planet.id]
+                for moon in planet_moons:
+                    moon.owner = planet.owner  # Propagate planet's owner to its moons
+
+    def set_celestial_body_owners____(self):
+        player_handler.reset_players()
+        population_density = int(self.data["globals"]["population_density"])
+        num_players = len(config.app.players)
+
+        # Collect all celestial bodies
+        celestial_bodies = sprite_groups.planets.sprites()  # Assuming this includes suns, planets, and moons
+
+        # Shuffle the list to ensure random distribution
+        random.shuffle(celestial_bodies)
+
+        # Ensure each player gets at least one planet
+        for i in range(num_players):
+            celestial_bodies[i].owner = i
+
+        # Assign the rest of the celestial bodies based on population density
+        for index, body in enumerate(celestial_bodies[num_players:], start=num_players):
+            if random.randint(0, 100) < population_density:
+                owner_id = index % num_players  # This ensures a more even distribution
+            else:
+                owner_id = -1
+            body.owner = owner_id
+
+        # Optionally, propagate ownership from suns to their planets and moons
+        for sun in [b for b in celestial_bodies if b.type == "sun"]:
+            sun_planets = [p for p in celestial_bodies if p.type == "planet" and p.orbit_object_id == sun.id]
+            for planet in sun_planets:
+                planet.owner = sun.owner  # Propagate sun's owner to its planets
+                planet_moons = [m for m in celestial_bodies if m.type == "moon" and m.orbit_object_id == planet.id]
+                for moon in planet_moons:
+                    moon.owner = planet.owner  # Propagate planet's owner to its moons
+
+    def set_celestial_body_owners_____(self):
+        # Reset players
+        player_handler.reset_players()
+
+        # Get population density from configuration
+        population_density = int(self.data["globals"]["population_density"])
+
+        # Get the number of players
+        num_players = len(config.app.players)
+
+        # Collect all celestial bodies
+        celestial_bodies = sprite_groups.planets.sprites()  # Assuming this includes suns, planets, and moons
+
+        # Shuffle the list to ensure random initial distribution
+        random.shuffle(celestial_bodies)
+
+        # Ensure each player gets at least one celestial body
+        for i in range(num_players):
+            celestial_bodies[i].owner = i
+
+        # Assign the rest of the celestial bodies
+        for index, body in enumerate(celestial_bodies[num_players:], start=num_players):
+            # Calculate owner based on index to ensure even distribution
+            owner_id = index % num_players
+            body.owner = owner_id
+
+        # Optionally, propagate ownership from suns to their planets and moons
+        for sun in [b for b in celestial_bodies if b.type == "sun"]:
+            sun_planets = [p for p in celestial_bodies if p.type == "planet" and p.orbit_object_id == sun.id]
+            for planet in sun_planets:
+                planet.owner = sun.owner  # Propagate sun's owner to its planets
+                planet_moons = [m for m in celestial_bodies if m.type == "moon" and m.orbit_object_id == planet.id]
+                for moon in planet_moons:
+                    moon.owner = planet.owner  # Propagate planet's owner to its moons
+
+    import random
+
+    def set_celestial_body_owners_____(self):
+        # Reset players
+        player_handler.reset_players()
+
+        # Get population density from configuration
+        population_density = int(self.data["globals"]["population_density"])
+
+        # Get the number of players
+        num_players = len(config.app.players)
+
+        # Collect all celestial bodies
+        celestial_bodies = sprite_groups.planets.sprites()  # Assuming this includes suns, planets, and moons
+
+        # Shuffle the list to ensure random initial distribution
+        random.shuffle(celestial_bodies)
+
+        # Calculate the minimum number of celestial bodies per player
+        min_bodies_per_player = len(celestial_bodies) // num_players
+        extra_bodies = len(celestial_bodies) % num_players
+
+        # Distribute celestial bodies
+        current_body_index = 0
+        for player_id in range(num_players):
+            # Assign the minimum number of bodies to each player
+            for _ in range(min_bodies_per_player):
+                celestial_bodies[current_body_index].owner = player_id
+                current_body_index += 1
+
+            # Distribute remaining bodies
+            if extra_bodies > 0:
+                celestial_bodies[current_body_index].owner = player_id
+                current_body_index += 1
+                extra_bodies -= 1
+
+        # Optionally, propagate ownership from suns to their planets and moons
+        for sun in [b for b in celestial_bodies if b.type == "sun"]:
+            sun_planets = [p for p in celestial_bodies if p.type == "planet" and p.orbit_object_id == sun.id]
+            for planet in sun_planets:
+                planet.owner = sun.owner  # Propagate sun's owner to its planets
+                planet_moons = [m for m in celestial_bodies if m.type == "moon" and m.orbit_object_id == planet.id]
+                for moon in planet_moons:
+                    moon.owner = planet.owner  # Propagate planet's owner to its moons
+
+    import random
+
+    import random
+
+    # def set_celestial_body_owners(self):
+    #     # Reset players
+    #     player_handler.reset_players()
+    #
+    #     # Get the number of players
+    #     num_players = len(config.app.players)
+    #
+    #     # Collect all celestial bodies
+    #     celestial_bodies = sprite_groups.planets.sprites()  # Assuming this includes suns, planets, and moons
+    #
+    #     # Shuffle the list to ensure random initial distribution
+    #     random.shuffle(celestial_bodies)
+    #
+    #     # Group celestial bodies by their solar systems
+    #     solar_systems = {}
+    #     for body in celestial_bodies:
+    #         if body.type == "sun":
+    #             solar_systems[body.id] = {"sun": body, "planets": [], "moons": []}
+    #         elif body.type == "planet":
+    #             if body.orbit_object_id in solar_systems:
+    #                 solar_systems[body.orbit_object_id]["planets"].append(body)
+    #             else:
+    #                 print(f"Warning: Sun with ID {body.orbit_object_id} not found for planet {body.id}")
+    #         elif body.type == "moon":
+    #             planet_found = False
+    #             for system in solar_systems.values():
+    #                 for planet in system["planets"]:
+    #                     if planet.id == body.orbit_object_id:
+    #                         system["moons"].append(body)
+    #                         planet_found = True
+    #                         break
+    #                 if planet_found:
+    #                     break
+    #             if not planet_found:
+    #                 print(f"Warning: Planet with ID {body.orbit_object_id} not found for moon {body.id}")
+    #
+    #     # Flatten the solar systems into a list for easier distribution
+    #     solar_system_list = list(solar_systems.values())
+    #
+    #     # Calculate the minimum number of solar systems per player
+    #     min_systems_per_player = len(solar_system_list) // num_players
+    #     extra_systems = len(solar_system_list) % num_players
+    #
+    #     # Distribute solar systems
+    #     current_system_index = 0
+    #     for player_id in range(num_players):
+    #         # Assign the minimum number of systems to each player
+    #         for _ in range(min_systems_per_player):
+    #             self.assign_system_to_player(solar_system_list[current_system_index], player_id)
+    #             current_system_index += 1
+    #
+    #         # Distribute remaining systems
+    #         if extra_systems > 0:
+    #             self.assign_system_to_player(solar_system_list[current_system_index], player_id)
+    #             current_system_index += 1
+    #             extra_systems -= 1
+    #
+    # def assign_system_to_player(self, system, player_id):
+    #     # Assign the sun to the player
+    #     system["sun"].owner = player_id
+    #
+    #     # Assign all planets in the system to the player
+    #     for planet in system["planets"]:
+    #         planet.owner = player_id
+    #
+    #     # Assign all moons in the system to the player
+    #     for moon in system["moons"]:
+    #         moon.owner = player_id
+
+    import random
+
+    # def set_celestial_body_owners(self):
+    #     # Reset players
+    #     player_handler.reset_players()
+    #
+    #     # Get the number of players
+    #     num_players = len(config.app.players)
+    #
+    #     # Collect all celestial bodies
+    #     celestial_bodies = sprite_groups.planets.sprites()  # Assuming this includes suns, planets, and moons
+    #
+    #     # Shuffle the list to ensure random initial distribution
+    #     random.shuffle(celestial_bodies)
+    #
+    #     # Group celestial bodies by their solar systems
+    #     solar_systems = {}
+    #     for body in celestial_bodies:
+    #         if body.type == "sun":
+    #             solar_systems[body.id] = {"sun": body, "planets": [], "moons": []}
+    #         elif body.type == "planet":
+    #             if body.orbit_object_id in solar_systems:
+    #                 solar_systems[body.orbit_object_id]["planets"].append(body)
+    #             else:
+    #                 print(f"Warning: Sun with ID {body.orbit_object_id} not found for planet {body.id}")
+    #         elif body.type == "moon":
+    #             planet_found = False
+    #             for system in solar_systems.values():
+    #                 for planet in system["planets"]:
+    #                     if planet.id == body.orbit_object_id:
+    #                         system["moons"].append(body)
+    #                         planet_found = True
+    #                         break
+    #                 if planet_found:
+    #                     break
+    #             if not planet_found:
+    #                 print(f"Warning: Planet with ID {body.orbit_object_id} not found for moon {body.id}")
+    #
+    #     # Flatten the solar systems into a list for easier distribution
+    #     solar_system_list = list(solar_systems.values())
+    #
+    #     # Calculate the minimum number of solar systems per player
+    #     min_systems_per_player = len(solar_system_list) // num_players
+    #     extra_systems = len(solar_system_list) % num_players
+    #
+    #     # Distribute solar systems in a round-robin fashion
+    #     player_systems = [[] for _ in range(num_players)]
+    #     for i, system in enumerate(solar_system_list):
+    #         player_id = i % num_players
+    #         player_systems[player_id].append(system)
+    #
+    #     # Assign systems to players
+    #     for player_id, systems in enumerate(player_systems):
+    #         for system in systems:
+    #             self.assign_system_to_player(system, player_id)
+    #
+    # def assign_system_to_player(self, system, player_id):
+    #     # Assign the sun to the player
+    #     system["sun"].owner = player_id
+    #
+    #     # Assign all planets in the system to the player
+    #     for planet in system["planets"]:
+    #         planet.owner = player_id
+    #
+    #     # Assign all moons in the system to the player
+    #     for moon in system["moons"]:
+    #         moon.owner = player_id
+
+    # def set_celestial_body_owners(self):
+    #     # Reset players
+    #     player_handler.reset_players()
+    #
+    #     # Get the number of players
+    #     num_players = len(config.app.players)
+    #
+    #     # Collect all celestial bodies
+    #     celestial_bodies = sprite_groups.planets.sprites()  # Assuming this includes suns, planets, and moons
+    #
+    #     # Shuffle the list to ensure random initial distribution
+    #     random.shuffle(celestial_bodies)
+    #
+    #     # Group celestial bodies by their solar systems
+    #     solar_systems = {}
+    #     for body in celestial_bodies:
+    #         if body.type == "sun":
+    #             solar_systems[body.id] = {"sun": body, "planets": [], "moons": []}
+    #         elif body.type == "planet":
+    #             if body.orbit_object_id in solar_systems:
+    #                 solar_systems[body.orbit_object_id]["planets"].append(body)
+    #             else:
+    #                 print(f"Warning: Sun with ID {body.orbit_object_id} not found for planet {body.id}")
+    #         elif body.type == "moon":
+    #             planet_found = False
+    #             for system in solar_systems.values():
+    #                 for planet in system["planets"]:
+    #                     if planet.id == body.orbit_object_id:
+    #                         system["moons"].append(body)
+    #                         planet_found = True
+    #                         break
+    #                 if planet_found:
+    #                     break
+    #             if not planet_found:
+    #                 print(f"Warning: Planet with ID {body.orbit_object_id} not found for moon {body.id}")
+    #
+    #     # Flatten the solar systems into a list for easier distribution
+    #     solar_system_list = list(solar_systems.values())
+    #
+    #     # Calculate the minimum number of solar systems per player
+    #     min_systems_per_player = len(solar_system_list) // num_players
+    #     extra_systems = len(solar_system_list) % num_players
+    #
+    #     # Distribute solar systems
+    #     player_systems = [[] for _ in range(num_players)]
+    #     for i, system in enumerate(solar_system_list):
+    #         player_id = i % num_players
+    #         player_systems[player_id].append(system)
+    #
+    #         # Ensure each player gets at least the minimum number of systems
+    #         if len(player_systems[player_id]) >= min_systems_per_player:
+    #             continue
+    #
+    #     # Assign extra systems to players in a round-robin fashion
+    #     for i in range(extra_systems):
+    #         player_systems[i].append(solar_system_list[-(i + 1)])
+    #
+    #     # Assign systems to players
+    #     for player_id, systems in enumerate(player_systems):
+    #         for system in systems:
+    #             self.assign_system_to_player(system, player_id)
+    #
+    # def assign_system_to_player(self, system, player_id):
+    #     # Assign the sun to the player
+    #     system["sun"].owner = player_id
+    #
+    #     # Assign all planets in the system to the player
+    #     for planet in system["planets"]:
+    #         planet.owner = player_id
+    #
+    #     # Assign all moons in the system to the player
+    #     for moon in system["moons"]:
+    #         moon.owner = player_id
+
+    # def set_celestial_body_owners(self):
+    #     # Reset players
+    #     player_handler.reset_players()
+    #
+    #     # Get the number of players
+    #     num_players = len(config.app.players)
+    #
+    #     # Collect all celestial bodies
+    #     celestial_bodies = sprite_groups.planets.sprites()  # Assuming this includes suns, planets, and moons
+    #
+    #     # Shuffle the list to ensure random initial distribution
+    #     random.shuffle(celestial_bodies)
+    #
+    #     # Get the population density from configuration
+    #     population_density = int(self.data["globals"]["population_density"])
+    #
+    #     # Group celestial bodies by their solar systems
+    #     solar_systems = {}
+    #     for body in celestial_bodies:
+    #         if body.type == "sun":
+    #             solar_systems[body.id] = {"sun": body, "planets": [], "moons": []}
+    #         elif body.type == "planet":
+    #             if body.orbit_object_id in solar_systems:
+    #                 solar_systems[body.orbit_object_id]["planets"].append(body)
+    #             else:
+    #                 print(f"Warning: Sun with ID {body.orbit_object_id} not found for planet {body.id}")
+    #         elif body.type == "moon":
+    #             planet_found = False
+    #             for system in solar_systems.values():
+    #                 for planet in system["planets"]:
+    #                     if planet.id == body.orbit_object_id:
+    #                         system["moons"].append(body)
+    #                         planet_found = True
+    #                         break
+    #                 if planet_found:
+    #                     break
+    #             if not planet_found:
+    #                 print(f"Warning: Planet with ID {body.orbit_object_id} not found for moon {body.id}")
+    #
+    #     # Flatten the solar systems into a list for easier distribution
+    #     solar_system_list = list(solar_systems.values())
+    #
+    #     # Calculate the minimum number of solar systems per player
+    #     min_systems_per_player = len(solar_system_list) // num_players
+    #     extra_systems = len(solar_system_list) % num_players
+    #
+    #     # Distribute solar systems
+    #     player_systems = [[] for _ in range(num_players)]
+    #     for i, system in enumerate(solar_system_list):
+    #         player_id = i % num_players
+    #         player_systems[player_id].append(system)
+    #
+    #         # Ensure each player gets at least the minimum number of systems
+    #         if len(player_systems[player_id]) >= min_systems_per_player:
+    #             continue
+    #
+    #     # Assign extra systems to players in a round-robin fashion
+    #     for i in range(extra_systems):
+    #         player_systems[i].append(solar_system_list[-(i + 1)])
+    #
+    #     # Assign systems to players
+    #     for player_id, systems in enumerate(player_systems):
+    #         for system in systems:
+    #             self.assign_system_to_player(system, player_id, population_density)
+    #
+    # def assign_system_to_player(self, system, player_id, population_density):
+    #     # Assign the sun to the player
+    #     system["sun"].owner = player_id
+    #
+    #     # Assign planets in the system to the player based on population density
+    #     for planet in system["planets"]:
+    #         r = random.randint(0, 100)
+    #         if r < population_density:
+    #             planet.owner = player_id
+    #         else:
+    #             planet.owner = -1
+    #
+    #     # Assign moons in the system to the player based on their planet's owner
+    #     for moon in system["moons"]:
+    #         planet = next((p for p in system["planets"] if p.id == moon.orbit_object_id), None)
+    #         if planet:
+    #             moon.owner = planet.owner
+    #         else:
+    #             print(f"Warning: Planet with ID {moon.orbit_object_id} not found for moon {moon.id}")
+
+
+    def set_celestial_body_owners(self):
+        # Reset players
+        player_handler.reset_players()
+
+        # Get the number of players
+        num_players = len(config.app.players)
+
+        # Collect all celestial bodies
+        celestial_bodies = sprite_groups.planets.sprites()  # Assuming this includes suns, planets, and moons
+
+        # Shuffle the list to ensure random initial distribution
+        random.shuffle(celestial_bodies)
+
+        # Get the population density from configuration
+        population_density = int(self.data["globals"]["population_density"])
+
+        # Group celestial bodies by their solar systems
+        solar_systems = {}
+        for body in celestial_bodies:
+            if body.type == "sun":
+                solar_systems[body.id] = {"sun": body, "planets": [], "moons": []}
+            elif body.type == "planet":
+                if body.orbit_object_id in solar_systems:
+                    solar_systems[body.orbit_object_id]["planets"].append(body)
+                else:
+                    print(f"Warning: Sun with ID {body.orbit_object_id} not found for planet {body.id}")
+            elif body.type == "moon":
+                planet_found = False
+                for system in solar_systems.values():
+                    for planet in system["planets"]:
+                        if planet.id == body.orbit_object_id:
+                            system["moons"].append(body)
+                            planet_found = True
+                            break
+                    if planet_found:
+                        break
+                if not planet_found:
+                    print(f"Warning: Planet with ID {body.orbit_object_id} not found for moon {body.id}")
+
+        # Flatten the solar systems into a list for easier distribution
+        solar_system_list = list(solar_systems.values())
+
+        # Calculate the minimum number of solar systems per player
+        min_systems_per_player = len(solar_system_list) // num_players
+        extra_systems = len(solar_system_list) % num_players
+
+        # Distribute solar systems
+        player_systems = [[] for _ in range(num_players)]
+        for i, system in enumerate(solar_system_list):
+            player_id = i % num_players
+            player_systems[player_id].append(system)
+
+            # Ensure each player gets at least the minimum number of systems
+            if len(player_systems[player_id]) >= min_systems_per_player:
+                continue
+
+        # Assign extra systems to players in a round-robin fashion
+        for i in range(extra_systems):
+            player_systems[i].append(solar_system_list[-(i + 1)])
+
+        # Assign systems to players
+        for player_id, systems in enumerate(player_systems):
+            for system in systems:
+                self.assign_system_to_player(system, player_id, population_density)
+
+    def assign_system_to_player(self, system, player_id, population_density):
+        # Assign the sun to the player
+        system["sun"].owner = player_id
+
+        # Assign planets in the system to the player based on population density
+        for planet in system["planets"]:
+            r = random.randint(0, 100)
+            if r < population_density:
+                planet.owner = player_id
+            else:
+                planet.owner = -1
+
+        # Assign moons in the system to the player based on their planet's owner
+        for moon in system["moons"]:
+            planet = next((p for p in system["planets"] if p.id == moon.orbit_object_id), None)
+            if planet:
+                moon.owner = planet.owner
+            else:
+                print(f"Warning: Planet with ID {moon.orbit_object_id} not found for moon {moon.id}")
+
+    import random
+

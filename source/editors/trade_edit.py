@@ -19,7 +19,7 @@ class TradeEdit(EditorBase):
         self.trader = None
 
         self.image_size = 80
-        self.player_image = self.scale_image("spaceship_30x30.png", (60, 60))
+        self.player_image = self.scale_image("spaceship.png", (60, 60))
         self.trader_image = self.scale_image("ufo_60x21.png", (60, 60))
         self.arrow_image = self.flip_and_scale_image("arrow-left.png", (60, 60))
 

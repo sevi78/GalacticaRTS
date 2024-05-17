@@ -51,9 +51,10 @@ class LevelEdit(EditorBase):
         self.collectable_item_amount_list = [_ for _ in range(0, 101, 1)]
         self.universe_density_list = [_ for _ in range(0, 110, 10)]
         self.population_density_list = [_ for _ in range(0, 105, 5)]
+        self.planet_orbit_speed_list = [_ for _ in range(10, 110, 10)]
         self.lists = ["level_list", "planets_list", "suns_list", "moons_list", "width_list", "height_list",
                       "collectable_item_amount_list", "universe_density_list", "central_compression_list",
-                      "population_density_list"]
+                      "population_density_list", "planet_orbit_speed_list"]
 
         # temp dict
         self.last_created = {}
@@ -234,7 +235,7 @@ class LevelEdit(EditorBase):
         # Desired order of keys
         desired_order = ["level", "level_success", "width", "height", "universe_density", "central_compression",
                          "goal", "suns", "planets", "moons", "collectable_item_amount", "spaceship", "spacehunter",
-                         "cargoloader", "population_density"]
+                         "cargoloader", "population_density", "planet_orbit_speed"]
 
         # for key, value in self.level_handler.data["globals"].items():
         #     if not key in desired_order:
@@ -284,6 +285,10 @@ class LevelEdit(EditorBase):
         if key == "central_compression":
             universe_factory.central_compression = value
 
+        if key == "planet_orbit_speed":
+            for planet in sprite_groups.planets.sprites():
+                planet.orbit_speed = planet.orbit_speed_raw / 100 * self.level_handler.data["globals"][key]
+
         # update scene: to make sure changes got displayed
         self.update_scene(key)
 
@@ -317,7 +322,7 @@ class LevelEdit(EditorBase):
                     self.level_handler.data["globals"]["width"], border)
             world_y = self.level_handler.level_dict_generator.get_random_position(
                     self.level_handler.data["globals"]["height"], border)
-            name = key + "_30x30.png"
+            name = key
             data = self.level_handler.data_default
             weapons = {}
 
@@ -429,7 +434,7 @@ class LevelEdit(EditorBase):
 
         # used for planets
         selected_planet = config.app.selected_planet
-        self.delete_planet(selected_planet)
+        planet_factory.delete_planet(selected_planet)
 
     def listen(self, events):
         """show or hide, navigate to planet on selection"""

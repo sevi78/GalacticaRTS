@@ -9,6 +9,12 @@ from source.handlers.pan_zoom_sprite_handler import sprite_groups
 RANDOM_FACTOR = 50
 MIN_FOOD_PRODUCTION = 2
 DELETE_BUILDING_THRESHOLD = 500
+SHIP_MAXIMUM = 15
+SPACESHIP_MAXIMUM = 5
+SPACEHUNTER_MAXXIMUM = 5
+CARGO_LOADER_MAXIMUM = 3
+SPACESTATION_MAXIMUM = 2
+
 
 
 class AutoEconomyHandler(AutoEconomyHandlerSetters):
@@ -54,13 +60,11 @@ class AutoEconomyHandler(AutoEconomyHandlerSetters):
             None
         """
 
-
         # choose the first building to delete from given category
         # if len(self.all_buildings) >= slots:
         all_buildings = [i for i in [item for sublist in self.all_buildings for item in sublist]]
         for i in all_buildings:
             if i in self.buildings_to_delete:
-
                 # delete building
                 for p in self.planets:
                     if i in p.buildings:
@@ -209,8 +213,24 @@ class AutoEconomyHandler(AutoEconomyHandlerSetters):
 
         if space_harbour_planet:
             ships = self.player.get_all_ships()
-            if not ships:
-                building_factory.build("spaceship", space_harbour_planet[0])
+            if not len(ships) > SHIP_MAXIMUM:
+                spaceships = len([i for i in ships if i.name == "spaceship"])
+                spacehunters = len([i for i in ships if i.name == "spacehunter"])
+                cargoloaders = len([i for i in ships if i.name == "cargoloader"])
+                spacestations = len([i for i in ships if i.name == "spacestation"])
+
+
+                if spaceships < SPACESHIP_MAXIMUM:
+                    building_factory.build("spaceship", space_harbour_planet[0])
+                elif spacehunters < SPACEHUNTER_MAXXIMUM:
+                    building_factory.build("spacehunter", space_harbour_planet[0])
+                elif cargoloaders < CARGO_LOADER_MAXIMUM:
+                    building_factory.build("cargoloader", space_harbour_planet[0])
+                elif spacestations < SPACESTATION_MAXIMUM:
+                    building_factory.build("spacestation", space_harbour_planet[0])
+
+
+
 
     def maximize_population_grow(self):
         # check if planet is able to grow population
@@ -284,11 +304,8 @@ class AutoEconomyHandler(AutoEconomyHandlerSetters):
                 most_consuming_building = building_factory.get_most_consuming_building(self.all_buildings, i)
                 for p in self.planets:
                     if most_consuming_building in p.buildings:
-                        building_factory.destroy_building(most_consuming_building,p)
-                        print (f"handle_infinte_loops: \nplayer: {self.player.name}\nzero_production:{zero_production}\ndestroyed building:{most_consuming_building} on {p}")
-
-
-
+                        building_factory.destroy_building(most_consuming_building, p)
+                        print(f"handle_infinte_loops: \nplayer: {self.player.name}\nzero_production:{zero_production}\ndestroyed building:{most_consuming_building} on {p}")
 
     def build(self):
         """
@@ -323,6 +340,10 @@ class AutoEconomyHandler(AutoEconomyHandlerSetters):
             self.set_building_widget_list()
             self.set_building_cue_max()
 
+            # build space harbour
+            self.build_space_harbour()
+            self.build_ship()
+
             # check if any building is building cue
             if len(self.building_widget_list) >= self.building_cue_max:
                 return
@@ -333,10 +354,6 @@ class AutoEconomyHandler(AutoEconomyHandlerSetters):
             self.maximize_population_grow()
             # build population buildings if needed
             self.build_population_buildings()
-
-            # build space harbour
-            self.build_space_harbour()
-            self.build_ship()
 
             # find fitting building and build it
             self.set_fit_building()
@@ -385,5 +402,3 @@ class AutoEconomyHandler(AutoEconomyHandlerSetters):
         # print (config.app.deal_manager.get_deals_from_player(self.player))
 
         pass
-
-

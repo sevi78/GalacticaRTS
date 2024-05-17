@@ -89,7 +89,6 @@ class EditorBase(WidgetBase):
         self.text_spacing = 20
         self.frame_color = colors.ui_dark
         self.frame = pygame.surface.Surface((self.world_width, self.world_height))
-        # self.frame.set_alpha(0)
         self.rect = self.frame.get_rect()
         self.rect.x, self.rect.y = self.world_x, self.world_y
 
@@ -339,7 +338,6 @@ class EditorBase(WidgetBase):
 
                 if hasattr(widget, "set_center"):
                     widget.set_center()
-            # editor.reposition( self.world_x,  self.world_y)
 
         # apply the difference to each widget
         for widget in self.widgets:
@@ -362,13 +360,18 @@ class EditorBase(WidgetBase):
             if hasattr(widget, "set_center"):
                 widget.set_center()
 
-    def draw_frame(self, **kwargs):  # old, working but weird, because the frame rect is not set correctly
+    def draw_frame(self, **kwargs):
+        # get corner radius and thickness
         corner_radius = kwargs.get("corner_radius", config.ui_rounded_corner_radius_big)
         corner_thickness = kwargs.get("corner_thickness", config.ui_rounded_corner_big_thickness)
 
-        height = self.max_height
-        self.frame = pygame.transform.scale(self.frame, (self.get_screen_width(), height))
+        # scale frame
+        self.frame = pygame.transform.scale(self.frame, (self.get_screen_width(), self.max_height))
 
-        rect = (self.world_x, self.world_y + TOP_SPACING, self.frame.get_rect().width, self.frame.get_rect().height)
-        draw_transparent_rounded_rect(self.win, (0, 0, 0), rect, corner_radius, config.ui_panel_alpha)
-        pygame.draw.rect(self.win, self.frame_color, rect, corner_thickness, corner_radius)
+        # set rect
+        self.rect = pygame.Rect((
+            self.world_x, self.world_y + TOP_SPACING, self.frame.get_rect().width, self.frame.get_rect().height))
+
+        # draw rounded rect
+        draw_transparent_rounded_rect(self.win, (0, 0, 0), self.rect, corner_radius, config.ui_panel_alpha)
+        pygame.draw.rect(self.win, self.frame_color, self.rect, corner_thickness, corner_radius)

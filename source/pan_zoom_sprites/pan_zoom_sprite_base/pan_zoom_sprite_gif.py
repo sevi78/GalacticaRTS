@@ -147,6 +147,9 @@ class PanZoomSprite(pygame.sprite.Sprite, VisibilityHandler, GameObjectDebug):
 
     @world_position.setter
     def world_position(self, position):
+        """
+        never set this anywhere in the code!!! will destroy the rotation of the ships !!!!
+        """
         self.world_x, self.world_y = position
         self.screen_position = self.pan_zoom.world_2_screen(self.world_x, self.world_y)
 

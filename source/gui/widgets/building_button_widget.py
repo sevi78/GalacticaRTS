@@ -154,7 +154,8 @@ class BuildingButtonWidget(WidgetBase):
                 text=name,
                 textColours=(0, 0, 0),
                 font_size=0,
-                onClick=on_click)
+                onClick=on_click,
+                info_panel_alpha=kwargs.get("info_panel_alpha", 255))
 
         return button
 
@@ -165,11 +166,26 @@ class BuildingButtonWidget(WidgetBase):
         # resource buttons
         for resource in resource_categories:
             y = self.rect.y
-            resource_button = ImageButton(win=self.win, x=x, y=y, width=ICON_SIZE, height=ICON_SIZE, isSubWidget=False, parent=self,
-                    image=pygame.transform.scale(get_image(resource + '_25x25.png'), (
-                        ICON_SIZE, ICON_SIZE)), tooltip=resource,
-                    frame_color=self.frame_color, moveable=False, include_text=True, layer=self.layer, key=resource,
-                    info_text=None, name=resource, textColours=(0, 0, 0), font_size=0)
+            resource_button = ImageButton(
+                    win=self.win,
+                    x=x,
+                    y=y,
+                    width=ICON_SIZE,
+                    height=ICON_SIZE,
+                    isSubWidget=False,
+                    parent=self,
+                    image=pygame.transform.scale(get_image(resource + '_25x25.png'),
+                            (ICON_SIZE, ICON_SIZE)),
+                    tooltip=resource,
+                    frame_color=self.frame_color,
+                    moveable=False,
+                    include_text=True,
+                    layer=self.layer,
+                    key=resource,
+                    info_text=None,
+                    name=resource,
+                    textColours=(0, 0, 0),
+                    font_size=0)
 
             self.resource_buttons.append(resource_button)
             self.buttons[resource] = resource_button
@@ -187,7 +203,8 @@ class BuildingButtonWidget(WidgetBase):
                         tooltip_generator.create_building_tooltip(building),
                         resource,
                         info_text,
-                        building
+                        building,
+                        info_panel_alpha=110
                         )
 
                 resource_button.children.append(building_button)

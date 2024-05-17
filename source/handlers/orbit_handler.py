@@ -66,7 +66,7 @@ def set_orbit_object(self):
 #         print("set_orbit_distance: no obj:", self.name, obj.name)
 
 
-def orbit(obj, orbit_obj, orbit_speed, direction):
+def orbit(obj, orbit_obj, orbit_speed, direction):# used for planets
     if not orbit_obj:
         return
 
@@ -103,6 +103,9 @@ def orbit(obj, orbit_obj, orbit_speed, direction):
 def orbit_ship(obj, orbit_obj, orbit_speed, direction):
     if not orbit_obj:
         return
+
+    if not obj.state_engine.state == "orbiting":
+        obj.state_engine.set_state("orbiting")
 
     if hasattr(obj, "enemy"):
         orbit_speed = orbit_speed / 5

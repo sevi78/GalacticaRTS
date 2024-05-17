@@ -59,7 +59,7 @@ class DebugEdit(EditorBase):
         checkbox_ships = Checkbox(
                 self.win, self.world_x - self.spacing_x + x + BUTTON_SIZE * 3, y, 30, 30, isSubWidget=False,
                 color=self.frame_color,
-                key="ships", image_name="spaceship_30x30.png", tooltip="debug spaceships", onClick=lambda: print("OKOKOK"), layer=9, parent=self)
+                key="ships", image_name="spaceship.png", tooltip="debug spaceships", onClick=lambda: print("OKOKOK"), layer=9, parent=self)
         x += BUTTON_SIZE * 1.5
         self.checkboxes.append(checkbox_ships)
         self.widgets.append(checkbox_ships)

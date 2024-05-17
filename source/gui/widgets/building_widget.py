@@ -250,16 +250,20 @@ class BuildingWidget(WidgetBase):
 
         # if it is a ship, no calculation has to be done, return : name, x, y, parent, weapons, **kwargs):
         if self.name in self.ship_names:
-            x, y = pan_zoom_handler.screen_2_world(self.receiver.screen_x, self.receiver.screen_y)
+            x, y = pan_zoom_handler.screen_2_world(self.receiver.rect.centerx, self.receiver.rect.centery)
+
+            # set autopilot true for all players except human player (0)
+            autopilot = self.receiver.owner != 0
             ship = config.app.ship_factory.create_ship(
                     self.name,
                     x,
                     y,
                     config.app,
                     {},
-                    data={"owner": self.receiver.owner})
+                    data={"owner": self.receiver.owner, "autopilot": autopilot})
 
             set_orbit_object_id(ship, self.receiver.id)
+
             return
 
         if self.name in planet_defence_upgrades:

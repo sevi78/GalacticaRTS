@@ -1,6 +1,7 @@
 from source.configuration.game_config import config
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
+from source.pan_zoom_sprites.pan_zoom_ship_classes.pan_zoom_ship import PanZoomShip
 
 
 def navigate_to(obj, **kwargs):  # should not be used !! use navigate_to_position, use for planets
@@ -53,6 +54,7 @@ def navigate_to_game_object_by_index(self):
     """
     use obj.world_x, obj.world_y  as input for navigation
     """
+
     if self.offset_index < len(self.widgets):
         obj = self.widgets[self.offset_index].obj
         if obj:
@@ -61,7 +63,7 @@ def navigate_to_game_object_by_index(self):
                 # select
                 config.app.set_selected_planet(obj)
 
-            if obj.__class__.__name__ == 'PanZoomShip':
+            if isinstance(obj, PanZoomShip):
                 navigate_to_position(obj.world_x, obj.world_y)
                 # select
                 config.app.ship = obj

@@ -30,10 +30,15 @@ class DiplpmacyHandler:
         self.player_index = player_index
         self.enemy_index = enemy_index
 
-        if self.is_in_peace(self.enemy_index, self.player_index):
-            diplomacy_edit.text = f"you are in peace with {config.app.players[self.enemy_index].name}."
+        if self.player_index != 0:
+            name_text = f"{config.app.players[self.player_index].name} is"
         else:
-            diplomacy_edit.text = f"You are in war with {config.app.players[self.enemy_index].name}"
+            name_text = "You are"
+
+        if self.is_in_peace(self.enemy_index, self.player_index):
+            diplomacy_edit.text = f"{name_text} in peace with {config.app.players[self.enemy_index].name}"
+        else:
+            diplomacy_edit.text = f"{name_text} in war with {config.app.players[self.enemy_index].name}"
 
         diplomacy_edit.set_enemy_image()
 

@@ -21,7 +21,7 @@ class PanZoomTargetObject(PanZoomSprite):
                 self.win,
                 colors.frame_color,
                 (400, 300),
-                60,
+                40,
                 0,
                 8,
                 1,
@@ -36,7 +36,7 @@ class PanZoomTargetObject(PanZoomSprite):
         self.hide()
 
         # only draw if the target is set
-        if self.parent.target:
+        if self.parent.target and self.parent.selected:
             self.target_cross.set_center_distance(self.parent.target.rect.width)
             self.target_cross.update(self.parent.target.rect.center)
             self.target_cross.draw()

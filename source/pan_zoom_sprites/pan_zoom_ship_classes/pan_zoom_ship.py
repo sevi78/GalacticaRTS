@@ -190,8 +190,8 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
                 self.parent.box_selection.selectable_objects.remove(self)
         except:
             pass
-
-        WidgetHandler.remove_widget(self.progress_bar)
+        if hasattr(self, "progress_bar"):
+            WidgetHandler.remove_widget(self.progress_bar)
 
         self.progress_bar = None
         self.kill()
@@ -221,7 +221,7 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
                 self.orbit_object = [i for i in sprite_groups.ufos.sprites() if
                                      i.id == self.orbit_object_id and i.name == self.orbit_object_name][0]
 
-        self.orbit_radius = 100 + self.id * 30
+        self.orbit_radius = 100 + (self.id * 30)
 
     def load_cargo(self):
         if self.target.collected:
@@ -359,6 +359,7 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
             else:
                 # self.target = self.pathfinding_manager.path[1].owner
                 self.pathfinding_manager.move_to_next_node()
+
             self.set_energy_reloader(target)
         else:
             self.target = self.target_object
@@ -371,6 +372,7 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         self.select(False)
 
     def move_towards_target(self):
+        self.state_engine.set_state("moving")
         direction = self.target_position - Vector2(self.world_x, self.world_y)
         distance = direction.length() * self.get_zoom()
         speed = self.set_speed()
@@ -392,9 +394,9 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         if time_steps:
             self.world_x += displacement.x / time_steps
             self.world_y += displacement.y / time_steps
-            self.set_world_position((self.world_x, self.world_y))
+            # self.set_world_position((self.world_x, self.world_y))
 
-        self.reach_target(distance/self.get_zoom())
+        self.reach_target(distance / self.get_zoom())
 
     def listen(self):
         config.app.tooltip_instance.reset_tooltip(self)
@@ -435,23 +437,32 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
                 # not mouse over object
                 self.clicked = False
                 if mouse_state == MouseState.LEFT_CLICK:
-                    if not hasattr(self.target, "property"):
-                        if not self.moving:
-                            self.target = None
-
-                    if config.app.ship == self:
-                        config.app.ship = None
+                    self.reset_target()
 
                 if mouse_state == MouseState.RIGHT_CLICK:
-                    if self.selected:
-                        self.set_target()
-                        self.orbit_object = None
-                        hit_object = sprite_groups.get_hit_object()
-                        if hit_object:
-                            self.set_energy_reloader(hit_object)
+                    self.activate_traveling()
 
-                        # follow path
-                        self.pathfinding_manager.follow_path(hit_object)
+    def activate_traveling(self):
+        if self.selected:
+            self.set_target()
+            self.orbit_object = None
+            hit_object = sprite_groups.get_hit_object()
+            if hit_object:
+                self.set_energy_reloader(hit_object)
+
+            # follow path
+            if hasattr(self, "pathfinding_manager"):
+                self.pathfinding_manager.follow_path(hit_object)
+
+    def reset_target(self):
+        if not hasattr(self.target, "property"):
+            if not self.moving:
+                self.target = None
+        self.deselect()
+
+    def deselect(self):
+        if config.app.ship == self:
+            config.app.ship = None
 
     def update(self):
         # update pathfinder
@@ -480,12 +491,13 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
                 scope.draw_range(self)
 
         self.set_distances()
+        # pygame.draw.circle(self.win, self.frame_color, self.rect.center, self.attack_distance, 1)
 
         # also setting the info text is questionable every frame
         self.set_info_text()
 
-        # show/ hide  target object
-        if self.moving:
+        # show/ hide target object
+        if self.state_engine.state == "moving":
             if self.target == self.target_object:
                 self.target_object.show()
         else:
@@ -500,7 +512,7 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
             self.progress_bar.hide()
 
         # draw selection and connections
-        if self.selected:
+        if self.selected and self == config.app.ship:
             self.draw_selection()
             if self.orbit_object:
                 self.draw_connections(self.orbit_object)
@@ -512,7 +524,7 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
             self.draw_selection()
 
         # travel
-        if self.target:
+        if self.target and self == config.app.ship:
             # ??? agan setting drawing the connections?
             self.draw_connections(self.target)
 
@@ -521,35 +533,17 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
             # reload ship
             self.reload_ship()
 
-        # move stopp reset
-        if self.energy > 0:
-            self.move_stop = 0
-
-        # move stopp
-        if self.energy <= 0:
-            self.move_stop = 1
-            sounds.stop_sound(self.sound_channel)
+        self.handle_move_stop()
 
         # reach target
         if self.target_reached:
-            self.moving = False
+            self.state_engine.set_state("sleeping")
 
         # attack enemies
         if self.enemy:
             orbit_ship(self, self.enemy, self.orbit_speed, self.orbit_direction)
-            # if self.enemy.property in ["ship", "ufo"]:
             self.follow_target(self.enemy)
             self.weapon_handler.attack(self.enemy)
-
-            # if self.enemy.attitude < 50:
-            #     self.weapon_handler.attack(self.enemy)
-            # else:
-            #     config.app.trade_edit.setup_trader(self, self.enemy)
-            #     config.app.trade_edit.set_visible()
-            #     self.enemy = None
-            #     # self.target = None
-            #     # self.moving = False
-            #     print("here to setup trader")
 
         # orbit around objects
         if self.orbit_object:
@@ -561,12 +555,7 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
             self.reload_ship()
 
         # autopilot
-        if self.autopilot:
-            self.autopilot_handler.update()
-
-        if config.enable_autopilot:
-            if not self.autopilot:
-                self.autopilot = config.enable_autopilot
+        self.handle_autopilot()
 
         # consume energy for traveling
         self.consume_energy_if_traveling()
@@ -578,6 +567,22 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         # set previous position, used for energy consumption calculation
         # make shure this is the last task, otherwise it would work(probably)
         self.previous_position = (self.world_x, self.world_y)
+
+    def handle_autopilot(self):
+        if self.autopilot:
+            self.autopilot_handler.update()
+        if config.enable_autopilot:
+            if not self.autopilot:
+                self.autopilot = config.enable_autopilot
+
+    def handle_move_stop(self):
+        # move stopp reset
+        if self.energy > 0:
+            self.move_stop = 0
+        # move stopp
+        if self.energy <= 0:
+            self.move_stop = 1
+            sounds.stop_sound(self.sound_channel)
 
     def draw(self):  # unused
         print("drawing ---")

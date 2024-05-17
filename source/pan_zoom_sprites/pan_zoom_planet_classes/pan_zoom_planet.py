@@ -70,6 +70,7 @@ class PanZoomPlanet(PanZoomSprite, VisibilityHandler, PanZoomPlanetOverviewButto
         self.just_explored = False
         self.property = "planet"
         self.moveable = kwargs.get("moveable", False)
+        self.orbit_speed_raw = kwargs.get("orbit_speed")
         self.orbit_speed = kwargs.get("orbit_speed")
         self.orbit_object = None
         self.orbit_object_id = kwargs.get("orbit_object_id")
@@ -217,8 +218,9 @@ class PanZoomPlanet(PanZoomSprite, VisibilityHandler, PanZoomPlanetOverviewButto
             x, y = mouse_handler.get_mouse_pos()
 
             if self.collide_rect.collidepoint(x, y):
-                # if mouse_handler.double_clicks == 1:
-                #     config.app.diplomacy_edit.open(self.owner, 0)
+                if mouse_handler.double_clicks == 1:
+                    config.app.diplomacy_edit.open(self.owner, 0)
+
                 if mouse_state == MouseState.RIGHT_CLICK:
                     self.parent.set_selected_planet(self)
 

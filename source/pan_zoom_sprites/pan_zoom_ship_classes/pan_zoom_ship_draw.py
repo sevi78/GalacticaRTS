@@ -61,13 +61,20 @@ class PanZoomShipDraw:
         event_text.set_text("reloading spaceship: --- needs a lot of energy!", obj=self)
 
     def draw_selection(self):
-        """ this handles how the ship is displayed on screen"""
+        """ this handles how the ship is displayed on screen:
+
+            as a circle either in player color or in self.frame_color based on config.show_player_colors == True/False
+        """
         if config.show_player_colors:
             pygame.draw.circle(self.win, self.player_color, self.rect.center, self.get_screen_width(), int(6 * self.get_zoom()))
         else:
             pygame.draw.circle(self.win, self.frame_color, self.rect.center, self.get_screen_width(), int(6 * self.get_zoom()))
 
     def draw_connections(self, target):
+        """
+        this calls draw_arrows_on_line_from_start_to_end
+        """
+
         draw_arrows_on_line_from_start_to_end(
                 surf=self.win,
                 color=self.frame_color,

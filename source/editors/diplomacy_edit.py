@@ -1,3 +1,5 @@
+import time
+
 import pygame
 
 from source.configuration.game_config import config
@@ -26,6 +28,7 @@ class DiplomacyEdit(EditorBase):
         self.create_buttons()
 
         # hide initially
+        self.opening_time = time.time()
         self.hide()
 
     def create_buttons(self) -> None:
@@ -86,8 +89,9 @@ class DiplomacyEdit(EditorBase):
             return
 
         diplomacy_handler.set_enemy_and_player(enemy_index, player_index)
-        self.set_visible()
-        # self.opening_time = time.time()
+        # self.set_visible()
+        self.show()
+        self.opening_time = time.time()
 
     def listen(self, events):
         if not self._hidden and not self._disabled:
@@ -95,13 +99,14 @@ class DiplomacyEdit(EditorBase):
             self.drag(events)
 
             # hide on right click, because on left click its not working properly, always hides after opening directly
-            if pygame.mouse.get_pressed()[2]:
-                self.hide()
+            # if pygame.mouse.get_pressed()[2]:
+            #     self.hide()
+            print(self.rect.collidepoint(pygame.mouse.get_pos()))
+            if not self.rect.collidepoint(pygame.mouse.get_pos()):
 
-            # if not self.on_hover:
-            #     if pygame.mouse.get_pressed()[0]:
-            #         if self.opening_time < time.time() - 0.3:
-            #             self.hide()
+                if pygame.mouse.get_pressed()[0]:
+                    if self.opening_time < time.time() - 0.3:
+                        self.hide()
 
     def draw_enemy_image(self):
         if self.enemy_image:

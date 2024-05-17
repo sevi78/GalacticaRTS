@@ -1,4 +1,6 @@
 import math
+
+import pygame.draw
 from pygame import Vector2
 
 from source.configuration.game_config import config
@@ -54,6 +56,7 @@ class PanZoomShipMoving:
         self._moving = value
         if value == True:
             self.orbiting = False
+            self.state_engine.set_state("moving")
 
         # self.state_engine.set_state()
 
@@ -67,7 +70,8 @@ class PanZoomShipMoving:
 
         if not hasattr(self, "state_engine"):
             return
-        # self.state_engine.set_state()
+        if value:
+            self.state_engine.set_state("move_stop")
 
     def set_speed(self):
         # adjust speed if no energy
@@ -78,16 +82,17 @@ class PanZoomShipMoving:
         return speed
 
     def set_attack_distance(self):
-        self.attack_distance = self.attack_distance_raw# * self.get_zoom()
+        self.attack_distance = self.attack_distance_raw  # * self.get_zoom()
+
 
     def set_desired_orbit_radius(self):
-        self.desired_orbit_radius = self.desired_orbit_radius_raw# * self.get_zoom()
+        self.desired_orbit_radius = self.desired_orbit_radius_raw  # * self.get_zoom()
 
     def set_target_object_reset_distance(self):
-        self.target_object_reset_distance = self.target_object_reset_distance_raw# * self.get_zoom()
+        self.target_object_reset_distance = self.target_object_reset_distance_raw  # * self.get_zoom()
 
     def set_reload_max_distance(self):
-        self.reload_max_distance = self.reload_max_distance_raw# * self.get_zoom()
+        self.reload_max_distance = self.reload_max_distance_raw * self.get_zoom()
 
     def set_distances(self):
         self.set_attack_distance()
@@ -218,9 +223,9 @@ class PanZoomShipMoving:
             sounds.stop_sound(self.sound_channel)
             self.hum_playing = False
 
-            # open diplomacy edit to make war or peace
-            if self.target.owner != self.owner:
-                config.app.diplomacy_edit.open(self.target.owner, self.owner)
+            # # open diplomacy edit to make war or peace
+            # if self.target.owner != self.owner:
+            #     config.app.diplomacy_edit.open(self.target.owner, self.owner)
 
             # attack if hostile planet
             if not diplomacy_handler.is_in_peace(self.target.owner, config.player):
@@ -231,6 +236,7 @@ class PanZoomShipMoving:
             self.moving = False
 
     def follow_target(self, obj):
+        self.state_engine.set_state("attacking")
         target_position = Vector2(obj.world_x, obj.world_y)
         current_position = Vector2(self.world_x, self.world_y)
 
@@ -270,6 +276,6 @@ class PanZoomShipMoving:
         self.energy -= traveled_distance * self.energy_use
         self.set_experience(traveled_distance * TRAVEL_EXPERIENCE_FACTOR)
 
-    def get_max_travel_range(self)->float:
+    def get_max_travel_range(self) -> float:
         """ returns the max distance in world coordinates the ship can move based on its energy """
         return self.energy / self.energy_use

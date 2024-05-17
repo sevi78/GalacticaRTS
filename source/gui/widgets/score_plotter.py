@@ -13,7 +13,7 @@ PLOTTER_SURFACE_HEIGHT = 500
 PLOTTER_SURFACE_GAP = 10
 PLOTTER_X_POS_DEFAULT = 30
 PLOTTER_STEP_X_DEFAULT = 5
-PLOTTER_Y_FACTOR_DEFAULT = 50
+PLOTTER_Y_FACTOR_DEFAULT = 1
 
 
 class ScorePlotter(EditorBase):
@@ -75,6 +75,7 @@ class ScorePlotter(EditorBase):
         self.max_height = PLOTTER_SURFACE_HEIGHT
         self.font_size = 12
         self.font = pygame.font.SysFont(config.font_name, self.font_size - 1)
+        self.last_drawn_x = 0
 
         # selectors
         self.selectors = []
@@ -83,7 +84,7 @@ class ScorePlotter(EditorBase):
         self.selector_step_x = None
         self.selector_y_factor = None
         self.plotter_step_x = 5
-        self.plotter_step_x_list = [_ for _ in range(1, 500, 5)]
+        self.plotter_step_x_list = [_ for _ in range(1, 500, 1)]
         self.plotter_x_pos_list = [_ for _ in range(-100000, 100000, 10)]
         self.plotter_x_pos = 0
         self.y_factor = 0.5
@@ -139,7 +140,8 @@ class ScorePlotter(EditorBase):
                 {"list_name": "plotter_x_pos_list", "list": self.plotter_x_pos_list},
                 self,
                 FONT_SIZE,
-                restrict_list_jump=True)
+                restrict_list_jump=True,
+                repeat_clicks=True)
         self.selector_plotter_x_pos.current_value = PLOTTER_X_POS_DEFAULT
         self.selector_plotter_x_pos.show()
 
@@ -256,6 +258,8 @@ class ScorePlotter(EditorBase):
                 self.draw_text(start_pos_x, self.plotter_surface.get_rect().bottom - 15, 20, 12, str(cycle), win=self.plotter_surface, font=self.font)
             else:
                 self.draw_text(start_pos_x, self.plotter_surface.get_rect().bottom - 15, 20, 12, ".", win=self.plotter_surface, font=self.font)
+
+
 
     def draw_plotter_surface(self):
         """

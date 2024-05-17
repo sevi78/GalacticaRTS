@@ -7,6 +7,7 @@ from source.gui.widgets.buttons.image_button import ImageButton
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.handlers.color_handler import colors
 from source.multimedia_library.images import get_image
+from source.text.info_panel_text_generator import info_panel_text_generator
 
 
 class SpaceHarbor(WidgetBase):
@@ -81,12 +82,13 @@ class SpaceHarbor(WidgetBase):
                     image=pygame.transform.scale(
                             get_image(f"{name}.png"), (25, 25) if not name == "spacestation" else (45, 45)),
                     tooltip=f"build {name}",
-                    info_text="",  # info_panel_text_generator.create_info_panel_ship_text("spacehunter"),
+                    info_text=info_panel_text_generator.create_info_panel_ship_text_from_json_dict(name),
                     frame_color=self.frame_color,
                     moveable=False,
                     include_text=True,
                     layer=self.layer,
-                    onClick=lambda name_=name: building_factory.build(name_, config.app.selected_planet)))
+                    onClick=lambda name_=name: building_factory.build(name_, config.app.selected_planet),
+                    info_panel_alpha= 110))
 
     def set_visible(self):
         if not self.parent.parent.selected_planet:

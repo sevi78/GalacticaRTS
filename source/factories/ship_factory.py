@@ -2,6 +2,7 @@ from source.configuration.game_config import config
 from source.handlers import file_handler
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
+from source.pan_zoom_sprites.pan_zoom_ship_classes.pan_zoom_rescue_drone import PanZoomRescueDrone
 from source.pan_zoom_sprites.pan_zoom_ship_classes.pan_zoom_ship import PanZoomShip
 
 
@@ -16,44 +17,11 @@ class ShipFactory:
             }
         self.ship_settings = file_handler.load_file("ship_settings.json", "config")
 
-    def create_ship__(self, name: str, x: int, y: int, parent: object, weapons: dict, **kwargs: dict) -> PanZoomShip:
+    def create_ship(self, name: str, x: int, y: int, parent: object, weapons: dict, **kwargs: dict) -> [PanZoomShip, PanZoomRescueDrone]:
         """ creates a ship from the image name like: schiff1_30x30
             name, x, y, parent, weapons, **kwargs
-        """
-        data = kwargs.get("data", {})
-        size_x, size_y = map(int, name.split("_")[1].split(".")[0].split("x"))
-        name = name.split("_")[0]
 
-        if name == "spacestation":
-            size_x, size_y = 100, 100
-
-        ship = PanZoomShip(config.win,
-                x,
-                y,
-                size_x,
-                size_y,
-                pan_zoom_handler,
-                f"{name}_30x30.png",
-                debug=False,
-                group="ships",
-                parent=parent,
-                rotate_to_target=True,
-                move_to_target=True,
-                align_image="center",
-                layer=5,
-                info_panel_alpha=80,
-                current_weapon="laser",
-                name=name,
-                weapons=weapons,
-                data=data,
-                outline_thickness=3,
-                outline_threshold=127,
-                is_spacestation=True if name == "spacestation" else False)
-        return ship
-
-    def create_ship(self, name: str, x: int, y: int, parent: object, weapons: dict, **kwargs: dict) -> PanZoomShip:
-        """ creates a ship from the image name like: schiff1_30x30
-            name, x, y, parent, weapons, **kwargs
+            returns a PanZoomShip
         """
         data_ = kwargs.get("data", {})
         data = self.ship_settings[name]
@@ -62,7 +30,11 @@ class ShipFactory:
 
         size_x, size_y = self.ship_sizes[name]  # map(int, name.split("_")[1].split(".")[0].split("x"))
 
-        ship = PanZoomShip(config.win,
+        class_ = PanZoomShip
+        if name == "rescue drone":
+            class_ = PanZoomRescueDrone
+
+        ship = class_(config.win,
                 x,
                 y,
                 size_x,
@@ -83,7 +55,12 @@ class ShipFactory:
                 data=data,
                 outline_thickness=3,
                 outline_threshold=127,
-                is_spacestation=True if name == "spacestation" else False)
+                is_spacestation=True if name == "spacestation" else False,
+                rotation_smoothing=10)
+
+        # bloody hack, otherwise position of some ships is wrong, no idea why !! ? :(
+        ship.world_x = x
+        ship.world_y = y
         return ship
 
     def create_ships_from_data(self, data):

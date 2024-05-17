@@ -1,9 +1,15 @@
+import copy
+import random
+
 import pygame
 
 import source.handlers.weapon_handler
 from source.configuration.game_config import config
+from source.factories.building_factory import building_factory
 from source.factories.planet_factory import planet_factory
+from source.factories.weapon_factory import weapon_factory
 from source.game_play import enemy_handler
+from source.handlers import weapon_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 
 
@@ -11,6 +17,24 @@ class Cheat:
     def cheat_ship(self):
         if self.ship:
             self.ship.energy = 10000
+
+    def cheat_ships(self):
+        for i in self.players:
+            if not i == 0:
+                planets = [_ for _ in sprite_groups.planets.sprites() if _.owner == i]
+                if planets:
+                    planet = random.choice(planets)
+                    x, y = planet.world_y, planet.world_y
+                else:
+                    return
+
+                ship = self.ship_factory.create_ship(
+                        "spaceship",
+                        x,
+                        y,
+                        config.app,
+                        {"rocket": copy.deepcopy(weapon_factory.get_weapon("rocket"))},
+                        data={"owner": i, "autopilot": True}),
 
     def cheat_planetary_defence(self, weapon):
         if not self.selected_planet:
@@ -29,6 +53,10 @@ class Cheat:
         self.player.minerals += value
         self.player.water += value
         self.player.technology += value
+
+    def cheat_resource(self, resource, value):
+        for i in self.players:
+            setattr(self.players[i], resource, getattr(self.players[i], resource) + value)
 
     def cheat_resources_and_population(self, value):
         self.player.energy += value

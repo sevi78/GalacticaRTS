@@ -17,7 +17,7 @@ class TextWrap:  # original
         self.word_height_sum = 0
         self.link_found = False
 
-    def wrap_text(self, win, text, pos, size, font, color=pygame.Color('white'), **kwargs):
+    def wrap_text(self, win, text, pos, size, font, color=pygame.Color('white'), **kwargs) -> None:
         """ text wrapper function:
             Parameters
             ----------

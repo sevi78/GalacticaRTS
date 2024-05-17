@@ -4,6 +4,7 @@ from source.configuration.game_config import config
 from source.editors.auto_economy_edit import AutoEconomyEdit
 from source.editors.editor_base.editor_base import EditorBase
 from source.editors.editor_base.editor_config import TOP_SPACING
+from source.factories.ship_factory import ship_factory
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.gui.widgets.inputbox import InputBox
 from source.gui.widgets.score_plotter import ScorePlotter
@@ -12,6 +13,7 @@ from source.handlers.image_handler import overblit_button_image
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.handlers.player_handler import player_handler
 from source.multimedia_library.images import get_image
+from source.text.info_panel_text_generator import info_panel_text_generator
 from source.text.text_formatter import format_number
 
 DIPLOMACY_BUTTON_SIZE = 25
@@ -160,7 +162,7 @@ class PlayerEdit(EditorBase):
                     moveable=False,
                     include_text=True,
                     layer=self.layer,
-                    onClick=lambda: print("no function"),
+                    onClick=lambda: config.app.cheat_resource(key, 500),
                     name=key,
                     textColour=self.frame_color,
                     font_size=12,
@@ -215,6 +217,7 @@ class PlayerEdit(EditorBase):
                     parent=self,
                     image=pygame.transform.scale(get_image(image_name), (button_size, button_size)),
                     tooltip=player,
+                    info_text=info_panel_text_generator.create_info_panel_player_text(player_index),
                     frame_color=self.frame_color,
                     moveable=False,
                     include_text=True,
@@ -223,7 +226,6 @@ class PlayerEdit(EditorBase):
                     name=player,
                     textColour=self.frame_color,
                     font_size=12,
-                    info_text="",  # info_panel_text_generator.create_info_panel_weapon_text(key),
                     textHAlign="right_outside",
                     outline_thickness=0,
                     outline_threshold=1
@@ -441,13 +443,13 @@ class PlayerEdit(EditorBase):
                         height=button_size,
                         isSubWidget=False,
                         parent=self,
-                        image=pygame.transform.scale(get_image("spacehunter_30x30.png"), (button_size, button_size)),
+                        image=pygame.transform.scale(get_image("spacehunter.png"), (button_size, button_size)),
                         tooltip="ships_icon",
                         frame_color=self.frame_color,
                         moveable=False,
                         include_text=True,
                         layer=self.layer,
-                        onClick=lambda: print("no function"),
+                        onClick=lambda: config.app.cheat_ships(),
                         name="ships_icon",
                         textColour=self.frame_color,
                         font_size=12,
@@ -485,7 +487,6 @@ class PlayerEdit(EditorBase):
                     outline_thickness=0,
                     outline_threshold=1
                     )
-
 
             self.buttons.append(icon)
             self.widgets.append(icon)
@@ -571,8 +572,6 @@ class PlayerEdit(EditorBase):
             space_harbor_icon = [i for i in self.widgets if i.name == f'space harbor_icon{player}'][0]
             space_harbor_icon._hidden = "space harbor" not in config.app.players[player].get_all_buildings()
 
-
-
     def update_inputboxes(self):
         for i in self.widgets:
             if i.__class__.__name__ == "InputBox":
@@ -618,6 +617,11 @@ class PlayerEdit(EditorBase):
 
                     if i.key == "score_count":
                         i.set_text(f"{player.score}")
+
+            if i.__class__.__name__ == "ImageButton":
+                if "player" in i.name:
+                    player_index = int(i.name.split("_")[1])
+                    i.info_text = info_panel_text_generator.create_info_panel_player_text(player_index)
 
     def overblit_player_image(self, player_index, value):
         button = [i for i in self.buttons if i.name == f"player_{player_index}"][0]
