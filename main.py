@@ -328,7 +328,7 @@ def main():
             60,
             container_width,
             150,
-            ["energy", "speed", "experience"],
+            ["energy", "speed", "experience", "owner"],
             parent=app,
             layer=10,
             list_name="ships",

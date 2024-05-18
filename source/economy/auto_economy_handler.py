@@ -16,7 +16,6 @@ CARGO_LOADER_MAXIMUM = 3
 SPACESTATION_MAXIMUM = 2
 
 
-
 class AutoEconomyHandler(AutoEconomyHandlerSetters):
     def __init__(self, player):
         """
@@ -209,6 +208,9 @@ class AutoEconomyHandler(AutoEconomyHandlerSetters):
                     building_factory.build("space harbor", self.planet)
 
     def build_ship(self):
+        """
+        builds ships if possible and send rescue drones
+        """
         space_harbour_planet = [i for i in self.planets if "space harbor" in i.buildings]
 
         if space_harbour_planet:
@@ -218,8 +220,17 @@ class AutoEconomyHandler(AutoEconomyHandlerSetters):
                 spacehunters = len([i for i in ships if i.name == "spacehunter"])
                 cargoloaders = len([i for i in ships if i.name == "cargoloader"])
                 spacestations = len([i for i in ships if i.name == "spacestation"])
+                rescue_drones = len([i for i in ships if i.name == "rescue drone"])
 
+                # build rescue drone
+                lost_ships = [ship for ship in ships if ship.state_engine.state == "move_stop"]
+                if lost_ships:
+                    if rescue_drones > 0:
+                        [i for i in ships if i.name == "rescue drone"][0].set_target(lost_ships[0])
+                    else:
+                        building_factory.build("rescue drone", space_harbour_planet[0])
 
+                # build spaceships
                 if spaceships < SPACESHIP_MAXIMUM:
                     building_factory.build("spaceship", space_harbour_planet[0])
                 elif spacehunters < SPACEHUNTER_MAXXIMUM:
@@ -228,9 +239,6 @@ class AutoEconomyHandler(AutoEconomyHandlerSetters):
                     building_factory.build("cargoloader", space_harbour_planet[0])
                 elif spacestations < SPACESTATION_MAXIMUM:
                     building_factory.build("spacestation", space_harbour_planet[0])
-
-
-
 
     def maximize_population_grow(self):
         # check if planet is able to grow population

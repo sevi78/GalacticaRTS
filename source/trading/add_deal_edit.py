@@ -1,7 +1,7 @@
 import pygame
 
 from source.configuration.game_config import config
-from source.editors.deal_select import DealSelect
+from source.trading.deal_select import DealSelect
 from source.editors.editor_base.editor_base import EditorBase
 from source.editors.editor_base.editor_config import TOP_SPACING
 from source.gui.widgets.buttons.image_button import ImageButton
@@ -14,6 +14,9 @@ FONT_SIZE = int(ARROW_SIZE * .8)
 
 
 class AddDealEdit(EditorBase):
+    """
+    this is the interface to add deal to the deal_manager by the human player
+    """
 
     def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
         EditorBase.__init__(self, win, x, y, width, height, isSubWidget=False, **kwargs)

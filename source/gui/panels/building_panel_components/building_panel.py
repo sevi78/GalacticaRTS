@@ -1,7 +1,7 @@
 import pygame
 from pygame_widgets.util import drawText
 
-from source.configuration.economy_params import EconomyParams
+from source.economy.economy_params import EconomyParams
 from source.configuration.game_config import config
 from source.factories.building_factory import building_factory
 from source.game_play.navigation import navigate_to

@@ -3,7 +3,7 @@ import time
 from source.configuration.game_config import config
 from source.economy.auto_economy_handler import AutoEconomyHandler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
-from source.handlers.trade_assistant import TradeAssistant
+from source.trading.trade_assistant import TradeAssistant
 
 
 class Player:
@@ -107,7 +107,10 @@ class Player:
                 buildings += i.buildings
         return buildings
 
-    def get_all_ships(self) -> list:
+    def get_all_ships(self) -> list[object]:
+        """
+        return a list of all ships belonging to the player
+        """
         ships = []
         for i in sprite_groups.ships:
             if i.owner == self.owner:

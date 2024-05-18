@@ -203,6 +203,7 @@ class ContainerWidgetItem(TextWrap):
                 - The name and energy of the object if it is a PanZoomShip.
                 - The index of the object if it is None.
         """
+        ships = ["PanZoomShip", "PanZoomRescueDrone"]
         text = ""
         if self.obj:
             if self.obj.__class__.__name__ == "PanZoomPlanet":
@@ -212,8 +213,9 @@ class ContainerWidgetItem(TextWrap):
                     text = (f"{self.obj.name} belongs to {config.app.players[self.obj.owner].name}, population:"
                             f" {format_number(self.obj.population, 1)}/{format_number(self.obj.population_limit, 1)}, buildings: {len(self.obj.buildings)}")
 
-            elif self.obj.__class__.__name__ == "PanZoomShip":
-                text += f"{self.obj.name}, energy: {format_number(self.obj.energy, 1)}"
+            # elif self.obj.__class__.__name__ == "PanZoomShip":
+            elif self.obj.__class__.__name__ in ships:
+                text += f"{self.obj.name}, owner: {config.app.players[self.obj.owner].name}, energy: {format_number(self.obj.energy, 1)}"
         else:
             text += f", index: {self.index}"
         return text

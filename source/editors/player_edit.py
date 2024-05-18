@@ -1,10 +1,9 @@
 import pygame
 
 from source.configuration.game_config import config
-from source.editors.auto_economy_edit import AutoEconomyEdit
+from source.economy.auto_economy_edit import AutoEconomyEdit
 from source.editors.editor_base.editor_base import EditorBase
 from source.editors.editor_base.editor_config import TOP_SPACING
-from source.factories.ship_factory import ship_factory
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.gui.widgets.inputbox import InputBox
 from source.gui.widgets.score_plotter import ScorePlotter

@@ -7,6 +7,7 @@ from source.editors.editor_base.editor_base import EditorBase
 from source.editors.editor_base.editor_config import TOP_SPACING
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.handlers.diplomacy_handler import diplomacy_handler
+from source.handlers.image_handler import outline_image
 from source.multimedia_library.images import get_image
 
 BUTTON_SIZE = 25
@@ -81,8 +82,16 @@ class DiplomacyEdit(EditorBase):
             i.hide()
 
     def set_enemy_image(self):
+        """
+        sets the image and outlines it based on war or peace
+        """
         self.enemy_image = pygame.transform.scale(get_image(
                 config.app.players[diplomacy_handler.enemy_index].image_name), (IMAGE_SIZE, IMAGE_SIZE))
+
+        if diplomacy_handler.is_in_peace(diplomacy_handler.player_index, diplomacy_handler.enemy_index):
+            self.enemy_image = outline_image(self.enemy_image, color=pygame.color.THECOLORS.get("green"), threshold=127, thickness=0)
+        else:
+            self.enemy_image = outline_image(self.enemy_image, color=pygame.color.THECOLORS.get("red"), threshold=127, thickness=0)
 
     def open(self, enemy_index: int, player_index: int) -> None:
         if enemy_index == -1:
@@ -98,12 +107,7 @@ class DiplomacyEdit(EditorBase):
             self.handle_hovering()
             self.drag(events)
 
-            # hide on right click, because on left click its not working properly, always hides after opening directly
-            # if pygame.mouse.get_pressed()[2]:
-            #     self.hide()
-            print(self.rect.collidepoint(pygame.mouse.get_pos()))
             if not self.rect.collidepoint(pygame.mouse.get_pos()):
-
                 if pygame.mouse.get_pressed()[0]:
                     if self.opening_time < time.time() - 0.3:
                         self.hide()

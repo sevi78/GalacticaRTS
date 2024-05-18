@@ -1,7 +1,7 @@
 from typing import Optional
 
 from source.configuration.game_config import config
-from source.editors.deal_select import DealSelect
+from source.trading.deal_select import DealSelect
 
 
 class TradeAssistant:

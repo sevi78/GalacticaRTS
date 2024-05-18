@@ -1,7 +1,7 @@
 import copy
 
 from source.configuration.game_config import config
-from source.editors.deal_select import DealSelect
+from source.trading.deal_select import DealSelect
 from source.editors.editor_base.editor_base import EditorBase
 from source.gui.event_text import event_text
 from source.handlers.image_handler import overblit_button_image

@@ -80,6 +80,10 @@ def overblit_button_image(button, image_name: str, value: bool, **kwargs) -> Non
 
 
 def outline_image(image, color=(0, 0, 0), threshold=127, thickness=0) -> pygame.surface:
+    """
+    this blits an outline to the image and returns it
+
+    """
     image.blit(get_outline(image, color, threshold, thickness), (0, 0))
     return image
 

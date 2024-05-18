@@ -1,7 +1,7 @@
 import pygame
 
 from source.app.ui_helper import UIHelper
-from source.configuration.economy_params import EconomyParams
+from source.economy.economy_params import EconomyParams
 from source.handlers.color_handler import colors
 
 
