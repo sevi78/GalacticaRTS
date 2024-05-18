@@ -17,7 +17,6 @@ class PanZoomRescueDrone(PanZoomShip):
         del self.pathfinding_manager
         del self.progress_bar
 
-
     def set_target(self):
         if self.target_set:
             return

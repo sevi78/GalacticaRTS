@@ -3,11 +3,11 @@ import math
 import random
 
 from source.configuration.game_config import config
+from source.economy.economy_handler import economy_handler
 from source.factories.planet_factory import planet_factory
 from source.factories.universe_factory import universe_factory
 from source.game_play.navigation import navigate_to_position
 from source.gui.event_text import event_text
-from source.economy.economy_handler import economy_handler
 from source.handlers.file_handler import load_file, write_file, get_level_list
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
@@ -666,7 +666,7 @@ class LevelHandler:
 
         return clusters
 
-    def set_celestial_body_owners_(self):# oroginal
+    def set_celestial_body_owners_(self):  # oroginal
         player_handler.reset_players()
         population_density = int(self.data["globals"]["population_density"])
         num_players = len(config.app.players)
@@ -790,8 +790,6 @@ class LevelHandler:
                 for moon in planet_moons:
                     moon.owner = planet.owner  # Propagate planet's owner to its moons
 
-    import random
-
     def set_celestial_body_owners_____(self):
         # Reset players
         player_handler.reset_players()
@@ -834,10 +832,6 @@ class LevelHandler:
                 planet_moons = [m for m in celestial_bodies if m.type == "moon" and m.orbit_object_id == planet.id]
                 for moon in planet_moons:
                     moon.owner = planet.owner  # Propagate planet's owner to its moons
-
-    import random
-
-    import random
 
     # def set_celestial_body_owners(self):
     #     # Reset players
@@ -907,8 +901,6 @@ class LevelHandler:
     #     # Assign all moons in the system to the player
     #     for moon in system["moons"]:
     #         moon.owner = player_id
-
-    import random
 
     # def set_celestial_body_owners(self):
     #     # Reset players
@@ -1135,7 +1127,6 @@ class LevelHandler:
     #         else:
     #             print(f"Warning: Planet with ID {moon.orbit_object_id} not found for moon {moon.id}")
 
-
     def set_celestial_body_owners(self):
         # Reset players
         player_handler.reset_players()
@@ -1220,6 +1211,3 @@ class LevelHandler:
                 moon.owner = planet.owner
             else:
                 print(f"Warning: Planet with ID {moon.orbit_object_id} not found for moon {moon.id}")
-
-    import random
-

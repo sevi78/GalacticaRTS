@@ -17,7 +17,8 @@ class ShipFactory:
             }
         self.ship_settings = file_handler.load_file("ship_settings.json", "config")
 
-    def create_ship(self, name: str, x: int, y: int, parent: object, weapons: dict, **kwargs: dict) -> [PanZoomShip, PanZoomRescueDrone]:
+    def create_ship(self, name: str, x: int, y: int, parent: object, weapons: dict, **kwargs: dict) -> [PanZoomShip,
+                                                                                                        PanZoomRescueDrone]:
         """ creates a ship from the image name like: schiff1_30x30
             name, x, y, parent, weapons, **kwargs
 

@@ -17,7 +17,6 @@ class PanZoomShipStateEngine:
         self.image_drawer = PanZoomShipStateEngineDraw(self.parent, self)
         self.state = "sleeping"
 
-
     def __del__(self) -> None:
         """ seems to be unused, state and rank image are getting deleted somehow :)"""
         if hasattr(self, "image_drawer"):
@@ -54,6 +53,7 @@ class PanZoomShipStateEngine:
 
     def listen(self, events):
         pass
+
     def update(self) -> None:
 
         if config.cross_view_start < pan_zoom_handler.zoom:

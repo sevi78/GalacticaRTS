@@ -247,15 +247,15 @@ class Button(WidgetBase, Moveable):
 
                 pygame.draw.rect(
                         self.win, self.borderColour, (
-                        self.screen_x, self.screen_y, self.screen_width, self.screen_height),
+                            self.screen_x, self.screen_y, self.screen_width, self.screen_height),
                         border_radius=self.radius
                         )
 
                 pygame.draw.rect(
                         self.win, self.colour, (
-                        self.screen_x + self.borderThickness, self.screen_y + self.borderThickness,
-                        self.screen_width - self.borderThickness * 2,
-                        self.screen_height - self.borderThickness * 2),
+                            self.screen_x + self.borderThickness, self.screen_y + self.borderThickness,
+                            self.screen_width - self.borderThickness * 2,
+                            self.screen_height - self.borderThickness * 2),
                         border_radius=self.radius
                         )
 

@@ -1,5 +1,5 @@
-from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.gui.interfaces.interface import Interface
+from source.handlers.pan_zoom_sprite_handler import sprite_groups
 
 
 class EnemyHandlerEdit(Interface):

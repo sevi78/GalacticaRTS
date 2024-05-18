@@ -109,8 +109,6 @@ class AutoEconomyHandlerSetters:
         else:
             self.preferred_building_key = random.choice(building_factory.get_all_possible_categories())
 
-
-
     def set_min_keys_resources(self) -> None:
         resource_stock = {key: value for key, value in self.player.get_resource_stock().items() if
                           key in self.resource_categories_except_technology_and_population}

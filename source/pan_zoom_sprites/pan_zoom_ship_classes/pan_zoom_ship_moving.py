@@ -84,7 +84,6 @@ class PanZoomShipMoving:
     def set_attack_distance(self):
         self.attack_distance = self.attack_distance_raw  # * self.get_zoom()
 
-
     def set_desired_orbit_radius(self):
         self.desired_orbit_radius = self.desired_orbit_radius_raw  # * self.get_zoom()
 

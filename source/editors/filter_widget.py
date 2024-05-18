@@ -1,5 +1,3 @@
-import copy
-
 import pygame
 
 from source.editors.editor_base.editor_base import EditorBase

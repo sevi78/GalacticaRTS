@@ -259,8 +259,6 @@ class ScorePlotter(EditorBase):
             else:
                 self.draw_text(start_pos_x, self.plotter_surface.get_rect().bottom - 15, 20, 12, ".", win=self.plotter_surface, font=self.font)
 
-
-
     def draw_plotter_surface(self):
         """
         The draw_plotter_surface method is responsible for drawing the plotter surface on the screen.

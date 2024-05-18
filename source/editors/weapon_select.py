@@ -86,7 +86,7 @@ class WeaponSelect(EditorBase):
                 isSubWidget=False,
                 parent=self,
                 image=pygame.transform.scale(get_image(f"{self.current_weapon['name']}.png"), (
-                button_size, button_size)),
+                    button_size, button_size)),
                 tooltip=key,
                 frame_color=self.frame_color,
                 moveable=False,

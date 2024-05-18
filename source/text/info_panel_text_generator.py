@@ -1,5 +1,6 @@
 import math
 from collections import Counter
+
 from source.configuration.game_config import config
 from source.factories.building_factory import building_factory
 from source.handlers.file_handler import load_file
@@ -136,7 +137,7 @@ class InfoPanelTextGenerator:
         return text
 
     def create_info_panel_ship_text(self, ship: object) -> str:
-        if ship.__class__.__name__  == "PanZoomRescueDrone":
+        if ship.__class__.__name__ == "PanZoomRescueDrone":
             return self.create_info_panel_rescue_drone_text(ship)
 
         text = f"{ship.name}:\n\n"
@@ -340,5 +341,6 @@ class InfoPanelTextGenerator:
         text += f"the rescue drone rescues ships that are lost in space by sending energy! send the drone to a ship that has run out of energy. the ship will get:\n\n"
         text += f"energy: {format_number(ship.energy, 1)}\n\n from the drone\n"
         return text
+
 
 info_panel_text_generator = InfoPanelTextGenerator()

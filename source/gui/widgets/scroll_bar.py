@@ -65,13 +65,13 @@ class ScrollBar:
         pygame.draw.rect(self.surface, colors.ui_darker, (
             0, y, self.world_width, height), 0, config.get("ui_rounded_corner_radius_small"))
 
-    def update_position(self)->None:
+    def update_position(self) -> None:
         """sets the position of the widget to the bottom right corner of the parent"""
         self.world_x = self.parent.world_x + self.parent.world_width - self.world_width
         self.world_y = self.parent.world_y + self.parent.world_height - self.world_height
         self.rect.x, self.rect.y = self.world_x, self.world_y
 
-    def listen(self, events)->None:
+    def listen(self, events) -> None:
         """
         Listens for mouse events and updates the scrollbar value based on the click position.
 

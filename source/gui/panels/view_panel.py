@@ -1,7 +1,6 @@
 import pygame
 
 from source.configuration.game_config import config
-from source.gui.event_text import event_text
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.handlers.color_handler import colors
@@ -94,7 +93,6 @@ class ViewPanel(WidgetBase):
                 onClick=lambda: config.set_global_variable("show_orbit", True, button=self.orbit_icon))
         self.widgets.append(self.orbit_icon)
         self.max_width += self.icon_size + self.spacing
-
 
         self.show_planet_names_icon = ImageButton(win=self.win,
                 x=self.get_screen_x() - 50,
@@ -228,7 +226,6 @@ class ViewPanel(WidgetBase):
         self.surface_rect.width = self.max_width
         self.surface_rect.x = config.app.advanced_settings_panel.surface_rect.left - self.surface_rect.width
         self.reposition_widgets()
-
 
     def reposition_widgets(self):
         for icon in self.widgets:

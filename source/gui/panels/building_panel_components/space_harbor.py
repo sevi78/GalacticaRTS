@@ -88,7 +88,7 @@ class SpaceHarbor(WidgetBase):
                     include_text=True,
                     layer=self.layer,
                     onClick=lambda name_=name: building_factory.build(name_, config.app.selected_planet),
-                    info_panel_alpha= 110))
+                    info_panel_alpha=110))
 
     def set_visible(self):
         if not self.parent.parent.selected_planet:

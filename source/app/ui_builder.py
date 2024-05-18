@@ -2,9 +2,7 @@ import pygame
 
 from source.app.scene_builder import SceneBuilder
 from source.configuration.game_config import config
-from source.trading.add_deal_edit import AddDealEdit
 from source.editors.building_edit import BuildingEdit
-from source.trading.deal_manager import DealManager
 from source.editors.debug_edit import DebugEdit
 from source.editors.diplomacy_edit import DiplomacyEdit
 from source.editors.enemy_handler_edit import EnemyHandlerEdit
@@ -12,7 +10,6 @@ from source.editors.planet_edit import PlanetEdit
 from source.editors.save_game_edit import SaveGameEdit
 from source.editors.settings_edit import SettingsEdit
 from source.editors.ship_edit import ShipEdit
-from source.trading.trade_edit import TradeEdit
 from source.editors.weapon_select import WeaponSelect
 from source.game_play.enemy_handler import enemy_handler
 from source.game_play.player import Player
@@ -29,6 +26,9 @@ from source.gui.widgets.background_image import BackgroundGradient
 from source.handlers.debug_handler import debugger
 from source.handlers.file_handler import load_file
 from source.handlers.player_handler import player_handler
+from source.trading.add_deal_edit import AddDealEdit
+from source.trading.deal_manager import DealManager
+from source.trading.trade_edit import TradeEdit
 
 EDITOR_HEIGHT = 600
 

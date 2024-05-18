@@ -34,7 +34,6 @@ from source.handlers.ui_handler import ui_handler
 from source.interaction.box_selection import BoxSelection
 from source.multimedia_library.images import get_image
 
-
 ECONOMY_UPDATE_INTERVAL = 2.0
 
 
@@ -282,16 +281,16 @@ def main():
     # initialize editors
     app.level_handler = LevelHandler(app)
     app.level_select = LevelSelect(pygame.display.get_surface(),
-        pygame.display.get_surface().get_rect().centerx - EDITOR_WIDTH / 2,
-        pygame.display.get_surface().get_rect().y,
-        EDITOR_WIDTH, EDITOR_WIDTH, parent=app, obj=None)
+            pygame.display.get_surface().get_rect().centerx - EDITOR_WIDTH / 2,
+            pygame.display.get_surface().get_rect().y,
+            EDITOR_WIDTH, EDITOR_WIDTH, parent=app, obj=None)
 
     level_edit_width = EDITOR_WIDTH / 1.6
 
     app.level_edit = LevelEdit(pygame.display.get_surface(),
-        pygame.display.get_surface().get_rect().right - level_edit_width,
-        pygame.display.get_surface().get_rect().y,
-        level_edit_width, EDITOR_HEIGHT, parent=app, ignore_other_editors=True)
+            pygame.display.get_surface().get_rect().right - level_edit_width,
+            pygame.display.get_surface().get_rect().y,
+            level_edit_width, EDITOR_HEIGHT, parent=app, ignore_other_editors=True)
 
     app.game_event_handler = GameEventHandler(data=load_file("game_event_handler.json", "config"), app=app)
 
@@ -311,68 +310,68 @@ def main():
 
     # ship container
     app.ship_container = ContainerWidget(
-        app.win,
-        app.advanced_settings_panel.screen_x,
-        60,
-        container_width,
-        container_height,
-        sprite_groups.convert_sprite_groups_to_image_widget_list("ships"),
-        function=navigate_to_game_object_by_index,
-        layer=9,
-        list_name="ships",
-        name="ships_container",
-
-        filter_widget=FilterWidget(
             app.win,
-            260,
+            app.advanced_settings_panel.screen_x,
             60,
             container_width,
-            150,
-            ["energy", "speed", "experience", "owner"],
-            parent=app,
-            layer=10,
+            container_height,
+            sprite_groups.convert_sprite_groups_to_image_widget_list("ships"),
+            function=navigate_to_game_object_by_index,
+            layer=9,
             list_name="ships",
-            name="ships_container_filter"
+            name="ships_container",
+
+            filter_widget=FilterWidget(
+                    app.win,
+                    260,
+                    60,
+                    container_width,
+                    150,
+                    ["energy", "speed", "experience", "owner"],
+                    parent=app,
+                    layer=10,
+                    list_name="ships",
+                    name="ships_container_filter"
+                    )
             )
-        )
 
     # planet container
     app.planet_container = ContainerWidget(
-        app.win,
-        app.advanced_settings_panel.screen_x + 320,
-        60,
-        container_width * 2,
-        container_height,
-        sprite_groups.convert_sprite_groups_to_image_widget_list("planets"),
-        function=navigate_to_game_object_by_index,
-        layer=9,
-        list_name="planets",
-        name="planets_container",
-        filter_widget=FilterWidget(
             app.win,
-            260,
+            app.advanced_settings_panel.screen_x + 320,
             60,
-            container_width,
-            150,
-            ["population", "population_limit", "buildings", "explored", "owner"],
-            parent=app,
-            layer=10,
+            container_width * 2,
+            container_height,
+            sprite_groups.convert_sprite_groups_to_image_widget_list("planets"),
+            function=navigate_to_game_object_by_index,
+            layer=9,
             list_name="planets",
-            name="planets_container_filter"
-            ))
+            name="planets_container",
+            filter_widget=FilterWidget(
+                    app.win,
+                    260,
+                    60,
+                    container_width,
+                    150,
+                    ["population", "population_limit", "buildings", "explored", "owner"],
+                    parent=app,
+                    layer=10,
+                    list_name="planets",
+                    name="planets_container_filter"
+                    ))
 
     # player edit
     width = 1200
     app.player_edit = PlayerEdit(pygame.display.get_surface(),
-        int(pygame.display.get_surface().get_width() / 2 - width / 2),
-        pygame.display.get_surface().get_rect().y,
-        width, height, parent=app, obj=None, layer=9, ignore_other_editors=True, drag_enabled=False, save=False)  # , game_paused=True)
+            int(pygame.display.get_surface().get_width() / 2 - width / 2),
+            pygame.display.get_surface().get_rect().y,
+            width, height, parent=app, obj=None, layer=9, ignore_other_editors=True, drag_enabled=False, save=False)  # , game_paused=True)
 
     # cursor object
     app.cursor = Cursor()
 
     # zoom scale
-    app.zoom_scale = ZoomScale(app.win, 250, app.win.get_size()[1] - 10, 180, 5, anchor_left = app.map_panel)
+    app.zoom_scale = ZoomScale(app.win, 250, app.win.get_size()[1] - 10, 180, 5, anchor_left=app.map_panel)
 
     # restore ui elements
     ui_handler.restore_ui_elements()

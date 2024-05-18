@@ -66,7 +66,7 @@ def set_orbit_object(self):
 #         print("set_orbit_distance: no obj:", self.name, obj.name)
 
 
-def orbit(obj, orbit_obj, orbit_speed, direction):# used for planets
+def orbit(obj, orbit_obj, orbit_speed, direction):  # used for planets
     if not orbit_obj:
         return
 

@@ -372,6 +372,5 @@ def main():
     # print (f"building_factory.main: {building_factory.get_fitting_building(89999, 'energy')}")
 
 
-
 if __name__ == "__main__":
     main()

@@ -178,7 +178,8 @@ class PathFindingManager:
             # if any nodes left
             if len(self.path) > 1:
                 # check if node is reachable
-                if self.next_node_inside_max_distance(self.path[0].get_position(), self.path[1].get_position(), self.parent.get_max_travel_range()):
+                if self.next_node_inside_max_distance(
+                        self.path[0].get_position(), self.path[1].get_position(), self.parent.get_max_travel_range()):
                     # if it can reach its next node, then set new target and move on
 
                     self.path.pop(0)
@@ -192,7 +193,6 @@ class PathFindingManager:
 
                     # generat new path
                     self.generate_path(self.parent.node, self.path[-1], self.parent.get_max_travel_range())
-
 
         # if still has a path
         if self.path:

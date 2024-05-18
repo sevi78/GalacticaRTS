@@ -17,7 +17,11 @@
     "production_population": 0,
     "production_technology": 0,
     "production_water": 0,
-    "enemies": [1,2,3]
+    "enemies": [
+      1,
+      2,
+      3
+    ]
   },
   "1": {
     "player": 1,
@@ -37,7 +41,9 @@
     "production_population": 0,
     "production_technology": 0,
     "production_water": 0,
-    "enemies": [0]
+    "enemies": [
+      0
+    ]
   },
   "2": {
     "player": 2,
@@ -57,7 +63,9 @@
     "production_population": 0,
     "production_technology": 0,
     "production_water": 0,
-    "enemies": [0]
+    "enemies": [
+      0
+    ]
   },
   "3": {
     "player": 3,
@@ -77,7 +85,9 @@
     "production_population": 0,
     "production_technology": 0,
     "production_water": 0,
-    "enemies": [0]
+    "enemies": [
+      0
+    ]
   },
   "4": {
     "player": 4,
