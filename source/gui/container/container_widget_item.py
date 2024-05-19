@@ -76,6 +76,7 @@ class ContainerWidgetItem(TextWrap):
     def __init__(self, win, x, y, width, height, image, index, **kwargs) -> None:
         """
         Initializes a new instance of the ContainerWidgetItem class.
+        these objects are getting initialized everytime a filter is applied to the container!
 
         Args:
             win (pygame.Surface): The Pygame window surface.
@@ -111,43 +112,15 @@ class ContainerWidgetItem(TextWrap):
         self.widgets = []
 
         # text
-        self.text = self.set_text()
+        self.text = ""
         self.font_size = FONT_SIZE
         self.font = pygame.sysfont.SysFont(None, FONT_SIZE)
 
         # state image
-
         self.state_image = None
         self.state_image_rect = None
-        self.set_state_image()
 
-    def set_state_image(self) -> None:
-        """
-        Sets the state image of the object.
-
-        This function checks if the object exists and if it is an instance of the "PanZoomShip" class. If both
-        conditions are met, it retrieves the state image from the object's state engine's image drawer and scales it to
-        the specified size. The scaled image is then assigned to the `state_image` attribute of the object.
-
-        Parameters:
-            None
-
-        Returns:
-            None
-        """
-        if self.obj:
-            if self.obj.__class__.__name__ == "PanZoomShip":
-                self.state_image = pygame.transform.scale(get_image(
-                        self.obj.state_engine.image_drawer.state_image_names[self.obj.state_engine.state]), (
-                    WIDGET_SIZE / 3, WIDGET_SIZE / 3))
-                self.state_image_rect = self.state_image.get_rect()
-
-            if self.obj.__class__.__name__ == "PanZoomPlanet":
-                if self.obj.owner != -1:
-                    image_name = config.app.players[self.obj.owner].image_name
-                    self.state_image = pygame.transform.scale(get_image(image_name), (
-                        WIDGET_SIZE, WIDGET_SIZE))
-                    self.state_image_rect = self.state_image.get_rect()
+        self.set_text_and_state_image()
 
     def set_position(self, pos) -> None:
         """
@@ -192,33 +165,55 @@ class ContainerWidgetItem(TextWrap):
     def show(self) -> None:
         self._hidden = False
 
-    def set_text(self) -> str:
+    def set_text_and_state_image(self) -> None:
         """
-        Sets the text of the widget based on the object it represents.
+        Sets the text and state image of the widget based on the object it represents.
 
         Returns:
             str: The text to be displayed on the widget. It can be one of the following:
                 - "unknown planet" if the object is a PanZoomPlanet and it has not been explored.
                 - The name of the object if it is a PanZoomPlanet and it has been explored.
-                - The name and energy of the object if it is a PanZoomShip.
+                - The name and energy of the object if it is a PanZoomShip/PanZoomRescueDrone.
                 - The index of the object if it is None.
         """
         ships = ["PanZoomShip", "PanZoomRescueDrone"]
-        text = ""
-        if self.obj:
-            if self.obj.__class__.__name__ == "PanZoomPlanet":
-                if self.obj.owner == -1:
-                    text = "unknown planet"
-                else:
-                    text = (f"{self.obj.name} belongs to {config.app.players[self.obj.owner].name}, population:"
-                            f" {format_number(self.obj.population, 1)}/{format_number(self.obj.population_limit, 1)}, buildings: {len(self.obj.buildings)}")
+        self.text = ""
 
-            # elif self.obj.__class__.__name__ == "PanZoomShip":
+        # if an object to display
+        if self.obj:
+            # planets
+            if self.obj.__class__.__name__ == "PanZoomPlanet":
+                # text
+                if self.obj.owner == -1:
+                    self.text = "unknown planet"
+                else:
+                    self.text = (f"{self.obj.name} belongs to {config.app.players[self.obj.owner].name}, population:"
+                                 f" {format_number(self.obj.population, 1)}/{format_number(self.obj.population_limit, 1)}, buildings: {len(self.obj.buildings)}")
+
+                # state image
+                if self.obj.owner != -1:
+                    image_name = config.app.players[self.obj.owner].image_name
+                    self.state_image = pygame.transform.scale(get_image(image_name), (
+                        WIDGET_SIZE, WIDGET_SIZE))
+                    self.state_image_rect = self.state_image.get_rect()
+
+
+            # ships
             elif self.obj.__class__.__name__ in ships:
-                text += f"{self.obj.name}, owner: {config.app.players[self.obj.owner].name}, energy: {format_number(self.obj.energy, 1)}"
+                # text
+                self.text += f"{self.obj.name}, owner: {config.app.players[self.obj.owner].name}, energy: {format_number(self.obj.energy, 1)}"
+
+                # state image
+                self.state_image = pygame.transform.scale(get_image(
+                        self.obj.state_engine.image_drawer.state_image_names[self.obj.state_engine.state]), (
+                    WIDGET_SIZE / 3, WIDGET_SIZE / 3))
+                self.state_image_rect = self.state_image.get_rect()
+
+        # if no object to display (like files or anything else, not implemented yet)
         else:
-            text += f", index: {self.index}"
-        return text
+            self.text += f", index: {self.index}"
+
+
 
     def draw_text(self) -> None:
         if self.parent:

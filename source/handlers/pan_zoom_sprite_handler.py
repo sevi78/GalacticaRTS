@@ -1,10 +1,9 @@
-import threading
 import pygame
 from pygame.sprite import LayeredUpdates
 
 from source.configuration.game_config import config
-from source.gui.lod import level_of_detail
 from source.gui.container.container_widget import ContainerWidgetItem, WIDGET_SIZE
+from source.gui.lod import level_of_detail
 from source.handlers import widget_handler
 from source.handlers.widget_handler import WidgetHandler
 from source.multimedia_library.images import get_image, get_gif_frames
@@ -91,6 +90,14 @@ class SpriteGroups:  # original
         return None
 
     def get_nearest_obj_by_type(self, sprite_group, key, caller):
+        """
+        returns the nearest obj:
+
+        params:
+        sprite_groups: the sprite_group to search for
+        key: the type of the obj, like moon sun or planet
+        caller: the reference object to calculate the distance
+        """
         objects = [obj for obj in sprite_group if obj.type == key]
         if objects:
             return min(objects, key=lambda obj: pygame.math.Vector2(obj.rect.center).distance_to(caller.rect.center))
@@ -101,6 +108,12 @@ class SpriteGroups:  # original
             return min(sprite_group, key=lambda
                 obj: pygame.math.Vector2(obj.rect.center).distance_to(caller.rect.center))
         return None
+
+    def sort_sprites_by_distance(self, sprite_group, caller):
+        if sprite_group:
+            return sorted(sprite_group, key=lambda
+                obj: pygame.math.Vector2(obj.rect.center).distance_to(caller.rect.center))
+        return []
 
     def convert_sprite_groups_to_image_widget_list(self, sprite_group_name, sort_by=None, reverse=True) -> list:
         # If a sort_by attribute is provided, sort the sprite_group by that attribute

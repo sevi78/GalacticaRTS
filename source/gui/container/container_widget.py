@@ -135,11 +135,9 @@ class ContainerWidget(InteractionHandler):
 
         # kwargs
         self.parent = kwargs.get("parent", None)
-        self.group = kwargs.get("group", None)
         self.layer = kwargs.get("layer", 10)
         self.name = kwargs.get("name", "container")
         self.list_name = kwargs.get("list_name", None)
-        self.filters = kwargs.get("filters", [])
         self.filter_widget = kwargs.get("filter_widget", None)
         if self.filter_widget:
             self.filter_widget.parent = self
@@ -185,9 +183,18 @@ class ContainerWidget(InteractionHandler):
         """ sets the widgets and resets offset values """
         if widgets:
             if not isinstance(widgets[0], ContainerWidgetItem):
-                self.set_widgets([ContainerWidgetItem(self.win, 0, WIDGET_SIZE * index, WIDGET_SIZE, WIDGET_SIZE,
-                        image=copy.copy(_.image_raw), index=index, obj=_, parent=self) for index, _ in
-                                  enumerate(widgets)])
+                self.set_widgets(
+                        [ContainerWidgetItem(
+                                self.win,
+                                0,
+                                WIDGET_SIZE * index,
+                                WIDGET_SIZE,
+                                WIDGET_SIZE,
+                                image=copy.copy(_.image_raw),
+                                index=index,
+                                obj=_,
+                                parent=self)
+                            for index, _ in enumerate(widgets)])
             else:
                 self.widgets = widgets
 
