@@ -71,7 +71,8 @@ class PanZoomGameObject(PanZoomSprite, InteractionHandler):
     def set_target_position(self):
         if hasattr(self.target, "property"):
             if self.target.property == "planet":
-                self.target_position = self.pan_zoom.screen_2_world(self.target.screen_x, self.target.screen_y)
+                # self.target_position = self.pan_zoom.screen_2_world(self.target.screen_x, self.target.screen_y)
+                self.target_position = self.pan_zoom.screen_2_world(self.target.rect.centerx, self.target.rect.centery)
                 return
 
             if self.target.property == "ship":

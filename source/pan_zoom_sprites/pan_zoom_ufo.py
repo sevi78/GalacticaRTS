@@ -127,6 +127,9 @@ class PanZoomUfo(PanZoomGameObject):  # , InteractionHandler):
             self.target_reached = False
 
     def flickering(self):
+        """
+        attitude > 50 = friendly
+        """
         if self.emp_attacked:
             return
 

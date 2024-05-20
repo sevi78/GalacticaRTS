@@ -3,10 +3,10 @@ import random
 import pygame.display
 
 from source.configuration.game_config import config
+from source.gui.interfaces.interface import InterfaceData
 from source.handlers.file_handler import load_file
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
-from source.gui.interfaces.interface import InterfaceData
 from source.multimedia_library.images import get_image_names_from_folder
 from source.pan_zoom_sprites.pan_zoom_ufo import PanZoomUfo
 from source.text.info_panel_text_generator import info_panel_text_generator
@@ -115,9 +115,13 @@ class EnemyHandler(InterfaceData):
                 self.time_since_last_spawn = 0
 
     def spawn_ufo(self, planet):
+        """
+        attitude > 50 == friendly
+        """
+
         x, y = pan_zoom_handler.screen_2_world(planet.screen_x, planet.screen_y)
 
-        attitude = random.randint(0, 100)
+        attitude = 0#random.randint(0, 100)
         attitude_bool = 0 if attitude < 50 else 1
 
         ufo = PanZoomUfo(self.win,

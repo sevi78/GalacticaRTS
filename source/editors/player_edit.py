@@ -4,6 +4,7 @@ from source.configuration.game_config import config
 from source.economy.auto_economy_edit import AutoEconomyEdit
 from source.editors.editor_base.editor_base import EditorBase
 from source.editors.editor_base.editor_config import TOP_SPACING
+from source.game_play.navigation import navigate_to
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.gui.widgets.inputbox import InputBox
 from source.gui.widgets.score_plotter import ScorePlotter
@@ -477,7 +478,7 @@ class PlayerEdit(EditorBase):
                     moveable=False,
                     include_text=True,
                     layer=self.layer,
-                    onClick=lambda: print("no function"),
+                    onClick=lambda player_index_ = player_index: self.navigate_to_space_harbor(player_index_),
                     name=f"space harbor_icon{player_index}",
                     textColour=self.frame_color,
                     font_size=12,
@@ -570,6 +571,13 @@ class PlayerEdit(EditorBase):
         for player in config.app.players:
             space_harbor_icon = [i for i in self.widgets if i.name == f'space harbor_icon{player}'][0]
             space_harbor_icon._hidden = "space harbor" not in config.app.players[player].get_all_buildings()
+
+    def navigate_to_space_harbor(self, player_index):
+        space_harbor = [i for i in sprite_groups.planets.sprites() if i.owner == player_index and "space harbor" in i.buildings]
+
+        print(space_harbor, player_index )
+        if space_harbor:
+            navigate_to(space_harbor[0])
 
     def update_inputboxes(self):
         for i in self.widgets:

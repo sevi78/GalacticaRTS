@@ -107,6 +107,8 @@ def orbit_ship(obj, orbit_obj, orbit_speed, direction):
     if not obj.state_engine.state == "orbiting":
         obj.state_engine.set_state("orbiting")
 
+    obj.orbiting = True
+
     if hasattr(obj, "enemy"):
         orbit_speed = orbit_speed / 5
 

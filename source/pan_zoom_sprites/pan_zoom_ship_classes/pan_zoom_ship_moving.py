@@ -1,10 +1,10 @@
 import math
 
-import pygame.draw
 from pygame import Vector2
 
 from source.configuration.game_config import config
 from source.handlers.diplomacy_handler import diplomacy_handler
+from source.handlers.orbit_handler import set_orbit_object_id
 from source.multimedia_library.sounds import sounds
 from source.pan_zoom_sprites.pan_zoom_ship_classes.pan_zoom_ship_params import SHIP_ORBIT_SPEED, SHIP_ORBIT_SPEED_MAX
 from source.path_finding.a_star_node_path_finding import Node
@@ -43,7 +43,7 @@ class PanZoomShipMoving:
         self._orbiting = value
         if value:
             if self.target:
-                self.set_orbit_object_id(self.target.id)
+                set_orbit_object_id(self, self.target.id)
 
         # self.state_engine.set_state()
 

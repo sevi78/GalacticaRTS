@@ -3,16 +3,16 @@ from pygame_widgets.util import drawText
 
 from source.configuration.game_config import config
 from source.draw.circles import draw_transparent_circle
-from source.draw.cross import draw_cross_in_circle, draw_dashed_cross_in_circle
+from source.draw.cross import draw_dashed_cross_in_circle
 from source.gui.lod import level_of_detail
 from source.gui.panels.building_panel_components.building_panel import SPECIAL_FONT_SIZE
 from source.gui.panels.building_panel_components.building_panel_draw import SPECIAL_TEXT_COLOR
+from source.handlers.color_handler import colors
 from source.handlers.diplomacy_handler import diplomacy_handler
+from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.player_handler import player_handler
 from source.multimedia_library.gif_handler import GifHandler
 from source.multimedia_library.images import get_image
-from source.handlers.pan_zoom_handler import pan_zoom_handler
-from source.handlers.color_handler import colors
 
 DEFAULT_ZOOM = 0.2
 TEXT_ZOOM = DEFAULT_ZOOM
@@ -106,17 +106,6 @@ class PanZoomPlanetDraw:
                         count += 1
                         y += 20  # Increment y for the next draw
 
-    def draw_alien_population_icons__(self):  # old
-        if self.get_zoom() > IMAGE_ZOOM:
-            if self.alien_population > 0:
-                x = self.screen_position[0] - self.screen_width / 2 - 60
-                if self.alien_attitude < 50:
-                    alien_image = pygame.transform.scale(get_image("alien_face_orange.png"), (25, 25))
-                else:
-                    alien_image = pygame.transform.scale(get_image("alien_face_green.png"), (25, 25))
-                self.win.blit(alien_image, (
-                    x, self.rect.centery))
-
     def draw_alien_population_icons(self):
         if self.get_zoom() > IMAGE_ZOOM:
             # check if hostile or friendly
@@ -126,6 +115,6 @@ class PanZoomPlanetDraw:
                 alien_image = pygame.transform.scale(get_image("alien_face_green.png"), (25, 25))
 
             # only draw if occupied by alien
-            if self.owner != -1:
+            if self.owner not in [0, -1]:
                 x = self.screen_position[0] - self.screen_width / 2 - 60
                 self.win.blit(alien_image, (x, self.rect.centery))
