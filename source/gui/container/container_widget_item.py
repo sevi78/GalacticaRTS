@@ -193,9 +193,12 @@ class ContainerWidgetItem(TextWrap):
                 # state image
                 if self.obj.owner != -1:
                     image_name = config.app.players[self.obj.owner].image_name
-                    self.state_image = pygame.transform.scale(get_image(image_name), (
-                        WIDGET_SIZE, WIDGET_SIZE))
-                    self.state_image_rect = self.state_image.get_rect()
+                else:
+                    image_name = "question_mark.png"
+
+                self.state_image = pygame.transform.scale(get_image(image_name), (
+                    WIDGET_SIZE, WIDGET_SIZE))
+                self.state_image_rect = self.state_image.get_rect()
 
 
             # ships

@@ -7,8 +7,8 @@ from source.app.ui_builder import UIBuilder
 from source.configuration.game_config import config
 from source.draw.cursor import Cursor
 from source.gui.widgets.zoom_scale import ZoomScale
-from source.editors.level_edit import LevelEdit
-from source.editors.level_select import LevelSelect
+from source.level.level_edit import LevelEdit
+from source.level.level_select import LevelSelect
 from source.editors.filter_widget import FilterWidget
 from source.editors.player_edit import PlayerEdit
 from source.factories.ship_factory import ShipFactory
@@ -24,7 +24,7 @@ from source.handlers import event_text_handler
 from source.economy.economy_handler import economy_handler
 from source.handlers.file_handler import load_file
 from source.handlers.game_event_handler import GameEventHandler
-from source.handlers.level_handler import LevelHandler
+from source.level.level_handler import LevelHandler
 from source.handlers.mouse_handler import mouse_handler
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups

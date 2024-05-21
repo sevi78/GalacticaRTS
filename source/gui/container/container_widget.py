@@ -362,6 +362,10 @@ class ContainerWidget(InteractionHandler):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
                     if self.rect.collidepoint(event.pos):
+                        # ensure that only clicks if not hovering over filter widget
+                        if self.filter_widget:
+                            if self.filter_widget.on_hover:
+                                return
                         offset_y = mouse_handler.get_mouse_pos()[1] - self.world_y
                         rel_offset_y = offset_y - (self.scroll_offset_y * WIDGET_SIZE)
                         offset_index = math.floor(rel_offset_y / WIDGET_SIZE)
