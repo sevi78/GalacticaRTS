@@ -51,7 +51,7 @@ class DebugEdit(EditorBase):
         checkbox_missiles = Checkbox(
                 self.win, self.world_x - self.spacing_x + x + BUTTON_SIZE * 3, y, 30, 30, isSubWidget=False,
                 color=self.frame_color,
-                key="missiles", image_name="missile42x17.gif", tooltip="debug missiles", onClick=lambda: print("OKOKOK"), layer=9, parent=self)
+                key="missiles", image_name="missile.png", tooltip="debug missiles", onClick=lambda: print("OKOKOK"), layer=9, parent=self)
         x += BUTTON_SIZE * 1.5
         self.checkboxes.append(checkbox_missiles)
         self.widgets.append(checkbox_missiles)
@@ -99,7 +99,7 @@ class DebugEdit(EditorBase):
         debug_checkbox = Checkbox(
                 self.win, self.world_x - self.spacing_x + x + BUTTON_SIZE * 3, y, 30, 30, isSubWidget=False,
                 color=self.frame_color,
-                key="debug_icon", tooltip="debug", onClick=lambda: print("debug: ",
+                key="debug_icon", image_name="debug_icon.png", tooltip="debug", onClick=lambda: print("debug: ",
                         config.debug), layer=9, parent=self)
         x += BUTTON_SIZE * 1.5
         self.checkboxes.append(debug_checkbox)

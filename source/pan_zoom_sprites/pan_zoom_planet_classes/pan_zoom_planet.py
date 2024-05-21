@@ -10,7 +10,7 @@ from source.gui.widgets.widget_base_components.visibilty_handler import Visibili
 from source.handlers.color_handler import colors
 from source.handlers.garbage_handler import garbage_handler
 from source.handlers.mouse_handler import mouse_handler, MouseState
-from source.handlers.orbit_handler import orbit
+from source.handlers.orbit_handler import orbit_with_constant_distance
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.handlers.widget_handler import WidgetHandler
@@ -25,9 +25,8 @@ from source.pan_zoom_sprites.pan_zoom_planet_classes.pan_zoom_planet_position_ha
     PanZoomPlanetPositionHandler
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_gif import PanZoomSprite
 from source.path_finding.a_star_node_path_finding import Node
-from source.test.orbit_circle import calculate_circle_points, draw_moving_circle
 
-ORBIT_RESOLUTION = 10
+ORBIT_RESOLUTION = 360
 
 
 class PanZoomPlanet(PanZoomSprite, VisibilityHandler, PanZoomPlanetOverviewButtons, PanZoomPlanetDraw,
@@ -81,12 +80,6 @@ class PanZoomPlanet(PanZoomSprite, VisibilityHandler, PanZoomPlanetOverviewButto
         self.world_x = x
         self.world_y = y
 
-        # new orbit system
-        self.orbit_resolution = ORBIT_RESOLUTION
-        self.orbit_points = calculate_circle_points(self.world_x, self.world_y, self.orbit_radius, resolution=self.orbit_resolution)
-        self.orbit_index = 0
-
-        ###
         self.zoomable = True
         self.string = "?"
 
@@ -261,59 +254,28 @@ class PanZoomPlanet(PanZoomSprite, VisibilityHandler, PanZoomPlanetOverviewButto
 
     def update(self):
         self.set_screen_position()
-        # self.node.update(self.world_x, self.world_y)
-
-        # self.set_center()
         self.update_pan_zoom_sprite()
         self.handle_overview_buttons()
-
-        # really needs this ?
-        # try:
-        #     config.app.tooltip_instance.reset_tooltip(self)
-        # except:
-        #     pass
-
         self.planet_defence.update()
 
-        # needs to be at another place
-        # self.set_planet_name()
-
-        # setting orbit object every frame??
+        # setting orbit object every frame?? yes , because in __init__ not all planets are created at this moment
         if not self.orbit_object:
             if len([i for i in sprite_groups.planets if i.id == self.orbit_object_id]) > 0:
                 self.orbit_object = [i for i in sprite_groups.planets if i.id == self.orbit_object_id][0]
 
         if not config.game_paused:
-            orbit(self, self.orbit_object, self.orbit_speed, 1)
+            orbit_with_constant_distance(self, self.orbit_object, self.orbit_speed, 1)
 
         # not needed in update, draw called from sprite_handler
         if not level_of_detail.inside_screen(self.rect.center):
             return
 
-        # self.calc_orbit()
         self.draw()
 
     def draw(self):
-        # pygame.draw.rect(self.win, self.frame_color, self.collide_rect, 1)
         draw_orbits(self)
         self.set_display_color()
         self.draw_cross()
         self.draw_player_colors()
         if self.show_text:
             self.draw_text()
-
-
-
-    def calc_orbit(self):
-        if not self.orbit_object:
-            return
-
-        if self.orbit_index < self.orbit_resolution - 1:
-            self.orbit_index += 1
-        else:
-            self.orbit_index = 0
-        # self.orbit_points = calculate_circle_points(self.orbit_object.rect.x, self.orbit_object.rect.y, self.orbit_radius * pan_zoom_handler.zoom, resolution=self.orbit_resolution)
-        x, y = pan_zoom_handler.world_2_screen(self.orbit_object.world_x, self.orbit_object.world_y)
-        self.orbit_points = calculate_circle_points(x, y, self.orbit_radius * pan_zoom_handler.zoom, resolution=self.orbit_resolution)
-        pygame.draw.polygon(self.win, self.frame_color, self.orbit_points, 1)
-        draw_moving_circle(self.win, self.orbit_points, self.orbit_object.world_width/2 * pan_zoom_handler.zoom, self.orbit_index, pygame.color.THECOLORS.get("red"), self)
