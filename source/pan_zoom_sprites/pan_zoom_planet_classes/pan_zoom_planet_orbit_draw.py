@@ -2,12 +2,12 @@ import math
 
 import pygame
 
+from source.configuration.game_config import config
 from source.draw.circles import draw_dashed_circle
 from source.gui.lod import level_of_detail
-from source.handlers.pan_zoom_handler import pan_zoom_handler
+from source.handlers.color_handler import colors
 from source.handlers.orbit_handler import get_orbit_pos
-from source.configuration.game_config import config
-from source.handlers.color_handler import colors, dim_color
+from source.handlers.pan_zoom_handler import pan_zoom_handler
 
 
 def draw_orbit_simple(self):

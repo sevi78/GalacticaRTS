@@ -1,8 +1,8 @@
 import random
 
+from source.configuration.game_config import config
 from source.gui.lod import level_of_detail
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_gif import PanZoomSprite
-from source.configuration.game_config import config
 
 
 class PanZoomCelestialObject(PanZoomSprite):

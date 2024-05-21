@@ -7,6 +7,7 @@ from pygame import Vector2
 from source.configuration.game_config import config
 from source.draw.scope import scope
 from source.gui.event_text import event_text
+from source.gui.interfaces.interface import InterfaceData
 from source.gui.lod import level_of_detail
 from source.gui.widgets.moving_image import MovingImage, SPECIAL_TEXT_COLOR
 from source.handlers.autopilot_handler import AutopilotHandler
@@ -19,7 +20,6 @@ from source.handlers.player_handler import player_handler
 from source.handlers.position_handler import prevent_object_overlap
 from source.handlers.weapon_handler import WeaponHandler
 from source.handlers.widget_handler import WidgetHandler
-from source.gui.interfaces.interface import InterfaceData
 from source.multimedia_library.images import get_image
 from source.multimedia_library.sounds import sounds
 from source.pan_zoom_sprites.pan_zoom_ship_classes.pan_zoom_ship_draw import PanZoomShipDraw

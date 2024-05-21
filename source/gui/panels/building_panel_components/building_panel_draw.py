@@ -33,7 +33,6 @@ class BuildingPanelDraw:
         if selected_planet.owner == -1:
             return
 
-
         # draw owner
         drawText(self.win, f"owner: {config.app.players[selected_planet.owner].name}", self.frame_color, (
             x + self.spacing_x, self.world_y, self.get_screen_width(), 20), self.font, "left")

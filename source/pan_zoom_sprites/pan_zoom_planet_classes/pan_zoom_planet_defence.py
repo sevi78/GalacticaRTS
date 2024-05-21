@@ -4,6 +4,7 @@ import time
 
 import pygame
 
+from source.configuration.game_config import config
 from source.draw.circles import draw_electromagnetic_impulse, draw_dashed_circle
 from source.draw.scope import scope
 from source.draw.zigzag_line import draw_zigzag_line
@@ -11,14 +12,11 @@ from source.factories.building_factory import building_factory
 from source.gui.widgets.moving_image import MovingImage
 from source.gui.widgets.progress_bar import ProgressBar
 from source.handlers.color_handler import colors
-from source.handlers.mouse_handler import mouse_handler
 from source.handlers.pan_zoom_handler import pan_zoom_handler
-from source.multimedia_library.images import get_image
-
-from source.multimedia_library.sounds import sounds
-from source.handlers.weapon_handler import attack, launch_missile
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
-from source.configuration.game_config import config
+from source.handlers.weapon_handler import attack, launch_missile
+from source.multimedia_library.images import get_image
+from source.multimedia_library.sounds import sounds
 
 MISSILE_LAUNCH_INTERVAL = 2
 EMP_PULSE_INTERVAL = 7

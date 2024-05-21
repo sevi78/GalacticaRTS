@@ -3,7 +3,6 @@ import pygame
 from source.configuration.game_config import config
 from source.gui.event_text import event_text
 from source.gui.widgets.building_widget import BuildingWidget
-
 from source.handlers.file_handler import load_file
 from source.multimedia_library.sounds import sounds
 

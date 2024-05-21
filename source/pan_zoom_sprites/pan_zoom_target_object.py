@@ -1,8 +1,7 @@
+from source.configuration.game_config import config
 from source.draw.arrow import ArrowCrossAnimatedArray
-
 from source.handlers.color_handler import colors
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_gif import PanZoomSprite
-from source.configuration.game_config import config
 
 
 class PanZoomTargetObject(PanZoomSprite):

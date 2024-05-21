@@ -1,7 +1,4 @@
 import random
-import sys
-
-import pygame
 
 # from source.multimedia_library.images import get_image
 from source.configuration.game_config import config

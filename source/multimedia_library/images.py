@@ -1,7 +1,6 @@
 import os
 import time
 from functools import lru_cache
-from pprint import pprint
 
 import pygame
 

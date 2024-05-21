@@ -5,11 +5,9 @@ import pygame
 
 import source.handlers.weapon_handler
 from source.configuration.game_config import config
-from source.factories.building_factory import building_factory
 from source.factories.planet_factory import planet_factory
 from source.factories.weapon_factory import weapon_factory
 from source.game_play import enemy_handler
-from source.handlers import weapon_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 
 

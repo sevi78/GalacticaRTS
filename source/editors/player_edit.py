@@ -478,7 +478,7 @@ class PlayerEdit(EditorBase):
                     moveable=False,
                     include_text=True,
                     layer=self.layer,
-                    onClick=lambda player_index_ = player_index: self.navigate_to_space_harbor(player_index_),
+                    onClick=lambda player_index_=player_index: self.navigate_to_space_harbor(player_index_),
                     name=f"space harbor_icon{player_index}",
                     textColour=self.frame_color,
                     font_size=12,
@@ -573,9 +573,10 @@ class PlayerEdit(EditorBase):
             space_harbor_icon._hidden = "space harbor" not in config.app.players[player].get_all_buildings()
 
     def navigate_to_space_harbor(self, player_index):
-        space_harbor = [i for i in sprite_groups.planets.sprites() if i.owner == player_index and "space harbor" in i.buildings]
+        space_harbor = [i for i in sprite_groups.planets.sprites() if
+                        i.owner == player_index and "space harbor" in i.buildings]
 
-        print(space_harbor, player_index )
+        print(space_harbor, player_index)
         if space_harbor:
             navigate_to(space_harbor[0])
 

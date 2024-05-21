@@ -5,7 +5,7 @@ from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.handlers.position_handler import get_random_pos
 from source.handlers.widget_handler import WidgetHandler
-from source.multimedia_library.images import get_image, get_gif
+from source.multimedia_library.images import get_image
 from source.pan_zoom_sprites.pan_zoom_collectable_item import PanZoomCollectableItem
 from source.text.info_panel_text_generator import info_panel_text_generator
 from source.universe.celestial_objects.asteroid import Asteroid

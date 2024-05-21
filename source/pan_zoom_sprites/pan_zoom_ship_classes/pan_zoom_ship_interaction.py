@@ -1,8 +1,8 @@
 import random
 
+from source.configuration.game_config import config
 from source.interaction.interaction_handler import InteractionHandler
 from source.multimedia_library.sounds import sounds
-from source.configuration.game_config import config
 
 
 class PanZoomShipInteraction(InteractionHandler):

@@ -1,8 +1,8 @@
 import random
 
-from source.factories.building_factory import building_factory
-from source.economy.economy_handler import economy_handler
 from source.configuration.game_config import config
+from source.economy.economy_handler import economy_handler
+from source.factories.building_factory import building_factory
 
 
 def get_sum_up_to_n(dict, n):

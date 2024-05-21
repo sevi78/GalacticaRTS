@@ -1,5 +1,7 @@
 import random
+
 import pygame
+
 from a_star_node_path_finding import Node, astar
 
 

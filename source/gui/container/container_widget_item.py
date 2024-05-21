@@ -213,8 +213,6 @@ class ContainerWidgetItem(TextWrap):
         else:
             self.text += f", index: {self.index}"
 
-
-
     def draw_text(self) -> None:
         if self.parent:
             text_width = self.parent.world_width - (WIDGET_SIZE * 2)

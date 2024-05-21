@@ -121,7 +121,7 @@ class EnemyHandler(InterfaceData):
 
         x, y = pan_zoom_handler.screen_2_world(planet.screen_x, planet.screen_y)
 
-        attitude = 0#random.randint(0, 100)
+        attitude = 0  # random.randint(0, 100)
         attitude_bool = 0 if attitude < 50 else 1
 
         ufo = PanZoomUfo(self.win,
