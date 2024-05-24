@@ -266,6 +266,9 @@ class LevelEdit(EditorBase):
 
     def set_selector_current_value(self):
         """updates the selectors values"""
+        if not self.level_handler.data:
+            return
+
         for i in self.selectors:
             if i.key in self.level_handler.data["globals"]:
                 i.set_current_value(self.level_handler.data["globals"][i.key])

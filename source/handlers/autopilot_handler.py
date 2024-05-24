@@ -77,7 +77,7 @@ class AutopilotHandler:
             pygame.draw.line(self.parent.win, (0, 255, 0), self.parent.rect.center, nearest.rect.center)
 
     def update(self):
-        self.draw_debug_lines()
+        # self.draw_debug_lines()
         self.set_task_change_interval()
 
         if self.task_change_time_reached():

@@ -18,6 +18,8 @@
     "min_dist_to_other_ships_max": 200,
     "minerals": 0,
     "minerals_max": 1000,
+    "orbit_object_id": -1,
+    "orbit_object_name": "",
     "orbit_radius": 130,
     "orbit_radius_max": 200,
     "orbit_speed": 0.5,
@@ -30,7 +32,8 @@
     "upgrade_factor": 1.5,
     "upgrade_factor_max": 3.0,
     "water": 0,
-    "water_max": 1000
+    "water_max": 1000,
+    "autopilot": false
   },
   "spacehunter": {
     "owner": 0,
@@ -51,6 +54,8 @@
     "min_dist_to_other_ships_max": 200,
     "minerals": 0,
     "minerals_max": 100,
+    "orbit_object_id": -1,
+    "orbit_object_name": "",
     "orbit_radius": 130,
     "orbit_radius_max": 200,
     "orbit_speed": 0.5,
@@ -63,7 +68,8 @@
     "upgrade_factor": 1.5,
     "upgrade_factor_max": 3.0,
     "water": 0,
-    "water_max": 100
+    "water_max": 100,
+    "autopilot": false
   },
   "spaceship": {
     "owner": 0,
@@ -84,6 +90,8 @@
     "min_dist_to_other_ships_max": 200,
     "minerals": 0,
     "minerals_max": 300,
+    "orbit_object_id": -1,
+    "orbit_object_name": "",
     "orbit_radius": 130,
     "orbit_radius_max": 200,
     "orbit_speed": 0.5,
@@ -96,7 +104,8 @@
     "upgrade_factor": 1.5,
     "upgrade_factor_max": 3.0,
     "water": 0,
-    "water_max": 400
+    "water_max": 400,
+    "autopilot": false
   },
   "spacestation": {
     "owner": 0,
@@ -117,6 +126,8 @@
     "min_dist_to_other_ships_max": 200,
     "minerals": 5000,
     "minerals_max": 10000,
+    "orbit_object_id": -1,
+    "orbit_object_name": "",
     "orbit_radius": 130,
     "orbit_radius_max": 200,
     "orbit_speed": 0.5,
@@ -129,7 +140,8 @@
     "upgrade_factor": 1.5,
     "upgrade_factor_max": 3.0,
     "water": 5000,
-    "water_max": 10000
+    "water_max": 10000,
+    "autopilot": false
   },
   "rescue drone": {
     "owner": 0,
@@ -150,6 +162,8 @@
     "min_dist_to_other_ships_max": 200,
     "minerals": 5000,
     "minerals_max": 10000,
+    "orbit_object_id": -1,
+    "orbit_object_name": "",
     "orbit_radius": 130,
     "orbit_radius_max": 200,
     "orbit_speed": 0.5,
@@ -162,6 +176,7 @@
     "upgrade_factor": 1.5,
     "upgrade_factor_max": 3.0,
     "water": 5000,
-    "water_max": 10000
+    "water_max": 10000,
+    "autopilot": false
   }
 }

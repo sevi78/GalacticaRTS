@@ -51,8 +51,8 @@
     },
     "10": {
         "widget_name": "SettingsEdit",
-        "world_x": 610.0,
-        "world_y": 30
+        "world_x": 609.0,
+        "world_y": 32
     },
     "11": {
         "widget_name": "LevelSelect",
@@ -74,12 +74,12 @@
         "world_x": 1310,
         "world_y": 375
     },
-    "20": {
+    "21": {
         "widget_name": "ships_container_filter",
         "world_x": 1825,
         "world_y": 25
     },
-    "21": {
+    "22": {
         "widget_name": "planets_container_filter",
         "world_x": 1825,
         "world_y": 315

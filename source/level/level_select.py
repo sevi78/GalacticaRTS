@@ -18,6 +18,14 @@ class LevelSelect(EditorBase):
         # lists
         self.data = file_handler.get_level_list()
 
+        # display_rect
+        self.button_display_rect = pygame.Rect(
+                self.world_x + self.text_spacing,
+                self.world_y + TOP_SPACING + self.text_spacing * 3,
+                self.frame.get_rect().width - self.text_spacing * 2,
+                self.frame.get_rect().height - self.text_spacing - (self.text_spacing * 3)
+                )
+
         #  widgets
         self.widgets = []
 
@@ -53,64 +61,62 @@ class LevelSelect(EditorBase):
                         i.tooltip = "move to this solar systems"
 
     def create_icons(self):
-        rows = 3
-        columns = 3
-        max_button_height = pygame.display.get_surface().get_height() - (TOP_SPACING + self.text_spacing * 3)
-        available_height = max_button_height - (rows - 1) * self.text_spacing * 3
-        max_button_size = available_height // rows
-        button_size = min(190, max_button_size)  # Set the initial button size
+        # get data:
         data = sorted(self.data, key=lambda x: int(x.split('_')[1].split('.')[0]))
-        x = self.text_spacing * 3  # Add a border on the left
-        y = self.text_spacing * 3  # Add a border on the top
+        item_amount = len(data)
+        rows, columns, item_width, item_height = self.calculate_grid(item_amount, self.button_display_rect.width + self.text_spacing * 2, self.button_display_rect.height + self.text_spacing * 2)
 
-        for index, i in enumerate(data):
-            level = i.split('_')[1].split('.json')[0]
-            level_dict = load_file(f"level_{level}.json", folder="levels")
-            tooltip = ""  # tooltip_generator.create_level_tooltip(level, level_dict)
-            infotext = info_panel_text_generator.create_create_info_panel_level_text(level, level_dict)
+        # arrange in rows and colums
+        for row in range(rows):
+            for col in range(columns):
+                item_index = row * columns + col
+                if item_index >= item_amount:
+                    break
 
-            icon = ImageButton(win=self.win,
-                    x=self.get_screen_x() + x,
-                    y=self.get_screen_y() + y + TOP_SPACING,
-                    width=button_size,
-                    height=button_size,
-                    isSubWidget=False,
-                    parent=self,
-                    image=pygame.transform.scale(get_image(f"{i.split('.json')[0]}.png"), (button_size, button_size)),
-                    tooltip=tooltip,
-                    frame_color=self.frame_color,
-                    moveable=False,
-                    include_text=True,
-                    layer=self.layer,
-                    onClick=lambda level_=level: self.select_level(level_),
-                    name=i,
-                    text=level,
-                    textColour=self.frame_color,
-                    font_size=50,
-                    info_text=infotext,
-                    info_panel_alpha=255
-                    )
-            self.buttons.append(icon)
-            self.widgets.append(icon)
+                # get data from item_index
+                i = data[item_index]
+                level = i.split('_')[1].split('.json')[0]
+                level_dict = load_file(f"level_{level}.json", folder="levels")
+                tooltip = ""  # tooltip_generator.create_level_tooltip(level, level_dict)
+                infotext = info_panel_text_generator.create_create_info_panel_level_text(level, level_dict)
 
-            x += button_size  # Add the button size and the border for the next column
+                icon = ImageButton(
+                        win=self.win,
+                        x=self.get_screen_x() + (col * item_height) + self.text_spacing,
+                        y=self.get_screen_y() + (row * item_height) + TOP_SPACING + self.text_spacing * 3,
+                        width=item_height,
+                        height=item_height,
+                        isSubWidget=False,
+                        parent=self,
+                        image=pygame.transform.scale(get_image(f"{i.split('.json')[0]}.png"), (
+                            item_height, item_height)),
+                        tooltip=tooltip,
+                        frame_color=self.frame_color,
+                        moveable=False,
+                        include_text=True,
+                        layer=self.layer,
+                        onClick=lambda level_=level: self.select_level(level_),
+                        name=i,
+                        text=level,
+                        textColour=self.frame_color,
+                        font_size=50,
+                        info_text=infotext,
+                        info_panel_alpha=255
+                        )
+                self.buttons.append(icon)
+                self.widgets.append(icon)
 
-            # Reset x and increment y to start a new row
-            if (index + 1) % columns == 0:
-                x = self.text_spacing * 3  # Reset x to add the border on the left for the new row
-                y += button_size  # Add the button size and the border for the next row
-
-        # Calculate the max height based on the number of icons created
-        self.max_height = 900  # self.world_y + 200 + min(y + button_size + self.text_spacing * 3, max_button_height)
+        # set max_height of editor
+        self.max_height = (rows * item_height) + self.text_spacing * 3 + TOP_SPACING
 
     def select_level(self, i: str):
         # convert level string to int and reduce -1 to make sure the previous level gets checked for success
-        level_number = int(i)
-        if level_number != 0:
-            level_number -= 1
+        previous_level_number = int(i)
+        if previous_level_number != 0:
+            previous_level_number -= 1
 
         # check for success of previous level
-        if self.parent.level_handler.level_successes[str(level_number)]:
+        if self.parent.level_handler.level_successes[str(previous_level_number)]:
             # if success, load level
             self.parent.level_handler.load_level(f"level_{i}.json", "levels")
             self.hide()
@@ -134,3 +140,12 @@ class LevelSelect(EditorBase):
         if not self._hidden and not self._disabled:
             self.draw_frame()
             self.draw_text(self.world_x + self.text_spacing, self.world_y + TOP_SPACING + self.text_spacing, 200, 30, f"Select Level:    (current level: {config.level}) ")
+
+            self.button_display_rect = pygame.Rect(
+                    self.world_x + self.text_spacing,
+                    self.world_y + TOP_SPACING + self.text_spacing * 3,
+                    self.frame.get_rect().width - self.text_spacing * 2,
+                    self.frame.get_rect().width - self.text_spacing * 2
+                    )
+
+            # pygame.draw.rect(self.win, colors.outside_screen_color, self.button_display_rect, 1)

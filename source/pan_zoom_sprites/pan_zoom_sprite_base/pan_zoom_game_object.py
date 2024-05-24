@@ -145,15 +145,15 @@ class PanZoomGameObject(PanZoomSprite, InteractionHandler):
         if direction.length() != 0:
             direction.normalize()
         else:
-            print("move_towards_target error! direction vector length is zero.")
+            # print("move_towards_target error! direction vector length is zero.")
             return
         displacement = direction * self.speed * config.game_speed
         time_steps = int(distance / self.speed) / self.get_zoom()
         if time_steps != 0:
             self.world_x += displacement.x / time_steps
             self.world_y += displacement.y / time_steps
-        else:
-            print("move_towards_target error! time_steps is zero.")
+        # else:
+        #     print("move_towards_target error! time_steps is zero.")
 
     def explode(self, **kwargs):
         # self.explode_calls += 1

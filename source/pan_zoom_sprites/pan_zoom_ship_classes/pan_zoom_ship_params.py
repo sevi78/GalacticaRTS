@@ -93,6 +93,7 @@ class PanZoomShipParams:
         self.buildings = []
 
         self.state_engine = PanZoomShipStateEngine(self)
+        self.state = "sleeping"
 
     def set_resources(self):
         self.resources = {
@@ -146,7 +147,7 @@ class PanZoomShipParams:
                                                                                               "energy"] * config.game_speed
                                 self.flickering()
                             else:
-                                event_text.set_text("PanZoomShip reloaded successfully!!!", obj=self)
+                                event_text.set_text(f"{self.name} reloaded successfully!!!", obj=self)
                                 sounds.stop_sound(self.sound_channel)
 
                 if self.energy_reloader.type == "sun":
@@ -163,7 +164,7 @@ class PanZoomShipParams:
                             self.energy_reloader.energy -= self.energy_reload_rate * config.game_speed
                             self.flickering()
                         else:
-                            event_text.set_text("PanZoomShip reloaded successfully!!!", obj=self)
+                            event_text.set_text(f"{self.name} reloaded successfully!!!", obj=self)
                             sounds.stop_sound(self.sound_channel)
         else:
             sounds.stop_sound(self.sound_channel)

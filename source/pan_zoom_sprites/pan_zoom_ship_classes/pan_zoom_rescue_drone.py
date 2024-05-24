@@ -12,11 +12,13 @@ class PanZoomRescueDrone(PanZoomShip):
         del self.pathfinding_manager
         del self.progress_bar
 
-    def set_target(self):
+    def set_target(self, **kwargs):
         if self.target_set:
             return
 
-        target = sprite_groups.get_hit_object(lists=["ships"])
+        target = kwargs.get("target", None)
+        if not target:
+            target = sprite_groups.get_hit_object(lists=["ships"])
         if target == self:
             return
 

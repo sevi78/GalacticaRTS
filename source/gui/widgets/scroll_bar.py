@@ -56,6 +56,9 @@ class ScrollBar:
                 config.get("ui_rounded_corner_radius_small"))
 
         # calculate height of the inner rect
+        if len(self.parent.widgets) - self.parent.visible_index_range + 1 == 0:
+            return
+
         height = self.world_height / (len(self.parent.widgets) - self.parent.visible_index_range + 1)
 
         # calculate the position of the inner rect

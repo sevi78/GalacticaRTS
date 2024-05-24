@@ -26,6 +26,7 @@ class PanZoomShipStateEngine:
 
     def set_state(self, state) -> None:
         self.state = state
+        self.parent.state = self.state
         # if self.parent.move_stop > 0:
         #     self.state = "move_stop"
         #
@@ -80,7 +81,7 @@ class PanZoomShipStateEngineDraw:
             "sleeping": "sleep.png",
             "orbiting": "orbit_icon.png",
             "autopilot": "autopilot.png",
-            "attacking": "attacking.png"
+            "attacking": "war_icon.png"
             }
         self.state_images = {
             "move_stop": ImageSprite(self.parent.win, x, y, STATE_IMAGE_SIZE, STATE_IMAGE_SIZE, get_image("noenergy_25x25.png"), parent=self.parent),

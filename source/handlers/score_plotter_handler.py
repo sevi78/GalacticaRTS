@@ -1,4 +1,5 @@
 import copy
+import math
 
 from source.configuration.game_config import config
 
@@ -89,7 +90,7 @@ class ScorePlotterHandler:
     end_cycle:              An integer representing the end cycle for the score history display.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.cycles = 0
         self.data = {}
         self.data_history = {}
@@ -99,7 +100,7 @@ class ScorePlotterHandler:
         self.start_cycle = 0
         self.end_cycle = 1
 
-    def set_data(self):
+    def set_data(self) -> None:
         """
         The set_data method in the ScorePlotterHandler class is responsible for setting the score data for each player
         by iterating over the players in the game configuration and storing their scores in the data dictionary.
@@ -112,7 +113,7 @@ class ScorePlotterHandler:
         for player_index, player in config.app.players.items():
             self.data[player_index] = player.score
 
-    def set_data_history(self):
+    def set_data_history(self) -> None:
         """
         he set_data_history method in the ScorePlotterHandler class is responsible for storing a copy of the current
         score data in the data_history dictionary, with the current cycle as the key.
@@ -125,7 +126,7 @@ class ScorePlotterHandler:
         """
         self.data_history[self.cycles] = copy.copy(self.data)
 
-    def set_data_history_display(self):
+    def set_data_history_display(self) -> None:
         """
         The set_data_history_display method in the ScorePlotterHandler class is responsible for creating a filtered
         dictionary of the score history data based on the specified range of cycles.
@@ -140,35 +141,33 @@ class ScorePlotterHandler:
         self.data_history_display = {cycle: self.data_history[cycle] for cycle in
                                      range(self.start_cycle, self.end_cycle) if cycle in self.data_history}
 
-    def get_data_history(self):
+    def get_data_history(self) -> dict:
         return self.data_history
 
-    def get_data_history_display(self):
+    def get_data_history_display(self) -> dict:
         return self.data_history_display
 
-    def calculate_visible_x_range(self, surface_width, plotter_x_pos, plotter_step_x):
-        """
-        The calculate_visible_x_range method in the ScorePlotterHandler class is responsible for determining the visible
-        range of cycles based on the surface width, plotter x position, and plotter step x.
+    def calculate_visible_x_range(self, surface_width, plotter_step_x) -> int:
+        range_ = int(surface_width / plotter_step_x)
 
-        Flow:
+        return range_
 
-        Calculate the width of the surface.
-        Calculate the start cycle by dividing the negative plotter x position by the plotter step x and taking the
-        integer part. If the result is negative, set the start cycle to 0.
-        Calculate the end cycle by adding the start cycle to the integer part of the width divided by the plotter
-        step x, and then adding 1.
+    def calculate_start_and_end_cycle(self, plotter_x_pos, plotter_step_x, range_) -> tuple[int, int]:
+        offset = math.floor(plotter_x_pos / plotter_step_x)
+        start_cycle = -offset
+        if start_cycle < 0:
+            start_cycle = 0
+        end_cycle = range_ - offset
+        max_key = max(self.data_history.keys())
+        if end_cycle > max_key:
+            end_cycle = max_key
+        return start_cycle, end_cycle
 
-        Outputs:
+    def set_start_and_end_cycles(self, surface_width, plotter_x_pos, plotter_step_x) -> None:
+        range_ = self.calculate_visible_x_range(surface_width, plotter_step_x)
+        self.start_cycle, self.end_cycle = self.calculate_start_and_end_cycle(plotter_x_pos, plotter_step_x, range_)
 
-        start_cycle: An integer representing the start cycle of the visible range.
-        end_cycle: An integer representing the end cycle of the visible range.
-        """
-        width = surface_width
-        self.start_cycle = max(0, int((-plotter_x_pos) / plotter_step_x))
-        self.end_cycle = self.start_cycle + int(width / plotter_step_x) + 1
-
-    def reset(self):
+    def reset(self) -> None:
         """
         The reset method in the ScorePlotterHandler class is responsible for resetting the cycles, data, and data
         history. It also calls the set_data and set_data_history methods to update the score data and history.
@@ -188,7 +187,7 @@ class ScorePlotterHandler:
         self.set_data()
         self.set_data_history()
 
-    def update(self):
+    def update(self) -> None:
         """
         The update method in the ScorePlotterHandler class is responsible for updating the score data, score history,
         and score history display for the next cycle.

@@ -1,3 +1,5 @@
+import math
+
 import pygame
 from pygame import Vector2
 
@@ -120,3 +122,22 @@ class PositionHandler:
     def set_center(self):
         self.center = (
             self.get_screen_x() + self.get_screen_width() / 2, self.get_screen_y() + self.get_screen_height() / 2)
+
+    def calculate_grid(self, item_amount, width, height):
+        """Calculate the optimal grid size and item size based on the number of items and display surface dimensions."""
+        columns = math.ceil(math.sqrt(item_amount))
+        rows = math.ceil(item_amount / columns)
+
+        # Adjust rows and columns to fit the items optimally
+        while columns * rows < item_amount:
+            if columns <= rows:
+                columns += 1
+            else:
+                rows += 1
+
+        # Ensure items are square and maintain the aspect ratio of the display surface
+        item_size = min(width // columns, height // rows)
+        item_width = item_size
+        item_height = item_size
+
+        return rows, columns, item_width, item_height

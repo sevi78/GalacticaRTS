@@ -141,6 +141,7 @@ class InfoPanelTextGenerator:
             return self.create_info_panel_rescue_drone_text(ship)
 
         text = f"{ship.name}:\n\n"
+        text += f"owner: {config.app.players[ship.owner].name}\n"
         text += f"experience: {int(ship.experience)}\n"
         text += f"rank: {ship.rank}\n"
         text += f"speed: {ship.speed}\n\n"
@@ -338,6 +339,7 @@ class InfoPanelTextGenerator:
 
     def create_info_panel_rescue_drone_text(self, ship):
         text = f"{ship.name}:\n\n"
+        text += f"owner: {config.app.players[ship.owner].name}\n"
         text += f"the rescue drone rescues ships that are lost in space by sending energy! send the drone to a ship that has run out of energy. the ship will get:\n\n"
         text += f"energy: {format_number(ship.energy, 1)}\n\n from the drone\n"
         return text

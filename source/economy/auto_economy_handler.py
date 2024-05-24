@@ -226,7 +226,7 @@ class AutoEconomyHandler(AutoEconomyHandlerSetters):
                 lost_ships = [ship for ship in ships if ship.state_engine.state == "move_stop"]
                 if lost_ships:
                     if rescue_drones > 0:
-                        [i for i in ships if i.name == "rescue drone"][0].set_target(lost_ships[0])
+                        [i for i in ships if i.name == "rescue drone"][0].set_target(target= lost_ships[0])
                     else:
                         building_factory.build("rescue drone", space_harbour_planet[0])
 
@@ -239,6 +239,12 @@ class AutoEconomyHandler(AutoEconomyHandlerSetters):
                     building_factory.build("cargoloader", space_harbour_planet[0])
                 elif spacestations < SPACESTATION_MAXIMUM:
                     building_factory.build("spacestation", space_harbour_planet[0])
+
+    def build_ship_weapons(self):
+        ships = self.player.get_all_ships()
+        weaponised_ships = [i for i in ships if i.name in ["spaceship", "spacehunter", "cargoloader"]]
+        if weaponised_ships:
+            print (f"build_ship_weapons:{weaponised_ships[0].weapon_handler.weapons}")
 
     def maximize_population_grow(self):
         # check if planet is able to grow population
@@ -351,6 +357,7 @@ class AutoEconomyHandler(AutoEconomyHandlerSetters):
             # build space harbour
             self.build_space_harbour()
             self.build_ship()
+            self.build_ship_weapons()
 
             # check if any building is building cue
             if len(self.building_widget_list) >= self.building_cue_max:

@@ -95,7 +95,7 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         PanZoomShipMoving.__init__(self, kwargs)
         PanZoomShipRanking.__init__(self)
         PanZoomShipDraw.__init__(self, kwargs)
-        PanZoomShipInteraction.__init__(self)
+        PanZoomShipInteraction.__init__(self, kwargs)
 
         # init vars
         self.is_spacestation = kwargs.get("is_spacestation", False)
@@ -111,6 +111,7 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         self.attack_distance_raw = 200
         self.property = "ship"
         self.rotate_correction_angle = SHIP_ROTATE_CORRECTION_ANGLE
+        self.orbit_object_name = kwargs.get("orbit_object_name", "")
         self.orbit_object = None
         self.orbit_angle = None
         self.collect_text = ""
@@ -359,6 +360,7 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
             else:
                 # self.target = self.pathfinding_manager.path[1].owner
                 self.pathfinding_manager.move_to_next_node()
+                self.enemy = None
 
             self.set_energy_reloader(target)
         else:

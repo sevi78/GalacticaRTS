@@ -93,6 +93,7 @@ class PlayerEdit(EditorBase):
         if self.show_plotter:
             self.score_plotter.enable()
             self.score_plotter.show()
+            self.score_plotter.reset()
         else:
             self.score_plotter.disable()
             self.score_plotter.hide()

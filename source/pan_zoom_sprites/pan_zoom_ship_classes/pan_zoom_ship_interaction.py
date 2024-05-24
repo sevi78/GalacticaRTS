@@ -6,13 +6,13 @@ from source.multimedia_library.sounds import sounds
 
 
 class PanZoomShipInteraction(InteractionHandler):
-    def __init__(self):
+    def __init__(self, kwargs):
         InteractionHandler.__init__(self)
         # functionality
         # self.orbiting = False
         self._selected = False
         self.target = None
-        self.autopilot = False
+        self.autopilot = kwargs.get("autopilot", False)
 
     # @property
     # def autopilot(self):

@@ -66,7 +66,7 @@ class ScorePlotter(EditorBase):
     font: Font object for rendering the text on the plotter surface.
     """
 
-    def __init__(self, win, x, y, width, height, **kwargs):
+    def __init__(self, win, x, y, width, height, **kwargs) -> None:
         EditorBase.__init__(self, win, x, y, width, height, isSubWidget=False, **kwargs)
         self.plotter_surface = pygame.surface.Surface((
             width - PLOTTER_SURFACE_GAP, PLOTTER_SURFACE_HEIGHT))
@@ -97,7 +97,7 @@ class ScorePlotter(EditorBase):
         # hide initially
         self.hide()
 
-    def create_selectors(self):
+    def create_selectors(self) -> None:
         x = self.world_x + self.world_width / 2 - ARROW_SIZE / 2
         y = self.world_y + self.plotter_surface.get_rect().height + 60
         self.selector_step_x = Selector(
@@ -149,7 +149,7 @@ class ScorePlotter(EditorBase):
         score_plotter_handler.plotter_x_pos = PLOTTER_X_POS_DEFAULT
         score_plotter_handler.plotter_step_x = PLOTTER_STEP_X_DEFAULT
 
-    def selector_callback(self, key, value, selector):
+    def selector_callback(self, key, value, selector) -> None:
         """ this is the selector_callback function called from the selector to return the values to the editor:
 
             The selector_callback method is called from a selector object to update the properties of the ScorePlotter
@@ -178,88 +178,48 @@ class ScorePlotter(EditorBase):
         if key == "plotter_x_pos":
             self.plotter_x_pos = value
             score_plotter_handler.plotter_x_pos = value  # + self.plotter_step_x
-            # score_plotter_handler.set_x_pos(value)
-            # print(f"{key}: {value}, {selector}")
 
-        score_plotter_handler.calculate_visible_x_range(self.plotter_surface.get_width(), self.plotter_x_pos, self.plotter_step_x)
+    def adjust_x_pos(self, endpos_x):
+        """
+        Adjusts the x position of the plotter if the end position exceeds the plotter surface width.
+        Ensures the new value is valid and updates the score_plotter_handler.
+        """
+        if score_plotter_handler.end_cycle < max(score_plotter_handler.data_history.keys()):
+            # score_plotter_handler.start_cycle += 1
+            # score_plotter_handler.end_cycle += 1
+            self.selector_plotter_x_pos.set_current_value(self.selector_plotter_x_pos.current_value - 1)
+            self.selector_callback("plotter_x_pos", self.selector_plotter_x_pos.current_value, self.plotter_x_pos)
 
-    def adjust_x_pos(self, endpos_x):  # not working :(
-        if endpos_x > self.plotter_surface.get_width():
-            self.selector_plotter_x_pos.set_current_value(self.selector_plotter_x_pos.current_value - self.plotter_step_x)
-            self.plotter_x_pos = self.selector_plotter_x_pos.current_value
-            # self.selector_callback("plotter_x_pos", self.selector_plotter_x_pos.current_value, self.selector_plotter_x_pos)
-            # self.selector_plotter_x_pos.current_value -=1
-            # self.plotter_x_pos = self.selector_plotter_x_pos.current_value
-            # score_plotter_handler.plotter_x_pos = self.plotter_x_pos
-
-    def adjust_step_x(self, endpos_x):  # doestnt work either
-        if endpos_x > self.plotter_surface.get_width():
-            self.selector_step_x.set_current_value(self.selector_step_x.current_value - 1)
-            self.selector_callback("step_x", self.selector_step_x.current_value, self.selector_step_x)
-
-    def adjust_y_factor(self, endpos_y):
+    def adjust_y_factor(self, endpos_y) -> None:
         if endpos_y < 0.0:
             self.selector_y_factor.set_current_value(self.selector_y_factor.current_value + 1)
             self.selector_callback("y_factor", self.selector_y_factor.current_value, self.selector_y_factor)
-            # self.y_factor = 1 / self.selector_y_factor.current_value
 
-    def draw_score_lines(self):
-        """
-        he draw_score_lines method is responsible for drawing the score lines on the plotter surface based on the data
-        history. It calculates the start and end positions for each line and draws them using the pygame.draw.line
-        function.
-
-        Flow:
-
-        Calculate the x and y positions for drawing the score lines.
-        Iterate over the data history, which contains the score data for each cycle.
-        For each cycle, iterate over the player dictionary, which contains the score for each player.
-        Check if there is a previous point to draw from by comparing the cycle to 0.
-        If there is a previous point, calculate the start and end positions for the line based on the previous score and
-        the current score.
-        Draw the line using the pygame.draw.line function, with the color based on the player index.
-        If the cycle is a multiple of 5, draw the cycle number as text on the plotter surface.
-        Otherwise, draw a dot as text on the plotter surface.
-        """
+    def draw_score_lines(self) -> None:
         x = self.plotter_surface.get_rect().x + self.plotter_x_pos
         y = self.plotter_surface.get_rect().bottom - 30
-
         for cycle, player_dict in score_plotter_handler.get_data_history_display().items():
-            # calculate x position
             start_pos_x = x + (cycle - 1) * self.plotter_step_x
-
-            # for every player
             for player_index, score in player_dict.items():
-                if cycle > 0:  # Ensure there is a previous point to draw from
-                    # Check if the previous cycle and player index exist in the data
-                    if ((cycle - 1) in score_plotter_handler.data_history_display
-                            and player_index in score_plotter_handler.data_history_display[cycle - 1]):
-                        # calculate y position
+                if cycle > 0:
+                    if ((cycle - 1) in score_plotter_handler.data_history_display and player_index in
+                            score_plotter_handler.data_history_display[cycle - 1]):
                         start_pos_y = y - score_plotter_handler.data_history_display[cycle - 1][
                             player_index] * self.y_factor
                         endpos_x = x + (cycle * self.plotter_step_x)
                         endpos_y = y - (score * self.y_factor)
-
-                        # draw lines
                         pygame.draw.line(
-                                self.plotter_surface,
-                                player_handler.get_player_color(player_index),
-                                (start_pos_x, start_pos_y),
-                                (endpos_x, endpos_y),
-                                1)
-
-                        # y_factor to make all visible
-                        # self.adjust_x_pos(endpos_x)
-                        # self.adjust_step_x(endpos_x)
+                                self.plotter_surface, player_handler.get_player_color(player_index),
+                                (start_pos_x, start_pos_y), (endpos_x, endpos_y), 1
+                                )
+                        self.adjust_x_pos(endpos_x)  # Ensure x_pos is adjusted
                         self.adjust_y_factor(endpos_y)
-
-            # draw grid
             if cycle % 5 == 0:
                 self.draw_text(start_pos_x, self.plotter_surface.get_rect().bottom - 15, 20, 12, str(cycle), win=self.plotter_surface, font=self.font)
             else:
                 self.draw_text(start_pos_x, self.plotter_surface.get_rect().bottom - 15, 20, 12, ".", win=self.plotter_surface, font=self.font)
 
-    def draw_plotter_surface(self):
+    def draw_plotter_surface(self) -> None:
         """
         The draw_plotter_surface method is responsible for drawing the plotter surface on the screen.
         It fills the surface with a dark color, draws a frame around it, and then calls the draw_score_lines method to
@@ -278,7 +238,20 @@ class ScorePlotter(EditorBase):
         self.draw_score_lines()
         self.win.blit(self.plotter_surface, (self.world_x, self.world_y))
 
-    def draw(self):
+    def reset(self):
+        self.selector_step_x.current_value = PLOTTER_STEP_X_DEFAULT
+        self.selector_y_factor.current_value = PLOTTER_Y_FACTOR_DEFAULT
+        self.selector_plotter_x_pos.current_value = PLOTTER_X_POS_DEFAULT
+
+        # set score plotter handler default values
+        score_plotter_handler.plotter_x_pos = PLOTTER_X_POS_DEFAULT
+        score_plotter_handler.plotter_step_x = PLOTTER_STEP_X_DEFAULT
+
+
+    def draw(self) -> None:
         if not self._hidden and not self._disabled:
-            score_plotter_handler.calculate_visible_x_range(self.plotter_surface.get_width(), self.plotter_x_pos, self.plotter_step_x)
+            # range_ = score_plotter_handler.calculate_visible_x_range(self.plotter_surface.get_width(), self.plotter_x_pos, self.plotter_step_x)
+            # print (score_plotter_handler.calculate_start_and_end_cycle( self.plotter_x_pos, self.plotter_step_x, range_))
+            # score_plotter_handler.set_start_and_end_cycles(score_plotter_handler.calculate_start_and_end_cycle( self.plotter_x_pos, self.plotter_step_x, range_))
+            score_plotter_handler.set_start_and_end_cycles(self.plotter_surface.get_width(), self.plotter_x_pos, self.plotter_step_x)
             self.draw_plotter_surface()
