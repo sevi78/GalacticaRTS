@@ -10,9 +10,9 @@ from source.gui.panels.building_panel_components.building_panel_draw import SPEC
 from source.handlers.color_handler import colors
 from source.handlers.diplomacy_handler import diplomacy_handler
 from source.handlers.pan_zoom_handler import pan_zoom_handler
-from source.handlers.player_handler import player_handler
 from source.multimedia_library.gif_handler import GifHandler
 from source.multimedia_library.images import get_image
+from source.player.player_handler import player_handler
 
 DEFAULT_ZOOM = 0.2
 TEXT_ZOOM = DEFAULT_ZOOM

@@ -16,7 +16,6 @@ from source.handlers.mouse_handler import MouseState, mouse_handler
 from source.handlers.orbit_handler import orbit_ship
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
-from source.handlers.player_handler import player_handler
 from source.handlers.position_handler import prevent_object_overlap
 from source.handlers.weapon_handler import WeaponHandler
 from source.handlers.widget_handler import WidgetHandler
@@ -31,6 +30,7 @@ from source.pan_zoom_sprites.pan_zoom_ship_classes.pan_zoom_ship_ranking import 
 from source.pan_zoom_sprites.pan_zoom_ship_classes.spacestation import Spacestation
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_game_object import PanZoomGameObject
 from source.pan_zoom_sprites.pan_zoom_target_object import PanZoomTargetObject
+from source.player.player_handler import player_handler
 from source.text.text_formatter import format_number
 
 

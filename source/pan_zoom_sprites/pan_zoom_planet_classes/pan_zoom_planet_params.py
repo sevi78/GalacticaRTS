@@ -4,9 +4,9 @@ from source.configuration.game_config import config
 from source.game_play.ranking import Ranking
 from source.gui.event_text import event_text
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
-from source.handlers.player_handler import player_handler
 from source.multimedia_library.images import get_image
 from source.multimedia_library.sounds import sounds
+from source.player.player_handler import player_handler
 from source.text.info_panel_text_generator import info_panel_text_generator
 
 

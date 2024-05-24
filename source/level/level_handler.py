@@ -11,9 +11,9 @@ from source.gui.event_text import event_text
 from source.handlers.file_handler import load_file, write_file, get_level_list
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
-from source.handlers.player_handler import player_handler
 from source.multimedia_library.images import get_image_names_from_folder
 from source.multimedia_library.screenshot import capture_screenshot
+from source.player.player_handler import player_handler
 from source.text.info_panel_text_generator import info_panel_text_generator
 from source.text.text_formatter import to_roman
 

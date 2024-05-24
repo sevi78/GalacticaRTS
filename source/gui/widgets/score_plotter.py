@@ -3,8 +3,8 @@ import pygame
 from source.configuration.game_config import config
 from source.editors.editor_base.editor_base import EditorBase
 from source.gui.widgets.selector import Selector
-from source.handlers.player_handler import player_handler
 from source.handlers.score_plotter_handler import score_plotter_handler
+from source.player.player_handler import player_handler
 
 ARROW_SIZE = 20
 FONT_SIZE = int(ARROW_SIZE * .8)
@@ -246,7 +246,6 @@ class ScorePlotter(EditorBase):
         # set score plotter handler default values
         score_plotter_handler.plotter_x_pos = PLOTTER_X_POS_DEFAULT
         score_plotter_handler.plotter_step_x = PLOTTER_STEP_X_DEFAULT
-
 
     def draw(self) -> None:
         if not self._hidden and not self._disabled:

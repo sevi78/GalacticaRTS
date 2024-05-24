@@ -12,7 +12,6 @@ from source.editors.settings_edit import SettingsEdit
 from source.editors.ship_edit import ShipEdit
 from source.editors.weapon_select import WeaponSelect
 from source.game_play.enemy_handler import enemy_handler
-from source.game_play.player import Player
 from source.gui.panels.advanced_settings_panel import AdvancedSettingsPanel
 from source.gui.panels.building_panel_components.building_panel import BuildingPanel
 from source.gui.panels.building_panel_components.game_time_widget import GameTime
@@ -25,7 +24,8 @@ from source.gui.tool_tip import ToolTip
 from source.gui.widgets.background_image import BackgroundGradient
 from source.handlers.debug_handler import debugger
 from source.handlers.file_handler import load_file
-from source.handlers.player_handler import player_handler
+from source.player.player import Player
+from source.player.player_handler import player_handler
 from source.trading.add_deal_edit import AddDealEdit
 from source.trading.deal_manager import DealManager
 from source.trading.trade_edit import TradeEdit

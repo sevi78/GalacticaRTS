@@ -10,7 +10,7 @@ from source.gui.widgets.zoom_scale import ZoomScale
 from source.level.level_edit import LevelEdit
 from source.level.level_select import LevelSelect
 from source.editors.filter_widget import FilterWidget
-from source.editors.player_edit import PlayerEdit
+from source.player.player_edit import PlayerEdit
 from source.factories.ship_factory import ShipFactory
 from source.game_play.cheat import Cheat
 from source.game_play.enemy_handler import enemy_handler
