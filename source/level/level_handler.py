@@ -220,7 +220,7 @@ class LevelHandler:
         event_text.planet_links = planet_factory.get_all_planet_names()
 
     def save_level(self, filename, folder):
-        data = self.generate_level_dict_from_scene(ignore_buildings=True, ignore_population= True)
+        data = self.generate_level_dict_from_scene(ignore_buildings=True, ignore_population=True)
         write_file(filename, folder, data)
 
         # save screenshot

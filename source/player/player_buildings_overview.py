@@ -75,7 +75,8 @@ class PlayerBuildingsOverview(EditorBase):
         self.max_height = y + TOP_SPACING + self.text_spacing * 3
         self.screen_width = x + (self.text_spacing * 2)
         self.draw_frame()
-        self.create_close_button(x=self.rect.topright[0] - self.text_spacing- button_size/2, y=self.world_y + TOP_SPACING)
+        self.create_close_button(x=self.rect.topright[
+                                       0] - self.text_spacing - button_size / 2, y=self.world_y + TOP_SPACING)
 
     def draw_bar_charts__(self):  # only all levels of building combined
         player = config.app.players[self.player_index]

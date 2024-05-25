@@ -80,7 +80,6 @@ class WidgetBaseMethods(ABC):
         if attr == 'height':
             self.screen_height = value
 
-
     def draw_frame(self, **kwargs):
         image = kwargs.get('image', None)
         rect = kwargs.get('rect', None)

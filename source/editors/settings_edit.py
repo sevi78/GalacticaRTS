@@ -38,7 +38,7 @@ class SettingsEdit(EditorBase):
             "ui_rounded_corner_radius_big": [_ for _ in range(3, 25)],
             "ui_rounded_corner_small_thickness": [_ for _ in range(0, 5)],
             "ui_rounded_corner_big_thickness": [_ for _ in range(0, 15)],
-            "enable_cross":[True,False],
+            "enable_cross": [True, False],
             "ui_cross_size": [_ for _ in range(3, 50)],
             "ui_cross_dash_length": [_ for _ in range(1, 20)],
             "ui_cross_thickness": [_ for _ in range(1, 10)],

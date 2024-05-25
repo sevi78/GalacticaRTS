@@ -5,7 +5,6 @@ from source.configuration.game_config import config
 from source.economy.economy_params import EconomyParams
 from source.factories.building_factory import building_factory
 from source.game_play.navigation import navigate_to
-from source.gui.event_text import event_text
 from source.gui.panels.building_panel_components.building_panel_constructor import BuildingPanelConstructor
 from source.gui.panels.building_panel_components.building_panel_draw import BuildingPanelDraw
 from source.gui.panels.building_panel_components.building_slot import BuildingSlot
@@ -16,7 +15,6 @@ from source.gui.widgets.building_button_widget import BuildingButtonWidget
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.handlers.color_handler import colors
 from source.multimedia_library.images import get_image
-from source.multimedia_library.sounds import sounds
 from source.text.info_panel_text_generator import info_panel_text_generator
 
 TOP_SPACING = 5

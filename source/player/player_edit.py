@@ -237,7 +237,8 @@ class PlayerEdit(EditorBase):
                     include_text=True,
                     layer=self.layer,
                     onClick=lambda player_index_=player_index: self.enable_auto_economy_edit(player_index_),
-                    on_hover_function= lambda player_index_=player_index: self.set_player_building_overview_player_index(player_index_),
+                    on_hover_function=lambda
+                        player_index_=player_index: self.set_player_building_overview_player_index(player_index_),
                     name=player,
                     textColour=self.frame_color,
                     font_size=12,
@@ -661,7 +662,6 @@ class PlayerEdit(EditorBase):
         if not self._hidden and not self._disabled:
             self.draw_frame()
             self.draw_text(self.world_x + self.text_spacing, self.world_y + TOP_SPACING + self.text_spacing, 200, 30, "Players:")
-
 
     def set_player_building_overview_player_index(self, player_index_):
         self.player_buildings_overview.player_index = player_index_
