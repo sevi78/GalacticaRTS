@@ -1,6 +1,7 @@
 {
     "monitor": 0,
     "draw_universe": true,
+    "enable_cross": false,
     "show_universe": true,
     "star_brightness": 100,
     "enable_game_events": true,
@@ -8,11 +9,11 @@
     "game_speed": 1,
     "player": 0,
     "players": 2,
-    "level": 0,
+    "level": 7,
     "show_player_colors": true,
     "ui_top_limit": 30,
     "ui_cross_dash_length": 3,
-    "ui_cross_size": 9,
+    "ui_cross_size": 5,
     "ui_cross_thickness": 1,
     "ui_scope_inner_circle_dash_length": 12,
     "ui_scope_outer_circle_dash_length": 24,
@@ -31,5 +32,6 @@
     "ui_tooltip_size": 10,
     "ui_show_cursor": true,
     "ui_cursor_size": 40,
-    "font_name": "segoeuiemoji"
+    "font_name": "segoeuiemoji",
+    "show_human_player_only": true
 }

@@ -26,6 +26,7 @@ class ImageButton(WidgetBase):
     def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
         super().__init__(win, x, y, width, height, isSubWidget, **kwargs)
         self.function = kwargs.get("function", None)
+        self.on_hover_function = kwargs.get("on_hover_function", None)
         self.layer = kwargs.get("layer", 3)
         self.parent = kwargs.get("parent")
         self.center = (
@@ -127,6 +128,11 @@ class ImageButton(WidgetBase):
 
                     if self.name == "close_button":
                         config.app.cursor.set_cursor("close")
+
+                    if self.on_hover_function:
+                        self.on_hover_function()
+
+
             else:
                 self.clicked = False
 

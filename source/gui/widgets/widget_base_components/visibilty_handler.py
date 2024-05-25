@@ -6,8 +6,7 @@ class VisibilityHandler:
         self._isSubWidget = isSubWidget
         self._hidden = False
         self._disabled = False
-        self.layer = kwargs.get("layer", None)
-        self.layers = kwargs.get("layers", None)
+        self.layer = kwargs.get("layer", 9)
         self.widgets = []
         if isSubWidget:
             self.hide()
@@ -25,20 +24,12 @@ class VisibilityHandler:
         for i in self.widgets:
             i.hide()
 
-        # if hasattr(self, "selectors"):
-        #     for i in self.selectors:
-        #         i.hide()
-
     def show(self):
         """shows self and its widgets
         """
         self._hidden = False
         for i in self.widgets:
             i.show()
-
-        # if hasattr(self, "selectors"):
-        #     for i in self.selectors:
-        #         i.show()
 
     def disable(self):
         self._disabled = True

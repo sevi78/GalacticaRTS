@@ -124,20 +124,6 @@ class BuildingPanel(WidgetBase, BuildingPanelConstructor, BuildingSlot, EconomyP
 
         return buildings
 
-    def destroy_building__(self, b):
-        print("destroy_building", b)
-        try:
-            self.parent.selected_planet.buildings.remove(b)
-        except ValueError as e:
-            print("destroy_building error:", b, e)
-
-        self.parent.selected_planet.calculate_production()
-        self.parent.selected_planet.calculate_population()
-        self.parent.selected_planet.set_population_limit()
-
-        event_text.text = f"you destroyed one {b}! You will not get anything back from it! ... what a waste ..."
-        sounds.play_sound(sounds.destroy_building)
-
     def reposition(self):
         win = pygame.display.get_surface()
         width = win.get_width()

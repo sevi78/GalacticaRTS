@@ -169,6 +169,7 @@ class InteractionHandler():  # (ResizeHandler):
         if value:
             if not self._hidden:
                 config.hover_object = self
+                # print("on hover", self.name)
         else:
             if config.hover_object == self:
                 config.hover_object = None

@@ -1,10 +1,14 @@
 from abc import ABC, abstractmethod
 
+import pygame
+
+from source.configuration.game_config import config
+from source.draw.rect import draw_transparent_rounded_rect
 from source.handlers.color_handler import colors
 from source.handlers.widget_handler import WidgetHandler
 
 
-class WidgetBaseParams:
+class WidgetBaseMethods(ABC):
     def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
         self.name = kwargs.get("name", self.__class__.__name__)
         self.win = win
@@ -21,11 +25,6 @@ class WidgetBaseParams:
 
         #  widgets
         self.widgets = []
-
-
-class WidgetBaseMethods(ABC, WidgetBaseParams):
-    def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
-        WidgetBaseParams.__init__(self, win, x, y, width, height, isSubWidget=False, **kwargs)
 
     def __repr__(self):
         return f'{type(self).__name__}(x = {self.screen_x}, y = {self.screen_y}, width = {self.screen_width}, height = {self.screen_height})'
@@ -80,6 +79,22 @@ class WidgetBaseMethods(ABC, WidgetBaseParams):
 
         if attr == 'height':
             self.screen_height = value
+
+
+    def draw_frame(self, **kwargs):
+        image = kwargs.get('image', None)
+        rect = kwargs.get('rect', None)
+
+        rect_surface = draw_transparent_rounded_rect(self.win, (0, 0, 0), self.surface_rect,
+                config.ui_rounded_corner_radius_small, config.ui_panel_alpha)
+
+        if image and rect:
+            rect_surface.blit(image, rect)
+            self.win.blit(rect_surface, self.surface_rect)
+
+        pygame.draw.rect(self.win, self.frame_color, self.surface_rect,
+                config.ui_rounded_corner_small_thickness, config.ui_rounded_corner_radius_small)
+        return rect_surface
 
     @abstractmethod
     def draw(self, **kwargs):

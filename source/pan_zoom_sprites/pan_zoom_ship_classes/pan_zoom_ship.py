@@ -349,8 +349,9 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         else:
             config.app.weapon_select.obj = self
 
-    def set_target(self):
-        target = sprite_groups.get_hit_object()
+    def set_target(self, **kwargs):
+        target = kwargs.get("target", sprite_groups.get_hit_object())
+
         if target == self:
             return
 

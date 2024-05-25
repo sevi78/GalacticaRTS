@@ -186,6 +186,7 @@ def calculate_gradient_color(start_color, end_color, percent, **kwargs):
     return r, g, b
 
 
-def get_average_color(image: pygame.surface.Surface):
-    color = pygame.transform.average_color(image, image.get_rect())
+def get_average_color(image: pygame.surface.Surface, **kwargs):
+    consider_alpha = kwargs.get("consider_alpha", False)
+    color = pygame.transform.average_color(image, image.get_rect(), consider_alpha)
     return color

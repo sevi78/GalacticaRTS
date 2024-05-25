@@ -111,6 +111,9 @@ class BuildingFactoryJsonDictReader:
         return list_
 
     def get_resource_categories(self) -> list[str]:
+        """ returns a list of all building categories except:
+            ignore_resources = ['planetary_defence', 'ship', 'weapons']
+        """
         ignore_resources = ['planetary_defence', 'ship', 'weapons']
         return [_ for _ in self.json_dict.keys() if not _ in ignore_resources]
 
@@ -230,7 +233,6 @@ class BuildingFactory(BuildingFactoryJsonDictReader):
         build_population_minimum = self.get_build_population_minimum_from_buildings_json(building)
         if build_population_minimum > receiver.population:
             event_text.text = "you must reach a population of minimum " + str(build_population_minimum) + " people to build a " + building + "!"
-
             sounds.play_sound("bleep", channel=7)
             return
 
@@ -242,10 +244,11 @@ class BuildingFactory(BuildingFactoryJsonDictReader):
             return
 
         defence_units = self.get_defence_unit_names()
+        ships = self.get_building_names("ship")
         civil_buildings = [i for i in receiver.buildings if not i in defence_units]
 
         if len(civil_buildings) + receiver.building_cue >= receiver.buildings_max:
-            if not building in defence_units:
+            if not building in defence_units and not building in ships:
                 event_text.text = "you have reached the maximum(" + str(receiver.buildings_max) + ") of buildings that can be build on " + receiver.name + "!"
                 sounds.play_sound("bleep", channel=7)
                 return

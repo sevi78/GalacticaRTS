@@ -35,6 +35,13 @@ class AutopilotHandler:
             math.dist(self.parent.rect.center, planet.rect.center) / pan_zoom_handler.zoom]
 
     def set_target(self) -> None:
+        # search sun
+        if self.parent.energy < self.parent.energy_max / 2:
+            nearest_sun = self.get_nearest_target([planet for planet in self.reachable_planets if planet.type == "sun"])
+            if nearest_sun:
+                self.parent.set_target(target=nearest_sun)
+                return
+
         self.set_reachable_planets()
         if self.reachable_planets:
             unexplored_planets = [planet for planet in self.reachable_planets if not planet.explored]

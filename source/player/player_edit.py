@@ -12,6 +12,7 @@ from source.handlers.diplomacy_handler import diplomacy_handler
 from source.handlers.image_handler import overblit_button_image
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.multimedia_library.images import get_image
+from source.player.player_buildings_overview import PlayerBuildingsOverview
 from source.player.player_handler import player_handler
 from source.text.info_panel_text_generator import info_panel_text_generator
 from source.text.text_formatter import format_number
@@ -73,6 +74,17 @@ class PlayerEdit(EditorBase):
 
         self.show_auto_economy_edit = True
 
+        # buildings_overview
+        self.player_buildings_overview = PlayerBuildingsOverview(
+                self.win,
+                self.world_x,
+                self.world_y,
+                400,
+                400,
+                False,
+                parent=self,
+                frame_corner_radius=10)
+
         # dirty hack to make attached editors hide at startup
         self.enable_plotter()
         self.enable_auto_economy_edit(0)
@@ -103,6 +115,7 @@ class PlayerEdit(EditorBase):
     def enable_auto_economy_edit(self, player_id: int):
         self.show_auto_economy_edit = not self.show_auto_economy_edit
         self.auto_economy_edit.player_id = player_id
+        self.player_buildings_overview.player_index = player_id
         self.auto_economy_edit.set_player(player_id)
 
         if self.show_auto_economy_edit:
@@ -224,6 +237,7 @@ class PlayerEdit(EditorBase):
                     include_text=True,
                     layer=self.layer,
                     onClick=lambda player_index_=player_index: self.enable_auto_economy_edit(player_index_),
+                    on_hover_function= lambda player_index_=player_index: self.set_player_building_overview_player_index(player_index_),
                     name=player,
                     textColour=self.frame_color,
                     font_size=12,
@@ -393,7 +407,7 @@ class PlayerEdit(EditorBase):
                         moveable=False,
                         include_text=True,
                         layer=self.layer,
-                        onClick=lambda: print("no function"),
+                        onClick=lambda player_index_=player_index: self.open_player_buildings_overview(player_index_),
                         name="buildings_icon",
                         textColour=self.frame_color,
                         font_size=12,
@@ -577,7 +591,7 @@ class PlayerEdit(EditorBase):
         space_harbor = [i for i in sprite_groups.planets.sprites() if
                         i.owner == player_index and "space harbor" in i.buildings]
 
-        print(space_harbor, player_index)
+        # print(space_harbor, player_index)
         if space_harbor:
             navigate_to(space_harbor[0])
 
@@ -647,3 +661,11 @@ class PlayerEdit(EditorBase):
         if not self._hidden and not self._disabled:
             self.draw_frame()
             self.draw_text(self.world_x + self.text_spacing, self.world_y + TOP_SPACING + self.text_spacing, 200, 30, "Players:")
+
+
+    def set_player_building_overview_player_index(self, player_index_):
+        self.player_buildings_overview.player_index = player_index_
+
+    def open_player_buildings_overview(self, player_index_):
+        self.player_buildings_overview.player_index = player_index_
+        self.player_buildings_overview.set_visible()

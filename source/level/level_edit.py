@@ -437,7 +437,11 @@ class LevelEdit(EditorBase):
 
         # used for planets
         selected_planet = config.app.selected_planet
+        # planet_id = str(selected_planet.id)
+        # if planet_id in config.app.level_handler.data["celestial_objects"].keys():
+        #     del config.app.level_handler.data["celestial_objects"][planet_id]
         planet_factory.delete_planet(selected_planet)
+
 
     def listen(self, events):
         """show or hide, navigate to planet on selection"""

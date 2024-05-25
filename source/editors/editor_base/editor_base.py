@@ -13,7 +13,8 @@ from source.multimedia_library.images import get_image
 
 
 class EditorBase(WidgetBase):
-    """The EditorBase class is a base class for editors in a pygame application. It provides methods for setting the
+    """
+    The EditorBase class is a base class for editors in a pygame application. It provides methods for setting the
     object to be edited, setting the edit mode, drawing text and frames, and initializing the class with necessary
     parameters.
 
@@ -49,22 +50,56 @@ class EditorBase(WidgetBase):
     draw_text(self, x, y, width, height, text): Draws text on the window.
     draw_frame(self): Draws a frame on the window.
 
+
+    args:
+    
+        win                     the surface to blit on
+        x                       The x-coordinate of the editor's position: world_x position
+        y                       The y-coordinate of the editor's position.: world_y position
+        width                   world_width
+        height                  world_height
+        isSubWidget             default = False, use this for sub_widgets that need to listen the events
+
+    **kwargs:
+
+        EditorBase:
+        obj                     the object to be edited. default None
+        parent                  the widgets parent. default None
+        layer                   the layer to blit on. default 9
+        ignore_other_editors    if set to true, the widget is getting hidden if any other editor is open, default False
+        drag_enabled            enables dragging for the editor. default True
+        save                    allows the editor to save its position after app quit(use settings_edit to save)
+        frame_corner_radius     the radius of the frame_corner, default config.ui_rounded_corner_radius_big
+        frame_corner_thickness  the thickness of the frame_corner, default config.ui_rounded_corner_big_thickness
+    
+    
+        WidgetBaseMethods:
+        name                    the name of the widget. default __class__.__name__
+        property                some property variable. default None
+        key                     is used for some Buttons to display images generated
+        id                      id of the widget, don't mess around with this
+        info_text               if info_text is set, it will send some data to info_panel on_hover
+        info_panel_alpha        the alpha value to display the info_panel image send via info_text
+    
+        ImageHandler:
+        image_name_small        the name of the small image to display
+        image_name_big          the name of the big image to display
+        image                   the image to display (pygame.Surface)
+        image_alpha             alpha value for the image
+        image_raw               the backup for image, used as non pixelated reference for scaling
+        outline_thickness       thickness of the image outline
+        outline_threshold       threshold to define the outline
+
+
     Fields:
 
-    obj: The object to be edited.
-    win: The window to draw on.
-    x: The x-coordinate of the editor's position.
-    y: The y-coordinate of the editor's position.
-    _width: The width of the editor.
-    _height: The height of the editor.
-    arrow_size: The size of the arrow.
-    spacing_x: The horizontal spacing.
-    spacing_y: The vertical spacing.
-    parent: The parent object.
-    layer: The layer of the editor.
-    font: The font used for text.
-    frame_color: The color of the frame.
-    frame: The surface for the frame.
+    spacing_x                   The horizontal spacing.
+    spacing_y                   The vertical spacing.
+    text_spacing                the spacing between frame border and text
+    font                        The font used for text.
+    frame_color                 The color of the frame.
+    frame                       The surface for the frame.
+    rect                        the rect of the frame
     """
 
     def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
@@ -83,11 +118,12 @@ class EditorBase(WidgetBase):
         self.spacing_x = width / 2 * .8
         self.spacing_y = SPACING_Y
         self.parent = kwargs.get("parent", None)
-        self.layer = kwargs.get("layer", 9)
         self.ignore_other_editors = kwargs.get("ignore_other_editors", False)
         self.font = pygame.font.SysFont(config.font_name, FONT_SIZE)
         self.text_spacing = 20
         self.frame_color = colors.ui_dark
+        self.frame_corner_radius = kwargs.get("frame_corner_radius", config.ui_rounded_corner_radius_big)
+        self.frame_corner_thickness = kwargs.get("frame_corner_thickness", config.ui_rounded_corner_big_thickness)
         self.frame = pygame.surface.Surface((self.world_width, self.world_height))
         self.rect = self.frame.get_rect()
         self.rect.x, self.rect.y = self.world_x, self.world_y
@@ -149,7 +185,8 @@ class EditorBase(WidgetBase):
             return
         for i in self.parent.editors:
             if not i == self:
-                i.hide()
+                if not i.ignore_other_editors:
+                    i.hide()
 
     def set_visible(self):
         # toggle visibility of the editor
@@ -224,11 +261,14 @@ class EditorBase(WidgetBase):
         self.buttons.append(load_button)
         self.widgets.append(load_button)
 
-    def create_close_button(self):
+    def create_close_button(self, **kwargs):
         button_size = 32
+        x = kwargs.get("x", self.get_screen_x() + self.get_screen_width() - button_size - button_size / 2)
+        y = kwargs.get("y", self.world_y + TOP_SPACING + button_size / 2)
+
         close_icon = ImageButton(win=self.win,
-                x=self.get_screen_x() + self.get_screen_width() - button_size - button_size / 2,
-                y=self.world_y + TOP_SPACING + button_size / 2,
+                x=x,
+                y=y,
                 width=button_size,
                 height=button_size,
                 isSubWidget=False,
@@ -249,13 +289,17 @@ class EditorBase(WidgetBase):
         self.buttons.append(close_icon)
         self.widgets.append(close_icon)
 
-    def create_selectors_from_dict(self, x, y, dict_):
+    def create_selectors_from_dict(self, x, y, dict_, **kwargs):
+        arrow_size = kwargs.get("arrow_size", ARROW_SIZE)
+        font_size = int(arrow_size * .8)
+        self.spacing_y = arrow_size * 1.3
+
         for key, value in dict_:
             # booleans
             if type(value) is bool:
                 self.selector_lists[key] = self.boolean_list
-                self.selectors.append(Selector(self.win, x, self.world_y + y, ARROW_SIZE, self.frame_color, 9,
-                        self.spacing_x, {"list_name": f"{key}_list", "list": self.boolean_list}, self, FONT_SIZE))
+                self.selectors.append(Selector(self.win, x, self.world_y + y, arrow_size, self.frame_color, 9,
+                        self.spacing_x, {"list_name": f"{key}_list", "list": self.boolean_list}, self, font_size))
 
                 y += self.spacing_y
 
@@ -264,14 +308,14 @@ class EditorBase(WidgetBase):
                 if not key in self.selector_lists.keys():
                     self.selector_lists[key] = self.default_list
 
-                self.selectors.append(Selector(self.win, x, self.world_y + y, ARROW_SIZE, self.frame_color, 9,
-                        self.spacing_x, {"list_name": f"{key}_list", "list": self.selector_lists[key]}, self, FONT_SIZE,
+                self.selectors.append(Selector(self.win, x, self.world_y + y, arrow_size, self.frame_color, 9,
+                        self.spacing_x, {"list_name": f"{key}_list", "list": self.selector_lists[key]}, self, font_size,
                         repeat_clicks=False))
 
                 y += self.spacing_y
 
         # set max height to draw the frame dynamical
-        self.max_height = y + ARROW_SIZE
+        self.max_height = y + arrow_size
 
     def close(self):
         config.set_global_variable("edit_mode", False)
@@ -362,8 +406,8 @@ class EditorBase(WidgetBase):
 
     def draw_frame(self, **kwargs):
         # get corner radius and thickness
-        corner_radius = kwargs.get("corner_radius", config.ui_rounded_corner_radius_big)
-        corner_thickness = kwargs.get("corner_thickness", config.ui_rounded_corner_big_thickness)
+        corner_radius = kwargs.get("corner_radius", self.frame_corner_radius)
+        corner_thickness = kwargs.get("corner_thickness", self.frame_corner_thickness)
 
         # scale frame
         self.frame = pygame.transform.scale(self.frame, (self.get_screen_width(), self.max_height))

@@ -118,6 +118,10 @@ class SpriteGroups:  # original
     def convert_sprite_groups_to_image_widget_list(self, sprite_group_name, sort_by=None, reverse=True) -> list:
         # If a sort_by attribute is provided, sort the sprite_group by that attribute
         sprite_group = getattr(self, sprite_group_name)
+
+        if config.show_human_player_only:
+            sprite_group = [i for i in sprite_group if i.owner == 0]
+
         if sort_by is not None:
             sprite_group = sorted(sprite_group, key=lambda x: getattr(x, sort_by), reverse=reverse)
 

@@ -51,8 +51,8 @@
     },
     "10": {
         "widget_name": "SettingsEdit",
-        "world_x": 609.0,
-        "world_y": 32
+        "world_x": 1358.0,
+        "world_y": 30
     },
     "11": {
         "widget_name": "LevelSelect",
@@ -74,14 +74,19 @@
         "world_x": 1310,
         "world_y": 375
     },
-    "21": {
+    "18": {
+        "widget_name": "PlayerBuildingsOverview",
+        "world_x": 360,
+        "world_y": 0
+    },
+    "22": {
         "widget_name": "ships_container_filter",
         "world_x": 1825,
         "world_y": 25
     },
-    "22": {
+    "23": {
         "widget_name": "planets_container_filter",
-        "world_x": 1825,
+        "world_x": 1810,
         "world_y": 315
     }
 }

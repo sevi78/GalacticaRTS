@@ -1,16 +1,14 @@
 import time
 import traceback
+
 import pygame
 
 from source.app.app_helper import AppHelper, select_next_item_in_list
 from source.app.ui_builder import UIBuilder
 from source.configuration.game_config import config
 from source.draw.cursor import Cursor
-from source.gui.widgets.zoom_scale import ZoomScale
-from source.level.level_edit import LevelEdit
-from source.level.level_select import LevelSelect
+from source.economy.economy_handler import economy_handler
 from source.editors.filter_widget import FilterWidget
-from source.player.player_edit import PlayerEdit
 from source.factories.ship_factory import ShipFactory
 from source.game_play.cheat import Cheat
 from source.game_play.enemy_handler import enemy_handler
@@ -20,11 +18,10 @@ from source.gui.container.container_widget import ContainerWidget
 from source.gui.event_text import event_text
 from source.gui.panels.map_panel import MapPanel
 from source.gui.widgets.image_widget import ImageSprite
+from source.gui.widgets.zoom_scale import ZoomScale
 from source.handlers import event_text_handler
-from source.economy.economy_handler import economy_handler
 from source.handlers.file_handler import load_file
 from source.handlers.game_event_handler import GameEventHandler
-from source.level.level_handler import LevelHandler
 from source.handlers.mouse_handler import mouse_handler
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
@@ -32,7 +29,11 @@ from source.handlers.score_plotter_handler import score_plotter_handler
 from source.handlers.time_handler import time_handler
 from source.handlers.ui_handler import ui_handler
 from source.interaction.box_selection import BoxSelection
+from source.level.level_edit import LevelEdit
+from source.level.level_handler import LevelHandler
+from source.level.level_select import LevelSelect
 from source.multimedia_library.images import get_image
+from source.player.player_edit import PlayerEdit
 
 ECONOMY_UPDATE_INTERVAL = 2.0
 
@@ -122,6 +123,8 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
         try:
             # if empty list: do nothing
             my_list = self.explored_planets
+            if config.show_human_player_only:
+                my_list = [i for i in self.explored_planets if i.owner == 0]
             if not my_list:
                 return
 
@@ -331,7 +334,8 @@ def main():
                     parent=app,
                     layer=10,
                     list_name="ships",
-                    name="ships_container_filter"
+                    name="ships_container_filter",
+                    ignore_other_editors=True
                     )
             )
 
@@ -353,11 +357,12 @@ def main():
                     60,
                     container_width,
                     150,
-                    ["population", "population_limit", "buildings", "explored", "owner"],
+                    ["population", "population_limit", "buildings", "explored", "owner", "name"],
                     parent=app,
                     layer=10,
                     list_name="planets",
-                    name="planets_container_filter"
+                    name="planets_container_filter",
+                    ignore_other_editors=True
                     ))
 
     # player edit

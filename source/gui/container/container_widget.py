@@ -131,7 +131,7 @@ class ContainerWidget(InteractionHandler):
         self.widgets = widgets
         self.function = function
 
-        assert len(self.widgets) > 0, f"widgets can not be len 0 !"
+        # assert len(self.widgets) > 0, f"widgets can not be len 0 !"
 
         # kwargs
         self.parent = kwargs.get("parent", None)
@@ -181,8 +181,11 @@ class ContainerWidget(InteractionHandler):
 
     def set_widgets(self, widgets):
         """ sets the widgets and resets offset values """
+        # check if widgets is not empty
         if widgets:
+            # check if widgets are container_widget_items
             if not isinstance(widgets[0], ContainerWidgetItem):
+                # if not, convert them into ContainerWidgetItems
                 self.set_widgets(
                         [ContainerWidgetItem(
                                 self.win,
@@ -195,8 +198,12 @@ class ContainerWidget(InteractionHandler):
                                 obj=_,
                                 parent=self)
                             for index, _ in enumerate(widgets)])
+            # if they are ContainerWidgetItem, set widgets
             else:
                 self.widgets = widgets
+        # if wisgets is empty, set empty list
+        else:
+            self.widgets = widgets
 
         self.offset_index = 0
         self.visible_index_range = 0
@@ -233,6 +240,11 @@ class ContainerWidget(InteractionHandler):
         Return the maximum scroll position.
         """
         len_ = len(self.widgets)
+
+        # make shure widget works without items
+        if not self.widgets:
+            return self.world_height
+
         size = self.widgets[0].world_width
         self.visible_index_range = math.floor(self.rect.height / size)
         max_scroll_y = (len_ * size) - self.visible_index_range
@@ -243,6 +255,9 @@ class ContainerWidget(InteractionHandler):
         The method retrieves the first child widget from the widgets list.
         It returns the height of the first child widget.
         """
+        # make shure widget works without items
+        if not self.widgets:
+            return self.world_height
         return self.widgets[0].world_height
 
     def select(self):
