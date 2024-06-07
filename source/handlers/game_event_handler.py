@@ -23,7 +23,7 @@ from source.text.info_panel_text_generator import info_panel_text_generator
 #         self.set_game_event(event)
 
 
-class GameEventHandler():
+class GameEventHandler:
     def __init__(self, data, app):
         # intitialize variables
         self.level = 0
@@ -52,7 +52,7 @@ class GameEventHandler():
                 end_text="GOOD LUCK !",
                 functions=None,
                 condition=None,
-                id=len(self.game_events.keys())
+                id_=len(self.game_events.keys())
                 )
 
         self.game_events["end"] = GameEvent(
@@ -62,7 +62,7 @@ class GameEventHandler():
                 end_text="make it better next time!  RESTART?!",
                 functions={"yes": "restart_game", "no": "end_game"},
                 condition=None,
-                id=len(self.game_events.keys())
+                id_=len(self.game_events.keys())
                 )
 
         self.event_cue.append(self.game_events["start"])
@@ -190,7 +190,7 @@ class GameEventHandler():
                         end_text="",
                         functions={"yes": "load_next_level", "no": "update_level_success"},
                         condition="",
-                        id=len(self.game_events.keys())
+                        id_=len(self.game_events.keys())
                         )
                 self.event_cue.append(self.game_events[f"goal{self.level}"])
                 self.app.event_panel.set_game_event(self.game_events[f"goal{self.level}"])
@@ -210,14 +210,3 @@ class GameEventHandler():
     def activate_timed_events(self):
         pass
         # print (f"activating timed event:")
-
-
-def main():
-    game_event_handler = GameEventHandler(data=load_file("game_event_handler.json", "config"))
-    run = True
-    while run:
-        game_event_handler.update()
-
-
-if __name__ == "__main__":
-    main()

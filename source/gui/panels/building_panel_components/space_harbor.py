@@ -44,8 +44,8 @@ class SpaceHarbor(WidgetBase):
     - surface_frame: the frame of the surface of the SpaceHarbor object.
     """
 
-    def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
-        super().__init__(win, x, y, width, height, isSubWidget, **kwargs)
+    def __init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs):
+        super().__init__(win, x, y, width, height, is_sub_widget, **kwargs)
         self.parent = kwargs.get("parent", None)
         self.frame_color = colors.frame_color
 
@@ -77,7 +77,7 @@ class SpaceHarbor(WidgetBase):
                     y=self.get_screen_y(),
                     width=25,
                     height=25,
-                    isSubWidget=False,
+                    is_sub_widget=False,
                     parent=self,
                     image=pygame.transform.scale(
                             get_image(f"{name}.png"), (25, 25) if not name == "spacestation" else (45, 45)),
@@ -87,7 +87,7 @@ class SpaceHarbor(WidgetBase):
                     moveable=False,
                     include_text=True,
                     layer=self.layer,
-                    onClick=lambda name_=name: building_factory.build(name_, config.app.selected_planet),
+                    on_click=lambda name_=name: building_factory.build(name_, config.app.selected_planet),
                     info_panel_alpha=110))
 
     def set_visible(self):

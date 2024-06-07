@@ -1,7 +1,7 @@
 import pygame
 
 from source.configuration.game_config import config
-from source.draw.rect import draw_transparent_rounded_rect
+from source.draw.rectangle import draw_transparent_rounded_rect
 from source.gui.container.container_config import FONT_SIZE, WIDGET_SIZE, TEXT_SPACING
 from source.handlers.color_handler import colors
 from source.multimedia_library.images import get_image

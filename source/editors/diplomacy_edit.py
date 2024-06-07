@@ -7,16 +7,15 @@ from source.editors.editor_base.editor_base import EditorBase
 from source.editors.editor_base.editor_config import TOP_SPACING
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.handlers.diplomacy_handler import diplomacy_handler
-from source.handlers.image_handler import outline_image
-from source.multimedia_library.images import get_image
+from source.multimedia_library.images import get_image, outline_image
 
 BUTTON_SIZE = 25
 IMAGE_SIZE = 45
 
 
 class DiplomacyEdit(EditorBase):
-    def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
-        EditorBase.__init__(self, win, x, y, width, height, isSubWidget=False, **kwargs)
+    def __init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs):
+        EditorBase.__init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs)
         # vars
         # self.opening_time = time.time()
         self.text = ""
@@ -38,7 +37,7 @@ class DiplomacyEdit(EditorBase):
                 y=self.world_y + TOP_SPACING + BUTTON_SIZE / 2,
                 width=BUTTON_SIZE,
                 height=BUTTON_SIZE,
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self,
                 image=pygame.transform.scale(
                         get_image("peace_icon.png"), (BUTTON_SIZE, BUTTON_SIZE)),
@@ -49,7 +48,7 @@ class DiplomacyEdit(EditorBase):
                 moveable=False,
                 include_text=False,
                 layer=10,
-                onClick=lambda: diplomacy_handler.update_diplomacy_status("peace"),
+                on_click=lambda: diplomacy_handler.update_diplomacy_status("peace"),
                 name="agree_button"
                 )
 
@@ -61,7 +60,7 @@ class DiplomacyEdit(EditorBase):
                 y=self.world_y + TOP_SPACING + BUTTON_SIZE / 2,
                 width=BUTTON_SIZE,
                 height=BUTTON_SIZE,
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self,
                 image=pygame.transform.scale(get_image("war_icon.png"), (BUTTON_SIZE, BUTTON_SIZE)),
                 image_raw=pygame.transform.scale(get_image("war_icon.png"), (BUTTON_SIZE, BUTTON_SIZE)),
@@ -70,7 +69,7 @@ class DiplomacyEdit(EditorBase):
                 moveable=False,
                 include_text=False,
                 layer=10,
-                onClick=lambda: diplomacy_handler.update_diplomacy_status("war"),
+                on_click=lambda: diplomacy_handler.update_diplomacy_status("war"),
                 name="decline_button"
                 )
 

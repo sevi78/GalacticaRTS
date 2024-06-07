@@ -2,7 +2,7 @@ import pygame
 from pygame_widgets.util import drawText
 
 from source.configuration.game_config import config
-from source.draw.circles import draw_transparent_circle
+from source.draw.circles import draw_transparent_circle, draw_transparent_circle_blurred
 from source.draw.cross import draw_dashed_cross_in_circle
 from source.gui.lod import level_of_detail
 from source.gui.panels.building_panel_components.building_panel import SPECIAL_FONT_SIZE
@@ -10,6 +10,7 @@ from source.gui.panels.building_panel_components.building_panel_draw import SPEC
 from source.handlers.color_handler import colors
 from source.handlers.diplomacy_handler import diplomacy_handler
 from source.handlers.pan_zoom_handler import pan_zoom_handler
+from source.math.math_handler import limit_number
 from source.multimedia_library.gif_handler import GifHandler
 from source.multimedia_library.images import get_image
 from source.player.player_handler import player_handler
@@ -68,18 +69,58 @@ class PanZoomPlanetDraw:
         if config.show_player_colors:
             self.display_color = self.player_color
 
+    # def draw_player_colors_(self):
+    #     if config.show_player_colors:
+    #         # draw_transparent_circle(self.win, self.player_color, self.rect.center, self.planet_defence.attack_distance, 20)
+    #         if config.enable_blurr:
+    #             if pan_zoom_handler.zoom > 0.25:
+    #                 draw_transparent_circle_blurred(self.win, self.player_color[
+    #                                                           :3], self.rect.center, int(self.planet_defence.attack_distance), config.blurr_alpha, 0, config.blurr_radius)
+    #             else:
+    #                 draw_transparent_circle(self.win, self.player_color, self.rect.center, self.planet_defence.attack_distance, 20)
+    #         else:
+    #             draw_transparent_circle(self.win, self.player_color, self.rect.center, self.planet_defence.attack_distance, 20)
+
     def draw_player_colors(self):
         if config.show_player_colors:
-            draw_transparent_circle(self.win, self.player_color, self.rect.center, self.planet_defence.attack_distance, 20)  # , special_flags=9)
+            if config.enable_blurr:
+                # Clamp the value to the range 0 to 255
+                alpha_ = limit_number(config.blurr_alpha / pan_zoom_handler.zoom, 20, 50)
+                draw_transparent_circle_blurred(
+                        self.win,
+                        self.player_color[:3],
+                        self.rect.center,
+                        int(self.planet_defence.attack_distance),
+                        alpha_,
+                        0,
+                        config.blurr_radius * pan_zoom_handler.zoom)
+
+            else:
+                draw_transparent_circle(
+                        self.win,
+                        self.player_color,
+                        self.rect.center,
+                        self.planet_defence.attack_distance,
+                        20)
 
     def draw_cross(self):
         if config.enable_cross:
-            draw_dashed_cross_in_circle(self.win, self.display_color, self.rect.center, config.ui_cross_size, config.ui_cross_thickness, config.ui_cross_dash_length)
+            draw_dashed_cross_in_circle(
+                    self.win,
+                    self.display_color,
+                    self.rect.center,
+                    config.ui_cross_size,
+                    config.ui_cross_thickness,
+                    config.ui_cross_dash_length)
 
     def draw_hover_circle(self):
         panzoom = pan_zoom_handler
-        pygame.draw.circle(self.win, self.frame_color, self.rect.center,
-                (self.rect.height / 2) + 4, int(6 * panzoom.zoom))
+        pygame.draw.circle(
+                self.win,
+                self.frame_color,
+                self.rect.center,
+                (self.rect.height / 2) + 4,
+                int(6 * panzoom.zoom))
 
     def draw_specials(self):
         # print ("draw_specials:", self.specials)

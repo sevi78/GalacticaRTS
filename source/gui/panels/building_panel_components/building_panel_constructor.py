@@ -17,13 +17,13 @@ class BuildingPanelConstructor:
                 y=self.get_screen_y() + 40,
                 width=self.image_size[0],
                 height=self.image_size[1],
-                isSubWidget=False,
+                is_sub_widget=False,
                 image=pygame.transform.scale(
                         get_image("arrow-left.png"), (self.arrow_size, self.arrow_size)),
                 tooltip="",
                 frame_color=self.frame_color,
                 transparent=True,
-                onClick=lambda: config.app.set_planet_selection(-1),
+                on_click=lambda: config.app.set_planet_selection(-1),
                 parent=self.parent, layer=self.layer
                 )
         self.planet_plus_arrow_button = Button(win=self.win,
@@ -31,12 +31,12 @@ class BuildingPanelConstructor:
                 y=self.get_screen_y() + 40,
                 width=self.image_size[0],
                 height=self.image_size[1],
-                isSubWidget=False,
+                is_sub_widget=False,
                 image=pygame.transform.scale(
                         get_image("arrow-right.png"), (self.arrow_size, self.arrow_size)),
                 tooltip="",
                 frame_color=self.frame_color,
                 transparent=True,
-                onClick=lambda: config.app.set_planet_selection(1),
+                on_click=lambda: config.app.set_planet_selection(1),
                 parent=self.parent, layer=self.layer
                 )

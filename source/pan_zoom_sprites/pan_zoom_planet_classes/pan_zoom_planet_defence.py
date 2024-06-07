@@ -44,7 +44,7 @@ class PanZoomPlanetDefence:
                 height=5,
                 progress=lambda: 0.0,
                 curved=True,
-                completedColour=colors.frame_color,
+                completed_color=colors.frame_color,
                 layer=self.parent.layer,
                 parent=self.parent,
                 h_align="right_outside",
@@ -84,7 +84,7 @@ class PanZoomPlanetDefence:
             self.emp_active = False
 
         self.emp_progress_display.progress = lambda: ((time.time() - self.last_emp) / self.emp_pulse_interval)
-        # self.emp_progress_display.completedColour = [int(255/((time.time() - self.last_emp) / self.emp_pulse_interval)), self.emp_progress_display.completedColour[1], self.emp_progress_display.completedColour[2]]
+        # self.emp_progress_display.completed_color = [int(255/((time.time() - self.last_emp) / self.emp_pulse_interval)), self.emp_progress_display.completed_color[1], self.emp_progress_display.completed_color[2]]
         # self.update_emp_progress_display()
 
     def update_emp_progress_display(self):  # unused
@@ -96,7 +96,7 @@ class PanZoomPlanetDefence:
                                1 - elapsed_time_percentage) * pygame.color.THECOLORS.get("green") + elapsed_time_percentage * pygame.color.THECOLORS.get("red")
 
         # Update the progress bar color
-        self.emp_progress_display.completedColour = green_to_red
+        self.emp_progress_display.completed_color = green_to_red
 
         # Update the progress bar progress
         self.emp_progress_display.progress = lambda: elapsed_time_percentage * 100

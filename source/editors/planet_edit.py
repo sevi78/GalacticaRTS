@@ -27,7 +27,7 @@ class PlanetEditBuilder:
                 y=self.world_y + TOP_SPACING + button_size / 2,
                 width=button_size,
                 height=button_size,
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self,
                 image=pygame.transform.scale(
                         get_image("randomize_icon.png"), (button_size, button_size)),
@@ -36,7 +36,7 @@ class PlanetEditBuilder:
                 moveable=False,
                 include_text=False,
                 layer=self.layer,
-                onClick=lambda: self.randomize(),
+                on_click=lambda: self.randomize(),
                 )
 
         randomize_button.hide()
@@ -111,9 +111,9 @@ class PlanetEditBuilder:
 
         for i in all_possible_resources:
             checkbox = Checkbox(
-                    self.win, self.world_x - self.spacing_x + x + BUTTON_SIZE * 4, y, 30, 30, isSubWidget=False,
+                    self.win, self.world_x - self.spacing_x + x + BUTTON_SIZE * 4, y, 30, 30, is_sub_widget=False,
                     color=self.frame_color,
-                    key=i, tooltip=i, onClick=lambda: print("OKOKOK"), layer=9, parent=self)
+                    key=i, tooltip=i, on_click=lambda: print("OKOKOK"), layer=9, parent=self)
             x += BUTTON_SIZE * 1.5
 
             self.checkboxes.append(checkbox)
@@ -164,8 +164,8 @@ class PlanetEdit(EditorBase, PlanetEditBuilder):
 
     """
 
-    def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
-        EditorBase.__init__(self, win, x, y, width, height, isSubWidget=False, **kwargs)
+    def __init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs):
+        EditorBase.__init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs)
         self.scale = 1.0
         self.s_pressed = False
 

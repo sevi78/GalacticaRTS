@@ -9,8 +9,8 @@ from source.universe.celestial_objects.celestial_object import CelestialObject
 
 
 class FlickeringStar(CelestialObject):
-    def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
-        CelestialObject.__init__(self, win, x, y, width, height, isSubWidget=False, **kwargs)
+    def __init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs):
+        CelestialObject.__init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs)
 
     def draw(self):
         self.set_screen_position()
@@ -34,8 +34,8 @@ class FlickeringStar(CelestialObject):
 
 
 class PulsatingStar(CelestialObject):
-    def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
-        CelestialObject.__init__(self, win, x, y, width, height, isSubWidget=False, **kwargs)
+    def __init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs):
+        CelestialObject.__init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs)
 
     def draw(self):
         self.set_screen_position()

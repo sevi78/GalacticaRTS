@@ -15,7 +15,7 @@ class PanZoomCelestialObject(PanZoomSprite):
     possible_directions = [-1, 1]
 
     def __init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs):
-        # WidgetBase.__init__(self, win, x, y, width, height, isSubWidget, **kwargs)
+        # WidgetBase.__init__(self, win, x, y, width, height, is_sub_widget, **kwargs)
         PanZoomSprite.__init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs)
         self.speed = random.uniform(0.1, 1.5)
         self.direction = (random.uniform(-self.speed, self.speed), random.uniform(-self.speed, self.speed))

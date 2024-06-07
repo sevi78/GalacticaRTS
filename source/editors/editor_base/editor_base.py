@@ -3,12 +3,13 @@ import inspect
 import pygame
 
 from source.configuration.game_config import config
-from source.draw.rect import draw_transparent_rounded_rect
+from source.draw.rectangle import draw_transparent_rounded_rect
 from source.editors.editor_base.editor_config import ARROW_SIZE, SPACING_Y, FONT_SIZE, TOP_SPACING
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.gui.widgets.selector import Selector
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.handlers.color_handler import colors
+from source.handlers.widget_handler import WidgetHandler
 from source.multimedia_library.images import get_image
 
 
@@ -43,7 +44,7 @@ class EditorBase(WidgetBase):
 
     Methods:
 
-    __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs): Initializes the class with the window, position,
+    __init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs): Initializes the class with the window, position,
     size, and other optional parameters.
     set_obj(self, obj): Sets the object to be edited.
     set_edit_mode(self): Sets the edit mode.
@@ -58,7 +59,7 @@ class EditorBase(WidgetBase):
         y                       The y-coordinate of the editor's position.: world_y position
         width                   world_width
         height                  world_height
-        isSubWidget             default = False, use this for sub_widgets that need to listen the events
+        is_sub_widget             default = False, use this for sub_widgets that need to listen the events
 
     **kwargs:
 
@@ -102,8 +103,8 @@ class EditorBase(WidgetBase):
     rect                        the rect of the frame
     """
 
-    def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
-        super().__init__(win, x, y, width, height, isSubWidget, **kwargs)
+    def __init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs):
+        super().__init__(win, x, y, width, height, is_sub_widget, **kwargs)
         self._obj = kwargs.get("obj", None)
         self.obj = kwargs.get("obj", None)
         # self.game_paused = kwargs.get("game_paused", False)
@@ -149,6 +150,8 @@ class EditorBase(WidgetBase):
 
         # save
         self.save = kwargs.get("save", True)
+
+        # WidgetHandler.add_widget(self)
 
     @property
     def on_hover(self):
@@ -205,7 +208,7 @@ class EditorBase(WidgetBase):
                 i.hide()
             else:
                 # only show if the attached editor is enabled!
-                if i.isEnabled():
+                if i.is_enabled():
                     i.show()
 
         self.hide_other_editors()
@@ -218,7 +221,7 @@ class EditorBase(WidgetBase):
                 y=self.max_height + button_size / 2,
                 width=button_size,
                 height=button_size,
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self,
                 image=pygame.transform.scale(
                         get_image("save_icon.png"), (button_size, button_size)),
@@ -227,7 +230,7 @@ class EditorBase(WidgetBase):
                 moveable=False,
                 include_text=True,
                 layer=self.layer,
-                onClick=function,
+                on_click=function,
                 name=name
                 )
         save_icon.hide()
@@ -243,7 +246,7 @@ class EditorBase(WidgetBase):
                 y=self.max_height + button_size / 2,
                 width=button_size,
                 height=button_size,
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self,
                 image=pygame.transform.scale(
                         get_image("load_icon.png"), (button_size, button_size)),
@@ -252,7 +255,7 @@ class EditorBase(WidgetBase):
                 moveable=False,
                 include_text=False,
                 layer=self.layer,
-                onClick=function,
+                on_click=function,
                 name=name
                 )
 
@@ -271,7 +274,7 @@ class EditorBase(WidgetBase):
                 y=y,
                 width=button_size,
                 height=button_size,
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self,
                 image=pygame.transform.scale(
                         get_image("close_icon.png"), (button_size / 2, button_size / 2)),
@@ -280,7 +283,7 @@ class EditorBase(WidgetBase):
                 moveable=False,
                 include_text=False,
                 layer=self.layer,
-                onClick=lambda: self.close(),
+                on_click=lambda: self.close(),
                 name="close_button"
                 )
 
@@ -289,7 +292,17 @@ class EditorBase(WidgetBase):
         self.buttons.append(close_icon)
         self.widgets.append(close_icon)
 
+    # def create_selectors_from_dict(self, x= self.world_x + self.world_width/2, y, dict_, **kwargs):
     def create_selectors_from_dict(self, x, y, dict_, **kwargs):
+        """
+        creates selectors from a json.dict:
+
+        -   ensure to set dict.items() as parameter:dict_!!!
+        -   set x to: self.world_x + self.world_width/2
+        kwargs:
+        -   arrow_size:       use this to set the size of the arrows and texts
+
+        """
         arrow_size = kwargs.get("arrow_size", ARROW_SIZE)
         font_size = int(arrow_size * .8)
         self.spacing_y = arrow_size * 1.3
@@ -313,6 +326,8 @@ class EditorBase(WidgetBase):
                         repeat_clicks=False))
 
                 y += self.spacing_y
+
+
 
         # set max height to draw the frame dynamical
         self.max_height = y + arrow_size
@@ -408,6 +423,7 @@ class EditorBase(WidgetBase):
         # get corner radius and thickness
         corner_radius = kwargs.get("corner_radius", self.frame_corner_radius)
         corner_thickness = kwargs.get("corner_thickness", self.frame_corner_thickness)
+        alpha = kwargs.get("alpha", config.ui_panel_alpha)
 
         # scale frame
         self.frame = pygame.transform.scale(self.frame, (self.get_screen_width(), self.max_height))
@@ -417,5 +433,10 @@ class EditorBase(WidgetBase):
             self.world_x, self.world_y + TOP_SPACING, self.frame.get_rect().width, self.frame.get_rect().height))
 
         # draw rounded rect
-        draw_transparent_rounded_rect(self.win, (0, 0, 0), self.rect, corner_radius, config.ui_panel_alpha)
+        draw_transparent_rounded_rect(self.win, (0, 0, 0), self.rect, corner_radius, alpha)
         pygame.draw.rect(self.win, self.frame_color, self.rect, corner_thickness, corner_radius)
+
+    def draw(self):
+        print ("draw")
+        # for i in self.widgets:
+        #     i.draw()

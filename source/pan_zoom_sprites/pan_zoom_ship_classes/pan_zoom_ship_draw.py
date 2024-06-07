@@ -24,7 +24,7 @@ class PanZoomShipDraw:
                 height=5,
                 progress=lambda: 1 / self.energy_max * self.energy,
                 curved=True,
-                completedColour=self.frame_color,
+                completed_color=self.frame_color,
                 layer=self.layer,
                 parent=self
                 )

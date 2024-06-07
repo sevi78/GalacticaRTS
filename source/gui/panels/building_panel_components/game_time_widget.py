@@ -15,8 +15,8 @@ FONT_SIZE = 18
 
 
 class GameTime(WidgetBase):
-    def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
-        super().__init__(win, x, y, width, height, isSubWidget, **kwargs)
+    def __init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs):
+        super().__init__(win, x, y, width, height, is_sub_widget, **kwargs)
         self.time_warp_text = None
         self.clockslider_height = 7
         self.game_speed = config.game_speed
@@ -49,12 +49,12 @@ class GameTime(WidgetBase):
                 y=self.surface_rect.y + (self.spacing / 2),
                 width=self.image_size[0],
                 height=self.image_size[1],
-                isSubWidget=False,
+                is_sub_widget=False,
                 image=self.image,
                 tooltip="this is the time, don't waste it !",
                 frame_color=self.frame_color,
                 transparent=True,
-                onClick=lambda: self.clock_slider.setValue(1),
+                on_click=lambda: self.clock_slider.set_value(1),
                 layer=self.layer
                 )
 
@@ -64,13 +64,13 @@ class GameTime(WidgetBase):
                 y=self.clock_slider.get_screen_y() - self.clock_slider.get_screen_height() - 2,
                 width=self.image_size[0],
                 height=self.image_size[1],
-                isSubWidget=False,
+                is_sub_widget=False,
                 image=pygame.transform.scale(
                         get_image("arrow-left.png"), (self.arrow_size, self.arrow_size)),
                 tooltip="decrease time",
                 frame_color=self.frame_color,
                 transparent=True,
-                onClick=lambda: self.set_clockslider_value(-1),
+                on_click=lambda: self.set_clockslider_value(-1),
                 layer=self.layer,
                 name="minus_arrow_button"
                 )
@@ -80,13 +80,13 @@ class GameTime(WidgetBase):
                 y=self.clock_slider.get_screen_y() - self.clock_slider.get_screen_height() - 2,
                 width=self.image_size[0],
                 height=self.image_size[1],
-                isSubWidget=False,
+                is_sub_widget=False,
                 image=pygame.transform.scale(
                         get_image("arrow-right.png"), (self.arrow_size, self.arrow_size)),
                 tooltip="increase time",
                 frame_color=self.frame_color,
                 transparent=True,
-                onClick=lambda: self.set_clockslider_value(+1),
+                on_click=lambda: self.set_clockslider_value(+1),
                 layer=self.layer,
                 name="plus_arrow_button"
                 )
@@ -99,22 +99,22 @@ class GameTime(WidgetBase):
                 y=self.surface_rect.y + int(self.spacing / 2),
                 width=self.surface_rect.width - self.spacing - self.spacing_x * 2,
                 height=self.clockslider_height,
-                min=1, max=50, step=1, handleColour=colors.ui_darker, layer=self.layer)
+                min=1, max=50, step=1, handle_color=colors.ui_darker, layer=self.layer)
 
-        self.clock_slider.colour = self.frame_color
-        self.clock_slider.setValue(config.game_speed)
+        self.clock_slider.color = self.frame_color
+        self.clock_slider.set_value(config.game_speed)
 
         # construct texts
-        self.time_warp_text = self.font.render(str(self.clock_slider.getValue()) + "x", True, self.frame_color)
+        self.time_warp_text = self.font.render(str(self.clock_slider.get_value()) + "x", True, self.frame_color)
         self.world_year_text = config.app.ui_helper.hms(self.world_year)
 
     def set_clockslider_value(self, value):
         if value < 0:
-            if self.clock_slider.min + 1 < self.clock_slider.getValue() - value:
-                self.clock_slider.setValue(self.clock_slider.getValue() + value)
+            if self.clock_slider.min + 1 < self.clock_slider.get_value() - value:
+                self.clock_slider.set_value(self.clock_slider.get_value() + value)
         elif value > 0:
-            if self.clock_slider.max + 1 > self.clock_slider.getValue() + value:
-                self.clock_slider.setValue(self.clock_slider.getValue() + value)
+            if self.clock_slider.max + 1 > self.clock_slider.get_value() + value:
+                self.clock_slider.set_value(self.clock_slider.get_value() + value)
 
     def update_time(self):
         self.world_year += 0.01 * self.game_speed * 10000
@@ -138,7 +138,7 @@ class GameTime(WidgetBase):
         else:
             self.clock_icon.image = self.image
 
-        self.time_warp_text = self.font.render(str(self.clock_slider.getValue()) + "x", True, self.frame_color)
+        self.time_warp_text = self.font.render(str(self.clock_slider.get_value()) + "x", True, self.frame_color)
         self.win.blit(self.time_warp_text,
                 (self.surface_rect.x + self.spacing_x, self.clock_icon.screen_y + self.clock_icon.rect.height / 2))
 
@@ -160,21 +160,21 @@ class GameTime(WidgetBase):
         self.year_text = self.font.render(f"year:{new_datetime}", True, self.frame_color)
         self.win.blit(self.year_text, (self.surface_rect.x + self.spacing_x + self.spacing_x, self.clock_icon.screen_y +
                                        self.clock_icon.get_screen_height() - self.year_text.get_height() + 6))
-        self.game_speed = self.clock_slider.getValue()
+        self.game_speed = self.clock_slider.get_value()
 
     def listen(self, events):
         for event in events:
             if event.type == pygame.KEYDOWN:
                 print(event.key, pygame.K_PLUS, pygame.K_MINUS)
                 if event.key == 1073741911:  # pygame.K_PLUS:
-                    self.clock_slider.setValue(self.clock_slider.getValue() + 1)
+                    self.clock_slider.set_value(self.clock_slider.get_value() + 1)
                 elif event.key == 1073741910:  # pygame.K_MINUS:
-                    self.clock_slider.setValue(self.clock_slider.getValue() - 1)
+                    self.clock_slider.set_value(self.clock_slider.get_value() - 1)
 
-                if self.clock_slider.getValue() < 1:
-                    self.clock_slider.setValue(1)
-                if self.clock_slider.getValue() > 100:
-                    self.clock_slider.setValue(100)
+                if self.clock_slider.get_value() < 1:
+                    self.clock_slider.set_value(1)
+                if self.clock_slider.get_value() > 100:
+                    self.clock_slider.set_value(100)
 
     def draw(self):
         """

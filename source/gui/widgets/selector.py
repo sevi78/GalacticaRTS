@@ -43,7 +43,7 @@ class Selector(WidgetBase):
             The list_name key in the data dictionary should be in the format 'list_name'.
             The list key in the data dictionary should be a list of values.
         """
-        WidgetBase.__init__(self, win, x, y, buttonsize, buttonsize, isSubWidget=False)
+        WidgetBase.__init__(self, win, x, y, buttonsize, buttonsize, is_sub_widget=False)
         # args
         self.win = win
         self.world_x = x
@@ -99,13 +99,13 @@ class Selector(WidgetBase):
                 y=self.world_y,
                 width=self.buttonsize,
                 height=self.buttonsize,
-                isSubWidget=False,
+                is_sub_widget=False,
                 image=pygame.transform.scale(
                         get_image("arrow-left.png"), (self.buttonsize, self.buttonsize)),
                 tooltip=f"choose {self.list_name.split('_list')[0]}",
                 frame_color=self.color,
                 transparent=True,
-                onClick=lambda: self.select(-1),
+                on_click=lambda: self.select(-1),
                 parent=self.parent,
                 layer=self.layer,
                 name="minus_arrow",
@@ -117,13 +117,13 @@ class Selector(WidgetBase):
                 y=self.world_y,
                 width=self.buttonsize,
                 height=self.buttonsize,
-                isSubWidget=False,
+                is_sub_widget=False,
                 image=pygame.transform.scale(
                         get_image("arrow-right.png"), (self.buttonsize, self.buttonsize)),
                 tooltip=f"choose {self.list_name.split('_list')[0]}",
                 frame_color=self.color,
                 transparent=True,
-                onClick=lambda: self.select(1),
+                on_click=lambda: self.select(1),
                 parent=self.parent,
                 layer=self.layer,
                 name="plus_arrow",
@@ -190,7 +190,7 @@ class Selector(WidgetBase):
         Returns:
             None
         """
-        self.set_text()
+        self.set_selector_text()
 
         text = self.font.render(self.display_text, True, self.color)
         text_rect = text.get_rect()
@@ -198,7 +198,7 @@ class Selector(WidgetBase):
         text_rect.y = self.minus_arrow.get_screen_y() + 6
         self.win.blit(text, text_rect)
 
-    def set_text(self):
+    def set_selector_text(self):
         """
         Sets the text to be displayed based on the current value.
         If the current value has a 'name' attribute, the display text is constructed using that.

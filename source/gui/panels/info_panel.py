@@ -49,8 +49,8 @@ class InfoPanel(WidgetBase, TextWrap):
     - text_surfaces: a dictionary of the text surfaces and their positions
     - visible: a boolean indicating whether the panel is visible or not"""
 
-    def __init__(self, win, x, y, width, height, isSubWidget, **kwargs):
-        super().__init__(win, x, y, width, height, isSubWidget, **kwargs)
+    def __init__(self, win, x, y, width, height, is_sub_widget, **kwargs):
+        super().__init__(win, x, y, width, height, is_sub_widget, **kwargs)
         TextWrap.__init__(self)
         self.name = "info panel"
         self.layer = kwargs.get("layer", 4)

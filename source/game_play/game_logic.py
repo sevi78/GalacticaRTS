@@ -4,9 +4,7 @@ import sys
 import pygame
 
 from source.configuration.game_config import config
-from source.factories.planet_factory import planet_factory
 from source.handlers.file_handler import write_file
-from source.handlers.pan_zoom_sprite_handler import sprite_groups
 
 
 class GameLogic:
@@ -60,10 +58,6 @@ Fields:
                 if event.key == pygame.K_ESCAPE:
                     sys.exit()
 
-    # def end_game(self):# unused
-    #     pygame.quit()
-    #     quit()
-
     def set_screen_size(self, size, events):
         """
         set the screen size using 's'
@@ -97,40 +91,6 @@ Fields:
                         config.width_current = size[0]
                         config.height_current = size[1]
 
-    def save_load(self, events):  # unused
-        """
-        stores the planet positions, use ctrl + S
-        """
-        # ignore all inputs while any text input is active
-        if config.text_input_active:
-            return
-        # check events for l_ctr +s for saving
-        for event in events:
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_s:
-                    self.s_pressed = True
-                if event.key == pygame.K_l:
-                    self.l_pressed = True
-                if event.key == pygame.K_LCTRL:
-                    self.ctrl_pressed = True
-
-            if event.type == pygame.KEYUP:
-                if event.key == pygame.K_s:
-                    self.s_pressed = False
-                if event.key == pygame.K_l:
-                    self.l_pressed = False
-                if event.key == pygame.K_LCTRL:
-                    self.ctrl_pressed = False
-
-            if self.ctrl_pressed and self.s_pressed:
-                print("self.save_planets()")
-
-                # planet_factory.save_planets()
-
-            if self.ctrl_pressed and self.l_pressed:
-                pass
-                # planet_factory.load_planets()
-
     def save_objects(self, filename, list_):
         if not list_:
             return
@@ -139,28 +99,3 @@ Fields:
             data[obj.name] = obj.get_dict()
 
         write_file(filename, "config", data)
-
-    def restart_game(self):
-        planet_factory.delete_planets()
-        self.explored_planets = []
-        self.player = None
-        self.create_player()
-
-        self.selected_planet = sprite_groups.planets.sprites()[0]
-        # planet_factory.load_planets()
-
-        # size_x = 250
-        # size_y = 35
-        # spacing = 10
-        #
-        # self.building_panel.__init__(self.win,
-        #     x=self.world_width - size_x,
-        #     y=spacing,
-        #     width=size_x - spacing,
-        #     height=size_y,
-        #     isSubWidget=False,
-        #     size_x=size_x,
-        #     size_y=size_y,
-        #     spacing=spacing,
-        #     parent=self,
-        #     layer=9)

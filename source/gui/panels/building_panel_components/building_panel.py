@@ -23,8 +23,8 @@ SPECIAL_FONT_SIZE = 16
 
 
 class BuildingPanel(WidgetBase, BuildingPanelConstructor, BuildingSlot, EconomyParams, BuildingPanelDraw):
-    def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
-        super().__init__(win, x, y, width, height, isSubWidget, **kwargs)
+    def __init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs):
+        super().__init__(win, x, y, width, height, is_sub_widget, **kwargs)
         EconomyParams.__init__(self)
         BuildingSlot.__init__(self)
         BuildingPanelDraw.__init__(self)
@@ -84,11 +84,11 @@ class BuildingPanel(WidgetBase, BuildingPanelConstructor, BuildingSlot, EconomyP
 
         # space harbor
         self.space_harbor = SpaceHarbor(self.win, self.world_x, self.world_y, self.get_screen_width(), self.sub_widget_height,
-                isSubWidget=False, parent=self, layer=9, font_size=font_size)
+                is_sub_widget=False, parent=self, layer=9, font_size=font_size)
 
         # planetary defence
         self.planetary_defence = PlanetaryDefenceWidget(self.win, self.world_x, self.world_y, self.get_screen_width(), self.sub_widget_height,
-                isSubWidget=False, parent=self, layer=9, spacing=5, icon_size=25, font_size=font_size)
+                is_sub_widget=False, parent=self, layer=9, spacing=5, icon_size=25, font_size=font_size)
 
         # building_button_widget
         self.building_button_widget = BuildingButtonWidget(win, 200, 100, 300, 200, self.parent,

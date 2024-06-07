@@ -71,8 +71,8 @@ class EnemyHandler(InterfaceData):
         self.explosion_gifs = get_image_names_from_folder("gifs", startswith_string="explosion")
         self.ufo_images = get_image_names_from_folder("ships", startswith_string="ufo")
 
-        for dict_name, dict in interface_variables.items():
-            for key, value in dict.items():
+        for dict_name, dict_ in interface_variables.items():
+            for key, value in dict_.items():
                 setattr(self, key, value)
                 setattr(self, key + "_max", value)
                 if not key.endswith("_max"):
@@ -83,9 +83,9 @@ class EnemyHandler(InterfaceData):
 
     def setup(self):
         data = load_file("enemy_handler_config.json", "config")
-        for name, dict in data.items():
+        for name, dict_ in data.items():
             if name == self.name:
-                for key, value in dict.items():
+                for key, value in dict_.items():
                     if key in self.__dict__:
                         setattr(self, key, value)
 

@@ -9,7 +9,7 @@ from source.pan_zoom_sprites.pan_zoom_planet_classes.pan_zoom_planet_economy imp
 
 class PanZoomPlanetOverviewButtons(PanZoomPlanetEconomy):
     def __init__(self, **kwargs):
-        PanZoomPlanetEconomy.__init__(self, kwargs)
+        PanZoomPlanetEconomy.__init__(self, **kwargs)
         self.technology_level_button = None
         self.smiley_button = None
         self.thumpsup_button = None
@@ -31,8 +31,8 @@ class PanZoomPlanetOverviewButtons(PanZoomPlanetEconomy):
                 y=0,
                 width=self.thumpsup_button_size[0],
                 height=self.thumpsup_button_size[1],
-                isSubWidget=False,
-                onClick=lambda: print("no function"),
+                is_sub_widget=False,
+                on_click=lambda: print("no function"),
                 transparent=True,
                 image_hover_surface_alpha=255,
                 parent=self.parent,
@@ -50,8 +50,8 @@ class PanZoomPlanetOverviewButtons(PanZoomPlanetEconomy):
                 y=0,
                 width=self.smiley_button_size[0],
                 height=self.smiley_button_size[1],
-                isSubWidget=False,
-                onClick=lambda: print("no function"),
+                is_sub_widget=False,
+                on_click=lambda: print("no function"),
                 transparent=True,
                 image_hover_surface_alpha=255,
                 parent=self.parent,
@@ -68,8 +68,8 @@ class PanZoomPlanetOverviewButtons(PanZoomPlanetEconomy):
                 y=0,
                 width=self.smiley_button_size[0],
                 height=self.smiley_button_size[1],
-                isSubWidget=False,
-                onClick=lambda: print("no function"),
+                is_sub_widget=False,
+                on_click=lambda: print("no function"),
                 transparent=True,
                 image_hover_surface_alpha=255,
                 parent=self.parent,
@@ -86,8 +86,8 @@ class PanZoomPlanetOverviewButtons(PanZoomPlanetEconomy):
                 y=0,
                 width=self.smiley_button_size[0],
                 height=self.smiley_button_size[1],
-                isSubWidget=False,
-                onClick=lambda: print("no function"),
+                is_sub_widget=False,
+                on_click=lambda: print("no function"),
                 transparent=True,
                 image_hover_surface_alpha=255,
                 parent=self.parent,

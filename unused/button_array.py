@@ -29,7 +29,7 @@ class ButtonArray(WidgetBase):
         self.numButtons = shape[0] * shape[1]
 
         # Array
-        self.colour = kwargs.get('colour', (210, 210, 180))
+        self.colour = kwargs.get('color', (210, 210, 180))
         self.border = kwargs.get('border', 10)
         self.topBorder = kwargs.get('topBorder', self.border)
         self.bottomBorder = kwargs.get('bottomBorder', self.border)
@@ -40,40 +40,40 @@ class ButtonArray(WidgetBase):
 
         self.buttonAttributes = {
             # # Colour
-            # 'inactiveColour': kwargs.get('inactiveColours', colors.ui_dark),
-            # 'hoverColour': kwargs.get('hoverColours', colors.ui_white),
-            # 'pressedColour': kwargs.get('pressedColours', self.frame_color),
-            # 'shadowDistance': kwargs.get('shadowDistances', None),
-            # 'shadowColour': kwargs.get('shadowColours', colors.shadow_color),
-            # "borderColour":kwargs.get('borderColours', colors.border_color),
-            # "inactiveBorderColour":kwargs.get('inactiveBorderColours', colors.inactive_color),
-            # "hiddenColour": kwargs.get('hiddenColours', None),
+            # 'inactive_color': kwargs.get('inactiveColours', colors.ui_dark),
+            # 'hover_color': kwargs.get('hoverColours', colors.ui_white),
+            # 'pressed_color': kwargs.get('pressedColours', self.frame_color),
+            # 'shadow_distance': kwargs.get('shadowDistances', None),
+            # 'shadow_color': kwargs.get('shadowColours', colors.shadow_color),
+            # "border_color":kwargs.get('borderColours', colors.border_color),
+            # "inactive_border_color":kwargs.get('inactiveBorderColours', colors.inactive_color),
+            # "hidden_color": kwargs.get('hiddenColours', None),
 
             # Colour
-            'inactiveColour': kwargs.get('inactiveColours', None),
-            'hoverColour': kwargs.get('hoverColours', None),
-            'pressedColour': kwargs.get('pressedColours', None),
-            'shadowDistance': kwargs.get('shadowDistances', None),
-            'shadowColour': kwargs.get('shadowColours', None),
-            "borderColour": kwargs.get('borderColours', None),
-            "inactiveBorderColour": kwargs.get('inactiveBorderColours', None),
-            "hiddenColour": kwargs.get('hiddenColours', None),
+            'inactive_color': kwargs.get('inactiveColours', None),
+            'hover_color': kwargs.get('hoverColours', None),
+            'pressed_color': kwargs.get('pressedColours', None),
+            'shadow_distance': kwargs.get('shadowDistances', None),
+            'shadow_color': kwargs.get('shadowColours', None),
+            "border_color": kwargs.get('borderColours', None),
+            "inactive_border_color": kwargs.get('inactiveBorderColours', None),
+            "hidden_color": kwargs.get('hiddenColours', None),
 
             # Function
-            'onClick': kwargs.get('onClicks', None),
-            'onRelease': kwargs.get('onReleases', None),
-            'onClickParams': kwargs.get('onClickParams', None),
-            'onReleaseParams': kwargs.get('onReleaseParams', None),
+            'on_click': kwargs.get('on_clicks', None),
+            'on_release': kwargs.get('onReleases', None),
+            'on_click_params': kwargs.get('on_click_params', None),
+            'on_release_params': kwargs.get('on_release_params', None),
             "property": kwargs.get('propertys', None),
             'layer': kwargs.get('layers', 4),
 
             # Text
-            'textColour': kwargs.get('textColours', None),
+            'text_color': kwargs.get('textColours', None),
             'font_size': kwargs.get('font_sizes', None),
             'text': kwargs.get('texts', None),
             'font': kwargs.get('fonts', None),
-            'textHAlign': kwargs.get('textHAligns', None),
-            'textVAlign': kwargs.get('textVAligns', None),
+            'text_h_align': kwargs.get('text_h_align', None),
+            'text_v_align': kwargs.get('text_v_align', None),
             'margin': kwargs.get('margins', None),
             'tooltip': kwargs.get('tooltips', None),
             'parent': kwargs.get('parents', None),
@@ -84,8 +84,8 @@ class ButtonArray(WidgetBase):
 
             # Image
             'image': kwargs.get('images', None),
-            'imageHAlign': kwargs.get('imageHAligns', None),
-            'imageVAlign': kwargs.get('imageVAligns', None),
+            'image_h_align': kwargs.get('image_h_align', None),
+            'image_v_align': kwargs.get('image_v_align', None),
             'imageRotation': kwargs.get('imageRotations', None),
             'imageFill': kwargs.get('imageFills', None),
             'imageZoom': kwargs.get('imageZooms', None),
@@ -143,7 +143,7 @@ class ButtonArray(WidgetBase):
 
             for rect in rects:
                 pass
-                # pygame.draw.rect(self.win, self.colour, rect)
+                # pygame.draw.rect(self.win, self.color, rect)
                 # this draws the annoying background
 
             for circle in circles:

@@ -1,7 +1,7 @@
 import pygame.display
 
 from source.configuration.game_config import config
-from source.draw.rect import draw_transparent_rounded_rect
+from source.draw.rectangle import draw_transparent_rounded_rect
 from source.factories.building_factory import building_factory
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
@@ -38,7 +38,7 @@ class BuildingButtonWidget(WidgetBase):
     Manages the positioning and layout of the buttons within the widget
 
     Methods:
-    __init__(self, win, x, y, width, height, app, isSubWidget=False, **kwargs): Initializes the BuildingButtonWidget
+    __init__(self, win, x, y, width, height, app, is_sub_widget=False, **kwargs): Initializes the BuildingButtonWidget
     object with the specified parameters and sets up the widget's properties and buttons.
     create_buttons(self): Creates the building buttons for each resource category and adds them to the widget.
     hide(self): Hides the widget and its buttons.
@@ -72,8 +72,8 @@ class BuildingButtonWidget(WidgetBase):
     sub_widget_height: The height of the subwidget within the parent widget.
     """
 
-    def __init__(self, win, x, y, width, height, app, isSubWidget=False, **kwargs):
-        WidgetBase.__init__(self, win, x, y, width, height, isSubWidget=False, **kwargs)
+    def __init__(self, win, x, y, width, height, app, is_sub_widget=False, **kwargs):
+        WidgetBase.__init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs)
         self.app = app
         self.max_width = 0
         self.max_height = 0
@@ -139,7 +139,7 @@ class BuildingButtonWidget(WidgetBase):
                 y=y,
                 width=width,
                 height=height,
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self,
                 image=pygame.transform.scale(get_image(image), (ICON_SIZE, ICON_SIZE)),
                 image_raw=get_image(image),
@@ -152,9 +152,9 @@ class BuildingButtonWidget(WidgetBase):
                 info_text=info_text,
                 name=name,
                 text=name,
-                textColours=(0, 0, 0),
+                text_color=(0, 0, 0),
                 font_size=0,
-                onClick=on_click,
+                on_click=on_click,
                 info_panel_alpha=kwargs.get("info_panel_alpha", 255))
 
         return button
@@ -172,7 +172,7 @@ class BuildingButtonWidget(WidgetBase):
                     y=y,
                     width=ICON_SIZE,
                     height=ICON_SIZE,
-                    isSubWidget=False,
+                    is_sub_widget=False,
                     parent=self,
                     image=pygame.transform.scale(get_image(resource + '_25x25.png'),
                             (ICON_SIZE, ICON_SIZE)),
@@ -184,7 +184,7 @@ class BuildingButtonWidget(WidgetBase):
                     key=resource,
                     info_text=None,
                     name=resource,
-                    textColours=(0, 0, 0),
+                    text_color=(0, 0, 0),
                     font_size=0)
 
             self.resource_buttons.append(resource_button)

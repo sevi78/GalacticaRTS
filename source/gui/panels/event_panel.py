@@ -13,7 +13,7 @@ from source.text.text_wrap import TextWrap
 class EventPanel(TextWrap, EditorBase):
     def __init__(self, win, x, y, width, height, interface_variables, **kwargs):
         TextWrap.__init__(self)
-        EditorBase.__init__(self, win, x, y, width, height, isSubWidget=False, **kwargs)
+        EditorBase.__init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs)
 
         self.name = "event panel"
         self.layer = kwargs.get("layer", 10)
@@ -51,14 +51,14 @@ class EventPanel(TextWrap, EditorBase):
 
         # Buttons
         self.yes_button = Button(self.win, self.get_screen_x() + self.get_screen_width() / 2 - 30,
-                                           self.world_y + self.get_screen_height(), 60, 60, isSubWidget=False,
+                                           self.world_y + self.get_screen_height(), 60, 60, is_sub_widget=False,
                 image=pygame.transform.scale(get_image("yes_icon.png"), (60, 60)),
-                transparent=True, parent=self, onClick=lambda: self.accept())
+                transparent=True, parent=self, on_click=lambda: self.accept())
 
         self.no_button = Button(self.win, self.get_screen_x() + self.get_screen_width() / 2 + 30,
-                                          self.world_y + self.get_screen_height(), 60, 60, isSubWidget=False,
+                                          self.world_y + self.get_screen_height(), 60, 60, is_sub_widget=False,
                 image=pygame.transform.scale(get_image("no_icon.png"), (60, 60)),
-                transparent=True, parent=self, onClick=lambda: self.decline())
+                transparent=True, parent=self, on_click=lambda: self.decline())
 
         self.max_height = height
         self.hide()

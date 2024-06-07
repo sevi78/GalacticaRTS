@@ -8,7 +8,7 @@ from source.app.ui_builder import UIBuilder
 from source.configuration.game_config import config
 from source.draw.cursor import Cursor
 from source.economy.economy_handler import economy_handler
-from source.editors.filter_widget import FilterWidget
+from source.gui.container.filter_widget import FilterWidget
 from source.factories.ship_factory import ShipFactory
 from source.game_play.cheat import Cheat
 from source.game_play.enemy_handler import enemy_handler

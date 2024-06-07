@@ -1,92 +1,97 @@
 {
-  "0": {
-    "widget_name": "event panel",
-    "world_x": 510.0,
-    "world_y": 240.0
-  },
-  "1": {
-    "widget_name": "WeaponSelect",
-    "world_x": 435.0,
-    "world_y": 0
-  },
-  "2": {
-    "widget_name": "PlanetEdit",
-    "world_x": 610.0,
-    "world_y": 0
-  },
-  "3": {
-    "widget_name": "SaveGameEdit",
-    "world_x": 610.0,
-    "world_y": 0
-  },
-  "4": {
-    "widget_name": "BuildingEdit",
-    "world_x": 610.0,
-    "world_y": 0
-  },
-  "5": {
-    "widget_name": "EnemyHandlerEdit",
-    "world_x": 610.0,
-    "world_y": 0
-  },
-  "6": {
-    "widget_name": "ShipEdit",
-    "world_x": 610.0,
-    "world_y": 0
-  },
-  "7": {
-    "widget_name": "DebugEdit",
-    "world_x": 610.0,
-    "world_y": 0
-  },
-  "8": {
-    "widget_name": "TradeEdit",
-    "world_x": 610.0,
-    "world_y": 0
-  },
-  "9": {
-    "widget_name": "AddDealEdit",
-    "world_x": 687,
-    "world_y": 30
-  },
-  "10": {
-    "widget_name": "SettingsEdit",
-    "world_x": 1358.0,
-    "world_y": 30
-  },
-  "11": {
-    "widget_name": "LevelSelect",
-    "world_x": 610.0,
-    "world_y": 0
-  },
-  "12": {
-    "widget_name": "LevelEdit",
-    "world_x": 1480.5,
-    "world_y": 477
-  },
-  "13": {
-    "widget_name": "ships_container",
-    "world_x": 1595,
-    "world_y": 85
-  },
-  "14": {
-    "widget_name": "planets_container",
-    "world_x": 1310,
-    "world_y": 375
-  },
-  "18": {
-    "widget_name": "PlayerBuildingsOverview",
-    "world_x": 360,
-    "world_y": 0
-  },
-  "22": {
-    "widget_name": "ships_container_filter",
-    "world_x": 1825,
-    "world_y": 25
-  },
-  "23": {
-    "widget_name": "planets_container_filter",
-    "world_x": 1810,
-    "world_y": 315
-  }
+    "0": {
+        "widget_name": "event panel",
+        "world_x": 510.0,
+        "world_y": 240.0
+    },
+    "1": {
+        "widget_name": "WeaponSelect",
+        "world_x": 435.0,
+        "world_y": 0
+    },
+    "2": {
+        "widget_name": "PlanetEdit",
+        "world_x": 610.0,
+        "world_y": 0
+    },
+    "3": {
+        "widget_name": "SaveGameEdit",
+        "world_x": 610.0,
+        "world_y": 0
+    },
+    "4": {
+        "widget_name": "BuildingEdit",
+        "world_x": 610.0,
+        "world_y": 0
+    },
+    "5": {
+        "widget_name": "EnemyHandlerEdit",
+        "world_x": 610.0,
+        "world_y": 0
+    },
+    "6": {
+        "widget_name": "ShipEdit",
+        "world_x": 610.0,
+        "world_y": 0
+    },
+    "7": {
+        "widget_name": "DebugEdit",
+        "world_x": 610.0,
+        "world_y": 0
+    },
+    "8": {
+        "widget_name": "TradeEdit",
+        "world_x": 610.0,
+        "world_y": 0
+    },
+    "9": {
+        "widget_name": "AddDealEdit",
+        "world_x": 687,
+        "world_y": 30
+    },
+    "10": {
+        "widget_name": "SettingsEdit",
+        "world_x": 1358.0,
+        "world_y": 30
+    },
+    "11": {
+        "widget_name": "AutoEconomyCalculatorEdit",
+        "world_x": 1443.0,
+        "world_y": 73
+    },
+    "12": {
+        "widget_name": "LevelSelect",
+        "world_x": 643.5,
+        "world_y": 56
+    },
+    "13": {
+        "widget_name": "LevelEdit",
+        "world_x": 1475,
+        "world_y": 90
+    },
+    "14": {
+        "widget_name": "ships_container",
+        "world_x": 1310,
+        "world_y": 375
+    },
+    "15": {
+        "widget_name": "planets_container",
+        "world_x": 1310,
+        "world_y": 60
+    },
+    "19": {
+        "widget_name": "PlayerBuildingsOverview",
+        "world_x": 1406,
+        "world_y": 33
+    },
+    "22": {
+        "widget_name": "ships_container_filter",
+        "world_x": 1510,
+        "world_y": 315
+    },
+    "23": {
+        "widget_name": "planets_container_filter",
+        "world_x": 1810,
+        "world_y": 0
+    }
 }

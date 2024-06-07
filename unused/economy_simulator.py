@@ -115,6 +115,8 @@ class EconomySimulator:
 
     def run_economy(self):
         self.cycle_count += 1
+        # building_factory.get
+        # if any(value for value in self.production)
         building = random.choice(self.get_building_fit_to_population())
         if building in ["town", "city", "metropole"]:
             if self.population in range(0, 999):

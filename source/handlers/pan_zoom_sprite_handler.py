@@ -75,11 +75,11 @@ class SpriteGroups:  # original
 
 
         """
-        filter = kwargs.get("filter", [])
+        filter_ = kwargs.get("filter", [])
         lists = kwargs.get("lists", ["planets", "ships", "ufos", "collectable_items", "celestial_objects"])
 
-        if filter:
-            lists -= filter
+        if filter_:
+            lists -= filter_
 
         for list_name in lists:
             if hasattr(self, list_name):

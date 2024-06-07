@@ -3,7 +3,7 @@ import os
 import pygame
 
 from source.handlers.file_handler import load_file, get_player_list
-from source.handlers.image_handler import overblit_button_image
+from source.multimedia_library.images import overblit_button_image
 
 
 class ScreenConfig:

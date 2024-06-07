@@ -1,6 +1,7 @@
 from typing import Optional
 
 from source.configuration.game_config import config
+from source.gui.event_text import event_text
 from source.trading.deal_select import DealSelect
 
 
@@ -14,41 +15,10 @@ class TradeAssistant:
     def __repr__(self):
         return (f"TradeAssistant:\n"
                 f" last_deal={self.get_last_deal_from_player()}\n,"
-                f" deals={self.get_active_deals_from_player()}\n,"
                 f" accepted_deals={self.get_accepted_deals_from_player()}\n,"
                 f" declined_deals={self.get_declined_deals_from_player()}\n"
-                f" last_deal_is_accepted={self.last_deal_is_accepted()}\n,"
-                f" last_deal_is_declined={self.last_deal_is_declined()}\n,"
-                f" last_deal_is_active={self.last_deal_is_active()}\n"
-                f" get_last_deal_from_player_and_offer_key={self.get_last_deal_from_player_and_offer_key('energy')}\n"
-                f" get_last_deal_from_player_and_request_key={self.get_last_deal_from_player_and_request_key('minerals')}\n"
-                f" adjust_last_deal_amount={self.adjust_deal_offer_and_request_based_on_reference_deal('energy', 'minerals', self.get_last_deal_from_player())}\n"
-                f" generate_deal_based_resource_maximum_and_minimum="
                 f"{self.generate_deal_based_resource_maximum_and_minimum(15.0, 10.0)}\n"
                 )
-
-    def last_deal_is_accepted(self) -> bool:
-        last_deal = self.get_last_deal_from_player()
-        if last_deal:
-            return last_deal in self.get_accepted_deals_from_player()
-        return False
-
-    def last_deal_is_declined(self) -> bool:
-        last_deal = self.get_last_deal_from_player()
-        if last_deal:
-            return last_deal in self.get_declined_deals_from_player()
-        return False
-
-    def last_deal_is_active(self) -> bool:
-        last_deal = self.get_last_deal_from_player()
-        if last_deal:
-            return last_deal in self.get_active_deals_from_player()
-        return False
-
-    def get_active_deals_from_player(self) -> list:
-        deal_manager = config.app.deal_manager
-        deals = [i for i in deal_manager.deals if i.provider_index == self.player_index]
-        return deals
 
     def get_accepted_deals_from_player(self) -> list:
         deal_manager = config.app.deal_manager
@@ -66,51 +36,15 @@ class TradeAssistant:
             return deal_manager.last_deals[self.player_index]
         return None
 
-    def get_last_deal_from_player_and_offer_key(self, offer_key: str) -> Optional[DealSelect]:
-        deal_manager = config.app.deal_manager
-        if self.player_index in deal_manager.last_deals.keys():
-            if offer_key in deal_manager.last_deals[self.player_index].offer.keys():
-                return deal_manager.last_deals[self.player_index]
-        return None
-
-    def get_last_deal_from_player_and_request_key(self, request_key: str) -> Optional[DealSelect]:
-        deal_manager = config.app.deal_manager
-        if self.player_index in deal_manager.last_deals.keys():
-            if request_key in deal_manager.last_deals[self.player_index].request.keys():
-                return deal_manager.last_deals[self.player_index]
-        return None
-
-    def adjust_deal_offer_and_request_based_on_reference_deal(
-            self, player_index: int, offer_key: str, request_key: str,
-            last_deal: DealSelect
-            ) -> dict:
-        # create a new deal dict
-        new_deal_dict = {"offer": {}, "request": {}}
-
-        # if has a last deal, go on
-        if last_deal:
-            # check if the offer and request keys are in the last deal
-            if offer_key in last_deal.offer.keys() and request_key in last_deal.request.keys():
-                # if last deal was accepted
-                if last_deal in self.get_accepted_deals_from_player():
-                    new_deal_dict["offer"][offer_key] = last_deal.offer[offer_key] * .85
-                    new_deal_dict["request"][request_key] = last_deal.request[request_key] * .9
-
-                # if last deal was declined
-                if last_deal in self.get_declined_deals_from_player():
-                    new_deal_dict["offer"][offer_key] = last_deal.offer[offer_key] * .9
-                    new_deal_dict["request"][request_key] = last_deal.request[request_key] * .85
-            else:
-                new_deal_dict["offer"] = last_deal.offer
-                new_deal_dict["request"] = last_deal.request
-
-        return new_deal_dict
-
     def generate_deal_based_resource_maximum_and_minimum(
             self,
             percentage_offer: float,
             percentage_request: float,
             ) -> dict:
+
+        """
+        this is called from the add_deal_edit to make the best deal based on the percentage values
+        """
 
         # create a new deal dict
         new_deal_dict = {"offer": {}, "request": {}}
@@ -132,6 +66,11 @@ class TradeAssistant:
     def generate_fitting_deal(self) -> dict:
         """
         Generates a fitting deal for the player.
+        it is called from:
+
+        config.app.deal_manager.add_fitting_deal(self.player.trade_assistant.generate_fitting_deal())
+
+
         gets the lowest and highest resource values, calculates the offer and request values based on the percentages
         and returns a dictionary containing the player index, offer, and request.
 
@@ -183,3 +122,16 @@ class TradeAssistant:
             self.request_percentage = max(self.request_percentage * 0.85, 0.1)
 
         # print (f"adjust_percentages:\n self.offer_percentage:{self.offer_percentage}\nself.request_percentage:{self.request_percentage}")
+
+    def trade_technology_to_the_bank(
+            self, offer_value: int, request_resource: str, request_value: int, player_index: int
+            ):
+        player = config.app.players[player_index]
+
+        if player.technology - offer_value > 0:
+            setattr(player, request_resource, getattr(player, request_resource) + request_value)
+            player.technology -= offer_value
+
+            print (f"trade_technology_to_the_bank: player: {player.name}, request:{request_resource}/{request_value}, for {offer_value} of technologyy")
+        else:
+            event_text.text = f"not enough technology for the deal!"

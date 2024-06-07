@@ -4,7 +4,7 @@ import math
 from pygame import Vector2
 
 from source.configuration.game_config import config
-from source.handlers.image_handler import outline_image
+from source.multimedia_library.images import outline_image
 from source.handlers.position_handler import rot_center
 from source.interaction.interaction_handler import InteractionHandler
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_gif import PanZoomSprite

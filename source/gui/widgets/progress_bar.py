@@ -36,8 +36,8 @@ class ProgressBar(WidgetBase):
     - _disabled: a boolean indicating whether the progress bar is disabled or not
     - progress: a callable function that returns the current progress value of the bar
     - curved: a boolean indicating whether the progress bar is curved or not
-    - completedColour: the color of the completed portion of the progress bar
-    - incompletedColour: the color of the incomplete portion of the progress bar
+    - completed_color: the color of the completed portion of the progress bar
+    - incompleted_color: the color of the incomplete portion of the progress bar
     - percent: the current progress value of the bar (between 0 and 1)
     - radius: the radius of the curved progress bar (half of the height)"""
 
@@ -52,8 +52,8 @@ class ProgressBar(WidgetBase):
         self.parent = kwargs.get("parent", None)
         self.progress = progress
         self.curved = kwargs.get('curved', False)
-        self.completedColour = kwargs.get('completedColour', (0, 200, 0))
-        self.incompletedColour = kwargs.get('incompletedColour', (100, 100, 100))
+        self.completed_color = kwargs.get('completed_color', (0, 200, 0))
+        self.incompleted_color = kwargs.get('incompleted_color', (100, 100, 100))
         self.percent = self.progress()
         self.ignore_progress = kwargs.get("ignore_progress", False)
         self.radius = self.screen_height / 2 if self.curved else 0
@@ -82,9 +82,9 @@ class ProgressBar(WidgetBase):
 
         self.set_position((x, y))
         if self.h_size:
-            self.setWidth(self.h_size)
+            self.set_screen_width(self.h_size)
         else:
-            self.setWidth(self.parent.rect.width)
+            self.set_screen_width(self.parent.rect.width)
 
     def draw(self):
         """ Display to surface """
@@ -95,7 +95,7 @@ class ProgressBar(WidgetBase):
         #         self.percent = 1
 
         if self.gradient_color:
-            self.completedColour = calculate_gradient_color((200, 0, 0),
+            self.completed_color = calculate_gradient_color((200, 0, 0),
                     pygame.color.THECOLORS["darkgreen"], self.percent, ignore_colors=["b"])
 
         if self.parent:
@@ -105,28 +105,28 @@ class ProgressBar(WidgetBase):
         if not self._hidden:
             if self.curved:
                 if self.percent == 0:
-                    pygame.draw.circle(self.win, self.incompletedColour,
+                    pygame.draw.circle(self.win, self.incompleted_color,
                             (self.screen_x, self.screen_y + self.screen_height // 2), self.radius)
-                    pygame.draw.circle(self.win, self.incompletedColour,
+                    pygame.draw.circle(self.win, self.incompleted_color,
                             (self.screen_x + self.screen_width, self.screen_y + self.screen_height // 2),
                             self.radius)
                 elif self.percent == 1:
-                    pygame.draw.circle(self.win, self.completedColour,
+                    pygame.draw.circle(self.win, self.completed_color,
                             (self.screen_x, self.screen_y + self.screen_height // 2), self.radius)
-                    pygame.draw.circle(self.win, self.completedColour,
+                    pygame.draw.circle(self.win, self.completed_color,
                             (self.screen_x + self.screen_width, self.screen_y + self.screen_height // 2),
                             self.radius)
                 else:
-                    pygame.draw.circle(self.win, self.completedColour, (
+                    pygame.draw.circle(self.win, self.completed_color, (
                         self.screen_x, self.screen_y + self.screen_height // 2),
                             self.radius)
-                    pygame.draw.circle(self.win, self.incompletedColour,
+                    pygame.draw.circle(self.win, self.incompleted_color,
                             (self.screen_x + self.screen_width, self.screen_y + self.screen_height // 2),
                             self.radius)
 
-            pygame.draw.rect(self.win, self.completedColour,
+            pygame.draw.rect(self.win, self.completed_color,
                     (self.screen_x, self.screen_y, int(self.screen_width * self.percent), self.screen_height))
-            pygame.draw.rect(self.win, self.incompletedColour,
+            pygame.draw.rect(self.win, self.incompleted_color,
                     (self.screen_x + int(self.screen_width * self.percent), self.screen_y,
                      int(self.screen_width * (1 - self.percent)), self.screen_height))
 

@@ -43,7 +43,14 @@ class PanZoomShipMoving:
         self._orbiting = value
         if value:
             if self.target:
-                set_orbit_object_id(self, self.target.id)
+                if hasattr(self.target, "id"):
+                    if not self.target.id == self.id:
+                        set_orbit_object_id(self, self.target.id)
+                    else:
+
+                        print("@orbiting.setter error: target.id == self.id!")
+                else:
+                    print ("@orbiting.setter error: target has no attr 'id'!")
 
         # self.state_engine.set_state()
 

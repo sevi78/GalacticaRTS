@@ -10,8 +10,8 @@ from source.multimedia_library.images import get_image, resize_image
 
 
 class TradeEdit(EditorBase):
-    def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
-        super().__init__(win, x, y, width, height, isSubWidget=False, **kwargs)
+    def __init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs):
+        super().__init__(win, x, y, width, height, is_sub_widget=False, **kwargs)
 
         self.trader_image_pos = (0, 0)
         self.player_image_pos = (0, 0)
@@ -56,7 +56,7 @@ class TradeEdit(EditorBase):
                 y=self.max_height + button_size / 2,
                 width=button_size,
                 height=button_size,
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self,
                 image=pygame.transform.scale(
                         get_image("thumps_up.png"), (button_size, button_size)),
@@ -65,7 +65,7 @@ class TradeEdit(EditorBase):
                 moveable=False,
                 include_text=False,
                 layer=self.layer,
-                onClick=lambda: self.agree(),
+                on_click=lambda: self.agree(),
                 name="agree_button"
                 )
 
@@ -84,9 +84,9 @@ class TradeEdit(EditorBase):
 
             button_size = 32
             checkbox = Checkbox(
-                    self.win, self.get_screen_x() + self.trader_image.get_width() * 4.7, self.world_y + y, 30, 30, isSubWidget=False,
+                    self.win, self.get_screen_x() + self.trader_image.get_width() * 4.7, self.world_y + y, 30, 30, is_sub_widget=False,
                     color=self.frame_color,
-                    key=key, tooltip=key, onClick=lambda: print("OKOKOK"), layer=9, parent=self)
+                    key=key, tooltip=key, on_click=lambda: print("OKOKOK"), layer=9, parent=self)
 
             self.checkboxes.append(checkbox)
             self.widgets.append(checkbox)

@@ -12,8 +12,8 @@ BUTTON_SIZE = 30
 
 
 class EconomyOverview(EditorBase):
-    def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
-        EditorBase.__init__(self, win, x, y, width, height, isSubWidget=False, **kwargs)
+    def __init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs):
+        EditorBase.__init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs)
         #  widgets
         self.widgets = []
         self.buttons = []
@@ -69,7 +69,7 @@ class EconomyOverview(EditorBase):
     #         y=y - BUTTON_SIZE,
     #         width=BUTTON_SIZE,
     #         height=BUTTON_SIZE,
-    #         isSubWidget=False,
+    #         is_sub_widget=False,
     #         parent=self,
     #         image=pygame.transform.scale(
     #             get_image(f"{building_name}_25x25.png"), (BUTTON_SIZE, BUTTON_SIZE)),
@@ -77,7 +77,7 @@ class EconomyOverview(EditorBase):
     #         frame_color=self.frame_color,
     #         moveable=False,
     #         include_text=True, layer=10,
-    #         onClick=lambda: None,
+    #         on_click=lambda: None,
     #         name=building_name)
     #         x += BUTTON_SIZE * 1.5
     #         self.buttons.append(button)

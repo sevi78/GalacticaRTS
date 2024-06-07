@@ -9,8 +9,8 @@ from source.text.info_panel_text_generator import info_panel_text_generator
 
 
 class AdvancedSettingsPanel(WidgetBase):
-    def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
-        super().__init__(win, x, y, width, height, isSubWidget, **kwargs)
+    def __init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs):
+        super().__init__(win, x, y, width, height, is_sub_widget, **kwargs)
         self.name = "settings panel"
         self.anchor_right = kwargs.get("anchor_right")
         self.bg_color = pygame.colordict.THECOLORS["black"]
@@ -43,19 +43,36 @@ class AdvancedSettingsPanel(WidgetBase):
 
     def create_icons(self):
         # level select
+        self.auto_economy_queue_edit_icon = ImageButton(win=self.win,
+                x=self.get_screen_x(),
+                y=self.surface_rect.y + self.spacing,
+                width=self.icon_size,
+                height=self.icon_size,
+                is_sub_widget=False,
+                parent=self,
+                image=pygame.transform.scale(get_image("autopilot.png"), (25, 25)),
+                tooltip="open auto economy edit queue edit",
+                frame_color=self.frame_color,
+                moveable=False,
+                include_text=True, layer=self.layer,
+                on_click=lambda: config.app.auto_economy_calculator_edit.set_visible())
+        self.widgets.append(self.auto_economy_queue_edit_icon)
+        self.max_width += self.icon_size + self.spacing
+
+        # level select
         self.level_select_icon = ImageButton(win=self.win,
                 x=self.get_screen_x(),
                 y=self.surface_rect.y + self.spacing,
                 width=self.icon_size,
                 height=self.icon_size,
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self,
                 image=pygame.transform.scale(get_image("level_icon.png"), (25, 25)),
                 tooltip="open level select",
                 frame_color=self.frame_color,
                 moveable=False,
                 include_text=True, layer=self.layer,
-                onClick=lambda: config.app.level_select.set_visible())
+                on_click=lambda: config.app.level_select.set_visible())
         self.widgets.append(self.level_select_icon)
         self.max_width += self.icon_size + self.spacing
 
@@ -65,14 +82,14 @@ class AdvancedSettingsPanel(WidgetBase):
                 y=self.surface_rect.y + self.spacing,
                 width=self.icon_size,
                 height=self.icon_size,
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self,
                 image=pygame.transform.scale(get_image("level_edit_icon.png"), (25, 25)),
                 tooltip="open level edit",
                 frame_color=self.frame_color,
                 moveable=False,
                 include_text=True, layer=self.layer,
-                onClick=lambda: config.app.level_edit.set_visible())
+                on_click=lambda: config.app.level_edit.set_visible())
         self.widgets.append(self.level_edit_icon)
         self.max_width += self.icon_size + self.spacing
 
@@ -82,14 +99,14 @@ class AdvancedSettingsPanel(WidgetBase):
                 y=self.surface_rect.y + self.spacing,
                 width=self.icon_size,
                 height=self.icon_size,
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self,
                 image=pygame.transform.scale(get_image("planet_edit.png"), (25, 25)),
                 tooltip="open planet edit",
                 frame_color=self.frame_color,
                 moveable=False,
                 include_text=True, layer=self.layer,
-                onClick=lambda: config.app.planet_edit.set_visible())
+                on_click=lambda: config.app.planet_edit.set_visible())
         self.widgets.append(self.planet_edit_icon)
         self.max_width += self.icon_size + self.spacing
 
@@ -99,14 +116,14 @@ class AdvancedSettingsPanel(WidgetBase):
                 y=self.surface_rect.y + self.spacing,
                 width=self.icon_size,
                 height=self.icon_size,
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self,
                 image=pygame.transform.scale(get_image("building_icon.png"), (25, 25)),
                 tooltip="open building edit",
                 frame_color=self.frame_color,
                 moveable=False,
                 include_text=True, layer=self.layer,
-                onClick=lambda: config.app.building_edit.set_visible())
+                on_click=lambda: config.app.building_edit.set_visible())
         self.widgets.append(self.building_edit_icon)
         self.max_width += self.icon_size + self.spacing
 
@@ -116,14 +133,14 @@ class AdvancedSettingsPanel(WidgetBase):
                 y=self.surface_rect.y + self.spacing,
                 width=self.icon_size,
                 height=self.icon_size,
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self,
                 image=pygame.transform.scale(get_image("debug_icon.png"), (25, 25)),
                 tooltip="open debug edit",
                 frame_color=self.frame_color,
                 moveable=False,
                 include_text=True, layer=self.layer,
-                onClick=lambda: config.app.debug_edit.set_visible())
+                on_click=lambda: config.app.debug_edit.set_visible())
         self.widgets.append(self.debug_edit_icon)
         self.max_width += self.icon_size + self.spacing
 
@@ -133,14 +150,14 @@ class AdvancedSettingsPanel(WidgetBase):
                 y=self.surface_rect.y + self.spacing,
                 width=self.icon_size,
                 height=self.icon_size,
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self,
                 image=pygame.transform.scale(get_image("gameplay_settings_icon.png"), (25, 25)),
                 tooltip="open enemy handler edit",
                 frame_color=self.frame_color,
                 moveable=False,
                 include_text=True, layer=self.layer,
-                onClick=lambda: config.app.enemy_handler_edit.set_visible())
+                on_click=lambda: config.app.enemy_handler_edit.set_visible())
         self.widgets.append(self.enemy_handler_edit_icon)
         self.max_width += self.icon_size + self.spacing
 
@@ -150,7 +167,7 @@ class AdvancedSettingsPanel(WidgetBase):
                 y=self.surface_rect.y + self.spacing,
                 width=self.icon_size,
                 height=self.icon_size,
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self,
                 image=pygame.transform.scale(
                         get_image("ship_edit.png"), (25, 25)),
@@ -158,7 +175,7 @@ class AdvancedSettingsPanel(WidgetBase):
                 frame_color=self.frame_color,
                 moveable=False,
                 include_text=True, layer=self.layer,
-                onClick=lambda: config.app.ship_edit.set_visible())
+                on_click=lambda: config.app.ship_edit.set_visible())
         self.widgets.append(self.ship_edit_icon)
         self.max_width += self.icon_size + self.spacing
 
@@ -168,14 +185,14 @@ class AdvancedSettingsPanel(WidgetBase):
                 y=self.surface_rect.y + self.spacing,
                 width=self.icon_size,
                 height=self.icon_size,
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self,
                 image=pygame.transform.scale(get_image("settings_40x40.png"), (25, 25)),
                 tooltip="open settings menu",
                 frame_color=self.frame_color,
                 moveable=False,
                 include_text=True, layer=self.layer,
-                onClick=lambda: config.app.settings_edit.set_visible())  # settings.main(surface=self.win))
+                on_click=lambda: config.app.settings_edit.set_visible())  # settings.main(surface=self.win))
         self.widgets.append(self.settings_icon)
         self.max_width += self.icon_size + self.spacing + self.spacing
 

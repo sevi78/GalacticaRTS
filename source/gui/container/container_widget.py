@@ -71,7 +71,7 @@ class ContainerWidget(InteractionHandler):
     list_name: The name of the container in a list.
     filters: The list of filters applied to the container.
     filter_widget: The filter widget associated with the container.
-    isSubWidget: A flag indicating if the container is a sub-widget.
+    is_sub_widget: A flag indicating if the container is a sub-widget.
     _hidden: A flag indicating if the container is hidden.
     surface: The surface on which the container and its child widgets are drawn.
     rect: The rectangle representing the position and size of the container.
@@ -142,7 +142,7 @@ class ContainerWidget(InteractionHandler):
         if self.filter_widget:
             self.filter_widget.parent = self
 
-        self.isSubWidget = True
+        self.is_sub_widget = True
         self._hidden = True
 
         # surface
@@ -174,7 +174,7 @@ class ContainerWidget(InteractionHandler):
         self.reposition_widgets()
 
         # register
-        WidgetHandler.addWidget(self)
+        WidgetHandler.add_widget(self)
 
         # save
         self.save = kwargs.get("save", True)

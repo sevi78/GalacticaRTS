@@ -1,7 +1,7 @@
 import pygame
 
+from source.auto_economy.auto_economy_edit import AutoEconomyEdit
 from source.configuration.game_config import config
-from source.economy.auto_economy_edit import AutoEconomyEdit
 from source.editors.editor_base.editor_base import EditorBase
 from source.editors.editor_base.editor_config import TOP_SPACING
 from source.game_play.navigation import navigate_to
@@ -9,9 +9,8 @@ from source.gui.widgets.buttons.image_button import ImageButton
 from source.gui.widgets.inputbox import InputBox
 from source.gui.widgets.score_plotter import ScorePlotter
 from source.handlers.diplomacy_handler import diplomacy_handler
-from source.handlers.image_handler import overblit_button_image
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
-from source.multimedia_library.images import get_image
+from source.multimedia_library.images import get_image, overblit_button_image
 from source.player.player_buildings_overview import PlayerBuildingsOverview
 from source.player.player_handler import player_handler
 from source.text.info_panel_text_generator import info_panel_text_generator
@@ -24,8 +23,8 @@ SPACING_X = 90
 
 
 class PlayerEdit(EditorBase):
-    def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
-        EditorBase.__init__(self, win, x, y, width, height, isSubWidget=False, **kwargs)
+    def __init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs):
+        EditorBase.__init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs)
 
         self.data = player_handler.get_players()
 
@@ -83,7 +82,8 @@ class PlayerEdit(EditorBase):
                 400,
                 False,
                 parent=self,
-                frame_corner_radius=10)
+                frame_corner_radius=10,
+                save=True)
 
         # dirty hack to make attached editors hide at startup
         self.enable_plotter()
@@ -94,7 +94,7 @@ class PlayerEdit(EditorBase):
 
     def set_max_height(self):
         """ sets the editors max_height based on the enabled sub editors, if any of them is enabled or not"""
-        if self.score_plotter.isEnabled() or self.auto_economy_edit.isEnabled():
+        if self.score_plotter.is_enabled() or self.auto_economy_edit.is_enabled():
             self.max_height = self.max_height_raw
         else:
             self.max_height = self.max_height_if_editors_closed
@@ -167,7 +167,7 @@ class PlayerEdit(EditorBase):
                     y=self.world_y + TOP_SPACING + 20,
                     width=button_size_resource,
                     height=button_size_resource,
-                    isSubWidget=False,
+                    is_sub_widget=False,
                     parent=self,
                     image=pygame.transform.scale(get_image(image_name_resource), (
                         button_size_resource, button_size_resource)),
@@ -176,12 +176,12 @@ class PlayerEdit(EditorBase):
                     moveable=False,
                     include_text=True,
                     layer=self.layer,
-                    onClick=lambda: config.app.cheat_resource(key, 500),
+                    on_click=lambda: config.app.cheat_resource(key, 500),
                     name=key,
-                    textColour=self.frame_color,
+                    text_color=self.frame_color,
                     font_size=12,
                     info_text="",  # info_panel_text_generator.create_info_panel_weapon_text(key),
-                    textHAlign="right_outside",
+                    text_h_align="right_outside",
                     outline_thickness=0,
                     outline_threshold=1
                     )
@@ -227,7 +227,7 @@ class PlayerEdit(EditorBase):
                     y=self.world_y + TOP_SPACING + y,
                     width=button_size,
                     height=button_size,
-                    isSubWidget=False,
+                    is_sub_widget=False,
                     parent=self,
                     image=pygame.transform.scale(get_image(image_name), (button_size, button_size)),
                     tooltip=player,
@@ -236,13 +236,13 @@ class PlayerEdit(EditorBase):
                     moveable=False,
                     include_text=True,
                     layer=self.layer,
-                    onClick=lambda player_index_=player_index: self.enable_auto_economy_edit(player_index_),
+                    on_click=lambda player_index_=player_index: self.enable_auto_economy_edit(player_index_),
                     on_hover_function=lambda
                         player_index_=player_index: self.set_player_building_overview_player_index(player_index_),
                     name=player,
-                    textColour=self.frame_color,
+                    text_color=self.frame_color,
                     font_size=12,
-                    textHAlign="right_outside",
+                    text_h_align="right_outside",
                     outline_thickness=0,
                     outline_threshold=1
                     )
@@ -265,7 +265,7 @@ class PlayerEdit(EditorBase):
                     y=self.world_y + TOP_SPACING + y + DIPLOMACY_BUTTON_SIZE / 3,
                     width=DIPLOMACY_BUTTON_SIZE,
                     height=DIPLOMACY_BUTTON_SIZE,
-                    isSubWidget=False,
+                    is_sub_widget=False,
                     parent=self,
                     image=diplomacy_image,
                     tooltip="set diplomacy",
@@ -273,13 +273,13 @@ class PlayerEdit(EditorBase):
                     moveable=False,
                     include_text=True,
                     layer=self.layer,
-                    onClick=lambda
+                    on_click=lambda
                         player_index_=player_index: config.app.diplomacy_edit.open(player_index_, config.player),
                     name=f"diplomacy{player_index}",
-                    textColour=self.frame_color,
+                    text_color=self.frame_color,
                     font_size=12,
                     info_text="",  # info_panel_text_generator.create_info_panel_weapon_text(key),
-                    textHAlign="right_outside",
+                    text_h_align="right_outside",
                     outline_thickness=0,
                     outline_threshold=1
                     )
@@ -342,7 +342,7 @@ class PlayerEdit(EditorBase):
                         y=self.world_y + TOP_SPACING + 20,
                         width=button_size,
                         height=button_size,
-                        isSubWidget=False,
+                        is_sub_widget=False,
                         parent=self,
                         image=pygame.transform.scale(get_image("Zeta Bentauri_60x60.png"), (button_size, button_size)),
                         tooltip="planet_icon",
@@ -350,12 +350,12 @@ class PlayerEdit(EditorBase):
                         moveable=False,
                         include_text=True,
                         layer=self.layer,
-                        onClick=lambda: print("no function"),
+                        on_click=lambda: print("no function"),
                         name="planet_icon",
-                        textColour=self.frame_color,
+                        text_color=self.frame_color,
                         font_size=12,
                         info_text="",  # info_panel_text_generator.create_info_panel_weapon_text(key),
-                        textHAlign="right_outside",
+                        text_h_align="right_outside",
                         outline_thickness=0,
                         outline_threshold=1
                         )
@@ -400,7 +400,7 @@ class PlayerEdit(EditorBase):
                         y=self.world_y + TOP_SPACING + 20,
                         width=button_size,
                         height=button_size,
-                        isSubWidget=False,
+                        is_sub_widget=False,
                         parent=self,
                         image=pygame.transform.scale(get_image("buildings_icon.png"), (button_size, button_size)),
                         tooltip="buildings_icon",
@@ -408,12 +408,12 @@ class PlayerEdit(EditorBase):
                         moveable=False,
                         include_text=True,
                         layer=self.layer,
-                        onClick=lambda player_index_=player_index: self.open_player_buildings_overview(player_index_),
+                        on_click=lambda player_index_=player_index: self.open_player_buildings_overview(player_index_),
                         name="buildings_icon",
-                        textColour=self.frame_color,
+                        text_color=self.frame_color,
                         font_size=12,
                         info_text="",  # info_panel_text_generator.create_info_panel_weapon_text(key),
-                        textHAlign="right_outside",
+                        text_h_align="right_outside",
                         outline_thickness=0,
                         outline_threshold=1
                         )
@@ -457,7 +457,7 @@ class PlayerEdit(EditorBase):
                         y=self.world_y + TOP_SPACING + 20,
                         width=button_size,
                         height=button_size,
-                        isSubWidget=False,
+                        is_sub_widget=False,
                         parent=self,
                         image=pygame.transform.scale(get_image("spacehunter.png"), (button_size, button_size)),
                         tooltip="ships_icon",
@@ -465,12 +465,12 @@ class PlayerEdit(EditorBase):
                         moveable=False,
                         include_text=True,
                         layer=self.layer,
-                        onClick=lambda: config.app.cheat_ships(),
+                        on_click=lambda: config.app.cheat_ships(),
                         name="ships_icon",
-                        textColour=self.frame_color,
+                        text_color=self.frame_color,
                         font_size=12,
                         info_text="",  # info_panel_text_generator.create_info_panel_weapon_text(key),
-                        textHAlign="right_outside",
+                        text_h_align="right_outside",
                         outline_thickness=0,
                         outline_threshold=1
                         )
@@ -486,7 +486,7 @@ class PlayerEdit(EditorBase):
                     y=self.world_y + TOP_SPACING + y,
                     width=button_size_,
                     height=button_size_,
-                    isSubWidget=False,
+                    is_sub_widget=False,
                     parent=self,
                     image=pygame.transform.scale(get_image("space harbor_25x25.png"), (button_size_, button_size_)),
                     tooltip="space harbor_icon",
@@ -494,12 +494,12 @@ class PlayerEdit(EditorBase):
                     moveable=False,
                     include_text=True,
                     layer=self.layer,
-                    onClick=lambda player_index_=player_index: self.navigate_to_space_harbor(player_index_),
+                    on_click=lambda player_index_=player_index: self.navigate_to_space_harbor(player_index_),
                     name=f"space harbor_icon{player_index}",
-                    textColour=self.frame_color,
+                    text_color=self.frame_color,
                     font_size=12,
                     info_text="",  # info_panel_text_generator.create_info_panel_weapon_text(key),
-                    textHAlign="right_outside",
+                    text_h_align="right_outside",
                     outline_thickness=0,
                     outline_threshold=1
                     )
@@ -545,7 +545,7 @@ class PlayerEdit(EditorBase):
                         y=self.world_y + TOP_SPACING + 20,
                         width=button_size,
                         height=button_size,
-                        isSubWidget=False,
+                        is_sub_widget=False,
                         parent=self,
                         image=pygame.transform.scale(get_image("score_icon.png"), (button_size, button_size)),
                         tooltip="open score plotter",
@@ -553,12 +553,12 @@ class PlayerEdit(EditorBase):
                         moveable=False,
                         include_text=True,
                         layer=self.layer,
-                        onClick=lambda: self.enable_plotter(),
+                        on_click=lambda: self.enable_plotter(),
                         name="score_icon",
-                        textColour=self.frame_color,
+                        text_color=self.frame_color,
                         font_size=12,
                         info_text="",  # info_panel_text_generator.create_info_panel_weapon_text(key),
-                        textHAlign="right_outside",
+                        text_h_align="right_outside",
                         outline_thickness=0,
                         outline_threshold=1
                         )
@@ -579,9 +579,9 @@ class PlayerEdit(EditorBase):
                 player_index = int(i.name.split("diplomacy")[1])
 
                 if not diplomacy_handler.is_in_peace(player_index, config.player):
-                    i.setImage(self.war_image)
+                    i.set_image(self.war_image)
                 else:
-                    i.setImage(self.peace_image)
+                    i.set_image(self.peace_image)
 
     def update_space_harbor_icon(self):
         for player in config.app.players:
@@ -664,7 +664,8 @@ class PlayerEdit(EditorBase):
             self.draw_text(self.world_x + self.text_spacing, self.world_y + TOP_SPACING + self.text_spacing, 200, 30, "Players:")
 
     def set_player_building_overview_player_index(self, player_index_):
-        self.player_buildings_overview.player_index = player_index_
+        self.player_buildings_overview.set_player_index(player_index_)
+        self.auto_economy_edit.set_player(player_index_)
 
     def open_player_buildings_overview(self, player_index_):
         self.player_buildings_overview.player_index = player_index_

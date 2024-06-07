@@ -4,6 +4,8 @@
     <content url="file://$MODULE_DIR$">
       <excludeFolder url="file://$MODULE_DIR$/output" />
       <excludeFolder url="file://$MODULE_DIR$/unused" />
+      <excludeFolder url="file://$MODULE_DIR$/unused/economy_new" />
+      <excludeFolder url="file://$MODULE_DIR$/unused/economy_new_bk" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

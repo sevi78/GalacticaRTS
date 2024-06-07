@@ -3,13 +3,13 @@ from abc import ABC, abstractmethod
 import pygame
 
 from source.configuration.game_config import config
-from source.draw.rect import draw_transparent_rounded_rect
+from source.draw.rectangle import draw_transparent_rounded_rect
 from source.handlers.color_handler import colors
 from source.handlers.widget_handler import WidgetHandler
 
 
 class WidgetBaseMethods(ABC):
-    def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
+    def __init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs):
         self.name = kwargs.get("name", self.__class__.__name__)
         self.win = win
         self.zoomable = False
@@ -59,7 +59,7 @@ class WidgetBaseMethods(ABC):
         if attr == 'height':
             return self.screen_height
 
-    def isEnabled(self):
+    def is_enabled(self):
         return not self._disabled
 
     def set(self, attr, value):

@@ -1,0 +1,43 @@
+//{
+//    "delete_buildings": 10,
+//    "maximize_population_grow": 10,
+//    "handle_infinite_loops": 10,
+//    "destroy_most_consuming_building": 5,
+//    "deal_with_the_bank": 10,
+//    "optimize_planets": 10,
+//    "build_energy_buildings": 10,
+//    "build_minerals_buildings": 10,
+//    "build_water_buildings": 10,
+//    "build_food_buildings": 10,
+//    "build_space_harbour": 10,
+//    "build_ship": 10,
+//    "build_ship_weapons": 10,
+//    "build_particle_accelerator": 10,
+//    "build_planetary_defence": 10,
+//    "build_population_buildings": 10,
+//    "build_fitting_building": 7,
+//    "build_university": 10,
+//    "add_deal": 10
+//}
+
+{
+    "delete_buildings": 5,
+    "maximize_population_grow": 10,
+    "handle_infinite_loops": 10,
+    "destroy_most_consuming_building": 7,
+    "deal_with_the_bank": 8,
+    "optimize_planets": 10,
+    "build_energy_buildings": 10,
+    "build_minerals_buildings": 10,
+    "build_water_buildings": 10,
+    "build_food_buildings": 10,
+    "build_space_harbour": 10,
+    "build_ship": 10,
+    "build_ship_weapons": 10,
+    "build_particle_accelerator": 10,
+    "build_planetary_defence": 10,
+    "build_population_buildings": 10,
+    "build_fitting_building": 7,
+    "build_university": 10,
+    "add_deal": 10
+}

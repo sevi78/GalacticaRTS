@@ -26,8 +26,8 @@ class Button(WidgetBase, Moveable):
         :param kwargs: Optional parameters
         """
 
-    def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
-        super().__init__(win, x, y, width, height, isSubWidget, **kwargs)
+    def __init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs):
+        super().__init__(win, x, y, width, height, is_sub_widget, **kwargs)
         Moveable.__init__(self, x, y, width, height, kwargs)
         self.kwargs = kwargs
         self.parent = kwargs.get("parent")
@@ -42,37 +42,37 @@ class Button(WidgetBase, Moveable):
         self.info_text = kwargs.get("info_text")
         self.target = None
 
-        # Colour
-        self.inactiveColour = kwargs.get('inactiveColour', (150, 150, 150))
-        self.hoverColour = kwargs.get('hoverColour', (125, 125, 125))
-        self.pressedColour = kwargs.get('pressedColour', (100, 100, 100))
-        self.colour = kwargs.get('colour', self.inactiveColour)  # Allows colour to override inactiveColour
-        self.inactiveColour = self.colour
-        self.shadowDistance = kwargs.get('shadowDistance', 0)
-        self.shadowColour = kwargs.get('shadowColour', (210, 210, 180))
-        self.hiddenColour = kwargs.get('hiddenColour', self.inactiveColour)
+        # _color
+        self.inactive_color = kwargs.get('inactive_color', (150, 150, 150))
+        self.hover_color = kwargs.get('hover_color', (125, 125, 125))
+        self.pressed_color = kwargs.get('pressed_color', (100, 100, 100))
+        self.color = kwargs.get('color', self.inactive_color)  # Allows color to override inactive_color
+        self.inactive_color = self.color
+        self.shadow_distance = kwargs.get('shadow_distance', 0)
+        self.shadow_color = kwargs.get('shadow_color', (210, 210, 180))
+        self.hidden_color = kwargs.get('hidden_color', self.inactive_color)
 
         # Function
-        self.onClick = kwargs.get('onClick', lambda *args: None)
-        self.onRelease = kwargs.get('onRelease', lambda *args: None)
-        self.onClickParams = kwargs.get('onClickParams', ())
-        self.onReleaseParams = kwargs.get('onReleaseParams', ())
+        self.on_click = kwargs.get('on_click', lambda *args: None)
+        self.on_release = kwargs.get('on_release', lambda *args: None)
+        self.on_click_params = kwargs.get('on_click_params', ())
+        self.on_release_params = kwargs.get('on_release_params', ())
         self.clicked = False
         self.moveable = kwargs.get("moveable", False)
         self.moving = False
         self.property = kwargs.get("property")
 
         # Text (Remove if using PyInstaller)
-        self.textColour = kwargs.get('textColour', (0, 0, 0))
+        self.text_color = kwargs.get('text_color', (0, 0, 0))
         self.font_size = kwargs.get('font_size', 20)
         self.string = kwargs.get('text', '')
         self.font = kwargs.get('font', pygame.font.SysFont(config.font_name, self.font_size))
-        self.text = self.font.render(self.string, True, self.textColour)
-        self.textHAlign = kwargs.get('textHAlign', 'centre')
-        self.textVAlign = kwargs.get('textVAlign', 'centre')
+        self.text = self.font.render(self.string, True, self.text_color)
+        self.text_h_align = kwargs.get('text_h_align', 'centre')
+        self.text_v_align = kwargs.get('text_v_align', 'centre')
         self.margin = kwargs.get('margin', 20)
-        self.textRect = self.text.get_rect()
-        self.alignTextRect()
+        self.text_rect = self.text.get_rect()
+        self.align_text_rect()
 
         # Image
         self.radius_extension = kwargs.get('radius_extension', 0)
@@ -81,20 +81,20 @@ class Button(WidgetBase, Moveable):
             width + self.radius_extension, height + self.radius_extension), 0, self.win)
         self.image_hover_surface.set_alpha(kwargs.get("image_hover_surface_alpha", 0))
         self.image = kwargs.get('image', None)
-        self.imageHAlign = kwargs.get('imageHAlign', 'centre')
-        self.imageVAlign = kwargs.get('imageVAlign', 'centre')
+        self.image_h_align = kwargs.get('image_h_align', 'centre')
+        self.image_v_align = kwargs.get('image_v_align', 'centre')
 
         if self.image:
             self.rect = self.image.get_rect()
-            self.alignImageRect()
+            self.align_image_rect()
 
         # Border
-        self.borderThickness = kwargs.get('borderThickness', 0)
-        self.inactiveBorderColour = kwargs.get('inactiveBorderColour', (0, 0, 0))
-        self.hoverBorderColour = kwargs.get('hoverBorderColour', (80, 80, 80))
-        self.pressedBorderColour = kwargs.get('pressedBorderColour', (100, 100, 100))
-        self.borderColour = kwargs.get('borderColour', self.inactiveBorderColour)
-        self.inactiveBorderColour = self.borderColour
+        self.border_thickness = kwargs.get('border_thickness', 0)
+        self.inactive_border_color = kwargs.get('inactive_border_color', (0, 0, 0))
+        self.hover_border_color = kwargs.get('hover_border_color', (80, 80, 80))
+        self.pressed_border_color = kwargs.get('pressed_border_color', (100, 100, 100))
+        self.border_color = kwargs.get('border_color', self.inactive_border_color)
+        self.inactive_border_color = self.border_color
         self.radius = kwargs.get('radius', 0)
 
         # ToolTip
@@ -103,7 +103,7 @@ class Button(WidgetBase, Moveable):
         # info_panel
         self.infopanel = kwargs.get("infopanel", "")
 
-    def drawCircle(self, color, alpha):
+    def draw_circle(self, color, alpha):
         if self.transparent:
             self.circle = pygame.surface.Surface((self.get_screen_width(), self.get_screen_height()), 0, self.win)
             self.circle.set_alpha(0)
@@ -133,10 +133,10 @@ class Button(WidgetBase, Moveable):
                     if event.type == pygame.MOUSEBUTTONDOWN:
                         if mouse_state == MouseState.LEFT_CLICK:
                             self.clicked = True
-                            self.onClick(*self.onClickParams)
-                            self.colour = self.pressedColour
-                            self.borderColour = self.pressedBorderColour
-                            self.drawCircle(self.pressedColour, 128)
+                            self.on_click(*self.on_click_params)
+                            self.color = self.pressed_color
+                            self.border_color = self.pressed_border_color
+                            self.draw_circle(self.pressed_color, 128)
 
                             # set planet on click of the building slot buttons
                             if self.parent:
@@ -169,10 +169,10 @@ class Button(WidgetBase, Moveable):
 
                     elif event.type == REPEAT_CLICK_EVENT:
                         # The timer has triggered a repeat click event
-                        self.onClick(*self.onClickParams)
-                        self.colour = self.pressedColour
-                        self.borderColour = self.pressedBorderColour
-                        self.drawCircle(self.pressedColour, 128)
+                        self.on_click(*self.on_click_params)
+                        self.color = self.pressed_color
+                        self.border_color = self.pressed_border_color
+                        self.draw_circle(self.pressed_color, 128)
 
                         # set cursor
                         if self.name == "minus_arrow":
@@ -186,21 +186,21 @@ class Button(WidgetBase, Moveable):
                     elif event.type == pygame.MOUSEBUTTONUP:
                         if mouse_state == MouseState.LEFT_RELEASE and self.clicked:
                             self.clicked = False
-                            self.onRelease(*self.onReleaseParams)
+                            self.on_release(*self.on_release_params)
 
                             # If repeat_clicks is True, stop the timer when the mouse button is released
                             if self.repeat_clicks:
                                 pygame.time.set_timer(REPEAT_CLICK_EVENT, 0)  # Setting delay to 0 stops the timer
 
                     elif mouse_state == MouseState.LEFT_DRAG and self.clicked:
-                        self.colour = self.pressedColour
-                        self.borderColour = self.pressedBorderColour
-                        self.drawCircle(self.pressedColour, 128)
+                        self.color = self.pressed_color
+                        self.border_color = self.pressed_border_color
+                        self.draw_circle(self.pressed_color, 128)
 
                     elif mouse_state == MouseState.HOVER or mouse_state == MouseState.LEFT_DRAG:
-                        self.colour = self.hoverColour
-                        self.borderColour = self.hoverBorderColour
-                        self.drawCircle(self.hoverColour, 128)
+                        self.color = self.hover_color
+                        self.border_color = self.hover_border_color
+                        self.draw_circle(self.hover_color, 128)
 
                         # self.win.blit(outline_image(self.image, self.frame_color, 1), self.image.get_rect())
 
@@ -227,9 +227,9 @@ class Button(WidgetBase, Moveable):
             else:
                 self.image = self.image_raw
                 self.clicked = False
-                self.colour = self.inactiveColour
-                self.borderColour = self.inactiveBorderColour
-                self.drawCircle(self.inactiveColour, 0)
+                self.color = self.inactive_color
+                self.border_color = self.inactive_border_color
+                self.draw_circle(self.inactive_color, 0)
 
     def draw(self):
         # """ Display to surface """
@@ -239,63 +239,63 @@ class Button(WidgetBase, Moveable):
         if not self._hidden and not self._disabled:
             if not self.transparent:
                 pygame.draw.rect(
-                        self.win, self.shadowColour,
-                        (self.screen_x + self.shadowDistance, self.screen_y + self.shadowDistance, self.screen_width,
+                        self.win, self.shadow_color,
+                        (self.screen_x + self.shadow_distance, self.screen_y + self.shadow_distance, self.screen_width,
                          self.screen_height),
                         border_radius=self.radius
                         )
 
                 pygame.draw.rect(
-                        self.win, self.borderColour, (
+                        self.win, self.border_color, (
                             self.screen_x, self.screen_y, self.screen_width, self.screen_height),
                         border_radius=self.radius
                         )
 
                 pygame.draw.rect(
-                        self.win, self.colour, (
-                            self.screen_x + self.borderThickness, self.screen_y + self.borderThickness,
-                            self.screen_width - self.borderThickness * 2,
-                            self.screen_height - self.borderThickness * 2),
+                        self.win, self.color, (
+                            self.screen_x + self.border_thickness, self.screen_y + self.border_thickness,
+                            self.screen_width - self.border_thickness * 2,
+                            self.screen_height - self.border_thickness * 2),
                         border_radius=self.radius
                         )
 
             if self.image:
                 self.rect = self.image.get_rect()
-                self.alignImageRect()
+                self.align_image_rect()
                 self.win.blit(self.image, self.rect)
 
-            self.text = self.font.render(self.string, True, self.textColour)
-            self.textRect = self.text.get_rect()
-            self.alignTextRect()
-            self.win.blit(self.text, self.textRect)
+            self.text = self.font.render(self.string, True, self.text_color)
+            self.text_rect = self.text.get_rect()
+            self.align_text_rect()
+            self.win.blit(self.text, self.text_rect)
 
-    def setOnClick(self, onClick, params=()):
-        self.onClick = onClick
-        self.onClickParams = params
+    def set_on_click(self, on_click, params=()):
+        self.on_click = on_click
+        self.on_click_params = params
 
-    def setOnRelease(self, onRelease, params=()):
-        self.onRelease = onRelease
-        self.onReleaseParams = params
+    def set_on_release(self, on_release, params=()):
+        self.on_release = on_release
+        self.on_release_params = params
 
-    def setInactiveColour(self, colour):
-        self.inactiveColour = colour
+    def set_inactive_color(self, color):
+        self.inactive_color = color
 
-    def setPressedColour(self, colour):
-        self.pressedColour = colour
+    def set_pressed_color(self, color):
+        self.pressed_color = color
 
-    def setHoverColour(self, colour):
-        self.hoverColour = colour
+    def set_hover_color(self, color):
+        self.hover_color = color
 
     def get(self, attr):
         parent = super().get(attr)
         if parent is not None:
             return parent
 
-        if attr == 'colour':
-            return self.colour
+        if attr == 'color':
+            return self.color
 
     def set(self, attr, value):
         super().set(attr, value)
 
-        if attr == 'colour':
-            self.inactiveColour = value
+        if attr == 'color':
+            self.inactive_color = value

@@ -43,7 +43,7 @@ class BuildingSlot:
         upgrades = planet.building_slot_upgrades
         consumption = planet.building_slot_upgrade_energy_consumption
         prices = planet.building_slot_upgrade_prices
-        max = len(planet.building_slot_upgrade_energy_consumption) - 2
+        max_ = len(planet.building_slot_upgrade_energy_consumption) - 2
 
         # check for mouse collision with image
         for button_name, image_rect in self.plus_button_image.items():
@@ -59,7 +59,7 @@ class BuildingSlot:
         # on hover set tooltip
         if self.hover:
             # if not max upgrade reached
-            if upgrades <= max:
+            if upgrades <= max_:
                 self.tooltip = f"Upgrade from {planet.building_slot_amount} building slots to " \
                                f"{planet.building_slot_amount + 1}? this will cost you " \
                                f"{prices[upgrades]}" \
@@ -78,7 +78,7 @@ class BuildingSlot:
         planet = self.parent.selected_planet
         upgrades = planet.building_slot_upgrades
         consumption = planet.building_slot_upgrade_energy_consumption
-        min = 0
+        min_ = 0
         self.tooltip = ""
 
         # check for mouse collision with image
@@ -95,13 +95,13 @@ class BuildingSlot:
         # on hover set tooltip
         if self.hover:
             # if not max upgrade reached
-            if planet.building_slot_amount >= min + 1:
+            if planet.building_slot_amount >= min_ + 1:
                 self.tooltip = f"Downgrade from {planet.building_slot_amount} building slots to " \
                                f"{planet.building_slot_amount - 1}? this will not give anything back,  " \
                                f" but it will increase the energy production by" \
                                f" {consumption[upgrades]}"
             else:
-                self.tooltip = f"you have reached the minimum{min} of possible building slot downgrades !"
+                self.tooltip = f"you have reached the minimum{min_} of possible building slot downgrades !"
 
         self.submit_tooltip()
 

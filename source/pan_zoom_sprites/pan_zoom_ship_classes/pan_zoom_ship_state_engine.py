@@ -17,39 +17,9 @@ class PanZoomShipStateEngine:
         self.image_drawer = PanZoomShipStateEngineDraw(self.parent, self)
         self.state = "sleeping"
 
-    def __del__(self) -> None:
-        """ seems to be unused, state and rank image are getting deleted somehow :)"""
-        if hasattr(self, "image_drawer"):
-            return
-            self.image_drawer.state_image.kill()
-            self.image_drawer.rank_image.kill()
-
     def set_state(self, state) -> None:
         self.state = state
         self.parent.state = self.state
-        # if self.parent.move_stop > 0:
-        #     self.state = "move_stop"
-        #
-        # elif self.parent.moving:
-        #     self.state = "moving"
-        #
-        # elif self.parent.following_path:
-        #     self.state = "following_path"
-        #
-        # elif self.parent.orbiting:
-        #     self.state = "orbiting"
-        #
-        # elif hasattr(self.parent, "autopilot"):
-        #     if self.parent.autopilot:
-        #         self.state = "autopilot"
-        #     else:
-        #         self.state = "sleeping"
-        #
-        #
-        #
-        # else:
-        #     self.state = "sleeping"
-
         self.image_drawer.set_state_image()
 
     def listen(self, events):

@@ -43,7 +43,7 @@ class DealSelect(EditorBase, TextWrap):
     Cleaning up references and deleting the deal object
 
     Methods:
-    __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs): Initializes the DealSelect object with the
+    __init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs): Initializes the DealSelect object with the
     given parameters and optional keyword arguments.
     create_buttons(self): Creates the buttons for agreeing or declining the deal.
     agree(self, buyer): Transfers resources from the provider to the buyer and vice versa.
@@ -81,8 +81,8 @@ class DealSelect(EditorBase, TextWrap):
     buttons: The buttons associated with the deal.
     """
 
-    def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs) -> None:
-        EditorBase.__init__(self, win, x, y, width, height, isSubWidget=False, **kwargs)
+    def __init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs) -> None:
+        EditorBase.__init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs)
         TextWrap.__init__(self)
 
         # args/kwargs
@@ -126,7 +126,7 @@ class DealSelect(EditorBase, TextWrap):
                 y=self.world_y + TOP_SPACING + 5,
                 width=BUTTON_SIZE,
                 height=BUTTON_SIZE,
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self,
                 image=pygame.transform.scale(
                         get_image("thumps_up.png"), (BUTTON_SIZE, BUTTON_SIZE)),
@@ -137,7 +137,7 @@ class DealSelect(EditorBase, TextWrap):
                 moveable=False,
                 include_text=False,
                 layer=9,
-                onClick=lambda: self.agree(self.buyer_index),
+                on_click=lambda: self.agree(self.buyer_index),
                 name="agree_button"
                 )
 
@@ -149,7 +149,7 @@ class DealSelect(EditorBase, TextWrap):
                 y=self.world_y + TOP_SPACING + 5,
                 width=BUTTON_SIZE,
                 height=BUTTON_SIZE,
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self,
                 image=pygame.transform.flip(
                         pygame.transform.scale(get_image("thumps_upred.png"), (BUTTON_SIZE, BUTTON_SIZE)), 1, 1),
@@ -160,7 +160,7 @@ class DealSelect(EditorBase, TextWrap):
                 moveable=False,
                 include_text=False,
                 layer=9,
-                onClick=lambda: self.decline(),
+                on_click=lambda: self.decline(),
                 name="decline_button"
                 )
 
@@ -265,6 +265,9 @@ class DealSelect(EditorBase, TextWrap):
 
     def generate_time_text(self) -> None:
         # remaining time text
+        self.life_time = DEAL_LIFETIME/config.game_speed
+        self.end_time = self.start_time + self.life_time
+
         current_time = time.time()
         self.remaining_time = self.end_time - current_time
         self.time_text = f"deal ends in: {int(self.remaining_time)} s"
@@ -342,6 +345,8 @@ class DealSelect(EditorBase, TextWrap):
 
     def draw(self) -> None:
         # end the deal after some time: DEAL_LIFETIME
+
+
         if self.remaining_time <= 0.0:
             self.clean_up_references(accepted=False)
 

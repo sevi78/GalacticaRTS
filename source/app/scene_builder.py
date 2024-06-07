@@ -24,9 +24,9 @@ class GameObjectStorage:
         self.explored_planets.sort(key=lambda x: (x.orbit_object_id, self.get_type_order(x.type)))
         self.update_building_button_widgets()
 
-    def get_type_order(self, type):
+    def get_type_order(self, type_):
         order = {"sun": 1, "planet": 2, "moon": 3}
-        return order.get(type, 4)
+        return order.get(type_, 4)
 
 
 class SceneBuilder(EconomyParams, GameObjectStorage):

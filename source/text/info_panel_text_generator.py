@@ -333,7 +333,7 @@ class InfoPanelTextGenerator:
         text = player.name
 
         text += f"\n\noffer_percentage: {trader.offer_percentage}\n"
-        text += f"request_percentage: {trader.request_percentage}\n"
+        text += f"request_percentage: {trader.request_percentage}\n\n"
 
         return text
 

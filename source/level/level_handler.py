@@ -4,6 +4,7 @@ import random
 
 from source.configuration.game_config import config
 from source.economy.economy_handler import economy_handler
+from source.factories.building_factory import building_factory
 from source.factories.planet_factory import planet_factory
 from source.factories.universe_factory import universe_factory
 from source.game_play.navigation import navigate_to_position
@@ -317,3 +318,87 @@ class LevelHandler:
             owner_planets = sorted_sprites[0:amount]
             for p in owner_planets:
                 p.owner = owner
+
+        # complete resources
+        self.complete_player_resources()
+
+    def get_all_possible_resources_of_player(self) -> dict:
+        """ get all possible resources from all players and all its planets:
+            returns a dict: {player.owner: list}
+        """
+        owner_resources = {}
+        for planet in sprite_groups.planets.sprites():
+            owner = planet.owner
+            if not owner ==-1:
+                owner_resources[owner] = []
+                for resource in planet.possible_resources:
+                    if not resource in owner_resources[owner]:
+                        owner_resources[owner].append(resource)
+
+        return owner_resources
+
+    def check_for_complete_player_resources(self) -> list:
+        """ checks if every player has at least every resource in the planets
+            returns a list with all incomplete player ids
+        """
+        # get all possible resources from all players and all planets
+        owner_resources = self.get_all_possible_resources_of_player()
+        incomplete_players_ids = []
+
+        # check if it has all resources
+        for id_, resource_list in owner_resources.items():
+            if not len(resource_list) == 5:
+                incomplete_players_ids.append(id_)
+        return incomplete_players_ids
+
+    def complete_player_resources(self) -> str:
+        """ checks if every player has at least every resource in the planets,
+            if not,  it completes the list of possible resources
+        """
+        resource_categories = building_factory.get_resource_categories()
+        ids_ = self.check_for_complete_player_resources()
+        text = "complete_player_resources: no incomplete player resources fixed"
+        if len(ids_) != 0:
+            text = ""
+            for id_ in ids_:
+                player = config.app.players[id_]
+                player_name = player.name
+                text += f"complete_player_resources: found incomplete player resources: {player_name}\n"
+                owner_planets = [p for p in sprite_groups.planets.sprites() if p.owner == id_]
+                for i in range(2):
+                    planet = random.choice(owner_planets)
+                    planet.possible_resources = resource_categories
+
+                text += f"complete_player_resources: fixed: {player_name}\n"
+
+            text += f"{self.get_all_possible_resources_of_player()}"
+
+        return text
+
+    def clean_up_level(self) -> None:
+        """this cleas up all rubbish like false orbit object_ids ect"""
+        print("clean_up_level: cleaning up: ")
+
+        # ships
+        for ship in sprite_groups.ships.sprites():
+            # ensure the ships has a correct owner
+            if ship.owner == -1:
+                ship.owner = 0
+                print(f"clean_up_level: setting ship owner to 0: {ship.name}")
+
+            if ship.orbit_object_id != -1:
+                ship.orbit_object_id = -1
+                print(f"clean_up_level: setting ship orbit_object_id to -1: {ship.name}")
+
+            if ship.orbit_object:
+                ship.orbit_object = None
+                print(f"clean_up_level: setting ship orbit_object to None: {ship.name}")
+
+            if ship.target:
+                ship.target = None
+                print(f"clean_up_level: setting ship.target to None: {ship.name}")
+
+        # planets
+        ids_ = self.check_for_complete_player_resources()
+        if len(ids_) != 0:
+            print (self.complete_player_resources())

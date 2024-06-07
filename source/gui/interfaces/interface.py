@@ -49,19 +49,19 @@ class InterfaceData:
             value = getattr(obj, i)
 
             if hasattr(obj, i + "_min"):
-                min = getattr(obj, i + "_min")
+                min_ = getattr(obj, i + "_min")
             else:
                 if type(value) == int:
-                    min = 0
+                    min_ = 0
                 elif type(value) == float:
-                    min = 0.0
+                    min_ = 0.0
 
             if hasattr(obj, i + "_max"):
-                max = getattr(obj, i + "_max")
+                max_ = getattr(obj, i + "_max")
             else:
-                max = getattr(obj, i)
+                max_ = getattr(obj, i)
 
-            self.interface_variables[i] = InterfaceVariable(i, value, min, max)
+            self.interface_variables[i] = InterfaceVariable(i, value, min_, max_)
 
     def get_interface_variables(self):
         self.set_variables(self)
@@ -170,8 +170,8 @@ class Interface(EditorBase):
 
     """
 
-    def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
-        EditorBase.__init__(self, win, x, y, width, height, isSubWidget=False, **kwargs)
+    def __init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs):
+        EditorBase.__init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs)
         self.slider_height = SLIDER_HEIGHT
         self.max_height = 0
         self.sliders = {}
@@ -207,11 +207,11 @@ class Interface(EditorBase):
                     max=var.value_max,
                     step=step,
                     initial=value,
-                    handleColour=colors.ui_dark,
+                    handle_color=colors.ui_dark,
                     layer=self.layer,
                     parent=self)
 
-            slider.colour = colors.ui_darker
+            slider.color = colors.ui_darker
 
             y += self.spacing_y
 
@@ -223,7 +223,7 @@ class Interface(EditorBase):
     def get_slider_data(self):
         data = {}
         for name, slider in self.sliders.items():
-            data[name] = slider.getValue()
+            data[name] = slider.get_value()
 
         return data
 
@@ -232,7 +232,7 @@ class Interface(EditorBase):
             return
 
         for key, value in self.sliders.items():
-            self.sliders[key].setValue(getattr(self.obj, key))
+            self.sliders[key].set_value(getattr(self.obj, key))
 
     def set_obj_values(self):
         if self._hidden:
@@ -250,7 +250,7 @@ class Interface(EditorBase):
     def draw_slider_texts(self):
         for name, slider in self.sliders.items():
             rect = pygame.Rect(self.world_x + self.text_spacing, slider.world_y - 2, self.world_width, self.slider_text_font_size)
-            text = f"{name} : {round(slider.getValue(), ROUND_PRECISION)} / {slider.max}"
+            text = f"{name} : {round(slider.get_value(), ROUND_PRECISION)} / {slider.max}"
             drawText(self.win, text, self.frame_color, rect, self.slider_font, align="left")
 
     def draw(self):

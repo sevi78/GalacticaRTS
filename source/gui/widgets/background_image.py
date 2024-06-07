@@ -8,8 +8,8 @@ from source.multimedia_library.images import get_image
 
 
 class BackgroundImage(WidgetBase):
-    def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
-        WidgetBase.__init__(self, win, x, y, width, height, isSubWidget, **kwargs)
+    def __init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs):
+        WidgetBase.__init__(self, win, x, y, width, height, is_sub_widget, **kwargs)
         self.layer = kwargs.get("layer", 0)
         self.surface = pygame.Surface((config.width, config.height))
         self.surface.set_colorkey((60, 60, 60))
@@ -26,8 +26,8 @@ class BackgroundImage(WidgetBase):
 
 
 class BackgroundGradient(WidgetBase):  # bad performance
-    def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
-        WidgetBase.__init__(self, win, x, y, width, height, isSubWidget, **kwargs)
+    def __init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs):
+        WidgetBase.__init__(self, win, x, y, width, height, is_sub_widget, **kwargs)
         self.layer = kwargs.get("layer", 8)
         self.draw_gradient = kwargs.get("draw_gradient", True)
         self.fade_range = kwargs.get("fade_range", 50)
@@ -62,15 +62,4 @@ class BackgroundGradient(WidgetBase):  # bad performance
         # pygame.draw.rect(self.win, colors.frame_color, (self.image_bottom_pos[0], self.image_bottom_pos[1], self.image_bottom.get_width(),self.image_bottom.get_height()), 1)
 
 
-class BackgroundGradient_ki(WidgetBase):  # doesnt work at all
-    def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
-        WidgetBase.__init__(self, win, x, y, width, height, isSubWidget, **kwargs)
-        self.layer = kwargs.get("layer", 10)
-        self.draw_gradient = kwargs.get("draw_gradient", True)
-        self.fade_range = kwargs.get("fade_range", 100)
 
-    def draw(self):
-        if not self.draw_gradient:
-            return
-
-        draw_gradient(self.win, self.world_x, self.world_y, self.world_width, self.world_height, self.fade_range, colors.frame_color)

@@ -11,7 +11,7 @@ FONTSIZE = 32
 
 class InputBox(WidgetBase):
     def __init__(self, win, x, y, w, h, text, **kwargs):
-        WidgetBase.__init__(self, win, x, y, w, h, isSubWidget=False, **kwargs)
+        WidgetBase.__init__(self, win, x, y, w, h, is_sub_widget=False, **kwargs)
 
         self.win = win
         self.rect = pg.Rect(x, y, w, h)

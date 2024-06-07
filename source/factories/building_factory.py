@@ -7,6 +7,11 @@ from source.handlers.file_handler import load_file
 from source.multimedia_library.sounds import sounds
 
 
+# import logging
+# logging.basicConfig(filename='log.log', level=logging.INFO)
+# logger = logging.getLogger(__name__)
+
+
 class BuildingFactoryJsonDictReader:
     def __init__(self):
         self.json_dict = self.load_json_dict()
@@ -15,11 +20,17 @@ class BuildingFactoryJsonDictReader:
         dict_ = load_file("buildings.json", "config")
         return dict_
 
-    def get_building_dict_from_buildings_json(self, building: str) -> dict:
+    def get_json_dict(self):
+        """ returns the json file as dict"""
+        return self.json_dict
+    def get_building_dict_from_buildings_json(self, building_name: str) -> dict:
+        """
+        return the dict from the building_name
+        """
         building_dict = {}
         for category, building_names in self.json_dict.items():
-            if building in building_names.keys():
-                for item, value in building_names[building].items():
+            if building_name in building_names.keys():
+                for item, value in building_names[building_name].items():
                     building_dict[item] = value
         return building_dict
 
@@ -52,29 +63,55 @@ class BuildingFactoryJsonDictReader:
                         production[item.split("production_")[1]] = value
         return production
 
-    def get_build_population_minimum_from_buildings_json(self, building) -> int:
+    def get_build_population_minimum(self, building: str) -> int:
+        """
+        returns the build_population_minimum of the building
+        """
         for category, building_names in self.json_dict.items():
             if building in building_names.keys():
                 for item, value in building_names[building].items():
                     if item == "build_population_minimum":
                         return value
 
+    def get_next_level_building(self, building: str) -> [str, None]:
+        """ returns the next level building (str) or None ( if the building is already the maximum level )
+        """
+        category = self.get_category_by_building(building)
+        building_list = self.get_building_names(category)
+        index_ = building_list.index(building)
+
+        if index_ + 1 < len(building_list):
+            return building_list[index_ + 1]
+        else:
+            return None
+
     def get_build_population_minimum_list(self) -> list:
+        """
+        returns a list of all possible build_population_minimums from all buildings:
+        results something like this [0, 1000, 2500, 5000, 10000]
+        """
+
         build_population_minimum_list = []
         for category, building_names in self.json_dict.items():
             for building_name in building_names.keys():
-                build_population_minimum_list.append(self.get_build_population_minimum_from_buildings_json(building_name))
+                build_population_minimum_list.append(self.get_build_population_minimum(building_name))
 
         return sorted(set(build_population_minimum_list))
 
-    def get_progress_time_from_buildings_json(self, building):
+    def get_progress_time(self, building: str) -> float:
+        """
+        returns the progresstime ( time to build it ) from building
+        """
         for category, building_names in self.json_dict.items():
             if building in building_names.keys():
                 for item, value in building_names[building].items():
                     if item == "building_production_time":
                         return value * self.json_dict[category][building]["building_production_time_scale"]
 
-    def get_category_by_building(self, building_name):
+    def get_category_by_building(self, building_name: str) -> str:
+        """
+        returns the category the building belongs to
+        """
         for category in self.json_dict.values():
             for building in category.values():
                 if building['name'] == building_name:
@@ -85,30 +122,6 @@ class BuildingFactoryJsonDictReader:
         """ returns a list of all building categories:
         list: [str,str,str ....]"""
         return list(self.json_dict.keys())
-
-    def get_a_list_of_building_names_with_build_population_minimum_bigger_than(self, minimum) -> list:
-        list_ = []
-        for i in self.get_resource_categories():
-            for building_name, building_dict in self.json_dict[i].items():
-                for key, value in building_dict.items():
-                    if key == "build_population_minimum":
-                        if value == minimum:
-                            list_.append(building_name)
-        return list_
-
-    def get_a_list_of_building_names_from_category_with_build_population_minimum_bigger_than(
-            self, minimum: int,
-            category: str
-            ) -> list:
-        list_ = []
-        for i in self.get_resource_categories():
-            if i == category:
-                for building_name, building_dict in self.json_dict[i].items():
-                    for key, value in building_dict.items():
-                        if key == "build_population_minimum":
-                            if value == minimum:
-                                list_.append(building_name)
-        return list_
 
     def get_resource_categories(self) -> list[str]:
         """ returns a list of all building categories except:
@@ -143,6 +156,7 @@ class BuildingFactoryJsonDictReader:
     #             building['technology_upgrade'] = {}
 
     def get_all_building_names(self) -> list:
+        """ returns a list of all building names in json_dict"""
         building_names = []
         for category, buildings in self.json_dict.items():
             for building in buildings.values():
@@ -164,8 +178,12 @@ class BuildingFactoryJsonDictReader:
 
         return d
 
-    def get_most_consuming_building(self, buildings, category):
-        building_name = "mine"
+    def get_most_consuming_building(self, buildings: list, category: str) -> str:
+        """ ensure this is called with 'all_buildings !!!
+         otherwise it might crash if buildings is something like:
+         ['food', ['food']]"""
+
+        building_name = ""
         min_production = 0
         buildings = sum(buildings, [])
         for building in buildings:
@@ -174,6 +192,32 @@ class BuildingFactoryJsonDictReader:
                 if d["production_" + category] < min_production:
                     min_production = d["production_" + category]
                     building_name = building
+
+
+        return building_name
+
+    def get_most_consuming_building(self, buildings: list, category: str) -> str:
+        if not buildings:
+            return
+
+        building_name = ""
+        try:
+            min_production = 0
+            flattened_buildings = [item for sublist in buildings for item in sublist]
+            for building in flattened_buildings:
+                d = self.get_building_by_name(building)
+                if d:
+                    for key, value in d.items():
+                        if d.get("production_" + category, 0) < min_production:
+                            min_production = d.get("production_" + category, 0)
+                            building_name = building
+        except TypeError as e:
+            print(f"get_most_consuming_building.error: {e}, buildings{type(buildings)}len:{len(buildings)}, category:{category}/type{type(category)}")
+            return building_name
+
+        except AttributeError as e:
+            print(f"get_most_consuming_building.error: {e}, buildings{type(buildings)}len:{len(buildings)}, category:{category}/type{type(category)}")
+            return building_name
 
         return building_name
 
@@ -208,11 +252,36 @@ class BuildingFactoryJsonDictReader:
         return fit_building
 
 
+    def get_a_list_of_building_names_with_build_population_minimum_bigger_than(self, minimum) -> list:
+        list_ = []
+        for i in self.get_resource_categories():
+            for building_name, building_dict in self.json_dict[i].items():
+                for key, value in building_dict.items():
+                    if key == "build_population_minimum":
+                        if value == minimum:
+                            list_.append(building_name)
+        return list_
+
+    def get_a_list_of_building_names_from_category_with_build_population_minimum_bigger_than(
+            self, minimum: int,
+            category: str
+            ) -> list:
+        list_ = []
+        for i in self.get_resource_categories():
+            if i == category:
+                for building_name, building_dict in self.json_dict[i].items():
+                    for key, value in building_dict.items():
+                        if key == "build_population_minimum":
+                            if value == minimum:
+                                list_.append(building_name)
+        return list_
+
+
 class BuildingFactory(BuildingFactoryJsonDictReader):
     def __init__(self):
         BuildingFactoryJsonDictReader.__init__(self)
 
-    def build(self, building, receiver, **kwargs):  # new version based on buildings.json
+    def build(self, building, receiver, **kwargs) -> str:  # new version based on buildings.json
         """
         this builds the buildings on the planet: first check for prices ect, then build a building_widget
         that overgives the values to the planet if ready
@@ -220,28 +289,34 @@ class BuildingFactory(BuildingFactoryJsonDictReader):
         """
         # print(f"BuildingFactory.build: building: {building}, receiver: {receiver},receiver.owner:{receiver.owner}, kwargs: {kwargs}")
         if not building in self.get_all_building_names():
-            return
+            # logger.info(f"building_factory.build: building {building} not in self.get_all_building_names()!")
+            return f"building_factory.build: building {building} not in self.get_all_building_names()!"
 
         prices = kwargs.get("prices", None)
         if not prices:
             prices = self.get_prices_from_buildings_json(building)
 
         # only build if selected planet is set
-        if not receiver: return
+        if not receiver:
+            # logger.info(f"building_factory.build: nor reciever!!")
+            return f"building_factory.build: nor reciever!!"
 
         # check for minimum population
-        build_population_minimum = self.get_build_population_minimum_from_buildings_json(building)
+        build_population_minimum = self.get_build_population_minimum(building)
         if build_population_minimum > receiver.population:
-            event_text.text = "you must reach a population of minimum " + str(build_population_minimum) + " people to build a " + building + "!"
+            text = f"you must reach a population of minimum {build_population_minimum} people to build a {building}!"
+            event_text.text = text
             sounds.play_sound("bleep", channel=7)
-            return
+            # logger.info(f"building_factory.build: {text}")
+            return text
 
         # build building widget, first pay the bill
         # pay the bill
         if receiver.building_cue >= receiver.building_slot_amount:
-            event_text.text = "you have reached the maximum(" + str(receiver.building_slot_amount) + ") of buildings that can be build at the same time on " + receiver.name + "!"
+            text = "you have reached the maximum(" + str(receiver.building_slot_amount) + ") of buildings that can be build at the same time on " + receiver.name + "!"
+            event_text.text = text
             sounds.play_sound("bleep", channel=7)
-            return
+            return text
 
         defence_units = self.get_defence_unit_names()
         ships = self.get_building_names("ship")
@@ -249,9 +324,10 @@ class BuildingFactory(BuildingFactoryJsonDictReader):
 
         if len(civil_buildings) + receiver.building_cue >= receiver.buildings_max:
             if not building in defence_units and not building in ships:
-                event_text.text = "you have reached the maximum(" + str(receiver.buildings_max) + ") of buildings that can be build on " + receiver.name + "!"
+                text = "you have reached the maximum(" + str(receiver.buildings_max) + ") of buildings that can be build on " + receiver.name + "!"
+                event_text.text = text
                 sounds.play_sound("bleep", channel=7)
-                return
+                return text
 
         check = self.build_payment(building, prices, config.app.players[receiver.owner])
 
@@ -267,11 +343,13 @@ class BuildingFactory(BuildingFactoryJsonDictReader):
                 widget_value = value
                 widget_name = building
             else:
-                return
+                return f"not enough resources to build: {building}"
 
         # create building_widget ( progressbar)
         if widget_key:
             self.create_building_widget(receiver, widget_key, widget_name, widget_value)
+
+            return f"succeded to build: {widget_name} on {receiver}"
 
     def create_building_widget(self, receiver, widget_key, widget_name, widget_value):
         widget_width = config.app.building_panel.get_screen_width()
@@ -301,7 +379,7 @@ class BuildingFactory(BuildingFactoryJsonDictReader):
                 receiver=receiver,
                 tooltip="building widget",
                 layer=4,
-                building_production_time=self.get_progress_time_from_buildings_json(widget_name),
+                building_production_time=self.get_progress_time(widget_name),
                 is_building=is_building,
                 ship_names=self.get_building_names("ship")
                 )
@@ -362,6 +440,7 @@ building_factory = BuildingFactory()
 
 
 def main():
+    pass
     # building_factory.insert_technology_upgrade()
     # write_file("buildings.json", building_factory.json_dict)
 
@@ -370,8 +449,14 @@ def main():
     # print(building_factory.get_most_consuming_building(building_factory.get_all_building_names(), "food"))
     # print (building_factory.get_resource_categories())
     # print (building_factory.get_all_resource_buildings())
-    building_factory = BuildingFactory()
+    # building_factory = BuildingFactory()
     # print (f"building_factory.main: {building_factory.get_fitting_building(89999, 'energy')}")
+
+    # print(building_factory.get_build_population_minimum("mine"))
+    # print(building_factory.get_build_population_minimum("particle accelerator"))
+    # print(building_factory.get_build_population_minimum_list())
+    # print (building_factory.get_a_list_of_building_names_from_category_with_build_population_minimum_bigger_than(0, "planetary_defence"))
+    # print (building_factory.get_next_level_building("farm"))
 
 
 if __name__ == "__main__":

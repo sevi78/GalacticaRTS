@@ -3,19 +3,72 @@ import random
 from source.configuration.game_config import config
 from source.economy.economy_handler import economy_handler
 from source.factories.building_factory import building_factory
+from source.math.math_handler import get_sum_up_to_n
 
 
-def get_sum_up_to_n(dict, n):
-    sum = 0
-    for key, value in dict.items():
-        if key < n:
-            sum += value
+class PanZoomPlanetEconomy:  # , SpecialHandler):
+    """
+    The PanZoomPlanetEconomy class models the economy of a planet in a game. It manages resources, population,
+    buildings, and production. The class includes methods to update resources, calculate production,
+    and manage population growth and limits.
 
-    return sum
+        Example Usage
+        kwargs = {
+            "buildings": ["town", "city"],
+            "population": 5000,
+            "alien_population": 200,
+            "alien_attitude": 50,
+            "building_slot_amount": 5,
+            "specials": ["energy", "food"],
+            "possible_resources": ["water", "energy", "food"]
+        }
+        planet_economy = PanZoomPlanetEconomy(kwargs)
+        planet_economy.update_planet_resources(["water", "energy"])
+        planet_economy.calculate_production()
+        planet_economy.add_population()
 
 
-class PanZoomPlanetEconomy():  # , SpecialHandler):
-    def __init__(self, kwargs):
+        Main functionalities
+        Manages and updates planet resources.
+        Calculates production of various resources.
+        Handles population growth and limits.
+        Manages buildings and their upgrades.
+
+        Methods
+        __init__(self, kwargs): Initializes the class with given parameters.
+        update_planet_resources(self, checkbox_values): Updates possible resources based on input.
+        calculate_production(self): Calculates the production of resources.
+        calculate_population(self): Calculates population growth.
+        set_population_limit(self): Sets the population limit based on buildings.
+        set_technology_upgrades(self, building): Applies technology upgrades from buildings.
+        add_population(self): Adjusts population based on food production and limits.
+
+        Fields
+        population_special,
+        technology_special,
+        minerals_special,
+        food_special,
+        energy_special,
+        water_special:Special attributes for various resources.
+        population_grow_factor: Factor for population growth.
+        resources: Dictionary holding current resources.
+        buildings, buildings_max: List of buildings and maximum allowed buildings.
+        population, population_limit, population_grow: Current population, its limit, and growth rate.
+        alien_population, alien_attitude: Alien population and their attitude.
+        building_slot_amount, building_slot_upgrades, building_slot_upgrade_prices,
+        building_slot_upgrade_energy_consumption, building_slot_max_amount: Building slot management attributes.
+        building_cue: Cue for building construction.
+        specials, specials_dict: Special attributes and their values.
+        possible_resources: List of possible resources.
+        production: Dictionary holding production values for resources.
+        production_water, production_energy, production_food, production_minerals, production_population,
+        production_technology: Individual production values for resources.
+        population_buildings, population_buildings_values: Types of population buildings and their capacities.
+        building_buttons_energy, building_buttons_water, building_buttons_food, building_buttons_minerals:
+        Lists of building buttons for each resource.
+        building_buttons, building_buttons_list: Dictionary and list of all building buttons.
+    """
+    def __init__(self, **kwargs):
         self.population_special = None
         self.technology_special = None
         self.minerals_special = None
@@ -116,10 +169,12 @@ class PanZoomPlanetEconomy():  # , SpecialHandler):
         self.production_population = self.production["population"]
 
         self.calculate_population()
-        self.set_thumpsup_status()
-        self.set_smiley_status()
-        self.set_technology_level_status()
-        self.set_overview_images()
+
+        if hasattr(self, "set_thumpsup_status"):
+            self.set_thumpsup_status()
+            self.set_smiley_status()
+            self.set_technology_level_status()
+            self.set_overview_images()
 
     def calculate_population(self):
         """ calculates population"""
@@ -148,3 +203,6 @@ class PanZoomPlanetEconomy():  # , SpecialHandler):
             self.population += self.population_grow * config.game_speed
         if self.production_food < 0 and self.population > 0:
             self.population += self.production_food
+
+
+

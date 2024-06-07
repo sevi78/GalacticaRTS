@@ -17,9 +17,11 @@ def get_orbit_pos(self):
 def set_orbit_object_id(self, orbit_object_id):
     """ sets the orbit id needed to find the orbit object
     """
-    self.orbit_object_id = orbit_object_id
-    set_orbit_object(self)
-
+    if not self.id == orbit_object_id:
+        self.orbit_object_id = orbit_object_id
+        set_orbit_object(self)
+    else:
+        print ("set_orbit_object_id error: self.id == orbit_object_id!")
 
 def set_orbit_object(self):
     """ sets the orbit object based on the orbit id

@@ -12,8 +12,8 @@ from source.text.info_panel_text_generator import info_panel_text_generator
 
 
 class LevelSelect(EditorBase):
-    def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
-        EditorBase.__init__(self, win, x, y, width, height, isSubWidget=False, **kwargs)
+    def __init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs):
+        EditorBase.__init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs)
         self.max_height = width
         # lists
         self.data = file_handler.get_level_list()
@@ -43,7 +43,7 @@ class LevelSelect(EditorBase):
                     # set image to icon
                     level = i.name.split('_')[1].split('.json')[0]
                     image_name = f"{i.name.split('.json')[0]}{'.png'}"
-                    i.setImage(get_image(image_name))
+                    i.set_image(get_image(image_name))
 
                     # blit success image onto icon image
                     if not int(level) == 0:
@@ -86,7 +86,7 @@ class LevelSelect(EditorBase):
                         y=self.get_screen_y() + (row * item_height) + TOP_SPACING + self.text_spacing * 3,
                         width=item_height,
                         height=item_height,
-                        isSubWidget=False,
+                        is_sub_widget=False,
                         parent=self,
                         image=pygame.transform.scale(get_image(f"{i.split('.json')[0]}.png"), (
                             item_height, item_height)),
@@ -95,10 +95,10 @@ class LevelSelect(EditorBase):
                         moveable=False,
                         include_text=True,
                         layer=self.layer,
-                        onClick=lambda level_=level: self.select_level(level_),
+                        on_click=lambda level_=level: self.select_level(level_),
                         name=i,
                         text=level,
-                        textColour=self.frame_color,
+                        text_color=self.frame_color,
                         font_size=50,
                         info_text=infotext,
                         info_panel_alpha=255

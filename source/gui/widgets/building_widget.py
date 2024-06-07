@@ -8,10 +8,9 @@ from source.factories.weapon_factory import weapon_factory
 from source.gui.widgets.buttons.button import Button
 from source.gui.widgets.progress_bar import ProgressBar
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
-from source.handlers.image_handler import overblit_button_image
 from source.handlers.orbit_handler import set_orbit_object_id
 from source.handlers.pan_zoom_handler import pan_zoom_handler
-from source.multimedia_library.images import get_image
+from source.multimedia_library.images import get_image, overblit_button_image
 from source.multimedia_library.sounds import sounds
 
 PROGRESSBAR_UPDATE_RATE_IN_SECONDS = 0.1
@@ -158,7 +157,7 @@ class BuildingWidget(WidgetBase):
                 width=self.get_screen_height(),
                 height=self.get_screen_height(),
                 image=self.image,
-                onClick=lambda: self.function("do nothing"),
+                on_click=lambda: self.function("do nothing"),
                 transparent=True,
                 image_hover_surface_alpha=255,
                 parent=config.app,
@@ -181,7 +180,7 @@ class BuildingWidget(WidgetBase):
                 height=self.progress_bar_height,
                 progress=lambda: 0,
                 curved=True,
-                completedColour=self.frame_color, layer=self.layer, ignore_progress=True)
+                completed_color=self.frame_color, layer=self.layer, ignore_progress=True)
 
         self.surface_rect = pygame.Rect(self.dynamic_x, self.dynamic_y, self.get_screen_width(), self.get_screen_height())
 
@@ -371,7 +370,7 @@ class BuildingWidget(WidgetBase):
         self.button.set_position((config.app.ui_helper.anchor_right, y))
 
         # progress_bar
-        self.progress_bar.setWidth(config.app.building_panel.get_screen_width() - self.button.get_screen_width() - 15)
+        self.progress_bar.set_screen_width(config.app.building_panel.get_screen_width() - self.button.get_screen_width() - 15)
         self.progress_bar.set_position((
             self.dynamic_x + self.button.get_screen_width() + 5, y + self.button.get_screen_height() / 2))
 

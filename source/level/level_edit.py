@@ -4,7 +4,7 @@ import pygame
 
 from source.configuration.game_config import config
 from source.draw.circles import draw_zoomable_circle
-from source.draw.zoomable_rect import draw_zoomable_rect
+from source.draw.rectangle import draw_zoomable_rect
 from source.editors.editor_base.editor_base import EditorBase
 from source.editors.editor_base.editor_config import ARROW_SIZE, FONT_SIZE, TOP_SPACING
 from source.factories.planet_factory import planet_factory
@@ -29,8 +29,8 @@ class LevelEdit(EditorBase):
     """Main functionalities:
     """
 
-    def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
-        EditorBase.__init__(self, win, x, y, width, height, isSubWidget=False, **kwargs)
+    def __init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs):
+        EditorBase.__init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs)
         self.level_handler = config.app.level_handler
 
         #  widgets
@@ -70,6 +70,7 @@ class LevelEdit(EditorBase):
         self.create_rename_button()
         self.create_owner_button()
         self.create_explore_button()
+        self.create_cleanup_button()
 
         self.set_selector_current_value()
 
@@ -82,7 +83,7 @@ class LevelEdit(EditorBase):
                 y=self.world_y + TOP_SPACING + BUTTON_SIZE / 2,
                 width=BUTTON_SIZE,
                 height=BUTTON_SIZE,
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self,
                 image=pygame.transform.scale(
                         get_image("randomize_icon.png"), (BUTTON_SIZE, BUTTON_SIZE)),
@@ -93,7 +94,7 @@ class LevelEdit(EditorBase):
                 moveable=False,
                 include_text=False,
                 layer=self.layer,
-                onClick=lambda: self.randomize_level(),
+                on_click=lambda: self.randomize_level(),
                 )
 
         randomize_button.hide()
@@ -107,7 +108,7 @@ class LevelEdit(EditorBase):
                 y=self.world_y + TOP_SPACING + BUTTON_SIZE / 2,
                 width=BUTTON_SIZE,
                 height=BUTTON_SIZE,
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self,
                 image=pygame.transform.scale(
                         get_image("update_icon.png"), (BUTTON_SIZE, BUTTON_SIZE)),
@@ -118,7 +119,7 @@ class LevelEdit(EditorBase):
                 moveable=False,
                 include_text=False,
                 layer=self.layer,
-                onClick=lambda: self.refresh_level(),
+                on_click=lambda: self.refresh_level(),
                 )
 
         update_button.hide()
@@ -132,7 +133,7 @@ class LevelEdit(EditorBase):
                 y=self.world_y + TOP_SPACING + BUTTON_SIZE / 2,
                 width=BUTTON_SIZE,
                 height=BUTTON_SIZE,
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self,
                 image=pygame.transform.scale(
                         get_image("owner.png"), (BUTTON_SIZE, BUTTON_SIZE)),
@@ -143,7 +144,7 @@ class LevelEdit(EditorBase):
                 moveable=False,
                 include_text=False,
                 layer=self.layer,
-                onClick=lambda: self.level_handler.set_planet_owners(),
+                on_click=lambda: self.level_handler.set_planet_owners(),
                 )
 
         owner_button.hide()
@@ -151,13 +152,15 @@ class LevelEdit(EditorBase):
         self.buttons.append(owner_button)
         self.widgets.append(owner_button)
 
+
+
     def create_smoothing_button(self):
         smoothing_button = ImageButton(win=self.win,
                 x=self.get_screen_x() + BUTTON_SIZE / 2 + BUTTON_SIZE * 3,
                 y=self.world_y + TOP_SPACING + BUTTON_SIZE / 2,
                 width=BUTTON_SIZE,
                 height=BUTTON_SIZE,
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self,
                 image=pygame.transform.scale(
                         get_image("calculate.png"), (BUTTON_SIZE, BUTTON_SIZE)),
@@ -168,7 +171,7 @@ class LevelEdit(EditorBase):
                 moveable=False,
                 include_text=False,
                 layer=self.layer,
-                onClick=lambda: position_handler.smooth_planet_positions(
+                on_click=lambda: position_handler.smooth_planet_positions(
                         self.level_handler.data["globals"]["width"], self.level_handler.data["globals"]["height"]),
                 )
 
@@ -183,7 +186,7 @@ class LevelEdit(EditorBase):
                 y=self.world_y + TOP_SPACING + BUTTON_SIZE / 2,
                 width=BUTTON_SIZE,
                 height=BUTTON_SIZE,
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self,
                 image=pygame.transform.scale(
                         get_image("rename_planets_icon.png"), (BUTTON_SIZE, BUTTON_SIZE)),
@@ -194,7 +197,7 @@ class LevelEdit(EditorBase):
                 moveable=False,
                 include_text=False,
                 layer=self.layer,
-                onClick=lambda: planet_factory.generate_planet_names())
+                on_click=lambda: planet_factory.generate_planet_names())
 
         rename_button.hide()
 
@@ -207,7 +210,7 @@ class LevelEdit(EditorBase):
                 y=self.world_y + TOP_SPACING + BUTTON_SIZE / 2,
                 width=BUTTON_SIZE,
                 height=BUTTON_SIZE,
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self,
                 image=pygame.transform.scale(
                         get_image("explore_icon.png"), (BUTTON_SIZE, BUTTON_SIZE)),
@@ -218,12 +221,37 @@ class LevelEdit(EditorBase):
                 moveable=False,
                 include_text=False,
                 layer=self.layer,
-                onClick=lambda: planet_factory.explore_planets())
+                on_click=lambda: planet_factory.explore_planets())
 
         explore_button.hide()
 
         self.buttons.append(explore_button)
         self.widgets.append(explore_button)
+
+    def create_cleanup_button(self):
+        cleanup_button = ImageButton(win=self.win,
+                x=self.get_screen_x() + BUTTON_SIZE / 2 + BUTTON_SIZE * 6,
+                y=self.world_y + TOP_SPACING + BUTTON_SIZE / 2,
+                width=BUTTON_SIZE,
+                height=BUTTON_SIZE,
+                is_sub_widget=False,
+                parent=self,
+                image=pygame.transform.scale(
+                        get_image("clean_up.png"), (BUTTON_SIZE, BUTTON_SIZE)),
+                tooltip="cleanup level",
+                info_text=info_panel_text_generator.create_create_info_panel_level_text(
+                        self.level_handler.data["globals"]["level"], self.level_handler.data),
+                frame_color=self.frame_color,
+                moveable=False,
+                include_text=False,
+                layer=self.layer,
+                on_click=lambda: self.level_handler.clean_up_level(),
+                )
+
+        cleanup_button.hide()
+
+        self.buttons.append(cleanup_button)
+        self.widgets.append(cleanup_button)
 
     def create_inputboxes(self):
         """"""
@@ -456,7 +484,7 @@ class LevelEdit(EditorBase):
 
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_BACKSPACE:
-                        if self.isVisible():
+                        if self.is_visible():
                             self.delete_object()
 
     def draw_level_borders(self):

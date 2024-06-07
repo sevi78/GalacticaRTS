@@ -3,6 +3,7 @@ import time
 
 from source.configuration.game_config import config
 from source.economy.auto_economy_builder import AutoEconomyBuilder
+from source.economy.auto_economy_priority_queue import AutoEconomyHandlerPriorityQueue
 from source.economy.auto_economy_setters import AutoEconomyHandlerSetters
 from source.factories.building_factory import building_factory
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
@@ -22,8 +23,11 @@ class AutoEconomyHandler(AutoEconomyHandlerSetters, AutoEconomyBuilder):
         Returns:
             None
         """
-        super().__init__(player)
+        # super().__init__(player)
+        AutoEconomyHandlerSetters.__init__(self, player)
         AutoEconomyBuilder.__init__(self)
+
+        self.priority_queue = AutoEconomyHandlerPriorityQueue()
 
         self.building = None
         self.build_start_time = time.time()
@@ -140,19 +144,58 @@ class AutoEconomyHandler(AutoEconomyHandlerSetters, AutoEconomyBuilder):
                 if buildings_to_delete:
                     building_factory.destroy_building(random.choice(buildings_to_delete), self.planet)
 
-                self.build_food_buildings(self.planet)
+                self.build_food_buildings()
 
     def handle_infinte_loops(self):
+        zero_production = self.get_zero_productions()
+        if zero_production:
+            self.deal_with_the_bank()
+            self.optimize_planets()
+            self.destroy_most_consuming_building()
+
+    # def destroy_most_consuming_building_(self):
+    #     # destroy most consuming building
+    #     zero_production = self.get_zero_productions()
+    #     for i in zero_production:
+    #
+    #         for p in self.planets:
+    #             if most_consuming_building in p.buildings:
+    #                 building_factory.destroy_building(most_consuming_building, p)
+
+    def destroy_most_consuming_building(self):
+        categories = self.player.get_negative_resource_stock_resources()
+        if not categories:
+            return
+
+        most_consuming_building = building_factory.get_most_consuming_building(self.all_buildings, random.choice(categories))
+        building_factory.destroy_building(most_consuming_building, self.planet)
+    def deal_with_the_bank(self):
+        # deal with the bank
+        deal = self.player.trade_assistant.generate_fitting_deal()
+        player_index = self.player.owner
+        stock = self.player.remove_population_key_from_stock(self.player.get_resource_stock())
+        highest_value = max(stock.values())
+        highest_key = None
+        for key, value in stock.items():
+            if value == highest_value:
+                highest_key = key
+        offer_value = getattr(self.player, highest_key) * .2
+        request_resource = list(deal["request"].keys())[0]
+        request_value = int(offer_value / 2)
+        self.player.trade_assistant.trade_technology_to_the_bank(offer_value, request_resource, request_value, player_index)
+
+    def add_deal(self):
+        config.app.deal_manager.add_fitting_deal(self.player.trade_assistant.generate_fitting_deal())
+
+    def get_zero_productions(self):
         # handle the case when a resource is producing 0 and the stock of this resource is negative
         production = {key: value for key, value in self.player.production.items() if key != "population"}
         stock = self.player.get_resource_stock()
         negative_stock_resources = []
-
         # get all negative resources from stock
         for key, value in stock.items():
             if value < 0:
                 negative_stock_resources.append(key)
-
         # if some negative values are there, check if any production is 0
         zero_production = []
         if negative_stock_resources:
@@ -160,18 +203,28 @@ class AutoEconomyHandler(AutoEconomyHandlerSetters, AutoEconomyBuilder):
                 if key in negative_stock_resources:
                     if value == 0:
                         zero_production.append(key)
-
         # if found the condition when a resource is producing 0 and the stock of this resource is negative, then
         # delete any building that consumes this resource
-        if zero_production:
-            for i in zero_production:
-                most_consuming_building = building_factory.get_most_consuming_building(self.all_buildings, i)
-                for p in self.planets:
-                    if most_consuming_building in p.buildings:
-                        building_factory.destroy_building(most_consuming_building, p)
-                        print(f"handle_infinte_loops: \nplayer: {self.player.name}\nzero_production:{zero_production}\ndestroyed building:{most_consuming_building} on {p}")
+        return zero_production
+
+    def optimize_planets(self, categories=building_factory.get_resource_categories_except_technology_and_population()):
+        for planet in self.planets:
+            population = planet.population
+            for building in planet.buildings:
+                next_level_building_category = building_factory.get_category_by_building(building)
+                if next_level_building_category in categories:
+                    next_level_building = building_factory.get_next_level_building(building)
+
+                    if next_level_building:
+                        if building_factory.get_build_population_minimum(building) < population:
+                            building_factory.destroy_building(building, planet)
+                            building_factory.build(next_level_building, planet)
+                            text = f"optimize_planets: destroy: {building} and build: {next_level_building} on {planet}"
+                            print(text)
 
     def update(self):
+
+        strategy = 0
         """
         Updates the state of the object based on the current game state.
 
@@ -195,12 +248,39 @@ class AutoEconomyHandler(AutoEconomyHandlerSetters, AutoEconomyBuilder):
             self.update_cycles += 1
             self.reset_start_time()
             self.set_economy_values()
-            self.build()
+            self.set_building_widget_list()
+            self.set_building_cue_max()
+
+            if strategy == 0:
+                self.build()
 
             config.app.deal_manager.get_fitting_deal(self.player)
 
             self.handle_infinte_loops()
 
-        # print (config.app.deal_manager.get_deals_from_player(self.player))
+            # add deals
+            self.add_deal()
 
-        pass
+            if strategy == 1:
+                self.priority_queue.set_priorities(self.planets)
+                if self.planets:
+                    for planet in self.planets:
+                        self.planet = planet
+                        self.priority_queue.planet = planet
+                        tasks = self.priority_queue.get_highest_priority_keys(self.priority_queue.planet_task_priorities[planet.id])
+                        self.set_building_widget_list()
+                        self.set_building_cue_max()
+                        for task in tasks:
+                            if "build" in task:
+                                # check if any building is building cue
+                                if len(self.building_widget_list) >= self.building_cue_max:
+                                    return
+                                else:
+                                    # build immediately if possible and some random factor
+                                    self.build_immediately()
+
+
+                            getattr(self, task)()
+
+
+        # print (config.app.deal_manager.get_deals_from_player(self.player))

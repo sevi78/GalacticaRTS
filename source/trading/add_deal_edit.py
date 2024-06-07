@@ -11,6 +11,8 @@ from source.trading.deal_select import DealSelect
 
 ARROW_SIZE = 20
 FONT_SIZE = int(ARROW_SIZE * .8)
+SELECTOR_SPACING = 100
+SELECTOR_GAP = 40
 
 
 class AddDealEdit(EditorBase):
@@ -18,8 +20,8 @@ class AddDealEdit(EditorBase):
     this is the interface to add deal to the deal_manager by the human player
     """
 
-    def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
-        EditorBase.__init__(self, win, x, y, width, height, isSubWidget=False, **kwargs)
+    def __init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs):
+        EditorBase.__init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs)
 
         #  widgets
         self.selectors_offer = []
@@ -45,64 +47,44 @@ class AddDealEdit(EditorBase):
         self.create_percent_selectors()
 
         self.create_buttons()
+        self.create_technology_trade_widgets()
 
         # hide initially
         self.hide()
 
-    def create_percent_selectors(self) -> None:
-        x = self.world_x + 30
-        y = 130
-        selector_spacing = 100
-        selector_gap = 40
-
-        self.selector_offer_percent = Selector(
-                self.win,
-                x + selector_spacing + selector_gap,
-                self.max_height + selector_gap,
-                ARROW_SIZE,
-                self.frame_color,
-                9,
-                selector_spacing,
-                {"list_name": "% offer_list", "list": self.percent_list},
-                self,
-                FONT_SIZE,
-                repeat_clicks=False,
-                restrict_list_jump=True)
-        self.selector_offer_percent.current_value = 20
-
-        x = self.world_x + self.world_width * 0.5
-        self.selector_request_percent = Selector(
-                self.win,
-                x + selector_spacing + selector_gap,
-                self.max_height + selector_gap,
-                ARROW_SIZE,
-                self.frame_color,
-                9,
-                selector_spacing,
-                {"list_name": "% request_list", "list": self.percent_list},
-                self,
-                FONT_SIZE,
-                repeat_clicks=False,
-                restrict_list_jump=True)
-        self.selector_request_percent.current_value = 15
-
     def create_selectors(self) -> None:
         x = self.world_x + 30
         y = 130
-        selector_spacing = 100
-        selector_gap = 40
 
         # offer
         for key, value in self.player_resources.items():
-            setattr(self, f"selector_offer_{key}", Selector(self.win, x + selector_spacing + selector_gap, self.world_y + y, ARROW_SIZE, self.frame_color, 9,
-                    selector_spacing, {"list_name": key + "_list", "list": self.value_list_offer}, self, FONT_SIZE, repeat_clicks=True))
+            setattr(self, f"selector_offer_{key}", Selector(
+                    self.win, x + SELECTOR_SPACING + SELECTOR_GAP,
+                              self.world_y + y,
+                    ARROW_SIZE,
+                    self.frame_color,
+                    9,
+                    SELECTOR_SPACING,
+                    {"list_name": key + "_list", "list": self.value_list_offer},
+                    self,
+                    FONT_SIZE,
+                    repeat_clicks=True))
 
             self.selectors_offer.append(getattr(self, f"selector_offer_{key}"))
 
             checkbox = Checkbox(
-                    self.win, x, self.world_y + y, 30, 30, isSubWidget=False,
+                    self.win,
+                    x,
+                    self.world_y + y,
+                    30,
+                    30,
+                    is_sub_widget=False,
                     color=self.frame_color,
-                    key=key, tooltip=key, onClick=lambda: print("OKOKOK"), layer=9, parent=self)
+                    key=key,
+                    tooltip=key,
+                    on_click=lambda: print("OKOKOK"),
+                    layer=9,
+                    parent=self)
             checkbox.checked = False
 
             self.checkboxes.append(checkbox)
@@ -115,15 +97,33 @@ class AddDealEdit(EditorBase):
 
         # request
         for key, value in self.player_resources.items():
-            setattr(self, f"selector_request_{key}", Selector(self.win, x + selector_spacing + selector_gap, self.world_y + y, ARROW_SIZE, self.frame_color, 9,
-                    selector_spacing, {"list_name": key + "_list", "list": self.value_list_request}, self, FONT_SIZE, repeat_clicks=True))
+            setattr(self, f"selector_request_{key}", Selector(
+                    self.win,
+                    x + SELECTOR_SPACING + SELECTOR_GAP,
+                    self.world_y + y,
+                    ARROW_SIZE,
+                    self.frame_color,
+                    9,
+                    SELECTOR_SPACING,
+                    {"list_name": key + "_list", "list": self.value_list_request},
+                    self, FONT_SIZE,
+                    repeat_clicks=True))
 
             self.selectors_request.append(getattr(self, f"selector_request_{key}"))
 
             checkbox = Checkbox(
-                    self.win, x, self.world_y + y, 30, 30, isSubWidget=False,
+                    self.win,
+                    x,
+                    self.world_y + y,
+                    30,
+                    30,
+                    is_sub_widget=False,
                     color=self.frame_color,
-                    key=key, tooltip=key, onClick=lambda: print("OKOKOK"), layer=9, parent=self)
+                    key=key,
+                    tooltip=key,
+                    on_click=lambda: print("OKOKOK"),
+                    layer=9,
+                    parent=self)
             checkbox.checked = False
 
             self.checkboxes.append(checkbox)
@@ -144,6 +144,97 @@ class AddDealEdit(EditorBase):
         for i in self.selectors_request:
             i.current_value = 100
 
+    def create_percent_selectors(self) -> None:
+        x = self.world_x + 30
+
+        self.selector_offer_percent = Selector(
+                self.win,
+                x + SELECTOR_SPACING + SELECTOR_GAP,
+                self.max_height + SELECTOR_GAP,
+                ARROW_SIZE,
+                self.frame_color,
+                9,
+                SELECTOR_SPACING,
+                {"list_name": "% offer_list", "list": self.percent_list},
+                self,
+                FONT_SIZE,
+                repeat_clicks=False,
+                restrict_list_jump=True)
+        self.selector_offer_percent.current_value = 20
+
+        x = self.world_x + self.world_width * 0.5
+        self.selector_request_percent = Selector(
+                self.win,
+                x + SELECTOR_SPACING + SELECTOR_GAP,
+                self.max_height + SELECTOR_GAP,
+                ARROW_SIZE,
+                self.frame_color,
+                9,
+                SELECTOR_SPACING,
+                {"list_name": "% request_list", "list": self.percent_list},
+                self,
+                FONT_SIZE,
+                repeat_clicks=False,
+                restrict_list_jump=True)
+        self.selector_request_percent.current_value = 15
+
+    def create_technology_trade_widgets(self):
+        x = self.world_x + 30
+        y = self.max_height
+
+        # technology checkbox
+        self.selector_offer_technology_to_bank = Selector(
+                self.win,
+                x + SELECTOR_SPACING + SELECTOR_GAP,
+                self.world_y + y,
+                ARROW_SIZE,
+                self.frame_color,
+                9,
+                SELECTOR_SPACING,
+                {"list_name": "technology_list", "list": self.value_list_offer},
+                self,
+                FONT_SIZE,
+                repeat_clicks=True)
+
+        # self.selectors_offer.append(getattr(self,"selector_offer_technology1"))
+
+        checkbox = Checkbox(
+                self.win, x, self.world_y + y, 30, 30, is_sub_widget=False,
+                color=self.frame_color,
+                key="technology", tooltip="technology", on_click=lambda: print("OKOKOK"), layer=9, parent=self)
+        checkbox.checked = True
+
+        self.checkboxes.append(checkbox)
+        # self.checkboxes_offer.append(checkbox)
+        self.widgets.append(checkbox)
+
+        # button
+        button_size = 32
+        self.agree_button1 = ImageButton(win=self.win,
+                x=self.get_screen_x() + self.get_screen_width() / 2,
+                y=self.world_y + y,
+                width=button_size,
+                height=button_size,
+                is_sub_widget=False,
+                parent=self,
+                image=pygame.transform.scale(
+                        get_image("2to1.png"), (button_size, button_size)),
+                tooltip="trade technology for 2/1 with the bank!",
+                frame_color=self.frame_color,
+                moveable=False,
+                include_text=False,
+                layer=self.layer,
+                on_click=lambda: self.agree_bank_deal(),
+                name="agree_button1"
+                )
+
+        self.agree_button1.hide()
+
+        self.buttons.append(self.agree_button1)
+        self.widgets.append(self.agree_button1)
+
+        y += self.spacing_y
+
     def create_buttons(self) -> None:
         button_size = 32
         agree_button = ImageButton(win=self.win,
@@ -151,7 +242,7 @@ class AddDealEdit(EditorBase):
                 y=self.max_height + button_size,
                 width=button_size,
                 height=button_size,
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self,
                 image=pygame.transform.scale(
                         get_image("thumps_up.png"), (button_size, button_size)),
@@ -160,7 +251,7 @@ class AddDealEdit(EditorBase):
                 moveable=False,
                 include_text=False,
                 layer=self.layer,
-                onClick=lambda: self.agree(),
+                on_click=lambda: self.agree(),
                 name="agree_button"
                 )
 
@@ -175,7 +266,7 @@ class AddDealEdit(EditorBase):
                 y=self.max_height + button_size,
                 width=button_size,
                 height=button_size,
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self,
                 image=pygame.transform.scale(
                         get_image("brain.png"), (button_size, button_size)),
@@ -184,7 +275,7 @@ class AddDealEdit(EditorBase):
                 moveable=False,
                 include_text=False,
                 layer=self.layer,
-                onClick=lambda: self.calculate_deal(),
+                on_click=lambda: self.calculate_deal(),
                 name="calculate_button"
                 )
 
@@ -193,9 +284,10 @@ class AddDealEdit(EditorBase):
         self.buttons.append(calculate_button)
         self.widgets.append(calculate_button)
 
-        self.max_height += button_size
+        self.max_height += button_size * 3
 
     def get_checkbox_values(self, **kwargs) -> None:
+        """ called from the checkbox on click """
         checkbox = kwargs.get("checkbox", None)
         value = kwargs.get("value", None)
 
@@ -208,12 +300,20 @@ class AddDealEdit(EditorBase):
                     elif not i.checked:
                         i.checked = True
 
+
             if checkbox in self.checkboxes_request:
                 for i in self.checkboxes_request:
                     if not i == checkbox:
                         i.checked = False
                     elif not i.checked:
                         i.checked = True
+
+
+        # set_technology_bank_deal
+        request_key = [i.key for i in self.checkboxes_request if i.checked][0]
+        offer_value = self.selector_offer_technology_to_bank.current_value
+        request_value = int(offer_value / 2)
+        self.set_technology_bank_deal(offer_value, request_key, request_value)
 
     def set_checkboxes_from_deal(self, deal: dict) -> None:
         for i in self.checkboxes_offer:
@@ -231,6 +331,11 @@ class AddDealEdit(EditorBase):
                 i.checked = False
 
     def set_selectors_from_deal(self, deal: dict) -> None:
+        offer_value = deal["offer"][list(deal["offer"].keys())[0]]
+        request_resource = list(deal["request"].keys())[0]
+        request_value = int(offer_value / 2)
+        self.set_technology_bank_deal(offer_value, request_resource, request_value)
+
         for i in self.selectors_offer:
             if i.key in deal["offer"]:
                 i.current_value = deal["offer"][i.key]
@@ -238,6 +343,10 @@ class AddDealEdit(EditorBase):
         for i in self.selectors_request:
             if i.key in deal["request"]:
                 i.current_value = deal["request"][i.key]
+
+    def set_technology_bank_deal(self, offer_value, request_resource, request_value) -> None:
+        self.selector_offer_technology_to_bank.current_value = offer_value
+        self.agree_button1.tooltip = f"trade technology for 2/1 with the bank! you will get {request_value} of {request_resource} for {offer_value} of technology"
 
     def selector_callback(self, key, value, selector) -> None:
         pass
@@ -270,6 +379,21 @@ class AddDealEdit(EditorBase):
 
     def agree(self) -> None:
         self.create_deal()
+
+    def agree_bank_deal(self) -> None:
+        """
+        accepts the technology bank deal
+        """
+
+        request_key = [i.key for i in self.checkboxes_request if i.checked][0]
+        offer_value = self.selector_offer_technology_to_bank.current_value
+        request_value = int(offer_value / 2)
+        trade_assistant = config.app.players[config.player].trade_assistant
+        player_index = config.player
+
+        # call the trade_technology_to_the_bank function from the assistant
+        trade_assistant.trade_technology_to_the_bank(offer_value, request_key, request_value, player_index)
+
 
     def listen(self, events) -> None:
         if not self._hidden and not self._disabled:

@@ -99,8 +99,8 @@ class PositionHandler:
                 self.atmosphere = pygame.transform.scale(self.atmosphere_raw, new_size)
 
         # set new size
-        self.setWidth(new_size[0] * panzoom.zoom)
-        self.setHeight(new_size[1] * panzoom.zoom)
+        self.set_screen_width(new_size[0] * panzoom.zoom)
+        self.set_screen_height(new_size[1] * panzoom.zoom)
 
     def get_zoom(self):
         if config.app:
@@ -113,10 +113,10 @@ class PositionHandler:
         self.screen_y = pos[1]
         self.set_center()
 
-    def setWidth(self, width):
+    def set_screen_width(self, width):
         self.screen_width = width
 
-    def setHeight(self, height):
+    def set_screen_height(self, height):
         self.screen_height = height
 
     def set_center(self):

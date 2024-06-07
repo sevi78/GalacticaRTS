@@ -11,6 +11,7 @@ from source.gui.interfaces.interface import InterfaceData
 from source.gui.lod import level_of_detail
 from source.gui.widgets.moving_image import MovingImage, SPECIAL_TEXT_COLOR
 from source.handlers.autopilot_handler import AutopilotHandler
+from source.handlers.color_handler import colors
 from source.handlers.file_handler import load_file
 from source.handlers.mouse_handler import MouseState, mouse_handler
 from source.handlers.orbit_handler import orbit_ship
@@ -175,9 +176,6 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
 
     def __delete__(self, instance):
         # remove all references
-        # if self in self.parent.ships:
-        #     self.parent.ships.remove(self)
-        self.state_engine.__del__()
         if self in sprite_groups.ships:
             sprite_groups.ships.remove(self)
 
@@ -350,7 +348,7 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
             config.app.weapon_select.obj = self
 
     def set_target(self, **kwargs):
-        target = kwargs.get("target", sprite_groups.get_hit_object())
+        target = kwargs.get("target", sprite_groups.get_hit_object(lists=["ships", "planets"]))
 
         if target == self:
             return
@@ -570,6 +568,8 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         # set previous position, used for energy consumption calculation
         # make shure this is the last task, otherwise it would work(probably)
         self.previous_position = (self.world_x, self.world_y)
+
+        # pygame.draw.circle(self.win, colors.ui_white, self.rect.center,self.attack_distance, 1)
 
     def handle_autopilot(self):
         if self.autopilot:

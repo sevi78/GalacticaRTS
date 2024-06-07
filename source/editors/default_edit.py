@@ -3,8 +3,8 @@ from source.editors.editor_base.editor_config import TOP_SPACING
 
 
 class DefaultEdit(EditorBase):
-    def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
-        EditorBase.__init__(self, win, x, y, width, height, isSubWidget=False, **kwargs)
+    def __init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs):
+        EditorBase.__init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs)
 
         #  widgets
         self.widgets = []

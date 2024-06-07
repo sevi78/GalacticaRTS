@@ -1,8 +1,5 @@
-import ctypes
 import gc
-import inspect
 import os
-import sys
 
 import psutil
 
@@ -25,37 +22,6 @@ class GarbageHandler:
                         value.remove(obj)
         except AttributeError:
             pass
-        # for key, value in obj.__slots__.items():
-        #     if obj1 == value:
-        #         setattr(obj, key, None)
-        #     if type(value) == list:
-        #         if obj1 in value:
-        #             value.remove(obj1)
-        #
-        # for key, value in obj1.__slots__.items():
-        #     if obj == value:
-        #         setattr(obj1, key, None)
-        #     if type(value) == list:
-        #         if obj in value:
-        #             value.remove(obj)
-
-    def get_all_references__(self, obj):
-        # do something with my_object
-        ref_count = ctypes.c_long.from_address(id(obj))
-        return ref_count
-
-    def get_all_references(self, obj):
-        ref_count = sys.getrefcount(obj) - 1  # Subtract 1 to account for the temporary reference created by getrefcount()
-        referrers = gc.get_referrers(obj)
-        frame = inspect.currentframe().f_back
-        local_variables = frame.f_locals.items()
-        references = [var_name for var_name, var_val in local_variables if var_val is obj]
-        return ref_count, referrers, references
-
-    def get_all_references(self, obj):
-        ref_count = sys.getrefcount(obj) - 1  # Subtract 1 to account for the temporary reference created by getrefcount()
-        referrers = gc.get_referrers(obj)
-        return ref_count, referrers
 
     def delete_all_references_from(self, obj):  # stupid ki function
         referrers = gc.get_referrers(obj)

@@ -67,7 +67,7 @@ class ScorePlotter(EditorBase):
     """
 
     def __init__(self, win, x, y, width, height, **kwargs) -> None:
-        EditorBase.__init__(self, win, x, y, width, height, isSubWidget=False, **kwargs)
+        EditorBase.__init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs)
         self.plotter_surface = pygame.surface.Surface((
             width - PLOTTER_SURFACE_GAP, PLOTTER_SURFACE_HEIGHT))
 

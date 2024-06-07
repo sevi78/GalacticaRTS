@@ -10,8 +10,8 @@ BUTTON_FONT_SIZE = 15
 
 
 class FilterWidget(EditorBase):
-    def __init__(self, win, x, y, width, height, filters, isSubWidget=False, **kwargs):
-        EditorBase.__init__(self, win, x, y, width, height, isSubWidget=False, **kwargs)
+    def __init__(self, win, x, y, width, height, filters, is_sub_widget=False, **kwargs):
+        EditorBase.__init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs)
         self.button_size = 15
         #  widgets
         self.widgets = []
@@ -35,7 +35,7 @@ class FilterWidget(EditorBase):
                     y=self.get_screen_y() + y + TOP_SPACING,
                     width=button_size,
                     height=button_size,
-                    isSubWidget=False,
+                    is_sub_widget=False,
                     parent=self,
                     image=pygame.transform.scale(get_image(f"{key}_icon.png"), (button_size, button_size)),
                     tooltip=key,
@@ -43,12 +43,12 @@ class FilterWidget(EditorBase):
                     moveable=False,
                     include_text=True,
                     layer=self.layer,
-                    onClick=lambda key_=key: self.select_filter(key_),
+                    on_click=lambda key_=key: self.select_filter(key_),
                     name=key,
-                    textColour=self.frame_color,
+                    text_color=self.frame_color,
                     font_size=BUTTON_FONT_SIZE,
                     info_text="",  # info_panel_text_generator.create_info_panel_weapon_text(key),
-                    textHAlign="right_outside",
+                    text_h_align="right_outside",
                     outline_thickness=0,
                     outline_threshold=1
                     )

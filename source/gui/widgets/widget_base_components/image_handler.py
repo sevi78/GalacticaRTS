@@ -2,7 +2,7 @@ import copy
 
 import pygame
 
-from source.handlers.image_handler import outline_image
+from source.multimedia_library.images import outline_image
 
 
 class ImageHandler:
@@ -23,25 +23,25 @@ class ImageHandler:
     def set_image_outline(self):
         self.image_outline = outline_image(copy.copy(self.image), self.frame_color, self.outline_threshold, self.outline_thickness)
 
-    def alignImageRect(self):
+    def align_image_rect(self):
         self.rect.center = (self.screen_x + self.screen_width // 2, self.screen_y + self.screen_height // 2)
 
-        if self.imageHAlign == 'left':
+        if self.image_h_align == 'left':
             self.rect.left = self.screen_x + self.margin - (self.radius_extension / 2)
-        elif self.imageHAlign == 'right':
+        elif self.image_h_align == 'right':
             self.rect.right = self.screen_x + self.screen_width - self.margin + (self.radius_extension / 2)
 
-        if self.imageVAlign == 'top':
+        if self.image_v_align == 'top':
             self.rect.top = self.screen_y + self.margin - (self.radius_extension / 2)
-        elif self.imageVAlign == 'bottom':
+        elif self.image_v_align == 'bottom':
             self.rect.bottom = self.screen_y + self.screen_height - self.margin - (self.radius_extension / 2)
 
-    def setImage(self, image):
+    def set_image(self, image):
         image = pygame.transform.scale(image, (self.get_screen_width(), self.get_screen_height()))
         if self.image_alpha:
             image.set_alpha(self.image_alpha)
         self.image = image
-        self.alignImageRect()
+        self.align_image_rect()
         self.set_image_outline()
 
     def set_image_position(self):

@@ -242,7 +242,8 @@ class PathFindingManager:
 
                 # set color: green if target can be reached, else red
                 color = pygame.color.THECOLORS["green"]
-                if self.next_node_inside_max_distance(current_node.get_position(), next_node.get_position(), self.parent.get_max_travel_range()):
+                travel_range = self.parent.get_max_travel_range()
+                if not self.next_node_inside_max_distance(current_node.get_position(), next_node.get_position(), travel_range):
                     color = pygame.color.THECOLORS["red"]
 
                 # draw the arrows

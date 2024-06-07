@@ -18,8 +18,8 @@ FONT_SIZE = int(ARROW_SIZE * .8)
 
 
 class SettingsEdit(EditorBase):
-    def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
-        EditorBase.__init__(self, win, x, y, width, height, isSubWidget=False, **kwargs)
+    def __init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs):
+        EditorBase.__init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs)
 
         # lists
         self.selectors = []
@@ -104,11 +104,11 @@ class SettingsEdit(EditorBase):
                     max=255,
                     step=step,
                     initial=value,
-                    handleColour=colors.ui_dark,
+                    handle_color=colors.ui_dark,
                     layer=self.layer,
                     parent=self)
 
-            slider.colour = colors.ui_darker
+            slider.color = colors.ui_darker
 
             y += self.spacing_y
 
@@ -120,7 +120,7 @@ class SettingsEdit(EditorBase):
     def get_slider_data(self):
         data = {}
         for name, slider in self.sliders.items():
-            data[name] = slider.getValue()
+            data[name] = slider.get_value()
 
         return data
 
@@ -129,7 +129,7 @@ class SettingsEdit(EditorBase):
             return
 
         for key, value in self.sliders.items():
-            self.sliders[key].setValue(getattr(self.obj, key))
+            self.sliders[key].set_value(getattr(self.obj, key))
 
     def set_selector_current_value(self):
         """updates the selectors values

@@ -152,20 +152,20 @@ def compare_json(default, data, file_name, path=""):
 def abs_database_path():
     # gets the path to store the files: database at root
     dir_path = os.path.dirname(os.path.realpath(__file__))
-    abs_database_path = os.path.split(dir_path)[0].split("source")[0] + "database" + os.sep
-    return abs_database_path
+    abs_database_path_ = os.path.split(dir_path)[0].split("source")[0] + "database" + os.sep
+    return abs_database_path_
 
 
 def abs_level_path():
-    return (os.path.join(abs_database_path(), "levels"))
+    return os.path.join(abs_database_path(), "levels")
 
 
 def abs_games_path():
-    return (os.path.join(abs_database_path(), "games"))
+    return os.path.join(abs_database_path(), "games")
 
 
 def abs_players_path():
-    return (os.path.join(abs_database_path(), "players"))
+    return os.path.join(abs_database_path(), "players")
 
 
 def write_file(filename, folder, data):

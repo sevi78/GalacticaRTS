@@ -33,14 +33,14 @@ class WidgetBase(WidgetBaseMethods, ImageHandler, TextHandler, PositionHandler, 
     - get_position: Gets the position of the widget as a tuple.
     - get_screen_width: Gets the width of the widget.
     - get_screen_height: Gets the height of the widget.
-    - isVisible: Checks if the widget is visible.
-    - isEnabled: Checks if the widget is enabled.
+    - is_visible: Checks if the widget is visible.
+    - is_enabled: Checks if the widget is enabled.
     - set: Sets the value of a given attribute.
     - setX: Sets the x-coordinate of the widget.
     - setY: Sets the y-coordinate of the widget.
-    - setWidth: Sets the width of the widget.
-    - setHeight: Sets the height of the widget.
-    - setIsSubWidget: Sets whether the widget is a sub-widget.
+    - set_screen_width: Sets the width of the widget.
+    - set_screen_height: Sets the height of the widget.
+    - set_is_sub_widget: Sets whether the widget is a sub-widget.
     - set_orbit_object_id: Sets the ID of the object to orbit around.
     - set_orbit_object: Sets the object to orbit around.
     - set_orbit_distance: Sets the distance to the object being orbited.
@@ -56,7 +56,7 @@ class WidgetBase(WidgetBaseMethods, ImageHandler, TextHandler, PositionHandler, 
     - _y: The internal y-coordinate of the widget.
     - _width: The width of the widget.
     - _height: The height of the widget.
-    - _isSubWidget: Whether the widget is a sub-widget.
+    - _is_sub_widget: Whether the widget is a sub-widget.
     - size_x: The width of the widget.
     - size_y: The height of the widget.
     - enable_orbit: Whether orbiting is enabled.
@@ -76,16 +76,16 @@ class WidgetBase(WidgetBaseMethods, ImageHandler, TextHandler, PositionHandler, 
     # __slots__ = ('world_width', 'world_height', 'screen_width', 'screen_height', 'world_x', 'world_y', 'screen_x', 'screen_y', 'pos', 'center', 'size_x', 'size_y', 'zoomable')
     # __slots__ += ('image', 'image_raw', 'rect', '_image_name_small', 'image_name_big')
     # __slots__ += ('_on_hover', 'on_hover_release')
-    # __slots__ += ('_isSubWidget', '_hidden', '_disabled', 'layer', 'layers', 'widgets')
+    # __slots__ += ('_is_sub_widget', '_hidden', '_disabled', 'layer', 'layers', 'widgets')
     # __slots__ += ('name', 'win', 'zoomable', 'property', 'debug', 'parent', 'key', 'id', 'children', 'info_text', 'frame_color', 'widgets')
 
     __slots__ = ('world_width', 'world_height', 'screen_width', 'screen_height', 'world_x', 'world_y', 'screen_x',
                  'screen_y', 'pos', 'center', 'size_x', 'size_y', 'zoomable', 'image', 'image_raw', 'rect',
-                 '_image_name_small', 'image_name_big', '_on_hover', 'on_hover_release', '_isSubWidget', '_hidden',
+                 '_image_name_small', 'image_name_big', '_on_hover', 'on_hover_release', '_is_sub_widget', '_hidden',
                  '_disabled', 'layer', 'layers', 'widgets', 'name', 'win', 'property', 'debug', 'parent', 'key', 'id',
                  'children', 'info_text', 'frame_color')
 
-    def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
+    def __init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs):
         """ Base for all widgets
 
         :param win: Surface on which to draw
@@ -100,7 +100,7 @@ class WidgetBase(WidgetBaseMethods, ImageHandler, TextHandler, PositionHandler, 
         :type height: int
         """
 
-        WidgetBaseMethods.__init__(self, win, x, y, width, height, isSubWidget=False, **kwargs)
+        WidgetBaseMethods.__init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs)
         ImageHandler.__init__(self, **kwargs)
         PositionHandler.__init__(self, x, y, width, height, **kwargs)
         TextHandler.__init__(self, **kwargs)
@@ -108,4 +108,33 @@ class WidgetBase(WidgetBaseMethods, ImageHandler, TextHandler, PositionHandler, 
         VisibilityHandler.__init__(self, **kwargs)
 
         # # register
-        WidgetHandler.addWidget(self)
+        # if self.parent:
+        #     print (f"self: {self}")#, parent: {self.parent}")
+        # if hasattr(self, "parent"):
+        #     print(f"self: {self}")  # , parent: {self.parent}")
+        # if hasattr(self, "parent"):
+        #     if self.parent:
+        #         if not self.parent.__class__.__name__ == "App":
+        #             print (f"self: {self.name}, self.parent: {self.parent}, self.parent.__class__.__name__: {self.parent.__class__.__name__}")
+
+        # if hasattr(self, "parent"):
+        #     if self.parent:
+        #         if self.parent.__class__.__base__.__name__ == "EditorBase":
+        #             if not self in self.parent.widgets:
+        #                 self.parent.widgets.append(self)
+        #             print (f"self: {self.name}, self.parent: {self.parent}, self.parent.__class__.__name__: {self.parent.__class__.__name__}")
+        #
+        #         else:
+        #             WidgetHandler.add_widget(self)
+        #
+        # else:
+        #     WidgetHandler.add_widget(self)
+
+        # if hasattr(self, "parent"):
+        #     if self.parent:
+        #         if self.parent.__class__.__base__.__name__ == "EditorBase":
+        #             self.set_is_sub_widget(True)
+
+        if self.is_sub_widget():
+            print (f"self.name: {self.name}")
+        WidgetHandler.add_widget(self)

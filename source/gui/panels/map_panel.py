@@ -3,16 +3,14 @@ import copy
 import pygame
 
 from source.configuration.game_config import config
-from source.draw.dashed_rectangle import draw_dashed_rounded_rectangle
-from source.draw.rect import draw_transparent_rounded_rect
+from source.draw.rectangle import draw_transparent_rounded_rect, draw_dashed_rounded_rectangle
 from source.game_play.navigation import navigate_to_position
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.handlers.color_handler import colors
-from source.handlers.image_handler import overblit_button_image
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.handlers.widget_handler import WidgetHandler
-from source.multimedia_library.images import get_image
+from source.multimedia_library.images import get_image, overblit_button_image
 
 PLANET_IMAGE_SIZE = 125
 MIN_OBJECT_SIZE = 2
@@ -160,8 +158,8 @@ class MapPanel:
         # needed for WidgetHandler
         self.layer = 9
         self._hidden = False
-        self.isSubWidget = True
-        WidgetHandler.addWidget(self)
+        self.is_sub_widget = True
+        WidgetHandler.add_widget(self)
 
     @property
     def on_hover(self):
@@ -185,7 +183,7 @@ class MapPanel:
                 y=y - BUTTON_SIZE,
                 width=BUTTON_SIZE,
                 height=BUTTON_SIZE,
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self,
                 image=pygame.transform.scale(
                         get_image("ships_25x25.png"), (BUTTON_SIZE, BUTTON_SIZE)),
@@ -193,7 +191,7 @@ class MapPanel:
                 frame_color=self.frame_color,
                 moveable=False,
                 include_text=True, layer=10,
-                onClick=lambda: self.show_objects("ships"),
+                on_click=lambda: self.show_objects("ships"),
                 name="ships")
 
         x += BUTTON_SIZE * 1.5
@@ -204,7 +202,7 @@ class MapPanel:
                 y=y - BUTTON_SIZE,
                 width=BUTTON_SIZE,
                 height=BUTTON_SIZE,
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self,
                 image=pygame.transform.scale(
                         get_image("Zeta Bentauri_60x60.png"), (BUTTON_SIZE, BUTTON_SIZE)),
@@ -212,7 +210,7 @@ class MapPanel:
                 frame_color=self.frame_color,
                 moveable=False,
                 include_text=True, layer=10,
-                onClick=lambda: self.show_objects("planets"),
+                on_click=lambda: self.show_objects("planets"),
                 name="planets")
 
         x += BUTTON_SIZE * 1.5
@@ -223,7 +221,7 @@ class MapPanel:
                 y=y - BUTTON_SIZE,
                 width=BUTTON_SIZE,
                 height=BUTTON_SIZE,
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self,
                 image=pygame.transform.scale(
                         get_image("orbit_icon.png"), (BUTTON_SIZE, BUTTON_SIZE)),
@@ -231,7 +229,7 @@ class MapPanel:
                 frame_color=self.frame_color,
                 moveable=False,
                 include_text=True, layer=10,
-                onClick=lambda: self.show_objects("orbits"),
+                on_click=lambda: self.show_objects("orbits"),
                 name="orbits")
 
         x += BUTTON_SIZE * 1.5
@@ -242,7 +240,7 @@ class MapPanel:
                 y=y - BUTTON_SIZE,
                 width=BUTTON_SIZE,
                 height=BUTTON_SIZE,
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self,
                 image=pygame.transform.scale(
                         get_image("artefact1_60x31.png"), (BUTTON_SIZE, BUTTON_SIZE)),
@@ -250,7 +248,7 @@ class MapPanel:
                 frame_color=self.frame_color,
                 moveable=False,
                 include_text=True, layer=10,
-                onClick=lambda: self.show_objects("items"),
+                on_click=lambda: self.show_objects("items"),
                 name="items")
 
         x += BUTTON_SIZE * 1.5
@@ -261,7 +259,7 @@ class MapPanel:
                 y=y - BUTTON_SIZE,
                 width=BUTTON_SIZE,
                 height=BUTTON_SIZE,
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self,
                 image=pygame.transform.scale(
                         get_image("ufo_74x30.png"), (BUTTON_SIZE, BUTTON_SIZE)),
@@ -269,7 +267,7 @@ class MapPanel:
                 frame_color=self.frame_color,
                 moveable=False,
                 include_text=True, layer=10,
-                onClick=lambda: self.show_objects("ufos"),
+                on_click=lambda: self.show_objects("ufos"),
                 name="ufos")
 
         x += BUTTON_SIZE * 1.5
@@ -280,7 +278,7 @@ class MapPanel:
                 y=y - BUTTON_SIZE,
                 width=BUTTON_SIZE,
                 height=BUTTON_SIZE,
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self,
                 image=pygame.transform.scale(
                         get_image("camera_icon.png"), (BUTTON_SIZE, BUTTON_SIZE)),
@@ -288,7 +286,7 @@ class MapPanel:
                 frame_color=self.frame_color,
                 moveable=False,
                 include_text=True, layer=10,
-                onClick=lambda: self.show_objects("camera"),
+                on_click=lambda: self.show_objects("camera"),
                 name="camera")
 
         x += BUTTON_SIZE * 1.5
@@ -299,7 +297,7 @@ class MapPanel:
                 y=y - BUTTON_SIZE,
                 width=BUTTON_SIZE,
                 height=BUTTON_SIZE,
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self,
                 image=pygame.transform.scale(
                         get_image("warning.png"), (BUTTON_SIZE, BUTTON_SIZE)),
@@ -307,7 +305,7 @@ class MapPanel:
                 frame_color=self.frame_color,
                 moveable=False,
                 include_text=True, layer=10,
-                onClick=lambda: self.show_objects("warnings"),
+                on_click=lambda: self.show_objects("warnings"),
                 name="warnings")
 
         x += BUTTON_SIZE * 1.5
@@ -318,7 +316,7 @@ class MapPanel:
                 y=y - BUTTON_SIZE,
                 width=BUTTON_SIZE,
                 height=BUTTON_SIZE,
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self,
                 image=pygame.transform.scale(
                         get_image("paint.png"), (BUTTON_SIZE, BUTTON_SIZE)),
@@ -326,7 +324,7 @@ class MapPanel:
                 frame_color=self.frame_color,
                 moveable=False,
                 include_text=True, layer=10,
-                onClick=lambda: self.show_objects("images"),
+                on_click=lambda: self.show_objects("images"),
                 name="images")
 
         x += BUTTON_SIZE * 1.5
@@ -337,7 +335,7 @@ class MapPanel:
                 y=y - BUTTON_SIZE,
                 width=BUTTON_SIZE,
                 height=BUTTON_SIZE,
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self,
                 image=pygame.transform.scale(
                         get_image("alpha.png"), (BUTTON_SIZE, BUTTON_SIZE)),
@@ -345,7 +343,7 @@ class MapPanel:
                 frame_color=self.frame_color,
                 moveable=False,
                 include_text=True, layer=10,
-                onClick=lambda: self.show_objects("alpha"),
+                on_click=lambda: self.show_objects("alpha"),
                 name="alpha")
 
         x += BUTTON_SIZE * 1.5
@@ -481,7 +479,7 @@ class MapPanel:
                 radius=radius,
                 width=width)
 
-    def draw_camera_focus(self, pan_zoom_handler) -> None:
+    def draw_camera_focus(self) -> None:
         if not self.show_camera:
             return
 
@@ -492,17 +490,6 @@ class MapPanel:
         width = config.width / self.factor / pan_zoom_handler.zoom
         height = config.height / self.factor / pan_zoom_handler.zoom
 
-        # # draw the rect onto background_surface
-        # if width < MIN_CAMERA_FOCUS_DRAW:
-        #     width, height = 19, 10
-        #     pygame.draw.rect(self.background_surface,
-        #         pygame.color.THECOLORS["orange"], pygame.Rect(x, y, width, height), 1, 3)
-        #
-        # if width in range(MIN_CAMERA_FOCUS_DRAW, MIN_CAMERA_FOCUS_DASHED_DRAW):
-        #     pygame.draw.rect(self.background_surface,
-        #         pygame.color.THECOLORS["lightgreen"], pygame.Rect(x, y, width, height), 1, 3)
-        # else:
-        #     draw_dashed_rounded_rectangle(self.background_surface, colors.ui_darker, pygame.Rect(x, y, width, height), 1, 15, 10)
 
         draw_dashed_rounded_rectangle(self.background_surface,
                 pygame.color.THECOLORS["gray31"], pygame.Rect(x, y, width, height), 1, 15, 10)
@@ -607,7 +594,7 @@ class MapPanel:
         self.draw_objects(sprite_groups.ufos.sprites(), self.background_surface)
 
         # draw camera focus
-        self.draw_camera_focus(pan_zoom_handler)
+        self.draw_camera_focus()
 
         # draw the map_image
         if self.show_alpha:

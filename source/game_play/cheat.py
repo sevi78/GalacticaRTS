@@ -52,9 +52,19 @@ class Cheat:
         self.player.water += value
         self.player.technology += value
 
-    def cheat_resource(self, resource, value):
-        for i in self.players:
-            setattr(self.players[i], resource, getattr(self.players[i], resource) + value)
+    def cheat_resource(self, resource, value, **kwargs):
+
+        """
+        why is it going into the else condition even player_index is not None ?
+        """
+        player_index = kwargs.get("player_index", None)
+
+        if player_index is not None:
+            setattr(self.players[player_index], resource, getattr(self.players[player_index], resource) + value)
+
+        else:
+            for i in self.players:
+                setattr(self.players[i], resource, getattr(self.players[i], resource) + value)
 
     def cheat_resources_and_population(self, value):
         self.player.energy += value

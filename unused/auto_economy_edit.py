@@ -7,8 +7,8 @@ TEXT_HEIGHT = 15
 
 
 class AutoEconomyEdit(EditorBase):
-    def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
-        EditorBase.__init__(self, win, x, y, width, height, isSubWidget=False, **kwargs)
+    def __init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs):
+        EditorBase.__init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs)
         self.enabled_input_boxes = []
         self.input_boxes = []
         self.input_boxes_value = []

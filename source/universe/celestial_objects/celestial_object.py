@@ -18,8 +18,8 @@ class CelestialObject(WidgetBase):
     #     'zoomable')
     possible_directions = [-1, 1]
 
-    def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
-        WidgetBase.__init__(self, win, x, y, width, height, isSubWidget, **kwargs)
+    def __init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs):
+        WidgetBase.__init__(self, win, x, y, width, height, is_sub_widget, **kwargs)
         self.speed = random.uniform(0.1, 1.5)
         self.direction = (random.uniform(-self.speed, self.speed), random.uniform(-self.speed, self.speed))
         self.rotation = 0

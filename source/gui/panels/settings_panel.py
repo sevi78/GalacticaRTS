@@ -6,15 +6,14 @@ from source.gui.panels.toggle_switch import ToggleSwitch
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.handlers.color_handler import colors
-from source.handlers.image_handler import overblit_button_image
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
-from source.multimedia_library.images import get_image
+from source.multimedia_library.images import get_image, overblit_button_image
 from source.text.info_panel_text_generator import info_panel_text_generator
 
 
 class SettingsPanel(WidgetBase):
-    def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
-        super().__init__(win, x, y, width, height, isSubWidget, **kwargs)
+    def __init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs):
+        super().__init__(win, x, y, width, height, is_sub_widget, **kwargs)
 
         self.orbit_icon = None
         self.name = "settings panel"
@@ -51,7 +50,7 @@ class SettingsPanel(WidgetBase):
         #     y=self.surface_rect.y + self.spacing,
         #     width=self.icon_size,
         #     height=self.icon_size,
-        #     isSubWidget=False,
+        #     is_sub_widget=False,
         #     parent=self,
         #     image=pygame.transform.scale(
         #         get_image("economy_icon.png"), (25, 25)),
@@ -59,7 +58,7 @@ class SettingsPanel(WidgetBase):
         #     frame_color=self.frame_color,
         #     moveable=False,
         #     include_text=True, layer=self.layer,
-        #     onClick=lambda: config.app.economy_overview.set_visible())
+        #     on_click=lambda: config.app.economy_overview.set_visible())
         # self.widgets.append(self.economy_overview_icon)
         # self.max_width += self.icon_size + self.spacing
 
@@ -68,7 +67,7 @@ class SettingsPanel(WidgetBase):
                 y=self.surface_rect.y + self.spacing,
                 width=self.icon_size,
                 height=self.icon_size,
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self,
                 image=pygame.transform.scale(get_image("view_icon.png"), (25, 25)),
                 image_raw=get_image("view_icon.png"),
@@ -80,11 +79,11 @@ class SettingsPanel(WidgetBase):
                 key="",
                 info_text="",
                 name="view_icon",
-                textColours=(0, 0, 0),
+                text_color=(0, 0, 0),
                 font_size=0,
                 outline_thickness=0,
                 outline_threshold=0,
-                onClick=lambda: config.app.view_panel.set_visible())
+                on_click=lambda: config.app.view_panel.set_visible())
 
         self.widgets.append(self.view_icon)
         self.max_width += self.icon_size + self.spacing
@@ -94,7 +93,7 @@ class SettingsPanel(WidgetBase):
                 y=self.surface_rect.y + self.spacing,
                 width=self.icon_size,
                 height=self.icon_size,
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self,
                 image=pygame.transform.scale(get_image("multiplayer.png"), (25, 25)),
                 image_raw=get_image("multiplayer.png"),
@@ -106,11 +105,11 @@ class SettingsPanel(WidgetBase):
                 key="",
                 info_text="",
                 name="players_icon",
-                textColours=(0, 0, 0),
+                text_color=(0, 0, 0),
                 font_size=0,
                 outline_thickness=0,
                 outline_threshold=0,
-                onClick=lambda: config.app.player_edit.set_visible())
+                on_click=lambda: config.app.player_edit.set_visible())
 
         self.widgets.append(self.players_icon)
         self.max_width += self.icon_size + self.spacing
@@ -120,7 +119,7 @@ class SettingsPanel(WidgetBase):
                 y=self.surface_rect.y + self.spacing,
                 width=self.icon_size,
                 height=self.icon_size,
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self,
                 image=pygame.transform.scale(get_image("mission_512x512.png"), (25, 25)),
                 image_raw=get_image("mission_512x512.png"),
@@ -132,7 +131,7 @@ class SettingsPanel(WidgetBase):
                 key="",
                 info_text="mission",
                 name="mission_icon",
-                textColours=(0, 0, 0),
+                text_color=(0, 0, 0),
                 font_size=0,
                 outline_thickness=0,
                 outline_threshold=0)
@@ -145,7 +144,7 @@ class SettingsPanel(WidgetBase):
                 y=self.surface_rect.y + self.spacing,
                 width=self.icon_size,
                 height=self.icon_size,
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self,
                 image=pygame.transform.scale(get_image("save_icon_bk.png"), (25, 25)),
                 image_raw=get_image("save_icon_bk.png"),
@@ -156,9 +155,9 @@ class SettingsPanel(WidgetBase):
                 layer=self.layer,
                 key="",
                 name="save_game_icon",
-                textColours=(0, 0, 0),
+                text_color=(0, 0, 0),
                 font_size=0,
-                onClick=lambda: config.app.save_game_edit.set_visible(),
+                on_click=lambda: config.app.save_game_edit.set_visible(),
                 outline_thickness=1,
                 outline_threshold=127)
 
@@ -170,7 +169,7 @@ class SettingsPanel(WidgetBase):
                 y=self.surface_rect.y + self.spacing,
                 width=self.icon_size,
                 height=self.icon_size,
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self,
                 image=pygame.transform.scale(get_image("deal_icon.png"), (25, 25)),
                 image_raw=get_image("deal_icon.png"),
@@ -181,9 +180,9 @@ class SettingsPanel(WidgetBase):
                 layer=self.layer,
                 key="",
                 name="deal_manager_icon",
-                textColours=(0, 0, 0),
+                text_color=(0, 0, 0),
                 font_size=0,
-                onClick=lambda: config.app.deal_manager.set_visible(),
+                on_click=lambda: config.app.deal_manager.set_visible(),
                 outline_thickness=1,
                 outline_threshold=127)
 
@@ -195,7 +194,7 @@ class SettingsPanel(WidgetBase):
                 y=self.surface_rect.y + self.spacing,
                 width=self.icon_size,
                 height=self.icon_size,
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self,
                 image=pygame.transform.scale(get_image("add_deal_icon.png"), (25, 25)),
                 image_raw=get_image("deal_icon.png"),
@@ -206,9 +205,9 @@ class SettingsPanel(WidgetBase):
                 layer=self.layer,
                 key="",
                 name="add_deal_icon",
-                textColours=(0, 0, 0),
+                text_color=(0, 0, 0),
                 font_size=0,
-                onClick=lambda: config.app.add_deal_edit.set_visible(),
+                on_click=lambda: config.app.add_deal_edit.set_visible(),
                 outline_thickness=1,
                 outline_threshold=127)
 
@@ -220,7 +219,7 @@ class SettingsPanel(WidgetBase):
                 y=self.surface_rect.y + self.spacing,
                 width=self.icon_size,
                 height=self.icon_size,
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self,
                 image=pygame.transform.scale(
                         get_image("ship_container_icon.png"), (25, 25)),
@@ -228,7 +227,7 @@ class SettingsPanel(WidgetBase):
                 frame_color=self.frame_color,
                 moveable=False,
                 include_text=True, layer=self.layer,
-                onClick=lambda: config.app.ship_container.set_visible())
+                on_click=lambda: config.app.ship_container.set_visible())
         self.widgets.append(self.ships_icon)
         self.max_width += self.icon_size + self.spacing
 
@@ -237,7 +236,7 @@ class SettingsPanel(WidgetBase):
                 y=self.surface_rect.y + self.spacing,
                 width=self.icon_size,
                 height=self.icon_size,
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self,
                 image=pygame.transform.scale(
                         get_image("planet_container_icon.png"), (25, 25)),
@@ -245,7 +244,7 @@ class SettingsPanel(WidgetBase):
                 frame_color=self.frame_color,
                 moveable=False,
                 include_text=True, layer=self.layer,
-                onClick=lambda: config.app.planet_container.set_visible())
+                on_click=lambda: config.app.planet_container.set_visible())
 
         self.widgets.append(self.planets_icon)
         self.max_width += self.icon_size + self.spacing
@@ -256,7 +255,7 @@ class SettingsPanel(WidgetBase):
                 y=self.surface_rect.y + self.spacing,
                 width=self.icon_size,
                 height=self.icon_size,
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self,
                 image=pygame.transform.scale(
                         get_image("spacehunter.png"), (25, 25)),
@@ -264,7 +263,7 @@ class SettingsPanel(WidgetBase):
                 frame_color=self.frame_color,
                 moveable=False,
                 include_text=True, layer=self.layer,
-                onClick=lambda: navigate_to(None, ship="spacehunter"))
+                on_click=lambda: navigate_to(None, ship="spacehunter"))
         self.widgets.append(self.spacehunter_icon)
         self.max_width += self.icon_size + self.spacing
 
@@ -273,14 +272,14 @@ class SettingsPanel(WidgetBase):
                 y=self.surface_rect.y + self.spacing,
                 width=self.icon_size,
                 height=self.icon_size,
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self,
                 image=pygame.transform.scale(get_image("info_30x30.png"), (25, 25)),
                 tooltip="information about game controls",
                 frame_color=self.frame_color,
                 moveable=False,
                 include_text=True, layer=self.layer,
-                onClick=lambda: self.set_info_text())
+                on_click=lambda: self.set_info_text())
         self.widgets.append(self.info_icon)
         self.max_width += self.icon_size + self.spacing
 
@@ -289,7 +288,7 @@ class SettingsPanel(WidgetBase):
         #     y=self.surface_rect.y + self.spacing,
         #     width=self.icon_size,
         #     height=self.icon_size,
-        #     isSubWidget=False,
+        #     is_sub_widget=False,
         #     parent=self,
         #     image=pygame.transform.scale(
         #         get_image("Zeta Bentauri_60x60.png"), (25, 25)),
@@ -297,7 +296,7 @@ class SettingsPanel(WidgetBase):
         #     frame_color=self.frame_color,
         #     moveable=False,
         #     include_text=True, layer=self.layer,
-        #     onClick=lambda: planet_editor.main(surface=self.win))
+        #     on_click=lambda: planet_editor.main(surface=self.win))
         # self.widgets.append(self.planet_editor_icon)
         # self.max_width += self.icon_size + self.spacing
 
@@ -306,7 +305,7 @@ class SettingsPanel(WidgetBase):
                 y=self.surface_rect.y + self.spacing,
                 width=self.icon_size,
                 height=self.icon_size,
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self,
                 image=pygame.transform.scale(
                         get_image("autopilot.png"), (25, 25)),
@@ -314,7 +313,7 @@ class SettingsPanel(WidgetBase):
                 frame_color=self.frame_color,
                 moveable=False,
                 include_text=True, layer=self.layer,
-                onClick=lambda: self.enebale_autopilot(self.autopilot_icon))
+                on_click=lambda: self.enebale_autopilot(self.autopilot_icon))
 
         self.widgets.append(self.autopilot_icon)
         self.max_width += self.icon_size + self.spacing
@@ -325,14 +324,14 @@ class SettingsPanel(WidgetBase):
                 y=self.surface_rect.y + self.spacing,
                 width=self.icon_size,
                 height=self.icon_size,
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self,
                 image=pygame.transform.scale(get_image("settings_40x40.png"), (25, 25)),
                 tooltip="open advanced settings panel",
                 frame_color=self.frame_color,
                 moveable=False,
                 include_text=True, layer=self.layer,
-                onClick=lambda: config.app.advanced_settings_panel.set_visible())  # settings.main(surface=self.win))
+                on_click=lambda: config.app.advanced_settings_panel.set_visible())  # settings.main(surface=self.win))
         self.widgets.append(self.settings_icon)
         self.max_width += self.icon_size + self.spacing + self.spacing
 

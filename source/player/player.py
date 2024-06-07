@@ -1,7 +1,8 @@
 import time
 
+from source.auto_economy.auto_economy_handler import AutoEconomyHandler
 from source.configuration.game_config import config
-from source.economy.auto_economy_handler import AutoEconomyHandler
+
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.trading.trade_assistant import TradeAssistant
 
@@ -97,6 +98,18 @@ class Player:
         new_stock = self.remove_population_key_from_stock(stock)
         return new_stock
 
+    def get_negative_resource_stock_resources(self):
+        """ returns a list of all resources with negative values from resource_stock( without population) """
+        resource_stock = self.remove_population_key_from_stock(self.get_resource_stock())
+        negative_stock_resources = []
+
+        # get all negative resources from stock
+        for key, value in resource_stock.items():
+            if value < 0:
+                negative_stock_resources.append(key)
+
+        return negative_stock_resources
+
     def get_all_planets(self):
         return [i for i in sprite_groups.planets if i.owner == self.owner]
 
@@ -118,6 +131,10 @@ class Player:
         return ships
 
     def get_all_building_slots(self) -> int:
+        """
+        returns the sum of all buildings_slots of all planets of the player:
+        - the maximum of buildings can be built
+        """
         slots = sum([i.buildings_max for i in sprite_groups.planets.sprites() if i.owner == self.owner])
         return slots
 
@@ -128,6 +145,9 @@ class Player:
         self.population_limit = sum([population_buildings_values[i] for i in self.buildings if
                                      i in population_buildings])
 
+    def get_population_limit(self):
+        self.set_population_limit()
+        return self.population_limit
     def produce(self) -> None:
         current_time = time.time()
         if current_time > self.start_time + self.wait:
@@ -142,23 +162,6 @@ class Player:
 
     def set_global_population(self) -> None:
         self.population = int(sum([i.population for i in sprite_groups.planets if i.owner == self.owner]))
-
-    def set_score__(self):
-        """ this sets the score of the player, not shure how to calculate it :)"""
-        # get building count
-        building_count = len(self.get_all_buildings())
-
-        # get planet count
-        planets_count = len(self.get_all_planets())
-
-        # set busted if no planet left
-        self.busted = planets_count == 0
-
-        # calculate score
-        if building_count == 0:
-            self.score = 0
-        else:
-            self.score = int(self.population / building_count)
 
     def set_score(self):
         """ this sets the score of the player, not shure how to calculate it :)"""

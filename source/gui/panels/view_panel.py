@@ -4,15 +4,14 @@ from source.configuration.game_config import config
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.handlers.color_handler import colors
-from source.handlers.image_handler import overblit_button_image
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
-from source.multimedia_library.images import get_image
+from source.multimedia_library.images import get_image, overblit_button_image
 from source.text.info_panel_text_generator import info_panel_text_generator
 
 
 class ViewPanel(WidgetBase):
-    def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
-        super().__init__(win, x, y, width, height, isSubWidget, **kwargs)
+    def __init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs):
+        super().__init__(win, x, y, width, height, is_sub_widget, **kwargs)
         self.name = "view panel"
         self.anchor_right = kwargs.get("anchor_right")
         self.bg_color = pygame.colordict.THECOLORS["black"]
@@ -47,7 +46,7 @@ class ViewPanel(WidgetBase):
                 y=self.surface_rect.y + self.spacing,
                 width=self.icon_size,
                 height=self.icon_size,
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self,
                 image=pygame.transform.scale(
                         get_image("view_explored_planets_icon.png"), (25, 25)),
@@ -55,7 +54,7 @@ class ViewPanel(WidgetBase):
                 frame_color=self.frame_color,
                 moveable=False,
                 include_text=True, layer=self.layer,
-                onClick=lambda: config.set_global_variable("view_explored_planets", True, button=self.view_explored_planets_icon))
+                on_click=lambda: config.set_global_variable("view_explored_planets", True, button=self.view_explored_planets_icon))
 
         self.widgets.append(self.view_explored_planets_icon)
         self.max_width += self.icon_size + self.spacing
@@ -65,7 +64,7 @@ class ViewPanel(WidgetBase):
                 y=self.surface_rect.y + self.spacing,
                 width=self.icon_size,
                 height=self.icon_size,
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self,
                 image=pygame.transform.scale(
                         get_image("cross.png"), (25, 25)),
@@ -73,7 +72,7 @@ class ViewPanel(WidgetBase):
                 frame_color=self.frame_color,
                 moveable=False,
                 include_text=True, layer=self.layer,
-                onClick=lambda: config.set_global_variable("enable_cross", True, button=self.cross_icon))
+                on_click=lambda: config.set_global_variable("enable_cross", True, button=self.cross_icon))
         self.widgets.append(self.cross_icon)
         self.max_width += self.icon_size + self.spacing
 
@@ -82,7 +81,7 @@ class ViewPanel(WidgetBase):
                 y=self.surface_rect.y + self.spacing,
                 width=self.icon_size,
                 height=self.icon_size,
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self,
                 image=pygame.transform.scale(
                         get_image("orbit_icon.png"), (25, 25)),
@@ -90,7 +89,7 @@ class ViewPanel(WidgetBase):
                 frame_color=self.frame_color,
                 moveable=False,
                 include_text=True, layer=self.layer,
-                onClick=lambda: config.set_global_variable("show_orbit", True, button=self.orbit_icon))
+                on_click=lambda: config.set_global_variable("show_orbit", True, button=self.orbit_icon))
         self.widgets.append(self.orbit_icon)
         self.max_width += self.icon_size + self.spacing
 
@@ -99,7 +98,7 @@ class ViewPanel(WidgetBase):
                 y=self.surface_rect.y + self.spacing,
                 width=self.icon_size,
                 height=self.icon_size,
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self,
                 image=pygame.transform.scale(
                         get_image("planet_text_icon.png"), (25, 25)),
@@ -107,7 +106,7 @@ class ViewPanel(WidgetBase):
                 frame_color=self.frame_color,
                 moveable=False,
                 include_text=True, layer=self.layer,
-                onClick=lambda: self.show_planet_names(button=self.show_planet_names_icon))
+                on_click=lambda: self.show_planet_names(button=self.show_planet_names_icon))
         self.widgets.append(self.show_planet_names_icon)
         self.max_width += self.icon_size + self.spacing
 
@@ -116,7 +115,7 @@ class ViewPanel(WidgetBase):
                 y=self.surface_rect.y + self.spacing,
                 width=self.icon_size,
                 height=self.icon_size,
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self,
                 image=pygame.transform.scale(
                         get_image("text_icon.png"), (25, 25)),
@@ -124,7 +123,7 @@ class ViewPanel(WidgetBase):
                 frame_color=self.frame_color,
                 moveable=False,
                 include_text=True, layer=self.layer,
-                onClick=lambda: self.show_tooltip(button=self.show_tooltip_icon))
+                on_click=lambda: self.show_tooltip(button=self.show_tooltip_icon))
 
         self.widgets.append(self.show_tooltip_icon)
         self.max_width += self.icon_size + self.spacing
@@ -134,7 +133,7 @@ class ViewPanel(WidgetBase):
                 y=self.surface_rect.y + self.spacing,
                 width=self.icon_size,
                 height=self.icon_size,
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self,
                 image=pygame.transform.scale(
                         get_image("text_icon.png"), (25, 25)),
@@ -142,7 +141,7 @@ class ViewPanel(WidgetBase):
                 frame_color=self.frame_color,
                 moveable=False,
                 include_text=True, layer=self.layer,
-                onClick=lambda: self.show_event_text(button=self.show_event_text_icon))
+                on_click=lambda: self.show_event_text(button=self.show_event_text_icon))
 
         self.widgets.append(self.show_event_text_icon)
         self.max_width += self.icon_size + self.spacing
@@ -152,7 +151,7 @@ class ViewPanel(WidgetBase):
                 y=self.surface_rect.y + self.spacing,
                 width=self.icon_size,
                 height=self.icon_size,
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self,
                 image=pygame.transform.scale(
                         get_image("map_icon.png"), (25, 25)),
@@ -160,7 +159,7 @@ class ViewPanel(WidgetBase):
                 frame_color=self.frame_color,
                 moveable=False,
                 include_text=True, layer=self.layer,
-                onClick=lambda: config.set_global_variable("show_map_panel", True, button=self.map_icon))
+                on_click=lambda: config.set_global_variable("show_map_panel", True, button=self.map_icon))
         self.widgets.append(self.map_icon)
         self.max_width += self.icon_size + self.spacing
 
@@ -169,7 +168,7 @@ class ViewPanel(WidgetBase):
                 y=self.surface_rect.y + self.spacing,
                 width=self.icon_size,
                 height=self.icon_size,
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self,
                 image=pygame.transform.scale(
                         get_image("smile.png"), (25, 25)),
@@ -177,7 +176,7 @@ class ViewPanel(WidgetBase):
                 frame_color=self.frame_color,
                 moveable=False,
                 include_text=True, layer=self.layer,
-                onClick=lambda: config.set_global_variable("show_overview_buttons", True, button=self.buttons_icon))
+                on_click=lambda: config.set_global_variable("show_overview_buttons", True, button=self.buttons_icon))
         self.widgets.append(self.buttons_icon)
         self.max_width += self.icon_size + self.spacing
 
@@ -186,7 +185,7 @@ class ViewPanel(WidgetBase):
                 y=self.surface_rect.y + self.spacing,
                 width=self.icon_size,
                 height=self.icon_size,
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self,
                 image=pygame.transform.scale(
                         get_image("color_icon.png"), (25, 25)),
@@ -194,7 +193,7 @@ class ViewPanel(WidgetBase):
                 frame_color=self.frame_color,
                 moveable=False,
                 include_text=True, layer=self.layer,
-                onClick=lambda: config.set_global_variable("show_player_colors", True, button=self.player_colors_icon))
+                on_click=lambda: config.set_global_variable("show_player_colors", True, button=self.player_colors_icon))
 
         self.widgets.append(self.player_colors_icon)
         self.max_width += self.icon_size + self.spacing + self.spacing

@@ -94,7 +94,7 @@ class PanZoomUfo(PanZoomGameObject):  # , InteractionHandler):
                 height=5,
                 progress=lambda: 1 / self.energy_max * self.energy,
                 curved=True,
-                completedColour=self.frame_color,
+                completed_color=self.frame_color,
                 layer=self.layer,
                 parent=self
                 )
@@ -108,8 +108,8 @@ class PanZoomUfo(PanZoomGameObject):  # , InteractionHandler):
 
     def setup(self):
         data = pan_zoom_ufo_config
-        for name, dict in data.items():
-            for key, value in dict.items():
+        for name, dict_ in data.items():
+            for key, value in dict_.items():
                 if key in self.__dict__ or key in self.__slots__:
                     setattr(self, key, value)
 
@@ -142,14 +142,14 @@ class PanZoomUfo(PanZoomGameObject):  # , InteractionHandler):
         r2 = random.randint(0, 6)
         startpos = self.rect.center
         endpos = self.target.rect.center
-        colors = [pygame.color.THECOLORS["blue"], pygame.color.THECOLORS["purple"], pygame.color.THECOLORS["pink"]]
+        colors_ = [pygame.color.THECOLORS["blue"], pygame.color.THECOLORS["purple"], pygame.color.THECOLORS["pink"]]
 
         if r == 3:
             pygame.draw.line(surface=self.win, start_pos=startpos, end_pos=endpos,
-                    color=random.choice(colors), width=r2)
+                    color=random.choice(colors_), width=r2)
         if r == 2:
             pygame.draw.line(surface=self.win, start_pos=startpos, end_pos=endpos,
-                    color=random.choice(colors), width=r * 2)
+                    color=random.choice(colors_), width=r * 2)
 
         self.damage()
 

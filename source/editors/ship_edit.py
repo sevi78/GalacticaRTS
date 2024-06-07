@@ -5,8 +5,8 @@ from source.handlers.pan_zoom_sprite_handler import sprite_groups
 
 
 class ShipEdit(Interface):
-    def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
-        Interface.__init__(self, win, x, y, width, height, isSubWidget=False, **kwargs)
+    def __init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs):
+        Interface.__init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs)
         self.create_selectors()
         self.create_save_button(lambda: self.parent.save_objects("ship_settings.json", sprite_groups.ships.sprites()), "save ship")
         self.create_close_button()

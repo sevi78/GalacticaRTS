@@ -9,6 +9,7 @@ from source.draw.circles import draw_transparent_circle
 from source.draw.zigzag_line import draw_zigzag_line
 from source.factories.weapon_factory import weapon_factory
 from source.gui.widgets.moving_image import MovingImage
+from source.handlers.color_handler import colors
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.multimedia_library.images import get_image
 from source.multimedia_library.sounds import sounds
@@ -25,6 +26,15 @@ class WeaponHandler:
         self.current_weapon = self.all_weapons[current_weapon]
         self.current_weapon_select = ""
         self.setup_interval_timers()
+
+    @property
+    def current_weapon_select(self) -> str:
+        return self._current_weapon_select
+
+    @current_weapon_select.setter
+    def current_weapon_select(self, value) -> None:
+        self._current_weapon_select = value
+        self.parent.attack_distance_raw = self.get_current_value("range")
 
     def setup_interval_timers(self):
         for i in self.all_weapons.keys():
@@ -145,7 +155,8 @@ class WeaponHandler:
         return value
 
     def draw_attack_distance(self):
-        draw_transparent_circle(self.parent.win, self.parent.frame_color, self.parent.rect.center, self.get_current_value("range") * pan_zoom_handler.zoom, 20)
+        # draw_transparent_circle(self.parent.win, self.parent.frame_color, self.parent.rect.center, self.get_current_value("range") * pan_zoom_handler.zoom, 20)
+        draw_transparent_circle(self.parent.win, colors.outside_screen_color, self.parent.rect.center, self.get_current_value("range") * pan_zoom_handler.zoom, 20)
 
     def attack(self, defender):
         # if not level_of_detail.inside_screen(self.parent.get_screen_position()):

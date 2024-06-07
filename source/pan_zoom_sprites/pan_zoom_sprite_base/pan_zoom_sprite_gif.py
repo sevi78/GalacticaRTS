@@ -6,9 +6,9 @@ import pygame
 from source.configuration.game_config import config
 from source.gui.widgets.widget_base_components.visibilty_handler import VisibilityHandler
 from source.handlers.color_handler import colors, get_average_color
-from source.handlers.image_handler import outline_image
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
-from source.multimedia_library.images import get_image, get_gif_frames, get_gif, get_gif_fps, get_gif_duration
+from source.multimedia_library.images import get_image, get_gif_frames, get_gif, get_gif_fps, get_gif_duration, \
+    outline_image
 from source.multimedia_library.sounds import sounds
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_debug import GameObjectDebug
 

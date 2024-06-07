@@ -9,7 +9,28 @@ SPACESHIP_MAXIMUM = 5
 SPACEHUNTER_MAXIMUM = 5
 CARGO_LOADER_MAXIMUM = 3
 SPACESTATION_MAXIMUM = 2
-PARTICLE_ACCELERATOR_BUILD_THRESHOLD = 10000
+
+import logging
+import os
+from datetime import datetime
+
+# Create the "logging" directory if it doesn't exist
+log_dir = os.path.join(os.getcwd(), "logging")
+os.makedirs(log_dir, exist_ok=True)
+
+# Get the current date and time
+now = datetime.now()
+
+# Create a log file name with the current date and time
+# log_filename = f"auto_economy_builder_{now.strftime('%Y%m%d_%H%M%S')}.log"
+log_filename = f"auto_economy_builder.log"
+
+# Create the full path to the log file in the "logging" directory
+log_file = os.path.join(log_dir, log_filename)
+
+# Configure logging to create a new log file for each run
+logging.basicConfig(filename=log_file, filemode="w", level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
 class AutoEconomyBuilder:
@@ -30,6 +51,9 @@ class AutoEconomyBuilder:
         # check if planet has the productions: food and population that it need to:
         # produce food
         # build population buildings needed to grow
+        if not self.planet:
+            return
+
         if not self.player.population >= self.player.population_limit:
             return
 
@@ -81,12 +105,27 @@ class AutoEconomyBuilder:
                         building_factory.build("metropole", self.planet)
                         building_factory.destroy_building("agriculture complex", self.planet)
 
-    def build_food_buildings(self, planet):
+    def build_energy_buildings(self):
+        building = building_factory.get_fitting_building(self.planet.population, "energy")
+        building_factory.build(building, self.planet)
+
+    def build_water_buildings(self):
+        building = building_factory.get_fitting_building(self.planet.population, "water")
+        building_factory.build(building, self.planet)
+
+    def build_food_buildings(self):
+        building = building_factory.get_fitting_building(self.planet.population, "food")
+        building_factory.build(building, self.planet)
+
+    def build_minerals_buildings(self):
+        building = building_factory.get_fitting_building(self.planet.population, "minerals")
+        building_factory.build(building, self.planet)
+    def build_building_by_category(self, planet, category):
         """
-        builds population buildings to planet
+        builds buildings to planet based on category
         checks for fitting building based on population of the planet
         """
-        building = building_factory.get_fitting_building(planet.population, "food")
+        building = building_factory.get_fitting_building(planet.population, category)
         building_factory.build(building, planet)
 
     def build_space_harbour(self):
@@ -95,12 +134,7 @@ class AutoEconomyBuilder:
             10000 population on the planet
             all production values positive
         """
-        production = {key: value for key, value in self.player.production.items() if key != "population"}
-        # check for population greater than 1000
-        if self.player.population > 10000:
-            if not any(value < 0 for value in production.values()):
-                if not "space harbor" in self.all_buildings:
-                    building_factory.build("space harbor", self.planet)
+        building_factory.build("space harbor", self.planet)
 
     def build_ship(self):
         """
@@ -158,12 +192,9 @@ class AutoEconomyBuilder:
             all production values positive
 
         """
-        production = {key: value for key, value in self.player.production.items() if key != "population"}
-        # check for population greater than 10000
-        if self.planet.population > PARTICLE_ACCELERATOR_BUILD_THRESHOLD:
-            if not any(value < 0 for value in production.values()):
-                if not "particle accelerator" in self.planet.buildings:
-                    building_factory.build("particle accelerator", self.planet)
+        if not "particle accelerator" in self.planet.buildings:
+            result = building_factory.build("particle accelerator", self.planet)
+            # logger.info(f"building 'particle accelerator' on {self.planet} by {self.player.name}: result: {result}")
 
     def build_planetary_defence(self):
         """ builds a planetary defence if:
@@ -186,7 +217,11 @@ class AutoEconomyBuilder:
 
                 if not defence_found:
                     building = random.choice(defence_buildings)
-                    building_factory.build(building, self.planet)
+                    result = building_factory.build(building, self.planet)
+                    logger.info(f"build_planetary_defence: building {building} on {self.planet} by {self.player.name}: result: {result}")
+
+    def build_university(self):
+        building_factory.build("university", self.planet)
 
     def build_immediately(self) -> None:
         """
@@ -212,67 +247,8 @@ class AutoEconomyBuilder:
                         i.build_immediately()
                         # print(f"building immediately !: {self.player.technology}")
 
-    def build(self):
-        """
-        Builds buildings on planets based on certain conditions.
-
-        This function iterates over each planet in the `planets` list and performs the following actions:
-        - Sets the current planet to the given planet.
-        - Sets the building widget list for the current planet.
-        - Sets the maximum building cue for the current planet.
-
-        If any building in the building widget list is currently building, the function returns. Otherwise, the function
-        proceeds to:
-        - Build a building immediately if possible and a random factor is satisfied.
-        - Build population buildings if needed.
-        - Find the fitting building and build it.
-
-        If a fitting building is found, the function sets the current building to the fitting building and calls the
-        `build` function of the `building_factory` class, passing in the fitting building and the current planet.
-
-        After iterating over all planets, the function checks if any resource stock is below the
-        `DELETE_BUILDING_THRESHOLD`. If so, it deletes buildings and adds a fitting deal using the `deal_manager` class.
-
-        Parameters:
-            self (object): The instance of the class.
-
-        Returns:
-            None
-        """
-
-        for planet in self.planets:
-            self.set_planet(planet)
-            self.set_building_widget_list()
-            self.set_building_cue_max()
-
-            # build space harbour
-            self.build_space_harbour()
-            self.build_ship()
-            self.build_ship_weapons()
-            self.build_particle_accelerator()
-            self.build_planetary_defence()
-
-            # check if any building is building cue
-            if len(self.building_widget_list) >= self.building_cue_max:
-                return
-            else:
-                # build immediately if possible and some random factor
-                self.build_immediately()
-
-            self.maximize_population_grow()
-            # build population buildings if needed
-            self.build_population_buildings()
-
-            # find fitting building and build it
-            self.set_fit_building()
-            if self.fit_building:
-                self.building = self.fit_building
-                building_factory.build(self.building, self.planet)
-
-        # delete buildings if needed
-        resource_stock = self.player.get_resource_stock()
-        if resource_stock[self.get_lowest_value_key(resource_stock)] < DELETE_BUILDING_THRESHOLD:
-            self.delete_buildings()
-
-        # add deals
-        config.app.deal_manager.add_fitting_deal(self.player.trade_assistant.generate_fitting_deal())
+    def build_fitting_building(self):
+        self.set_fit_building()
+        if self.fit_building:
+            self.building = self.fit_building
+            building_factory.build(self.building, self.planet)

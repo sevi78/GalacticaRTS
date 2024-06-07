@@ -37,7 +37,7 @@
   },
   "spacehunter": {
     "owner": 0,
-    "attack_distance_raw": 200,
+    "attack_distance_raw": 400,
     "crew": 3,
     "crew_max": 5,
     "desired_orbit_radius_raw": 100,
@@ -73,7 +73,7 @@
   },
   "spaceship": {
     "owner": 0,
-    "attack_distance_raw": 200,
+    "attack_distance_raw": 300,
     "crew": 7,
     "crew_max": 12,
     "desired_orbit_radius_raw": 100,

@@ -3,7 +3,7 @@ import copy
 from source.configuration.game_config import config
 from source.editors.editor_base.editor_base import EditorBase
 from source.gui.event_text import event_text
-from source.handlers.image_handler import overblit_button_image
+from source.multimedia_library.images import overblit_button_image
 from source.trading.deal_select import DealSelect
 
 OFFER_DEAL_PERCENT = 25
@@ -12,8 +12,8 @@ MAX_DEALS_PER_LIST = 25
 
 
 class DealManager(EditorBase):  # new
-    def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs) -> None:
-        EditorBase.__init__(self, win, x, y, width, height, isSubWidget=False, **kwargs)
+    def __init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs) -> None:
+        EditorBase.__init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs)
 
         #  widgets
         self.overblit_image = None
@@ -27,8 +27,8 @@ class DealManager(EditorBase):  # new
         self.hide()
 
     def __repr__(self):
-        return f"DealManager:\n deals: {len(self.deals)}\n self.accepted_deals: {len(self.accepted_deals)}\n self.declined_deals:{len(self.declined_deals)} "
-
+        # return f"DealManager:\n deals: {self.deals}\n self.accepted_deals: {len(self.accepted_deals)}\n self.declined_deals:{len(self.declined_deals)} "
+        return str(self.name)
     def add_accepted_deal(self, deal: DealSelect) -> None:
         if len(self.accepted_deals) >= MAX_DEALS_PER_LIST:
             self.accepted_deals.pop(0)

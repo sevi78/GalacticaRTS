@@ -44,7 +44,7 @@ class PanZoomPlanet(PanZoomSprite, VisibilityHandler, PanZoomPlanetOverviewButto
         'overview_buttons', 'smiley_status', 'thumpsup_status', 'frame_color', 'gif_handler', 'type',
         'parent', 'screen_size', 'target', 'moving', 'tooltip', 'id', 'level', 'fog_of_war_radius', 'explored',
         'just_explored', 'moveable', 'orbit_speed', 'orbit_object', 'orbit_distance', 'string', 'start_time', 'wait',
-        'selected', 'onClick', 'info_text', 'info_text_raw', 'thumpsup_button_size', 'thumpsup_button',
+        'selected', 'on_click', 'info_text', 'info_text_raw', 'thumpsup_button_size', 'thumpsup_button',
         'smiley_button_size', 'smiley_button', 'planet_defence')
 
     def __init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs):

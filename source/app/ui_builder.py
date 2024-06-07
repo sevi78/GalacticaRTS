@@ -1,6 +1,7 @@
 import pygame
 
 from source.app.scene_builder import SceneBuilder
+from source.auto_economy.auto_economy_calculator_edit import AutoEconomyCalculatorEdit
 from source.configuration.game_config import config
 from source.editors.building_edit import BuildingEdit
 from source.editors.debug_edit import DebugEdit
@@ -113,7 +114,7 @@ class UIBuilder(SceneBuilder):
                 y=self.settings_panel.surface_rect.bottom,
                 width=240,
                 height=300,
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self.resource_panel,
                 layer=9)
 
@@ -124,7 +125,7 @@ class UIBuilder(SceneBuilder):
                 0,
                 1920,
                 1080,
-                isSubWidget=False,
+                is_sub_widget=False,
                 layer=8,
                 draw_gradient=BACKGROUND_GRADIENT_DRAW,
                 fade_range=BACKGROUND_GRADIENT_FADE_RANGE)
@@ -239,16 +240,6 @@ class UIBuilder(SceneBuilder):
                 obj=None,
                 layer=9)  # , game_paused=True)
 
-        # self.economy_overview = EconomyOverview(
-        #     pygame.display.get_surface(),
-        #     0,
-        #     0,
-        #     1920,
-        #     800,
-        #     parent=self,
-        #     obj=None,
-        #     layer=10)  # , game_paused=True)
-
         self.settings_edit = SettingsEdit(
                 pygame.display.get_surface(),
                 pygame.display.get_surface().get_rect().centerx - width / 2,
@@ -258,6 +249,18 @@ class UIBuilder(SceneBuilder):
                 parent=self,
                 obj=None,
                 layer=9)  # , game_paused=True)
+
+        self.auto_economy_calculator_edit = AutoEconomyCalculatorEdit(
+                pygame.display.get_surface(),
+                pygame.display.get_surface().get_rect().centerx - width / 2,
+                pygame.display.get_surface().get_rect().y + spacing_y,
+                int(width / 1.5),
+                height,
+                parent=self,
+                obj=None,
+                layer=9)  # , game_paused=True)
+
+
 
     def create_players(self, data):
         # for some stupid reason, i ant move this to player_handler: RuntimeError: dictionary changed size during iteration
@@ -317,7 +320,7 @@ class UIBuilder(SceneBuilder):
                 height=100,
                 color=pygame.colordict.THECOLORS["black"],
                 text_color=self.frame_color,  # pygame.colordict.THECOLORS["darkslategray1"],
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self,
                 layer=10)
 
@@ -331,7 +334,7 @@ class UIBuilder(SceneBuilder):
                 y=spacing,
                 width=size_x - spacing,
                 height=size_y,
-                isSubWidget=False,
+                is_sub_widget=False,
                 size_x=size_x,
                 size_y=size_y,
                 spacing=spacing,
@@ -343,7 +346,7 @@ class UIBuilder(SceneBuilder):
                 y=spacing,
                 width=size_x - spacing,
                 height=size_y,
-                isSubWidget=True,
+                is_sub_widget=True,
                 size_x=size_x,
                 size_y=size_y,
                 spacing=spacing,
@@ -360,7 +363,7 @@ class UIBuilder(SceneBuilder):
                 y=spacing * 2,
                 width=size_x - spacing,
                 height=size_y,
-                isSubWidget=False,
+                is_sub_widget=False,
                 size_x=size_x,
                 size_y=size_y,
                 spacing=spacing,
@@ -374,7 +377,7 @@ class UIBuilder(SceneBuilder):
                 y=self.settings_panel.surface_frame.bottom,
                 width=size_x - spacing,
                 height=size_y,
-                isSubWidget=False,
+                is_sub_widget=False,
                 size_x=size_x,
                 size_y=size_y,
                 spacing=spacing,
@@ -388,7 +391,7 @@ class UIBuilder(SceneBuilder):
                 y=self.settings_panel.surface_frame.bottom,
                 width=size_x - spacing,
                 height=size_y,
-                isSubWidget=False,
+                is_sub_widget=False,
                 size_x=size_x,
                 size_y=size_y,
                 spacing=spacing,
@@ -411,7 +414,7 @@ class UIBuilder(SceneBuilder):
                 y=pos_y,
                 width=size_x,
                 height=size_y,
-                isSubWidget=False,
+                is_sub_widget=False,
                 size_x=size_x,
                 size_y=size_y,
                 spacing=spacing,

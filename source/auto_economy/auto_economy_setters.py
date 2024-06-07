@@ -62,7 +62,7 @@ class AutoEconomyHandlerSetters:
         self.max_keys_resources = None
 
         self.lowest_key = None
-        self.highest__key = None
+        self.highest_key = None
         self.max_keys_all = None
         self.min_keys_all = None
 
