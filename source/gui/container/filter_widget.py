@@ -3,8 +3,8 @@ import pygame
 from source.editors.editor_base.editor_base import EditorBase
 from source.editors.editor_base.editor_config import TOP_SPACING
 from source.gui.widgets.buttons.image_button import ImageButton
-from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.multimedia_library.images import get_image
+from source.trading.market import market
 
 BUTTON_FONT_SIZE = 15
 
@@ -25,14 +25,14 @@ class FilterWidget(EditorBase):
 
         self.hide()
 
-    def create_buttons(self, keys):
+    def create_buttons(self, keys):  # orig
         x = 0
         y = 0
         button_size = 15
         for key in keys:
             icon = ImageButton(win=self.win,
                     x=self.get_screen_x() + x,
-                    y=self.get_screen_y() + y + TOP_SPACING,
+                    y=self.world_y - self.button_size + TOP_SPACING,
                     width=button_size,
                     height=button_size,
                     is_sub_widget=False,
@@ -61,6 +61,12 @@ class FilterWidget(EditorBase):
         self.screen_width = button_size * len(keys)
 
     def reposition_widgets(self):
+        """
+        !!! container widget has no screen_x, therfore, its notinherited from editorbase
+        use world_x ect from parent
+        """
+        self.world_y = self.parent.frame.world_y - TOP_SPACING - self.button_size
+
         for icon in self.widgets:
             icon.screen_x = self.world_x + self.button_size * self.widgets.index(icon)
             icon.screen_y = self.world_y + TOP_SPACING
@@ -79,14 +85,22 @@ class FilterWidget(EditorBase):
         print("key:", key)
         print("dict: ", self.parent.widgets)
 
-        # Sort the list of widgets based on the specified key (attribute) in descending order
-        sorted_widgets = sprite_groups.convert_sprite_groups_to_image_widget_list(
-                self.list_name,
-                sort_by=key,
-                reverse=getattr(self, key))
+        if not self.parent.name == "deal_container":
+            # Sort the list of widgets based on the specified key (attribute) in descending order
+            sorted_widgets = market.convert_sprite_groups_to_container_widget_items_list(
+                    self.list_name,
+                    sort_by=key,
+                    reverse=getattr(self, key)
+                    )
 
-        # Update the parent's widgets list with the sorted list
-        self.parent.set_widgets(sorted_widgets)
+            # Update the parent's widgets list with the sorted list
+            self.parent.set_widgets(sorted_widgets)
+
+        else:
+            # sorted_widgets  = market.convert_deals_into_container_widget_item(key)
+            sorted_widgets = market.sort_trades(self.parent.widgets, key)
+            # Update the parent's widgets list with the sorted list
+            self.parent.set_widgets(sorted_widgets)
 
     def listen(self, events):
         if not self._hidden and not self._disabled:

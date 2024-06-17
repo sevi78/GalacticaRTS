@@ -38,6 +38,10 @@ class WidgetBaseMethods(ABC):
         for i in self.widgets:
             i.__del__()
 
+        # garbage_handler.delete_all_references(self,self)
+        # garbage_handler.delete_references(self)
+
+
     def set_screen_size(self, screen_size):
         self.screen_size = screen_size
 

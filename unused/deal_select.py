@@ -1,4 +1,7 @@
+import gc
+import inspect
 import time
+import weakref
 
 import pygame
 
@@ -7,8 +10,11 @@ from source.editors.editor_base.editor_base import EditorBase
 from source.editors.editor_base.editor_config import TOP_SPACING
 from source.gui.event_text import event_text
 from source.gui.widgets.buttons.image_button import ImageButton
+from source.handlers.garbage_handler import garbage_handler
+from source.handlers.widget_handler import WidgetHandler
 from source.multimedia_library.images import get_image
 from source.text.text_wrap import TextWrap
+from source.trading.trade import Trade
 
 BUTTON_SIZE = 12
 DEAL_LIFETIME = 120  # seconds
@@ -91,8 +97,8 @@ class DealSelect(EditorBase, TextWrap):
         self.widgets = []
         self.provider_index = kwargs.get("player_index", 0)
         self.buyer_index = kwargs.get("buyer_index", 0)
-        self.provider_image = pygame.transform.scale(get_image(config.app.players[self.provider_index].image_name),
-                (20, 20))
+        self.provider_image = kwargs.get("image", None)
+
 
         # timing to delete after some time
         self.life_time = DEAL_LIFETIME
@@ -120,6 +126,73 @@ class DealSelect(EditorBase, TextWrap):
     def __repr__(self) -> str:
         return f"DealSelect: provider: {config.app.players[self.provider_index].name}, {self.offer} for {self.request}"
 
+
+
+    def clean_up_references(self, accepted) -> None:
+        """
+        Removes the instance from the deal manager lists and deletes it.
+        Args:
+            accepted (bool): Whether the deal was accepted or declined.
+        Returns:
+            None
+        """
+        # Remove from lists and delete it
+        if self in config.app.deal_manager.deals:
+            if accepted:
+                config.app.deal_manager.add_accepted_deal(self)
+                if self in config.app.deal_manager.deals:
+                    config.app.deal_manager.deals.remove(self)
+
+
+            else:
+                config.app.deal_manager.add_declined_deal(self)
+                if self in config.app.deal_manager.deals:
+                    config.app.deal_manager.deals.remove(self)
+
+
+            config.app.deal_manager.reposition_deals()
+            self.__delete__()
+
+    def __delete__(self):
+        """
+        Properly delete the DealSelect object and its associated widgets and buttons.
+        """
+        for widget in self.widgets:
+            widget.parent = None
+            WidgetHandler.remove_widget(widget)
+            garbage_handler.delete_all_references(widget, self)
+            garbage_handler.delete_all_references(self, widget)
+            del widget
+        for button in self.buttons:
+            button.parent = None
+            garbage_handler.delete_all_references(button, self)
+            garbage_handler.delete_all_references(self, button)
+            del button
+
+        self.widgets = []
+        self.buttons = []
+        WidgetHandler.remove_widget(self)
+        garbage_handler.delete_all_references(self, self)
+
+        config.app.editors.remove(self)
+        self.__del__()
+        # print ( f"in editors: {len([i for i in config.app.editors if i.name == 'DealSelect'])}")
+        referrers = gc.get_referrers(self)
+        for ref in referrers:
+            if type(ref) == list:
+                ref.remove(self)
+            elif type(ref) == dict:
+                ref.pop(self.provider_index)
+
+                # del ref[ref.keys().index(self)]
+            else:
+
+                print (f"refs: {ref}, {type(ref)}")
+
+        referrers__ = gc.get_referrers(self)
+        garbage_handler.delete_all_references(self, self)
+        print (f"referrers__ {referrers__}")
+        del self
     def create_buttons(self) -> None:
         agree_button = ImageButton(win=self.win,
                 x=self.get_screen_x() + self.get_screen_width() - BUTTON_SIZE * 3,
@@ -218,7 +291,7 @@ class DealSelect(EditorBase, TextWrap):
         # print("deal_select: decline!!!")
         self.clean_up_references(accepted=False)
 
-    def clean_up_references(self, accepted) -> None:
+    def clean_up_references__(self, accepted) -> None:
         """
         Removes the instance from the deal manager lists and deletes it.
 
@@ -239,13 +312,33 @@ class DealSelect(EditorBase, TextWrap):
         """
         # remove from lists and delete it
         if self in config.app.deal_manager.deals:
-
             if accepted:
                 config.app.deal_manager.add_accepted_deal(self)
+
             else:
                 config.app.deal_manager.add_declined_deal(self)
 
-        self.__del__()
+            # del config.app.last_deals[self.provider_index]
+            # self.deals.append(deal)
+            # self.widgets.append(deal)
+        # for i in self.buttons:
+        #     i.__del__()
+        #
+        #     garbage_handler.delete_all_references(self, i)
+        # self.__del__()
+        # del self
+
+        self.__delete__(self)
+
+
+        # for i in self.widgets:
+        #     weak = weakref.ref(i)
+        #     print ("weakref widgets: ", weak)
+        #
+        # for i in self.buttons:
+        #     weak = weakref.ref(i)
+        #     print ("weakref buttons: ", weak)
+
 
     def generate_provider_text(self) -> None:
         text = f"{config.app.players[self.provider_index].name} offers:  "
@@ -366,7 +459,7 @@ def main():
     pygame.init()
     pygame.display.set_caption("DealEdit")
     screen = pygame.display.set_mode((800, 600))
-    editor = DealSelect(screen, 100, 30, 220, 60, False, offer={"energy": 50}, request={"food": 30}, layer=9)
+    editor = DealSelect(screen, 100, 30, 220, 60, False, offer={"energy": 50}, request={"food": 30}, layer=9, image = get_image(""))
 
     running = True
     while running:

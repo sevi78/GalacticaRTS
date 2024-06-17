@@ -53,8 +53,10 @@ class EconomyCalculator:
     Fields
     building_factory: An instance of BuildingFactory used to retrieve building data and requirements.
     """
+
     def __init__(self):
         self.settings = load_file("auto_economy_calculator_settings.json", "config")
+
     def calculate_production_score(
             self,
             building: str,
@@ -76,7 +78,7 @@ class EconomyCalculator:
 
         # calculate resources into production
         resource_differ = self.get_resource_difference(current_resources_dict, resource_goal_dict)
-        resource_differ_max = max(resource_differ.values())
+        resource_differ_max = max(resource_differ.values()) if max(resource_differ.values()) != 0.0 else 1
         resource_differ_max_keys = [i for i in current_resources_dict if resource_differ[i] == resource_differ_max]
 
         # calculate new_dict
@@ -84,18 +86,22 @@ class EconomyCalculator:
         # add both, current_dict and building_dict
         # this will be the actual values if the building is built
         for key, value in building_dict.items():
-            # calculate into the score: if key is lowest stock value, then divide the value through the differ
+            # calculate into the score: if key is the lowest stock value, then divide the value through the difference
             # between the resources and the resource goal
             # this ensures that the lower the stock value is, the higher its key gets prioritized
 
+            # if the resource(key) is in the list of the highest values from the list
             if key in resource_differ_max_keys:
+                # calculate the score by adding the production to the value (default=0)
+                # then divide through the value of the highest differences from any resources
+                # to include the resources to the score
+                # divide through the amount of available building slots
+
                 new_dict[key] = (value + current_production_dict[key]) / resource_differ_max
 
-            # if not key is lowest stock value
+            # if not key is the highest stock value
             else:
                 new_dict[key] = value + current_production_dict[key]
-
-
 
         # calculate building_scores
         building_scores = {

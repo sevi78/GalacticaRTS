@@ -35,6 +35,6 @@
     "ui_tooltip_size": 10,
     "ui_show_cursor": true,
     "ui_cursor_size": 40,
-    "show_human_player_only": false,
+    "show_human_player_only": true,
     "font_name": "segoeuiemoji"
 }

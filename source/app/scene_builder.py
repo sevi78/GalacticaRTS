@@ -13,11 +13,6 @@ class GameObjectStorage:
         self.building_button_widgets = []
         self.explored_planets = []
 
-    def add_explored_planet__(self, planet):
-        self.explored_planets.append(planet)
-        self.explored_planets = sorted(self.explored_planets)
-        self.update_building_button_widgets()
-
     def add_explored_planet(self, planet):
         self.explored_planets.append(planet)
         # sort the planets by orbit_object_id and type

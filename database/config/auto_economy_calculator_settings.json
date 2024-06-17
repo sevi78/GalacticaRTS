@@ -1,14 +1,14 @@
 {
-    "production_energy": 3,
-    "production_food": 3,
-    "production_minerals": 2,
-    "production_water": 2,
+    "production_energy": 1,
+    "production_food": 1,
+    "production_minerals": 1,
+    "production_water": 1,
     "production_technology": 1,
     "production_population": 0,
-    "resource_energy": 10000,
-    "resource_food": 10000,
-    "resource_minerals": 10000,
-    "resource_water": 10000,
-    "resource_technology": 10000,
-    "resource_population": 10000
+    "resource_energy": 1000,
+    "resource_food": 1000,
+    "resource_minerals": 1000,
+    "resource_water": 1000,
+    "resource_technology": 1000,
+    "resource_population": 1000
 }

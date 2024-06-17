@@ -182,7 +182,7 @@ class SettingsPanel(WidgetBase):
                 name="deal_manager_icon",
                 text_color=(0, 0, 0),
                 font_size=0,
-                on_click=lambda: config.app.deal_manager.set_visible(),
+                on_click=lambda: config.app.deal_container.set_visible(),
                 outline_thickness=1,
                 outline_threshold=127)
 

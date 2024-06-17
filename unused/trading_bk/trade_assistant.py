@@ -2,8 +2,7 @@ from typing import Optional
 
 from source.configuration.game_config import config
 from source.gui.event_text import event_text
-from source.trading.market import market
-from source.trading.trade import Trade
+from source.trading.deal_select import DealSelect
 
 
 class TradeAssistant:
@@ -22,16 +21,19 @@ class TradeAssistant:
                 )
 
     def get_accepted_deals_from_player(self) -> list:
-        deals = [i for i in market.accepted_deals if i.owner_index == self.player_index]
+        deal_manager = config.app.deal_manager
+        deals = [i for i in deal_manager.accepted_deals if i.provider_index == self.player_index]
         return deals
 
     def get_declined_deals_from_player(self) -> list:
-        deals = [i for i in market.declined_deals if i.owner_index == self.player_index]
+        deal_manager = config.app.deal_manager
+        deals = [i for i in deal_manager.declined_deals if i.provider_index == self.player_index]
         return deals
 
-    def get_last_deal_from_player(self) -> Optional[Trade]:
-        if self.player_index in market.last_deals.keys():
-            return market.last_deals[self.player_index]
+    def get_last_deal_from_player(self) -> Optional[DealSelect]:
+        deal_manager = config.app.deal_manager
+        if self.player_index in deal_manager.last_deals.keys():
+            return deal_manager.last_deals[self.player_index]
         return None
 
     def generate_deal_based_resource_maximum_and_minimum(
@@ -61,7 +63,7 @@ class TradeAssistant:
 
         return new_deal_dict
 
-    def generate_fitting_deal(self) -> Trade:
+    def generate_fitting_deal(self) -> dict:
         """
         Generates a fitting deal for the player.
         it is called from:
@@ -89,8 +91,8 @@ class TradeAssistant:
         # create offer and request
         offer = {highest_value_key: offer_value}
         request = {lowest_value_key: request_value}
-        trade = Trade(self.player.owner, offer, request)
-        return trade
+        data = {"player_index": self.player_index, "offer": offer, "request": request}
+        return data
 
     def adjust_percentages(self):
         """
@@ -113,20 +115,13 @@ class TradeAssistant:
 
         # Adjust the percentages based on the status of the last deal
         if last_deal in self.get_accepted_deals_from_player():
-            self.offer_percentage = self.limit_percentage(max(self.offer_percentage * 1.1, 0.1))
-            self.request_percentage = self.limit_percentage(max(self.request_percentage * 1.15, 0.1))
+            self.offer_percentage = max(self.offer_percentage * 1.1, 0.1)
+            self.request_percentage = max(self.request_percentage * 1.15, 0.1)
         elif last_deal in self.get_declined_deals_from_player():
-            self.offer_percentage = self.limit_percentage(max(self.offer_percentage * 0.9, 0.1))
-            self.request_percentage = self.limit_percentage(max(self.request_percentage * 0.85, 0.1))
+            self.offer_percentage = max(self.offer_percentage * 0.9, 0.1)
+            self.request_percentage = max(self.request_percentage * 0.85, 0.1)
 
-    def limit_percentage(self, percentage: float) -> float:
-        if percentage >= 100.0:
-            percentage = 100.0
-
-        if percentage <= 0.0:
-            percentage = 0.0
-
-        return percentage
+        # print (f"adjust_percentages:\n self.offer_percentage:{self.offer_percentage}\nself.request_percentage:{self.request_percentage}")
 
     def trade_technology_to_the_bank(
             self, offer_value: int, request_resource: str, request_value: int, player_index: int

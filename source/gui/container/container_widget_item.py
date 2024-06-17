@@ -109,7 +109,9 @@ class ContainerWidgetItem(TextWrap):
         self._hidden = False
         self.obj = kwargs.get("obj", None)
         self.parent = kwargs.get("parent", None)
-        self.widgets = []
+        self.container_name = kwargs.get("container_name", None)
+        self.item_buttons = kwargs.get("item_buttons", None)
+        self.widgets = kwargs.get("item_buttons", None)
 
         # text
         self.text = ""
@@ -119,8 +121,23 @@ class ContainerWidgetItem(TextWrap):
         # state image
         self.state_image = None
         self.state_image_rect = None
-
         self.set_text_and_state_image()
+
+        # buttons
+        self.create_buttons()
+
+    def create_buttons(self):
+        """
+        "agree": {
+            "image": pygame.transform.scale(get_image("thumps_up.png"), (button_size, button_size)),
+            "function": lambda: test()
+            },
+        """
+        if not self.item_buttons:
+            return
+
+        for i in self.widgets:
+            i.parent = self
 
     def set_position(self, pos) -> None:
         """
@@ -212,9 +229,16 @@ class ContainerWidgetItem(TextWrap):
                     WIDGET_SIZE / 3, WIDGET_SIZE / 3))
                 self.state_image_rect = self.state_image.get_rect()
 
+            elif self.obj.__class__.__name__ == "Trade":
+                # text
+                self.text += f"{self.obj.__str__()}"
+
+
         # if no object to display (like files or anything else, not implemented yet)
         else:
             self.text += f", index: {self.index}"
+
+        self.create_buttons()
 
     def draw_text(self) -> None:
         if self.parent:
@@ -229,7 +253,7 @@ class ContainerWidgetItem(TextWrap):
                 (text_width, FONT_SIZE),
                 self.font,
                 colors.frame_color,
-                iconize=["energy", "population", "buildings"])
+                iconize=["energy", "food", "minerals", "technology", "population", "buildings", "water"])
 
     def draw_hover_rect(self) -> None:
         """
@@ -277,9 +301,24 @@ class ContainerWidgetItem(TextWrap):
             if self.state_image is not None:
                 self.win.blit(self.state_image, self.state_image_rect)
 
+        # draw buttons
+        for i in self.widgets:
+            i.draw()
+
+    def listen(self, events):
+        for i in self.widgets:
+            i.listen(events)
+            # print (f"listen i: {i}")
+
     def draw(self) -> None:
         self.rect.topleft = (self.world_x, self.world_y)
+
         if not self._hidden:
+            # if self.parent:
+            #     for index, (key, value) in enumerate(self.item_buttons.items()):
+            #         self.item_buttons_dict[key]["dest"] = (
+            #             self.parent.rect.width - 50 - ((value["image"].get_rect().width + 5) * index), self.rect.top)
+
             self.draw_images()
             self.draw_text()
             self.draw_hover_rect()

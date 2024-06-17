@@ -7,8 +7,7 @@ from source.gui.widgets.buttons.image_button import ImageButton
 from source.gui.widgets.checkbox import Checkbox
 from source.gui.widgets.selector import Selector
 from source.multimedia_library.images import get_image
-from source.trading.market import market
-from source.trading.trade import Trade
+from source.trading.deal_select import DealSelect
 
 ARROW_SIZE = 20
 FONT_SIZE = int(ARROW_SIZE * .8)
@@ -301,12 +300,14 @@ class AddDealEdit(EditorBase):
                     elif not i.checked:
                         i.checked = True
 
+
             if checkbox in self.checkboxes_request:
                 for i in self.checkboxes_request:
                     if not i == checkbox:
                         i.checked = False
                     elif not i.checked:
                         i.checked = True
+
 
         # set_technology_bank_deal
         request_key = [i.key for i in self.checkboxes_request if i.checked][0]
@@ -361,7 +362,22 @@ class AddDealEdit(EditorBase):
         offer = {offer_key: offer_value}
         request = {request_key: request_value}
 
-        market.add_deal(Trade(0, offer, request))
+        # create deal
+        config.app.deal_manager.set_deal(DealSelect(
+                config.app.win,
+                0,
+                30,
+                300,
+                60,
+                False,
+                offer=offer,
+                request=request,
+                layer=9,
+                parent=config.app,
+                player_index=config.player,
+                save=False,
+                image= pygame.transform.scale(get_image(config.app.players[config.player].image_name),
+                (20, 20))))
 
     def agree(self) -> None:
         self.create_deal()
@@ -379,6 +395,7 @@ class AddDealEdit(EditorBase):
 
         # call the trade_technology_to_the_bank function from the assistant
         trade_assistant.trade_technology_to_the_bank(offer_value, request_key, request_value, player_index)
+
 
     def listen(self, events) -> None:
         if not self._hidden and not self._disabled:

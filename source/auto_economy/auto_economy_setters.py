@@ -116,8 +116,6 @@ class AutoEconomyHandlerSetters:
         self.min_keys_resources = [key for key in resource_stock if
                                    all(resource_stock[temp] >= resource_stock[key] for temp in resource_stock)]
 
-        # print(f"set_min_keys_resources:\n    self.player: {self.player.name}, resource_stock: {resource_stock}, self.min_keys_resources: {self.min_keys_resources}")
-
     def set_max_keys_resources(self) -> None:
         resource_stock = {key: value for key, value in self.player.get_resource_stock().items() if
                           key in self.resource_categories_except_technology_and_population}
@@ -127,7 +125,6 @@ class AutoEconomyHandlerSetters:
     def set_min_keys_all(self) -> None:
         stock = self.player.get_stock()
         self.min_keys_all = [key for key in stock if all(stock[temp] >= stock[key] for temp in stock)]
-        # print (f"set_min_keys_all of {self.player.name}: stock: {stock}, self.min_keys_all: {self.min_keys_all}")
 
     def set_max_keys_all(self) -> None:
         stock = self.player.get_stock()

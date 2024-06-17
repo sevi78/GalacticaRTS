@@ -139,6 +139,7 @@ class ContainerWidget(InteractionHandler):
         self.name = kwargs.get("name", "container")
         self.list_name = kwargs.get("list_name", None)
         self.filter_widget = kwargs.get("filter_widget", None)
+
         if self.filter_widget:
             self.filter_widget.parent = self
 
@@ -179,7 +180,7 @@ class ContainerWidget(InteractionHandler):
         # save
         self.save = kwargs.get("save", True)
 
-    def set_widgets(self, widgets):
+    def set_widgets(self, widgets: list) -> None:
         """ sets the widgets and resets offset values """
         # check if widgets is not empty
         if widgets:
@@ -196,7 +197,8 @@ class ContainerWidget(InteractionHandler):
                                 image=copy.copy(_.image_raw),
                                 index=index,
                                 obj=_,
-                                parent=self)
+                                parent=self,
+                                items_buttons=self.item_buttons)
                             for index, _ in enumerate(widgets)])
             # if they are ContainerWidgetItem, set widgets
             else:
@@ -205,6 +207,13 @@ class ContainerWidget(InteractionHandler):
         else:
             self.widgets = widgets
 
+        self.update_container()
+
+    def add_widget(self, widget: ContainerWidgetItem):
+        self.widgets.append(widget)
+        self.update_container()
+
+    def update_container(self):
         self.offset_index = 0
         self.visible_index_range = 0
         # set offset_y to minus 1 !!!
@@ -217,8 +226,8 @@ class ContainerWidget(InteractionHandler):
         self.scroll_offset_y = 0
         self.max_scroll_y = self.get_max_scroll_y()
         self.reposition_widgets()
-
         # hahahah :) !!! this makes is stay visible --- grotesque :)
+        # self._hidden = True
         self.set_visible()
         self.set_visible()
 
@@ -337,6 +346,7 @@ class ContainerWidget(InteractionHandler):
         if self._hidden:
             return
 
+        # print ("container_widget.listen")
         # all widgets listen
         self.scrollbar.listen(events)
 
@@ -348,8 +358,23 @@ class ContainerWidget(InteractionHandler):
         else:
             self.on_hover = False
 
+        if self.on_hover:
+            pass
+            # buttons
+            # self.handle_buttons(events)
+
         # drag
         self.drag(events)
+
+        # widgets
+        for i in self.widgets:
+            if not i.parent:
+                # parenting
+                i.parent = self
+
+            # listen
+            i.listen(events)
+            # print (f"listen i: {i}")
 
         # handle events
         for event in events:
@@ -381,17 +406,23 @@ class ContainerWidget(InteractionHandler):
                         if self.filter_widget:
                             if self.filter_widget.on_hover:
                                 return
-                        offset_y = mouse_handler.get_mouse_pos()[1] - self.world_y
-                        rel_offset_y = offset_y - (self.scroll_offset_y * WIDGET_SIZE)
-                        offset_index = math.floor(rel_offset_y / WIDGET_SIZE)
 
-                        self.offset_index = offset_index
+                        self.offset_index = self.get_offset_index()
                         self.select()
 
-        # hover
-        for i in self.widgets:
-            if not i.parent:
-                i.parent = self
+    def get_offset_index(self):
+        offset_y = mouse_handler.get_mouse_pos()[1] - self.world_y
+        rel_offset_y = offset_y - (self.scroll_offset_y * WIDGET_SIZE)
+        offset_index = math.floor(rel_offset_y / WIDGET_SIZE)
+        return offset_index
+
+    def overblit_buttons(self, dict_, value):
+        if value:
+            dict_["image"].fill((0, 0, 0, 0))
+            dict_["image"].blit(dict_["outline_image"], dict_["image"].get_rect())
+        else:
+            dict_["image"].fill((0, 0, 0, 0))
+            dict_["image"].blit(dict_["image_raw"], dict_["image"].get_rect())
 
     def draw(self):
         if self._hidden:

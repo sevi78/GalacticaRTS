@@ -28,8 +28,6 @@ from source.handlers.file_handler import load_file
 from source.player.player import Player
 from source.player.player_handler import player_handler
 from source.trading.add_deal_edit import AddDealEdit
-from source.trading.deal_manager import DealManager
-from source.trading.trade_edit import TradeEdit
 
 EDITOR_HEIGHT = 600
 
@@ -75,7 +73,6 @@ class UIBuilder(SceneBuilder):
         self.building_edit = None
         self.save_game_edit = None
         self.weapon_select = None
-        self.deal_manager = None
         self.diplomacy_edit = None
         self.player_edit = None
 
@@ -150,17 +147,7 @@ class UIBuilder(SceneBuilder):
                 ignore_other_editors=True,
                 save=False)
 
-        self.deal_manager = DealManager(
-                self.win,
-                240,
-                30,
-                460,
-                60,
-                False,
-                layer=10,
-                parent=self,
-                ignore_other_editors=True,
-                save=False)
+
 
         self.weapon_select = WeaponSelect(
                 pygame.display.get_surface(),
@@ -221,14 +208,14 @@ class UIBuilder(SceneBuilder):
                 pygame.display.get_surface().get_rect().y + spacing_y,
                 width, height, parent=self, obj=debugger, layer=9)
 
-        self.trade_edit = TradeEdit(pygame.display.get_surface(),
-                pygame.display.get_surface().get_rect().centerx - width / 2,
-                pygame.display.get_surface().get_rect().y + spacing_y,
-                width,
-                height,
-                parent=self,
-                obj=None,
-                layer=9)  # , game_paused=True)
+        # self.trade_edit = TradeEdit(pygame.display.get_surface(),
+        #         pygame.display.get_surface().get_rect().centerx - width / 2,
+        #         pygame.display.get_surface().get_rect().y + spacing_y,
+        #         width,
+        #         height,
+        #         parent=self,
+        #         obj=None,
+        #         layer=9)  # , game_paused=True)
 
         self.add_deal_edit = AddDealEdit(
                 pygame.display.get_surface(),

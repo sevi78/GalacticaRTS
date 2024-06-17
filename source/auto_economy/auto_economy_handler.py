@@ -6,6 +6,7 @@ from source.auto_economy.auto_economy_setters import AutoEconomyHandlerSetters
 from source.auto_economy.economy_calculator import economy_calculator
 from source.configuration.game_config import config
 from source.factories.building_factory import building_factory
+from source.trading.market import market
 
 RANDOM_FACTOR = 50
 MIN_FOOD_PRODUCTION = 2
@@ -80,15 +81,6 @@ class AutoEconomyHandler(AutoEconomyHandlerSetters, AutoEconomyBuilder):  # orig
     # !!! this might be wrong, maybe we need random choice of all lowest keys?
     def get_highest_value_key(self, stock: dict) -> str:
         """
-        Returns the key with the lowest value in the given stock dictionary.
-
-        Parameters:
-            stock (dict): A dictionary representing a stock, where the keys are the stock names and the values are their corresponding prices.
-
-        Returns:
-            str: The key with the lowest value in the stock dictionary.
-        """
-        """
         Returns the key with the highest value in the given stock dictionary.
 
         Parameters:
@@ -122,7 +114,7 @@ class AutoEconomyHandler(AutoEconomyHandlerSetters, AutoEconomyBuilder):  # orig
                 lowest_key = key
         return lowest_key
 
-    def maximize_population_grow(self):
+    def maximize_population_grow__(self):
         # check if planet is able to grow population
         if "food" in self.planet.possible_resources and "population" in self.planet.possible_resources:
 
@@ -166,7 +158,7 @@ class AutoEconomyHandler(AutoEconomyHandlerSetters, AutoEconomyBuilder):  # orig
     #     if loop_counter >= max_loops:
     #         print("Warning: Infinite loop detected and stopped.")
 
-    def destroy_most_consuming_building(self):
+    def destroy_most_consuming_building__(self):
         # destroy most consuming building
         zero_production = self.get_zero_productions()
         for i in zero_production:
@@ -186,14 +178,15 @@ class AutoEconomyHandler(AutoEconomyHandlerSetters, AutoEconomyBuilder):  # orig
             if value == highest_value:
                 highest_key = key
         offer_value = getattr(self.player, highest_key) * .2
-        request_resource = list(deal["request"].keys())[0]
+        request_resource = list(deal.request.keys())[0]
         request_value = int(offer_value / 2)
         self.player.trade_assistant.trade_technology_to_the_bank(offer_value, request_resource, request_value, player_index)
 
     def add_deal(self):
-        config.app.deal_manager.add_fitting_deal(self.player.trade_assistant.generate_fitting_deal())
+        trade = self.player.trade_assistant.generate_fitting_deal()
+        market.add_deal(trade)
 
-    def get_zero_productions(self):
+    def get_zero_productions__(self):
         # handle the case when a resource is producing 0 and the stock of this resource is negative
         production = {key: value for key, value in self.player.production.items() if key != "population"}
         stock = self.player.get_resource_stock()
@@ -215,27 +208,17 @@ class AutoEconomyHandler(AutoEconomyHandlerSetters, AutoEconomyBuilder):  # orig
 
     def optimize_planets(self, categories=building_factory.get_resource_categories_except_technology_and_population()):
         for planet in self.planets:
-            population = planet.population
             for building in planet.buildings:
                 next_level_building_category = building_factory.get_category_by_building(building)
                 if next_level_building_category in categories:
                     next_level_building = building_factory.get_next_level_building(building)
 
                     if next_level_building:
-                        if building_factory.get_build_population_minimum(building) < population:
+                        if building_factory.get_build_population_minimum(building) < planet.population:
                             building_factory.destroy_building(building, planet)
                             building_factory.build(next_level_building, planet)
                             text = f"optimize_planets: destroy: {building} and build: {next_level_building} on {planet}"
-
-    # def get_best_population_planets(self):
-    #     max_ = 0
-    #
-    #     for i in self.planets:
-    #         if i.build_priorities["population"] > max_:
-    #             max_ = i.build_priorities["population"]
-    #
-    #     best_population_planets = [i for i in self.planets if i.build_priorities["population"] == max_]
-    #     return best_population_planets
+                            return
 
     def update(self):
         """
@@ -277,8 +260,6 @@ class AutoEconomyHandler(AutoEconomyHandlerSetters, AutoEconomyBuilder):  # orig
 
                 # check if not too much widgets are build at the same time
                 if len(self.building_widget_list) >= self.building_cue_max:
-                    config.app.deal_manager.get_fitting_deal(self.player)
-                    self.add_deal()
                     self.build_immediately()
                 else:
                     # get best fitting building
@@ -294,5 +275,15 @@ class AutoEconomyHandler(AutoEconomyHandlerSetters, AutoEconomyBuilder):  # orig
                         building_factory.build(random.choice(lowest_production_score_keys), planet)
 
             # otherwise optimize planets
-            if len(all_buildings) >= all_building_slots:
-                self.optimize_planets()
+            # if len(all_buildings) >= all_building_slots:
+            # if all(value > 1 for key, value in self.player.production.items()):
+            if len(all_buildings) == all_building_slots:
+                # self.optimize_planets()
+                pass
+
+        if any(value < 700 for key, value in self.player.production.items()):
+            self.deal_with_the_bank()
+
+            market.get_fitting_deal(self.player)
+            self.add_deal()
+

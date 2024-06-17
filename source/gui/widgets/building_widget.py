@@ -8,6 +8,7 @@ from source.factories.weapon_factory import weapon_factory
 from source.gui.widgets.buttons.button import Button
 from source.gui.widgets.progress_bar import ProgressBar
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
+from source.handlers.garbage_handler import garbage_handler
 from source.handlers.orbit_handler import set_orbit_object_id
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.multimedia_library.images import get_image, overblit_button_image
@@ -328,12 +329,19 @@ class BuildingWidget(WidgetBase):
     def delete(self):
         if self in config.app.building_widget_list:
             config.app.building_widget_list.remove(self)
-        self.__del__()
+
         self.progress_bar.__del__()
         self.button.__del__()
+        self.__del__()
+        garbage_handler.delete_all_references(self, self.progress_bar)
+        garbage_handler.delete_all_references(self, self.button)
+        garbage_handler.delete_all_references(self,self)
+
 
     def listen(self, events):
         for event in events:
+            if not self.button:
+                return
             if self.button.rect.collidepoint(pygame.mouse.get_pos()):
                 self.immediately_build_cost = int((1 - self.progress_bar.percent) * self.building_production_time)
                 self.set_tooltip()

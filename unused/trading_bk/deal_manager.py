@@ -1,15 +1,22 @@
 import copy
 
+import pygame
+
 from source.configuration.game_config import config
 from source.editors.editor_base.editor_base import EditorBase
 from source.gui.event_text import event_text
-from source.multimedia_library.images import overblit_button_image
+from source.multimedia_library.images import overblit_button_image, get_image
 from source.trading.deal_select import DealSelect
 
 OFFER_DEAL_PERCENT = 25
 MAX_DEALS_PER_PLAYERS = 3
 MAX_DEALS_PER_LIST = 25
 
+class Trade:
+    def __init__(self):
+        self.request = {}
+        self.offer = {}
+        self.provider_index = 0
 
 class DealManager(EditorBase):  # new
     def __init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs) -> None:
@@ -27,12 +34,13 @@ class DealManager(EditorBase):  # new
         self.hide()
 
     def __repr__(self):
-        # return f"DealManager:\n deals: {self.deals}\n self.accepted_deals: {len(self.accepted_deals)}\n self.declined_deals:{len(self.declined_deals)} "
-        return str(self.name)
+        return f"DealManager:\n deals: {self.deals}\n self.accepted_deals: {len(self.accepted_deals)}\n self.declined_deals:{len(self.declined_deals)} "
+        # return str(self.name)
     def add_accepted_deal(self, deal: DealSelect) -> None:
         if len(self.accepted_deals) >= MAX_DEALS_PER_LIST:
             self.accepted_deals.pop(0)
         self.accepted_deals.append(deal)
+
         self.deals.remove(deal)
         self.reposition_deals()
         self.overblit_deal_icon()
@@ -41,6 +49,9 @@ class DealManager(EditorBase):  # new
         if len(self.declined_deals) >= MAX_DEALS_PER_LIST:
             self.declined_deals.pop(0)
         self.declined_deals.append(deal)
+        # if deal.provider_index in self.last_deals.keys():
+        #     self.last_deals.__delitem__(deal.provider_index)
+        # print (len(self.last_deals.keys()))
         self.deals.remove(deal)
         self.reposition_deals()
         self.overblit_deal_icon()
@@ -99,8 +110,10 @@ class DealManager(EditorBase):  # new
                 layer=9,
                 parent=config.app,
                 player_index=data["player_index"],
-                save=False
-                )
+                save=False,
+                image=pygame.transform.scale(get_image(config.app.players[config.player].image_name),
+                        (20, 20)))
+
         self.set_deal(deal)
 
     def get_fitting_deal(self, player) -> None:

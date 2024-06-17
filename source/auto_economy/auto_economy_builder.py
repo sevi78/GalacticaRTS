@@ -35,7 +35,7 @@ logger = logging.getLogger(__name__)
 
 class AutoEconomyBuilder:
 
-    def build_population_buildings(self):
+    def build_population_buildings__(self):
         """
         Check if the planet has the necessary resources to produce food and build population buildings for growth.
         If the player's population is not greater than or equal to the population limit, return.
@@ -105,11 +105,11 @@ class AutoEconomyBuilder:
                         building_factory.build("metropole", self.planet)
                         building_factory.destroy_building("agriculture complex", self.planet)
 
-    def build_energy_buildings(self):
+    def build_energy_buildings__(self):
         building = building_factory.get_fitting_building(self.planet.population, "energy")
         building_factory.build(building, self.planet)
 
-    def build_water_buildings(self):
+    def build_water_buildings__(self):
         building = building_factory.get_fitting_building(self.planet.population, "water")
         building_factory.build(building, self.planet)
 

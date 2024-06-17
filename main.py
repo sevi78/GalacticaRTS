@@ -8,13 +8,13 @@ from source.app.ui_builder import UIBuilder
 from source.configuration.game_config import config
 from source.draw.cursor import Cursor
 from source.economy.economy_handler import economy_handler
-from source.gui.container.filter_widget import FilterWidget
 from source.factories.ship_factory import ShipFactory
 from source.game_play.cheat import Cheat
 from source.game_play.enemy_handler import enemy_handler
 from source.game_play.game_logic import GameLogic
 from source.game_play.navigation import navigate_to, navigate_to_game_object_by_index
 from source.gui.container.container_widget import ContainerWidget
+from source.gui.container.filter_widget import FilterWidget
 from source.gui.event_text import event_text
 from source.gui.panels.map_panel import MapPanel
 from source.gui.widgets.image_widget import ImageSprite
@@ -34,6 +34,7 @@ from source.level.level_handler import LevelHandler
 from source.level.level_select import LevelSelect
 from source.multimedia_library.images import get_image
 from source.player.player_edit import PlayerEdit
+from source.trading.market import market
 
 ECONOMY_UPDATE_INTERVAL = 2.0
 
@@ -157,6 +158,7 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
             self.start_time = time.time()
 
             economy_handler.update()
+            market.update()
             score_plotter_handler.update()
 
     def update(self, events):
@@ -318,7 +320,7 @@ def main():
             60,
             container_width,
             container_height,
-            sprite_groups.convert_sprite_groups_to_image_widget_list("ships"),
+            market.convert_sprite_groups_to_container_widget_items_list("ships"),
             function=navigate_to_game_object_by_index,
             layer=9,
             list_name="ships",
@@ -346,7 +348,7 @@ def main():
             60,
             container_width * 2,
             container_height,
-            sprite_groups.convert_sprite_groups_to_image_widget_list("planets"),
+            market.convert_sprite_groups_to_container_widget_items_list("planets"),
             function=navigate_to_game_object_by_index,
             layer=9,
             list_name="planets",
@@ -372,6 +374,33 @@ def main():
             pygame.display.get_surface().get_rect().y,
             width, height, parent=app, obj=None, layer=9, ignore_other_editors=True, drag_enabled=False, save=False)  # , game_paused=True)
 
+    # deal container
+    app.deal_container = ContainerWidget(
+            app.win,
+            600,
+            60,
+            600,
+            container_height,
+            [],
+            function=navigate_to_game_object_by_index,
+            layer=9,
+            list_name="deals",
+            name="deal_container",
+
+            filter_widget=FilterWidget(
+                    app.win,
+                    260,
+                    60,
+                    container_width,
+                    150,
+                    ["water", "energy", "food", "minerals", "technology", "owner_index"],
+                    parent=app,
+                    layer=10,
+                    list_name="deals",
+                    name="deals_container_filter",
+                    ignore_other_editors=True
+                    )
+            )
     # cursor object
     app.cursor = Cursor()
 
