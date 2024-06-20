@@ -215,8 +215,12 @@ class AutoEconomyHandler(AutoEconomyHandlerSetters, AutoEconomyBuilder):  # orig
 
                     if next_level_building:
                         if building_factory.get_build_population_minimum(building) < planet.population:
-                            building_factory.destroy_building(building, planet)
-                            building_factory.build(next_level_building, planet)
+                            if not building in building_factory.get_building_names("population"):
+                                building_factory.destroy_building(building, planet)
+                                building_factory.build(next_level_building, planet)
+                            else:
+                                building_factory.destroy_building(building, planet)
+
                             text = f"optimize_planets: destroy: {building} and build: {next_level_building} on {planet}"
                             return
 
@@ -258,32 +262,41 @@ class AutoEconomyHandler(AutoEconomyHandlerSetters, AutoEconomyBuilder):  # orig
             for planet in self.planets:
                 self.set_building_widget_list()
 
+                # get best fitting building
+                lowest_production_score_keys = economy_calculator.get_best_fitting_building(
+                        all_buildings=len(all_buildings),
+                        all_building_slots=all_building_slots,
+                        population_limit=planet.population_limit,
+                        population=planet.population,
+                        production=planet.production,
+                        production_goal=production_goal,
+                        resources=self.player.get_stock(),
+                        resource_goal=resource_goal)
+
+
                 # check if not too much widgets are build at the same time
                 if len(self.building_widget_list) >= self.building_cue_max:
                     self.build_immediately()
                 else:
-                    # get best fitting building
-                    lowest_production_score_keys = economy_calculator.get_best_fitting_building(
-                            population=planet.population,
-                            production=planet.production,
-                            production_goal=production_goal,
-                            resources=self.player.get_stock(),
-                            resource_goal=resource_goal)
-
                     # check if any building slots are left
                     if len(all_buildings) < all_building_slots:
                         building_factory.build(random.choice(lowest_production_score_keys), planet)
 
+
+
+                print (f"planet: {planet.name}, population: {planet.population}, population_limit:{planet.population_limit}\n lowest_production_score_keys: {lowest_production_score_keys}")
             # otherwise optimize planets
             # if len(all_buildings) >= all_building_slots:
             # if all(value > 1 for key, value in self.player.production.items()):
             if len(all_buildings) == all_building_slots:
-                # self.optimize_planets()
-                pass
+                # building_factory.destroy_building(building_factory.get_most_consuming_building(all_buildings, building_factory.get_resource_categories_except_technology_and_population()), planet)
+                # the problem is: it builds too many pop buildings but do not destr
+                self.optimize_planets(building_factory.get_all_possible_categories())
 
-        if any(value < 700 for key, value in self.player.production.items()):
+
+        if any(value < 700 for key, value in self.player.get_resource_stock().items() if not key == "population"):
             self.deal_with_the_bank()
-
-            market.get_fitting_deal(self.player)
             self.add_deal()
+
+        market.get_fitting_deal(self.player)
 

@@ -3,7 +3,7 @@ import pygame
 from source.editors.editor_base.editor_base import EditorBase
 from source.editors.editor_base.editor_config import TOP_SPACING
 from source.gui.widgets.buttons.image_button import ImageButton
-from source.multimedia_library.images import get_image
+from source.multimedia_library.images import get_image, filter_icons
 from source.trading.market import market
 
 BUTTON_FONT_SIZE = 15
@@ -37,7 +37,7 @@ class FilterWidget(EditorBase):
                     height=button_size,
                     is_sub_widget=False,
                     parent=self,
-                    image=pygame.transform.scale(get_image(f"{key}_icon.png"), (button_size, button_size)),
+                    image=pygame.transform.scale(get_image(filter_icons[key]), (button_size, button_size)),
                     tooltip=key,
                     frame_color=self.frame_color,
                     moveable=False,

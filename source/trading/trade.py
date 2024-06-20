@@ -16,8 +16,10 @@ class Trade:
         """ 
         ?????????' why is it opposite ?? nedds to be checked :) 
         """
-        self.request = offer
-        self.offer = request
+        # self.request = offer
+        # self.offer = request
+        self.request = request
+        self.offer = offer
         self.owner_index = owner_index
 
         # timing

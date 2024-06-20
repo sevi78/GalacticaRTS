@@ -179,8 +179,7 @@ class PanZoomPlanetEconomy:  # , SpecialHandler):
     def calculate_population(self):
         """ calculates population"""
         if self.production["food"] > 0:
-            self.population_grow = self.population_grow_factor * self.production[
-                "food"] * config.game_speed
+            self.population_grow = self.population_grow_factor * self.production["food"] * config.game_speed
         if self.population < 0:
             self.population = 0
 
@@ -201,8 +200,14 @@ class PanZoomPlanetEconomy:  # , SpecialHandler):
         # check if it can grow
         if self.population_limit > self.population and self.production_food > 0:
             self.population += self.population_grow * config.game_speed
+
+            # danger!!! might destroy everything
+            # self.production["population"] =self.population_grow * config.game_speed
+
         if self.production_food < 0 and self.population > 0:
             self.population += self.production_food
+
+
 
 
 

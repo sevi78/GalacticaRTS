@@ -2,7 +2,7 @@ import copy
 import math
 import random
 
-import source.trading.market
+
 from source.configuration.game_config import config
 from source.economy.economy_handler import economy_handler
 from source.factories.building_factory import building_factory
@@ -17,6 +17,7 @@ from source.level.level_dict_generator import LevelDictGenerator
 from source.multimedia_library.screenshot import capture_screenshot
 from source.player.player_handler import player_handler
 from source.text.info_panel_text_generator import info_panel_text_generator
+from source.trading.market import market
 
 
 class LevelHandler:
@@ -210,12 +211,12 @@ class LevelHandler:
 
         # setup container
         if hasattr(self.app, "ship_container"):
-            self.app.ship_container.set_widgets(source.trading.market.convert_sprite_groups_to_container_widget_items_list("ships"))
+            self.app.ship_container.set_widgets(market.convert_sprite_groups_to_container_widget_items_list("ships"))
 
             # self.app.ship_container.filter_widget.show()
 
         if hasattr(self.app, "planet_container"):
-            self.app.planet_container.set_widgets(source.trading.market.convert_sprite_groups_to_container_widget_items_list("planets"))
+            self.app.planet_container.set_widgets(market.convert_sprite_groups_to_container_widget_items_list("planets"))
             # self.app.ship_container.filter_widget.show()
 
         # setup event_text

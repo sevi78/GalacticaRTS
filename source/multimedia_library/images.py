@@ -15,6 +15,24 @@ from source.handlers.file_handler import pictures_path
 images = {}
 all_image_names = []
 
+filter_icons = {
+    'buildings': 'buildings_icon.png',
+    'energy': 'energy_icon.png',
+    'experience': 'experience_icon.png',
+    'explored': 'explored_icon.png',
+    'food': 'food_icon.png',
+    'minerals': 'minerals_icon.png',
+    'name': 'name_icon.png',
+    'owner': 'owner.png',
+    'owner_index': 'owner.png',
+    'population': 'population_icon.png',
+    'population_limit': 'population_limit_icon.png',
+    'speed': 'speed_icon.png',
+    'state': 'state_icon.png',
+    'technology': 'technology_icon.png',
+    'water': 'water_icon.png'
+    }
+
 gifs = {}
 gif_frames = {}
 gif_fps = {}

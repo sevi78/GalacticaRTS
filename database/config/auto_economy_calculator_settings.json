@@ -4,7 +4,7 @@
     "production_minerals": 1,
     "production_water": 1,
     "production_technology": 1,
-    "production_population": 0,
+    "production_population": 1,
     "resource_energy": 1000,
     "resource_food": 1000,
     "resource_minerals": 1000,

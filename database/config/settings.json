@@ -9,7 +9,7 @@
     "star_brightness": 100,
     "enable_game_events": true,
     "fps": 60,
-    "game_speed": 1,
+    "game_speed": 100,
     "player": 0,
     "players": 2,
     "level": 7,
