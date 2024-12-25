@@ -3,8 +3,10 @@ import math
 import pygame.mouse
 
 from source.configuration.game_config import config
+from source.debug.function_disabler import disabler, auto_disable
 from source.gui.event_text import event_text
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
+from source.handlers.time_handler import time_handler
 from source.multimedia_library.sounds import sounds
 from source.pan_zoom_sprites.pan_zoom_ship_classes.pan_zoom_ship_state_engine import PanZoomShipStateEngine
 from source.text.info_panel_text_generator import info_panel_text_generator
@@ -18,7 +20,7 @@ SHIP_ROTATE_CORRECTION_ANGLE = 90
 SHIP_TARGET_OBJECT_RESET_DISTANCE = 15
 SHIP_RELOAD_MAX_DISTANCE = 300
 SHIP_RELOAD_MAX_DISTANCE_MAX = 600
-SHIP_ENERGY_USE = 1
+SHIP_ENERGY_USE = 0.1
 SHIP_ENERGY_USE_MAX = 10
 SHIP_ENERGY = 10000
 SHIP_ENERGY_MAX = 10000
@@ -26,6 +28,18 @@ SHIP_ENERGY_RELOAD_RATE = 0.1
 SHIP_ORBIT_SPEED = 0.5
 SHIP_ORBIT_SPEED_MAX = 0.6
 
+"""
+TODO:
+remove all variables for resources, self.resources must be used
+
+"""
+
+
+# disabled_functions = ["set_info_text", "set_tooltip", "submit_tooltip", "reload_ship"]
+# for i in disabled_functions:
+#     disabler.disable(i)
+#
+# @auto_disable
 
 class PanZoomShipParams:
     def __init__(self, **kwargs):
@@ -86,12 +100,7 @@ class PanZoomShipParams:
         # tooltip
         self.tooltip = ""
 
-        # uprade
-        self.building_slot_amount = 1
-        self.building_cue = 0
-        self.buildings_max = 10
-        self.buildings = []
-
+        # states
         self.state_engine = PanZoomShipStateEngine(self)
         self.state = "sleeping"
 
@@ -110,7 +119,6 @@ class PanZoomShipParams:
                 text = info_panel_text_generator.create_info_panel_ship_text(self)
                 self.parent.info_panel.set_text(text)
                 self.parent.info_panel.set_planet_image(self.image_raw, alpha=self.info_panel_alpha)
-
             return
 
         text = info_panel_text_generator.create_info_panel_ship_text(self)
@@ -125,46 +133,97 @@ class PanZoomShipParams:
             if self.tooltip != "":
                 config.tooltip_text = self.tooltip
 
-    def reload_ship(self):
+    def reload_ship_(self):  # original
         """ this reloads the ships energy"""
+        reloading = False
+        if not self.energy_reloader:
+            self.electro_discharge.visible = False
+            return
         if self.energy_reloader:
             dist = math.dist(self.rect.center, self.energy_reloader.rect.center)
             if dist > self.reload_max_distance:
                 return
 
             # if reloader is a planet
-            if hasattr(self.energy_reloader, "production"):
-                if self.energy_reloader.production["energy"] > 0:
-                    if self.energy_reloader.owner in self.parent.players.keys():
-                        if self.parent.players[self.energy_reloader.owner].energy - self.energy_reload_rate * \
-                                self.energy_reloader.production[
-                                    "energy"] > 0:
-                            if self.energy < self.energy_max:
-                                self.energy += self.energy_reload_rate * self.energy_reloader.production[
-                                    "energy"] * config.game_speed
-                                self.parent.players[self.energy_reloader.owner].energy -= self.energy_reload_rate * \
-                                                                                          self.energy_reloader.production[
-                                                                                              "energy"] * config.game_speed
-                                self.flickering()
-                            else:
-                                event_text.set_text(f"{self.name} reloaded successfully!!!", obj=self)
-                                sounds.stop_sound(self.sound_channel)
+            if hasattr(self.energy_reloader, "type"):
+                if self.energy_reloader.type == "planet":
+                    if self.energy_reloader.economy_agent.production["energy"] > 0:
+                        if self.energy_reloader.owner in self.parent.players.keys():
+                            if self.parent.players[self.energy_reloader.owner].stock[
+                                "energy"] - self.energy_reload_rate * \
+                                    self.energy_reloader.economy_agent.production[
+                                        "energy"] > 0:
+                                if self.energy < self.energy_max:
+                                    self.energy += self.energy_reload_rate * \
+                                                   self.energy_reloader.economy_agent.production[
+                                                       "energy"] * time_handler.game_speed
+                                    self.parent.players[self.energy_reloader.owner].stock["energy"] -= \
+                                        (
+                                                self.energy_reload_rate * self.energy_reloader.economy_agent.production[
+                                            "energy"] * time_handler.game_speed
+                                        )
+                                    # self.flickering()
+                                    self.update_electro_discharge()
+                                else:
+                                    self.electro_discharge.visible = False
+                                    event_text.set_text(f"{self.name} reloaded successfully!!!", obj=self, sender=self.owner)
+                                    sounds.stop_sound(self.sound_channel)
 
-                if self.energy_reloader.type == "sun":
-                    if self.energy < self.energy_max:
-                        self.energy += self.energy_reload_rate * config.game_speed
-                        self.flickering()
+                    if self.energy_reloader.type == "sun":
+                        if self.energy < self.energy_max:
+                            self.energy += self.energy_reload_rate * time_handler.game_speed
+                            self.update_electro_discharge()
+                        else:
+                            self.electro_discharge.visible = False
+
 
             # if relaoder is a ship
             elif hasattr(self.energy_reloader, "crew"):
                 if self.energy_reloader.energy > 0:
-                    if self.energy_reloader.energy - self.energy_reload_rate * config.game_speed > 0:
+                    if self.energy_reloader.energy - self.energy_reload_rate * time_handler.game_speed > 0:
                         if self.energy < self.energy_max:
                             self.energy += self.energy_reload_rate
-                            self.energy_reloader.energy -= self.energy_reload_rate * config.game_speed
-                            self.flickering()
+                            self.energy_reloader.energy -= self.energy_reload_rate * time_handler.game_speed
+                            self.update_electro_discharge()
+
                         else:
-                            event_text.set_text(f"{self.name} reloaded successfully!!!", obj=self)
+                            self.electro_discharge.visible = False
+                            event_text.set_text(f"{self.name} reloaded successfully!!!", obj=self, sender=self.owner)
                             sounds.stop_sound(self.sound_channel)
         else:
+            self.electro_discharge.visible = False
+            sounds.stop_sound(self.sound_channel)
+
+    def reload_ship(self):
+        """ This reloads the ship's energy """
+        if not self.energy_reloader or math.dist(self.rect.center, self.energy_reloader.rect.center) > self.reload_max_distance:
+            self.electro_discharge.visible = False
+            return
+
+        if self.energy_reloader.type == "planet" and self.energy_reloader.economy_agent.production["energy"] > 0 and \
+                self.energy_reloader.owner in self.parent.players.keys() and \
+                self.parent.players[self.energy_reloader.owner].stock["energy"] - self.energy_reload_rate * \
+                self.energy_reloader.economy_agent.production["energy"] > 0 and \
+                self.energy < self.energy_max:
+            self.energy += self.energy_reload_rate * self.energy_reloader.economy_agent.production[
+                "energy"] * time_handler.game_speed
+            self.parent.players[self.energy_reloader.owner].stock["energy"] -= (
+                    self.energy_reload_rate * self.energy_reloader.economy_agent.production[
+                "energy"] * time_handler.game_speed)
+            self.update_electro_discharge()
+        elif self.energy_reloader.type == "sun" and self.energy < self.energy_max:
+            self.energy += self.energy_reload_rate * time_handler.game_speed
+            self.update_electro_discharge()
+        elif hasattr(self.energy_reloader, "crew") and self.energy_reloader.energy > 0 and \
+                self.energy_reloader.energy - self.energy_reload_rate * time_handler.game_speed > 0 and \
+                self.energy < self.energy_max:
+            self.energy += self.energy_reload_rate
+            self.energy_reloader.energy -= self.energy_reload_rate * time_handler.game_speed
+            self.update_electro_discharge()
+        else:
+            self.electro_discharge.visible = False
+
+        if self.energy >= self.energy_max:
+            self.electro_discharge.visible = False
+            event_text.set_text(f"{self.name} reloaded successfully!!!", obj=self, sender=self.owner)
             sounds.stop_sound(self.sound_channel)

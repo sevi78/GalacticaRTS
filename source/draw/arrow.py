@@ -1,9 +1,16 @@
 import math
+from functools import lru_cache
 
 import pygame
+from pygame import Rect
 
 
-def draw_arrows_on_line_from_start_to_end(surf, color, start_pos, end_pos, width=1, dash_length=10, arrow_size=(4, 6)):
+def draw_arrows_on_line_from_start_to_end_(surf, color, start_pos, end_pos, width=1, dash_length=10, arrow_size=(4, 6)):
+    clip_rect_ = surf.get_clip()
+    border = 50
+    clip_rect = Rect(
+            clip_rect_[0] + border, clip_rect_[1] + border, clip_rect_[2] - border * 2, clip_rect_[3] - border * 2)
+
     x1, y1 = end_pos
     x2, y2 = start_pos
     dl = dash_length
@@ -42,31 +49,93 @@ def draw_arrows_on_line_from_start_to_end(surf, color, start_pos, end_pos, width
         # pygame.draw.lines(surf, color, True, [right, tip, left])
 
 
-def draw_arrow_pointing_to_target_pos(screen, start_pos, target_pos, color, arrow_size):
-    """
-    This function draws an arrow that moves towards a target position.
+@lru_cache(maxsize=1000)
+def calculate_arrow_points_on_line_from_start_to_end(start_pos, end_pos, dash_length=10, arrow_size=(4, 6)):
+    x1, y1 = end_pos
+    x2, y2 = start_pos
+    dl = dash_length
 
-    Parameters:
-    screen (pygame.Surface): The surface to draw the arrow on.
-    start_pos (tuple): The starting position of the arrow.
-    target_pos (tuple): The target position of the arrow.
-    color (tuple): The color of the arrow.
-    arrow_size (int): The size of the arrow.
-    """
+    dx = x2 - x1
+    dy = y2 - y1
+    distance = math.hypot(dx, dy)
+    if distance == 0:
+        return []
+    dashes = int(distance / dl)
+    if dashes == 0:
+        return []
 
-    # Calculate the angle to the target position
-    dx, dy = target_pos[0] - start_pos[0], target_pos[1] - start_pos[1]
-    angle = math.atan2(dy, dx)
+    dx_dash = dx / dashes
+    dy_dash = dy / dashes
 
-    # Calculate the end position of the arrow
-    end_pos = (start_pos[0] + arrow_size * math.cos(angle), start_pos[1] + arrow_size * math.sin(angle))
+    arrow_width, arrow_height = arrow_size
 
-    # Draw the arrow
-    pygame.draw.line(screen, color, start_pos, end_pos, 2)
-    pygame.draw.polygon(screen, color, [end_pos, (
-        end_pos[0] - 10 * math.cos(angle - math.pi / 6), end_pos[1] - 10 * math.sin(angle - math.pi / 6)), (
-                                            end_pos[0] - 10 * math.cos(angle + math.pi / 6),
-                                            end_pos[1] - 10 * math.sin(angle + math.pi / 6))])
+    points = []
+    for i in range(dashes):
+        end = x1 + dx_dash * i, y1 + dy_dash * i
+        start = x1 + dx_dash * (i + 0.5), y1 + dy_dash * (i + 0.5)
+
+        angle = math.atan2(dy_dash, dx_dash)
+        right = end[0] + arrow_height * math.cos(angle - math.pi / 6), end[
+            1] + arrow_height * math.sin(angle - math.pi / 6)
+        left = end[0] + arrow_height * math.cos(angle + math.pi / 6), end[
+            1] + arrow_height * math.sin(angle + math.pi / 6)
+        tip = end[0] + arrow_width * math.cos(angle), end[1] + arrow_width * math.sin(angle)
+
+        points.append((start, end, (right, tip, left)))
+
+    return points
+
+
+def draw_arrows_on_line_from_start_to_end(surf, color, start_pos, end_pos, width=1, dash_length=10, arrow_size=(4, 6)):
+    clip_rect_ = surf.get_clip()
+    border = 50
+    clip_rect = Rect(
+            clip_rect_[0] + border, clip_rect_[1] + border,
+            clip_rect_[2] - border * 2, clip_rect_[3] - border * 2
+            )
+
+    points = calculate_arrow_points_on_line_from_start_to_end(start_pos, end_pos, dash_length, arrow_size)
+
+    for start, end, arrow in points:
+        if (clip_rect.left <= start[0] <= clip_rect.right and
+                clip_rect.top <= start[1] <= clip_rect.bottom and
+                clip_rect.left <= end[0] <= clip_rect.right and
+                clip_rect.top <= end[1] <= clip_rect.bottom):
+
+            pygame.draw.line(surf, color, start, end, width)
+
+            right, tip, left = arrow
+            if (clip_rect.left <= tip[0] <= clip_rect.right and
+                    clip_rect.top <= tip[1] <= clip_rect.bottom):
+                pygame.draw.polygon(surf, color, [right, tip, left])
+
+
+
+# def draw_arrow_pointing_to_target_pos(screen, start_pos, target_pos, color, arrow_size):
+#     """
+#     This function draws an arrow that moves towards a target position.
+#
+#     Parameters:
+#     screen (pygame.Surface): The surface to draw the arrow on.
+#     start_pos (tuple): The starting position of the arrow.
+#     target_pos (tuple): The target position of the arrow.
+#     color (tuple): The color of the arrow.
+#     arrow_size (int): The size of the arrow.
+#     """
+#
+#     # Calculate the angle to the target position
+#     dx, dy = target_pos[0] - start_pos[0], target_pos[1] - start_pos[1]
+#     angle = math.atan2(dy, dx)
+#
+#     # Calculate the end position of the arrow
+#     end_pos = (start_pos[0] + arrow_size * math.cos(angle), start_pos[1] + arrow_size * math.sin(angle))
+#
+#     # Draw the arrow
+#     pygame.draw.line(screen, color, start_pos, end_pos, 2)
+#     pygame.draw.polygon(screen, color, [end_pos, (
+#         end_pos[0] - 10 * math.cos(angle - math.pi / 6), end_pos[1] - 10 * math.sin(angle - math.pi / 6)), (
+#                                             end_pos[0] - 10 * math.cos(angle + math.pi / 6),
+#                                             end_pos[1] - 10 * math.sin(angle + math.pi / 6))])
 
 
 def draw_arrow_orientated(win, pos, orientation, color, size, width=1):
@@ -132,6 +201,8 @@ class ArrowCrossAnimated:
         self.width = width
 
         # calculated
+        self.max_moving_index = None
+        self.min_moving_index = None
         self.moving_distance = self.size - self.center_distance
         self.steps = steps
         self.direction = direction

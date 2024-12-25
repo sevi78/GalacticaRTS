@@ -10,6 +10,7 @@ from source.gui.widgets.selector import Selector
 from source.gui.widgets.slider import Slider
 from source.handlers.color_handler import colors
 from source.handlers.file_handler import write_file
+from source.handlers.time_handler import time_handler
 from source.handlers.ui_handler import ui_handler
 from source.handlers.widget_handler import WidgetHandler
 
@@ -28,8 +29,8 @@ class SettingsEdit(EditorBase):
         self.font_name_list = pygame.sysfont.get_fonts()
 
         self.selector_lists = {
-            "player": [_ for _ in range(0, config.players)],
-            "players": [_ for _ in range(0, config.players)],
+            "player": [_ for _ in range(0, config.app.level_handler.data["globals"]["players"])],
+            # "players": [_ for _ in range(0, config.players)],
             "fps": [25, 60, 90, 120, 1000],
             "enable_game_events": self.boolean_list,
             "draw_universe": self.boolean_list,
@@ -151,8 +152,9 @@ class SettingsEdit(EditorBase):
                         widget.font = pygame.font.SysFont(value, widget.font_size)
 
         elif key == "game_speed":
-            config.game_speed = value
-            config.app.game_time.game_speed = value
+            self.game_speed = value
+            time_handler.game_speed = value
+            # config.app.game_time.game_speed = value
 
         elif key == "ui_tooltip_size":
             config.app.tooltip_instance.font_size = value

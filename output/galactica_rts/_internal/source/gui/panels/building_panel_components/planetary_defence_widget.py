@@ -16,8 +16,8 @@ BUTTON_SIZE = 25
 
 
 class PlanetaryDefenceWidget(WidgetBase):
-    def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
-        super().__init__(win, x, y, width, height, isSubWidget, **kwargs)
+    def __init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs):
+        super().__init__(win, x, y, width, height, is_sub_widget, **kwargs)
         self.name = "Planetary Defence"
         self.icon_size = kwargs.get("icon_size", ICON_SIZE)
         self.parent = kwargs.get("parent", None)
@@ -51,7 +51,7 @@ class PlanetaryDefenceWidget(WidgetBase):
                 y=self.surface_rect.y + self.spacing,
                 width=self.icon_size,
                 height=self.icon_size,
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self,
                 image=pygame.transform.scale(get_image("cannon.png"), (BUTTON_SIZE, BUTTON_SIZE)),
                 tooltip="build cannon",
@@ -59,14 +59,14 @@ class PlanetaryDefenceWidget(WidgetBase):
                 frame_color=self.frame_color,
                 moveable=False,
                 include_text=True, layer=self.layer,
-                onClick=lambda: building_factory.build("cannon", config.app.selected_planet))
+                on_click=lambda: building_factory.build("cannon", config.app.selected_planet))
 
         self.missile_launcher_icon = ImageButton(win=self.win,
                 x=self.get_screen_x() + BUTTON_SIZE + 10,
                 y=self.surface_rect.y + self.spacing,
                 width=self.icon_size,
                 height=self.icon_size,
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self,
                 image=pygame.transform.scale(get_image("missile.png"), (BUTTON_SIZE, BUTTON_SIZE)),
                 tooltip="build missile launcher",
@@ -74,14 +74,14 @@ class PlanetaryDefenceWidget(WidgetBase):
                 frame_color=self.frame_color,
                 moveable=False,
                 include_text=True, layer=self.layer,
-                onClick=lambda: building_factory.build("missile", config.app.selected_planet))
+                on_click=lambda: building_factory.build("missile", config.app.selected_planet))
 
         self.energy_blast_icon = ImageButton(win=self.win,
                 x=self.get_screen_x() + BUTTON_SIZE * 2 + 10,
                 y=self.surface_rect.y + self.spacing,
                 width=self.icon_size,
                 height=self.icon_size,
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self,
                 image=pygame.transform.scale(get_image("energy blast.png"), (BUTTON_SIZE, BUTTON_SIZE)),
                 tooltip="build energy blaster",
@@ -89,14 +89,14 @@ class PlanetaryDefenceWidget(WidgetBase):
                 frame_color=self.frame_color,
                 moveable=False,
                 include_text=True, layer=self.layer,
-                onClick=lambda: building_factory.build("energy blast", config.app.selected_planet))
+                on_click=lambda: building_factory.build("energy blast", config.app.selected_planet))
 
         self.electro_magnetic_impulse_icon = ImageButton(win=self.win,
                 x=self.get_screen_x() + BUTTON_SIZE * 3 + 10,
                 y=self.surface_rect.y + self.spacing,
                 width=self.icon_size,
                 height=self.icon_size,
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self,
                 image=pygame.transform.scale(get_image("electro magnetic impulse.png"), (BUTTON_SIZE, BUTTON_SIZE)),
                 tooltip="build electro magnetic impulse(E.M.P.)",
@@ -104,7 +104,7 @@ class PlanetaryDefenceWidget(WidgetBase):
                 frame_color=self.frame_color,
                 moveable=False,
                 include_text=True, layer=self.layer,
-                onClick=lambda: building_factory.build("electro magnetic impulse", config.app.selected_planet))
+                on_click=lambda: building_factory.build("electro magnetic impulse", config.app.selected_planet))
 
         self.parent.widgets.append(self)
         self.buttons.append(self.cannon_icon)
@@ -117,7 +117,7 @@ class PlanetaryDefenceWidget(WidgetBase):
             visible = False
             return visible
 
-        if "particle accelerator" in self.parent.parent.selected_planet.buildings:
+        if "particle accelerator" in self.parent.parent.selected_planet.economy_agent.buildings:
             self.show_buttons()
             self.parent.parent.building_panel.max_height += self.parent.sub_widget_height
             visible = True
@@ -153,7 +153,7 @@ class PlanetaryDefenceWidget(WidgetBase):
         self.surface_rect.x = self.parent.surface_rect.x
         self.surface_rect.y = self.parent.world_y + self.spacing + 5
 
-        if "space harbor" in self.parent.parent.selected_planet.buildings:
+        if "space harbor" in self.parent.parent.selected_planet.economy_agent.buildings:
             self.surface_rect.y = self.parent.world_y + self.parent.sub_widget_height + self.spacing + 5
 
         self.win.blit(self.surface, self.surface_rect)

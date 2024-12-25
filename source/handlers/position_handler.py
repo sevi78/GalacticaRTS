@@ -2,6 +2,7 @@ import math
 import random
 
 import pygame
+from pygame import Rect
 
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 
@@ -26,7 +27,7 @@ def smooth_position(prev_x, prev_y, x, y, smooth):
     return new_x, new_y
 
 
-def rot_center(image, angle, x, y, **kwargs):
+def rot_center(image, angle, x, y, **kwargs):# this should not be used, use rotate_image_cashed
     """
     rotates the image around its center
     """
@@ -108,13 +109,28 @@ def prevent_object_overlap(objects, min_dist):
                     obj2.world_y -= dy * adjustment
 
 
-def get_random_pos(left_end, right_end, top_end, bottom_end, central_compression):  # circular, more dense in the center
+def get_random_pos_old(
+        left_end, right_end, top_end, bottom_end, central_compression
+        ):  # circular, more dense in the center
     radius = (right_end - left_end) / 2
     center_x = (right_end + left_end) / 2
     center_y = (top_end + bottom_end) / 2
 
     theta = 2 * math.pi * random.random()  # Random angle
     r = radius * (random.random() ** central_compression)  # Random radius to the power of 'power'
+
+    x = center_x + r * math.cos(theta)
+    y = center_y + r * math.sin(theta)
+
+    return x, y
+
+
+def get_random_pos(world_rect: Rect, central_compression):
+    radius = world_rect.width / 2
+    center_x, center_y = world_rect.center
+
+    theta = 2 * math.pi * random.random()  # Random angle
+    r = radius * (random.random() ** central_compression)  # Random radius to the power of 'central_compression'
 
     x = center_x + r * math.cos(theta)
     y = center_y + r * math.sin(theta)
@@ -170,7 +186,26 @@ def smooth_ship_positions():
         ship.energy = ship.energy_max
 
 
-def smooth_planet_positions(width, height):
+def smooth_planet_positions(width: int, height: int) -> None:
+    """
+Adjusts the positions of planets to ensure they stay within a circular boundary.
+
+1. Smooths ship positions (via a separate function call).
+
+2. Calculates the center and boundary of the circular area.
+
+3. For each planet with an orbit:
+
+- Checks if it's outside the boundary (including its orbit radius).
+- If so, repositions it to the edge of the boundary.
+ - Adjusts orbit radius if the planet is too far from or close to the center.
+
+4. Prevents overlap between celestial objects.
+
+Side effects:
+    - Calls smooth_ship_positions() and prevent_object_overlap() functions.
+    """
+
     smooth_ship_positions()
     center_x = width / 2
     center_y = height / 2

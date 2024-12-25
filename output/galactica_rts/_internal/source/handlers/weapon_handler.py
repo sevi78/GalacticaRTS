@@ -1,6 +1,5 @@
 import copy
 import random
-import time
 
 import pygame
 
@@ -10,6 +9,7 @@ from source.draw.zigzag_line import draw_zigzag_line
 from source.factories.weapon_factory import weapon_factory
 from source.gui.widgets.moving_image import MovingImage
 from source.handlers.pan_zoom_handler import pan_zoom_handler
+from source.handlers.time_handler import time_handler
 from source.multimedia_library.images import get_image
 from source.multimedia_library.sounds import sounds
 from source.pan_zoom_sprites.pan_zoom_missile import PanZoomMissile, MISSILE_POWER
@@ -26,12 +26,21 @@ class WeaponHandler:
         self.current_weapon_select = ""
         self.setup_interval_timers()
 
+    @property
+    def current_weapon_select(self) -> str:
+        return self._current_weapon_select
+
+    @current_weapon_select.setter
+    def current_weapon_select(self, value) -> None:
+        self._current_weapon_select = value
+        self.parent.attack_distance_raw = self.get_current_value("range")
+
     def setup_interval_timers(self):
         for i in self.all_weapons.keys():
-            setattr(self, f"{i}_last_shoot", time.time())
+            setattr(self, f"{i}_last_shoot", time_handler.time)
 
     def laser(self, defender, power, shoot_interval):
-        actual_time = time.time()
+        actual_time = time_handler.time
         if actual_time - self.laser_last_shoot > 1 / shoot_interval:
             self.laser_last_shoot = actual_time
 
@@ -51,11 +60,11 @@ class WeaponHandler:
                 sounds.play_sound(sounds.laser)
 
     def phaser(self, defender, power, shoot_interval):
-        actual_time = time.time()
+        actual_time = time_handler.time
         if actual_time - self.phaser_last_shoot > 1 / shoot_interval:
             self.phaser_last_shoot = actual_time
             self.draw_moving_image(defender, power)
-            config.app.player.energy -= self.current_weapon.get("energy_consumtion", 1)
+            config.app.player.stock["energy"] -= self.current_weapon.get("energy_consumtion", 1)
             color = random.choice(list(pygame.color.THECOLORS.keys()))
             draw_zigzag_line(
                     surface=self.parent.win,
@@ -68,7 +77,7 @@ class WeaponHandler:
             defender.energy -= power
 
     def rocket(self, defender, power, shoot_interval):
-        actual_time = time.time()
+        actual_time = time_handler.time
         if actual_time - self.phaser_last_shoot > 1 / shoot_interval:
             self.phaser_last_shoot = actual_time
             app = config.app
@@ -100,29 +109,7 @@ class WeaponHandler:
                         target=defender,
                         missile_power=power,
                         appear_at_start=True)
-                # missile.set_target(defender)
 
-            # if defender.property == "planet":
-            #
-            #     missile = PanZoomMissile(
-            #         screen,
-            #         x,
-            #         y,
-            #         42,
-            #         17,
-            #         pan_zoom_handler,
-            #         "missile_42x17.gif",
-            #         group="missiles",
-            #         loop_gif=True,
-            #         move_to_target=True,
-            #         align_image="topleft",
-            #         explosion_relative_gif_size=1.0,
-            #         layer=9,
-            #         debug=False,
-            #         target=defender,
-            #         missile_power=power,
-            #         appear_at_start=True)
-            #     # missile.set_target(defender)
 
     def draw_moving_image(self, defender, power):
         MovingImage(
@@ -145,7 +132,8 @@ class WeaponHandler:
         return value
 
     def draw_attack_distance(self):
-        draw_transparent_circle(self.parent.win, self.parent.frame_color, self.parent.rect.center, self.get_current_value("range") * pan_zoom_handler.zoom, 20)
+        # draw_transparent_circle(self.parent.win, self.parent.frame_color, self.parent.rect.center, self.get_current_value("range") * pan_zoom_handler.zoom, 20)
+        draw_transparent_circle(self.parent.win, self.parent.player_color, self.parent.rect.center, self.get_current_value("range") * pan_zoom_handler.zoom, 20)
 
     def attack(self, defender):
         # if not level_of_detail.inside_screen(self.parent.get_screen_position()):
@@ -156,6 +144,8 @@ class WeaponHandler:
         if self.current_weapon["name"] in self.weapons.keys():
             power = self.get_current_value("power")
             shoot_interval = self.get_current_value("shoot_interval")
+
+            # here the attack function should be called
             getattr(self, self.current_weapon["name"])(defender, power, shoot_interval)
 
         if defender.property in ["ship", "ufo"]:
@@ -174,8 +164,8 @@ class WeaponHandler:
 
 
 def attack_planet(attacker, defender, power):
-    if defender.population >= 0:
-        defender.population -= power / 100
+    if defender.economy_agent.population > 0:
+        defender.economy_agent.population -= power / 100
     else:
         defender.owner = attacker.owner
         defender.get_explored(attacker.owner)
@@ -186,13 +176,17 @@ def attack_planet(attacker, defender, power):
 
 
 def attack(attacker, defender):
+    """
+    used by planet defence
+    """
+
     # this might be deleted: should not attacker attack defender even if not on screen ???
     # if not level_of_detail.inside_screen(attacker.get_screen_position()):
     #     return
 
     # if attacker is planet
     if attacker.property == "planet":
-        gun_power = len([i for i in attacker.buildings if i == "cannon"]) * CANNON_GUNPOWER
+        gun_power = len([i for i in attacker.economy_agent.buildings if i == "cannon"]) * CANNON_GUNPOWER
     else:
         gun_power = attacker.gun_power
 

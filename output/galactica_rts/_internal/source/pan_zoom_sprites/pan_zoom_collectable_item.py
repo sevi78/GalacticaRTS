@@ -1,11 +1,11 @@
 import pygame
 
+from source.configuration.game_config import config
 from source.gui.lod import level_of_detail
 from source.handlers.mouse_handler import mouse_handler, MouseState
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.interaction.interaction_handler import InteractionHandler
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_gif import PanZoomSprite
-from source.configuration.game_config import config
 
 
 class PanZoomCollectableItem(PanZoomSprite, InteractionHandler):
@@ -35,6 +35,7 @@ class PanZoomCollectableItem(PanZoomSprite, InteractionHandler):
         self.collect_text = ""
         self.name = "collectable item"
         self.collected = False
+        self.id = kwargs.get("id", len(sprite_groups.collectable_items))
 
         sprite_groups.collectable_items.add(self)
 

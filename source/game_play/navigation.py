@@ -34,10 +34,11 @@ def navigate_to(obj, **kwargs):  # should not be used !! use navigate_to_positio
         obj.set_info_text()
 
         # set the new position
-        panzoom.world_offset_x, panzoom.world_offset_y = panzoom.screen_2_world(obj.rect.centerx - panzoom.screen_width / 2, obj.rect.centery - panzoom.screen_height / 2)
+        # panzoom.world_offset_x, panzoom.world_offset_y = panzoom.screen_2_world(obj.rect.centerx - panzoom.screen_width / 2, obj.rect.centery - panzoom.screen_height / 2)
+        panzoom.set_world_offset(panzoom.screen_2_world(obj.rect.centerx - panzoom.screen_width / 2, obj.rect.centery - panzoom.screen_height / 2))
         return
 
-    panzoom.world_offset_x, panzoom.world_offset_y = panzoom.screen_2_world(obj.get_screen_x() + x_offset - panzoom.screen_width / 2, obj.get_screen_y() + y_offset - panzoom.screen_height / 2)
+    panzoom.set_world_offset(panzoom.screen_2_world(obj.get_screen_x() + x_offset - panzoom.screen_width / 2, obj.get_screen_y() + y_offset - panzoom.screen_height / 2))
 
 
 def navigate_to_position(x, y):  # use for ships
@@ -47,8 +48,8 @@ def navigate_to_position(x, y):  # use for ships
 
     panzoom = pan_zoom_handler
     screen_x, screen_y = panzoom.world_2_screen(x, y)
-    panzoom.world_offset_x, panzoom.world_offset_y = panzoom.screen_2_world(screen_x - panzoom.screen_width / 2, screen_y - panzoom.screen_height / 2)
-
+    # panzoom.world_offset_x, panzoom.world_offset_y = panzoom.screen_2_world(screen_x - panzoom.screen_width / 2, screen_y - panzoom.screen_height / 2)
+    panzoom.set_world_offset(panzoom.screen_2_world(screen_x - panzoom.screen_width / 2, screen_y - panzoom.screen_height / 2))
 
 def navigate_to_game_object_by_index(self):
     """

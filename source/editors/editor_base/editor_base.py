@@ -9,8 +9,7 @@ from source.gui.widgets.buttons.image_button import ImageButton
 from source.gui.widgets.selector import Selector
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.handlers.color_handler import colors
-from source.handlers.widget_handler import WidgetHandler
-from source.multimedia_library.images import get_image
+from source.multimedia_library.images import get_image, scale_image_cached
 
 
 class EditorBase(WidgetBase):
@@ -145,6 +144,7 @@ class EditorBase(WidgetBase):
         self.checkbox_values = []
 
         self.editors = []
+        self.containers = []
         if config.app:
             config.app.editors.append(self)
 
@@ -211,19 +211,32 @@ class EditorBase(WidgetBase):
                 if i.is_enabled():
                     i.show()
 
+        # toggle containers attached the editor itself
+        for i in self.containers:
+            # hide if the editor is hidden
+            if self._hidden:
+                i.hide()
+
+            else:
+                # only show if the attached editor is enabled!
+                i.show()
+
         self.hide_other_editors()
 
     def create_save_button(self, function, tooltip, **kwargs):
-        name = kwargs.get("name", "no_name")
         button_size = 32
+        name = kwargs.get("name", "no_name")
+        x = kwargs.get("x", self.get_screen_x() + self.get_screen_width() / 2 - button_size / 2)
+        y = kwargs.get("y", self.max_height + button_size / 2)
+
         save_icon = ImageButton(win=self.win,
-                x=self.get_screen_x() + self.get_screen_width() / 2 - button_size,
-                y=self.max_height + button_size / 2,
+                x=x,
+                y=y,
                 width=button_size,
                 height=button_size,
                 is_sub_widget=False,
                 parent=self,
-                image=pygame.transform.scale(
+                image=scale_image_cached(
                         get_image("save_icon.png"), (button_size, button_size)),
                 tooltip=tooltip,
                 frame_color=self.frame_color,
@@ -237,6 +250,7 @@ class EditorBase(WidgetBase):
 
         self.buttons.append(save_icon)
         self.widgets.append(save_icon)
+        return save_icon
 
     def create_load_button(self, function, tooltip, **kwargs):
         name = kwargs.get("name", "no_name")
@@ -248,7 +262,7 @@ class EditorBase(WidgetBase):
                 height=button_size,
                 is_sub_widget=False,
                 parent=self,
-                image=pygame.transform.scale(
+                image=scale_image_cached(
                         get_image("load_icon.png"), (button_size, button_size)),
                 tooltip=tooltip,
                 frame_color=self.frame_color,
@@ -276,7 +290,7 @@ class EditorBase(WidgetBase):
                 height=button_size,
                 is_sub_widget=False,
                 parent=self,
-                image=pygame.transform.scale(
+                image=scale_image_cached(
                         get_image("close_icon.png"), (button_size / 2, button_size / 2)),
                 tooltip="close editor",
                 frame_color=self.frame_color,
@@ -295,6 +309,9 @@ class EditorBase(WidgetBase):
     # def create_selectors_from_dict(self, x= self.world_x + self.world_width/2, y, dict_, **kwargs):
     def create_selectors_from_dict(self, x, y, dict_, **kwargs):
         """
+        dict_items([('monitor', 0), ('draw_universe', True), ('enable_cross', False), ('enable_blurr', True), ('blurr_radius', 20), ('blurr_alpha', 20), ('show_universe', True), ('star_brightness', 100), ('enable_game_events', True), ('fps', 60), ('game_speed', 4), ('player', 0), ('players', 4), ('level', 0), ('show_player_colors', True), ('ui_top_limit', 30), ('ui_cross_dash_length', 3), ('ui_cross_size', 5), ('ui_cross_thickness', 1), ('ui_scope_inner_circle_dash_length', 12), ('ui_scope_outer_circle_dash_length', 24), ('ui_event_text_fade', True), ('ui_event_text_visible', True), ('ui_event_text_size', 11), ('ui_orbit_color_brightness', 15), ('ui_planet_orbit_color_brightness', 1), ('ui_moon_orbit_color_brightness', 12), ('ui_panel_alpha', 220), ('ui_rounded_corner_big_thickness', 1), ('ui_rounded_corner_radius_big', 30), ('ui_rounded_corner_radius_small', 9), ('ui_rounded_corner_small_thickness', 1), ('ui_tooltip_enabled', True), ('ui_tooltip_size', 10), ('ui_show_cursor', True), ('ui_cursor_size', 40), ('show_human_player_only', False), ('font_name', 'segoeuiemoji')])
+        """
+        """
         creates selectors from a json.dict:
 
         -   ensure to set dict.items() as parameter:dict_!!!
@@ -304,6 +321,8 @@ class EditorBase(WidgetBase):
 
         """
         arrow_size = kwargs.get("arrow_size", ARROW_SIZE)
+        spacing_x = kwargs.get("spacing_x", self.spacing_x)
+
         font_size = int(arrow_size * .8)
         self.spacing_y = arrow_size * 1.3
 
@@ -312,7 +331,7 @@ class EditorBase(WidgetBase):
             if type(value) is bool:
                 self.selector_lists[key] = self.boolean_list
                 self.selectors.append(Selector(self.win, x, self.world_y + y, arrow_size, self.frame_color, 9,
-                        self.spacing_x, {"list_name": f"{key}_list", "list": self.boolean_list}, self, font_size))
+                        spacing_x, {"list_name": f"{key}_list", "list": self.boolean_list}, self, font_size))
 
                 y += self.spacing_y
 
@@ -322,12 +341,10 @@ class EditorBase(WidgetBase):
                     self.selector_lists[key] = self.default_list
 
                 self.selectors.append(Selector(self.win, x, self.world_y + y, arrow_size, self.frame_color, 9,
-                        self.spacing_x, {"list_name": f"{key}_list", "list": self.selector_lists[key]}, self, font_size,
+                        spacing_x, {"list_name": f"{key}_list", "list": self.selector_lists[key]}, self, font_size,
                         repeat_clicks=False))
 
                 y += self.spacing_y
-
-
 
         # set max height to draw the frame dynamical
         self.max_height = y + arrow_size
@@ -419,6 +436,11 @@ class EditorBase(WidgetBase):
             if hasattr(widget, "set_center"):
                 widget.set_center()
 
+        # containers
+        for container in self.containers:
+            container.world_x += diff_x
+            container.world_y += diff_y
+
     def draw_frame(self, **kwargs):
         # get corner radius and thickness
         corner_radius = kwargs.get("corner_radius", self.frame_corner_radius)
@@ -426,7 +448,7 @@ class EditorBase(WidgetBase):
         alpha = kwargs.get("alpha", config.ui_panel_alpha)
 
         # scale frame
-        self.frame = pygame.transform.scale(self.frame, (self.get_screen_width(), self.max_height))
+        self.frame = scale_image_cached(self.frame, (self.get_screen_width(), self.max_height))
 
         # set rect
         self.rect = pygame.Rect((
@@ -437,6 +459,6 @@ class EditorBase(WidgetBase):
         pygame.draw.rect(self.win, self.frame_color, self.rect, corner_thickness, corner_radius)
 
     def draw(self):
-        print ("draw")
+        print("draw")
         # for i in self.widgets:
         #     i.draw()

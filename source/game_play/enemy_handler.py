@@ -90,10 +90,10 @@ class EnemyHandler(InterfaceData):
                         setattr(self, key, value)
 
     def ufo_limit_reached(self):
-        if config.app.player.population < 500:
+        if config.app.player.stock.get("population") < 500:
             return True
 
-        if len(sprite_groups.ufos.sprites()) * 1000 > config.app.player.population:
+        if len(sprite_groups.ufos.sprites()) * 1000 > config.app.player.stock.get("population"):
             return True
 
         return False
@@ -101,7 +101,7 @@ class EnemyHandler(InterfaceData):
     def set_explored_planets_with_aliens(self):
         if config.app:
             self.explored_planets_with_aliens = [i for i in config.app.explored_planets if
-                                                 i.alien_population != 0]
+                                                 i.economy_agent.alien_population != 0]
 
     def update(self):
         self.time_since_last_spawn += 1

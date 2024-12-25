@@ -3,7 +3,7 @@ from pygame_widgets.util import drawText
 
 from source.configuration.game_config import config
 from source.factories.building_factory import building_factory
-from source.multimedia_library.images import get_image
+from source.multimedia_library.images import get_image, scale_image_cached, rounded_surface
 from source.text.text_formatter import format_number
 
 SPECIAL_RIGHT_OFFSET = 60
@@ -16,16 +16,16 @@ SPECIAL_TEXT_COLOR = "palegreen4"  # "chartreuse3"
 class BuildingPanelDraw:
     def __init__(self):
         self.resource_image_size = (15, 15)
-        self.population_image = pygame.transform.scale(get_image("population_25x25.png"), (25, 25))
-        self.plus_image = pygame.transform.scale(
+        self.population_image = scale_image_cached(get_image("population_25x25.png"), (25, 25))
+        self.plus_image = scale_image_cached(
                 get_image("plus_icon.png"), self.resource_image_size)
         self.plus_image_rect = self.plus_image.get_rect()
 
-        self.minus_image = pygame.transform.scale(
+        self.minus_image = scale_image_cached(
                 get_image("minus_icon.png"), self.resource_image_size)
         self.minus_image_rect = self.minus_image.get_rect()
 
-        self.building_image = pygame.transform.scale(get_image("building_icon.png"), self.resource_image_size)
+        self.building_image = rounded_surface(scale_image_cached(get_image("building_icon.png"), self.resource_image_size), 3)
         self.building_image_rect = self.building_image.get_rect()
 
     def draw_planet_params(self, x):
@@ -41,12 +41,12 @@ class BuildingPanelDraw:
 
         # draw population text
         # population
-        drawText(self.win, "population: " + str(int(selected_planet.population)) + "/" + format_number(selected_planet.population_limit, 1), self.frame_color, (
+        drawText(self.win, "population: " + str(int(selected_planet.economy_agent.population)) + "/" + format_number(selected_planet.economy_agent.population_limit, 1), self.frame_color, (
             x + self.spacing_x, self.world_y, self.get_screen_width(), 20), self.font, "left")
 
         # print ("selected_planet.specials_dict:", selected_planet.specials_dict)
-        value = selected_planet.specials_dict["population_grow_factor"]["value"]
-        operator = selected_planet.specials_dict["population_grow_factor"]["operator"]
+        value = selected_planet.economy_agent.specials_dict["population_grow_factor"]["value"]
+        operator = selected_planet.economy_agent.specials_dict["population_grow_factor"]["operator"]
         if float(value) > 0.0:
             if operator == "*":
                 operator = "x"
@@ -55,7 +55,7 @@ class BuildingPanelDraw:
                 x + self.screen_width - SPECIAL_RIGHT_OFFSET, self.world_y - SPECIAL_Y_OFFSET, self.get_screen_width(),
                 20), self.special_font, "left")
 
-        # image = pygame.transform.scale(get_image("population_25x25.png"), (25,25))
+        # image = scale_image_cached(get_image("population_25x25.png"), (25,25))
         self.win.blit(self.population_image, (x - 4, self.world_y))
 
         self.world_y += self.spacing * 3
@@ -72,16 +72,16 @@ class BuildingPanelDraw:
         # if self.parent.selected_planet.owner != -1:
         #     image = config.app.players[self.parent.selected_planet.owner].image
 
-        self.planet_image = pygame.transform.scale(self.parent.selected_planet.image_raw, (150, 150))
+        self.planet_image = scale_image_cached(self.parent.selected_planet.image_raw, (150, 150))
         self.planet_image.set_alpha(128)
         self.win.blit(self.planet_image, self.surface_rect.midtop)
         self.world_y += self.spacing * 3
 
         # building slots:____________________________________________________________________________________________
-        drawText(self.win, "building slots:  " + str(self.parent.selected_planet.building_slot_amount) + "/" + str(self.parent.selected_planet.building_slot_max_amount - 1), self.frame_color, (
+        drawText(self.win, "building slots:  " + str(self.parent.selected_planet.economy_agent.building_slot_amount) + "/" + str(self.parent.selected_planet.economy_agent.building_slot_max_amount - 1), self.frame_color, (
             x + self.spacing_x, self.world_y, self.get_screen_width(), 20), self.font, "left")
         # plus icon
-        # plus_image = pygame.transform.scale(
+        # plus_image = scale_image_cached(
         #     get_image("plus_icon.png"), self.resource_image_size)
 
         # get rect for storage
@@ -93,7 +93,7 @@ class BuildingPanelDraw:
         self.world_y += self.spacing * 2
 
         # minus icon
-        # minus_image = pygame.transform.scale(
+        # minus_image = scale_image_cached(
         #     get_image("minus_icon.png"), self.resource_image_size)
 
         # get rect for storage
@@ -106,12 +106,12 @@ class BuildingPanelDraw:
 
         # buildings:_______________________________________________________________________________________________
         defence_units = building_factory.get_defence_unit_names()
-        civil_buildings = [i for i in self.parent.selected_planet.buildings if not i in defence_units]
+        civil_buildings = [i for i in self.parent.selected_planet.economy_agent.buildings if not i in defence_units]
 
-        drawText(self.win, "buildings:  " + str(len(civil_buildings)) + "/" + str(int(self.parent.selected_planet.buildings_max)), self.frame_color, (
+        drawText(self.win, "buildings:  " + str(len(civil_buildings)) + "/" + str(int(self.parent.selected_planet.economy_agent.buildings_max)), self.frame_color, (
             x + self.spacing_x, self.world_y, self.get_screen_width(), 20), self.font, "left")
 
-        # image = pygame.transform.scale(get_image("building_icon.png"),self.resource_image_size)
+        # image = scale_image_cached(get_image("building_icon.png"),self.resource_image_size)
         #
         # image_rect = image.get_rect()
         self.building_image_rect.x = x
@@ -122,7 +122,7 @@ class BuildingPanelDraw:
 
         # draw an image for every type of building built, plus a counter text
         self.singleton_buildings = []
-        for sb in self.parent.selected_planet.buildings:
+        for sb in self.parent.selected_planet.economy_agent.buildings:
             if not sb in self.singleton_buildings:
                 self.singleton_buildings.append(sb)
         self.singleton_buildings_images = {}
@@ -131,8 +131,7 @@ class BuildingPanelDraw:
             # because of the dynamic creation of this panel, we cannot use a button, this would lead to memory leaks
             # and performance problems - so we just blit an image and get its rect as button surface
 
-            image = pygame.transform.scale(get_image(b + "_25x25.png"),
-                    self.resource_image_size)
+            image = rounded_surface(scale_image_cached(get_image(b + "_25x25.png"), self.resource_image_size), 3)
 
             # get rect for storage
             image_rect = image.get_rect()
@@ -146,7 +145,7 @@ class BuildingPanelDraw:
             self.win.blit(image, image_rect)
 
             # building count
-            value = self.parent.selected_planet.buildings.count(b)
+            value = self.parent.selected_planet.economy_agent.buildings.count(b)
             text = self.font.render(b + ": " + str(value) + "x", True, self.frame_color)
             self.win.blit(text, (x + self.spacing_x, self.world_y + y))
 
@@ -173,13 +172,13 @@ class BuildingPanelDraw:
         self.world_y += self.spacing * 3
         resources = self.parent.resources
         for r in resources:
-            image = pygame.transform.scale(
+            image = scale_image_cached(
                     get_image(r + "_25x25.png"), self.resource_image_size)
             self.win.blit(image, (x, self.world_y))
 
             # draw specials
-            value_special = selected_planet.specials_dict[r]["value"]
-            operator = selected_planet.specials_dict[r]["operator"]
+            value_special = selected_planet.economy_agent.specials_dict[r]["value"]
+            operator = selected_planet.economy_agent.specials_dict[r]["operator"]
             if operator == "*":
                 operator = "x"
             text_ = ""
@@ -190,7 +189,8 @@ class BuildingPanelDraw:
                 self.win.blit(text, (x + self.screen_width - SPECIAL_RIGHT_OFFSET, self.world_y - SPECIAL_Y_OFFSET))
 
             # draw resource
-            value = getattr(self.parent.selected_planet, "production_" + r)
+            # value = getattr(self.parent.selected_planet, "production_" + r)
+            value = self.parent.selected_planet.economy_agent.production[r]
             text = self.font.render(r + ": " + str(value), True, self.frame_color)
             self.win.blit(text, (x + self.spacing_x, self.world_y))
             self.world_y += self.spacing * 2
@@ -205,7 +205,7 @@ class BuildingPanelDraw:
             self.surface.get_height()), self.font, "center")
         self.world_y += self.spacing * 3
         for r in resources:
-            image = pygame.transform.scale(
+            image = scale_image_cached(
                     get_image(r + "_25x25.png"), self.resource_image_size)
             self.win.blit(image, (x, self.world_y))
 

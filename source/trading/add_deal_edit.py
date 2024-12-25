@@ -6,7 +6,7 @@ from source.editors.editor_base.editor_config import TOP_SPACING
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.gui.widgets.checkbox import Checkbox
 from source.gui.widgets.selector import Selector
-from source.multimedia_library.images import get_image
+from source.multimedia_library.images import get_image, scale_image_cached
 from source.trading.market import market
 from source.trading.trade import Trade
 
@@ -218,7 +218,7 @@ class AddDealEdit(EditorBase):
                 height=button_size,
                 is_sub_widget=False,
                 parent=self,
-                image=pygame.transform.scale(
+                image=scale_image_cached(
                         get_image("2to1.png"), (button_size, button_size)),
                 tooltip="trade technology for 2/1 with the bank!",
                 frame_color=self.frame_color,
@@ -245,7 +245,7 @@ class AddDealEdit(EditorBase):
                 height=button_size,
                 is_sub_widget=False,
                 parent=self,
-                image=pygame.transform.scale(
+                image=scale_image_cached(
                         get_image("thumps_up.png"), (button_size, button_size)),
                 tooltip="agree!",
                 frame_color=self.frame_color,
@@ -269,7 +269,7 @@ class AddDealEdit(EditorBase):
                 height=button_size,
                 is_sub_widget=False,
                 parent=self,
-                image=pygame.transform.scale(
+                image=scale_image_cached(
                         get_image("brain.png"), (button_size, button_size)),
                 tooltip="calculate deal!",
                 frame_color=self.frame_color,
@@ -361,7 +361,7 @@ class AddDealEdit(EditorBase):
         offer = {offer_key: offer_value}
         request = {request_key: request_value}
 
-        market.add_deal(Trade(0, offer, request))
+        market.add_deal(Trade(config.app.game_client.id, offer, request), from_server=False)
 
     def agree(self) -> None:
         self.create_deal()

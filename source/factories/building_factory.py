@@ -3,8 +3,13 @@ import pygame
 from source.configuration.game_config import config
 from source.gui.event_text import event_text
 from source.gui.widgets.building_widget import BuildingWidget
+# from source.handlers.building_widget_handler import building_widget_handler
 from source.handlers.file_handler import load_file
+from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.multimedia_library.sounds import sounds
+
+
+# from source.pan_zoom_sprites.pan_zoom_planet_classes.pan_zoom_planet import PanZoomPlanet
 
 
 # import logging
@@ -23,6 +28,15 @@ class BuildingFactoryJsonDictReader:
     def get_json_dict(self):
         """ returns the json file as dict"""
         return self.json_dict
+
+    def get_all_building_dicts(self):
+        dict_ = {}
+        for category in building_factory.get_json_dict():
+            for key, value in building_factory.get_json_dict()[category].items():
+                dict_[value["name"]] = value
+
+        return dict_
+
     def get_building_dict_from_buildings_json(self, building_name: str) -> dict:
         """
         return the dict from the building_name
@@ -178,23 +192,22 @@ class BuildingFactoryJsonDictReader:
 
         return d
 
-    def get_most_consuming_building(self, buildings: list, category: str) -> str:
-        """ ensure this is called with 'all_buildings !!!
-         otherwise it might crash if buildings is something like:
-         ['food', ['food']]"""
-
-        building_name = ""
-        min_production = 0
-        buildings = sum(buildings, [])
-        for building in buildings:
-            d = self.get_building_by_name(building)
-            for key, value in d.items():
-                if d["production_" + category] < min_production:
-                    min_production = d["production_" + category]
-                    building_name = building
-
-
-        return building_name
+    # def get_most_consuming_building(self, buildings: list, category: str) -> str:
+    #     """ ensure this is called with 'all_buildings !!!
+    #      otherwise it might crash if buildings is something like:
+    #      ['food', ['food']]"""
+    #
+    #     building_name = ""
+    #     min_production = 0
+    #     buildings = sum(buildings, [])
+    #     for building in buildings:
+    #         d = self.get_building_by_name(building)
+    #         for key, value in d.items():
+    #             if d["production_" + category] < min_production:
+    #                 min_production = d["production_" + category]
+    #                 building_name = building
+    #
+    #     return building_name
 
     def get_most_consuming_building(self, buildings: list, category: str) -> str:
         if not buildings:
@@ -251,7 +264,6 @@ class BuildingFactoryJsonDictReader:
 
         return fit_building
 
-
     def get_a_list_of_building_names_with_build_population_minimum_bigger_than(self, minimum) -> list:
         list_ = []
         for i in self.get_resource_categories():
@@ -281,52 +293,82 @@ class BuildingFactory(BuildingFactoryJsonDictReader):
     def __init__(self):
         BuildingFactoryJsonDictReader.__init__(self)
 
-    def build(self, building, receiver, **kwargs) -> str:  # new version based on buildings.json
+    def build(self, building, receiver: object, **kwargs) -> str:  # new version based on buildings.json
         """
         this builds the buildings on the planet: first check for prices ect, then build a building_widget
         that overgives the values to the planet if ready
-        :param building: string
+        :param
+        building: string
+        receiver: PanZoomPlanet
+
         """
-        # print(f"BuildingFactory.build: building: {building}, receiver: {receiver},receiver.owner:{receiver.owner}, kwargs: {kwargs}")
+        assert isinstance(receiver, object), AssertionError
+        prices = kwargs.get("prices", None)
+
         if not building in self.get_all_building_names():
             # logger.info(f"building_factory.build: building {building} not in self.get_all_building_names()!")
             return f"building_factory.build: building {building} not in self.get_all_building_names()!"
 
-        prices = kwargs.get("prices", None)
         if not prices:
             prices = self.get_prices_from_buildings_json(building)
 
         # only build if selected planet is set
         if not receiver:
             # logger.info(f"building_factory.build: nor reciever!!")
-            return f"building_factory.build: nor reciever!!"
+            return f"building_factory.build: no reciever!!"
+
+        # send to server
+        planets_types = ["moon", "planet", "sun"]
+        if receiver.type in planets_types:
+            sprite_group = "planets"
+        else:
+            sprite_group = f"{receiver.type}s"
+
+        data = {
+            "f": "build",
+            "building": building,
+            "receiver": receiver.id,
+            "sprite_group": sprite_group,
+            "prices": prices
+            }
+        if config.app.game_client.connected:
+            config.app.game_client.send_message(data)
+        else:
+            text = self.handle_build(data)
+            event_text.set_text(text, sender=receiver.owner, sound={"name": "bleep", "channel": 7})
+
+    def handle_build(self, data: dict):
+        building = data["building"]
+        sprite_group = data["sprite_group"]
+        receiver = [_ for _ in getattr(sprite_groups, sprite_group) if _.id == data["receiver"]][0]
+        prices = data["prices"]
 
         # check for minimum population
         build_population_minimum = self.get_build_population_minimum(building)
-        if build_population_minimum > receiver.population:
+        if build_population_minimum > receiver.economy_agent.population:
             text = f"you must reach a population of minimum {build_population_minimum} people to build a {building}!"
-            event_text.text = text
-            sounds.play_sound("bleep", channel=7)
+            event_text.set_text(text, sender=receiver.owner, sound={"name": "bleep", "channel": 7})
+            # sounds.play_sound("bleep", channel=7)
             # logger.info(f"building_factory.build: {text}")
             return text
 
         # build building widget, first pay the bill
         # pay the bill
-        if receiver.building_cue >= receiver.building_slot_amount:
-            text = "you have reached the maximum(" + str(receiver.building_slot_amount) + ") of buildings that can be build at the same time on " + receiver.name + "!"
-            event_text.text = text
-            sounds.play_sound("bleep", channel=7)
+        if receiver.economy_agent.building_cue >= receiver.economy_agent.building_slot_amount:
+            text = "you have reached the maximum(" + str(receiver.economy_agent.building_slot_amount) + ") of buildings that can be build at the same time on " + receiver.name + "!"
+            event_text.set_text(text, sender=receiver.owner, sound={"name": "bleep", "channel": 7})
+            # sounds.play_sound("bleep", channel=7)
             return text
 
         defence_units = self.get_defence_unit_names()
         ships = self.get_building_names("ship")
-        civil_buildings = [i for i in receiver.buildings if not i in defence_units]
+        civil_buildings = [i for i in receiver.economy_agent.buildings if not i in defence_units]
 
-        if len(civil_buildings) + receiver.building_cue >= receiver.buildings_max:
+        if len(civil_buildings) + receiver.economy_agent.building_cue >= receiver.economy_agent.buildings_max:
             if not building in defence_units and not building in ships:
-                text = "you have reached the maximum(" + str(receiver.buildings_max) + ") of buildings that can be build on " + receiver.name + "!"
-                event_text.text = text
-                sounds.play_sound("bleep", channel=7)
+                text = "you have reached the maximum(" + str(receiver.economy_agent.buildings_max) + ") of buildings that can be build on " + receiver.name + "!"
+                event_text.set_text(text, sender=receiver.owner, sound={"name": "bleep", "channel": 7})
+                # sounds.play_sound("bleep", channel=7)
                 return text
 
         check = self.build_payment(building, prices, config.app.players[receiver.owner])
@@ -351,6 +393,11 @@ class BuildingFactory(BuildingFactoryJsonDictReader):
 
             return f"succeded to build: {widget_name} on {receiver}"
 
+    def handle_build_immediately(self, cue_id: int):
+        for i in config.app.building_widget_list:
+            if i.cue_id == cue_id:
+                i.handle_build_immediately(cue_id)
+
     def create_building_widget(self, receiver, widget_key, widget_name, widget_value):
         widget_width = config.app.building_panel.get_screen_width()
         widget_height = 35
@@ -359,7 +406,7 @@ class BuildingFactory(BuildingFactoryJsonDictReader):
         # get the position and size
         win = pygame.display.get_surface()
         height = win.get_height()
-        y = height - spacing - widget_height - widget_height * len(config.app.building_widget_list)
+        # y = height - spacing - widget_height - widget_height * building_widget_handler.get_cue_id(receiver)
         sounds.play_sound(sounds.bleep2, channel=7)
 
         is_building = True
@@ -368,7 +415,7 @@ class BuildingFactory(BuildingFactoryJsonDictReader):
 
         building_widget = BuildingWidget(win=config.app.win,
                 x=config.app.building_panel.screen_x,
-                y=y,
+                y=0,
                 width=widget_width,
                 height=widget_height,
                 name=widget_name,
@@ -385,7 +432,7 @@ class BuildingFactory(BuildingFactoryJsonDictReader):
                 )
 
         # add building widget to building cue to make shure it can be build only if building_cue is < building_slots_amount
-        receiver.building_cue += 1
+        receiver.economy_agent.building_cue += 1
 
         # print(f"create_building_widget:receiver:{receiver}, receiver.owner:{receiver.owner},widget_name:{widget_name}, widget_key:{widget_key}, widget_value:{widget_value}  ")
 
@@ -395,13 +442,13 @@ class BuildingFactory(BuildingFactoryJsonDictReader):
 
         # check for prices
         for key, value in prices.items():
-            if not getattr(player, key) - value >= 0:
-                text += f"{getattr(player, key) - value} {key}, "
+            if not player.stock[key] - value >= 0:
+                text += f"{player.stock[key] - value} {key}, "
                 check = False
 
         if not check:
             text = text[:-2] + "!"
-            event_text.text = text
+            event_text.set_text(text, sender=player.owner)
 
         return check
 
@@ -417,22 +464,43 @@ class BuildingFactory(BuildingFactoryJsonDictReader):
         check = self.check_if_enough_resources_to_build(building, prices, player)
         if check:
             for key, value in prices.items():
-                setattr(player, key, getattr(player, key) - value)
+                # setattr(player, key, getattr(player, key) - value)
+                player.stock[key] = player.stock[key] - value
 
         return check
 
-    def destroy_building(self, building, planet):
+    def destroy_building(self, building: str, planet: object):
+        assert isinstance(planet, object), AssertionError
         # print(f"destroy_building on planet {planet}: {building}")
-        if building in planet.buildings:
-            planet.buildings.remove(building)
+        data = {
+            "f": "destroy_building",
+            "building": building,
+            "receiver": planet.id,
+            "sender": config.app.game_client.id
+            }
 
-        planet.calculate_production()
-        planet.calculate_population()
-        planet.set_population_limit()
+        if config.app.game_client.connected:
+            config.app.game_client.send_message(data)
+        else:
+            self.handle_destroy_building(data)
 
+    def handle_destroy_building(self, data):
+        building = data["building"]
+        planet = [i for i in sprite_groups.planets.sprites() if i.id == data["receiver"]][0]
+        sender = data["sender"]
+
+        # remove building
+        if building in planet.economy_agent.buildings:
+            planet.economy_agent.buildings.remove(building)
+
+        # calculate new production
+        planet.economy_agent.calculate_production()
+        planet.economy_agent.calculate_population()
+        planet.economy_agent.set_population_limit()
         config.app.calculate_global_production(config.app.players[planet.owner])
 
-        event_text.text = f"you destroyed one {building}! You will not get anything back from it! ... what a waste ..."
+        # set event_text and play sound
+        event_text.set_text(f"you destroyed one {building}! You will not get anything back from it! ... what a waste ...", sender=sender)
         sounds.play_sound(sounds.destroy_building)
 
 

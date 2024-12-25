@@ -4,7 +4,7 @@ from source.app.app_helper import select_next_item_in_list
 from source.configuration.game_config import config
 from source.gui.widgets.buttons.button import Button
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
-from source.multimedia_library.images import get_image
+from source.multimedia_library.images import get_image, scale_image_cached
 
 
 class Selector(WidgetBase):
@@ -100,7 +100,7 @@ class Selector(WidgetBase):
                 width=self.buttonsize,
                 height=self.buttonsize,
                 is_sub_widget=False,
-                image=pygame.transform.scale(
+                image=scale_image_cached(
                         get_image("arrow-left.png"), (self.buttonsize, self.buttonsize)),
                 tooltip=f"choose {self.list_name.split('_list')[0]}",
                 frame_color=self.color,
@@ -118,7 +118,7 @@ class Selector(WidgetBase):
                 width=self.buttonsize,
                 height=self.buttonsize,
                 is_sub_widget=False,
-                image=pygame.transform.scale(
+                image=scale_image_cached(
                         get_image("arrow-right.png"), (self.buttonsize, self.buttonsize)),
                 tooltip=f"choose {self.list_name.split('_list')[0]}",
                 frame_color=self.color,

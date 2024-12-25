@@ -10,16 +10,18 @@ from source.gui.widgets.selector import Selector
 from source.gui.widgets.slider import Slider
 from source.handlers.color_handler import colors
 from source.handlers.file_handler import write_file
+from source.handlers.time_handler import time_handler
 from source.handlers.ui_handler import ui_handler
 from source.handlers.widget_handler import WidgetHandler
 
-ARROW_SIZE = 25
+
+ARROW_SIZE = 15
 FONT_SIZE = int(ARROW_SIZE * .8)
 
 
 class SettingsEdit(EditorBase):
-    def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
-        EditorBase.__init__(self, win, x, y, width, height, isSubWidget=False, **kwargs)
+    def __init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs):
+        EditorBase.__init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs)
 
         # lists
         self.selectors = []
@@ -28,8 +30,8 @@ class SettingsEdit(EditorBase):
         self.font_name_list = pygame.sysfont.get_fonts()
 
         self.selector_lists = {
-            "player": [_ for _ in range(0, config.players)],
-            "players": [_ for _ in range(0, config.players)],
+            "player": [_ for _ in range(0, config.app.level_handler.data["globals"]["players"])],
+            # "players": [_ for _ in range(0, config.players)],
             "fps": [25, 60, 90, 120, 1000],
             "enable_game_events": self.boolean_list,
             "draw_universe": self.boolean_list,
@@ -38,6 +40,7 @@ class SettingsEdit(EditorBase):
             "ui_rounded_corner_radius_big": [_ for _ in range(3, 25)],
             "ui_rounded_corner_small_thickness": [_ for _ in range(0, 5)],
             "ui_rounded_corner_big_thickness": [_ for _ in range(0, 15)],
+            "enable_cross": [True, False],
             "ui_cross_size": [_ for _ in range(3, 50)],
             "ui_cross_dash_length": [_ for _ in range(1, 20)],
             "ui_cross_thickness": [_ for _ in range(1, 10)],
@@ -55,20 +58,24 @@ class SettingsEdit(EditorBase):
         self.create_selectors_from_dict(
                 x=self.world_x - ARROW_SIZE / 2 + self.world_width / 2,
                 y=130,
-                dict_=config.settings.items())
+                dict_=config.settings.items(), arrow_size=ARROW_SIZE)
 
         # fonts
+        arrow_size = ARROW_SIZE
+        font_size = int(arrow_size * .8)
+        self.spacing_y = arrow_size * 1.3
+
         self.selector_font_name = Selector(
                 self.win,
-                self.world_x - ARROW_SIZE / 2 + self.world_width / 2,
+                self.world_x - arrow_size / 2 + self.world_width / 2,
                 self.max_height - self.spacing_y,
-                ARROW_SIZE,
+                arrow_size,
                 self.frame_color,
                 9,
                 self.spacing_x,
                 {"list_name": "font_name_list", "list": self.font_name_list},
                 self,
-                FONT_SIZE)
+                font_size)
 
         # self.create_color_sliders()
         self.create_close_button()
@@ -99,11 +106,11 @@ class SettingsEdit(EditorBase):
                     max=255,
                     step=step,
                     initial=value,
-                    handleColour=colors.ui_dark,
+                    handle_color=colors.ui_dark,
                     layer=self.layer,
                     parent=self)
 
-            slider.colour = colors.ui_darker
+            slider.color = colors.ui_darker
 
             y += self.spacing_y
 
@@ -115,7 +122,7 @@ class SettingsEdit(EditorBase):
     def get_slider_data(self):
         data = {}
         for name, slider in self.sliders.items():
-            data[name] = slider.getValue()
+            data[name] = slider.get_value()
 
         return data
 
@@ -124,7 +131,7 @@ class SettingsEdit(EditorBase):
             return
 
         for key, value in self.sliders.items():
-            self.sliders[key].setValue(getattr(self.obj, key))
+            self.sliders[key].set_value(getattr(self.obj, key))
 
     def set_selector_current_value(self):
         """updates the selectors values
@@ -146,8 +153,9 @@ class SettingsEdit(EditorBase):
                         widget.font = pygame.font.SysFont(value, widget.font_size)
 
         elif key == "game_speed":
-            config.game_speed = value
-            config.app.game_time.game_speed = value
+            self.game_speed = value
+            time_handler.game_speed = value
+            # config.app.game_time.game_speed = value
 
         elif key == "ui_tooltip_size":
             config.app.tooltip_instance.font_size = value

@@ -187,7 +187,7 @@ class PathFindingManager:
 
                 else:
                     # if next node not reachable, set reloader and orbit around the planet
-                    event_text.set_text(f"{self.parent} has not enough energy to travel further!", obj=self.parent)
+                    event_text.set_text(f"{self.parent} has not enough energy to travel further!", obj=self.parent, sender=self.parent.owner)
                     self.parent.set_energy_reloader(self.path[0].owner)
                     orbit_object = self.path[0].owner
 

@@ -43,13 +43,13 @@ class PlanetFactory:
                     width=int(value["world_width"]),
                     height=int(value["world_height"]),
                     pan_zoom=pan_zoom_handler,
-                    isSubWidget=False,
+                    is_sub_widget=False,
                     image=get_image(value["image_name_small"]),
                     image_name=value["image_name_small"],
                     transparent=True,
                     info_text=value["info_text"],
                     text=value["name"],
-                    textColour=colors.frame_color,
+                    text_color=colors.frame_color,
                     property="planet",
                     name=value["name"],
                     parent=config.app,
@@ -57,7 +57,7 @@ class PlanetFactory:
                     possible_resources=value["possible_resources"],
                     moveable=config.moveable,
                     hover_image=get_image("selection_150x150.png"),
-                    textVAlign="below_the_bottom",
+                    text_v_align="below_the_bottom",
                     layer=4,
                     id=value["id"],
                     orbit_object_id=value["orbit_object_id"],
@@ -77,13 +77,14 @@ class PlanetFactory:
                     atmosphere_name=value["atmosphere_name"],
                     data=data["celestial_objects"][key],
                     owner=data["celestial_objects"][key]["owner"],
+                    group="planets"
                     )
 
             if explored:
                 pan_zoom_planet_button.get_explored(data["celestial_objects"][key]["owner"])
 
             # update stats
-            pan_zoom_planet_button.set_population_limit()
+            pan_zoom_planet_button.economy_agent.set_population_limit()
 
             # register
             sprite_groups.planets.add(pan_zoom_planet_button)

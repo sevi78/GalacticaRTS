@@ -49,8 +49,8 @@ class InfoPanel(WidgetBase, TextWrap):
     - text_surfaces: a dictionary of the text surfaces and their positions
     - visible: a boolean indicating whether the panel is visible or not"""
 
-    def __init__(self, win, x, y, width, height, isSubWidget, **kwargs):
-        super().__init__(win, x, y, width, height, isSubWidget, **kwargs)
+    def __init__(self, win, x, y, width, height, is_sub_widget, **kwargs):
+        super().__init__(win, x, y, width, height, is_sub_widget, **kwargs)
         TextWrap.__init__(self)
         self.name = "info panel"
         self.layer = kwargs.get("layer", 4)
@@ -94,8 +94,17 @@ class InfoPanel(WidgetBase, TextWrap):
                 self.size,
                 self.font,
                 self.color,
-                iconize=["water", "energy", "food", "minerals", "technology", "population", "phaser", "laser", "rocket",
-                         "\u2713"])
+                iconize=[
+                    "water",
+                    "energy",
+                    "food",
+                    "minerals",
+                    "technology",
+                    "population",
+                    "phaser",
+                    "laser",
+                    "rocket",
+                    "\u2713"])
         self.set_size_from_text()
         if self.planet_image:
             self.set_planet_image(self.planet_image, size=self.planet_image.get_size(), align="topright")
@@ -120,27 +129,6 @@ class InfoPanel(WidgetBase, TextWrap):
         size = kwargs.get("size", None)
         align = kwargs.get("align", "topright")
         alpha = kwargs.get("alpha", 128)
-
-        # if size:
-        #     self.planet_image = pygame.transform.scale(planet_image, size)
-        # else:
-        #     self.planet_image = pygame.transform.scale(planet_image, self.planet_image_size)
-
-        # if size:
-        #     # Calculate the aspect ratio of the original image
-        #     aspect_ratio = planet_image.get_width() / planet_image.get_height()
-        #
-        #     # Calculate the maximum width and height based on the aspect ratio and self.planet_image_size
-        #     max_width = min(size[0], self.planet_image_size[0])
-        #     max_height = min(size[1], self.planet_image_size[1])
-        #
-        #     # Adjust the width and height to maintain the aspect ratio and fit within the limits
-        #     if (max_width / aspect_ratio) > max_height:
-        #         self.planet_image = pygame.transform.scale(planet_image, (int(max_height * aspect_ratio), max_height))
-        #     else:
-        #         self.planet_image = pygame.transform.scale(planet_image, (max_width, int(max_width / aspect_ratio)))
-        # else:
-        #     self.planet_image = pygame.transform.scale(planet_image, self.planet_image_size)
 
         if size:
             # Calculate the aspect ratio of the original image

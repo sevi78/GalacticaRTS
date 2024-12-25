@@ -8,6 +8,9 @@ from source.app.ui_builder import UIBuilder
 from source.configuration.game_config import config
 from source.draw.cursor import Cursor
 from source.economy.economy_handler import economy_handler
+from source.editors.chat_edit import ChatEdit
+from source.editors.client_edit import ClientEdit
+from source.editors.settings_edit import SettingsEdit
 from source.factories.ship_factory import ShipFactory
 from source.game_play.cheat import Cheat
 from source.game_play.enemy_handler import enemy_handler
@@ -16,6 +19,7 @@ from source.game_play.navigation import navigate_to, navigate_to_game_object_by_
 from source.gui.container.container_widget import ContainerWidget
 from source.gui.container.filter_widget import FilterWidget
 from source.gui.event_text import event_text
+from source.gui.lod import level_of_detail
 from source.gui.panels.map_panel import MapPanel
 from source.gui.widgets.image_widget import ImageSprite
 from source.gui.widgets.zoom_scale import ZoomScale
@@ -25,7 +29,9 @@ from source.handlers.game_event_handler import GameEventHandler
 from source.handlers.mouse_handler import mouse_handler
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
+from source.handlers.position_handler import prevent_object_overlap
 from source.handlers.score_plotter_handler import score_plotter_handler
+from source.handlers.screen_handler import screen_handler
 from source.handlers.time_handler import time_handler
 from source.handlers.ui_handler import ui_handler
 from source.interaction.box_selection import BoxSelection
@@ -33,7 +39,7 @@ from source.level.level_edit import LevelEdit
 from source.level.level_handler import LevelHandler
 from source.level.level_select import LevelSelect
 from source.multimedia_library.images import get_image
-from source.player.player_edit import PlayerEdit
+from source.pan_zoom_sprites.pan_zoom_ship_test2.interaction_handler import interaction_handler2
 from source.trading.market import market
 
 ECONOMY_UPDATE_INTERVAL = 2.0
@@ -92,11 +98,11 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
         self.start_time = time.time()
         self.wait = ECONOMY_UPDATE_INTERVAL
 
-        self.game_speed = 0
+        # self.game_speed = 0#load_file("settings.json", "config")["game_speed"]
         self.run = 1
 
         self._selected_planet = None
-        self.select_image = ImageSprite(self.win, 0, 0, 25, 25, get_image("check.png"), parent=self, hidden=True)
+        self.select_image = ImageSprite(self.win, 0, 0, 25, 25, get_image("check.png"), parent=self, hidden=True, layer=4)
         self.sprite_groups = sprite_groups
 
     @property
@@ -167,11 +173,13 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
         :param events:
         :return:
         """
+
+        # update box selection, might be mived to self.update
+        self.box_selection.listen(events)
+
         # update select image
         if self.selected_planet:
             self.select_image.set_position(self.selected_planet.rect.centerx, self.selected_planet.rect.centery, "center")
-            # self.select_image.show()
-            self.select_image.draw()
 
         # update game_events
         self.game_event_handler.update()
@@ -179,21 +187,25 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
         # update economy
         self.update_economy()
 
-        # game pause
         for event in events:
             # ignore all inputs while any text input is active
             if config.text_input_active:
                 return
-
+            # game pause
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     self.pause_game()
+                if event.key == pygame.K_TAB:
+                    screen_handler.set_screen_tiled(1920, 1080, 2, self.game_client.id, not screen_handler.alignment)
+                    print("pressed: ", event.key)
 
         # set fps
-        pygame.display.set_caption("GalacticaRTS" + "   " + str(f"FPS: {time_handler.fps}"))
+        # pygame.display.set_caption(f"GalacticaRTS: FPS: {time_handler.fps}, client_id: {self.game_client.id}, host:{self.game_client.host}" )
 
         # necessary functions, maybe could put these outside somehow
         self.quit_game(events)
+
+        # really update the ui_helper every frame ???
         self.ui_helper.update()
 
         # update player
@@ -207,12 +219,14 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
         event_text.update()
         event_text_handler.listen(event_text, events)
 
+        # update lod, only needed for debug, remove it later!!!
+        level_of_detail.draw_debug_rect()
         # pathfinding
         # pathfinding_manager.draw_path()
 
     def loop(self):
         """
-        the game loop: blits the background,fog of war.
+        the game loop: blits the background
         calls self.update,  updates pygame_widgets and pygame.display
         :return:
         """
@@ -221,11 +235,14 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
             # fill background
             self.win.fill((0, 0, 15))
 
-            # set fps
-            time_handler.set_fps(int(config.fps))
-
             # get events
             events = pygame.event.get()
+
+            # set fps
+            # time_handler.set_fps(int(config.fps))
+            time_handler.set_fps(800)
+            time_handler.update_time()
+            time_handler.listen(events)
 
             # update mouse handler
             mouse_handler.handle_mouse_inputs(events)
@@ -243,16 +260,18 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
 
             # update sprites
             # dont mess up the order! for some reason it must be drawn first then update
-
             sprite_groups.update(events=events)
+            prevent_object_overlap(sprite_groups.ships, 80)
             sprite_groups.listen(events)
-            sprite_groups.draw(self.win, events=events)
+            # interaction_handler2.handle_mouse()
 
-            # update box selection, might be mived to self.update
-            self.box_selection.listen(events)
+            sprite_groups.draw(self.win, events=events)
 
             # update app
             self.update(events)
+
+            # receive data from server
+            self.game_client.message_handler.handle_messages()
 
             # handle screensize using [>]
             self.set_screen_size((config.width_minimized, config.height_minimized), events)
@@ -262,6 +281,7 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
 
             # pygame update
             # pygame.display.update()
+
             pygame.display.flip()
 
             # testing
@@ -270,7 +290,7 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
             # print(f"sounds.get_sound.cache_info(): {sounds.get_sound.cache_info()}")
 
 
-def main():
+def init():
     EDITOR_WIDTH = 700
     EDITOR_HEIGHT = 600
 
@@ -280,23 +300,32 @@ def main():
     # initialize app
     app = App(config.width, config.height)
 
-    # initialize box_selection
-    app.box_selection = BoxSelection(app.win, sprite_groups.ships.sprites() + sprite_groups.planets.sprites())
-
     # initialize editors
     app.level_handler = LevelHandler(app)
     app.level_select = LevelSelect(pygame.display.get_surface(),
-            pygame.display.get_surface().get_rect().centerx - EDITOR_WIDTH / 2,
+            int(pygame.display.get_surface().get_rect().centerx - EDITOR_WIDTH / 2),
             pygame.display.get_surface().get_rect().y,
             EDITOR_WIDTH, EDITOR_WIDTH, parent=app, obj=None)
 
     level_edit_width = EDITOR_WIDTH / 1.6
-
     app.level_edit = LevelEdit(pygame.display.get_surface(),
-            pygame.display.get_surface().get_rect().right - level_edit_width,
+            int(pygame.display.get_surface().get_rect().right - level_edit_width),
             pygame.display.get_surface().get_rect().y,
-            level_edit_width, EDITOR_HEIGHT, parent=app, ignore_other_editors=True)
+            int(level_edit_width), EDITOR_HEIGHT, parent=app, ignore_other_editors=True)
 
+    EDITOR_HEIGHT = 600
+    EDITOR_WIDTH = 700
+    app.settings_edit = SettingsEdit(
+            pygame.display.get_surface(),
+            int(pygame.display.get_surface().get_rect().centerx - EDITOR_WIDTH / 2),
+            pygame.display.get_surface().get_rect().y,
+            int(EDITOR_WIDTH / 1.5),
+            EDITOR_HEIGHT,
+            parent=app,
+            obj=None,
+            layer=9)  # , game_paused=True)
+
+    # initialize game_event_handler
     app.game_event_handler = GameEventHandler(data=load_file("game_event_handler.json", "config"), app=app)
 
     # load first level
@@ -320,7 +349,7 @@ def main():
             60,
             container_width,
             container_height,
-            market.convert_sprite_groups_to_container_widget_items_list("ships"),
+            sprite_groups.convert_sprite_groups_to_container_widget_items_list("ships"),
             function=navigate_to_game_object_by_index,
             layer=9,
             list_name="ships",
@@ -340,7 +369,6 @@ def main():
                     ignore_other_editors=True
                     )
             )
-
     # planet container
     app.planet_container = ContainerWidget(
             app.win,
@@ -348,7 +376,7 @@ def main():
             60,
             container_width * 2,
             container_height,
-            market.convert_sprite_groups_to_container_widget_items_list("planets"),
+            sprite_groups.convert_sprite_groups_to_container_widget_items_list("planets"),
             function=navigate_to_game_object_by_index,
             layer=9,
             list_name="planets",
@@ -368,11 +396,7 @@ def main():
                     ))
 
     # player edit
-    width = 1200
-    app.player_edit = PlayerEdit(pygame.display.get_surface(),
-            int(pygame.display.get_surface().get_width() / 2 - width / 2),
-            pygame.display.get_surface().get_rect().y,
-            width, height, parent=app, obj=None, layer=9, ignore_other_editors=True, drag_enabled=False, save=False)  # , game_paused=True)
+    app.create_player_edit(2)
 
     # deal container
     app.deal_container = ContainerWidget(
@@ -401,14 +425,59 @@ def main():
                     ignore_other_editors=True
                     )
             )
+    # chat edit
+    h_ = 150
+    app.chat_edit = ChatEdit(
+            app.win,
+            config.app.map_panel.world_width,
+            config.app.win.get_height() - h_,
+            600,
+            h_,
+            parent=app,
+            frame_corner_radius=0,
+            frame_corner_thickness=0)
+    app.chat_edit.set_visible()
+
+    # client_edit
+    app.client_edit = ClientEdit(
+            app.win,
+            0,
+            0,
+            1000,
+            0,
+            name="client_edit",
+            parent=app,
+            ignore_other_editors=True, drag_enabled=True, save=True
+            )
+
     # cursor object
     app.cursor = Cursor()
 
     # zoom scale
-    app.zoom_scale = ZoomScale(app.win, 250, app.win.get_size()[1] - 10, 180, 5, anchor_left=app.map_panel)
+    app.zoom_scale = ZoomScale(
+            app.win,
+            250,
+            app.win.get_size()[1] - 10,
+            180,
+            5,
+            anchor_left=app.map_panel)
 
     # restore ui elements
     ui_handler.restore_ui_elements()
+
+    # scenario_1()
+
+    # initialize box_selection
+    app.box_selection = BoxSelection(app.win, sprite_groups.ships.sprites() + sprite_groups.planets.sprites())
+
+
+
+    return app
+
+
+def main():
+    # initialise objects
+    app = init()
 
     # start game loop
     app.loop()

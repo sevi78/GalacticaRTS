@@ -1,9 +1,9 @@
 import math
-import time
 
 import pygame
 
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
+from source.handlers.time_handler import time_handler
 from source.text.text_wrap import TextWrap
 
 # Initialize Pygame
@@ -104,7 +104,7 @@ class MovingImage(pygame.sprite.Sprite):
         self.text_color = text_color
         self.font_size = SPECIAL_FONT_SIZE
         self.font = pygame.font.SysFont(fontname, self.font_size)
-        self.start_time = time.time()
+        self.start_time = time_handler.time
         self.alpha = 255
         self.loops = loops
         self.runs = 0
@@ -114,7 +114,7 @@ class MovingImage(pygame.sprite.Sprite):
         sprite_groups.moving_images.add(self)
 
     def reset(self):
-        self.start_time = time.time()
+        self.start_time = time_handler.time
         self.world_x = self.start_x
         self.world_y = self.start_y
         self.rect.x = int(self.world_x)
@@ -130,7 +130,7 @@ class MovingImage(pygame.sprite.Sprite):
             self.start_y = self.parent[1]
 
             # Calculate elapsed time
-        elapsed_time = time.time() - self.start_time
+        elapsed_time = time_handler.time - self.start_time
 
         if elapsed_time < self.lifetime:
             # Check if the object has a target

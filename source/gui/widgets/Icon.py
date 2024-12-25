@@ -73,10 +73,11 @@ class Icon(WidgetBase):
             self.text = str(self.value)
 
         if self.key != "":
+            player = config.app.players[config.app.game_client.id]
             if self.key == "population":
-                self.text = str(int(self.value)) + "/" + format_number(self.parent.player.population_limit, 1)
+                self.text = str(int(self.value)) + "/" + format_number(player.population_limit, 1)
             else:
-                self.text = str(int(self.value)) + "/" + str(int(getattr(self.parent.player, "production_" + self.key)))
+                self.text = str(int(self.value)) + "/" + str(int(player.production[self.key]))
 
         self.text_img = self.font.render(self.text, True, self.frame_color)
 
@@ -100,7 +101,8 @@ class Icon(WidgetBase):
 
     def update(self):
         if self.key != "":
-            self.value = getattr(self.parent.player, self.key)
+            # self.value = self.parent.player.stock[self.key]
+            self.value = self.parent.players[config.app.game_client.id].stock[self.key]
 
         for i in self.__dict__.items():
             if hasattr(i, "update()"):

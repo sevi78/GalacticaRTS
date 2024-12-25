@@ -1,8 +1,9 @@
 import random
 
-from source.gui.lod import level_of_detail
-from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_gif import PanZoomSprite
 from source.configuration.game_config import config
+from source.gui.lod import level_of_detail
+from source.handlers.time_handler import time_handler
+from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_gif import PanZoomSprite
 
 
 class PanZoomCelestialObject(PanZoomSprite):
@@ -15,7 +16,7 @@ class PanZoomCelestialObject(PanZoomSprite):
     possible_directions = [-1, 1]
 
     def __init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs):
-        # WidgetBase.__init__(self, win, x, y, width, height, isSubWidget, **kwargs)
+        # WidgetBase.__init__(self, win, x, y, width, height, is_sub_widget, **kwargs)
         PanZoomSprite.__init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs)
         self.speed = random.uniform(0.1, 1.5)
         self.direction = (random.uniform(-self.speed, self.speed), random.uniform(-self.speed, self.speed))
@@ -41,11 +42,11 @@ class PanZoomCelestialObject(PanZoomSprite):
 
     def move(self, direction):
         if direction:
-            self.world_x += direction[0] * config.game_speed
-            self.world_y += direction[1] * config.game_speed
+            self.world_x += direction[0] * time_handler.game_speed
+            self.world_y += direction[1] * time_handler.game_speed
         else:
-            self.world_x -= self.speed * config.game_speed
-            self.world_y += self.speed * config.game_speed / 2
+            self.world_x -= self.speed * time_handler.game_speed
+            self.world_y += self.speed * time_handler.game_speed / 2
 
         if self.world_x > config.scene_width * config.quadrant_amount:
             self.world_x = 0

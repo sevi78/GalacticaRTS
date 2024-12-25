@@ -1,7 +1,6 @@
-from datetime import datetime
+import os
 
 import pygame
-import os
 
 
 def capture_screenshot(screen: pygame.Surface, filename: str, area: tuple, target_size: tuple, **kwargs):

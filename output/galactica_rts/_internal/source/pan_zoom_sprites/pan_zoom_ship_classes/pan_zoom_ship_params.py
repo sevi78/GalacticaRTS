@@ -5,6 +5,7 @@ import pygame.mouse
 from source.configuration.game_config import config
 from source.gui.event_text import event_text
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
+from source.handlers.time_handler import time_handler
 from source.multimedia_library.sounds import sounds
 from source.pan_zoom_sprites.pan_zoom_ship_classes.pan_zoom_ship_state_engine import PanZoomShipStateEngine
 from source.text.info_panel_text_generator import info_panel_text_generator
@@ -18,7 +19,7 @@ SHIP_ROTATE_CORRECTION_ANGLE = 90
 SHIP_TARGET_OBJECT_RESET_DISTANCE = 15
 SHIP_RELOAD_MAX_DISTANCE = 300
 SHIP_RELOAD_MAX_DISTANCE_MAX = 600
-SHIP_ENERGY_USE = 1
+SHIP_ENERGY_USE = 0.1
 SHIP_ENERGY_USE_MAX = 10
 SHIP_ENERGY = 10000
 SHIP_ENERGY_MAX = 10000
@@ -87,12 +88,14 @@ class PanZoomShipParams:
         self.tooltip = ""
 
         # uprade
-        self.building_slot_amount = 1
-        self.building_cue = 0
-        self.buildings_max = 10
-        self.buildings = []
+        ### ???? TODO: do we really need tht ? a ship is not a building isnt it ?
+        # self.building_slot_amount = 1
+        # self.building_cue = 0
+        # self.buildings_max = 10
+        # self.buildings = []
 
         self.state_engine = PanZoomShipStateEngine(self)
+        self.state = "sleeping"
 
     def set_resources(self):
         self.resources = {
@@ -126,6 +129,8 @@ class PanZoomShipParams:
 
     def reload_ship(self):
         """ this reloads the ships energy"""
+        if not self.energy_reloader:
+            return
         if self.energy_reloader:
             dist = math.dist(self.rect.center, self.energy_reloader.rect.center)
             if dist > self.reload_max_distance:
@@ -140,30 +145,32 @@ class PanZoomShipParams:
                                     "energy"] > 0:
                             if self.energy < self.energy_max:
                                 self.energy += self.energy_reload_rate * self.energy_reloader.production[
-                                    "energy"] * config.game_speed
-                                self.parent.players[self.energy_reloader.owner].energy -= self.energy_reload_rate * \
-                                                                                          self.energy_reloader.production[
-                                                                                              "energy"] * config.game_speed
+                                    "energy"] * time_handler.game_speed
+                                self.parent.players[self.energy_reloader.owner].energy -= \
+                                    (
+                                            self.energy_reload_rate * self.energy_reloader.production[
+                                        "energy"] * time_handler.game_speed
+                                    )
                                 self.flickering()
                             else:
-                                event_text.set_text("PanZoomShip reloaded successfully!!!", obj=self)
+                                event_text.set_text(f"{self.name} reloaded successfully!!!", obj=self)
                                 sounds.stop_sound(self.sound_channel)
 
                 if self.energy_reloader.type == "sun":
                     if self.energy < self.energy_max:
-                        self.energy += self.energy_reload_rate * config.game_speed
+                        self.energy += self.energy_reload_rate * time_handler.game_speed
                         self.flickering()
 
             # if relaoder is a ship
             elif hasattr(self.energy_reloader, "crew"):
                 if self.energy_reloader.energy > 0:
-                    if self.energy_reloader.energy - self.energy_reload_rate * config.game_speed > 0:
+                    if self.energy_reloader.energy - self.energy_reload_rate * time_handler.game_speed > 0:
                         if self.energy < self.energy_max:
                             self.energy += self.energy_reload_rate
-                            self.energy_reloader.energy -= self.energy_reload_rate * config.game_speed
+                            self.energy_reloader.energy -= self.energy_reload_rate * time_handler.game_speed
                             self.flickering()
                         else:
-                            event_text.set_text("PanZoomShip reloaded successfully!!!", obj=self)
+                            event_text.set_text(f"{self.name} reloaded successfully!!!", obj=self)
                             sounds.stop_sound(self.sound_channel)
         else:
             sounds.stop_sound(self.sound_channel)

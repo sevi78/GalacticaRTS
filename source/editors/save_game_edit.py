@@ -7,7 +7,7 @@ from source.editors.editor_base.editor_config import TOP_SPACING
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.handlers.file_handler import write_file, abs_games_path, \
     generate_json_filename_based_on_datetime, get_games_list, move_file_to_trash
-from source.multimedia_library.images import get_image
+from source.multimedia_library.images import get_image, scale_image_cached
 
 
 class SaveGameEdit(EditorBase):
@@ -50,7 +50,7 @@ class SaveGameEdit(EditorBase):
                 height=button_size,
                 is_sub_widget=False,
                 parent=self,
-                image=pygame.transform.scale(
+                image=scale_image_cached(
                         get_image("uncheck.png"), (button_size, button_size)),
                 tooltip=tooltip,
                 frame_color=self.frame_color,
@@ -90,7 +90,7 @@ class SaveGameEdit(EditorBase):
                     height=button_size,
                     is_sub_widget=False,
                     parent=self,
-                    image=pygame.transform.scale(
+                    image=scale_image_cached(
                             get_image("load_icon.png"), (button_size, button_size)),
                     frame_color=self.frame_color,
                     moveable=False,

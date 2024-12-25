@@ -33,5 +33,5 @@ class Ranking:
 
         # check if objs population bigger than any item in population ranges and set its image based on the index
         for i in range(len(population_list)):
-            if obj.population >= population_list[i]:
+            if obj.economy_agent.population >= population_list[i]:
                 obj.rank = self.ranks[i]

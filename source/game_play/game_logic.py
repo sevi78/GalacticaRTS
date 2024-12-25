@@ -5,6 +5,7 @@ import pygame
 
 from source.configuration.game_config import config
 from source.handlers.file_handler import write_file
+from source.handlers.time_handler import time_handler
 
 
 class GameLogic:
@@ -24,72 +25,89 @@ class GameLogic:
 Fields:
 - None."""
 
-    def __init__(self):
-        pass
-
     def pause_game(self):
+        if self.game_client.connected:
+            self.game_client.send_message({"f": "pause_game"})
+        else:
+            self.handle_pause_game()
+
+
+
+    def handle_pause_game(self):
+        # toggle game_paused
+        config.game_paused = not config.game_paused
+
+        # print("handle_pause_game.pause_game:", config.game_paused)
         if config.game_paused:
-            config.game_paused = False
-        else:
-            config.game_paused = True
-
-        print("pause_game", config.game_paused)
-        if config.game_speed > 0:
-            self.game_speed = config.game_speed
-            config.game_speed = 0
-
-            # config.enable_orbit = False
+            time_handler.stored_game_speed = time_handler.game_speed
+            time_handler.game_speed = 0
             self.event_text = "Game Paused!"
-
+            print(f"handle_pause_game.Game Paused! {time_handler.game_speed}")
         else:
-            config.game_speed = self.game_speed
+            time_handler.game_speed = time_handler.stored_game_speed
             self.event_text = "Game Continued!"
+            print(f"handle_pause_game.Game Continued! {time_handler.game_speed}")
 
     def quit_game(self, events):
         """
         :param events:
         quit the game with quit icon or esc
         """
+
         for event in events:
             if event.type == pygame.QUIT:
+                # self.network_client.disconnect()
+                self.game_client.disconnect_from_server()
                 pygame.quit()
                 quit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
+                    self.game_client.disconnect_from_server()
+                    # self.network_client.disconnect()
                     sys.exit()
 
-    def set_screen_size(self, size, events):
-        """
-        set the screen size using 's'
-        :param size:
-        :param events:
-        """
 
+
+    def set_screen_size(self, size, events):
         for event in events:
-            # ignore all inputs while any text input is active
             if config.text_input_active:
                 return
 
             if event.type == pygame.KEYDOWN:
+                screen_info = pygame.display.Info()
+                current_w, current_h = screen_info.current_w, screen_info.current_h
+
                 if event.key == pygame.K_UP:
-                    """ x = 0
-                        y = 0
-                        os.environ['SDL_VIDEO_WINDOW_POS'] = f"{x},{y}"""
-                    screen_info = pygame.display.Info()
                     current_size = (screen_info.current_w, screen_info.current_h)
                     os.environ['SDL_VIDEO_CENTERED'] = '1'
-                    # # Set the position of the window to the second monitor
-                    # os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (0, -1080)
 
                     if current_size[0] == config.width:
                         pygame.display.set_mode(size, pygame.RESIZABLE, pygame.DOUBLEBUF)
                         config.width_current = size[0]
                         config.height_current = size[1]
                     else:
-                        pygame.display.set_mode((
-                            config.width, config.height), pygame.RESIZABLE, pygame.DOUBLEBUF)
+                        pygame.display.set_mode((config.width, config.height), pygame.RESIZABLE, pygame.DOUBLEBUF)
                         config.width_current = size[0]
                         config.height_current = size[1]
+
+                if event.key == pygame.K_LEFT:
+                    new_width = current_w // 2
+                    size = (new_width, current_h)
+                    position = (0, 0)
+                    os.environ['SDL_VIDEO_WINDOW_POS'] = f'{position[0]},{position[1]}'
+                    pygame.display.set_mode(size, pygame.RESIZABLE, pygame.DOUBLEBUF)
+                    config.width_current = new_width
+                    config.height_current = current_h
+
+                if event.key == pygame.K_RIGHT:
+                    new_width = current_w // 2
+                    size = (new_width, current_h)
+                    position_x = current_w - new_width
+                    position = (position_x, 0)
+                    os.environ['SDL_VIDEO_WINDOW_POS'] = f'{position[0]},{position[1]}'
+                    pygame.display.set_mode(size, pygame.RESIZABLE, pygame.DOUBLEBUF)
+                    config.width_current = new_width
+                    config.height_current = current_h
 
     def save_objects(self, filename, list_):
         if not list_:

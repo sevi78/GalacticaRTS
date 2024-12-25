@@ -1,5 +1,4 @@
 import random
-import time
 
 import pygame
 
@@ -12,9 +11,11 @@ from source.handlers.file_handler import load_file
 from source.handlers.garbage_handler import garbage_handler
 from source.handlers.mouse_handler import mouse_handler, MouseState
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
+from source.handlers.time_handler import time_handler
 from source.handlers.weapon_handler import WeaponHandler
 from source.handlers.widget_handler import WidgetHandler
 from source.multimedia_library.gif_handler import GifHandler
+from source.multimedia_library.images import scale_image_cached
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_game_object import PanZoomGameObject
 from source.text.info_panel_text_generator import info_panel_text_generator
 
@@ -38,7 +39,7 @@ class PanZoomUfo(PanZoomGameObject):  # , InteractionHandler):
         self.id = kwargs.get("id", 0)
         self.lifetime = kwargs.get("lifetime", LIFETIME)
         self.shrink = 0.0
-        self.creation_time = time.time()
+        self.creation_time = time_handler.time
         self.elapsed_time = 0.0
         self.info_text = kwargs.get("infotext", "")
         self.random_target_interval = pan_zoom_ufo_config["random_target_interval"]
@@ -62,6 +63,7 @@ class PanZoomUfo(PanZoomGameObject):  # , InteractionHandler):
         self.population_max = 200
         self.technology = kwargs.get("technology", 100)
         self.technology_max = 200
+        self.type = "ufo"
 
         self.resources = {
             "minerals": self.minerals,
@@ -163,10 +165,10 @@ class PanZoomUfo(PanZoomGameObject):  # , InteractionHandler):
                 self.target.explode()
                 self.set_random_target(immediately=True)
 
-        if self.target.population - self.weapon_handler.gun_power / 100 > 0:
+        if self.target.economy_agent.population - self.weapon_handler.gun_power / 100 > 0:
             self.target.under_attack = True
-            self.target.population -= self.weapon_handler.gun_power / 100
-            event_text.set_text(f"ufo attack !!!!, people are getting killed at {self.target.name}! population: {int(self.target.population)}", obj=self.target)
+            self.target.economy_agent.population -= self.weapon_handler.gun_power / 100
+            event_text.set_text(f"ufo attack !!!!, people are getting killed at {self.target.name}! population: {int(self.target.economy_agent.population)}", obj=self.target)
 
     def listen(self):
         if not self._hidden and not self._disabled:
@@ -177,7 +179,7 @@ class PanZoomUfo(PanZoomGameObject):  # , InteractionHandler):
             if self.rect.collidepoint(x, y):
                 if mouse_state == MouseState.HOVER or mouse_state == MouseState.LEFT_DRAG:
                     # self.win.blit(self.image_outline, self.rect)
-                    self.win.blit(pygame.transform.scale(self.image_outline, self.rect.size), self.rect)
+                    self.win.blit(scale_image_cached(self.image_outline, self.rect.size), self.rect)
                     # set tooltip
                     if self.tooltip:
                         if self.tooltip != "":
@@ -227,7 +229,7 @@ class PanZoomUfo(PanZoomGameObject):  # , InteractionHandler):
                 self.progress_bar.set_progressbar_position()
 
         # Check the elapsed time
-        self.elapsed_time = time.time() - self.creation_time
+        self.elapsed_time = time_handler.time - self.creation_time
 
         if self.elapsed_time > LIFETIME:
             self.disappear()

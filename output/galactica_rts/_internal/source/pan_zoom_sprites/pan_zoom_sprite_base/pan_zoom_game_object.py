@@ -1,11 +1,11 @@
 import copy
 import math
 
-import pygame
 from pygame import Vector2
 
 from source.configuration.game_config import config
-from source.handlers.image_handler import outline_image
+from source.handlers.time_handler import time_handler
+from source.multimedia_library.images import outline_image
 from source.handlers.position_handler import rot_center
 from source.interaction.interaction_handler import InteractionHandler
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_gif import PanZoomSprite
@@ -71,7 +71,8 @@ class PanZoomGameObject(PanZoomSprite, InteractionHandler):
     def set_target_position(self):
         if hasattr(self.target, "property"):
             if self.target.property == "planet":
-                self.target_position = self.pan_zoom.screen_2_world(self.target.screen_x, self.target.screen_y)
+                # self.target_position = self.pan_zoom.screen_2_world(self.target.screen_x, self.target.screen_y)
+                self.target_position = self.pan_zoom.screen_2_world(self.target.rect.centerx, self.target.rect.centery)
                 return
 
             if self.target.property == "ship":
@@ -145,15 +146,15 @@ class PanZoomGameObject(PanZoomSprite, InteractionHandler):
         if direction.length() != 0:
             direction.normalize()
         else:
-            print("move_towards_target error! direction vector length is zero.")
+            # print("move_towards_target error! direction vector length is zero.")
             return
-        displacement = direction * self.speed * config.game_speed
+        displacement = direction * self.speed * time_handler.game_speed
         time_steps = int(distance / self.speed) / self.get_zoom()
         if time_steps != 0:
             self.world_x += displacement.x / time_steps
             self.world_y += displacement.y / time_steps
-        else:
-            print("move_towards_target error! time_steps is zero.")
+        # else:
+        #     print("move_towards_target error! time_steps is zero.")
 
     def explode(self, **kwargs):
         # self.explode_calls += 1

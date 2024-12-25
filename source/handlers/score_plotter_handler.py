@@ -2,6 +2,7 @@ import copy
 import math
 
 from source.configuration.game_config import config
+from source.gui.event_text import event_text
 
 
 class ScorePlotterHandler:
@@ -164,6 +165,12 @@ class ScorePlotterHandler:
         return start_cycle, end_cycle
 
     def set_start_and_end_cycles(self, surface_width, plotter_x_pos, plotter_step_x) -> None:
+        """ make shure the game is running to avoid nasty errors!!! """
+
+        if not score_plotter_handler.data:
+            event_text.set_text("No data to plot! start a game first!! ")
+            return
+
         range_ = self.calculate_visible_x_range(surface_width, plotter_step_x)
         self.start_cycle, self.end_cycle = self.calculate_start_and_end_cycle(plotter_x_pos, plotter_step_x, range_)
 

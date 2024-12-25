@@ -123,6 +123,7 @@ class ResourcePanel(WidgetBase):
         # self.clock.tick(int(config.fps))
         # fps = f"fps: {str(self.clock.get_fps())}"  # , {sprite_groups.__str__()} hover:{config.hover_object}"
         fps = f"fps: {str(round(time_handler.fps, 1))}, memory usage: {garbage_handler.get_memory_usage()} MB"
+        caption = f"GalacticaRTS: FPS: {round(time_handler.fps, 1)},memory usage: {garbage_handler.get_memory_usage()} MB,  ip: {config.app.game_client.ip}, client_id: {config.app.game_client.id}, is_host: {config.app.game_client.is_host}"
         # fps = f"fps: {str(self.clock.get_fps())}, {sprite_groups.__str__()} hover:{config.hover_object}"
-        text = self.clock_font.render(fps, 0, self.frame_color)
+        text = self.clock_font.render(caption, 0, self.frame_color)
         self.win.blit(text, (0, 0, 30, 30))

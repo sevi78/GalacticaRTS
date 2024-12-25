@@ -3,10 +3,10 @@ import random
 import pygame.display
 
 from source.configuration.game_config import config
+from source.gui.interfaces.interface import InterfaceData
 from source.handlers.file_handler import load_file
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
-from source.interfaces.interface import InterfaceData
 from source.multimedia_library.images import get_image_names_from_folder
 from source.pan_zoom_sprites.pan_zoom_ufo import PanZoomUfo
 from source.text.info_panel_text_generator import info_panel_text_generator
@@ -71,8 +71,8 @@ class EnemyHandler(InterfaceData):
         self.explosion_gifs = get_image_names_from_folder("gifs", startswith_string="explosion")
         self.ufo_images = get_image_names_from_folder("ships", startswith_string="ufo")
 
-        for dict_name, dict in interface_variables.items():
-            for key, value in dict.items():
+        for dict_name, dict_ in interface_variables.items():
+            for key, value in dict_.items():
                 setattr(self, key, value)
                 setattr(self, key + "_max", value)
                 if not key.endswith("_max"):
@@ -83,17 +83,17 @@ class EnemyHandler(InterfaceData):
 
     def setup(self):
         data = load_file("enemy_handler_config.json", "config")
-        for name, dict in data.items():
+        for name, dict_ in data.items():
             if name == self.name:
-                for key, value in dict.items():
+                for key, value in dict_.items():
                     if key in self.__dict__:
                         setattr(self, key, value)
 
     def ufo_limit_reached(self):
-        if config.app.player.population < 500:
+        if config.app.player.stock.get("population") < 500:
             return True
 
-        if len(sprite_groups.ufos.sprites()) * 1000 > config.app.player.population:
+        if len(sprite_groups.ufos.sprites()) * 1000 > config.app.player.stock.get("population"):
             return True
 
         return False
@@ -101,7 +101,7 @@ class EnemyHandler(InterfaceData):
     def set_explored_planets_with_aliens(self):
         if config.app:
             self.explored_planets_with_aliens = [i for i in config.app.explored_planets if
-                                                 i.alien_population != 0]
+                                                 i.economy_agent.alien_population != 0]
 
     def update(self):
         self.time_since_last_spawn += 1
@@ -115,9 +115,13 @@ class EnemyHandler(InterfaceData):
                 self.time_since_last_spawn = 0
 
     def spawn_ufo(self, planet):
+        """
+        attitude > 50 == friendly
+        """
+
         x, y = pan_zoom_handler.screen_2_world(planet.screen_x, planet.screen_y)
 
-        attitude = random.randint(0, 100)
+        attitude = 0  # random.randint(0, 100)
         attitude_bool = 0 if attitude < 50 else 1
 
         ufo = PanZoomUfo(self.win,

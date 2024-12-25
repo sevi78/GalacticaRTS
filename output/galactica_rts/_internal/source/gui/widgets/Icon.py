@@ -8,8 +8,8 @@ from source.text.text_formatter import format_number
 
 
 class Icon(WidgetBase):
-    def __init__(self, win, x, y, width, height, isSubWidget, **kwargs):
-        super().__init__(win, x, y, width, height, isSubWidget, **kwargs)
+    def __init__(self, win, x, y, width, height, is_sub_widget, **kwargs):
+        super().__init__(win, x, y, width, height, is_sub_widget, **kwargs)
         self.layer = kwargs.get("layer", 4)
         self.parent = kwargs.get("parent")
         self.value = 0
@@ -45,6 +45,7 @@ class Icon(WidgetBase):
 
         # clicking
         self.clickable = kwargs.get("clickable", False)
+        self.on_click = kwargs.get('on_click', lambda *args: None)
         self.function = kwargs.get("function", None)
 
         # tooltip
@@ -67,45 +68,41 @@ class Icon(WidgetBase):
             elif event.type == MOUSEMOTION and self.moving:
                 self.rect.move_ip(event.rel)
 
-    def on_click(self, events):
-        if not self.clickable:  return
-        for event in events:
-            if event.type == MOUSEBUTTONDOWN:
-                if self.rect.collidepoint(event.pos):
-                    if self.function:
-                        print("executing:", getattr(self.parent, self.function))
-
-    def set_text(self):
+    def set_icon_text(self):
         if self.display_value_only:
             self.text = str(self.value)
 
         if self.key != "":
+            player = config.app.players[config.app.game_client.id]
             if self.key == "population":
-                self.text = str(int(self.value)) + "/" + format_number(self.parent.player.population_limit, 1)
+                self.text = str(int(self.value)) + "/" + format_number(player.population_limit, 1)
             else:
-                self.text = str(int(self.value)) + "/" + str(int(getattr(self.parent.player, "production_" + self.key)))
+                self.text = str(int(self.value)) + "/" + str(int(player.production[self.key]))
 
         self.text_img = self.font.render(self.text, True, self.frame_color)
 
     def listen(self, events):
-        self.update(events)
+        self.update()
         mouse_state = mouse_handler.get_mouse_state()
         x, y = mouse_handler.get_mouse_pos()
         config.app.tooltip_instance.reset_tooltip(self)
+
         if self.rect.collidepoint(x, y):
             if mouse_state == MouseState.HOVER or mouse_state == MouseState.LEFT_DRAG:
-                # self.draw_hover_rect()
                 self.image = self.image_outline
                 if self.tooltip != "":
                     config.tooltip_text = self.tooltip
+
+            if mouse_state == MouseState.LEFT_CLICK:
+                self.on_click()
+
         else:
             self.image = self.image_raw
 
-    def update(self, events):
+    def update(self):
         if self.key != "":
-            self.value = getattr(self.parent.player, self.key)
-
-        self.on_click(events)
+            # self.value = self.parent.player.stock[self.key]
+            self.value = self.parent.players[config.app.game_client.id].stock[self.key]
 
         for i in self.__dict__.items():
             if hasattr(i, "update()"):
@@ -116,7 +113,7 @@ class Icon(WidgetBase):
             return
 
         self.win.blit(self.image, self.rect)
-        self.set_text()
+        self.set_icon_text()
         self.win.blit(self.text_img, (self.rect.x + self.world_width + self.text_spacing, self.rect.y + 6))
 
         if self.include_text:

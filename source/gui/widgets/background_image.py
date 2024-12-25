@@ -1,10 +1,9 @@
 import pygame
 
 from source.configuration.game_config import config
-from source.draw.gradient_background import draw_gradient
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.handlers.color_handler import colors
-from source.multimedia_library.images import get_image
+from source.multimedia_library.images import get_image, scale_image_cached
 
 
 class BackgroundImage(WidgetBase):
@@ -15,7 +14,7 @@ class BackgroundImage(WidgetBase):
         self.surface.set_colorkey((60, 60, 60))
         self.surface.set_alpha(0)
         self.image = kwargs.get("image", None)
-        self.image = pygame.transform.scale(self.image, (self.win.get_width(), self.win.get_height()))
+        self.image = scale_image_cached(self.image, (self.win.get_width(), self.win.get_height()))
         self.color = colors.background_color
 
     def draw(self):
@@ -33,12 +32,12 @@ class BackgroundGradient(WidgetBase):  # bad performance
         self.fade_range = kwargs.get("fade_range", 50)
 
         # set images
-        self.image_left = pygame.transform.scale(get_image("gradient_transparent_left.png"), (self.fade_range, height))
-        self.image_right = pygame.transform.scale(get_image("gradient_transparent_right.png"), (
+        self.image_left = scale_image_cached(get_image("gradient_transparent_left.png"), (self.fade_range, height))
+        self.image_right = scale_image_cached(get_image("gradient_transparent_right.png"), (
             self.fade_range, height))
-        self.image_top = pygame.transform.scale(get_image("gradient_transparent_top.png"), (
+        self.image_top = scale_image_cached(get_image("gradient_transparent_top.png"), (
             width - (self.fade_range * 2), self.fade_range))
-        self.image_bottom = pygame.transform.scale(get_image("gradient_transparent_bottom.png"), (
+        self.image_bottom = scale_image_cached(get_image("gradient_transparent_bottom.png"), (
             width - (self.fade_range * 2), self.fade_range))
 
         # set image positions
@@ -60,6 +59,3 @@ class BackgroundGradient(WidgetBase):  # bad performance
         # pygame.draw.rect(self.win, colors.frame_color, (self.image_right_pos[0], self.image_right_pos[1], self.image_right.get_width(), self.image_right.get_height()), 1)
         # pygame.draw.rect(self.win, colors.frame_color, (self.image_top_pos[0], self.image_top_pos[1], self.image_top.get_width(), self.image_top.get_height()), 1)
         # pygame.draw.rect(self.win, colors.frame_color, (self.image_bottom_pos[0], self.image_bottom_pos[1], self.image_bottom.get_width(),self.image_bottom.get_height()), 1)
-
-
-

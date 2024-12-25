@@ -64,11 +64,11 @@ class InfoPanelTextGenerator:
 
     def create_special_info_panel_string(self, planet):
         text = ""
-        for key, value in planet.specials_dict.items():
+        for key, value in planet.economy_agent.specials_dict.items():
             operator = value["operator"]
             special_key = key
             special_value = value["value"]
-            if special_key in planet.resources:
+            if special_key in planet.economy_agent.resources:
                 if operator == "*":
                     operator = "x"
                 text += f"{special_key} is produced {special_value}x faster!\n"
@@ -83,18 +83,22 @@ class InfoPanelTextGenerator:
         return text
 
     def create_info_panel_planet_text(self, planet):
+        if not planet.owner in config.app.players.keys():
+            # print(f"create_info_panel_planet_text.error: planet {planet.name} owner: {planet.owner} not in config.app.players.keys()!!")
+            return
+
         text = f"Welcome to {planet.name}!\n\n"
         if planet.owner == -1:
             text += f"You are the first to arrive on this {planet.type}. It's a blank slate waiting for you to make your mark.\n"
         else:
             text += f"This planet belongs to the mighty {config.app.players[planet.owner].name}, ruler of the {config.app.players[planet.owner].species}."
-        text += f"You can build up to {planet.buildings_max} buildings on this planet.\n"
-        if planet.specials:
+        text += f"You can build up to {planet.economy_agent.buildings_max} buildings on this planet.\n"
+        if planet.economy_agent.specials:
             text += f"This planet has some special properties:\n\n {self.create_special_info_panel_string(planet)}.\n"
         else:
             text += "There are no special buildings available on this planet.\n"
         text += "Possible resources on this planet include:\n\n"
-        for resource in planet.possible_resources:
+        for resource in planet.economy_agent.possible_resources:
             text += f"- {resource}\n"
         if planet.orbit_object:
             distance = math.dist((planet.world_x, planet.world_y), (
@@ -140,7 +144,7 @@ class InfoPanelTextGenerator:
         if ship.__class__.__name__ == "PanZoomRescueDrone":
             return self.create_info_panel_rescue_drone_text(ship)
 
-        text = f"{ship.name}:\n\n"
+        text = f"{ship.name}({ship.id}):\n\n"
         text += f"owner: {config.app.players[ship.owner].name}\n"
         text += f"experience: {int(ship.experience)}\n"
         text += f"rank: {ship.rank}\n"
@@ -157,20 +161,19 @@ class InfoPanelTextGenerator:
                 text += f" {i}\n"
         text += "\n"
         if ship.weapon_handler.weapons:
-            try:
-                text += "weapons:\n\n"
-                for key in ship.weapon_handler.weapons.keys():
-                    text += f" {key} level {ship.weapon_handler.weapons[key]['level']}\n"
-            except TypeError as e:
-                print(f"create_info_panel_ship_text error: {e}, key: {key}, weapons: {ship.weapon_handler.weapons}")
+            text += "weapons:\n\n"
+            for key in ship.weapon_handler.weapons.keys():
+                text += f" {key} level {ship.weapon_handler.weapons[key]['level']}\n"
+
         if ship.is_spacestation:
-            text += f"\nspacestation energy production: {format_number(ship.spacestation.production_energy, 3)} \n"
+            text += f"\nspacestation energy production: {format_number(ship.spacestation.production['energy'], 3)} \n"
 
         if ship.debug:
             text += "\n\ndebug:\n"
             text += f"id: {ship.id}\n"
             text += f"name: {ship.name}\n"
             text += f"selected: {str(ship.selected)}\n"
+            text += f"is app.ship: {ship == config.app.ship}\n"
             if ship.energy_reloader:
                 text += f"reloader: {str(ship.energy_reloader.name)}\n"
             else:
@@ -192,6 +195,7 @@ class InfoPanelTextGenerator:
                 text += "orbit_object: None\n"
                 text += f"orbit_object_id: {ship.orbit_object_id}\n"
                 text += f"orbit_object_name: {ship.orbit_object_name}\n"
+
             if ship.orbit_angle:
                 text += f"orbit_angle: {ship.orbit_angle}\n"
             else:
@@ -306,6 +310,7 @@ class InfoPanelTextGenerator:
         infotext = f"level {level}:\n\n\n\n\n\n"
         infotext += f"{goal}"
         infotext += "stats:"
+        infotext += f"\n\nplayers: {data.get('globals').get('players')}\n"
         res_string = ""
         for i in resources:
             res_string += f"{i}\n"

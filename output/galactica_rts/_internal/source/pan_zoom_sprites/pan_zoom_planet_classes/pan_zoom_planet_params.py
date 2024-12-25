@@ -1,12 +1,12 @@
 import pygame
 
+from source.configuration.game_config import config
 from source.game_play.ranking import Ranking
 from source.gui.event_text import event_text
-from source.handlers.player_handler import player_handler
+from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.multimedia_library.images import get_image
 from source.multimedia_library.sounds import sounds
-from source.handlers.pan_zoom_sprite_handler import sprite_groups
-from source.configuration.game_config import config
+from source.player.player_handler import player_handler
 from source.text.info_panel_text_generator import info_panel_text_generator
 
 
@@ -84,11 +84,17 @@ class PanZoomPlanetParams:
         return
 
     def get_explored(self, owner):
-
         """
         called only once when the planet gets explored
         shows buttons ect
         """
+
+        if config.app.game_client.connected:
+            config.app.game_client.send_message({"f": "get_explored", "sprite_group": "planets", "planet_id": self.id, "owner": owner})
+        else:
+            self.handle_get_explored(owner)
+
+    def handle_get_explored(self, owner):
         # set owner
         if self.owner != owner:
             if self.owner != -1:

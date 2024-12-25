@@ -72,8 +72,10 @@ class ZoomScale(WidgetBase):
         if self.anchor_left:
             if self.anchor_left.visible:
                 self.world_x = self.anchor_left.world_x + self.anchor_left.world_width + 20
+                self.world_y = self.anchor_left.world_y + self.anchor_left.world_height - 20
             else:
                 self.world_x = 20
+                self.world_y = config.app.win.get_height() - 20
 
         self.start_pos = (self.world_x, self.world_y + self.world_height)
         self.end_pos = (self.world_x + self.world_width, self.world_y + self.world_height)

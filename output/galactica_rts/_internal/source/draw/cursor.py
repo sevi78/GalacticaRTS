@@ -1,9 +1,8 @@
 import pygame.mouse
 
 from source.configuration.game_config import config
-from source.handlers.image_handler import change_non_transparent_pixels
 from source.handlers.widget_handler import WidgetHandler
-from source.multimedia_library.images import get_image
+from source.multimedia_library.images import get_image, change_non_transparent_pixels
 
 CURSOR_SIZE = 50
 
@@ -15,7 +14,7 @@ class Cursor:
         self.cursor = "idle"
         self.color = pygame.color.THECOLORS.get("white")  # colors.frame_color
         self.layer = 10
-        self.isSubWidget = False
+        self.is_sub_widget = False
         self.name = "cursor"
 
         self.cursors = {
@@ -62,7 +61,7 @@ class Cursor:
         self.image = self.cursors.get(self.cursor)
 
         # register
-        WidgetHandler.addWidget(self)
+        WidgetHandler.add_widget(self)
 
     def change_image_color(self):
         for key, value in self.cursors.items():

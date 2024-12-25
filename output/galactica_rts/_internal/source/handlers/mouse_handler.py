@@ -1,7 +1,8 @@
-import time
 from enum import Enum
 
 import pygame
+
+from source.handlers.time_handler import time_handler
 
 
 class MouseState(Enum):
@@ -89,9 +90,9 @@ class MouseHandler:
                     if self.mouse_states[event.button] == 0:
                         # one time clicked
                         self.mouse_states[event.button] = 1
-                        self.double_click_starts[event.button] = time.time()
+                        self.double_click_starts[event.button] = time_handler.time
                     else:
-                        current_time = time.time()
+                        current_time = time_handler.time
                         start_time = self.double_click_starts[event.button]
                         elapsed_time = current_time - start_time
                         delay = self.double_click_delays[event.button]
@@ -103,14 +104,14 @@ class MouseHandler:
                             self.mouse_states[event.button] = 0
                         else:
                             # Not a double-click, reset timer
-                            self.double_click_starts[event.button] = time.time()
+                            self.double_click_starts[event.button] = time_handler.time
 
             # if click released something in the mouse
             elif event.type == pygame.MOUSEBUTTONUP:
                 # check if event is a button (left, middle, right)
                 if event.button in [1, 2, 3]:
                     if self.mouse_states[event.button] == 1:
-                        current_time = time.time()
+                        current_time = time_handler.time
                         start_time = self.double_click_starts[event.button]
                         elapsed_time = current_time - start_time
                         delay = self.double_click_delays[event.button]

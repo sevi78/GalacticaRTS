@@ -1,9 +1,10 @@
 import math
 import random
-import time
+from source.handlers.time_handler import time_handler
 
 import pygame
 
+from source.configuration.game_config import config
 from source.draw.circles import draw_electromagnetic_impulse, draw_dashed_circle
 from source.draw.scope import scope
 from source.draw.zigzag_line import draw_zigzag_line
@@ -11,14 +12,11 @@ from source.factories.building_factory import building_factory
 from source.gui.widgets.moving_image import MovingImage
 from source.gui.widgets.progress_bar import ProgressBar
 from source.handlers.color_handler import colors
-from source.handlers.mouse_handler import mouse_handler
 from source.handlers.pan_zoom_handler import pan_zoom_handler
-from source.multimedia_library.images import get_image
-
-from source.multimedia_library.sounds import sounds
-from source.handlers.weapon_handler import attack, launch_missile
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
-from source.configuration.game_config import config
+from source.handlers.weapon_handler import attack, launch_missile
+from source.multimedia_library.images import get_image
+from source.multimedia_library.sounds import sounds
 
 MISSILE_LAUNCH_INTERVAL = 2
 EMP_PULSE_INTERVAL = 7
@@ -32,11 +30,11 @@ class PanZoomPlanetDefence:
         self.attack_distance_raw = 300
         self.attack_distance = self.attack_distance_raw
         self.defence_units_names = building_factory.get_defence_unit_names()
-        self.last_missile_launch = time.time()
+        self.last_missile_launch = time_handler.time
         self.missile_launch_interval = MISSILE_LAUNCH_INTERVAL
         self.emp_pulse_interval = EMP_PULSE_INTERVAL
-        self.last_emp = time.time()
-        self.emp_pulse_time = time.time()
+        self.last_emp = time_handler.time
+        self.emp_pulse_time = time_handler.time
         self.emp_active = False
         self.slider_height = 100
         self.emp_progress_display = ProgressBar(win=self.parent.win,
@@ -46,7 +44,7 @@ class PanZoomPlanetDefence:
                 height=5,
                 progress=lambda: 0.0,
                 curved=True,
-                completedColour=colors.frame_color,
+                completed_color=colors.frame_color,
                 layer=self.parent.layer,
                 parent=self.parent,
                 h_align="right_outside",
@@ -61,15 +59,15 @@ class PanZoomPlanetDefence:
         del self
 
     def get_defence_units(self):
-        return [i for i in self.parent.buildings if i in self.defence_units_names]
+        return [i for i in self.parent.economy_agent.buildings if i in self.defence_units_names]
 
     def get_missiles(self):
-        return len([i for i in self.parent.buildings if i == "missile"])
+        return len([i for i in self.parent.economy_agent.buildings if i == "missile"])
 
     def activate_electro_magnetic_impulse(self, pulse_time, ufo):
         # if config.show_overview_buttons:
         #     self.emp_progress_display.show()
-        if time.time() - pulse_time < self.emp_pulse_time:
+        if time_handler.time - pulse_time < self.emp_pulse_time:
 
             draw_electromagnetic_impulse(
                     self.parent.win,
@@ -82,23 +80,23 @@ class PanZoomPlanetDefence:
 
             ufo.emp_attacked = True
         else:
-            self.emp_pulse_time = time.time()
+            self.emp_pulse_time = time_handler.time
             self.emp_active = False
 
-        self.emp_progress_display.progress = lambda: ((time.time() - self.last_emp) / self.emp_pulse_interval)
-        # self.emp_progress_display.completedColour = [int(255/((time.time() - self.last_emp) / self.emp_pulse_interval)), self.emp_progress_display.completedColour[1], self.emp_progress_display.completedColour[2]]
+        self.emp_progress_display.progress = lambda: ((time_handler.time - self.last_emp) / self.emp_pulse_interval)
+        # self.emp_progress_display.completed_color = [int(255/((time_handler.time - self.last_emp) / self.emp_pulse_interval)), self.emp_progress_display.completed_color[1], self.emp_progress_display.completed_color[2]]
         # self.update_emp_progress_display()
 
     def update_emp_progress_display(self):  # unused
         # Calculate the percentage of time elapsed
-        elapsed_time_percentage = ((time.time() - self.last_emp) / self.emp_pulse_interval)
+        elapsed_time_percentage = ((time_handler.time - self.last_emp) / self.emp_pulse_interval)
 
         # Interpolate the color from green to red based on the elapsed time percentage
         green_to_red = (
                                1 - elapsed_time_percentage) * pygame.color.THECOLORS.get("green") + elapsed_time_percentage * pygame.color.THECOLORS.get("red")
 
         # Update the progress bar color
-        self.emp_progress_display.completedColour = green_to_red
+        self.emp_progress_display.completed_color = green_to_red
 
         # Update the progress bar progress
         self.emp_progress_display.progress = lambda: elapsed_time_percentage * 100
@@ -164,19 +162,19 @@ class PanZoomPlanetDefence:
 
                 if "missile" in defence_units:
                     missiles = self.get_missiles()
-                    if time.time() - self.missile_launch_interval / missiles > self.last_missile_launch:
+                    if time_handler.time - self.missile_launch_interval / missiles > self.last_missile_launch:
                         launch_missile(self.parent, ufo)
-                        self.last_missile_launch = time.time()
+                        self.last_missile_launch = time_handler.time
 
                 if "energy blast" in defence_units:
                     if self.parent == config.app.selected_planet:
                         self.activate_energy_blast()
 
                 if "electro magnetic impulse" in defence_units:
-                    if time.time() - self.emp_pulse_interval > self.last_emp:
+                    if time_handler.time - self.emp_pulse_interval > self.last_emp:
                         self.emp_active = True
-                        self.last_emp = time.time()
-                        self.emp_pulse_time = time.time()
+                        self.last_emp = time_handler.time
+                        self.emp_pulse_time = time_handler.time
 
                     if self.emp_active:
                         self.activate_electro_magnetic_impulse(EMP_PULSE_TIME, ufo)

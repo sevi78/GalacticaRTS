@@ -8,7 +8,7 @@ from source.factories.building_factory import building_factory
 from source.gui.widgets.buttons.button import Button
 from source.gui.widgets.inputbox import InputBox
 from source.handlers.file_handler import write_file, load_file
-from source.multimedia_library.images import get_image
+from source.multimedia_library.images import get_image, scale_image_cached
 
 ICON_SIZE = 25
 TEXT_HEIGHT = 30
@@ -106,7 +106,7 @@ class BuildingEdit(EditorBase):
                         width=self.buttonsize,
                         height=self.buttonsize,
                         is_sub_widget=False,
-                        image=pygame.transform.scale(
+                        image=scale_image_cached(
                                 get_image("arrow-left.png"), (self.buttonsize, self.buttonsize)),
                         frame_color=self.frame_color,
                         transparent=True,
@@ -122,7 +122,7 @@ class BuildingEdit(EditorBase):
                         width=self.buttonsize,
                         height=self.buttonsize,
                         is_sub_widget=False,
-                        image=pygame.transform.scale(
+                        image=scale_image_cached(
                                 get_image("arrow-right.png"), (self.buttonsize, self.buttonsize)),
                         frame_color=self.frame_color,
                         transparent=True,

@@ -3,8 +3,8 @@ from source.pan_zoom_sprites.pan_zoom_celestial_objects.pan_zoom_celestial_objec
 
 
 class PanZoomComet(PanZoomCelestialObject):
-    def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
-        PanZoomCelestialObject.__init__(self, win, x, y, width, height, isSubWidget=False, **kwargs)
+    def __init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs):
+        PanZoomCelestialObject.__init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs)
 
     def update(self):
         self.update_pan_zoom_sprite()

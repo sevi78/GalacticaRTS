@@ -43,11 +43,13 @@ class Scope:
         max_range = obj.energy / obj.energy_use
         draw_dashed_circle(self.win, self.base_color, obj.rect.center, max_range * pan_zoom_handler.zoom, 25)
 
-    def draw_scope(self, start_pos: tuple, range_: float, info: dict) -> bool:
+    def draw_scope(self, start_pos: tuple, range_: float, info: dict, **kwargs) -> bool:
         """
         draws line to mouse position and draws the scope and some info text
+        use kwargs('lists') to filter which hit object get accepted to make the scope green
         """
 
+        lists = kwargs.get("lists", [])
         # Adjust dash_length and change direction if limits are reached
         if self.dash_lenght >= self.dash_lenght_max or self.dash_lenght <= 1.0:
             self.dir *= -1  # Reverse the direction
@@ -69,10 +71,11 @@ class Scope:
         color = self.base_color
 
         # if has target and hover over target -> green
-        hit_object = sprite_groups.get_hit_object()
+        hit_object = sprite_groups.get_hit_object(lists=lists)
 
         if hit_object:
             color = self.hover_color
+            # really need this. otherwise the hit object will not set info panel text
             if hasattr(hit_object, 'info_text'):
                 config.app.info_panel.set_text(hit_object.info_text)
                 config.app.info_panel.set_planet_image(hit_object.image_raw)

@@ -5,6 +5,7 @@ from source.editors.editor_base.editor_base import EditorBase
 from source.gui.widgets.buttons.button import Button
 from source.handlers.color_handler import colors
 from source.handlers.mouse_handler import mouse_handler, MouseState
+# from source.handlers.screen_handler import screen_handler
 from source.multimedia_library.images import get_image
 from source.multimedia_library.sounds import sounds
 from source.text.text_wrap import TextWrap
@@ -13,7 +14,7 @@ from source.text.text_wrap import TextWrap
 class EventPanel(TextWrap, EditorBase):
     def __init__(self, win, x, y, width, height, interface_variables, **kwargs):
         TextWrap.__init__(self)
-        EditorBase.__init__(self, win, x, y, width, height, isSubWidget=False, **kwargs)
+        EditorBase.__init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs)
 
         self.name = "event panel"
         self.layer = kwargs.get("layer", 10)
@@ -51,29 +52,40 @@ class EventPanel(TextWrap, EditorBase):
 
         # Buttons
         self.yes_button = Button(self.win, self.get_screen_x() + self.get_screen_width() / 2 - 30,
-                                           self.world_y + self.get_screen_height(), 60, 60, isSubWidget=False,
+                                           self.world_y + self.get_screen_height(), 60, 60, is_sub_widget=False,
                 image=pygame.transform.scale(get_image("yes_icon.png"), (60, 60)),
-                transparent=True, parent=self, onClick=lambda: self.accept())
+                transparent=True, parent=self, on_click=lambda: self.accept())
 
         self.no_button = Button(self.win, self.get_screen_x() + self.get_screen_width() / 2 + 30,
-                                          self.world_y + self.get_screen_height(), 60, 60, isSubWidget=False,
+                                          self.world_y + self.get_screen_height(), 60, 60, is_sub_widget=False,
                 image=pygame.transform.scale(get_image("no_icon.png"), (60, 60)),
-                transparent=True, parent=self, onClick=lambda: self.decline())
+                transparent=True, parent=self, on_click=lambda: self.decline())
 
         self.max_height = height
         self.hide()
 
-    def accept(self):
+    def start_game(self):
+        self.hide()
+        config.app.pause_game()
+
+    def accept(self, **kwargs):
+        from_server = kwargs.get("from_server", None)
+
         if not self._hidden:
             if self.functions:
-                # if self.game_event.deal:
-                #     self.game_event.deal.make_deal()
-                #
-                # else:
                 getattr(config.app.game_event_handler, self.functions["yes"])()
 
-            self.hide()
-            config.game_paused = False
+            self.start_game()
+
+        if not from_server:
+            message = {
+                "f": "accept",
+                "object": "event_panel"
+                }
+            config.app.game_client.send_message(message)
+
+        else:
+            self.start_game()
 
     def decline(self):
         if not self._hidden:
@@ -117,12 +129,22 @@ class EventPanel(TextWrap, EditorBase):
 
     def listen(self, events):
         mouse_state = mouse_handler.get_mouse_state()
+        if config.app.game_client.connected:
+            if not self._hidden:
+                config.app.client_edit.set_visible()
+                self.hide()
+                return
+
         if mouse_state == MouseState.LEFT_CLICK:
             if not self.functions:
                 if not self._hidden:
-                    config.game_paused = False
-
-                self.hide()
+                    self.start_game()
+                    message = {
+                        "f": "accept",
+                        "object": "event_panel"
+                        }
+                    config.app.game_client.send_message(message)
+                    self.hide()
 
     def draw(self):
         if not self._hidden:

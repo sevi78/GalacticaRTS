@@ -1,3 +1,5 @@
+import random
+
 import pygame
 
 from source.configuration.game_config import config
@@ -33,6 +35,62 @@ def dim_color(color, value, min_value, maximize=False):
     b = max(min_value, min(255, int(b * fade_factor)))
 
     return r, g, b
+
+# def generate_random_color(min_value, max_value, seed=None):
+#     if seed is not None:
+#         random.seed(seed)
+#
+#     if min_value >= max_value:
+#         return (0, 0, 0)  # Return black if conditions are unmet
+#
+#     rand_value = random.randint(min_value, max_value)
+#     color = (rand_value % 256, (rand_value * 2) % 256, (rand_value * 3) % 256)
+#     return color
+
+#
+# import random
+#
+#
+# def generate_random_color(min_value, max_value, seed=None):
+#     if seed is None or seed == 0:
+#         return (0, 0, 0)  # Always return black if seed is None or 0
+#
+#     if not 0 <= seed <= 100:
+#         raise ValueError("Seed must be between 0 and 100 inclusive")
+#
+#     if min_value >= max_value:
+#         return (0, 0, 0)  # Return black if conditions are unmet
+#
+#     # Calculate the probability of generating a color
+#     color_probability = seed / 100
+#
+#     if random.random() < color_probability:
+#         rand_value = random.randint(min_value, max_value)
+#         color = (rand_value % 256, (rand_value * 2) % 256, (rand_value * 3) % 256)
+#         return color
+#     else:
+#         return (0, 0, 0)  # Return black if the random check fails
+
+
+class Colors__:
+    def __init__(self):
+        self.emp_color = "#7B7B7B7B"  # (123, 123, 123, 123)
+        self.hover_color = "#006400"  # darkgreen
+        self.pressed_color = "#00FFFF"  # cyan
+        self.inactive_color = "#FF0000"  # red
+        self.shadow_color = "#FFA500"  # orange
+        self.text_color = "#FFFFFF"  # white
+        self.border_color = "#800080"  # purple
+        self.hover_border_color = "#A52A2A"  # brown
+        self.pressed_border_color = "#808080"  # grey
+        self.frame_color = "#37829D"  # (55, 130, 157)
+        self.background_color = "#00070D"  # (0, 7, 13)
+        self.ui_white = "#EEFDFE"  # (238, 253, 254)
+        self.ui_dark = "#37829D"  # (55, 130, 157)
+        self.ui_darker = "#083336"  # (8, 51, 54)
+        self.orbit_color = "#083332"  # (8, 51, 50)
+        self.orbit_color_planet = "#092014"  # (9, 32, 20)
+        self.orbit_color_moon = "#070F20"  # (7, 15, 32)
 
 
 class Colors:
@@ -82,14 +140,7 @@ class Colors:
             return self.orbit_colors["orbit_color"]
 
 
-# class PygameColors:
-#     def __init__(self):
-#         for key, value in pygame.color.THECOLORS.items():
-#             setattr(self, key, value)
-#
-#
-# pygame_colors = PygameColors()
-# print(pygame_colors.__dict__)
+
 colors = Colors()
 
 

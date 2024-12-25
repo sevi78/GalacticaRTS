@@ -17,7 +17,7 @@ class TextWrap:  # original
         self.word_height_sum = 0
         self.link_found = False
 
-    def wrap_text(self, win, text, pos, size, font, color=pygame.Color('white'), **kwargs):
+    def wrap_text(self, win, text, pos, size, font, color=pygame.Color('white'), **kwargs) -> None:
         """ text wrapper function:
             Parameters
             ----------
@@ -91,8 +91,10 @@ class TextWrap:  # original
                         else:
                             image_name = word.split(":")[0] + ".png"
 
-                            # if image_name == "✓.png":
-                            #     image_name = "check.png"
+                            if image_name == "\u2713.png":
+                                image_name = "check.png"
+                                word = ""
+                                word_surface = None
 
                         img = pygame.transform.scale(get_image(image_name), (word_height, word_height))
                         win.blit(img, (x, y))
@@ -118,24 +120,14 @@ class TextWrap:  # original
                     win.blit(txt_surf, (x, y))
 
                 else:
-                    win.blit(word_surface, (x, y))
+                    if word_surface:
+                        win.blit(word_surface, (x, y))
+                if word_surface:
+                    word_surface.get_rect().x = x
+                    word_surface.get_rect().y = y
 
-                word_surface.get_rect().x = x
-                word_surface.get_rect().y = y
-
-                # add to click surfaces list
-                # if word in str(alarm_links):
-                #     self.set_click_surfaces(word, word_height, word_width, x, y)
-                #     pygame.draw.rect(win, colors.ui_darker, (x, y, word_width, word_height), 1, 3)
-                # else:
-                #     index_ = line.index(word)
-                #     if index_ > 0:
-                #         if line[line.index(word)-1] in :
-                #             self.set_click_surfaces(word, word_height, word_width, x, y)
-                #             pygame.draw.rect(win, colors.ui_darker, (x, y, word_width, word_height), 1, 3)
                 if self.link_found:
                     self.set_click_surfaces(word, word_height, word_width, x, y)
-                    # pygame.draw.rect(win, colors.ui_darker, (x, y, word_width, word_height), 1, 3)
 
                 x += word_width + space
 
@@ -146,7 +138,8 @@ class TextWrap:  # original
             self.word_height_sum = y
 
     def set_click_surfaces(self, word, word_height, word_width, x, y):
-        self.click_surfaces_list.append((word, pygame.Rect(x, y, word_width, word_height)))
+        if word:
+            self.click_surfaces_list.append((word, pygame.Rect(x, y, word_width, word_height)))
 
 
 def main():

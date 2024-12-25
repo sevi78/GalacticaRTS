@@ -1,12 +1,16 @@
 import copy
 
+import pygame
+
 from source.configuration.game_config import config
 from source.gui.container.container_config import WIDGET_SIZE
 from source.gui.container.container_widget_item import ContainerWidgetItem
 from source.gui.container.container_widget_item_button import ContainerWidgetItemButton
 from source.gui.event_text import event_text
-from source.handlers.pan_zoom_sprite_handler import sprite_groups
-from source.multimedia_library.images import get_image, get_gif_frames, overblit_button_image
+from source.gui.widgets.moving_image import MovingImage
+from source.handlers.time_handler import time_handler
+from source.multimedia_library.images import get_image, overblit_button_image
+from source.trading.market_data import market_data
 from source.trading.trade import Trade
 
 button_size = WIDGET_SIZE * .7
@@ -15,51 +19,67 @@ MAX_DEALS_PER_PLAYERS = 3
 MAX_DEALS_PER_LIST = 25
 
 
-class Market:
+class Market:  # server
     def __init__(self) -> None:
-        self.deals = []
-        self.accepted_deals = []
-        self.declined_deals = []
-        self.last_deals = {}
         self.overblit_image = None
 
     def __repr__(self):
         return f"deals: {self.deals}\n, accepted_deals: {self.accepted_deals}\n, declined_deals: {self.declined_deals}"
 
     def get_deals_from_player(self, player) -> list:
-        return [i for i in self.deals if i.owner_index == player.owner]
+        return [i for i in market_data.deals if i.owner_index == player.owner]
 
     def deals_per_player_limit_reached(self, deal: Trade):
         player = config.app.players[deal.owner_index]
         player_deals = self.get_deals_from_player(player)
         if len(player_deals) >= MAX_DEALS_PER_PLAYERS:
-            event_text.set_text(f"Sorry {player.name}, you can't make anymore deals at the moment, you have reached the maximum({MAX_DEALS_PER_PLAYERS}) of deals!")
+            event_text.set_text(f"Sorry {player.name}, you can't make anymore deals at the moment, you have reached the maximum({MAX_DEALS_PER_PLAYERS}) of deals!", sender=deal.owner_index)
             return True
         return False
-
-    def add_deal(self, trade: Trade) -> None:
-        if self.deals_per_player_limit_reached(trade):
-            return
-        self.deals.append(trade)
-        self.last_deals[trade.owner_index] = trade
-        self.update_container_widget(trade)
 
     def update_container_widget(self, trade: Trade):
         widgets = self.convert_deals_into_container_widget_item()
         config.app.deal_container.set_widgets(widgets)
 
-    def convert_deals_into_container_widget_item(self, sort_by=None, reverse=True, **kwargs) -> list:  # orig
+    def convert_deals_into_container_widget_item(self, sort_by=None, reverse=True, **kwargs) -> list:
         widgets = []
 
         if sort_by != None:
-            self.deals = self.sort_trades(self.deals, sort_by)
+            market_data.deals = self.sort_trades(market_data.deals, sort_by)
 
-        for index_, deal in enumerate(self.deals):
+        for index_, deal in enumerate(market_data.deals):
             """
             example::
             deal.request: {'food':10}
             deal.offer: {'water':10}
             """
+
+            item_buttons = [
+                ContainerWidgetItemButton(
+                        config.app.win,
+                        0,
+                        0,
+                        button_size,
+                        button_size,
+                        "decline",
+                        "thumps_upred_flipped.png",
+                        container_name="deal_container",
+                        function=lambda index__=index_: self.decline_deal(index__)),
+                ]
+
+            if deal.owner_index != config.app.game_client.id:  # Check if the deal belongs to the current player
+                item_buttons.append(
+                        ContainerWidgetItemButton(
+                                config.app.win,
+                                0,
+                                0,
+                                button_size,
+                                button_size,
+                                "agree",
+                                "thumps_up.png",
+                                container_name="deal_container",
+                                function=lambda index__=index_: self.accept_deal(index__, config.app.game_client.id)),
+                        )
 
             widgets.append(ContainerWidgetItem(
                     config.app.win,
@@ -70,28 +90,7 @@ class Market:
                     image=get_image(config.app.players[0].image_name),
                     obj=deal,
                     index=index_ + 1,
-                    item_buttons=[
-                        ContainerWidgetItemButton(
-                                config.app.win,
-                                0,
-                                0,
-                                button_size,
-                                button_size,
-                                "decline",
-                                "thumps_upred_flipped.png",
-                                container_name="deal_container",
-                                function=lambda index__=index_: self.decline_deal(index__, 0)),
-                        ContainerWidgetItemButton(
-                                config.app.win,
-                                0,
-                                0,
-                                button_size,
-                                button_size,
-                                "agree",
-                                "thumps_up.png",
-                                container_name="deal_container",
-                                function=lambda index__=index_: self.accept_deal(index__, 0)),
-                        ],
+                    item_buttons=item_buttons,
                     parent=None,
                     container_name="deal_container"))
         return widgets
@@ -111,147 +110,170 @@ class Market:
 
         return sorted_trades
 
-    def convert_deals_into_container_widget_item__(self, sort_by=None, reverse=True, **kwargs) -> list:
-        widgets = []
+    def get_fitting_deal(self, player) -> None:
+        resource_stock = player.get_resource_stock()
+        for i in market_data.deals:
+            if i.owner_index != player.owner:
+                deal_key = list(i.offer.keys())[0]
+                if deal_key == player.auto_economy_handler.get_lowest_value_key(resource_stock):
+                    self.accept_deal(market_data.deals.index(i), player.owner)
 
-        # Extract the first key from deal.offer or deal.request for sorting
-
-        print(self.deals)
-        sorted = self.sort_trades(self.deals, sort_by)
-
-        def get_first_key(deal):
-            return next(iter(deal.offer.keys()))
-
-        # Sort the deals if sort_by is provided
-        if sort_by is not None:
-            self.deals = sorted(self.deals, key=lambda deal: get_first_key(deal), reverse=reverse)
-
-        for index_, deal in enumerate(self.deals):
-            """
-            example::
-            deal.request: {'food':10}
-            deal.offer: {'water':10}
-            """
-            widgets.append(ContainerWidgetItem(
-                    config.app.win,
-                    0,
-                    WIDGET_SIZE,
-                    WIDGET_SIZE,
-                    WIDGET_SIZE,
-                    image=get_image(config.app.players[0].image_name),
-                    obj=deal,
-                    index=index_ + 1,
-                    item_buttons=[
-                        ContainerWidgetItemButton(
-                                config.app.win,
-                                0,
-                                0,
-                                button_size,
-                                button_size,
-                                "decline",
-                                "thumps_upred_flipped.png",
-                                container_name="deal_container",
-                                function=lambda index__=index_: self.decline_deal(index__, 0)),
-                        ContainerWidgetItemButton(
-                                config.app.win,
-                                0,
-                                0,
-                                button_size,
-                                button_size,
-                                "agree",
-                                "thumps_up.png",
-                                container_name="deal_container",
-                                function=lambda index__=index_: self.accept_deal(index__, 0)),
-                        ],
-                    parent=None,
-                    container_name="deal_container"))
-        return widgets
-
-    def convert_sprite_groups_to_container_widget_items_list(
-            self, sprite_group_name, sort_by=None, reverse=True, **kwargs
-            ) -> list:
-        # If a sort_by attribute is provided, sort the sprite_group by that attribute
-        sprite_group = getattr(sprite_groups, sprite_group_name)
-
-        if config.show_human_player_only:
-            sprite_group = [i for i in sprite_group if i.owner == 0]
-
-        if sort_by is not None:
-            sprite_group = sorted(sprite_group, key=lambda x: getattr(x, sort_by), reverse=reverse)
-
-        item_buttons = kwargs.get("item_buttons", {})
-        parent = kwargs.get("parent", None)
-        return [ContainerWidgetItem(
-                config.app.win,
-                0,
-                WIDGET_SIZE * index,
-                WIDGET_SIZE,
-                WIDGET_SIZE,
-                image=get_image(_.image_name) if not _.image_name.endswith(".gif") else get_gif_frames(_.image_name)[0],
-                obj=_,
-                index=index + 1,
-                item_buttons=item_buttons,
-                parent=parent)
-            for index, _ in enumerate(sprite_group)]
-
-    def accept_deal(self, deal_index, buyer_index):
-        self.transfer_resources(self.deals[deal_index], buyer_index)
-
-    def decline_deal(self, deal_index, buyer_index):
-        if deal_index < len(self.deals):
-            trade = self.deals.pop(deal_index)
-            self.declined_deals.append(trade)
-            self.update_container_widget(trade)
+    def overblit_deal_icon(self) -> None:
+        if not self.overblit_image:
+            self.overblit_image = copy.copy(config.app.settings_panel.deal_manager_icon.image)
+        if market_data.deals:
+            overblit_button_image(config.app.settings_panel.deal_manager_icon, "warning.png", False)
         else:
-            print("Invalid deal_index: out of range")
+            config.app.settings_panel.deal_manager_icon.image = self.overblit_image
 
     def transfer_resources(self, deal: Trade, buyer_index) -> None:
+        """
+            Execute a resource transfer between two players based on a trade deal.
+
+            Args:
+                deal (Trade): The trade deal containing offer and request details.
+                buyer_index (int): The index of the buyer in the players list.
+
+            Side effects:
+                - Updates player inventories
+                - Displays transaction messages
+                - Updates market data
+                - Shows resource transfer animations
+        """
+        # get the provider and buyer
         provider = config.app.players[deal.owner_index]
         provider_resource = list(deal.offer.keys())[0]
         provider_value = list(deal.offer.values())[0]
         buyer = config.app.players[buyer_index]
         buyer_resource = list(deal.request.keys())[0]
         buyer_value = list(deal.request.values())[0]
-        buyer_resource_amount = getattr(buyer, buyer_resource, 0)
+        buyer_resource_amount = buyer.stock[buyer_resource]  # getattr(buyer, buyer_resource, 0)
         remaining_resources = buyer_resource_amount - buyer_value
 
+        # Check if the buyer has enough resources
         if remaining_resources < 0:
-            event_text.set_text(f"You don't have enough resources to make this deal! you are missing: {remaining_resources} of {buyer_resource}")
+            event_text.set_text(f"You don't have enough resources to make this deal! you are missing: {remaining_resources} of {buyer_resource}", sender=buyer_index)
             return
 
-        setattr(provider, provider_resource, getattr(provider, provider_resource) - provider_value)
-        setattr(buyer, provider_resource, getattr(buyer, provider_resource) + provider_value)
-        setattr(buyer, buyer_resource, buyer_resource_amount - buyer_value)
-        setattr(provider, buyer_resource, getattr(provider, buyer_resource) + buyer_value)
+        # Transfer resources
+        provider.stock[provider_resource] -= provider_value
+        buyer.stock[provider_resource] += provider_value
 
-        event_text.text = f"{provider.name} gave {provider_value} {provider_resource} to {buyer.name}, received {buyer_value} {buyer_resource} from {buyer.name}"
+        buyer.stock[buyer_resource] = buyer_resource_amount - buyer_value
+        provider.stock[buyer_resource] += buyer_value
 
-        trade = self.deals.pop(self.deals.index(deal))
-        self.accepted_deals.append(trade)
-        self.update_container_widget(trade)
+        # set event text
+        event_text.set_text(f"{provider.name} gave {provider_value} {provider_resource} to {buyer.name}, received {buyer_value} {buyer_resource} from {buyer.name}")
 
-    def get_fitting_deal(self, player) -> None:
-        resource_stock = player.get_resource_stock()
-        for i in self.deals:
-            if i.owner_index != player.owner:
-                deal_key = list(i.offer.keys())[0]
-                if deal_key == player.auto_economy_handler.get_lowest_value_key(resource_stock):
-                    self.accept_deal(self.deals.index(i), player.owner)
+        # Display animated resource transfers
+        self.show_transfer_resources(buyer_resource, buyer_value, provider_resource, provider_value, buyer_index, deal.owner_index)
 
-    def overblit_deal_icon(self) -> None:
-        if not self.overblit_image:
-            self.overblit_image = copy.copy(config.app.settings_panel.deal_manager_icon.image)
-        if self.deals:
-            overblit_button_image(config.app.settings_panel.deal_manager_icon, "warning.png", False)
+        # Remove the deal from the list
+        if deal in market_data.deals:
+            trade = market_data.deals.pop(market_data.deals.index(deal))
+            market_data.accepted_deals.append(trade)
+            self.update_container_widget(trade)
+
+    def show_transfer_resources(
+            self,
+            buyer_resource: str,
+            buyer_value: int,
+            provider_resource: str,
+            provider_value: int,
+            buyer_index: int,
+            provider_index: int
+            ):
+        """
+        Display animated resource transfers between buyer and provider.
+
+        This function creates moving images to visualize resource transfers. It only
+        displays animations for the client involved in the transaction (either buyer or provider).
+
+        Args:
+            buyer_resource (str): Type of resource the buyer is receiving.
+            buyer_value (int): Amount of resource the buyer is receiving.
+            provider_resource (str): Type of resource the provider is giving.
+            provider_value (int): Amount of resource the provider is giving.
+            buyer_index (int): Identifier for the buyer.
+            provider_index (int): Identifier for the provider.
+
+        Returns:
+            None
+        """
+        client_id = config.app.game_client.id
+        # Only proceed if the current client is involved in the transaction
+        if client_id not in (buyer_index, provider_index):
+            return
+
+        # determine if the current client is the buyer or provider
+        is_provider = client_id == provider_index
+
+        # List of tuples containing data for both resources involved in the transfer
+        resources = [
+            (provider_resource, provider_value, is_provider),
+            (buyer_resource, buyer_value, not is_provider)
+            ]
+
+        for resource, value, is_outgoing in resources:
+            # Get the icon object for the current resource
+            icon = getattr(config.app.resource_panel, f"{resource}_icon")
+
+            # Determine starting y-position and movement direction
+            start_y = icon.rect.y if is_outgoing else icon.rect.y + 60
+            velocity = (0, 0.5) if is_outgoing else (0, -0.5)
+
+            # Set operand and color based on whether resource is outgoing or incoming
+            operand = "-" if is_outgoing else "+"
+            color = pygame.color.THECOLORS["red" if is_outgoing else "green"]
+
+            # Create and display the moving image for the resource transfer
+            MovingImage(
+                    config.app.win,
+                    icon.rect.x, start_y, 30, 30,
+                    get_image(f"{resource}_icon.png"),
+                    3.0, velocity,
+                    f" {value}{operand}", color,
+                    "georgiaproblack", 1,
+                    pygame.Rect(icon.rect.x, start_y, 30, 30)
+                    )
+
+    def add_deal(self, trade: Trade, **kwargs) -> None:
+        from_server = kwargs.get("from_server", False)
+        if not from_server:
+            config.app.game_client.send_message({"f": "add_deal", "trade": trade.__repr__()})
         else:
-            config.app.settings_panel.deal_manager_icon.image = self.overblit_image
+            if self.deals_per_player_limit_reached(trade):
+                return
+            market_data.add_deal(trade)
+            self.update_container_widget(trade)
+
+    def accept_deal(self, deal_index, buyer_index, **kwargs):
+        from_server = kwargs.get("from_server", False)
+        if not from_server:
+            config.app.game_client.send_message({"f": "accept_deal", "deal_index": deal_index, "buyer_index": buyer_index})
+        else:
+            trade = market_data.accept_deal(deal_index, buyer_index)
+            if trade:
+                self.transfer_resources(trade, buyer_index)
+                self.update_container_widget(trade)
+
+    def decline_deal(self, deal_index, **kwargs):
+        from_server = kwargs.get("from_server", False)
+        if not from_server:
+            config.app.game_client.send_message({"f": "decline_deal", "deal_index": deal_index})
+        else:
+            trade = market_data.decline_deal(deal_index)
+            if trade:
+                self.update_container_widget(trade)
 
     def update(self):
         widgets = config.app.deal_container.widgets
         for i in widgets:
-            i.obj.update()
+            i.set_text_and_state_image()
+
+            i.obj.generate_time_text(time_handler.game_speed)
             if i.obj.remaining_time < 0.0:
-                self.decline_deal(widgets.index(i), 0)
+                self.decline_deal(widgets.index(i))
         self.overblit_deal_icon()
 
 

@@ -24,14 +24,14 @@ class ToggleSwitch:
                 y=self.parent.max_height,
                 width=self.toggle_size,
                 height=self.toggle_size,
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self,
                 image=pygame.transform.rotate(image, 90),
                 tooltip=f"close {self.parent.name}",
                 frame_color=self.frame_color,
                 moveable=False,
                 include_text=True, layer=self.layer,
-                onClick=lambda: self.toggle_panel())
+                on_click=lambda: self.toggle_panel())
 
     def toggle_panel(self):
         if not self.parent._hidden:

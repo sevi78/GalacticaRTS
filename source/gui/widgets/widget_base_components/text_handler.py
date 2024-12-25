@@ -1,7 +1,6 @@
 import pygame
 
 from source.configuration.game_config import config
-from source.handlers.color_handler import colors
 
 
 class TextHandler:

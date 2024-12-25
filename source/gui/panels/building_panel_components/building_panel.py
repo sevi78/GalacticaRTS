@@ -14,7 +14,7 @@ from source.gui.panels.toggle_switch import ToggleSwitch
 from source.gui.widgets.building_button_widget import BuildingButtonWidget
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.handlers.color_handler import colors
-from source.multimedia_library.images import get_image
+from source.multimedia_library.images import get_image,scale_image_cached
 from source.text.info_panel_text_generator import info_panel_text_generator
 
 TOP_SPACING = 5
@@ -68,14 +68,14 @@ class BuildingPanel(WidgetBase, BuildingPanelConstructor, BuildingSlot, EconomyP
 
         # smiley and thumbsup
         self.smiley_size = 18
-        self.smiley_image_sad = pygame.transform.scale(get_image("sad.png"), (self.smiley_size, self.smiley_size))
-        self.smiley_image_smile = pygame.transform.scale(get_image("smile.png"), (self.smiley_size, self.smiley_size))
+        self.smiley_image_sad = scale_image_cached(get_image("sad.png"), (self.smiley_size, self.smiley_size))
+        self.smiley_image_smile = scale_image_cached(get_image("smile.png"), (self.smiley_size, self.smiley_size))
         self.smiley = self.smiley_image_smile
 
         self.thumps_up_size = 20
-        self.thumps_up_image_red = pygame.transform.scale(pygame.transform.flip(get_image("thumps_upred.png"),
+        self.thumps_up_image_red = scale_image_cached(pygame.transform.flip(get_image("thumps_upred.png"),
                 True, True), (self.thumps_up_size, self.thumps_up_size))
-        self.thumps_up_image_green = pygame.transform.scale(pygame.transform.flip(get_image("thumps_up.png"),
+        self.thumps_up_image_green = scale_image_cached(pygame.transform.flip(get_image("thumps_up.png"),
                 True, False), (self.thumps_up_size, self.thumps_up_size))
         self.thumps_up = self.thumps_up_image_green
 
@@ -115,7 +115,7 @@ class BuildingPanel(WidgetBase, BuildingPanelConstructor, BuildingSlot, EconomyP
         if self.parent.selected_planet:
 
             buildings = ""
-            for i in self.parent.selected_planet.buildings:
+            for i in self.parent.selected_planet.economy_agent.buildings:
                 buildings += i + ", "
 
             self.planet_buttons.show_building_buttons()
@@ -203,10 +203,10 @@ class BuildingPanel(WidgetBase, BuildingPanelConstructor, BuildingSlot, EconomyP
         self.max_height = self.world_y + self.toggle_switch.toggle_size
 
         if self.parent.selected_planet:
-            if "space harbor" in self.parent.selected_planet.buildings:
+            if "space harbor" in self.parent.selected_planet.economy_agent.buildings:
                 self.max_height += self.sub_widget_height
 
-            if "particle accelerator" in self.parent.selected_planet.buildings:
+            if "particle accelerator" in self.parent.selected_planet.economy_agent.buildings:
                 self.max_height += self.sub_widget_height
 
         self.max_height += self.building_button_widget.max_height

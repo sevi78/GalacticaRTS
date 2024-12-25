@@ -11,8 +11,8 @@ from source.multimedia_library.images import get_image
 
 
 class SaveGameEdit(EditorBase):
-    def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
-        EditorBase.__init__(self, win, x, y, width, height, isSubWidget=False, **kwargs)
+    def __init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs):
+        EditorBase.__init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs)
 
         #  widgets
         self.widgets = []
@@ -48,7 +48,7 @@ class SaveGameEdit(EditorBase):
                 y=self.max_height + button_size / 2,
                 width=button_size,
                 height=button_size,
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self,
                 image=pygame.transform.scale(
                         get_image("uncheck.png"), (button_size, button_size)),
@@ -57,7 +57,7 @@ class SaveGameEdit(EditorBase):
                 moveable=False,
                 include_text=True,
                 layer=self.layer,
-                onClick=function,
+                on_click=function,
                 name="delete_button"
                 )
 
@@ -88,7 +88,7 @@ class SaveGameEdit(EditorBase):
                     y=self.get_screen_y() + TOP_SPACING + button_size * 3 + y,
                     width=button_size,
                     height=button_size,
-                    isSubWidget=False,
+                    is_sub_widget=False,
                     parent=self,
                     image=pygame.transform.scale(
                             get_image("load_icon.png"), (button_size, button_size)),
@@ -96,10 +96,10 @@ class SaveGameEdit(EditorBase):
                     moveable=False,
                     include_text=True,
                     layer=self.layer,
-                    onClick=lambda name_=name: self.set_current_game(name_),
+                    on_click=lambda name_=name: self.set_current_game(name_),
                     text=i,
-                    textColour=self.frame_color,
-                    textHAlign="left_outside",
+                    text_color=self.frame_color,
+                    text_h_align="left_outside",
                     name=name
                     )
             y += button_size
@@ -120,11 +120,11 @@ class SaveGameEdit(EditorBase):
     def change_icon_tect_color(self):
         for i in self.games_icons:
             if i.string == self.current_game:
-                i.textColour = pygame.color.THECOLORS["darkgreen"]
-                i.text = self.font.render(i.string, True, i.textColour)
+                i.text_color = pygame.color.THECOLORS["darkgreen"]
+                i.text = self.font.render(i.string, True, i.text_color)
             else:
-                i.textColour = self.frame_color
-                i.text = self.font.render(i.string, True, i.textColour)
+                i.text_color = self.frame_color
+                i.text = self.font.render(i.string, True, i.text_color)
 
     def save_game(self):
         filename = generate_json_filename_based_on_datetime(f"galactica level {self.parent.level_handler.data['globals']['level']} ")
@@ -134,6 +134,9 @@ class SaveGameEdit(EditorBase):
 
     def load_game(self, value):
         # self.parent.level_handler.load_level(0, data=load_file(self.current_game, folder="games"), current_game= self.current_game)
+        if value == "not set !":
+            return
+
         self.parent.level_handler.load_level(self.current_game, "games")
         self.parent.level_handler.current_game = self.current_game
         print(f"load game: {value}")

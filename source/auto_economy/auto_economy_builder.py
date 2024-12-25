@@ -64,7 +64,7 @@ class AutoEconomyBuilder:
 
             # build the first population building
             # build a first town
-            if not "town" in self.planet.buildings:
+            if not "town" in self.planet.economy_agent.buildings:
                 building_factory.build("town", self.planet)
                 building_factory.build("farm", self.planet)
                 building_factory.build("farm", self.planet)
@@ -76,27 +76,27 @@ class AutoEconomyBuilder:
                     # check if population is between 1000 and 10000
                     if population in range(1000, 10000):
                         # upgrade population building
-                        if not "city" in self.planet.buildings:
-                            if "town" in self.planet.buildings:
+                        if not "city" in self.planet.economy_agent.buildings:
+                            if "town" in self.planet.economy_agent.buildings:
                                 # delete town
                                 building_factory.destroy_building("town", self.planet)
                             building_factory.build("city", self.planet)
 
                             # upgrade farm
-                            if "farm" in self.planet.buildings:
+                            if "farm" in self.planet.economy_agent.buildings:
                                 building_factory.destroy_building("farm", self.planet)
                             building_factory.build("ranch", self.planet)
 
                     # check if population is between 10000 and 100000
                     if population in range(10000, 100000):
                         # upgrade population building
-                        if not "metropole" in self.planet.buildings:
-                            if "city" in self.planet.buildings:
+                        if not "metropole" in self.planet.economy_agent.buildings:
+                            if "city" in self.planet.economy_agent.buildings:
                                 # delete city
                                 building_factory.destroy_building("city", self.planet)
                             building_factory.build("metropole", self.planet)
 
-                            if "ranch" in self.planet.buildings:
+                            if "ranch" in self.planet.economy_agent.buildings:
                                 building_factory.destroy_building("ranch", self.planet)
                             building_factory.build("metropole", self.planet)
 
@@ -120,7 +120,8 @@ class AutoEconomyBuilder:
     def build_minerals_buildings(self):
         building = building_factory.get_fitting_building(self.planet.population, "minerals")
         building_factory.build(building, self.planet)
-    def build_building_by_category(self, planet, category):
+
+    def build_building_by_category__(self, planet, category):
         """
         builds buildings to planet based on category
         checks for fitting building based on population of the planet
@@ -128,7 +129,7 @@ class AutoEconomyBuilder:
         building = building_factory.get_fitting_building(planet.population, category)
         building_factory.build(building, planet)
 
-    def build_space_harbour(self):
+    def build_space_harbour__(self):
         """ builds a space harbour if not found on any planet and:
 
             10000 population on the planet
@@ -140,7 +141,7 @@ class AutoEconomyBuilder:
         """
         builds ships if possible and send rescue drones
         """
-        space_harbour_planet = [i for i in self.planets if "space harbor" in i.buildings]
+        space_harbour_planet = [i for i in self.planets if "space harbor" in i.economy_agent.buildings]
 
         if space_harbour_planet:
             ships = self.player.get_all_ships()
@@ -171,28 +172,58 @@ class AutoEconomyBuilder:
                 elif spacestations < SPACESTATION_MAXIMUM:
                     building_factory.build("spacestation", space_harbour_planet[0])
 
+    # def build_ship_weapons_(self):  # orig
+    #     ships = self.player.get_all_ships()
+    #     weaponised_ships = [i for i in ships if i.name in ["spaceship", "spacehunter", "cargoloader"]]
+    #     weapons = building_factory.get_building_names("weapons")
+    #     if weaponised_ships:
+    #         ship = random.choice(weaponised_ships)
+    #         if not ship.weapon_handler.weapons:
+    #             config.app.weapon_select.obj = ship
+    #             weapon = random.choice(weapons)
+    #             config.app.weapon_select.select_weapon(weapon)
+    #             config.app.weapon_select.upgrade()
+
     def build_ship_weapons(self):
         ships = self.player.get_all_ships()
         weaponised_ships = [i for i in ships if i.name in ["spaceship", "spacehunter", "cargoloader"]]
         weapons = building_factory.get_building_names("weapons")
         if weaponised_ships:
             ship = random.choice(weaponised_ships)
+            weapon = random.choice(weapons)
+
+            # if ship has no weapons
             if not ship.weapon_handler.weapons:
-                config.app.weapon_select.obj = ship
-                weapon = random.choice(weapons)
-                config.app.weapon_select.select_weapon(weapon)
-                config.app.weapon_select.upgrade()
+                # build the weapon
+                prices = building_factory.get_prices_from_weapons_dict(
+                        ship.weapon_handler.current_weapon["name"], ship.weapon_handler.current_weapon["level"])
+                building_factory.build(ship.weapon_handler.current_weapon["name"], ship, prices=prices)
+                print(f"build_ship_weapons:buy {weapon} on ship: {ship.id}")
 
-                print(f"build_ship_weapons:{ship}, {weapon}")
+            # if has weapons already, upgrade
+            else:
+                all_building_widgets = config.app.building_widget_list
+                # print(f"all_building_widgets: {all_building_widgets}")
+                # print(f"all_building_widgets.names: {[_.name for _ in all_building_widgets]}")
+                # print(f"all_building_widgets.keys:{[_.key for _ in all_building_widgets]}")
 
-    def build_particle_accelerator(self):
+                already_in_cue = len([_.name for _ in all_building_widgets if _.name == weapon])
+
+                if ship.weapon_handler.current_weapon[
+                    "level"] + already_in_cue < ship.weapon_handler.max_weapons_upgrade_level:
+                    prices = building_factory.get_prices_from_weapons_dict(
+                            ship.weapon_handler.current_weapon["name"], ship.weapon_handler.current_weapon["level"])
+                    building_factory.build(ship.weapon_handler.current_weapon["name"], ship, prices=prices)
+                    # print(f"build_ship_weapons:upgrade {weapon} on ship: {ship.id}")
+
+    def build_particle_accelerator__(self):
         """ builds a particle accelerator if:
 
             10000 population on the planet
             all production values positive
 
         """
-        if not "particle accelerator" in self.planet.buildings:
+        if not "particle accelerator" in self.planet.economy_agent.buildings:
             result = building_factory.build("particle accelerator", self.planet)
             # logger.info(f"building 'particle accelerator' on {self.planet} by {self.player.name}: result: {result}")
 
@@ -206,7 +237,7 @@ class AutoEconomyBuilder:
         """
         production = {key: value for key, value in self.player.production.items() if key != "population"}
         # check if it has a particle accelerator
-        if "particle accelerator" in self.planet.buildings:
+        if "particle accelerator" in self.planet.economy_agent.buildings:
             if not any(value < 0 for value in production.values()):
                 defence_buildings = building_factory.get_building_names("planetary_defence")
                 defence_found = False
@@ -243,7 +274,8 @@ class AutoEconomyBuilder:
             r = random.randint(0, int(len(self.building_widget_list) / 3))
             for i in self.building_widget_list:
                 if self.building_widget_list.index(i) == r:
-                    if i.immediately_build_cost < self.player.technology and i.receiver.owner == self.player.owner:
+                    if i.immediately_build_cost < self.player.stock[
+                        "technology"] and i.receiver.owner == self.player.owner:
                         i.build_immediately()
                         # print(f"building immediately !: {self.player.technology}")
 

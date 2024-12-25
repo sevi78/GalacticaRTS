@@ -1,9 +1,10 @@
 import locale
+import re
 
 SUFFIXES = ['', 'k', 'M', 'B', 'T']
 
 
-def format_number(n: int, digits: int = 0) -> str:
+def format_number(n: [int, float], digits: int = 0) -> str:
     """ formats a number (int) based on suffixes:
         ['', 'k', 'M', 'B', 'T']
 
@@ -64,22 +65,66 @@ def to_roman(num: int) -> str:
     return roman_num
 
 
-if __name__ == "__main__":
-    print(format_number(0))
-    print(format_number(1100))
-    print(format_number(10100))
-    print(format_number(100010))
-    print(format_number(1010000))
-    print(format_number(10010000))
+def validate_text_format(text: str, format_dict: dict) -> str:
+    """
+    Validates a text string against a specified format.
 
-    print(format_number(1100, 0))
-    print(format_number(10100, 1))
-    print(format_number(100010, 2))
-    print(format_number(1010000, 4))
-    print(format_number(10010000, 5))
+    Args:
+    text (str): The text to be validated.
+    format_dict (dict): A dictionary specifying the expected format.
+                        e.g., {'server': 'xxx.xxx.x.xx', 'port': '0000'}
 
-    print(format_number(-1100, 0))
-    print(format_number(-10100, 1))
-    print(format_number(-100010, 2))
-    print(format_number(-1010000, 4))
-    print(format_number(-10010000, 5))
+    Returns:
+    str: 'Valid' if the text matches the format, or a description of the error.
+    """
+    # Remove surrounding braces and split the text into key-value pairs
+    try:
+        text = text.strip('{}')
+        text_dict = {}
+        for item in re.findall(r'"([^"]+)"\s*:\s*"?([^",}]+)"?', text):
+            key, value = item
+            text_dict[key.strip()] = value.strip()
+    except Exception:
+        return f"Invalid format. Expected: {format_dict}, Received: {text}"
+
+    # Check if all required keys are present
+    if set(format_dict.keys()) != set(text_dict.keys()):
+        return f"Invalid format. Expected: {format_dict}, Received: {text_dict}"
+
+    # Validate each part
+    for key, format_value in format_dict.items():
+        if key == 'server':
+            ip = text_dict[key]
+            ip_parts = ip.split('.')
+            if len(ip_parts) != 4:
+                return f"Invalid IP address. Expected format: {format_value}, Received: {ip}"
+            if not all(part.isdigit() and 0 <= int(part) <= 255 for part in ip_parts):
+                return f"Invalid IP address: each part should be between 0 and 255. Received: {ip}"
+            if not (len(ip_parts[2]) == 1 and len(ip_parts[3]) == 2):
+                return f"Invalid IP address format. Expected: {format_value}, Received: {ip}"
+        elif key == 'port':
+            port = text_dict[key]
+            if not port.isdigit() or len(port) != len(format_value):
+                return f"Invalid port. Expected format: {format_value} ({len(format_value)} digits), Received: {port}"
+        else:
+            if text_dict[key] != format_value:
+                return f"Invalid {key}. Expected: {format_value}, Received: {text_dict[key]}"
+
+    return "Valid"
+
+
+# Test cases
+if __name__ == '__main__':
+    format_dict = {'server': 'xxx.xxx.x.xx', 'port': '0000'}
+
+    print(validate_text_format('{"server":"192.168.1.22","port":"5555"}', format_dict))
+    print(validate_text_format('{"server":"192.168.1.222","port":"5555"}', format_dict))
+    print(validate_text_format('{"server":"192.168.1.22","port":"555"}', format_dict))
+    print(validate_text_format('{"server":"192.168.01.22","port":"5555"}', format_dict))
+    print(validate_text_format('{"server":"192.168.1.22", "port":"5555"}', format_dict))
+    print(validate_text_format('{"server":"192.168.1.22","port":"55555"}', format_dict))
+
+    # Test with a different format
+    new_format = {'server': 'xxx.xxx.x.xx', 'port': '00000', 'protocol': 'TCP'}
+    print(validate_text_format('{"server":"192.168.1.22","port":"55555","protocol":"TCP"}', new_format))
+    print(validate_text_format('{"server":"192.168.1.22","port":"55555","protocol":"UDP"}', new_format))

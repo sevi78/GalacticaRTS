@@ -75,7 +75,7 @@ def limit_positions(obj, screen_size):  # unused
         hide_obj_outside_view()
 
 
-def prevent_object_overlap(objects, min_dist):  # this should be replaced with math.dist
+def prevent_object_overlap(objects, min_dist):
     smoothing = 100
     for obj1 in objects:
         for obj2 in objects:
@@ -196,7 +196,7 @@ def smooth_planet_positions(width, height):
 
                 if math.dist((planet.world_x, planet.world_y), (center_x, center_y)) < -PLANET_MAX_DISTANCE:
                     planet.orbit_radius -= PLANET_MAX_DISTANCE / 10
-
+    prevent_object_overlap(sprite_groups.planets.sprites(), 500)
 #
 # import pygame
 #

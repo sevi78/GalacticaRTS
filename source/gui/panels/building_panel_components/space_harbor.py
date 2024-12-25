@@ -6,7 +6,7 @@ from source.factories.building_factory import building_factory
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.handlers.color_handler import colors
-from source.multimedia_library.images import get_image
+from source.multimedia_library.images import get_image, scale_image_cached
 from source.text.info_panel_text_generator import info_panel_text_generator
 
 
@@ -79,7 +79,7 @@ class SpaceHarbor(WidgetBase):
                     height=25,
                     is_sub_widget=False,
                     parent=self,
-                    image=pygame.transform.scale(
+                    image=scale_image_cached(
                             get_image(f"{name}.png"), (25, 25) if not name == "spacestation" else (45, 45)),
                     tooltip=f"build {name}",
                     info_text=info_panel_text_generator.create_info_panel_ship_text_from_json_dict(name),
@@ -95,7 +95,7 @@ class SpaceHarbor(WidgetBase):
             visible = False
             return visible
 
-        if "space harbor" in self.parent.parent.selected_planet.buildings:
+        if "space harbor" in self.parent.parent.selected_planet.economy_agent.buildings:
             self.show_buttons()
             self.parent.parent.building_panel.max_height += self.parent.sub_widget_height
             visible = True

@@ -2,12 +2,13 @@ from typing import Optional
 
 from source.configuration.game_config import config
 from source.gui.event_text import event_text
-from source.trading.market import market
+from source.trading.market_data import market_data
 from source.trading.trade import Trade
 
 
 class TradeAssistant:
     def __init__(self, player):
+        """ this class is injected to the player object."""
         self.player = player
         self.player_index = self.player.owner
         self.offer_percentage = 20
@@ -22,16 +23,16 @@ class TradeAssistant:
                 )
 
     def get_accepted_deals_from_player(self) -> list:
-        deals = [i for i in market.accepted_deals if i.owner_index == self.player_index]
+        deals = [i for i in market_data.accepted_deals if i.owner_index == self.player_index]
         return deals
 
     def get_declined_deals_from_player(self) -> list:
-        deals = [i for i in market.declined_deals if i.owner_index == self.player_index]
+        deals = [i for i in market_data.declined_deals if i.owner_index == self.player_index]
         return deals
 
     def get_last_deal_from_player(self) -> Optional[Trade]:
-        if self.player_index in market.last_deals.keys():
-            return market.last_deals[self.player_index]
+        if self.player_index in market_data.last_deals.keys():
+            return market_data.last_deals[self.player_index]
         return None
 
     def generate_deal_based_resource_maximum_and_minimum(
@@ -129,14 +130,25 @@ class TradeAssistant:
         return percentage
 
     def trade_technology_to_the_bank(
-            self, offer_value: int, request_resource: str, request_value: int, player_index: int
+            self, offer_value: int, request_resource: str, request_value: int, player_index: int, **kwargs
             ):
+        from_server = kwargs.get("from_server", False)
         player = config.app.players[player_index]
 
-        if player.technology - offer_value > 0:
-            setattr(player, request_resource, getattr(player, request_resource) + request_value)
-            player.technology -= offer_value
+        if player.stock["technology"] - offer_value > 0:
+            # setattr(player, request_resource, getattr(player, request_resource) + request_value)
+            player.stock[request_resource] = player.stock[request_resource] + request_value
+            player.stock["technology"] -= offer_value
 
             # print (f"trade_technology_to_the_bank: player: {player.name}, request:{request_resource}/{request_value}, for {offer_value} of technologyy")
         else:
-            event_text.text = f"not enough technology for the deal!"
+            event_text.set_text(f"not enough technology for the deal!", sender=player_index)
+
+        if not from_server:
+            config.app.game_client.send_message({
+                "f": "trade_technology_to_the_bank",
+                "offer_value": offer_value,
+                "request_resource": request_resource,
+                "request_value": request_value,
+                "player_index": player_index
+                })

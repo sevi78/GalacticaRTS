@@ -15,8 +15,8 @@ TEXT_HEIGHT = 30
 
 
 class BuildingEdit(EditorBase):
-    def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
-        EditorBase.__init__(self, win, x, y, width, height, isSubWidget=False, **kwargs)
+    def __init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs):
+        EditorBase.__init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs)
 
         #  widgets
         self.input_boxes_value = []
@@ -105,7 +105,7 @@ class BuildingEdit(EditorBase):
                         y=input_box_value.world_y,
                         width=self.buttonsize,
                         height=self.buttonsize,
-                        isSubWidget=False,
+                        is_sub_widget=False,
                         image=pygame.transform.scale(
                                 get_image("arrow-left.png"), (self.buttonsize, self.buttonsize)),
                         frame_color=self.frame_color,
@@ -121,7 +121,7 @@ class BuildingEdit(EditorBase):
                         y=input_box_value.world_y,
                         width=self.buttonsize,
                         height=self.buttonsize,
-                        isSubWidget=False,
+                        is_sub_widget=False,
                         image=pygame.transform.scale(
                                 get_image("arrow-right.png"), (self.buttonsize, self.buttonsize)),
                         frame_color=self.frame_color,

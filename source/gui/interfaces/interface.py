@@ -235,7 +235,7 @@ class Interface(EditorBase):
             self.sliders[key].set_value(getattr(self.obj, key))
 
     def set_obj_values(self):
-        if self._hidden:
+        if self._hidden or self._disabled:
             return
 
         data = self.get_slider_data()

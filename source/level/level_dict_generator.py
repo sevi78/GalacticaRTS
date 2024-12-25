@@ -338,7 +338,7 @@ class LevelDictGenerator:
         else:
             alien_population = 0
 
-        owner = random.randint(-1, config.players)
+        owner = random.randint(-1, config.app.level_handler.data["globals"]["players"])
         if owner == 0:
             owner = -1
 

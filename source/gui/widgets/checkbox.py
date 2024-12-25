@@ -5,7 +5,7 @@ import pygame
 from source.configuration.game_config import config
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.handlers.mouse_handler import mouse_handler, MouseState
-from source.multimedia_library.images import get_image
+from source.multimedia_library.images import get_image, scale_image_cached
 
 BUTTON_SIZE = 30
 FRAME_THICKNESS = 2
@@ -25,24 +25,24 @@ class Checkbox(ImageButton):
         self.image_name = kwargs.get("image_name", None)
         self.button_size = kwargs.get("button_size", BUTTON_SIZE)
 
-        self.image_check = pygame.transform.scale(
+        self.image_check = scale_image_cached(
                 get_image("check.png"), (self.button_size * .7, self.button_size * .7))
-        self.image_uncheck = pygame.transform.scale(
+        self.image_uncheck = scale_image_cached(
                 get_image("uncheck.png"), (self.button_size, self.button_size))
 
         if self.image_name:
-            self.image = pygame.transform.scale(get_image(self.image_name), (self.button_size, self.button_size))
+            self.image = scale_image_cached(get_image(self.image_name), (self.button_size, self.button_size))
 
         if not self.image:
             try:
-                self.image = pygame.transform.scale(
+                self.image = scale_image_cached(
                         get_image(self.key + "_25x25.png"), (self.button_size, self.button_size))
             except KeyError:
                 try:
-                    self.image = pygame.transform.scale(
+                    self.image = scale_image_cached(
                             get_image(self.key + ".png"), (self.button_size, self.button_size))
                 except KeyError:
-                    self.image = pygame.transform.scale(
+                    self.image = scale_image_cached(
                             get_image("no_icon.png"), (self.button_size, self.button_size))
 
         self.image_raw = copy.copy(self.image)

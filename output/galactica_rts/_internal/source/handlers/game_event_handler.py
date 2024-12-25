@@ -2,12 +2,13 @@ import time
 
 from source.game_play.game_events import GameEvent
 from source.handlers.file_handler import load_file
+from source.handlers.time_handler import time_handler
 from source.text.info_panel_text_generator import info_panel_text_generator
 
 
 # def create_random_event(self):
 #     if self.event_time > self.random_event_time:
-#         self.random_event_time += random.randint(self.min_intervall, self.intervall) * config.game_speed
+#         self.random_event_time += random.randint(self.min_intervall, self.intervall) * time_handler.game_speed
 #         event = GameEvent(
 #             name="alien_deal_random",
 #             title="Deal Offer",
@@ -23,7 +24,7 @@ from source.text.info_panel_text_generator import info_panel_text_generator
 #         self.set_game_event(event)
 
 
-class GameEventHandler():
+class GameEventHandler:
     def __init__(self, data, app):
         # intitialize variables
         self.level = 0
@@ -31,7 +32,7 @@ class GameEventHandler():
         self.app = app
         self.game_event_interval = 0
         self.update_interval = data.get("update_interval")
-        self.start_time = time.time()
+        self.start_time = time_handler.time
         self.event_time = 0
         self.goal = {}
         self.goal_success = {}
@@ -52,7 +53,7 @@ class GameEventHandler():
                 end_text="GOOD LUCK !",
                 functions=None,
                 condition=None,
-                id=len(self.game_events.keys())
+                id_=len(self.game_events.keys())
                 )
 
         self.game_events["end"] = GameEvent(
@@ -62,7 +63,7 @@ class GameEventHandler():
                 end_text="make it better next time!  RESTART?!",
                 functions={"yes": "restart_game", "no": "end_game"},
                 condition=None,
-                id=len(self.game_events.keys())
+                id_=len(self.game_events.keys())
                 )
 
         self.event_cue.append(self.game_events["start"])
@@ -121,15 +122,15 @@ class GameEventHandler():
                 self.event_cue.pop(0)
 
         # check for update interval
-        if not time.time() - self.start_time > self.update_interval:
+        if not time_handler.time - self.start_time > self.update_interval:
             return
 
         # set event_time
-        self.event_time = time.time() - self.start_time
+        self.event_time = time_handler.time - self.start_time
 
         # activate timed event
         if self.event_time > self.game_event_interval:
-            self.start_time = time.time()
+            self.start_time = time_handler.time
             self.activate_timed_events()
 
         self.evaluate_goal()
@@ -155,7 +156,8 @@ class GameEventHandler():
         for key, value in self.goal.items():
             # evaluate the goals: check if certain resource is > value
             if key in self.resources:
-                player_value = eval(f"self.app.player.{key}")
+                # player_value = eval(f"self.app.player.stock[{key}]")
+                player_value = self.app.player.stock[key]
                 if player_value > value:
                     self.goal_success[key] = True
                     body += f"your {key} is greater than {value} "
@@ -190,7 +192,7 @@ class GameEventHandler():
                         end_text="",
                         functions={"yes": "load_next_level", "no": "update_level_success"},
                         condition="",
-                        id=len(self.game_events.keys())
+                        id_=len(self.game_events.keys())
                         )
                 self.event_cue.append(self.game_events[f"goal{self.level}"])
                 self.app.event_panel.set_game_event(self.game_events[f"goal{self.level}"])
@@ -210,14 +212,3 @@ class GameEventHandler():
     def activate_timed_events(self):
         pass
         # print (f"activating timed event:")
-
-
-def main():
-    game_event_handler = GameEventHandler(data=load_file("game_event_handler.json", "config"))
-    run = True
-    while run:
-        game_event_handler.update()
-
-
-if __name__ == "__main__":
-    main()

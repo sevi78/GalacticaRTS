@@ -1,7 +1,8 @@
 import math
-import time
 
 import pygame
+
+from source.handlers.time_handler import time_handler
 
 
 def draw_arc_with_dashes_original(
@@ -93,24 +94,24 @@ def main():
     pygame.init()
     win = pygame.display.set_mode((600, 600))
     test_loops = 1000000
-    start_original = time.time()
+    start_original = time_handler.time
     for i in range(test_loops):
         draw_arc_with_dashes_original(win, (
             100, 100, 100), pygame.Rect(10, 10, 100, 100), 90, 180, 20, dash_length=10, width=1)
-    end_original = time.time()
+    end_original = time_handler.time
     print(f"Original: {end_original - start_original} seconds for {test_loops} loops")
 
-    start_codium = time.time()
+    start_codium = time_handler.time
     for i in range(test_loops):
         draw_arc_with_dashes(win, (100, 100, 100), pygame.Rect(10, 10, 100, 100), 90, 180, 20, dash_length=10, width=1)
-    end_codium = time.time()
+    end_codium = time_handler.time
     print(f"Codium: {end_codium - start_codium} seconds for {test_loops} loops")
 
-    start_copilot = time.time()
+    start_copilot = time_handler.time
     for i in range(test_loops):
         draw_arc_with_dashes_copilot(win, (
             100, 100, 100), pygame.Rect(10, 10, 100, 100), 90, 180, 20, dash_length=10, width=1)
-    end_copilot = time.time()
+    end_copilot = time_handler.time
     print(f"Copilot: {end_copilot - start_copilot} seconds for {test_loops} loops")
 
 

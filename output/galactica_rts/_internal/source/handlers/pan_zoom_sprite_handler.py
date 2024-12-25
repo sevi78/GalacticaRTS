@@ -1,10 +1,9 @@
-import threading
 import pygame
 from pygame.sprite import LayeredUpdates
 
 from source.configuration.game_config import config
-from source.gui.lod import level_of_detail
 from source.gui.container.container_widget import ContainerWidgetItem, WIDGET_SIZE
+from source.gui.lod import level_of_detail
 from source.handlers import widget_handler
 from source.handlers.widget_handler import WidgetHandler
 from source.multimedia_library.images import get_image, get_gif_frames
@@ -76,11 +75,11 @@ class SpriteGroups:  # original
 
 
         """
-        filter = kwargs.get("filter", [])
+        filter_ = kwargs.get("filter", [])
         lists = kwargs.get("lists", ["planets", "ships", "ufos", "collectable_items", "celestial_objects"])
 
-        if filter:
-            lists -= filter
+        if filter_:
+            lists -= filter_
 
         for list_name in lists:
             if hasattr(self, list_name):
@@ -91,6 +90,14 @@ class SpriteGroups:  # original
         return None
 
     def get_nearest_obj_by_type(self, sprite_group, key, caller):
+        """
+        returns the nearest obj:
+
+        params:
+        sprite_groups: the sprite_group to search for
+        key: the type of the obj, like moon sun or planet
+        caller: the reference object to calculate the distance
+        """
         objects = [obj for obj in sprite_group if obj.type == key]
         if objects:
             return min(objects, key=lambda obj: pygame.math.Vector2(obj.rect.center).distance_to(caller.rect.center))
@@ -102,12 +109,47 @@ class SpriteGroups:  # original
                 obj: pygame.math.Vector2(obj.rect.center).distance_to(caller.rect.center))
         return None
 
-    def convert_sprite_groups_to_image_widget_list(self, sprite_group_name, sort_by=None, reverse=True) -> list:
-        # If a sort_by attribute is provided, sort the sprite_group by that attribute
-        sprite_group = getattr(self, sprite_group_name)
-        if sort_by is not None:
-            sprite_group = sorted(sprite_group, key=lambda x: getattr(x, sort_by), reverse=reverse)
+    def sort_sprites_by_distance(self, sprite_group, caller):
+        if sprite_group:
+            return sorted(sprite_group, key=lambda
+                obj: pygame.math.Vector2(obj.rect.center).distance_to(caller.rect.center))
+        return []
 
+    def convert_sprite_groups_to_container_widget_items_list(
+            self, sprite_group_name, sort_by=None, reverse=True, **kwargs
+            ) -> list:
+        # If a sort_by attribute is provided, sort the sprite_group by that attribute
+        sprite_group = getattr(sprite_groups, sprite_group_name)
+
+        if config.show_human_player_only:
+            # Create a new SpriteGroup with only human player sprites
+            human_player_sprites = [sprite for sprite in sprite_group if sprite.owner == config.app.game_client.id]
+
+            # Create a new SpriteGroup with the filtered sprites
+            new_sprite_group = type(sprite_group)()  # Create a new instance of the same SpriteGroup type
+            for sprite in human_player_sprites:
+                new_sprite_group.add(sprite)
+
+            sprite_group = new_sprite_group
+
+        if sort_by is not None:
+            # Convert sprite_group to a list for sorting
+            sprite_list = sprite_group.sprites()
+
+            if hasattr(sprite_list[0].economy_agent, sort_by):
+                sorted_sprites = sorted(sprite_list, key=lambda x: getattr(x.economy_agent, sort_by), reverse=reverse)
+            else:
+                sorted_sprites = sorted(sprite_list, key=lambda x: getattr(x, sort_by), reverse=reverse)
+
+            # Create a new sorted SpriteGroup
+            sorted_sprite_group = type(sprite_group)()
+            for sprite in sorted_sprites:
+                sorted_sprite_group.add(sprite)
+
+            sprite_group = sorted_sprite_group
+
+        item_buttons = kwargs.get("item_buttons", {})
+        parent = kwargs.get("parent", None)
         return [ContainerWidgetItem(
                 config.app.win,
                 0,
@@ -116,7 +158,9 @@ class SpriteGroups:  # original
                 WIDGET_SIZE,
                 image=get_image(_.image_name) if not _.image_name.endswith(".gif") else get_gif_frames(_.image_name)[0],
                 obj=_,
-                index=index + 1)
+                index=index + 1,
+                item_buttons=item_buttons,
+                parent=parent)
             for index, _ in enumerate(sprite_group)]
 
     def listen(self, events):

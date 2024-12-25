@@ -1,6 +1,7 @@
 import pygame as pg
 
 from source.configuration.game_config import config
+from source.gui.event_text import event_text
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.handlers.color_handler import colors
 
@@ -11,7 +12,7 @@ FONTSIZE = 32
 
 class InputBox(WidgetBase):
     def __init__(self, win, x, y, w, h, text, **kwargs):
-        WidgetBase.__init__(self, win, x, y, w, h, isSubWidget=False, **kwargs)
+        WidgetBase.__init__(self, win, x, y, w, h, is_sub_widget=False, **kwargs)
 
         self.win = win
         self.rect = pg.Rect(x, y, w, h)
@@ -28,6 +29,10 @@ class InputBox(WidgetBase):
         self.text_input_type = kwargs.get("text_input_type", str)
         self.property = "input_box"
         self.draw_frame = kwargs.get("draw_frame", True)
+        self.delete_text_on_first_input = kwargs.get("delete_text_on_first_input", False)
+        self.max_letters = kwargs.get("max_letters", None)
+        self.send_text_to_server = kwargs.get("send_text_to_server", False)
+        self.input_count = 0
         self.kwargs = kwargs
 
         self.hide()
@@ -81,16 +86,31 @@ class InputBox(WidgetBase):
             if event.type == pg.KEYDOWN:
                 if self.active:
                     if event.key == pg.K_RETURN:
+                        if self.send_text_to_server:
+                            config.app.game_client.send_message({"f": "send_text", "text": f"{config.app.players[config.app.game_client.id].name}:   {self.text}"})
+                        event_text.set_text(self.text)
                         self.text = ''
                     elif event.key == pg.K_BACKSPACE:
                         self.text = self.text[:-1]
                     else:
+                        if self.delete_text_on_first_input:
+                            if self.input_count == 0:
+                                self.text = ''
+                                self.input_count += 1
+
                         if self.text_input_type == int:
                             if event.unicode.isdigit() or (event.unicode == '-' and len(self.text) == 0):
-                                self.text += event.unicode
+                                if len(self.text) < self.max_letters:
+                                    self.text += event.unicode
+
                         elif self.text_input_type == str:
                             if event.unicode.isalpha():
+                                if len(self.text) < self.max_letters:
+                                    self.text += event.unicode
+                        elif self.text_input_type == None:
+                            if len(self.text) < self.max_letters:
                                 self.text += event.unicode
+
                     # Re-render the text.
                     self.txt_surface = self.font.render(self.text, True, self.color)
 

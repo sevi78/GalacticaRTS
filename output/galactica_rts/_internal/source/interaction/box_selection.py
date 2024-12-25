@@ -115,7 +115,12 @@ class BoxSelection:
         that they are not selected.
         """
         # select or deselect
-        [selected.select(True) for selected in self.selected_objects]
+        if config.app.game_client.connected:
+            [selected.select(True) for selected in self.selected_objects if selected.owner == config.app.game_client.id]
+        else:
+            [selected.select(True) for selected in self.selected_objects if
+             selected.owner == config.app.players[config.player].owner]
+
         [other.select(False) for other in self.selectable_objects if
          other not in self.selected_objects and other != config.app.ship]
 

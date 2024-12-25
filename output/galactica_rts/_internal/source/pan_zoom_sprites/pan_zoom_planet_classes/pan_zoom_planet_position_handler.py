@@ -33,18 +33,18 @@ class PanZoomPlanetPositionHandler:
         self.image = pygame.transform.scale(self.image_raw, new_size)
 
         # set new size
-        self.setWidth(new_size[0] * self.get_zoom())
-        self.setHeight(new_size[1] * self.get_zoom())
+        self.set_screen_width(new_size[0] * self.get_zoom())
+        self.set_screen_height(new_size[1] * self.get_zoom())
 
     def set_position(self, pos):
         self.screen_x = pos[0]
         self.screen_y = pos[1]
         self.set_center()
 
-    def setWidth(self, width):
+    def set_screen_width(self, width):
         self.screen_width = width
 
-    def setHeight(self, height):
+    def set_screen_height(self, height):
         self.screen_height = height
 
     def set_center(self):

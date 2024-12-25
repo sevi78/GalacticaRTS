@@ -3,7 +3,8 @@ import pygame
 from source.editors.editor_base.editor_base import EditorBase
 from source.editors.editor_base.editor_config import TOP_SPACING
 from source.gui.widgets.buttons.image_button import ImageButton
-from source.multimedia_library.images import get_image, filter_icons
+from source.handlers.pan_zoom_sprite_handler import sprite_groups
+from source.multimedia_library.images import get_image, filter_icons, scale_image_cached
 from source.trading.market import market
 
 BUTTON_FONT_SIZE = 15
@@ -37,7 +38,7 @@ class FilterWidget(EditorBase):
                     height=button_size,
                     is_sub_widget=False,
                     parent=self,
-                    image=pygame.transform.scale(get_image(filter_icons[key]), (button_size, button_size)),
+                    image=scale_image_cached(get_image(filter_icons[key]), (button_size, button_size)),
                     tooltip=key,
                     frame_color=self.frame_color,
                     moveable=False,
@@ -87,7 +88,7 @@ class FilterWidget(EditorBase):
 
         if not self.parent.name == "deal_container":
             # Sort the list of widgets based on the specified key (attribute) in descending order
-            sorted_widgets = market.convert_sprite_groups_to_container_widget_items_list(
+            sorted_widgets = sprite_groups.convert_sprite_groups_to_container_widget_items_list(
                     self.list_name,
                     sort_by=key,
                     reverse=getattr(self, key)

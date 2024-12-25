@@ -93,10 +93,6 @@ class GarbageHandler:
         mem_usage_in_MB = mem_info.rss / (1024 ** 2)
         return mem_usage_in_MB
 
-    import gc
-    import sys
-    import inspect
-
     def show_references(self, obj, max_depth=3, depth=0):
         """
         Show all references to the given object.
@@ -125,9 +121,6 @@ class GarbageHandler:
                 else:
                     # Recursively show references for the referrer
                     self.show_references(ref, max_depth, depth + 1)
-
-
-
 
 
 garbage_handler = GarbageHandler()

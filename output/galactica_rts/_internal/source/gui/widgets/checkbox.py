@@ -13,8 +13,8 @@ BORDER_RADIUS = 5
 
 
 class Checkbox(ImageButton):
-    def __init__(self, win, x, y, width, height, isSubWidget, **kwargs):
-        ImageButton.__init__(self, win, x, y, width, height, isSubWidget, **kwargs)
+    def __init__(self, win, x, y, width, height, is_sub_widget, **kwargs):
+        ImageButton.__init__(self, win, x, y, width, height, is_sub_widget, **kwargs)
 
         self.name = kwargs.get("name")
         self.parent = kwargs.get("parent")

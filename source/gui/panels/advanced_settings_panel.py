@@ -4,7 +4,7 @@ from source.configuration.game_config import config
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.handlers.color_handler import colors
-from source.multimedia_library.images import get_image
+from source.multimedia_library.images import get_image, scale_image_cached
 from source.text.info_panel_text_generator import info_panel_text_generator
 
 
@@ -50,7 +50,7 @@ class AdvancedSettingsPanel(WidgetBase):
                 height=self.icon_size,
                 is_sub_widget=False,
                 parent=self,
-                image=pygame.transform.scale(get_image("autopilot.png"), (25, 25)),
+                image=scale_image_cached(get_image("autopilot.png"), (25, 25)),
                 tooltip="open auto economy edit queue edit",
                 frame_color=self.frame_color,
                 moveable=False,
@@ -67,7 +67,7 @@ class AdvancedSettingsPanel(WidgetBase):
                 height=self.icon_size,
                 is_sub_widget=False,
                 parent=self,
-                image=pygame.transform.scale(get_image("level_icon.png"), (25, 25)),
+                image=scale_image_cached(get_image("level_icon.png"), (25, 25)),
                 tooltip="open level select",
                 frame_color=self.frame_color,
                 moveable=False,
@@ -84,7 +84,7 @@ class AdvancedSettingsPanel(WidgetBase):
                 height=self.icon_size,
                 is_sub_widget=False,
                 parent=self,
-                image=pygame.transform.scale(get_image("level_edit_icon.png"), (25, 25)),
+                image=scale_image_cached(get_image("level_edit_icon.png"), (25, 25)),
                 tooltip="open level edit",
                 frame_color=self.frame_color,
                 moveable=False,
@@ -101,7 +101,7 @@ class AdvancedSettingsPanel(WidgetBase):
                 height=self.icon_size,
                 is_sub_widget=False,
                 parent=self,
-                image=pygame.transform.scale(get_image("planet_edit.png"), (25, 25)),
+                image=scale_image_cached(get_image("planet_edit.png"), (25, 25)),
                 tooltip="open planet edit",
                 frame_color=self.frame_color,
                 moveable=False,
@@ -118,7 +118,7 @@ class AdvancedSettingsPanel(WidgetBase):
                 height=self.icon_size,
                 is_sub_widget=False,
                 parent=self,
-                image=pygame.transform.scale(get_image("building_icon.png"), (25, 25)),
+                image=scale_image_cached(get_image("building_icon.png"), (25, 25)),
                 tooltip="open building edit",
                 frame_color=self.frame_color,
                 moveable=False,
@@ -135,7 +135,7 @@ class AdvancedSettingsPanel(WidgetBase):
                 height=self.icon_size,
                 is_sub_widget=False,
                 parent=self,
-                image=pygame.transform.scale(get_image("debug_icon.png"), (25, 25)),
+                image=scale_image_cached(get_image("debug_icon.png"), (25, 25)),
                 tooltip="open debug edit",
                 frame_color=self.frame_color,
                 moveable=False,
@@ -152,7 +152,7 @@ class AdvancedSettingsPanel(WidgetBase):
                 height=self.icon_size,
                 is_sub_widget=False,
                 parent=self,
-                image=pygame.transform.scale(get_image("gameplay_settings_icon.png"), (25, 25)),
+                image=scale_image_cached(get_image("gameplay_settings_icon.png"), (25, 25)),
                 tooltip="open enemy handler edit",
                 frame_color=self.frame_color,
                 moveable=False,
@@ -169,7 +169,7 @@ class AdvancedSettingsPanel(WidgetBase):
                 height=self.icon_size,
                 is_sub_widget=False,
                 parent=self,
-                image=pygame.transform.scale(
+                image=scale_image_cached(
                         get_image("ship_edit.png"), (25, 25)),
                 tooltip="open ship edit",
                 frame_color=self.frame_color,
@@ -187,7 +187,7 @@ class AdvancedSettingsPanel(WidgetBase):
                 height=self.icon_size,
                 is_sub_widget=False,
                 parent=self,
-                image=pygame.transform.scale(get_image("settings_40x40.png"), (25, 25)),
+                image=scale_image_cached(get_image("settings_40x40.png"), (25, 25)),
                 tooltip="open settings menu",
                 frame_color=self.frame_color,
                 moveable=False,

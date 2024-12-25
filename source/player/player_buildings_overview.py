@@ -7,7 +7,7 @@ from source.editors.editor_base.editor_config import TOP_SPACING
 from source.factories.building_factory import building_factory
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.handlers.color_handler import get_average_color, colors, dim_color
-from source.multimedia_library.images import get_image
+from source.multimedia_library.images import get_image, scale_image_cached
 
 
 class PlayerBuildingsOverview(EditorBase):
@@ -53,15 +53,16 @@ class PlayerBuildingsOverview(EditorBase):
         self.hide()
         self.create_buttons()
 
-
     def set_player_index(self, player_index_):
         self.player_index = player_index_
         self.title_text = config.app.players[self.player_index].name
         self.buildings = config.app.players[self.player_index].get_all_buildings()
 
-    def set_buildings(self, buildings:list, planet_name):
-        self.buildings = buildings
-        self.title_text = planet_name
+    # def set_buildings(self, planet: PanZoomPlanet):
+    #     self.planet = planet
+    #     self.buildings = planet.economy_agent.buildings
+    #     self.title_text = planet.name
+
     def create_buttons(self):
         categories = building_factory.get_all_possible_categories()
         categories.remove("ship")
@@ -82,7 +83,7 @@ class PlayerBuildingsOverview(EditorBase):
                     height=button_size,
                     is_sub_widget=False,
                     parent=self,
-                    image=pygame.transform.scale(get_image(image_name), (button_size, button_size)),
+                    image=scale_image_cached(get_image(image_name), (button_size, button_size)),
                     tooltip=i,
                     info_text="",
                     frame_color=self.frame_color,
@@ -113,7 +114,7 @@ class PlayerBuildingsOverview(EditorBase):
 
     def draw_bar_charts(self):  # with sub levels
         player = config.app.players[self.player_index]
-        all_buildings = self.buildings#player.get_all_buildings()
+        all_buildings = self.buildings  # player.get_all_buildings()
         all_buildings_amount = len(all_buildings)
 
         for button in self.buttons:
@@ -178,7 +179,7 @@ class PlayerBuildingsOverview(EditorBase):
             the drawing should be below all other items
         """
         player = config.app.players[self.player_index]
-        all_buildings = self.buildings#player.get_all_buildings()
+        all_buildings = self.buildings  # player.get_all_buildings()
         all_buildings_amount = len(all_buildings)
 
         y = self.world_y + self.max_chart_height + 130  # Adjust y position to be below other drawings
@@ -197,7 +198,7 @@ class PlayerBuildingsOverview(EditorBase):
                             height=button_size,
                             is_sub_widget=False,
                             parent=self,
-                            image=pygame.transform.scale(get_image(image_name), (button_size, button_size)),
+                            image=scale_image_cached(get_image(image_name), (button_size, button_size)),
                             tooltip=button.name,
                             info_text="",
                             frame_color=self.frame_color,
@@ -227,6 +228,8 @@ class PlayerBuildingsOverview(EditorBase):
                 # draw charts
                 category = button.name
                 possible_buildings = building_factory.get_building_names(category)
+                best_buildings = []
+                building_production_scores_sums = {key: 0 for key in building_factory.get_all_building_names()}
 
                 for building in possible_buildings:
                     # get amount of this building
@@ -250,6 +253,57 @@ class PlayerBuildingsOverview(EditorBase):
                                     button.world_width / 3
                                     ),
                             0,
+                            3
+                            )
+
+                    player = config.app.players[self.player_index]
+                    best_buildings = []
+
+                    all_planets = player.get_all_planets()
+                    chart_width = 0
+                    if all_planets:
+                        building_production_scores_sums = {
+                            planet.name: planet.economy_agent.building_production_scores_sums for planet in
+                            player.get_all_planets()}
+
+                        summed_building_production_scores_average = {}
+                        min_value = 100.0
+                        max_value = 0.0
+                        lowest_production_score_keys = []
+
+                        for planet_name, building_production_scores_sum in building_production_scores_sums.items():
+                            for key, value in building_production_scores_sum.items():
+                                if key == building:
+                                    if value < min_value:
+                                        min_value = value
+                                    elif value > max_value:
+                                        max_value = value
+
+                        c = 0
+                        for planet_name, building_production_scores_sum in building_production_scores_sums.items():
+                            for key, value in building_production_scores_sum.items():
+                                if key == building:
+                                    chart_width += value
+                                    c += 1
+                                    if value == min_value:
+                                        if not key in lowest_production_score_keys:
+                                            lowest_production_score_keys.append(key)
+
+                        chart_width /= c
+                        best_buildings = lowest_production_score_keys
+                        color = pygame.color.THECOLORS.get("red") if building in best_buildings else pygame.color.THECOLORS.get("orange")
+
+                    # sum_score
+                    pygame.draw.rect(
+                            self.win,
+                            color,
+                            pygame.Rect(
+                                    self.world_x + button_size + self.text_spacing * 2,
+                                    y + button.world_width / 2,
+                                    chart_width,
+                                    button.world_width / 3
+                                    ),
+                            1,
                             3
                             )
 

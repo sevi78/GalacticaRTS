@@ -1,7 +1,6 @@
-import functools
+from functools import lru_cache
 
 import pygame
-from functools import lru_cache
 
 from source.handlers.file_handler import soundpath
 

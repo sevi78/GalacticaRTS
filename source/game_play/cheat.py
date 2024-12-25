@@ -39,18 +39,15 @@ class Cheat:
             return
 
         for i in planet_factory.get_all_planets(["planet", "moon"]):
-            i.buildings.append(weapon)
+            i.economy_agent.buildings.append(weapon)
 
     def cheat_population(self, value):
         for i in sprite_groups.planets:
-            i.population += value
+            i.economy_agent.population += value
 
     def cheat_resources(self, value):
-        self.player.energy += value
-        self.player.food += value
-        self.player.minerals += value
-        self.player.water += value
-        self.player.technology += value
+        for key, v in self.player.stock.items():
+            self.player.stock[key] += value
 
     def cheat_resource(self, resource, value, **kwargs):
 
@@ -60,11 +57,13 @@ class Cheat:
         player_index = kwargs.get("player_index", None)
 
         if player_index is not None:
-            setattr(self.players[player_index], resource, getattr(self.players[player_index], resource) + value)
+            # setattr(self.players[player_index], resource, getattr(self.players[player_index], resource) + value)
+            self.players[player_index].stock[resource] += value
 
         else:
             for i in self.players:
-                setattr(self.players[i], resource, getattr(self.players[i], resource) + value)
+                # setattr(self.players[i], resource, getattr(self.players[i], resource) + value)
+                self.players[i].stock[resource] += value
 
     def cheat_resources_and_population(self, value):
         self.player.energy += value
@@ -88,7 +87,7 @@ class Cheat:
         # self.selected_planet.buildings.append("missile")
 
         for i in sprite_groups.planets:
-            i.buildings.append("missile")
+            i.economy_agent.buildings.append("missile")
 
     def cheat_ufo(self):
         if not self.selected_planet:
@@ -102,11 +101,11 @@ class Cheat:
             self.level_select.update_icons()
 
     def cheat_all(self):
-        self.cheat_resources(10000)
-        self.cheat_ship()
-        self.cheat_population(10000)
-        self.explore_all()
-        self.cheat_level_success()
+        # self.cheat_resources(10000)
+        # self.cheat_ship()
+        self.cheat_population(10000.0)
+        # self.explore_all()
+        # self.cheat_level_success()
 
     def cheat(self, events):
         # ignore all inputs while any text input is active

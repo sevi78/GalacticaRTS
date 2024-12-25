@@ -1,7 +1,7 @@
 import pygame.display
 
 from source.configuration.game_config import config
-from source.draw.rect import draw_transparent_rounded_rect
+from source.draw.rectangle import draw_transparent_rounded_rect
 from source.factories.building_factory import building_factory
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
@@ -38,7 +38,7 @@ class BuildingButtonWidget(WidgetBase):
     Manages the positioning and layout of the buttons within the widget
 
     Methods:
-    __init__(self, win, x, y, width, height, app, isSubWidget=False, **kwargs): Initializes the BuildingButtonWidget
+    __init__(self, win, x, y, width, height, app, is_sub_widget=False, **kwargs): Initializes the BuildingButtonWidget
     object with the specified parameters and sets up the widget's properties and buttons.
     create_buttons(self): Creates the building buttons for each resource category and adds them to the widget.
     hide(self): Hides the widget and its buttons.
@@ -72,8 +72,8 @@ class BuildingButtonWidget(WidgetBase):
     sub_widget_height: The height of the subwidget within the parent widget.
     """
 
-    def __init__(self, win, x, y, width, height, app, isSubWidget=False, **kwargs):
-        WidgetBase.__init__(self, win, x, y, width, height, isSubWidget=False, **kwargs)
+    def __init__(self, win, x, y, width, height, app, is_sub_widget=False, **kwargs):
+        WidgetBase.__init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs)
         self.app = app
         self.max_width = 0
         self.max_height = 0
@@ -139,7 +139,7 @@ class BuildingButtonWidget(WidgetBase):
                 y=y,
                 width=width,
                 height=height,
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self,
                 image=pygame.transform.scale(get_image(image), (ICON_SIZE, ICON_SIZE)),
                 image_raw=get_image(image),
@@ -152,9 +152,10 @@ class BuildingButtonWidget(WidgetBase):
                 info_text=info_text,
                 name=name,
                 text=name,
-                textColours=(0, 0, 0),
+                text_color=(0, 0, 0),
                 font_size=0,
-                onClick=on_click)
+                on_click=on_click,
+                info_panel_alpha=kwargs.get("info_panel_alpha", 255))
 
         return button
 
@@ -165,11 +166,26 @@ class BuildingButtonWidget(WidgetBase):
         # resource buttons
         for resource in resource_categories:
             y = self.rect.y
-            resource_button = ImageButton(win=self.win, x=x, y=y, width=ICON_SIZE, height=ICON_SIZE, isSubWidget=False, parent=self,
-                    image=pygame.transform.scale(get_image(resource + '_25x25.png'), (
-                        ICON_SIZE, ICON_SIZE)), tooltip=resource,
-                    frame_color=self.frame_color, moveable=False, include_text=True, layer=self.layer, key=resource,
-                    info_text=None, name=resource, textColours=(0, 0, 0), font_size=0)
+            resource_button = ImageButton(
+                    win=self.win,
+                    x=x,
+                    y=y,
+                    width=ICON_SIZE,
+                    height=ICON_SIZE,
+                    is_sub_widget=False,
+                    parent=self,
+                    image=pygame.transform.scale(get_image(resource + '_25x25.png'),
+                            (ICON_SIZE, ICON_SIZE)),
+                    tooltip=resource,
+                    frame_color=self.frame_color,
+                    moveable=False,
+                    include_text=True,
+                    layer=self.layer,
+                    key=resource,
+                    info_text=None,
+                    name=resource,
+                    text_color=(0, 0, 0),
+                    font_size=0)
 
             self.resource_buttons.append(resource_button)
             self.buttons[resource] = resource_button
@@ -187,7 +203,8 @@ class BuildingButtonWidget(WidgetBase):
                         tooltip_generator.create_building_tooltip(building),
                         resource,
                         info_text,
-                        building
+                        building,
+                        info_panel_alpha=110
                         )
 
                 resource_button.children.append(building_button)
@@ -274,10 +291,10 @@ class BuildingButtonWidget(WidgetBase):
             if key_ == "mineral":   key_ = "minerals"
 
             if self.parent.name == "building panel":
-                if key_ not in self.app.selected_planet.possible_resources:
+                if key_ not in self.app.selected_planet.economy_agent.possible_resources:
                     resource_button.hide()
             else:
-                if key_ not in self.parent.possible_resources:
+                if key_ not in self.parent.economy_agent.possible_resources:
                     resource_button.hide()
 
         self.set_frame_height()
@@ -354,10 +371,10 @@ class BuildingButtonWidget(WidgetBase):
             if self.app.selected_planet:
                 # set correct y_position using sub_widget_height
                 self.sub_widget_height = 0
-                if "space harbor" in self.app.selected_planet.buildings:
+                if "space harbor" in self.app.selected_planet.economy_agent.buildings:
                     self.sub_widget_height += self.parent.sub_widget_height
 
-                if "particle accelerator" in self.app.selected_planet.buildings:
+                if "particle accelerator" in self.app.selected_planet.economy_agent.buildings:
                     self.sub_widget_height += self.parent.sub_widget_height
 
                 # make shure it gets drawn after building panel is reopened

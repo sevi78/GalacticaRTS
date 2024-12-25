@@ -18,6 +18,13 @@ class DefaultEdit(EditorBase):
 
         # set max_height, important to remove the default value of 200 after create_widgets() !!!
         # otherwise the display is terribly wrong !!
+
+        # be careful with the height! best give a height of 0 to make shure the save button is at the correct place !!
+        # its bullshit,i know but it works
+
+        # maybe use a editor like settings edit or something like that, copy paste it. specially the initialisation is depending !!
+
+        self.create_inputbox()
         self.max_height = 200
 
         # attach to parent
@@ -33,3 +40,4 @@ class DefaultEdit(EditorBase):
         if not self._hidden and not self._disabled:
             self.draw_frame()
             self.draw_text(self.world_x + self.text_spacing, self.world_y + TOP_SPACING + self.text_spacing, 200, 30, "DefaultEdit:")
+            self.inputbox.draw()

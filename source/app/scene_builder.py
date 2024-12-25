@@ -48,14 +48,14 @@ class SceneBuilder(EconomyParams, GameObjectStorage):
         spacing = 100
 
         self._ship = None
-        self.ship = self.ship_factory.create_ship("spaceship", center_x, center_y + 300, self, {})
+        self.ship = self.ship_factory.create_ship("spaceship", center_x, center_y + 300, self, {}, owner=0)
 
     @property
     def ship(self):
         return self._ship
 
     @ship.setter
-    def ship(self, value):
+    def ship(self, value):  # orig
         self._ship = value
         if value:
             if hasattr(self, "ship_edit"):

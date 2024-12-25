@@ -1,0 +1,19 @@
+{
+  "player": 2,
+  "image_name": "alien2.png",
+  "color": "orange",
+  "name": "bolk",
+  "species": "hungoldonts",
+  "energy": 1000,
+  "food": 1000,
+  "minerals": 1000,
+  "population": 0,
+  "technology": 1000,
+  "water": 1000,
+  "production_energy": 0,
+  "production_food": 0,
+  "production_minerals": 0,
+  "production_population": 0,
+  "production_technology": 0,
+  "production_water": 0
+}

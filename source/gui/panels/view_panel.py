@@ -5,7 +5,7 @@ from source.gui.widgets.buttons.image_button import ImageButton
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.handlers.color_handler import colors
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
-from source.multimedia_library.images import get_image, overblit_button_image
+from source.multimedia_library.images import get_image, overblit_button_image, scale_image_cached
 from source.text.info_panel_text_generator import info_panel_text_generator
 
 
@@ -35,6 +35,17 @@ class ViewPanel(WidgetBase):
         self.font = pygame.font.SysFont(config.font_name, self.font_size)
         self.max_height = self.get_screen_y() + self.surface_rect.height
 
+        # icons
+        self.buttons_icon = None
+        self.map_icon = None
+        self.show_event_text_icon = None
+        self.show_tooltip_icon = None
+        self.show_planet_names_icon = None
+        self.orbit_icon = None
+        self.cross_icon = None
+        self.view_explored_planets_icon = None
+        self.player_colors_icon = None
+
         self.create_icons()
 
         self.init = 0
@@ -48,7 +59,7 @@ class ViewPanel(WidgetBase):
                 height=self.icon_size,
                 is_sub_widget=False,
                 parent=self,
-                image=pygame.transform.scale(
+                image=scale_image_cached(
                         get_image("view_explored_planets_icon.png"), (25, 25)),
                 tooltip="show explored planets",
                 frame_color=self.frame_color,
@@ -66,7 +77,7 @@ class ViewPanel(WidgetBase):
                 height=self.icon_size,
                 is_sub_widget=False,
                 parent=self,
-                image=pygame.transform.scale(
+                image=scale_image_cached(
                         get_image("cross.png"), (25, 25)),
                 tooltip="show cross",
                 frame_color=self.frame_color,
@@ -83,7 +94,7 @@ class ViewPanel(WidgetBase):
                 height=self.icon_size,
                 is_sub_widget=False,
                 parent=self,
-                image=pygame.transform.scale(
+                image=scale_image_cached(
                         get_image("orbit_icon.png"), (25, 25)),
                 tooltip="show orbit",
                 frame_color=self.frame_color,
@@ -100,7 +111,7 @@ class ViewPanel(WidgetBase):
                 height=self.icon_size,
                 is_sub_widget=False,
                 parent=self,
-                image=pygame.transform.scale(
+                image=scale_image_cached(
                         get_image("planet_text_icon.png"), (25, 25)),
                 tooltip="show planet names",
                 frame_color=self.frame_color,
@@ -117,7 +128,7 @@ class ViewPanel(WidgetBase):
                 height=self.icon_size,
                 is_sub_widget=False,
                 parent=self,
-                image=pygame.transform.scale(
+                image=scale_image_cached(
                         get_image("text_icon.png"), (25, 25)),
                 tooltip="show tooltips",
                 frame_color=self.frame_color,
@@ -135,7 +146,7 @@ class ViewPanel(WidgetBase):
                 height=self.icon_size,
                 is_sub_widget=False,
                 parent=self,
-                image=pygame.transform.scale(
+                image=scale_image_cached(
                         get_image("text_icon.png"), (25, 25)),
                 tooltip="show event text",
                 frame_color=self.frame_color,
@@ -153,7 +164,7 @@ class ViewPanel(WidgetBase):
                 height=self.icon_size,
                 is_sub_widget=False,
                 parent=self,
-                image=pygame.transform.scale(
+                image=scale_image_cached(
                         get_image("map_icon.png"), (25, 25)),
                 tooltip="show map",
                 frame_color=self.frame_color,
@@ -170,7 +181,7 @@ class ViewPanel(WidgetBase):
                 height=self.icon_size,
                 is_sub_widget=False,
                 parent=self,
-                image=pygame.transform.scale(
+                image=scale_image_cached(
                         get_image("smile.png"), (25, 25)),
                 tooltip="show planet overview",
                 frame_color=self.frame_color,
@@ -187,7 +198,7 @@ class ViewPanel(WidgetBase):
                 height=self.icon_size,
                 is_sub_widget=False,
                 parent=self,
-                image=pygame.transform.scale(
+                image=scale_image_cached(
                         get_image("color_icon.png"), (25, 25)),
                 tooltip="show player colors",
                 frame_color=self.frame_color,

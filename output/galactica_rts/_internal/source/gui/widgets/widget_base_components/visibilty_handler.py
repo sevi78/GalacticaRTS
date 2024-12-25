@@ -2,14 +2,13 @@ from source.handlers.widget_handler import WidgetHandler
 
 
 class VisibilityHandler:
-    def __init__(self, isSubWidget=False, **kwargs):
-        self._isSubWidget = isSubWidget
+    def __init__(self, is_sub_widget=False, **kwargs):
+        self._is_sub_widget = is_sub_widget
         self._hidden = False
         self._disabled = False
-        self.layer = kwargs.get("layer", None)
-        self.layers = kwargs.get("layers", None)
+        self.layer = kwargs.get("layer", 9)
         self.widgets = []
-        if isSubWidget:
+        if is_sub_widget:
             self.hide()
 
     def set_visible(self):
@@ -25,10 +24,6 @@ class VisibilityHandler:
         for i in self.widgets:
             i.hide()
 
-        # if hasattr(self, "selectors"):
-        #     for i in self.selectors:
-        #         i.hide()
-
     def show(self):
         """shows self and its widgets
         """
@@ -36,27 +31,23 @@ class VisibilityHandler:
         for i in self.widgets:
             i.show()
 
-        # if hasattr(self, "selectors"):
-        #     for i in self.selectors:
-        #         i.show()
-
     def disable(self):
         self._disabled = True
 
     def enable(self):
         self._disabled = False
 
-    def isSubWidget(self):
-        return self._isSubWidget
+    def is_sub_widget(self):
+        return self._is_sub_widget
 
-    def setIsSubWidget(self, isSubWidget):
-        self._isSubWidget = isSubWidget
-        if isSubWidget:
-            WidgetHandler.removeWidget(self)
+    def set_is_sub_widget(self, is_sub_widget):
+        self._is_sub_widget = is_sub_widget
+        if is_sub_widget:
+            WidgetHandler.remove_widget(self)
         else:
-            WidgetHandler.addWidget(self)
+            WidgetHandler.add_widget(self)
 
-    def isVisible(self):
+    def is_visible(self):
         return not self._hidden
 
     def set_children_visible(self, value):

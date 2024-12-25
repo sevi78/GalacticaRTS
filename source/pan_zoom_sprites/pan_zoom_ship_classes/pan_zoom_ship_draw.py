@@ -1,17 +1,26 @@
-import random
-
 import pygame
+from pygame import Vector2
 
 from source.configuration.game_config import config
+from source.debug.function_disabler import disabler, auto_disable
+# from source.debug.function_disabler import disabler, auto_disable
 from source.draw.arrow import draw_arrows_on_line_from_start_to_end
-from source.gui.event_text import event_text
-from source.gui.lod import level_of_detail
+from source.factories.universe_factory import universe_factory
 from source.gui.widgets.progress_bar import ProgressBar
 from source.handlers.color_handler import colors
+from source.handlers.pan_zoom_handler import pan_zoom_handler
+from source.handlers.pan_zoom_sprite_handler import sprite_groups
+from source.math.line_intersect import interectLineCircle
+from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_classes import PanZoomGif
+from source.pan_zoom_sprites.rot_rect import RotRect
 
-STATE_IMAGE_SIZE = 27
 
-
+#
+# disabled_functions = ["draw_connections", "draw_selection"]
+# for i in disabled_functions:
+#     disabler.disable(i)
+#
+# @auto_disable
 class PanZoomShipDraw:
     def __init__(self, kwargs):
         self.frame_color = colors.frame_color
@@ -29,55 +38,89 @@ class PanZoomShipDraw:
                 parent=self
                 )
 
-    def flickering(self):
-        if not level_of_detail.inside_screen(self.get_screen_position()):
-            return
-        # make flickering relaod stream :))
-        r0 = random.randint(-4, 5)
-        r = random.randint(-3, 4)
-        r1 = random.randint(0, 17)
-        r2 = random.randint(0, 9)
+        # electro_discharge, used for energy reloading
+        x, y = pan_zoom_handler.screen_2_world(self.rect.centerx, self.rect.centery)
+        self.electro_discharge = PanZoomGif(
+                win=self.win,  # type: ignore
+                world_x=x,
+                world_y=y,
+                world_width=114,
+                world_height=64,
+                layer=self.layer,  # type: ignore
+                group=sprite_groups.energy_reloader,
+                gif_name="electro_discharge_croped.gif",
+                gif_index=0,
+                gif_animation_time=None,
+                loop_gif=True,
+                kill_after_gif_loop=False,
+                image_alpha=None,
+                rotation_angle=0,
+                movement_speed=0,
+                direction=Vector2(0, 0),
+                world_rect=universe_factory.world_rect,
+                align_image="center"
+                )
+        self.electro_discharge.visible = False
 
-        startpos = (self.rect.center[0] + r, self.rect.center[1] + r)
-        endpos = (self.energy_reloader.rect.center[0] + r0, self.energy_reloader.rect.center[1] + r0)
+        # rot_rect used for several positions like lefttop, aim point ect
+        self.rot_rect = RotRect(self.rect_raw)
+        self.rot_rect.add_point(Vector2(self.rot_rect.midtop.x, self.rot_rect.midtop.y - 200), "aim_point")
 
-        if r0 == 0:
-            return
+    def update_electro_discharge(self):
+        self.rot_rect.update(
+                x=self.rect.centerx,
+                y=self.rect.centery,
+                width=self.world_width * pan_zoom_handler.zoom,
+                height=self.world_height * pan_zoom_handler.zoom,
+                pivot=Vector2(self.rect.center),
+                angle=self.angle,
+                scale=pan_zoom_handler.zoom
+                )
 
-        if r == 3:
-            pygame.draw.line(surface=self.win, start_pos=startpos, end_pos=endpos,
-                    color=pygame.color.THECOLORS["yellow"], width=r2)
+        # check intersection
+        cpt = self.energy_reloader.rect.center  # centerpoint
+        radius = self.energy_reloader.rect.width / 2
+        intersection = interectLineCircle(self.rect.center, self.rot_rect.aim_point, cpt, radius)
+        # draw_intersection(self.win, cpt, intersection, self.rect.center, self.rot_rect.aim_point, radius)
 
-        if r == 7:
-            pygame.draw.line(surface=self.win, start_pos=startpos, end_pos=endpos,
-                    color=pygame.color.THECOLORS["red"], width=r1)
+        # Update electro discharge visibility
+        if (self.target_reached and len(intersection) == 2):
+            self.electro_discharge.visible = True
 
-        if r == 2:
-            pygame.draw.line(surface=self.win, start_pos=startpos, end_pos=endpos,
-                    color=pygame.color.THECOLORS["white"], width=r * 2)
+            # Update electro discharge position and rotation
+            x, y = pan_zoom_handler.screen_2_world(self.rot_rect.midtop[0], self.rot_rect.midtop[1])
+            self.electro_discharge.set_rotation_angle(self.angle + 90)
+            self.electro_discharge.set_position(x, y)
 
-        # pygame.mixer.Channel(2).play (sounds.electricity2)
-        # sounds.play_sound(sounds.electricity2, channel=self.sound_channel)
-        event_text.set_text("reloading spaceship: --- needs a lot of energy!", obj=self)
+        else:
+            self.electro_discharge.visible = False
 
     def draw_selection(self):
         """ this handles how the ship is displayed on screen:
-
             as a circle either in player color or in self.frame_color based on config.show_player_colors == True/False
         """
-        if config.show_player_colors:
-            pygame.draw.circle(self.win, self.player_color, self.rect.center, self.get_screen_width(), int(6 * self.get_zoom()))
-        else:
-            pygame.draw.circle(self.win, self.frame_color, self.rect.center, self.get_screen_width(), int(6 * self.get_zoom()))
+        # only draw selections of the local user
+        client_id = config.app.game_client.id
+        if not self.owner == client_id:
+            return
+
+        # get the coler to display
+        color = self.player_color if config.show_player_colors else self.frame_color
+
+        # draw it
+        pygame.draw.circle(self.win, color, self.rect.center, self.get_screen_width(), int(6 * pan_zoom_handler.get_zoom()))
 
     def draw_connections(self, target):
         """
         this calls draw_arrows_on_line_from_start_to_end
         """
+        client_id = config.app.game_client.id
+        if not self.owner == client_id:
+            return
 
         draw_arrows_on_line_from_start_to_end(
                 surf=self.win,
-                color=self.frame_color,
+                color=colors.ui_darker,
                 start_pos=self.rect.center,
                 end_pos=target.rect.center,
                 width=1,

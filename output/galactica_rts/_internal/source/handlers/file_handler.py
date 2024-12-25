@@ -136,6 +136,34 @@ def update_files(folder, category, key, value, **kwargs):
             write_file(file_name, folder, data)
 
 
+def update_level_files(folder, category, key, value):
+    # get path
+    path = os.path.join(abs_database_path() + os.sep + folder)
+
+    # search files
+    for file_name in os.listdir(path):
+        if file_name.endswith('.json'):
+
+            # open file
+            with open(os.path.join(path, file_name)) as json_file:
+                data = json.load(json_file)
+
+                # search for key
+                for k, v in data[category].items():
+                    # add key
+                    if not key in data[category][k]:
+
+                        data[category][k][key] = eval(value)
+
+                    else:
+                        text = f"changing: {category},{k},{data[category][k][key]} to {eval(value)}:"
+                        data[category][k][key] = eval(value)
+
+                        print(text)
+
+            write_file(file_name, folder, data)
+
+
 def compare_json(default, data, file_name, path=""):
     for key in default:
         if key not in data:
@@ -152,20 +180,20 @@ def compare_json(default, data, file_name, path=""):
 def abs_database_path():
     # gets the path to store the files: database at root
     dir_path = os.path.dirname(os.path.realpath(__file__))
-    abs_database_path = os.path.split(dir_path)[0].split("source")[0] + "database" + os.sep
-    return abs_database_path
+    abs_database_path_ = os.path.split(dir_path)[0].split("source")[0] + "database" + os.sep
+    return abs_database_path_
 
 
 def abs_level_path():
-    return (os.path.join(abs_database_path(), "levels"))
+    return os.path.join(abs_database_path(), "levels")
 
 
 def abs_games_path():
-    return (os.path.join(abs_database_path(), "games"))
+    return os.path.join(abs_database_path(), "games")
 
 
 def abs_players_path():
-    return (os.path.join(abs_database_path(), "players"))
+    return os.path.join(abs_database_path(), "players")
 
 
 def write_file(filename, folder, data):
@@ -206,8 +234,10 @@ def get_ships_list():
 
 
 def get_player_list():
-    file_list = [file for file in os.listdir(abs_players_path()) if file.startswith("player_")]
-    return file_list
+    file = load_file("players.json", "config")
+    # file_list = [file for file in os.listdir(abs_players_path()) if file.startswith("player_")]
+    return len(file.keys())
+    # return file_list
 
 
 def generate_json_filename_based_on_datetime(prefix):
@@ -226,13 +256,15 @@ def move_file_to_trash(file_path):
 def main():
     pass
     # update_json_files(load_file("level_0.json", folder="levels"))
-    # compare_json_files(abs_level_path(), load_file("level_0.json", folder="levels"))
+    compare_json_files(abs_level_path(), load_file("level_0.json", folder="levels"))
     # update_files("games", "ships", "owner", 0, None)
     # update_files("levels", "celestial_objects", "owner", 0, condition="data[category][k]['explored'] == True" )
     # update_files("levels", "celestial_objects", "owner", 1, condition="data[category][k]['alien_population'] > 0")
     # update_files("levels", "globals", "population_density", 50.0, condition=None)
     # compare_json_files(abs_level_path(), load_file("level_6.json", folder="levels_bk"))
-    update_files("levels", "celestial_objects", "buildings", [], condition="data[category][k]['buildings'] != []")
+    # update_files("levels", "celestial_objects", "buildings", [], condition="data[category][k]['buildings'] != []")
+    # update_files("levels", "celestial_objects", "buildings", [], condition="data[category][k]['buildings'] != []")
+    # update_level_files("levels", "ships", "energy_use", "data[category][k][key] / 10")
 
 
 if __name__ == "__main__":

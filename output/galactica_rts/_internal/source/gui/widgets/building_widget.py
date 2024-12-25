@@ -1,5 +1,4 @@
 import copy
-import time
 
 import pygame
 
@@ -8,10 +7,11 @@ from source.factories.weapon_factory import weapon_factory
 from source.gui.widgets.buttons.button import Button
 from source.gui.widgets.progress_bar import ProgressBar
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
-from source.handlers.image_handler import overblit_button_image
+from source.handlers.garbage_handler import garbage_handler
 from source.handlers.orbit_handler import set_orbit_object_id
 from source.handlers.pan_zoom_handler import pan_zoom_handler
-from source.multimedia_library.images import get_image
+from source.handlers.time_handler import time_handler
+from source.multimedia_library.images import get_image, overblit_button_image
 from source.multimedia_library.sounds import sounds
 
 PROGRESSBAR_UPDATE_RATE_IN_SECONDS = 0.1
@@ -131,6 +131,7 @@ class BuildingWidget(WidgetBase):
         self.immediately_build_cost = 0
         self.tooltip = kwargs.get("tooltip", "no tooltip set yet!")
         self.is_building = kwargs.get("is_building", True)
+        self.ship_names = kwargs.get("ship_names", [])
 
         # get the position and size
         self.win = pygame.display.get_surface()
@@ -157,7 +158,7 @@ class BuildingWidget(WidgetBase):
                 width=self.get_screen_height(),
                 height=self.get_screen_height(),
                 image=self.image,
-                onClick=lambda: self.function("do nothing"),
+                on_click=lambda: self.function("do nothing"),
                 transparent=True,
                 image_hover_surface_alpha=255,
                 parent=config.app,
@@ -168,10 +169,10 @@ class BuildingWidget(WidgetBase):
 
         # progress bar
         self.progress_bar_update_rate = PROGRESSBAR_UPDATE_RATE_IN_SECONDS
-        self.progress_bar_start_time = time.time()
+        self.progress_bar_start_time = time_handler.time
         self.progress_bar_width = kwargs.get("progress_bar_width", 100)
         self.progress_bar_height = kwargs.get("progress_bar_height", 10)
-        self.start_time = time.time()
+        self.start_time = time_handler.time
 
         self.progress_bar = ProgressBar(win=self.win,
                 x=self.dynamic_x + self.button.get_screen_width(),
@@ -180,7 +181,7 @@ class BuildingWidget(WidgetBase):
                 height=self.progress_bar_height,
                 progress=lambda: 0,
                 curved=True,
-                completedColour=self.frame_color, layer=self.layer, ignore_progress=True)
+                completed_color=self.frame_color, layer=self.layer, ignore_progress=True)
 
         self.surface_rect = pygame.Rect(self.dynamic_x, self.dynamic_y, self.get_screen_width(), self.get_screen_height())
 
@@ -199,10 +200,10 @@ class BuildingWidget(WidgetBase):
 
     def update_progressbar(self) -> None:
         # get game speed
-        game_speed = config.game_speed
+        game_speed = time_handler.game_speed
 
         # get current time
-        current_time = time.time()
+        current_time = time_handler.time
 
         # production time
         production_time = self.building_production_time
@@ -236,7 +237,6 @@ class BuildingWidget(WidgetBase):
             print(f"set_building_to_receiver: You can't build on this planet!: {self.receiver.name}")
             return
 
-        ships = ["spaceship", "cargoloader", "spacehunter", "spacestation"]
         # technology_upgrades = ["university"]
         planet_defence_upgrades = ["cannon", "missile"]
         weapons = None
@@ -246,17 +246,29 @@ class BuildingWidget(WidgetBase):
         sounds.play_sound("success", channel=7)
 
         # remove self from planets building cue:
-        self.receiver.building_cue -= 1
+        self.receiver.economy_agent.building_cue -= 1
 
-        # if it is a ship, no calculation has to be done, return
-        if self.name in ships:
-            x, y = pan_zoom_handler.screen_2_world(self.receiver.screen_x, self.receiver.screen_y)
-            ship = config.app.ship_factory.create_ship(self.name + "_30x30.png", x, y, config.app, {})
+        # if it is a ship, no calculation has to be done, return : name, x, y, parent, weapons, **kwargs):
+        if self.name in self.ship_names:
+            x, y = pan_zoom_handler.screen_2_world(self.receiver.rect.centerx, self.receiver.rect.centery)
+
+            # set autopilot true for all players except human player (0)
+            autopilot = self.receiver.owner != 0
+            ship = config.app.ship_factory.create_ship(
+                    self.name,
+                    x,
+                    y,
+                    config.app,
+                    {},
+                    data={"owner": self.receiver.owner, "autopilot": autopilot},
+                    owner=self.receiver.owner)
+
             set_orbit_object_id(ship, self.receiver.id)
+
             return
 
         if self.name in planet_defence_upgrades:
-            self.receiver.buildings.append(self.name)
+            self.receiver.economy_agent.buildings.append(self.name)
             return
 
         if weapons:
@@ -277,24 +289,24 @@ class BuildingWidget(WidgetBase):
                 return
 
         # append to receivers building list
-        self.receiver.buildings.append(self.name)
-        self.receiver.set_technology_upgrades(self.name)
+        self.receiver.economy_agent.buildings.append(self.name)
+        self.receiver.economy_agent.set_technology_upgrades(self.name)
 
         # set new value to receivers production
-        setattr(self.receiver, self.name, getattr(self.receiver, "production_" + self.key) - self.value)
+        # setattr(self.receiver, self.name, getattr(self.receiver, "production_" + self.key) - self.value)
 
         # set new value to player production
         player = config.app.players[self.receiver.owner]
-        setattr(player, self.name, getattr(player, self.key) - self.value)
+        # setattr(player, self.name, getattr(player, self.key) - self.value)
 
         # calculate production
-        self.receiver.set_population_limit()
-        self.receiver.calculate_production()
+        self.receiver.economy_agent.set_population_limit()
+        self.receiver.economy_agent.calculate_production()
         config.app.calculate_global_production(player)
         config.app.tooltip_instance.reset_tooltip(self)
 
         # # debug
-        # debug_text = f"lifetime of building widget: {self.name} was: {time.time() - self.start_time}, building_production time is:{self.building_production_time} at game_speed:{config.game_speed}"
+        # debug_text = f"lifetime of building widget: {self.name} was: {time_handler.time - self.start_time}, building_production time is:{self.building_production_time} at game_speed:{time_handler.game_speed}"
         # event_text.text = debug_text
         # config.app.info_panel.set_text(debug_text)
         # print(debug_text)
@@ -302,28 +314,49 @@ class BuildingWidget(WidgetBase):
     def function(self, arg):
         player = config.app.players[self.receiver.owner]
         config.tooltip_text = ""
-        if self.immediately_build_cost < player.technology and self.receiver.owner == config.player:
+        if self.immediately_build_cost < player.stock["technology"] and self.receiver.owner == config.player:
             self.build_immediately()
 
     def set_tooltip(self):
         self.button.tooltip = f"are you sure to build this {self.name} immediately? this will cost you {self.immediately_build_cost} technology units?{self.receiver}"
 
+    
+
     def build_immediately(self):
         """ !!! make shure the correct player is adressed!!!"""
+        if config.app.game_client.connected:
+            message = {
+                "f": "build_immediately",
+                "cue_id": self.cue_id
+                }
+
+            config.app.game_client.send_message(message)
+        else:
+            self.handle_build_immediately(self.cue_id)
+
+    def handle_build_immediately(self, cue_id: int):
+
         player = config.app.players[self.receiver.owner]
-        player.technology -= self.immediately_build_cost
+        player.stock["technology"] -= self.immediately_build_cost
         self.set_building_to_receiver()
         self.delete()
 
     def delete(self):
         if self in config.app.building_widget_list:
             config.app.building_widget_list.remove(self)
+        if self.progress_bar:
+            self.progress_bar.__del__()
+        if self.button:
+            self.button.__del__()
         self.__del__()
-        self.progress_bar.__del__()
-        self.button.__del__()
+        garbage_handler.delete_all_references(self, self.progress_bar)
+        garbage_handler.delete_all_references(self, self.button)
+        garbage_handler.delete_all_references(self, self)
 
     def listen(self, events):
         for event in events:
+            if not self.button:
+                return
             if self.button.rect.collidepoint(pygame.mouse.get_pos()):
                 self.immediately_build_cost = int((1 - self.progress_bar.percent) * self.building_production_time)
                 self.set_tooltip()
@@ -338,7 +371,7 @@ class BuildingWidget(WidgetBase):
             25, 25), outline=True, color=self.receiver.player_color)
 
         # update progress bar
-        if not config.game_speed == 0 and not config.game_paused:
+        if not time_handler.game_speed == 0 and not config.game_paused:
             self.update_progressbar()
 
         # reposition
@@ -360,7 +393,7 @@ class BuildingWidget(WidgetBase):
         self.button.set_position((config.app.ui_helper.anchor_right, y))
 
         # progress_bar
-        self.progress_bar.setWidth(config.app.building_panel.get_screen_width() - self.button.get_screen_width() - 15)
+        self.progress_bar.set_screen_width(config.app.building_panel.get_screen_width() - self.button.get_screen_width() - 15)
         self.progress_bar.set_position((
             self.dynamic_x + self.button.get_screen_width() + 5, y + self.button.get_screen_height() / 2))
 

@@ -120,7 +120,6 @@ class ContainerWidget(InteractionHandler):
         self.offset_y = 0
         self.offset_x = 0
         self.moving = False
-        self.drag_enabled = True
 
         # params
         self.win = win
@@ -134,6 +133,8 @@ class ContainerWidget(InteractionHandler):
         # assert len(self.widgets) > 0, f"widgets can not be len 0 !"
 
         # kwargs
+        self.drag_enabled = kwargs.get("drag_enabled", True)
+        # self.drag_from_parent_only = kwargs.get("drag_from_parent_only", False)
         self.parent = kwargs.get("parent", None)
         self.layer = kwargs.get("layer", 10)
         self.name = kwargs.get("name", "container")
@@ -274,6 +275,16 @@ class ContainerWidget(InteractionHandler):
         if hasattr(self, "function"):
             if callable(self.function):
                 getattr(self, "function")(self)
+
+    def hide(self):
+        self._hidden = True
+        if self.filter_widget:
+            self.filter_widget.hide()
+
+    def show(self):
+        self._hidden = False
+        if self.filter_widget:
+            self.filter_widget.show()
 
     def set_visible(self):
         self._hidden = not self._hidden

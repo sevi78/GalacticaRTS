@@ -1,0 +1,8 @@
+{
+  "event panel": {
+    "min_intervall": 1273,
+    "min_intervall_max": 10000,
+    "intervall": 2667,
+    "intervall_max": 10000
+  }
+}

@@ -1,11 +1,10 @@
 import pygame
 from pygame_widgets.util import drawText
 
-from source.configuration.economy_params import EconomyParams
 from source.configuration.game_config import config
+from source.economy.economy_params import EconomyParams
 from source.factories.building_factory import building_factory
 from source.game_play.navigation import navigate_to
-from source.gui.event_text import event_text
 from source.gui.panels.building_panel_components.building_panel_constructor import BuildingPanelConstructor
 from source.gui.panels.building_panel_components.building_panel_draw import BuildingPanelDraw
 from source.gui.panels.building_panel_components.building_slot import BuildingSlot
@@ -16,7 +15,6 @@ from source.gui.widgets.building_button_widget import BuildingButtonWidget
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.handlers.color_handler import colors
 from source.multimedia_library.images import get_image
-from source.multimedia_library.sounds import sounds
 from source.text.info_panel_text_generator import info_panel_text_generator
 
 TOP_SPACING = 5
@@ -25,8 +23,8 @@ SPECIAL_FONT_SIZE = 16
 
 
 class BuildingPanel(WidgetBase, BuildingPanelConstructor, BuildingSlot, EconomyParams, BuildingPanelDraw):
-    def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
-        super().__init__(win, x, y, width, height, isSubWidget, **kwargs)
+    def __init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs):
+        super().__init__(win, x, y, width, height, is_sub_widget, **kwargs)
         EconomyParams.__init__(self)
         BuildingSlot.__init__(self)
         BuildingPanelDraw.__init__(self)
@@ -86,11 +84,11 @@ class BuildingPanel(WidgetBase, BuildingPanelConstructor, BuildingSlot, EconomyP
 
         # space harbor
         self.space_harbor = SpaceHarbor(self.win, self.world_x, self.world_y, self.get_screen_width(), self.sub_widget_height,
-                isSubWidget=False, parent=self, layer=9, font_size=font_size)
+                is_sub_widget=False, parent=self, layer=9, font_size=font_size)
 
         # planetary defence
         self.planetary_defence = PlanetaryDefenceWidget(self.win, self.world_x, self.world_y, self.get_screen_width(), self.sub_widget_height,
-                isSubWidget=False, parent=self, layer=9, spacing=5, icon_size=25, font_size=font_size)
+                is_sub_widget=False, parent=self, layer=9, spacing=5, icon_size=25, font_size=font_size)
 
         # building_button_widget
         self.building_button_widget = BuildingButtonWidget(win, 200, 100, 300, 200, self.parent,
@@ -117,26 +115,12 @@ class BuildingPanel(WidgetBase, BuildingPanelConstructor, BuildingSlot, EconomyP
         if self.parent.selected_planet:
 
             buildings = ""
-            for i in self.parent.selected_planet.buildings:
+            for i in self.parent.selected_planet.economy_agent.buildings:
                 buildings += i + ", "
 
             self.planet_buttons.show_building_buttons()
 
         return buildings
-
-    def destroy_building__(self, b):
-        print("destroy_building", b)
-        try:
-            self.parent.selected_planet.buildings.remove(b)
-        except ValueError as e:
-            print("destroy_building error:", b, e)
-
-        self.parent.selected_planet.calculate_production()
-        self.parent.selected_planet.calculate_population()
-        self.parent.selected_planet.set_population_limit()
-
-        event_text.text = f"you destroyed one {b}! You will not get anything back from it! ... what a waste ..."
-        sounds.play_sound(sounds.destroy_building)
 
     def reposition(self):
         win = pygame.display.get_surface()
@@ -219,10 +203,10 @@ class BuildingPanel(WidgetBase, BuildingPanelConstructor, BuildingSlot, EconomyP
         self.max_height = self.world_y + self.toggle_switch.toggle_size
 
         if self.parent.selected_planet:
-            if "space harbor" in self.parent.selected_planet.buildings:
+            if "space harbor" in self.parent.selected_planet.economy_agent.buildings:
                 self.max_height += self.sub_widget_height
 
-            if "particle accelerator" in self.parent.selected_planet.buildings:
+            if "particle accelerator" in self.parent.selected_planet.economy_agent.buildings:
                 self.max_height += self.sub_widget_height
 
         self.max_height += self.building_button_widget.max_height

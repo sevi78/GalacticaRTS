@@ -4,12 +4,12 @@ from source.app.scene_builder import SceneBuilder
 from source.auto_economy.auto_economy_calculator_edit import AutoEconomyCalculatorEdit
 from source.configuration.game_config import config
 from source.editors.building_edit import BuildingEdit
+from source.editors.client_edit import network_config
 from source.editors.debug_edit import DebugEdit
 from source.editors.diplomacy_edit import DiplomacyEdit
 from source.editors.enemy_handler_edit import EnemyHandlerEdit
 from source.editors.planet_edit import PlanetEdit
 from source.editors.save_game_edit import SaveGameEdit
-from source.editors.settings_edit import SettingsEdit
 from source.editors.ship_edit import ShipEdit
 from source.editors.weapon_select import WeaponSelect
 from source.game_play.enemy_handler import enemy_handler
@@ -25,7 +25,10 @@ from source.gui.tool_tip import ToolTip
 from source.gui.widgets.background_image import BackgroundGradient
 from source.handlers.debug_handler import debugger
 from source.handlers.file_handler import load_file
+from source.network.client.client import Client
+# from source.network.client.web_socket_client import WebSocketClient
 from source.player.player import Player
+from source.player.player_edit import PlayerEdit
 from source.player.player_handler import player_handler
 from source.trading.add_deal_edit import AddDealEdit
 
@@ -92,6 +95,11 @@ class UIBuilder(SceneBuilder):
         self.player = None  # this is the human player, default index 0
         self.players = {}
 
+        # initialize game_client
+        # network_config = load_file("network_config.json", "config")
+        self.game_client = Client(network_config["host"], network_config["port"])
+        # self.game_client = WebSocketClient()
+
         # building_panel
         self.create_building_panel()
 
@@ -147,8 +155,6 @@ class UIBuilder(SceneBuilder):
                 ignore_other_editors=True,
                 save=False)
 
-
-
         self.weapon_select = WeaponSelect(
                 pygame.display.get_surface(),
                 pygame.display.get_surface().get_rect().centerx - width * 1.5 / 2,
@@ -192,15 +198,15 @@ class UIBuilder(SceneBuilder):
                 parent=self,
                 obj=enemy_handler)
 
-        self.ship_edit = ShipEdit(
-                pygame.display.get_surface(),
-                pygame.display.get_surface().get_rect().centerx - width / 2,
-                pygame.display.get_surface().get_rect().y + spacing_y,
-                width,
-                height,
-                parent=self,
-                obj=self.ship,
-                layer=9)
+        # self.ship_edit = ShipEdit(
+        #         pygame.display.get_surface(),
+        #         pygame.display.get_surface().get_rect().centerx - width / 2,
+        #         pygame.display.get_surface().get_rect().y + spacing_y,
+        #         width,
+        #         height,
+        #         parent=self,
+        #         obj=self.ship,
+        #         layer=9)
 
         self.debug_edit = DebugEdit(
                 pygame.display.get_surface(),
@@ -227,15 +233,15 @@ class UIBuilder(SceneBuilder):
                 obj=None,
                 layer=9)  # , game_paused=True)
 
-        self.settings_edit = SettingsEdit(
-                pygame.display.get_surface(),
-                pygame.display.get_surface().get_rect().centerx - width / 2,
-                pygame.display.get_surface().get_rect().y + spacing_y,
-                int(width / 1.5),
-                height,
-                parent=self,
-                obj=None,
-                layer=9)  # , game_paused=True)
+        # self.settings_edit = SettingsEdit(
+        #         pygame.display.get_surface(),
+        #         pygame.display.get_surface().get_rect().centerx - width / 2,
+        #         pygame.display.get_surface().get_rect().y + spacing_y,
+        #         int(width / 1.5),
+        #         height,
+        #         parent=self,
+        #         obj=None,
+        #         layer=9)  # , game_paused=True)
 
         self.auto_economy_calculator_edit = AutoEconomyCalculatorEdit(
                 pygame.display.get_surface(),
@@ -247,10 +253,8 @@ class UIBuilder(SceneBuilder):
                 obj=None,
                 layer=9)  # , game_paused=True)
 
-
-
-    def create_players(self, data):
-        # for some stupid reason, i ant move this to player_handler: RuntimeError: dictionary changed size during iteration
+    def create_players(self, data=dict) -> None:
+        # for some stupid reason, i cant move this to player_handler: RuntimeError: dictionary changed size during iteration
         for key, value in data.items():
             player_id = data[key]["player"]
             self.players[player_id] = Player(
@@ -279,8 +283,8 @@ class UIBuilder(SceneBuilder):
                     enemies=data[key]["enemies"]
                     )
 
-            # set active (human) player
-            self.player = self.players[0]
+        # set active (human) player
+        self.player = self.players[0]
 
     def create_event_panel(self):
         w, h = 900, 600
@@ -410,3 +414,17 @@ class UIBuilder(SceneBuilder):
                 icon_size=icon_size,
                 anchor_right=self.advanced_settings_panel.get_screen_x(),
                 app=self)
+
+    def create_player_edit(self, num_players: int):
+        width, height = 1200, 1200
+
+        # make shure its deleted before creating a new one
+        if hasattr(self, 'player_edit') and self.player_edit is not None:
+            self.player_edit.__del__()
+            del self.player_edit
+
+        # create a new one
+        self.player_edit = PlayerEdit(pygame.display.get_surface(),
+                int(pygame.display.get_surface().get_width() / 2 - width / 2),
+                pygame.display.get_surface().get_rect().y,
+                width, height, parent=self, obj=None, layer=9, ignore_other_editors=True, drag_enabled=False, save=False, num_players=num_players)

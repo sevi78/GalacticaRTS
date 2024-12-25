@@ -1,15 +1,19 @@
 import pygame
 
 from source.configuration.game_config import config
+from source.economy.EconomyAgent import EconomyAgent
 from source.factories.building_factory import building_factory
 from source.gui.widgets.buttons.button import Button
-from source.pan_zoom_sprites.pan_zoom_planet_classes.pan_zoom_planet_economy import PanZoomPlanetEconomy
 from source.multimedia_library.images import get_image
 
 
-class PanZoomPlanetOverviewButtons(PanZoomPlanetEconomy):
+# from source.pan_zoom_sprites.pan_zoom_planet_classes.pan_zoom_planet_economy import PanZoomPlanetEconomy
+
+
+class PanZoomPlanetOverviewButtons():
     def __init__(self, **kwargs):
-        PanZoomPlanetEconomy.__init__(self, kwargs)
+        # PanZoomPlanetEconomy.__init__(self, **kwargs)
+        self.economy_agent = EconomyAgent(self)
         self.technology_level_button = None
         self.smiley_button = None
         self.thumpsup_button = None
@@ -19,7 +23,7 @@ class PanZoomPlanetOverviewButtons(PanZoomPlanetEconomy):
         self.thumpsup_button_size = (18, 18)
         self.smiley_button_size = (20, 20)
         self.min_offset_y_to_text = 25
-        self.set_population_limit()
+        self.economy_agent.set_population_limit()
 
     def create_overview_buttons(self):
         """
@@ -31,8 +35,8 @@ class PanZoomPlanetOverviewButtons(PanZoomPlanetEconomy):
                 y=0,
                 width=self.thumpsup_button_size[0],
                 height=self.thumpsup_button_size[1],
-                isSubWidget=False,
-                onClick=lambda: print("no function"),
+                is_sub_widget=False,
+                on_click=lambda: print("no function"),
                 transparent=True,
                 image_hover_surface_alpha=255,
                 parent=self.parent,
@@ -50,8 +54,8 @@ class PanZoomPlanetOverviewButtons(PanZoomPlanetEconomy):
                 y=0,
                 width=self.smiley_button_size[0],
                 height=self.smiley_button_size[1],
-                isSubWidget=False,
-                onClick=lambda: print("no function"),
+                is_sub_widget=False,
+                on_click=lambda: print("no function"),
                 transparent=True,
                 image_hover_surface_alpha=255,
                 parent=self.parent,
@@ -68,8 +72,8 @@ class PanZoomPlanetOverviewButtons(PanZoomPlanetEconomy):
                 y=0,
                 width=self.smiley_button_size[0],
                 height=self.smiley_button_size[1],
-                isSubWidget=False,
-                onClick=lambda: print("no function"),
+                is_sub_widget=False,
+                on_click=lambda: print("no function"),
                 transparent=True,
                 image_hover_surface_alpha=255,
                 parent=self.parent,
@@ -86,8 +90,8 @@ class PanZoomPlanetOverviewButtons(PanZoomPlanetEconomy):
                 y=0,
                 width=self.smiley_button_size[0],
                 height=self.smiley_button_size[1],
-                isSubWidget=False,
-                onClick=lambda: print("no function"),
+                is_sub_widget=False,
+                on_click=lambda: print("no function"),
                 transparent=True,
                 image_hover_surface_alpha=255,
                 parent=self.parent,
@@ -116,7 +120,7 @@ class PanZoomPlanetOverviewButtons(PanZoomPlanetEconomy):
                         i.show()
                         i.enable()
                         if i.name == "planetary_defence_button":
-                            if not "particle accelerator" in self.buildings:
+                            if not "particle accelerator" in self.economy_agent.buildings:  # economy_agent.
                                 i.hide()
                                 i.disable()
                     else:
@@ -139,7 +143,7 @@ class PanZoomPlanetOverviewButtons(PanZoomPlanetEconomy):
     def set_thumpsup_status(self):
         # is everything in plus, show thumpsup green,otherwise red, set smiley to sad if no food production
         vl = []
-        for key, value in self.production.items():
+        for key, value in self.economy_agent.production.items():
             if value < 0:
                 vl.append(value)
         if len(vl) > 0:
@@ -148,7 +152,7 @@ class PanZoomPlanetOverviewButtons(PanZoomPlanetEconomy):
             self.thumpsup_status = False
 
     def set_smiley_status(self):
-        if self.production["food"] > 0:
+        if self.economy_agent.production["food"] > 0:
             self.smiley_status = True
         else:
             self.smiley_status = False

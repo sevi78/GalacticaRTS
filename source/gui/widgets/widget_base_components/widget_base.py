@@ -136,5 +136,5 @@ class WidgetBase(WidgetBaseMethods, ImageHandler, TextHandler, PositionHandler, 
         #             self.set_is_sub_widget(True)
 
         if self.is_sub_widget():
-            print (f"self.name: {self.name}")
+            print(f"self.name: {self.name}")
         WidgetHandler.add_widget(self)

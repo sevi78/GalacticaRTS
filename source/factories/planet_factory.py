@@ -77,13 +77,14 @@ class PlanetFactory:
                     atmosphere_name=value["atmosphere_name"],
                     data=data["celestial_objects"][key],
                     owner=data["celestial_objects"][key]["owner"],
+                    group="planets"
                     )
 
             if explored:
                 pan_zoom_planet_button.get_explored(data["celestial_objects"][key]["owner"])
 
             # update stats
-            pan_zoom_planet_button.set_population_limit()
+            pan_zoom_planet_button.economy_agent.set_population_limit()
 
             # register
             sprite_groups.planets.add(pan_zoom_planet_button)

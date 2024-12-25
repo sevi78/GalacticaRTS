@@ -6,9 +6,10 @@ import pygame
 from source.configuration.game_config import config
 from source.gui.widgets.widget_base_components.visibilty_handler import VisibilityHandler
 from source.handlers.color_handler import colors, get_average_color
-from source.handlers.image_handler import outline_image
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
-from source.multimedia_library.images import get_image, get_gif_frames, get_gif, get_gif_fps, get_gif_duration
+from source.handlers.time_handler import time_handler
+from source.multimedia_library.images import get_image, get_gif_frames, get_gif, get_gif_fps, get_gif_duration, \
+    outline_image
 from source.multimedia_library.sounds import sounds
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_debug import GameObjectDebug
 
@@ -76,7 +77,7 @@ class PanZoomSprite(pygame.sprite.Sprite, VisibilityHandler, GameObjectDebug):
         self.appear_at_start = kwargs.get("appear_at_start", False)
         self.shrink = 0.0 if self.appear_at_start else 1.0
         self.gif_index = 1
-        self.gif_start = time.time()
+        self.gif_start = time_handler.time
         self.gif_animation_time = 0.1
         self.current_time = 0
         self.counter = 0
@@ -147,6 +148,9 @@ class PanZoomSprite(pygame.sprite.Sprite, VisibilityHandler, GameObjectDebug):
 
     @world_position.setter
     def world_position(self, position):
+        """
+        never set this anywhere in the code!!! will destroy the rotation of the ships !!!!
+        """
         self.world_x, self.world_y = position
         self.screen_position = self.pan_zoom.world_2_screen(self.world_x, self.world_y)
 
@@ -233,7 +237,7 @@ class PanZoomSprite(pygame.sprite.Sprite, VisibilityHandler, GameObjectDebug):
                 if self.sound:
                     sounds.play_sound(self.sound)
 
-        if time.time() > self.gif_start + self.gif_animation_time:
+        if time_handler.time > self.gif_start + self.gif_animation_time:
             self.image_raw = self.gif_frames[self.gif_index]
             self.gif_index += 1
             self.gif_start += self.gif_animation_time

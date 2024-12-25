@@ -11,7 +11,7 @@ class ScreenConfig:
         """
         Sets the monitor at runtime and initializes a Pygame window on the selected monitor.
         :param monitor_index: The index of the monitor where the window should be displayed. Defaults to 0.
-        this funtion has some problems.
+        this function has some problems.
         some windows are not shown up after calling
         """
         # Get the list of available monitors
@@ -36,6 +36,23 @@ class ScreenConfig:
         win = pygame.display.set_mode(monitor_resolution, pygame.HWSURFACE | pygame.DOUBLEBUF, display=monitor_index)
         return win
 
+    def set_screen_size(self, client_index):
+
+        if config.app.game_client.id == 1:
+            # Place the screen at the top left with half the window width
+            position = (0, 0)  # Top left corner
+            size = (self.window_width // 2, self.window_height)
+        elif config.app.game_client.id == 2:
+            # Place the screen centered with half of screen width
+            position = ((self.window_width - (self.window_width // 2)) // 2, 0)
+            size = (self.window_width // 2, self.window_height)
+        else:
+            # Default case: full screen
+            position = (0, 0)
+            size = (self.window_width, self.window_height)
+
+        return position, size
+
 
 class GameConfig:
     """
@@ -48,14 +65,15 @@ class GameConfig:
         # Initialize configuration variables
         self.width = 1920
         self.height = 1080
-        self.width_minimized = 1920
-        self.height_minimized = 800
+        self.width_minimized = self.width / 2
+        self.height_minimized = 1080
         self.width_current = self.width
         self.height_current = self.height
         self.moveable = True
         self.app = None
-        self.players = len(get_player_list())
+        self.players = get_player_list()
         self.player = 0
+        self.game_speed = None
         self.tooltip_text = ""
         self.game_paused = False
         self.scene_width = 14000

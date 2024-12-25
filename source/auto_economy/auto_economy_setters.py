@@ -3,7 +3,9 @@ import random
 
 from source.configuration.game_config import config
 from source.factories.building_factory import building_factory
+# from source.handlers.building_widget_handler import building_widget_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
+from source.handlers.time_handler import time_handler
 
 BUILD_CHANGE_INTERVAL = 60
 BUILDING_CUE_MAX = 3
@@ -94,7 +96,7 @@ class AutoEconomyHandlerSetters:
         self.player_population_limit = self.player.population_limit
 
     def set_build_change_interval(self) -> None:
-        self.build_change_interval = self.build_change_interval_raw / config.game_speed
+        self.build_change_interval = self.build_change_interval_raw / time_handler.game_speed
 
     def set_planets(self):
         self.planets = [i for i in sprite_groups.planets if i.owner == self.player.owner]
@@ -153,7 +155,7 @@ class AutoEconomyHandlerSetters:
 
     def set_all_buildings(self) -> None:
         """ sets self.buildings to a list of all buildings in all valid planets"""
-        self.all_buildings = [i.buildings for i in sprite_groups.planets if i.owner == self.player.owner]
+        self.all_buildings = [i.economy_agent.buildings for i in sprite_groups.planets if i.owner == self.player.owner]
 
     def set_building_cue_max(self) -> None:
         self.building_cue_max = random.randint(1, BUILDING_CUE_MAX)

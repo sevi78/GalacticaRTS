@@ -1,49 +1,57 @@
-import time
-
 import pygame
 from pygame import MOUSEBUTTONDOWN, MOUSEBUTTONUP, MOUSEMOTION
 
+from source.configuration.game_config import config
 from source.draw.circles import draw_transparent_circle
 from source.gui.lod import level_of_detail
 from source.gui.widgets.widget_base_components.visibilty_handler import VisibilityHandler
-from source.handlers.mouse_handler import mouse_handler, MouseState
-from source.handlers.widget_handler import WidgetHandler
-from source.interaction.interaction_handler import InteractionHandler
-from source.pan_zoom_sprites.pan_zoom_planet_classes.pan_zoom_planet_orbit_draw import draw_orbits
-from source.pan_zoom_sprites.pan_zoom_planet_classes.pan_zoom_planet_position_handler import \
-    PanZoomPlanetPositionHandler
-
-from source.handlers.pan_zoom_sprite_handler import sprite_groups
-from source.pan_zoom_sprites.pan_zoom_planet_classes.pan_zoom_planet_overview_buttons import \
-    PanZoomPlanetOverviewButtons
-from source.pan_zoom_sprites.pan_zoom_planet_classes.pan_zoom_planet_defence import PanZoomPlanetDefence
-from source.pan_zoom_sprites.pan_zoom_planet_classes.pan_zoom_planet_draw import PanZoomPlanetDraw
-from source.pan_zoom_sprites.pan_zoom_planet_classes.pan_zoom_planet_params import PanZoomPlanetParams
-from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_gif import PanZoomSprite
-from source.handlers.pan_zoom_handler import pan_zoom_handler
-from source.handlers.orbit_handler import orbit
-from source.configuration.game_config import config
 from source.handlers.color_handler import colors
 from source.handlers.garbage_handler import garbage_handler
+from source.handlers.mouse_handler import mouse_handler, MouseState
+from source.handlers.orbit_handler import orbit_with_constant_distance
+from source.handlers.pan_zoom_handler import pan_zoom_handler
+from source.handlers.pan_zoom_sprite_handler import sprite_groups
+from source.handlers.time_handler import time_handler
+from source.handlers.widget_handler import WidgetHandler
+from source.interaction.interaction_handler import InteractionHandler
+from source.pan_zoom_sprites.pan_zoom_planet_classes.pan_zoom_planet_defence import PanZoomPlanetDefence
+from source.pan_zoom_sprites.pan_zoom_planet_classes.pan_zoom_planet_draw import PanZoomPlanetDraw
+from source.pan_zoom_sprites.pan_zoom_planet_classes.pan_zoom_planet_orbit_draw import draw_orbits
+from source.pan_zoom_sprites.pan_zoom_planet_classes.pan_zoom_planet_overview_buttons import \
+    PanZoomPlanetOverviewButtons
+from source.pan_zoom_sprites.pan_zoom_planet_classes.pan_zoom_planet_params import PanZoomPlanetParams
+from source.pan_zoom_sprites.pan_zoom_planet_classes.pan_zoom_planet_position_handler import \
+    PanZoomPlanetPositionHandler
+from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_gif import PanZoomSprite
 from source.path_finding.a_star_node_path_finding import Node
+
+ORBIT_RESOLUTION = 360
 
 
 class PanZoomPlanet(PanZoomSprite, VisibilityHandler, PanZoomPlanetOverviewButtons, PanZoomPlanetDraw,
         PanZoomPlanetParams, PanZoomPlanetPositionHandler, InteractionHandler):
     """ Main functionalities: """
+    # __slots__ = PanZoomSprite.__slots__ + (
+    #     'orbit_radius', 'font_size', 'font', '_on_hover', 'on_hover_release', 'size_x',
+    #     'size_y', 'resources', 'buildings', 'buildings_max', 'population', 'population_limit', 'population_grow',
+    #     'alien_population', 'building_slot_amount', 'building_slot_upgrades', 'building_slot_upgrade_prices',
+    #     'building_slot_upgrade_energy_consumption', 'building_slot_max_amount', 'building_cue', 'specials',
+    #     'possible_resources', 'production', 'production_water', 'production_energy', 'production_food',
+    #     'production_minerals', 'production_population', 'production_technology', 'population_buildings',
+    #     'population_buildings_values', 'building_buttons_energy', 'building_buttons_water', 'building_buttons_food',
+    #     'building_buttons_minerals', 'building_buttons', 'building_buttons_list', 'building_buttons_visible',
+    #     'overview_buttons', 'smiley_status', 'thumpsup_status', 'frame_color', 'gif_handler', 'type',
+    #     'parent', 'screen_size', 'target', 'moving', 'tooltip', 'id', 'level', 'fog_of_war_radius', 'explored',
+    #     'just_explored', 'moveable', 'orbit_speed', 'orbit_object', 'orbit_distance', 'string', 'start_time', 'wait',
+    #     'selected', 'on_click', 'info_text', 'info_text_raw', 'thumpsup_button_size', 'thumpsup_button',
+    #     'smiley_button_size', 'smiley_button', 'planet_defence')
+
     __slots__ = PanZoomSprite.__slots__ + (
         'orbit_radius', 'font_size', 'font', '_on_hover', 'on_hover_release', 'size_x',
-        'size_y', 'resources', 'buildings', 'buildings_max', 'population', 'population_limit', 'population_grow',
-        'alien_population', 'building_slot_amount', 'building_slot_upgrades', 'building_slot_upgrade_prices',
-        'building_slot_upgrade_energy_consumption', 'building_slot_max_amount', 'building_cue', 'specials',
-        'possible_resources', 'production', 'production_water', 'production_energy', 'production_food',
-        'production_minerals', 'production_population', 'production_technology', 'population_buildings',
-        'population_buildings_values', 'building_buttons_energy', 'building_buttons_water', 'building_buttons_food',
-        'building_buttons_minerals', 'building_buttons', 'building_buttons_list', 'building_buttons_visible',
-        'overview_buttons', 'smiley_status', 'thumpsup_status', 'frame_color', 'gif_handler', 'type',
+        'size_y', 'overview_buttons', 'smiley_status', 'thumpsup_status', 'frame_color', 'gif_handler', 'type',
         'parent', 'screen_size', 'target', 'moving', 'tooltip', 'id', 'level', 'fog_of_war_radius', 'explored',
         'just_explored', 'moveable', 'orbit_speed', 'orbit_object', 'orbit_distance', 'string', 'start_time', 'wait',
-        'selected', 'onClick', 'info_text', 'info_text_raw', 'thumpsup_button_size', 'thumpsup_button',
+        'selected', 'on_click', 'info_text', 'info_text_raw', 'thumpsup_button_size', 'thumpsup_button',
         'smiley_button_size', 'smiley_button', 'planet_defence')
 
     def __init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs):
@@ -70,6 +78,7 @@ class PanZoomPlanet(PanZoomSprite, VisibilityHandler, PanZoomPlanetOverviewButto
         self.just_explored = False
         self.property = "planet"
         self.moveable = kwargs.get("moveable", False)
+        self.orbit_speed_raw = kwargs.get("orbit_speed")
         self.orbit_speed = kwargs.get("orbit_speed")
         self.orbit_object = None
         self.orbit_object_id = kwargs.get("orbit_object_id")
@@ -82,7 +91,7 @@ class PanZoomPlanet(PanZoomSprite, VisibilityHandler, PanZoomPlanetOverviewButto
         self.string = "?"
 
         self.win = win
-        self.start_time = time.time()
+        self.start_time = time_handler.time
         self.wait = kwargs.get("wait", 1.0)
         self.selected = False
 
@@ -105,10 +114,25 @@ class PanZoomPlanet(PanZoomSprite, VisibilityHandler, PanZoomPlanetOverviewButto
         # setup loaded data
         self.data = kwargs.get("data", {})
         for key, value in self.data.items():
-            setattr(self, key, value)
+            # if key in self.economy_agent.__dict__:
+            if hasattr(self.economy_agent, key):
+                setattr(self.economy_agent, key, value)
+            else:
+                setattr(self, key, value)
 
         # register the button
         sprite_groups.planets.add(self)
+
+    def get_network_data(self, function: str) -> dict:
+        if function == "position_update":
+            data = {
+                "id": self.id,
+                "x": int(self.world_x),
+                "y": int(self.world_y),
+                "p": int(self.economy_agent.population)
+                }
+
+            return data
 
     def __repr__(self):
         return self.name
@@ -217,8 +241,9 @@ class PanZoomPlanet(PanZoomSprite, VisibilityHandler, PanZoomPlanetOverviewButto
             x, y = mouse_handler.get_mouse_pos()
 
             if self.collide_rect.collidepoint(x, y):
-                # if mouse_handler.double_clicks == 1:
-                #     config.app.diplomacy_edit.open(self.owner, 0)
+                if mouse_handler.double_clicks == 1:
+                    config.app.diplomacy_edit.open(self.owner, config.app.game_client.id)
+
                 if mouse_state == MouseState.RIGHT_CLICK:
                     self.parent.set_selected_planet(self)
 
@@ -228,6 +253,11 @@ class PanZoomPlanet(PanZoomSprite, VisibilityHandler, PanZoomPlanetOverviewButto
                 elif mouse_state == MouseState.LEFT_CLICK:
                     self.clicked = True
                     self.parent.set_selected_planet(self)
+                    # config.app.player_edit.player_buildings_overview.set_buildings(self)
+
+                    # config.app.player_edit.planet_buildings_overview.set_buildings(self)
+                    # if config.app.player_edit.planet_buildings_overview._hidden:
+                    #     config.app.player_edit.planet_buildings_overview.set_visible()
 
                 elif mouse_state == MouseState.LEFT_DRAG and self.clicked:
                     pass
@@ -251,30 +281,17 @@ class PanZoomPlanet(PanZoomSprite, VisibilityHandler, PanZoomPlanetOverviewButto
 
     def update(self):
         self.set_screen_position()
-        # self.node.update(self.world_x, self.world_y)
-
-        # self.set_center()
         self.update_pan_zoom_sprite()
         self.handle_overview_buttons()
-
-        # really needs this ?
-        # try:
-        #     config.app.tooltip_instance.reset_tooltip(self)
-        # except:
-        #     pass
-
         self.planet_defence.update()
 
-        # needs to be at another place
-        # self.set_planet_name()
-
-        # setting orbit object every frame??
+        # setting orbit object every frame?? yes , because in __init__ not all planets are created at this moment
         if not self.orbit_object:
             if len([i for i in sprite_groups.planets if i.id == self.orbit_object_id]) > 0:
                 self.orbit_object = [i for i in sprite_groups.planets if i.id == self.orbit_object_id][0]
 
         if not config.game_paused:
-            orbit(self, self.orbit_object, self.orbit_speed, 1)
+            orbit_with_constant_distance(self, self.orbit_object, self.orbit_speed, 1)
 
         # not needed in update, draw called from sprite_handler
         if not level_of_detail.inside_screen(self.rect.center):
@@ -283,7 +300,6 @@ class PanZoomPlanet(PanZoomSprite, VisibilityHandler, PanZoomPlanetOverviewButto
         self.draw()
 
     def draw(self):
-        # pygame.draw.rect(self.win, self.frame_color, self.collide_rect, 1)
         draw_orbits(self)
         self.set_display_color()
         self.draw_cross()

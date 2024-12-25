@@ -30,6 +30,8 @@ class BuildingPanelDraw:
 
     def draw_planet_params(self, x):
         selected_planet = self.parent.selected_planet
+        if selected_planet.owner == -1:
+            return
 
         # draw owner
         drawText(self.win, f"owner: {config.app.players[selected_planet.owner].name}", self.frame_color, (
@@ -39,12 +41,12 @@ class BuildingPanelDraw:
 
         # draw population text
         # population
-        drawText(self.win, "population: " + str(int(selected_planet.population)) + "/" + format_number(selected_planet.population_limit, 1), self.frame_color, (
+        drawText(self.win, "population: " + str(int(selected_planet.economy_agent.population)) + "/" + format_number(selected_planet.economy_agent.population_limit, 1), self.frame_color, (
             x + self.spacing_x, self.world_y, self.get_screen_width(), 20), self.font, "left")
 
         # print ("selected_planet.specials_dict:", selected_planet.specials_dict)
-        value = selected_planet.specials_dict["population_grow_factor"]["value"]
-        operator = selected_planet.specials_dict["population_grow_factor"]["operator"]
+        value = selected_planet.economy_agent.specials_dict["population_grow_factor"]["value"]
+        operator = selected_planet.economy_agent.specials_dict["population_grow_factor"]["operator"]
         if float(value) > 0.0:
             if operator == "*":
                 operator = "x"
@@ -76,7 +78,7 @@ class BuildingPanelDraw:
         self.world_y += self.spacing * 3
 
         # building slots:____________________________________________________________________________________________
-        drawText(self.win, "building slots:  " + str(self.parent.selected_planet.building_slot_amount) + "/" + str(self.parent.selected_planet.building_slot_max_amount - 1), self.frame_color, (
+        drawText(self.win, "building slots:  " + str(self.parent.selected_planet.economy_agent.building_slot_amount) + "/" + str(self.parent.selected_planet.economy_agent.building_slot_max_amount - 1), self.frame_color, (
             x + self.spacing_x, self.world_y, self.get_screen_width(), 20), self.font, "left")
         # plus icon
         # plus_image = pygame.transform.scale(
@@ -104,9 +106,9 @@ class BuildingPanelDraw:
 
         # buildings:_______________________________________________________________________________________________
         defence_units = building_factory.get_defence_unit_names()
-        civil_buildings = [i for i in self.parent.selected_planet.buildings if not i in defence_units]
+        civil_buildings = [i for i in self.parent.selected_planet.economy_agent.buildings if not i in defence_units]
 
-        drawText(self.win, "buildings:  " + str(len(civil_buildings)) + "/" + str(int(self.parent.selected_planet.buildings_max)), self.frame_color, (
+        drawText(self.win, "buildings:  " + str(len(civil_buildings)) + "/" + str(int(self.parent.selected_planet.economy_agent.buildings_max)), self.frame_color, (
             x + self.spacing_x, self.world_y, self.get_screen_width(), 20), self.font, "left")
 
         # image = pygame.transform.scale(get_image("building_icon.png"),self.resource_image_size)
@@ -120,7 +122,7 @@ class BuildingPanelDraw:
 
         # draw an image for every type of building built, plus a counter text
         self.singleton_buildings = []
-        for sb in self.parent.selected_planet.buildings:
+        for sb in self.parent.selected_planet.economy_agent.buildings:
             if not sb in self.singleton_buildings:
                 self.singleton_buildings.append(sb)
         self.singleton_buildings_images = {}
@@ -144,7 +146,7 @@ class BuildingPanelDraw:
             self.win.blit(image, image_rect)
 
             # building count
-            value = self.parent.selected_planet.buildings.count(b)
+            value = self.parent.selected_planet.economy_agent.buildings.count(b)
             text = self.font.render(b + ": " + str(value) + "x", True, self.frame_color)
             self.win.blit(text, (x + self.spacing_x, self.world_y + y))
 
@@ -176,8 +178,8 @@ class BuildingPanelDraw:
             self.win.blit(image, (x, self.world_y))
 
             # draw specials
-            value_special = selected_planet.specials_dict[r]["value"]
-            operator = selected_planet.specials_dict[r]["operator"]
+            value_special = selected_planet.economy_agent.specials_dict[r]["value"]
+            operator = selected_planet.economy_agent.specials_dict[r]["operator"]
             if operator == "*":
                 operator = "x"
             text_ = ""
@@ -188,7 +190,8 @@ class BuildingPanelDraw:
                 self.win.blit(text, (x + self.screen_width - SPECIAL_RIGHT_OFFSET, self.world_y - SPECIAL_Y_OFFSET))
 
             # draw resource
-            value = getattr(self.parent.selected_planet, "production_" + r)
+            # value = getattr(self.parent.selected_planet, "production_" + r)
+            value = self.parent.selected_planet.economy_agent.production[r]
             text = self.font.render(r + ": " + str(value), True, self.frame_color)
             self.win.blit(text, (x + self.spacing_x, self.world_y))
             self.world_y += self.spacing * 2

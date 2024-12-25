@@ -1,5 +1,7 @@
 import pygame
 from PIL import Image, ImageFilter
+
+
 #
 # pygame.init()
 # window = pygame.display.set_mode((300, 300))
@@ -28,9 +30,10 @@ def blur_image_edges(surf, radius):
     blurred_image = blur_image(blur_surf, radius)
     return blurred_image
 
+
 def gaussian_blur(surface, radius):
     scaled_surface = pygame.transform.smoothscale(surface, (
-    surface.get_width() // radius, surface.get_height() // radius))
+        surface.get_width() // radius, surface.get_height() // radius))
     scaled_surface = pygame.transform.smoothscale(scaled_surface, (surface.get_width(), surface.get_height()))
     return scaled_surface
 #

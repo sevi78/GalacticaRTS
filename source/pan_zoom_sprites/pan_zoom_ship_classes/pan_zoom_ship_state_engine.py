@@ -1,4 +1,7 @@
+import pygame
+
 from source.configuration.game_config import config
+from source.debug.function_disabler import disabler, auto_disable
 from source.draw.cross import draw_dashed_cross_in_circle
 from source.gui.widgets.image_widget import ImageSprite
 from source.handlers.pan_zoom_handler import pan_zoom_handler
@@ -10,12 +13,20 @@ ARC_SIZE = 50
 CROSS_RADIUS = 24
 DASH_LENGHT = 6
 
+# disabled_functions = ["listen"]
+# for i in disabled_functions:
+#     disabler.disable(i)
+#
+# @auto_disable
 
 class PanZoomShipStateEngine:
     def __init__(self, parent: object) -> None:
         self.parent = parent
         self.image_drawer = PanZoomShipStateEngineDraw(self.parent, self)
         self.state = "sleeping"
+
+    def end_object(self):
+        self.image_drawer.end_object()
 
     def set_state(self, state) -> None:
         self.state = state
@@ -26,15 +37,18 @@ class PanZoomShipStateEngine:
         pass
 
     def update(self) -> None:
-
         if config.cross_view_start < pan_zoom_handler.zoom:
             self.image_drawer.show()
-            self.image_drawer.draw_rank_image()
-            self.image_drawer.draw_state_image()
+            self.image_drawer.update_rank_image()
+            self.image_drawer.update_state_image()
         else:
             self.image_drawer.hide()
             draw_dashed_cross_in_circle(self.parent.win, self.parent.frame_color, self.parent.get_screen_position(), config.ui_cross_size, config.ui_cross_thickness, config.ui_cross_dash_length / 2)
 
+
+# disabled_functions = ["set_state_image", "update_rank_image", "update_state_image"]
+# for i in disabled_functions:
+#     disabler.disable(i)
 
 class PanZoomShipStateEngineDraw:
     def __init__(self, parent: object, engine: PanZoomShipStateEngine):
@@ -53,21 +67,25 @@ class PanZoomShipStateEngineDraw:
             "autopilot": "autopilot.png",
             "attacking": "war_icon.png"
             }
+
         self.state_images = {
-            "move_stop": ImageSprite(self.parent.win, x, y, STATE_IMAGE_SIZE, STATE_IMAGE_SIZE, get_image("noenergy_25x25.png"), parent=self.parent),
-            "following_path": ImageSprite(self.parent.win, x, y, STATE_IMAGE_SIZE, STATE_IMAGE_SIZE, get_image("follow_path_icon.png"), parent=self.parent),
-            "moving": ImageSprite(self.parent.win, x, y, STATE_IMAGE_SIZE - 5, STATE_IMAGE_SIZE - 5, get_image("moving.png"), parent=self.parent),
-            "sleeping": ImageSprite(self.parent.win, x, y, STATE_IMAGE_SIZE, STATE_IMAGE_SIZE, get_image("sleep.png"), parent=self.parent),
-            "orbiting": ImageSprite(self.parent.win, x, y, STATE_IMAGE_SIZE, STATE_IMAGE_SIZE, get_image("orbit_icon.png"), parent=self.parent),
-            "autopilot": ImageSprite(self.parent.win, x, y, STATE_IMAGE_SIZE, STATE_IMAGE_SIZE, get_image("autopilot.png"), parent=self.parent),
-            "attacking": ImageSprite(self.parent.win, x, y, STATE_IMAGE_SIZE, STATE_IMAGE_SIZE, get_image("war_icon.png"), parent=self.parent),
+            "move_stop": pygame.transform.scale(get_image("noenergy_25x25.png"), (STATE_IMAGE_SIZE, STATE_IMAGE_SIZE)),
+            "following_path": pygame.transform.scale(get_image("follow_path_icon.png"), (STATE_IMAGE_SIZE, STATE_IMAGE_SIZE)),
+            "moving": pygame.transform.scale(get_image("moving.png"), (STATE_IMAGE_SIZE - 5, STATE_IMAGE_SIZE - 5)),
+            "sleeping": pygame.transform.scale(get_image("sleep.png"), (STATE_IMAGE_SIZE, STATE_IMAGE_SIZE)),
+            "orbiting": pygame.transform.scale(get_image("orbit_icon.png"), (STATE_IMAGE_SIZE, STATE_IMAGE_SIZE)),
+            "autopilot": pygame.transform.scale(get_image("autopilot.png"), (STATE_IMAGE_SIZE, STATE_IMAGE_SIZE)),
+            "attacking": pygame.transform.scale(get_image("war_icon.png"), (STATE_IMAGE_SIZE, STATE_IMAGE_SIZE)),
             }
 
-        # very bloody hack to ensure the rank image is not drawn at initial position, no idea why this its there
         self.rank_image = ImageSprite(self.parent.win, -200, -200, 25, 25, get_image("warning_icon.png"), parent=self.parent)
         self.state_image = ImageSprite(self.parent.win, -200, -200, STATE_IMAGE_SIZE, STATE_IMAGE_SIZE, get_image("sleep.png"), parent=self.parent)
 
         self.hide()
+
+    def end_object(self):
+        self.rank_image.end_object()
+        self.state_image.end_object()
 
     def show(self):
         self.state_image.show()
@@ -78,32 +96,24 @@ class PanZoomShipStateEngineDraw:
         self.rank_image.hide()
 
     def set_state_image(self):
-        for key, value in self.state_images.items():
-            if key == self.engine.state:
-                self.state_image = value
+        self.state_image.set_image(self.state_images[self.engine.state])
 
-    def draw_rank_image(self) -> None:
+    def update_rank_image(self) -> None:
         # set image
         if not self.rank_image.image == self.parent.ranking.rank_images[self.parent.rank]:
             self.rank_image.set_image(self.parent.ranking.rank_images[self.parent.rank])
 
         # calculate position
-        rank_image_pos = (self.parent.rect.x + self.parent.get_screen_width() / 2 / self.parent.get_zoom(),
-                          self.parent.rect.y - self.parent.get_screen_height() / 2 / self.parent.get_zoom())
+        rank_image_pos = (self.parent.rect.x + self.parent.get_screen_width() / 2 / pan_zoom_handler.get_zoom(),
+                          self.parent.rect.y - self.parent.get_screen_height() / 2 / pan_zoom_handler.get_zoom())
 
         # set position
         self.rank_image.set_position(rank_image_pos[0], rank_image_pos[1], "topright")
 
-        # draw
-        self.rank_image.draw()
-
-    def draw_state_image(self) -> None:
+    def update_state_image(self) -> None:
         # calculate position
         state_image_position = self.rank_image.rect.x + STATE_IMAGE_SPACING, self.rank_image.rect.y
 
         # set position
         self.state_image.set_position(
                 state_image_position[0], state_image_position[1] - STATE_IMAGE_SIZE / 2, "topright")
-
-        # draw
-        self.state_image.draw()

@@ -1,12 +1,12 @@
 from source.editors.editor_base.editor_config import ARROW_SIZE, FONT_SIZE, TOP_SPACING
+from source.gui.interfaces.interface import Interface
 from source.gui.widgets.selector import Selector
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
-from source.interfaces.interface import Interface
 
 
 class ShipEdit(Interface):
-    def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
-        Interface.__init__(self, win, x, y, width, height, isSubWidget=False, **kwargs)
+    def __init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs):
+        Interface.__init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs)
         self.create_selectors()
         self.create_save_button(lambda: self.parent.save_objects("ship_settings.json", sprite_groups.ships.sprites()), "save ship")
         self.create_close_button()

@@ -26,18 +26,27 @@ class ScrollBar:
         self.surface = pygame.Surface((width, height))
         self.rect = self.surface.get_rect(topleft=(x, y))
 
+        self._value = 0.0
         self.value = 0.0
 
     @property
-    def value(self):
+    def value(self) -> float:
         return self._value
 
     @value.setter
-    def value(self, value):
+    def value(self, value: float) -> None:
         self._value = value
-        self.draw_surface(value)
+        self.draw_surface()
+        # self.parent.update_scroll_position_from_scrollbar(value)
 
-    def draw_surface(self, value):
+    def draw_surface(self) -> None:
+        """
+        Draws the surface of the scroll bar based on the current value.
+
+        This function updates the surface, draws a rounded rectangle, calculates the height and position of the inner
+        rectangle, and then draws the inner rectangle on the surface.
+        """
+
         # update surface
         self.surface.fill((0, 0, 0, 0))
 
@@ -46,63 +55,43 @@ class ScrollBar:
                 (0, 0, self.world_width, self.world_height), config.get("ui_rounded_corner_small_thickness"),
                 config.get("ui_rounded_corner_radius_small"))
 
-        height = self.world_height / len(self.parent.widgets)
+        # calculate height of the inner rect
+        if len(self.parent.widgets) - self.parent.visible_index_range + 1 == 0:
+            return
+
+        height = self.world_height / (len(self.parent.widgets) - self.parent.visible_index_range + 1)
+
+        # calculate the position of the inner rect
         y = self.world_height * self.value
 
-        # draw inne rect
+        # draw inner rect
         pygame.draw.rect(self.surface, colors.ui_darker, (
             0, y, self.world_width, height), 0, config.get("ui_rounded_corner_radius_small"))
 
-    def update_position(self):
+    def update_position(self) -> None:
         """sets the position of the widget to the bottom right corner of the parent"""
         self.world_x = self.parent.world_x + self.parent.world_width - self.world_width
         self.world_y = self.parent.world_y + self.parent.world_height - self.world_height
         self.rect.x, self.rect.y = self.world_x, self.world_y
 
-    def listen(self, events):
+    def listen(self, events) -> None:
+        """
+        Listens for mouse events and updates the scrollbar value based on the click position.
+
+        Parameters:
+            events (list): A list of pygame.event.Event objects representing mouse events.
+
+        Returns:
+            None
+        """
         for event in events:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if self.rect.collidepoint(event.pos):
-                    self.value = 1 / self.world_height * (pygame.mouse.get_pos()[1] - self.rect.y)
-                    scroll_offset_y = int(self.value * len(self.parent.widgets)) * -1
-
-                    if scroll_offset_y < self.parent.scroll_offset_y:
-                        self.parent.scroll_y = -1
-                    elif scroll_offset_y == 0:
-                        self.parent.scroll_y = 0
-                    else:
-                        self.parent.scroll_y = 1
-
-                    self.parent.scroll_offset_y = scroll_offset_y
-                    self.value = abs(1 / len(self.parent.widgets) * self.parent.scroll_offset_y)
-                    self.parent.reposition_widgets()
-
-                    # print (f"self.parent.scroll_offset_y:{self.parent.scroll_offset_y},scroll_offset_y:{scroll_offset_y}")
-
-                    # self.parent.scroll_offset_y =
-                    # self.parent.reposition_widgets()
-
-                    # print(f"self.parent.scroll_offset_y: {self.parent.scroll_offset_y},self.parent.scroll_y:{self.parent.scroll_y}")
-                    # print (f"self.parent.scroll_factor:{self.parent.scroll_factor}")
-                    # self.parent.scroll_y = -1
-
-                    # print ("_________________________________________________________________________________________")
-                    # print (f"self.parent.scroll_offset_y: {self.parent.scroll_offset_y}, new_offset_y:{new_offset_y}")
-                    # print(f"self.parent.scroll_offset_y: {self.parent.scroll_offset_y}, new_offset_y1:{new_offset_y1}")
-                    # print(f"self.parent.scroll_offset_y: {self.parent.scroll_offset_y}, new_offset_y2:{new_offset_y2}")
-                    # print(f"self.parent.scroll_offset_y: {self.parent.scroll_offset_y}, new_offset_y3:{new_offset_y3}")
-                    # print(f"self.parent.scroll_offset_y: {self.parent.scroll_offset_y}, new_offset_y4:{new_offset_y4}")
-
-                    # self.parent.scroll_offset_y = int(1/self.value * len(self.parent.widgets))
-                    # print (f"value: {self.value}")
-                    # # self.scrollbar.value = abs(1 / len(self.widgets) * self.scroll_offset_y)
-                    #
-                    # self.parent.scroll_offset_y = int(-self.value * len(self.parent.widgets))
-                    # print("self.parent.scroll_offset_y:", self.parent.scroll_offset_y)
-                    # self.parent.reposition_widgets()
-                #     self.parent.drag_enabled = False
-                # else:
-                #     self.parent.drag_enabled = True
+                    # Calculate the relative position of the click within the scrollbar
+                    click_position = event.pos[1] - self.rect.y
+                    # Normalize the click position to a value between 0 and 1
+                    self.value = click_position / self.rect.height
+                    self.parent.update_scroll_position_from_scrollbar(self.value)
 
     def draw(self):
         self.win.blit(self.surface, self.rect)

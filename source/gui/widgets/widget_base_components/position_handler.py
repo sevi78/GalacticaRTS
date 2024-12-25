@@ -6,6 +6,7 @@ from pygame import Vector2
 from source.configuration.game_config import config
 from source.gui.lod import level_of_detail
 from source.handlers.pan_zoom_handler import pan_zoom_handler
+from source.multimedia_library.images import scale_image_cached
 
 MIN_IMAGE_ZOOM_SIZE = 1
 MAX_IMAGE_ZOOM_SIZE = 1000
@@ -92,11 +93,11 @@ class PositionHandler:
         # set new image size
         # if hasattr(self, "image_raw") and hasattr(self, "image"):
         if self.image:
-            self.image = pygame.transform.scale(self.image_raw, new_size)
+            self.image = scale_image_cached(self.image_raw, new_size)
 
         if hasattr(self, "atmosphere"):
             if self.atmosphere:
-                self.atmosphere = pygame.transform.scale(self.atmosphere_raw, new_size)
+                self.atmosphere = scale_image_cached(self.atmosphere_raw, new_size)
 
         # set new size
         self.set_screen_width(new_size[0] * panzoom.zoom)

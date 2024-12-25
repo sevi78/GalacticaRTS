@@ -16,9 +16,11 @@ class AutoEconomyCalculatorEdit(EditorBase):
         # hide initially
         self.hide()
 
-        # attach to parent
-        # self.parent.editors.append(self)
         self.settings = economy_calculator.settings
+        self.selector_lists = {
+            key: [_ for _ in range(0, 100, 1)] if key.startswith("production_") else [_ for _ in range(0, 11000, 1000)]
+            for key in self.settings.keys()}
+        self.selector_lists["calculation"] = [_ for _ in range(0, 10, 1)]
         self.create_selectors_from_dict(self.world_x + self.world_width / 2, self.world_y + TOP_SPACING + self.text_spacing * 4, self.settings.items())
         self.set_selectors_current_value()
         self.create_save_button(lambda: self.save_settings(), "save settings")
@@ -29,6 +31,7 @@ class AutoEconomyCalculatorEdit(EditorBase):
 
     def selector_callback(self, key, value, selector) -> None:
         self.settings[key] = value
+        economy_calculator.settings = self.settings
 
     def save_settings(self):
         write_file("auto_economy_calculator_settings.json", "config", self.settings)

@@ -5,7 +5,7 @@ from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.handlers.position_handler import get_random_pos
 from source.handlers.widget_handler import WidgetHandler
-from source.multimedia_library.images import get_image, get_gif
+from source.multimedia_library.images import get_image
 from source.pan_zoom_sprites.pan_zoom_collectable_item import PanZoomCollectableItem
 from source.text.info_panel_text_generator import info_panel_text_generator
 from source.universe.celestial_objects.asteroid import Asteroid
@@ -115,6 +115,18 @@ class UniverseFactory:
             1: get_image("galaxy3_small.png")
             }
 
+        self.artefact_images = ["artefact1_60x31.png",
+                                "meteor_50x50.png",
+                                "meteor_60x83.png",
+                                "meteor1_50x50.png"
+                                ]
+        self.artefact_sizes = {
+            "artefact1_60x31.png": (60, 31),
+            "meteor_50x50.png": (50, 50),
+            "meteor_60x83.png": (int(60) * .5, int(83) * .5),
+            "meteor1_50x50.png": (50, 50)
+            }
+
         # drawing lists
         self.star = []
         self.pulsating_star = []
@@ -123,8 +135,8 @@ class UniverseFactory:
         self.nebulae = []
         self.galaxy = []
         self.comet = []
+        self.artefact = []
         self.universe = []
-        self.quadrant = []
 
         # create universe
         self.celestial_objects = {}
@@ -132,9 +144,8 @@ class UniverseFactory:
     def get_random_image(self, images):
         return random.choice(images)
 
-    def create_artefacts(self, x, y, width, height, amount):  # orig
-        all_specials = ["food * 1.5", "energy * 1.5", "minerals * 1.5", "water * 1.5", "technology * 1.5",
-                        "buildings_max + 1"]
+    def create_artefacts(self, x, y, width, height, amount, **kwargs):  # orig
+        collectable_items = kwargs.get("collectable_items", None)
 
         def select_resources():
             resources = ["water", "food", "energy", "technology", "minerals"]
@@ -153,74 +164,100 @@ class UniverseFactory:
                 total_amount += amount
             return selected_resources
 
-        image_names = ["artefact1_60x31.png",
-                       "meteor_50x50.png",
-                       "meteor_60x83.png",
-                       "meteor1_50x50.png"
-                       ]
+        all_specials = ["food * 1.5", "energy * 1.5", "minerals * 1.5", "water * 1.5", "technology * 1.5",
+                        "buildings_max + 1"]
 
-        artefact_sizes = {
-            "artefact1_60x31.png": (60, 31),
-            "meteor_50x50.png": (50, 50),
-            "meteor_60x83.png": (int(60) * .5, int(83) * .5),
-            "meteor1_50x50.png": (50, 50)
-            }
-        for i in range(int(amount / 2)):
-            x, y = get_random_pos(self.left_end, self.right_end, self.top_end, self.bottom_end, self.central_compression)
-            image_name = random.choice(image_names)
-            size = artefact_sizes[image_name]
-            width, height = size
-            selected_resources = select_resources()
-            specials = [random.choice(all_specials)]
+        if collectable_items:
+            for collectable_item, dict_ in collectable_items.items():
+                if dict_["image_name"].endswith(".png"):
+                    relative_gif_size = 1.0
+                else:
+                    relative_gif_size = 0.4
 
-            artefact = PanZoomCollectableItem(config.win,
-                    x=x, y=y, width=width, height=height,
-                    pan_zoom=pan_zoom_handler,
-                    image_name=image_name,
-                    isSubWidget=False,
-                    transparent=True,
-                    tooltip="...maybe an alien artefact ? ...we don't now what it is ! it might be dangerous --- but maybe useful !?",
-                    infotext=info_panel_text_generator.create_info_panel_collectable_item_text(selected_resources, specials),
-                    moveable=True,
-                    energy=selected_resources["energy"],
-                    minerals=selected_resources["minerals"],
-                    food=selected_resources["food"],
-                    technology=selected_resources["technology"],
-                    water=selected_resources["water"],
-                    specials=specials,
-                    parent=self,
-                    group="collectable_items",
-                    gif="sphere.gif",
-                    align_image="center",
-                    outline_thickness=1,
-                    outline_threshold=0)
+                artefact = PanZoomCollectableItem(config.win,
+                        x=dict_["world_x"],
+                        y=dict_["world_y"],
+                        width=dict_["world_width"],
+                        height=dict_["world_height"],
+                        pan_zoom=pan_zoom_handler,
+                        image_name=dict_["image_name"],
+                        is_sub_widget=False,
+                        transparent=True,
+                        tooltip="...maybe an alien artefact ? ...we don't now what it is ! it might be dangerous --- but maybe useful !?",
+                        infotext=info_panel_text_generator.create_info_panel_collectable_item_text(
+                                dict_["resources"], dict_["specials"]),
+                        moveable=True,
+                        energy=dict_["resources"]["energy"],
+                        minerals=dict_["resources"]["minerals"],
+                        food=dict_["resources"]["food"],
+                        technology=dict_["resources"]["technology"],
+                        water=dict_["resources"]["water"],
+                        specials=dict_["specials"],
+                        parent=self,
+                        group="collectable_items",
+                        relative_gif_size=relative_gif_size,
+                        align_image="center",
+                        outline_thickness=1,
+                        outline_threshold=0)
 
-        for i in range(int(amount / 2)):
-            x, y = get_random_pos(self.left_end, self.right_end, self.top_end, self.bottom_end, self.central_compression)
-            selected_resources = select_resources()
-            specials = [random.choice(all_specials)]
-            artefact = PanZoomCollectableItem(config.win,
-                    x=x, y=y, width=60, height=60,
-                    pan_zoom=pan_zoom_handler,
-                    image_name="sphere.gif",
-                    isSubWidget=False,
-                    transparent=True,
-                    tooltip="...maybe an alien artefact ? ...we don't now what it is ! it might be dangerous --- but maybe useful !?",
-                    infotext=info_panel_text_generator.create_info_panel_collectable_item_text(selected_resources, specials),
-                    moveable=True,
-                    energy=selected_resources["energy"],
-                    minerals=selected_resources["minerals"],
-                    food=selected_resources["food"],
-                    technology=selected_resources["technology"],
-                    water=selected_resources["water"],
-                    specials=specials,
-                    parent=self,
-                    group="collectable_items",
-                    gif="sphere.gif",
-                    relative_gif_size=0.4,
-                    align_image="center",
-                    outline_thickness=1,
-                    outline_threshold=0)
+        else:
+            # create random static artefacts
+            for i in range(int(amount / 2)):
+                x, y = get_random_pos(self.left_end, self.right_end, self.top_end, self.bottom_end, self.central_compression)
+                image_name = random.choice(self.artefact_images)
+                size = self.artefact_sizes[image_name]
+                width, height = size
+                selected_resources = select_resources()
+                specials = [random.choice(all_specials)]
+
+                artefact = PanZoomCollectableItem(config.win,
+                        x=x, y=y, width=width, height=height,
+                        pan_zoom=pan_zoom_handler,
+                        image_name=image_name,
+                        is_sub_widget=False,
+                        transparent=True,
+                        tooltip="...maybe an alien artefact ? ...we don't now what it is ! it might be dangerous --- but maybe useful !?",
+                        infotext=info_panel_text_generator.create_info_panel_collectable_item_text(selected_resources, specials),
+                        moveable=True,
+                        energy=selected_resources["energy"],
+                        minerals=selected_resources["minerals"],
+                        food=selected_resources["food"],
+                        technology=selected_resources["technology"],
+                        water=selected_resources["water"],
+                        specials=specials,
+                        parent=self,
+                        group="collectable_items",
+                        gif="sphere.gif",
+                        align_image="center",
+                        outline_thickness=1,
+                        outline_threshold=0)
+
+            # create spherical, animated artefacts
+            for i in range(int(amount / 2)):
+                x, y = get_random_pos(self.left_end, self.right_end, self.top_end, self.bottom_end, self.central_compression)
+                selected_resources = select_resources()
+                specials = [random.choice(all_specials)]
+                artefact = PanZoomCollectableItem(config.win,
+                        x=x, y=y, width=60, height=60,
+                        pan_zoom=pan_zoom_handler,
+                        image_name="sphere.gif",
+                        is_sub_widget=False,
+                        transparent=True,
+                        tooltip="...maybe an alien artefact ? ...we don't now what it is ! it might be dangerous --- but maybe useful !?",
+                        infotext=info_panel_text_generator.create_info_panel_collectable_item_text(selected_resources, specials),
+                        moveable=True,
+                        energy=selected_resources["energy"],
+                        minerals=selected_resources["minerals"],
+                        food=selected_resources["food"],
+                        technology=selected_resources["technology"],
+                        water=selected_resources["water"],
+                        specials=specials,
+                        parent=self,
+                        group="collectable_items",
+                        relative_gif_size=0.4,
+                        align_image="center",
+                        outline_thickness=1,
+                        outline_threshold=0)
 
     def create_stars(self):
         # star images
@@ -292,7 +329,8 @@ class UniverseFactory:
 
             comet = Comet(self.win, x, y, w, h, image=image, layer=self.layer, parent=self, type="comet", gif="comet.gif")
 
-    def create_universe(self, x, y, width, height):
+    def create_universe(self, x, y, width, height, collectable_items_amount, **kwargs):
+        collectable_items = kwargs.get("collectable_items", None)
         self.left_end = x
         self.top_end = y
         self.right_end = self.left_end + width
@@ -303,8 +341,9 @@ class UniverseFactory:
         self.create_nebulaes()
         self.create_comets()
         self.create_asteroids()
+        self.create_artefacts(x, y, width, height, collectable_items_amount, collectable_items=collectable_items)
 
-        self.universe = self.star + self.pulsating_star + self.galaxy + self.nebulae + self.comet + self.asteroid  # + self.quadrant
+        self.universe = self.star + self.pulsating_star + self.galaxy + self.nebulae + self.comet + self.asteroid + self.artefact
 
         self.celestial_objects = {
             "star": self.star,
@@ -312,7 +351,8 @@ class UniverseFactory:
             "galaxy": self.galaxy,
             "nebulae": self.nebulae,
             "comet": self.comet,
-            "asteroid": self.asteroid
+            "asteroid": self.asteroid,
+            "collectable_item": self.artefact
             }
 
     def delete_universe(self):

@@ -42,8 +42,8 @@ class ToolTip(WidgetBase):
     - visible: a boolean indicating whether the tooltip is visible or not.
     - active: a boolean indicating whether the tooltip is active or not, could be set by a button """
 
-    def __init__(self, surface, x, y, width, height, color, text_color, isSubWidget, parent, **kwargs):
-        super().__init__(surface, x, y, width, height, isSubWidget, **kwargs)
+    def __init__(self, surface, x, y, width, height, color, text_color, is_sub_widget, parent, **kwargs):
+        super().__init__(surface, x, y, width, height, is_sub_widget, **kwargs)
         self.layer = kwargs.get("layer", 10)
         self.visible = False
         self.win = surface

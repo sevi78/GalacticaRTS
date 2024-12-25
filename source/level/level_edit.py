@@ -1,5 +1,3 @@
-import random
-
 import pygame
 
 from source.configuration.game_config import config
@@ -14,15 +12,16 @@ from source.gui.widgets.inputbox import InputBox
 from source.gui.widgets.selector import Selector
 from source.handlers import position_handler
 from source.handlers.color_handler import colors
-from source.handlers.file_handler import get_ships_list
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
-from source.multimedia_library.images import get_image, get_image_names_from_folder
+from source.multimedia_library.images import get_image, scale_image_cached
 from source.text.info_panel_text_generator import info_panel_text_generator
 
 PLANET_MAX_SIZE = 200.0
 PLANET_MIN_SIZE = 10.0
 BUTTON_SIZE = 25
+INFO_PANEL_ALPHA = 60
+INFO_PANEL_FONT_SIZE = 12
 
 
 class LevelEdit(EditorBase):
@@ -39,6 +38,7 @@ class LevelEdit(EditorBase):
 
         # lists
         self.central_compression_list = [_ for _ in range(101)]
+        self.players_list = [_ for _ in range(1, 6)]
         self.level_list = [_ for _ in range(12)]
         self.planets_list = [_ for _ in range(1, 51)]
         self.suns_list = [_ for _ in range(1, 31)]
@@ -85,16 +85,18 @@ class LevelEdit(EditorBase):
                 height=BUTTON_SIZE,
                 is_sub_widget=False,
                 parent=self,
-                image=pygame.transform.scale(
+                image=scale_image_cached(
                         get_image("randomize_icon.png"), (BUTTON_SIZE, BUTTON_SIZE)),
                 tooltip="randomize level",
                 info_text=info_panel_text_generator.create_create_info_panel_level_text(
                         self.level_handler.data["globals"]["level"], self.level_handler.data),
+                info_panel_alpha=INFO_PANEL_ALPHA,
+                info_panel_font_size=INFO_PANEL_FONT_SIZE,
                 frame_color=self.frame_color,
                 moveable=False,
                 include_text=False,
                 layer=self.layer,
-                on_click=lambda: self.randomize_level(),
+                on_click=lambda: self.level_handler.randomize_level(),
                 )
 
         randomize_button.hide()
@@ -110,16 +112,17 @@ class LevelEdit(EditorBase):
                 height=BUTTON_SIZE,
                 is_sub_widget=False,
                 parent=self,
-                image=pygame.transform.scale(
+                image=scale_image_cached(
                         get_image("update_icon.png"), (BUTTON_SIZE, BUTTON_SIZE)),
                 tooltip="refresh level",
-                info_text=info_panel_text_generator.create_create_info_panel_level_text(
-                        self.level_handler.data["globals"]["level"], self.level_handler.data),
+                info_text=self.level_handler.refresh_level.__doc__,
+                info_panel_alpha=INFO_PANEL_ALPHA,
+                info_panel_font_size=INFO_PANEL_FONT_SIZE,
                 frame_color=self.frame_color,
                 moveable=False,
                 include_text=False,
                 layer=self.layer,
-                on_click=lambda: self.refresh_level(),
+                on_click=lambda: self.level_handler.refresh_level(),
                 )
 
         update_button.hide()
@@ -135,11 +138,14 @@ class LevelEdit(EditorBase):
                 height=BUTTON_SIZE,
                 is_sub_widget=False,
                 parent=self,
-                image=pygame.transform.scale(
+                image=scale_image_cached(
                         get_image("owner.png"), (BUTTON_SIZE, BUTTON_SIZE)),
                 tooltip="set owners",
-                info_text=info_panel_text_generator.create_create_info_panel_level_text(
-                        self.level_handler.data["globals"]["level"], self.level_handler.data),
+                # info_text=info_panel_text_generator.create_create_info_panel_level_text(
+                #         self.level_handler.data["globals"]["level"], self.level_handler.data),
+                info_text=self.level_handler.set_planet_owners.__doc__,
+                info_panel_alpha=INFO_PANEL_ALPHA,
+                info_panel_font_size=INFO_PANEL_FONT_SIZE,
                 frame_color=self.frame_color,
                 moveable=False,
                 include_text=False,
@@ -152,8 +158,6 @@ class LevelEdit(EditorBase):
         self.buttons.append(owner_button)
         self.widgets.append(owner_button)
 
-
-
     def create_smoothing_button(self):
         smoothing_button = ImageButton(win=self.win,
                 x=self.get_screen_x() + BUTTON_SIZE / 2 + BUTTON_SIZE * 3,
@@ -162,11 +166,12 @@ class LevelEdit(EditorBase):
                 height=BUTTON_SIZE,
                 is_sub_widget=False,
                 parent=self,
-                image=pygame.transform.scale(
+                image=scale_image_cached(
                         get_image("calculate.png"), (BUTTON_SIZE, BUTTON_SIZE)),
                 tooltip="smooth planet positions",
-                info_text=info_panel_text_generator.create_create_info_panel_level_text(
-                        self.level_handler.data["globals"]["level"], self.level_handler.data),
+                info_text=position_handler.smooth_planet_positions.__doc__,
+                info_panel_alpha=INFO_PANEL_ALPHA,
+                info_panel_font_size=INFO_PANEL_FONT_SIZE,
                 frame_color=self.frame_color,
                 moveable=False,
                 include_text=False,
@@ -188,11 +193,13 @@ class LevelEdit(EditorBase):
                 height=BUTTON_SIZE,
                 is_sub_widget=False,
                 parent=self,
-                image=pygame.transform.scale(
+                image=scale_image_cached(
                         get_image("rename_planets_icon.png"), (BUTTON_SIZE, BUTTON_SIZE)),
                 tooltip="rename planets",
                 info_text=info_panel_text_generator.create_create_info_panel_level_text(
                         self.level_handler.data["globals"]["level"], self.level_handler.data),
+                info_panel_alpha=INFO_PANEL_ALPHA,
+                info_panel_font_size=INFO_PANEL_FONT_SIZE,
                 frame_color=self.frame_color,
                 moveable=False,
                 include_text=False,
@@ -212,11 +219,13 @@ class LevelEdit(EditorBase):
                 height=BUTTON_SIZE,
                 is_sub_widget=False,
                 parent=self,
-                image=pygame.transform.scale(
+                image=scale_image_cached(
                         get_image("explore_icon.png"), (BUTTON_SIZE, BUTTON_SIZE)),
                 tooltip="explore planets",
                 info_text=info_panel_text_generator.create_create_info_panel_level_text(
                         self.level_handler.data["globals"]["level"], self.level_handler.data),
+                info_panel_alpha=INFO_PANEL_ALPHA,
+                info_panel_font_size=INFO_PANEL_FONT_SIZE,
                 frame_color=self.frame_color,
                 moveable=False,
                 include_text=False,
@@ -236,11 +245,12 @@ class LevelEdit(EditorBase):
                 height=BUTTON_SIZE,
                 is_sub_widget=False,
                 parent=self,
-                image=pygame.transform.scale(
+                image=scale_image_cached(
                         get_image("clean_up.png"), (BUTTON_SIZE, BUTTON_SIZE)),
                 tooltip="cleanup level",
-                info_text=info_panel_text_generator.create_create_info_panel_level_text(
-                        self.level_handler.data["globals"]["level"], self.level_handler.data),
+                info_text=self.level_handler.clean_up_level.__doc__,
+                info_panel_alpha=INFO_PANEL_ALPHA,
+                info_panel_font_size=INFO_PANEL_FONT_SIZE,
                 frame_color=self.frame_color,
                 moveable=False,
                 include_text=False,
@@ -261,20 +271,18 @@ class LevelEdit(EditorBase):
 
     def create_selectors(self):
         # Desired order of keys
-        desired_order = ["level", "level_success", "width", "height", "universe_density", "central_compression",
+        desired_order = ["level", "players", "level_success", "width", "height", "universe_density",
+                         "central_compression",
                          "goal", "suns", "planets", "moons", "collectable_item_amount", "spaceship", "spacehunter",
                          "cargoloader", "population_density", "planet_orbit_speed"]
-
-        # for key, value in self.level_handler.data["globals"].items():
-        #     if not key in desired_order:
-        #         desired_order.append(key)
 
         # Create a new dictionary with the desired key order
         self.level_handler.data["globals"] = {key: self.level_handler.data["globals"][key] for key in desired_order}
 
         x = self.world_x + self.world_width / 2 - ARROW_SIZE / 2
         y = 140
-        no_repeat_clicks = ["suns", "planets", "moons", "spaceship", "spacehunter", "cargoloader"]
+        no_repeat_clicks = ["suns", "planets", "moons", "spaceship", "spacehunter", "cargoloader", "players"]
+
         # create global selectors
         for key, value in self.level_handler.data["globals"].items():
             # print(f"key:{key}, value: {value}")
@@ -287,7 +295,8 @@ class LevelEdit(EditorBase):
                 y += self.spacing_y
 
             else:
-                print(f"cant create selector, no list availlable:{key}")
+                pass
+                # print(f"cant create selector, no list availlable:{key}")
 
         # finally set the max height of the panel based on the selectors
         self.max_height = y
@@ -320,155 +329,12 @@ class LevelEdit(EditorBase):
             for planet in sprite_groups.planets.sprites():
                 planet.orbit_speed = planet.orbit_speed_raw / 100 * self.level_handler.data["globals"][key]
 
+        # if players changed, setup a new ship and a planet for each player
+        if key == "players":
+            self.level_handler.on_players_changed(value)
+
         # update scene: to make sure changes got displayed
-        self.update_scene(key)
-
-    def update_scene(self, key: str):
-        # get selector value
-        selector_value = self.level_handler.data["globals"][key]
-
-        # add object to scene:
-        self.update_ships(key, selector_value)
-        self.update_planets(key, selector_value)
-
-    def update_ships(self, key, selector_value):
-        # check if key is a ship
-        if not key in get_ships_list():
-            return
-
-        # get all ships with the given key
-        ship_key_list = [_.id for _ in sprite_groups.ships.sprites() if _.name == key]
-
-        # check if object needs to be added or deleted based on selector_value
-        if selector_value > len(ship_key_list):
-            add = True
-        else:
-            add = False
-
-        # add ship
-        if add:
-            # get values for the constructor
-            border = min(self.level_handler.data["globals"]["width"], self.level_handler.data["globals"]["height"]) / 4
-            world_x = self.level_handler.level_dict_generator.get_random_position(
-                    self.level_handler.data["globals"]["width"], border)
-            world_y = self.level_handler.level_dict_generator.get_random_position(
-                    self.level_handler.data["globals"]["height"], border)
-            name = key
-            data = self.level_handler.data_default
-            weapons = {}
-
-            # add ship to the scene
-            ship = self.parent.ship_factory.create_ship(name, world_x, world_y, self.parent, weapons, data=data)
-        else:
-            # remove object from scene
-            if len(sprite_groups.ships.sprites()) > 0:
-                # get id of the last created ship
-                last_ship_id = max([_.id for _ in sprite_groups.ships.sprites() if _.name == key])
-
-                # get last created ship
-                last_ship = [_ for _ in sprite_groups.ships.sprites() if _.name == key and _.id == last_ship_id][0]
-
-                # finally delete the ship
-                sprite_groups.ships.sprites()[
-                    sprite_groups.ships.sprites().index(last_ship)].__delete__(sprite_groups.ships.sprites().index(last_ship))
-
-    def update_planets(self, key, selector_value):
-        # check if key is a planet:
-        if not key in ["suns", "planets", "moons"]:
-            return
-
-        key_ = key[:-1]
-        # get all planets with the given key
-        planet_key_list = [_.id for _ in sprite_groups.planets.sprites() if _.type == key_]
-
-        # check if object needs to be added or deleted based on selector_value
-        if selector_value > len(planet_key_list):
-            add = True
-        else:
-            add = False
-
-        # add planet
-        if add:
-            # get values for the constructor
-            border = min(self.level_handler.data["globals"]["width"], self.level_handler.data["globals"]["height"]) / 4
-            world_x = self.level_handler.level_dict_generator.get_random_position(
-                    self.level_handler.data["globals"]["width"], border)
-            world_y = self.level_handler.level_dict_generator.get_random_position(
-                    self.level_handler.data["globals"]["height"], border)
-            id_ = len(sprite_groups.planets.sprites())
-
-            if key_ == "sun":
-                orbit_object_id = id_
-                image_names = get_image_names_from_folder(key)
-
-            elif key_ == "planet":
-                orbit_object_id = random.choice([_.id for _ in sprite_groups.planets.sprites() if _.type == "sun"])
-                image_names = get_image_names_from_folder(key)
-
-            elif key_ == "moon":
-                orbit_object_id = random.choice([_.id for _ in sprite_groups.planets.sprites() if _.type == "planet"])
-                image_names = get_image_names_from_folder("gifs", startswith_string="moon")
-
-            # generate data
-            planet_data = self.level_handler.level_dict_generator.create_celestial_object(
-                    id_, key_, image_names, orbit_object_id, world_x, world_y)
-            data = {"celestial_objects": {str(id_): planet_data}}
-
-            # add planet to the scene
-            planet_factory.create_planets_from_data(data)
-            planet = [_ for _ in sprite_groups.planets.sprites() if _.id == id_][0]
-
-            planet.name = "not set"
-        else:
-            # remove object from scene
-            if len(sprite_groups.planets.sprites()) > 0:
-                # get id of the last created planet
-                last_planet_id = max([_.id for _ in sprite_groups.planets.sprites() if _.type == key_])
-
-                # get last created planet
-                last_planet = [_ for _ in sprite_groups.planets.sprites() if _.type == key_ and _.id == last_planet_id][
-                    0]
-
-                # finally delete the planet
-                planet_factory.delete_planet(last_planet)
-
-    def randomize_level(self):
-        ignorables = ["level"]
-        for selector in self.selectors:
-            if not selector.key in ignorables:
-                selector.current_value = random.choice(selector.list)
-                self.selector_callback(selector.key, selector.current_value, selector)
-        self.refresh_level()
-
-    def refresh_level(self):
-        self.level_handler.delete_level()
-        self.level_handler.generate_level_dict_from_editor()
-        planet_factory.create_planets_from_data(data=self.level_handler.data)
-        self.parent.selected_planet = sprite_groups.planets.sprites()[0]
-        self.parent.ship_factory.create_ships_from_data(data=self.level_handler.data)
-        self.level_handler.create_universe()
-
-        # set info text
-        for i in self.buttons:
-            i.info_text = info_panel_text_generator.create_create_info_panel_level_text(
-                    self.level_handler.data["globals"]["level"], self.level_handler.data)
-
-        self.level_handler.setup_pan_zoom_handler()
-
-    def delete_object(self):
-        selected_ships = config.app.box_selection.selected_objects
-
-        # used for ships
-        if len(selected_ships) > 0:
-            for i in selected_ships:
-                i.__delete__(i)
-
-        # used for planets
-        selected_planet = config.app.selected_planet
-        # planet_id = str(selected_planet.id)
-        # if planet_id in config.app.level_handler.data["celestial_objects"].keys():
-        #     del config.app.level_handler.data["celestial_objects"][planet_id]
-        planet_factory.delete_planet(selected_planet)
+        self.level_handler.update_scene(key)
 
     def listen(self, events):
         """show or hide, navigate to planet on selection"""

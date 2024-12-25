@@ -35,12 +35,12 @@ class EconomyParams:
             "technology": 0
             }
 
-        self.production_water = self.production["water"]
-        self.production_energy = self.production["energy"]
-        self.production_food = self.production["food"]
-        self.production_minerals = self.production["minerals"]
-        self.production_population = self.production["population"]
-        self.production_technology = self.production["technology"]
+        # self.production_water = self.production["water"]
+        # self.production_energy = self.production["energy"]
+        # self.production_food = self.production["food"]
+        # self.production_minerals = self.production["minerals"]
+        # self.production_population = self.production["population"]
+        # self.production_technology = self.production["technology"]
 
         # prices/production
         # self.prices = prices

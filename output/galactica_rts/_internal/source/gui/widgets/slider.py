@@ -20,23 +20,23 @@ class Slider(WidgetBase):
     - draw: draws the slider on the screen with the current selected value and customizable colors and border thickness
     - contains: checks if the given coordinates are within the handle of the slider
     - round: rounds the given value to the nearest multiple of the step size
-    - getValue: returns the current selected value of the slider
-    - setValue: sets the current selected value of the slider to the given value
+    - get_value: returns the current selected value of the slider
+    - set_value: sets the current selected value of the slider to the given value
 
     Fields:
     - selected: a boolean indicating whether the handle of the slider is currently selected
     - min: the minimum value of the slider range
     - max: the maximum value of the slider range
     - step: the step size of the slider
-    - colour: the color of the slider
-    - handleColour: the color of the handle of the slider
-    - borderThickness: the thickness of the border of the slider
-    - borderColour: the color of the border of the slider
+    - color: the color of the slider
+    - handle_color: the color of the handle of the slider
+    - border_thickness: the thickness of the border of the slider
+    - border_color: the color of the border of the slider
     - value: the current selected value of the slider
     - curved: a boolean indicating whether the slider is curved or straight
     - vertical: a boolean indicating whether the slider is vertical or horizontal
     - radius: the radius of the curved part of the slider
-    - handleRadius: the radius of the handle of the slider
+    - handle_radius: the radius of the handle of the slider
     """
 
     def __init__(self, win, x, y, width, height, **kwargs):
@@ -48,13 +48,14 @@ class Slider(WidgetBase):
         self.max = kwargs.get('max', 99)
         self.step = kwargs.get('step', 1)
 
-        self.colour = kwargs.get('colour', (200, 200, 200))
-        self.handleColour = kwargs.get('handleColour', (0, 0, 0))
+        self.color = kwargs.get('color', (200, 200, 200))
+        self.handle_color = kwargs.get('handle_color', (0, 0, 0))
 
-        self.borderThickness = kwargs.get('borderThickness', 3)
-        self.borderColour = kwargs.get('borderColour', (0, 0, 0))
+        self.border_thickness = kwargs.get('border_thickness', 3)
+        self.border_color = kwargs.get('border_color', (0, 0, 0))
 
         self.value = self.round(kwargs.get('initial', (self.max + self.min) / 2))
+        self.function = kwargs.get('function', None)
 
         self.curved = kwargs.get('curved', True)
 
@@ -67,11 +68,14 @@ class Slider(WidgetBase):
                 self.radius = self.screen_height // 2
 
         if self.vertical:
-            self.handleRadius = kwargs.get('handleRadius', int(self.screen_width / 1.3))
+            self.handle_radius = kwargs.get('handle_radius', int(self.screen_width / 1.3))
         else:
-            self.handleRadius = kwargs.get('handleRadius', int(self.screen_height / 1.3))
+            self.handle_radius = kwargs.get('handle_radius', int(self.screen_height / 1.3))
 
     def listen(self, events):
+        # if not config.app.game_client.is_host:
+        #     return
+
         if not self._hidden and not self._disabled:
             mouse_state = mouse_handler.get_mouse_state()
             x, y = mouse_handler.get_mouse_pos()
@@ -93,6 +97,9 @@ class Slider(WidgetBase):
                     self.value = self.round((x - self.screen_x) / self.screen_width * self.max + self.min)
                     self.value = max(min(self.value, self.max), self.min)
 
+                if self.function:
+                    self.function(self.value)
+
                 if hasattr(self.parent, "set_obj_values"):
                     self.parent.set_obj_values()
 
@@ -105,38 +112,40 @@ class Slider(WidgetBase):
     def round(self, value):
         return self.step * round(value / self.step)
 
-    def getValue(self):
+    def get_value(self):
         return self.value
 
-    def setValue(self, value):
+    def set_value(self, value):
         self.value = value
+        if self.function:
+            self.function(self.value)
 
     def draw(self):
         if not self._hidden and not self._disabled:
-            pygame.draw.rect(self.win, self.colour, (
+            pygame.draw.rect(self.win, self.color, (
                 self.screen_x, self.screen_y, self.screen_width, self.screen_height))
 
             if self.vertical:
                 if self.curved:
-                    pygame.draw.circle(self.win, self.colour, (
+                    pygame.draw.circle(self.win, self.color, (
                         self.screen_x + self.screen_width // 2, self.screen_y), self.radius)
-                    pygame.draw.circle(self.win, self.colour, (
+                    pygame.draw.circle(self.win, self.color, (
                         self.screen_x + self.screen_width // 2, self.screen_y + self.screen_height),
                             self.radius)
                 circle = (int(self.screen_x + self.screen_width // 2),
                           int(self.screen_y + (self.max - self.value) / (self.max - self.min) * self.screen_height))
             else:
                 if self.curved:
-                    pygame.draw.circle(self.win, self.colour, (
+                    pygame.draw.circle(self.win, self.color, (
                         self.screen_x, self.screen_y + self.screen_height // 2), self.radius)
-                    pygame.draw.circle(self.win, self.colour, (
+                    pygame.draw.circle(self.win, self.color, (
                         self.screen_x + self.screen_width, self.screen_y + self.screen_height // 2),
                             self.radius)
                 circle = (int(self.screen_x + (self.value - self.min) / (self.max - self.min) * self.screen_width),
                           int(self.screen_y + self.screen_height // 2))
 
-                gfxdraw.filled_circle(self.win, *circle, int(self.handleRadius), self.handleColour)
-                gfxdraw.aacircle(self.win, *circle, int(self.handleRadius), self.handleColour)
+                gfxdraw.filled_circle(self.win, *circle, int(self.handle_radius), self.handle_color)
+                gfxdraw.aacircle(self.win, *circle, int(self.handle_radius), self.handle_color)
 
 
 if __name__ == '__main__':
@@ -165,8 +174,8 @@ if __name__ == '__main__':
 
         win.fill((255, 255, 255))
 
-        output.setText(slider.getValue())
-        v_output.setText(v_slider.getValue())
+        output.setText(slider.get_value())
+        v_output.setText(v_slider.get_value())
 
         update(events)
         pygame.display.update()

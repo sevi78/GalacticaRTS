@@ -7,8 +7,8 @@ from source.universe.celestial_objects.celestial_object import CelestialObject
 
 
 class CelestialObjectStatic(CelestialObject):
-    def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
-        CelestialObject.__init__(self, win, x, y, width, height, isSubWidget=False, **kwargs)
+    def __init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs):
+        CelestialObject.__init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs)
         self.rotation = random.randint(0, 360)
         self.rotated_image, self.rotated_rect = rot_center(self.image, self.rotation, self.screen_x, self.screen_y)
         self.image_raw = self.rotated_image

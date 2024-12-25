@@ -1,7 +1,7 @@
 import pygame
 
 from source.app.ui_helper import UIHelper
-from source.configuration.economy_params import EconomyParams
+from source.economy.economy_params import EconomyParams
 from source.handlers.color_handler import colors
 
 
@@ -13,20 +13,15 @@ class GameObjectStorage:
         self.building_button_widgets = []
         self.explored_planets = []
 
-    def add_explored_planet__(self, planet):
-        self.explored_planets.append(planet)
-        self.explored_planets = sorted(self.explored_planets)
-        self.update_building_button_widgets()
-
     def add_explored_planet(self, planet):
         self.explored_planets.append(planet)
         # sort the planets by orbit_object_id and type
         self.explored_planets.sort(key=lambda x: (x.orbit_object_id, self.get_type_order(x.type)))
         self.update_building_button_widgets()
 
-    def get_type_order(self, type):
+    def get_type_order(self, type_):
         order = {"sun": 1, "planet": 2, "moon": 3}
-        return order.get(type, 4)
+        return order.get(type_, 4)
 
 
 class SceneBuilder(EconomyParams, GameObjectStorage):
@@ -53,7 +48,7 @@ class SceneBuilder(EconomyParams, GameObjectStorage):
         spacing = 100
 
         self._ship = None
-        self.ship = self.ship_factory.create_ship("spaceship_30x30.png", center_x, center_y + 300, self, {})
+        self.ship = self.ship_factory.create_ship("spaceship", center_x, center_y + 300, self, {}, owner=0)
 
     @property
     def ship(self):

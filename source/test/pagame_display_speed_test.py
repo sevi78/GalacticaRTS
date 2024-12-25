@@ -3,7 +3,7 @@ import random
 import pygame
 
 from source.handlers.color_handler import colors
-from source.multimedia_library.images import get_image
+from source.multimedia_library.images import get_image, scale_image_cached
 
 
 class Object:
@@ -13,7 +13,7 @@ class Object:
         self.y = y
         self.width = width
         self.height = height
-        self.image = pygame.transform.scale(image, (width, height)).convert_alpha()
+        self.image = scale_image_cached(image, (width, height)).convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y

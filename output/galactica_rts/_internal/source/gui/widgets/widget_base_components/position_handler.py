@@ -1,3 +1,5 @@
+import math
+
 import pygame
 from pygame import Vector2
 
@@ -97,8 +99,8 @@ class PositionHandler:
                 self.atmosphere = pygame.transform.scale(self.atmosphere_raw, new_size)
 
         # set new size
-        self.setWidth(new_size[0] * panzoom.zoom)
-        self.setHeight(new_size[1] * panzoom.zoom)
+        self.set_screen_width(new_size[0] * panzoom.zoom)
+        self.set_screen_height(new_size[1] * panzoom.zoom)
 
     def get_zoom(self):
         if config.app:
@@ -111,12 +113,31 @@ class PositionHandler:
         self.screen_y = pos[1]
         self.set_center()
 
-    def setWidth(self, width):
+    def set_screen_width(self, width):
         self.screen_width = width
 
-    def setHeight(self, height):
+    def set_screen_height(self, height):
         self.screen_height = height
 
     def set_center(self):
         self.center = (
             self.get_screen_x() + self.get_screen_width() / 2, self.get_screen_y() + self.get_screen_height() / 2)
+
+    def calculate_grid(self, item_amount, width, height):
+        """Calculate the optimal grid size and item size based on the number of items and display surface dimensions."""
+        columns = math.ceil(math.sqrt(item_amount))
+        rows = math.ceil(item_amount / columns)
+
+        # Adjust rows and columns to fit the items optimally
+        while columns * rows < item_amount:
+            if columns <= rows:
+                columns += 1
+            else:
+                rows += 1
+
+        # Ensure items are square and maintain the aspect ratio of the display surface
+        item_size = min(width // columns, height // rows)
+        item_width = item_size
+        item_height = item_size
+
+        return rows, columns, item_width, item_height

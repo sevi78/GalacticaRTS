@@ -3,8 +3,10 @@ import pygame
 from source.configuration.game_config import config
 from source.gui.lod import level_of_detail
 from source.handlers.mouse_handler import mouse_handler, MouseState
+from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.interaction.interaction_handler import InteractionHandler
+from source.multimedia_library.images import scale_image_cached
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_gif import PanZoomSprite
 
 
@@ -15,26 +17,21 @@ class PanZoomCollectableItem(PanZoomSprite, InteractionHandler):
                                            'population', 'technology', 'resources', 'collect_text')
 
     # PanZoomMouseHandler
-    __slots__ += ("_on_hover", "on_hover_release")
+    # __slots__ += ("_on_hover", "on_hover_release")
 
-    def __init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs):
-        PanZoomSprite.__init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs)
+    def __init__(self, win, x, y, width, height,image_name, **kwargs):
+        PanZoomSprite.__init__(self, win, x, y, width, height, pan_zoom_handler, image_name, **kwargs)
         InteractionHandler.__init__(self)
         self.property = "item"
         self.type = "collectable item"
         self.info_text = kwargs.get("infotext")
         self.tooltip = kwargs.get("tooltip", None)
-        self.energy = kwargs.get("energy", 0)
-        self.food = kwargs.get("food", 0)
-        self.minerals = kwargs.get("minerals", 0)
-        self.water = kwargs.get("water", 0)
-        self.population = kwargs.get("population", 0)
-        self.technology = kwargs.get("technology", None)
-        self.resources = {"water": self.water, "energy": self.energy, "food": self.food, "minerals": self.minerals, "technology": self.technology}
+        self.resources = kwargs.get("resources", {})
         self.specials = kwargs.get("specials", [])
         self.collect_text = ""
-        self.name = "collectable item"
+        # self.name = "collectable item"
         self.collected = False
+        self.id = kwargs.get("id", len(sprite_groups.collectable_items))
 
         sprite_groups.collectable_items.add(self)
 
@@ -51,7 +48,7 @@ class PanZoomCollectableItem(PanZoomSprite, InteractionHandler):
 
             if self.rect.collidepoint(mouse_handler.get_mouse_pos()):  # self.contains(x, y):
                 if mouse_state == MouseState.HOVER or mouse_state == MouseState.LEFT_DRAG:
-                    self.win.blit(pygame.transform.scale(self.image_outline, self.rect.size), self.rect)
+                    self.win.blit(scale_image_cached(self.image_outline, self.rect.size), self.rect)
                     # set tooltip
                     if self.tooltip:
                         if self.tooltip != "":

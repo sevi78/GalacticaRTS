@@ -27,7 +27,7 @@ class WidgetHandler:
                     # if level_of_detail.inside_screen((widget.screen_x, widget.screen_y), border=0):
                     widget.draw()
 
-                    if widget.isSubWidget:
+                    if widget.is_sub_widget:
                         if hasattr(widget, "listen"):
                             widget.listen(events)
 
@@ -39,7 +39,7 @@ class WidgetHandler:
         return all_widgets
 
     @staticmethod
-    def addWidget(widget):
+    def add_widget(widget):
         if str(widget.layer) == "None":
             WidgetHandler.layers[9].append(widget)
         else:

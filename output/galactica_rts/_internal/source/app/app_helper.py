@@ -1,4 +1,4 @@
-from source.handlers.economy_handler import economy_handler
+from source.economy.economy_handler import economy_handler
 
 
 class AppHelper:

@@ -1,6 +1,7 @@
 import pygame
 from pygame_widgets.util import drawText
 
+
 from source.configuration.game_config import config
 from source.draw.circles import draw_transparent_circle, draw_transparent_circle_blurred
 from source.draw.cross import draw_dashed_cross_in_circle
@@ -12,7 +13,7 @@ from source.handlers.diplomacy_handler import diplomacy_handler
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.math.math_handler import limit_number
 from source.multimedia_library.gif_handler import GifHandler
-from source.multimedia_library.images import get_image
+from source.multimedia_library.images import get_image, scale_image_cached
 from source.player.player_handler import player_handler
 
 DEFAULT_ZOOM = 0.2
@@ -35,7 +36,7 @@ class PanZoomPlanetDraw:
 
     def setup_special_images(self):
         self.special_images = {}
-        for key in self.production.keys():
+        for key in self.economy_agent.production.keys():
             self.special_images[key] = get_image(key + '_25x25.png')
 
     def setup_gif_handler(self):
@@ -46,7 +47,7 @@ class PanZoomPlanetDraw:
                 self.gif_handler = GifHandler(self, self.gif, loop=True, relative_gif_size=1.0)
 
     def draw_text(self):
-        if self.get_zoom() > TEXT_ZOOM:
+        if pan_zoom_handler.get_zoom() > TEXT_ZOOM:
             self.text = self.font.render(self.string, True, colors.frame_color)
             self.text_rect = self.text.get_rect()
             self.text_rect.centerx = self.rect.centerx
@@ -69,32 +70,21 @@ class PanZoomPlanetDraw:
         if config.show_player_colors:
             self.display_color = self.player_color
 
-    # def draw_player_colors_(self):
-    #     if config.show_player_colors:
-    #         # draw_transparent_circle(self.win, self.player_color, self.rect.center, self.planet_defence.attack_distance, 20)
-    #         if config.enable_blurr:
-    #             if pan_zoom_handler.zoom > 0.25:
-    #                 draw_transparent_circle_blurred(self.win, self.player_color[
-    #                                                           :3], self.rect.center, int(self.planet_defence.attack_distance), config.blurr_alpha, 0, config.blurr_radius)
-    #             else:
-    #                 draw_transparent_circle(self.win, self.player_color, self.rect.center, self.planet_defence.attack_distance, 20)
-    #         else:
-    #             draw_transparent_circle(self.win, self.player_color, self.rect.center, self.planet_defence.attack_distance, 20)
-
     def draw_player_colors(self):
         if config.show_player_colors:
             if config.enable_blurr:
                 # Clamp the value to the range 0 to 255
                 alpha_ = limit_number(config.blurr_alpha / pan_zoom_handler.zoom, 20, 50)
+                blurr_radius = limit_number(config.blurr_radius * pan_zoom_handler.zoom, 3, 60)
+                # print(blurr_radius)
                 draw_transparent_circle_blurred(
                         self.win,
-                        self.player_color[:3],
+                        self.player_color,  # Pass the full color
                         self.rect.center,
                         int(self.planet_defence.attack_distance),
                         alpha_,
                         0,
-                        config.blurr_radius * pan_zoom_handler.zoom)
-
+                        blurr_radius)
             else:
                 draw_transparent_circle(
                         self.win,
@@ -126,17 +116,17 @@ class PanZoomPlanetDraw:
         # print ("draw_specials:", self.specials)
         if not level_of_detail.inside_screen(self.get_position()):
             return
-        if self.get_zoom() > SPECIALS_ZOOM:
+        if pan_zoom_handler.get_zoom() > SPECIALS_ZOOM:
             # Load the font once
             font = pygame.font.SysFont("georgiaproblack", SPECIAL_FONT_SIZE)
             x = self.screen_position[0] + self.screen_width / 2 + 20
             y = self.rect.centery
 
-            if self.specials:
+            if self.economy_agent.specials:
                 count = 0
-                for key, value in self.specials_dict.items():
+                for key, value in self.economy_agent.specials_dict.items():
                     operator, value = value["operator"], value["value"]
-                    if value != 0 and key in self.production.keys():
+                    if value != 0 and key in self.economy_agent.production.keys():
                         self.win.blit(self.special_images[key], (x, y))
 
                         if operator == "*":
@@ -148,14 +138,17 @@ class PanZoomPlanetDraw:
                         y += 20  # Increment y for the next draw
 
     def draw_alien_population_icons(self):
-        if self.get_zoom() > IMAGE_ZOOM:
+        if pan_zoom_handler.get_zoom() > IMAGE_ZOOM:
             # check if hostile or friendly
             if not diplomacy_handler.is_in_peace(self.owner, config.player):
-                alien_image = pygame.transform.scale(get_image("alien_face_orange.png"), (25, 25))
+                alien_image = scale_image_cached(get_image("alien_face_orange.png"), (25, 25))
             else:
-                alien_image = pygame.transform.scale(get_image("alien_face_green.png"), (25, 25))
+                alien_image = scale_image_cached(get_image("alien_face_green.png"), (25, 25))
 
             # only draw if occupied by alien
             if self.owner not in [0, -1]:
                 x = self.screen_position[0] - self.screen_width / 2 - 60
                 self.win.blit(alien_image, (x, self.rect.centery))
+
+
+disabled_function = [PanZoomPlanetDraw.draw_specials]

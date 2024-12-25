@@ -1,8 +1,11 @@
 import math
+
 from pygame import Vector2
 
 from source.configuration.game_config import config
 from source.handlers.diplomacy_handler import diplomacy_handler
+from source.handlers.orbit_handler import set_orbit_object_id
+from source.handlers.time_handler import time_handler
 from source.multimedia_library.sounds import sounds
 from source.pan_zoom_sprites.pan_zoom_ship_classes.pan_zoom_ship_params import SHIP_ORBIT_SPEED, SHIP_ORBIT_SPEED_MAX
 from source.path_finding.a_star_node_path_finding import Node
@@ -41,9 +44,16 @@ class PanZoomShipMoving:
         self._orbiting = value
         if value:
             if self.target:
-                self.set_orbit_object_id(self.target.id)
+                if hasattr(self.target, "id"):
+                    if not self.target.id == self.id:
+                        set_orbit_object_id(self, self.target.id)
+                    else:
 
-        self.state_engine.set_state()
+                        print("@orbiting.setter error: target.id == self.id!")
+                else:
+                    print("@orbiting.setter error: target has no attr 'id'!")
+
+        # self.state_engine.set_state()
 
     @property
     def moving(self):
@@ -54,8 +64,9 @@ class PanZoomShipMoving:
         self._moving = value
         if value == True:
             self.orbiting = False
+            self.state_engine.set_state("moving")
 
-        self.state_engine.set_state()
+        # self.state_engine.set_state()
 
     @property
     def move_stop(self):
@@ -67,7 +78,8 @@ class PanZoomShipMoving:
 
         if not hasattr(self, "state_engine"):
             return
-        self.state_engine.set_state()
+        if value:
+            self.state_engine.set_state("move_stop")
 
     def set_speed(self):
         # adjust speed if no energy
@@ -78,13 +90,13 @@ class PanZoomShipMoving:
         return speed
 
     def set_attack_distance(self):
-        self.attack_distance = self.attack_distance_raw * self.get_zoom()
+        self.attack_distance = self.attack_distance_raw  # * self.get_zoom()
 
     def set_desired_orbit_radius(self):
-        self.desired_orbit_radius = self.desired_orbit_radius_raw * self.get_zoom()
+        self.desired_orbit_radius = self.desired_orbit_radius_raw  # * self.get_zoom()
 
     def set_target_object_reset_distance(self):
-        self.target_object_reset_distance = self.target_object_reset_distance_raw * self.get_zoom()
+        self.target_object_reset_distance = self.target_object_reset_distance_raw  # * self.get_zoom()
 
     def set_reload_max_distance(self):
         self.reload_max_distance = self.reload_max_distance_raw * self.get_zoom()
@@ -97,31 +109,6 @@ class PanZoomShipMoving:
 
     def set_energy_reloader(self, obj):
         self.energy_reloader = obj
-
-    # def move_towards_target(self):
-    #     direction = self.target_position - Vector2(self.world_x, self.world_y)
-    #     distance = direction.length() * self.get_zoom()
-    #     speed = self.set_speed()
-    #
-    #     # Normalize the direction vector
-    #     if not direction.length() == 0.0:
-    #         try:
-    #             direction.normalize()
-    #         except ValueError as e:
-    #             print("move_towards_target: exc:", e)
-    #
-    #     # Calculate the displacement vector for each time step
-    #     displacement = direction * speed * config.game_speed
-    #
-    #     # Calculate the number of time steps needed to reach the target position
-    #     time_steps = int(distance / speed) / self.get_zoom()
-    #
-    #     # Move the obj towards the target position with a constant speed
-    #     if time_steps:
-    #         self.world_x += displacement.x / time_steps
-    #         self.world_y += displacement.y / time_steps
-    #
-    #     self.reach_target(distance)
 
     def play_travel_sound(self):
         # plays sound
@@ -138,6 +125,9 @@ class PanZoomShipMoving:
         self.target.get_explored(self.owner)
 
     def reach_target(self, distance):
+        if not self.target:
+            return
+
         if self.target.property == "ufo":
             if distance <= self.attack_distance:
                 self.moving = False
@@ -215,12 +205,12 @@ class PanZoomShipMoving:
             sounds.stop_sound(self.sound_channel)
             self.hum_playing = False
 
-            # open diplomacy edit to make war or peace
-            if self.target.owner != self.owner:
-                config.app.diplomacy_edit.open(self.target.owner, self.owner)
+            # # open diplomacy edit to make war or peace
+            # if self.target.owner != self.owner:
+            #     config.app.diplomacy_edit.open(self.target.owner, self.owner)
 
             # attack if hostile planet
-            if not diplomacy_handler.is_in_peace(self.target.owner, config.player):
+            if not diplomacy_handler.is_in_peace(self.target.owner, self.owner):
                 self.reach_enemy()
 
             # set orbit object ( also resets target)
@@ -228,6 +218,7 @@ class PanZoomShipMoving:
             self.moving = False
 
     def follow_target(self, obj):
+        self.state_engine.set_state("attacking")
         target_position = Vector2(obj.world_x, obj.world_y)
         current_position = Vector2(self.world_x, self.world_y)
 
@@ -249,12 +240,15 @@ class PanZoomShipMoving:
                 speed = self.set_speed()
 
             # Calculate the displacement vector for each time step
-            displacement = direction * speed * config.game_speed / config.fps
+            displacement = direction * speed * time_handler.game_speed / config.fps
             # print(f"displacement: {displacement}")
 
             # Move the obj towards the target position with a constant speed
-            self.world_x += displacement.x
-            self.world_y += displacement.y
+            if config.app.game_client.is_host:
+                self.world_x += displacement.x
+                self.world_y += displacement.y
+
+            self.set_world_position((self.world_x, self.world_y))
 
     def consume_energy_if_traveling(self):
         # only subtract energy if some energy is left
@@ -266,5 +260,6 @@ class PanZoomShipMoving:
         self.energy -= traveled_distance * self.energy_use
         self.set_experience(traveled_distance * TRAVEL_EXPERIENCE_FACTOR)
 
-    def get_max_travel_range(self):
+    def get_max_travel_range(self) -> float:
+        """ returns the max distance in world coordinates the ship can move based on its energy """
         return self.energy / self.energy_use

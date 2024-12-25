@@ -31,11 +31,11 @@ def draw_orbit_circle(self):
     color = colors.get_orbit_color(self.type)
     if self.orbit_object and config.show_orbit:
         pos = get_orbit_pos(self)
-        radius = self.orbit_radius * self.get_zoom()
+        radius = self.orbit_radius * pan_zoom_handler.get_zoom()
         pygame.draw.circle(config.win, color, (pos[0], pos[1]), radius, 1)
 
 
-def draw_orbit(self):
+def draw_orbit(self):  # original
     """
     Draws the orbit with fancy circles
     """
@@ -52,7 +52,7 @@ def draw_orbit(self):
 
     if config.show_orbit:
         pos = get_orbit_pos(self)
-        radius = self.orbit_radius * self.get_zoom()
+        radius = self.orbit_radius * pan_zoom_handler.get_zoom()
         width = 1  # initial width of the circle
         circumference = 2 * math.pi * radius
         num_points = math.ceil(circumference / max_points)
@@ -63,7 +63,7 @@ def draw_orbit(self):
             x = pos[0] + radius * math.cos(angle)  # x-coordinate of the current point
             y = pos[1] + radius * math.sin(angle)  # y-coordinate of the current point
             if level_of_detail.inside_screen((x, y)):
-                if math.dist(self.rect.center, (x, y)) * self.get_zoom() > min_dist_to_draw / self.get_zoom():
+                if math.dist(self.rect.center, (x, y)) * pan_zoom_handler.get_zoom() > min_dist_to_draw / pan_zoom_handler.get_zoom():
                     points.append((int(x), int(y)))
 
         if len(points) > 1:
@@ -83,13 +83,16 @@ def draw_orbit(self):
                 pygame.draw.circle(config.win, color, center, size, width)
 
 
-def draw_orbits(self):
-    if self.get_zoom() < 0.1:
+def draw_orbits(self):  # original
+    if pan_zoom_handler.get_zoom() < 0.1:
         draw_orbit_circle(self)
-    elif self.get_zoom() < 0.8 > 0.1:
+    elif pan_zoom_handler.get_zoom() < 0.8 > 0.1:
         draw_orbit_simple(self)
-    elif self.get_zoom() > 0.8:
+    elif pan_zoom_handler.get_zoom() > 0.8:
         if level_of_detail.inside_screen(self.rect.center):
             draw_orbit(self)
 
-    # draw_orbit_angle(self)
+#
+# def draw_orbits(self):
+#     draw_orbit_simple(self)
+#     draw_orbit(self)

@@ -5,6 +5,31 @@ from source.factories.building_factory import building_factory
 from source.gui.lod import level_of_detail
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.handlers.mouse_handler import mouse_handler, MouseState
+from source.multimedia_library.images import overblit_button_image
+
+
+class Delegate:
+    """ a simple delegate for a button:
+
+        :param state_image: The image of the button
+        :type state_image: str
+
+        use: inject an instance of this class as kwarg to the ImageButton,
+        the ImageButton then will call check_state()
+
+    """
+    def __init__(self, state_image: str) -> None:
+        self.state_image = state_image
+        self.trigger = None
+
+    def check_state(self, parent: object, trigger: bool) -> None:
+        # check if the state has changed
+        if not trigger == self.trigger:
+            # set the state
+            self.trigger = trigger
+
+            # set the image
+            overblit_button_image(parent, self.state_image, not self.trigger)
 
 
 class ImageButton(WidgetBase):
@@ -23,9 +48,10 @@ class ImageButton(WidgetBase):
         :param kwargs: Optional parameters:
         """
 
-    def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
-        super().__init__(win, x, y, width, height, isSubWidget, **kwargs)
+    def __init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs):
+        super().__init__(win, x, y, width, height, is_sub_widget, **kwargs)
         self.function = kwargs.get("function", None)
+        self.on_hover_function = kwargs.get("on_hover_function", None)
         self.layer = kwargs.get("layer", 3)
         self.parent = kwargs.get("parent")
         self.center = (
@@ -34,36 +60,37 @@ class ImageButton(WidgetBase):
         self.info_text = kwargs.get("info_text")
 
         # Function
-        self.onClick = kwargs.get('onClick', lambda *args: None)
-        self.onRelease = kwargs.get('onRelease', lambda *args: None)
-        self.onClickParams = kwargs.get('onClickParams', ())
-        self.onReleaseParams = kwargs.get('onReleaseParams', ())
+        self.on_click = kwargs.get('on_click', lambda *args: None)
+        self.on_release = kwargs.get('on_release', lambda *args: None)
+        self.on_click_params = kwargs.get('on_click_params', ())
+        self.on_release_params = kwargs.get('on_release_params', ())
         self.clicked = False
         self.moveable = kwargs.get("moveable", False)
         self.moving = False
         self.property = kwargs.get("property")
+        self.delegate = kwargs.get("delegate", None)
 
         # Text (Remove if using PyInstaller)
-        self.textColour = kwargs.get('textColour', (255, 255, 25))
+        self.text_color = kwargs.get('text_color', (255, 255, 25))
         self.font_size = kwargs.get('font_size', 20)
         self.string = kwargs.get('text', '')
         self.font = kwargs.get('font', pygame.font.SysFont(config.font_name, self.font_size))
-        self.text = self.font.render(self.string, True, self.textColour)
-        self.textHAlign = kwargs.get('textHAlign', 'centre')
-        self.textVAlign = kwargs.get('textVAlign', 'centre')
+        self.text = self.font.render(self.string, True, self.text_color)
+        self.text_h_align = kwargs.get('text_h_align', 'centre')
+        self.text_v_align = kwargs.get('text_v_align', 'centre')
         self.margin = kwargs.get('margin', 20)
-        self.textRect = self.text.get_rect()
-        self.alignTextRect()
+        self.text_rect = self.text.get_rect()
+        self.align_text_rect()
 
         # Image
         self.transparent = kwargs.get('transparent', False)
         self.image = kwargs.get('image', None)
-        self.imageHAlign = kwargs.get('imageHAlign', 'centre')
-        self.imageVAlign = kwargs.get('imageVAlign', 'centre')
+        self.image_h_align = kwargs.get('image_h_align', 'centre')
+        self.image_v_align = kwargs.get('image_v_align', 'centre')
 
         if self.image:
             self.rect = self.image.get_rect()
-            self.alignImageRect()
+            self.align_image_rect()
 
         # ToolTip
         self.tooltip = kwargs.get("tooltip", "")
@@ -80,6 +107,9 @@ class ImageButton(WidgetBase):
         if config.app:
             config.app.tooltip_instance.reset_tooltip(self)
 
+        if self.delegate:
+            self.delegate.check_state(self, config.app.game_client.connected)
+
         if not self._hidden and not self._disabled:
             mouse_state = mouse_handler.get_mouse_state()
             x, y = mouse_handler.get_mouse_pos()
@@ -87,11 +117,11 @@ class ImageButton(WidgetBase):
             if self.rect.collidepoint(x, y):
                 if mouse_state == MouseState.LEFT_RELEASE and self.clicked:
                     self.clicked = False
-                    self.onRelease(*self.onReleaseParams)
+                    self.on_release(*self.on_release_params)
 
                 elif mouse_state == MouseState.LEFT_CLICK:
                     self.clicked = True
-                    self.onClick(*self.onClickParams)
+                    self.on_click(*self.on_click_params)
 
                     # this is used for build .... dirty hack, but leave it !
                     if self.string:
@@ -127,6 +157,11 @@ class ImageButton(WidgetBase):
 
                     if self.name == "close_button":
                         config.app.cursor.set_cursor("close")
+
+                    if self.on_hover_function:
+                        self.on_hover_function()
+
+
             else:
                 self.clicked = False
 
@@ -140,40 +175,40 @@ class ImageButton(WidgetBase):
         if not self._hidden:
             if self.image:
                 self.rect = self.image.get_rect()
-                self.alignImageRect()
+                self.align_image_rect()
                 self.win.blit(self.image, self.rect)
 
-            self.textRect = self.text.get_rect()
-            self.alignTextRect()
-            self.win.blit(self.text, self.textRect)
+            self.text_rect = self.text.get_rect()
+            self.align_text_rect()
+            self.win.blit(self.text, self.text_rect)
 
-    def setOnClick(self, onClick, params=()):
-        self.onClick = onClick
-        self.onClickParams = params
+    def set_on_click(self, on_click, params=()):
+        self.on_click = on_click
+        self.on_click_params = params
 
-    def setOnRelease(self, onRelease, params=()):
-        self.onRelease = onRelease
-        self.onReleaseParams = params
+    def set_on_release(self, on_release, params=()):
+        self.on_release = on_release
+        self.on_release_params = params
 
-    def setInactiveColour(self, colour):
-        self.inactiveColour = colour
+    def set_inactive_color(self, color):
+        self.inactive_color = color
 
-    def setPressedColour(self, colour):
-        self.pressedColour = colour
+    def set_pressed_color(self, color):
+        self.pressed_color = color
 
-    def setHoverColour(self, colour):
-        self.hoverColour = colour
+    def set_hover_color(self, color):
+        self.hover_color = color
 
     def get(self, attr):
         parent = super().get(attr)
         if parent is not None:
             return parent
 
-        if attr == 'colour':
-            return self.colour
+        if attr == 'color':
+            return self.color
 
     def set(self, attr, value):
         super().set(attr, value)
 
-        if attr == 'colour':
-            self.inactiveColour = value
+        if attr == 'color':
+            self.inactive_color = value

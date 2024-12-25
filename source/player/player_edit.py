@@ -1,6 +1,7 @@
 import pygame
 
-from source.auto_economy.auto_economy_edit import AutoEconomyEdit
+# from source.auto_economy.auto_economy_edit import AutoEconomyEdit
+from source.auto_economy.planet_buildings_overview import PlanetBuildingsOverview
 from source.configuration.game_config import config
 from source.editors.editor_base.editor_base import EditorBase
 from source.editors.editor_base.editor_config import TOP_SPACING
@@ -10,7 +11,7 @@ from source.gui.widgets.inputbox import InputBox
 from source.gui.widgets.score_plotter import ScorePlotter
 from source.handlers.diplomacy_handler import diplomacy_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
-from source.multimedia_library.images import get_image, overblit_button_image
+from source.multimedia_library.images import get_image, overblit_button_image, scale_image_cached
 from source.player.player_buildings_overview import PlayerBuildingsOverview
 from source.player.player_handler import player_handler
 from source.text.info_panel_text_generator import info_panel_text_generator
@@ -26,12 +27,13 @@ class PlayerEdit(EditorBase):
     def __init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs):
         EditorBase.__init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs)
 
+        self.num_players = kwargs.get("num_players", 2)
         self.data = player_handler.get_players()
 
         # images
-        self.peace_image = pygame.transform.scale(get_image("peace_icon.png"), (
+        self.peace_image = scale_image_cached(get_image("peace_icon.png"), (
             DIPLOMACY_BUTTON_SIZE, DIPLOMACY_BUTTON_SIZE))
-        self.war_image = pygame.transform.scale(get_image("war_icon.png"), (
+        self.war_image = scale_image_cached(get_image("war_icon.png"), (
             DIPLOMACY_BUTTON_SIZE, DIPLOMACY_BUTTON_SIZE))
 
         #  widgets
@@ -58,20 +60,20 @@ class PlayerEdit(EditorBase):
         self.show_plotter = True
 
         # auto_economy_edit
-        self.auto_economy_edit = AutoEconomyEdit(
-                pygame.display.get_surface(),
-                self.world_x,
-                self.world_y + self.world_y + 400 - TOP_SPACING,
-                900, PLOTTER_SURFACE_HEIGHT,
-                parent=self,
-                obj=None,
-                layer=9,
-                ignore_other_editors=True,
-                save=False,
-                drag_enabled=False
-                )
-
-        self.show_auto_economy_edit = True
+        # self.auto_economy_edit = AutoEconomyEdit(
+        #         pygame.display.get_surface(),
+        #         self.world_x,
+        #         self.world_y + self.world_y + 400 - TOP_SPACING,
+        #         900, PLOTTER_SURFACE_HEIGHT,
+        #         parent=self,
+        #         obj=None,
+        #         layer=9,
+        #         ignore_other_editors=True,
+        #         save=False,
+        #         drag_enabled=False
+        #         )
+        #
+        # self.show_auto_economy_edit = True
 
         # buildings_overview
         self.player_buildings_overview = PlayerBuildingsOverview(
@@ -85,16 +87,27 @@ class PlayerEdit(EditorBase):
                 frame_corner_radius=10,
                 save=True)
 
+        self.planet_buildings_overview = PlanetBuildingsOverview(
+                self.win,
+                self.world_x,
+                self.world_y,
+                400,
+                400,
+                False,
+                parent=self,
+                frame_corner_radius=10,
+                save=True)
+
         # dirty hack to make attached editors hide at startup
         self.enable_plotter()
-        self.enable_auto_economy_edit(0)
+        # self.enable_auto_economy_edit(0)
 
         # hide initially
         self.hide()
 
     def set_max_height(self):
         """ sets the editors max_height based on the enabled sub editors, if any of them is enabled or not"""
-        if self.score_plotter.is_enabled() or self.auto_economy_edit.is_enabled():
+        if self.score_plotter.is_enabled():  # or self.auto_economy_edit.is_enabled():
             self.max_height = self.max_height_raw
         else:
             self.max_height = self.max_height_if_editors_closed
@@ -112,20 +125,20 @@ class PlayerEdit(EditorBase):
 
         self.set_max_height()
 
-    def enable_auto_economy_edit(self, player_id: int):
-        self.show_auto_economy_edit = not self.show_auto_economy_edit
-        self.auto_economy_edit.player_id = player_id
-        self.player_buildings_overview.player_index = player_id
-        self.auto_economy_edit.set_player(player_id)
-
-        if self.show_auto_economy_edit:
-            self.auto_economy_edit.enable()
-            self.auto_economy_edit.show()
-        else:
-            self.auto_economy_edit.disable()
-            self.auto_economy_edit.hide()
-
-        self.set_max_height()
+    # def enable_auto_economy_edit(self, player_id: int):
+    #     self.show_auto_economy_edit = not self.show_auto_economy_edit
+    #     self.auto_economy_edit.player_id = player_id
+    #     self.player_buildings_overview.player_index = player_id
+    #     self.auto_economy_edit.set_player(player_id)
+    #
+    #     if self.show_auto_economy_edit:
+    #         self.auto_economy_edit.enable()
+    #         self.auto_economy_edit.show()
+    #     else:
+    #         self.auto_economy_edit.disable()
+    #         self.auto_economy_edit.hide()
+    #
+    #     self.set_max_height()
 
     def create_variable_boxes(self, h, key, ordered_data, player, value, x, y):
         text = f"{value}"
@@ -169,7 +182,7 @@ class PlayerEdit(EditorBase):
                     height=button_size_resource,
                     is_sub_widget=False,
                     parent=self,
-                    image=pygame.transform.scale(get_image(image_name_resource), (
+                    image=scale_image_cached(get_image(image_name_resource), (
                         button_size_resource, button_size_resource)),
                     tooltip=key,
                     frame_color=self.frame_color,
@@ -218,6 +231,8 @@ class PlayerEdit(EditorBase):
         # create items
         for player in ordered_data.keys():
             player_index = int(player.split("_")[1])
+            if player_index > self.num_players-1:
+                break
 
             # create player image button
             image_name = player_handler.player_image_names[player]
@@ -229,14 +244,14 @@ class PlayerEdit(EditorBase):
                     height=button_size,
                     is_sub_widget=False,
                     parent=self,
-                    image=pygame.transform.scale(get_image(image_name), (button_size, button_size)),
+                    image=scale_image_cached(get_image(image_name), (button_size, button_size)),
                     tooltip=player,
                     info_text=info_panel_text_generator.create_info_panel_player_text(player_index),
                     frame_color=self.frame_color,
                     moveable=False,
                     include_text=True,
                     layer=self.layer,
-                    on_click=lambda player_index_=player_index: self.enable_auto_economy_edit(player_index_),
+                    # on_click=lambda player_index_=player_index: self.enable_auto_economy_edit(player_index_),
                     on_hover_function=lambda
                         player_index_=player_index: self.set_player_building_overview_player_index(player_index_),
                     name=player,
@@ -254,10 +269,10 @@ class PlayerEdit(EditorBase):
             # diplomacy
             peace = diplomacy_handler.is_in_peace(player_index, config.player)
             if peace:
-                diplomacy_image = pygame.transform.scale(get_image("peace_icon.png"), (
+                diplomacy_image = scale_image_cached(get_image("peace_icon.png"), (
                     DIPLOMACY_BUTTON_SIZE, DIPLOMACY_BUTTON_SIZE))
             else:
-                diplomacy_image = pygame.transform.scale(get_image("war_icon.png"), (
+                diplomacy_image = scale_image_cached(get_image("war_icon.png"), (
                     DIPLOMACY_BUTTON_SIZE, DIPLOMACY_BUTTON_SIZE))
 
             icon = ImageButton(win=self.win,
@@ -344,7 +359,7 @@ class PlayerEdit(EditorBase):
                         height=button_size,
                         is_sub_widget=False,
                         parent=self,
-                        image=pygame.transform.scale(get_image("Zeta Bentauri_60x60.png"), (button_size, button_size)),
+                        image=scale_image_cached(get_image("Zeta Bentauri_60x60.png"), (button_size, button_size)),
                         tooltip="planet_icon",
                         frame_color=self.frame_color,
                         moveable=False,
@@ -402,7 +417,7 @@ class PlayerEdit(EditorBase):
                         height=button_size,
                         is_sub_widget=False,
                         parent=self,
-                        image=pygame.transform.scale(get_image("buildings_icon.png"), (button_size, button_size)),
+                        image=scale_image_cached(get_image("buildings_icon.png"), (button_size, button_size)),
                         tooltip="buildings_icon",
                         frame_color=self.frame_color,
                         moveable=False,
@@ -459,7 +474,7 @@ class PlayerEdit(EditorBase):
                         height=button_size,
                         is_sub_widget=False,
                         parent=self,
-                        image=pygame.transform.scale(get_image("spacehunter.png"), (button_size, button_size)),
+                        image=scale_image_cached(get_image("spacehunter.png"), (button_size, button_size)),
                         tooltip="ships_icon",
                         frame_color=self.frame_color,
                         moveable=False,
@@ -488,7 +503,7 @@ class PlayerEdit(EditorBase):
                     height=button_size_,
                     is_sub_widget=False,
                     parent=self,
-                    image=pygame.transform.scale(get_image("space harbor_25x25.png"), (button_size_, button_size_)),
+                    image=scale_image_cached(get_image("space harbor_25x25.png"), (button_size_, button_size_)),
                     tooltip="space harbor_icon",
                     frame_color=self.frame_color,
                     moveable=False,
@@ -547,7 +562,7 @@ class PlayerEdit(EditorBase):
                         height=button_size,
                         is_sub_widget=False,
                         parent=self,
-                        image=pygame.transform.scale(get_image("score_icon.png"), (button_size, button_size)),
+                        image=scale_image_cached(get_image("score_icon.png"), (button_size, button_size)),
                         tooltip="open score plotter",
                         frame_color=self.frame_color,
                         moveable=False,
@@ -585,12 +600,14 @@ class PlayerEdit(EditorBase):
 
     def update_space_harbor_icon(self):
         for player in config.app.players:
-            space_harbor_icon = [i for i in self.widgets if i.name == f'space harbor_icon{player}'][0]
-            space_harbor_icon._hidden = "space harbor" not in config.app.players[player].get_all_buildings()
+            space_harbor_icons = [i for i in self.widgets if i.name == f'space harbor_icon{player}']
+            if space_harbor_icons:
+                space_harbor_icon = space_harbor_icons[0]
+                space_harbor_icon._hidden = "space harbor" not in config.app.players[player].get_all_buildings()
 
     def navigate_to_space_harbor(self, player_index):
         space_harbor = [i for i in sprite_groups.planets.sprites() if
-                        i.owner == player_index and "space harbor" in i.buildings]
+                        i.owner == player_index and "space harbor" in i.economy_agent.buildings]
 
         # print(space_harbor, player_index)
         if space_harbor:
@@ -665,8 +682,12 @@ class PlayerEdit(EditorBase):
 
     def set_player_building_overview_player_index(self, player_index_):
         self.player_buildings_overview.set_player_index(player_index_)
-        self.auto_economy_edit.set_player(player_index_)
+        # self.auto_economy_edit.set_player(player_index_)
 
     def open_player_buildings_overview(self, player_index_):
         self.player_buildings_overview.player_index = player_index_
         self.player_buildings_overview.set_visible()
+
+    def open_planet_buildings_overview(self, player_index_):
+        self.planet_buildings_overview.player_index = player_index_
+        self.planet_buildings_overview.set_visible()

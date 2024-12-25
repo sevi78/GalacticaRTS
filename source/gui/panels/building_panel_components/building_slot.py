@@ -40,10 +40,10 @@ class BuildingSlot:
             return
 
         planet = self.parent.selected_planet
-        upgrades = planet.building_slot_upgrades
-        consumption = planet.building_slot_upgrade_energy_consumption
-        prices = planet.building_slot_upgrade_prices
-        max_ = len(planet.building_slot_upgrade_energy_consumption) - 2
+        upgrades = planet.economy_agent.building_slot_upgrades
+        consumption = planet.economy_agent.building_slot_upgrade_energy_consumption
+        prices = planet.economy_agent.building_slot_upgrade_prices
+        max_ = len(planet.economy_agent.building_slot_upgrade_energy_consumption) - 2
 
         # check for mouse collision with image
         for button_name, image_rect in self.plus_button_image.items():
@@ -60,8 +60,8 @@ class BuildingSlot:
         if self.hover:
             # if not max upgrade reached
             if upgrades <= max_:
-                self.tooltip = f"Upgrade from {planet.building_slot_amount} building slots to " \
-                               f"{planet.building_slot_amount + 1}? this will cost you " \
+                self.tooltip = f"Upgrade from {planet.economy_agent.building_slot_amount} building slots to " \
+                               f"{planet.economy_agent.building_slot_amount + 1}? this will cost you " \
                                f"{prices[upgrades]}" \
                                f" technology! it will reduce the energy production by" \
                                f" {consumption[upgrades + 1]}"
@@ -76,8 +76,8 @@ class BuildingSlot:
             return
 
         planet = self.parent.selected_planet
-        upgrades = planet.building_slot_upgrades
-        consumption = planet.building_slot_upgrade_energy_consumption
+        upgrades = planet.economy_agent.building_slot_upgrades
+        consumption = planet.economy_agent.building_slot_upgrade_energy_consumption
         min_ = 0
         self.tooltip = ""
 
@@ -95,9 +95,9 @@ class BuildingSlot:
         # on hover set tooltip
         if self.hover:
             # if not max upgrade reached
-            if planet.building_slot_amount >= min_ + 1:
-                self.tooltip = f"Downgrade from {planet.building_slot_amount} building slots to " \
-                               f"{planet.building_slot_amount - 1}? this will not give anything back,  " \
+            if planet.economy_agent.building_slot_amount >= min_ + 1:
+                self.tooltip = f"Downgrade from {planet.economy_agent.building_slot_amount} building slots to " \
+                               f"{planet.economy_agent.building_slot_amount - 1}? this will not give anything back,  " \
                                f" but it will increase the energy production by" \
                                f" {consumption[upgrades]}"
             else:
@@ -138,9 +138,9 @@ class BuildingSlot:
         do_upgrade = False
 
         # check if not max is reached
-        if planet.building_slot_upgrades <= len(planet.building_slot_upgrade_prices) - 2:
+        if planet.economy_agent.building_slot_upgrades <= len(planet.economy_agent.building_slot_upgrade_prices) - 2:
             # now get the next price
-            price = planet.building_slot_upgrade_prices[planet.building_slot_upgrades]
+            price = planet.economy_agent.building_slot_upgrade_prices[planet.economy_agent.building_slot_upgrades]
 
             # on hover and click, do upgrade
             for event in events:
@@ -152,7 +152,7 @@ class BuildingSlot:
 
         # max upgrades reached, exit function
         else:
-            event_text.text = f"maximum {planet.building_slot_upgrades} building slots reached!"
+            event_text.set_text(f"maximum {planet.economy_agent.building_slot_upgrades} building slots reached!", sender=player.owner)
             return
 
         # if do_upgrade, set values
@@ -160,18 +160,19 @@ class BuildingSlot:
             return
 
         # if enough technology
-        if player.technology - price > 0:
-            event_text.text = f"Upgraded from {planet.building_slot_amount} building slots to {planet.building_slot_amount + 1}!"
+        if player.stock["technology"] - price > 0:
+            event_text.set_text(f"Upgraded from {planet.economy_agent.building_slot_amount} building slots to {planet.economy_agent.building_slot_amount + 1}!", sender=player.owner)
             # if not max reached
-            if planet.building_slot_upgrades < len(planet.building_slot_upgrade_prices.items()):
-                planet.building_slot_amount += 1
-                planet.building_slot_upgrades += 1
-                player.technology -= price
+            if planet.economy_agent.building_slot_upgrades < len(planet.economy_agent.building_slot_upgrade_prices.items()):
+                planet.economy_agent.building_slot_amount += 1
+                planet.economy_agent.building_slot_upgrades += 1
+                # TODO: possble error here, shouldnt it be player.stock["technology] -= price ????
+                player.stock["technology"] -= price
         else:
-            event_text.text = f"not enough technology to upgrade building slot ! you have {player.technology}, but you will need {price}"
+            event_text.set_text(f"not enough technology to upgrade building slot ! you have {player.stock['technology']}, but you will need {price}", sender=player.owner)
 
         # finally calculate new productions
-        planet.calculate_production()
+        planet.economy_agent.calculate_production()
         economy_handler.calculate_global_production(player)
 
     def downgrade_building_slots(self, events, player):
@@ -182,7 +183,7 @@ class BuildingSlot:
         do_downgrade = False
 
         # check if not min is reached
-        if planet.building_slot_upgrades >= 0:
+        if planet.economy_agent.building_slot_upgrades >= 0:
             # on hover and click, do upgrade
             for event in events:
                 if event.type == pygame.MOUSEBUTTONDOWN:
@@ -193,21 +194,21 @@ class BuildingSlot:
 
         # min upgrades reached, exit function
         else:
-            event_text.text = f"minimum {0} building slots reached!"
+            event_text.set_text(f"minimum {0} building slots reached!", sender=player.owner)
             return
 
         # if do_upgrade, set values
         if not do_downgrade:
             return
 
-        event_text.text = f"Downgraded from {planet.building_slot_amount} building slots to {planet.building_slot_amount - 1}!"
+        event_text.set_text(f"Downgraded from {planet.economy_agent.building_slot_amount} building slots to {planet.economy_agent.building_slot_amount - 1}!",sender=player.owner)
 
         # if not min reached
-        if planet.building_slot_amount > 0:
-            planet.building_slot_amount -= 1
-            if planet.building_slot_upgrades > 0:
-                planet.building_slot_upgrades -= 1
+        if planet.economy_agent.building_slot_amount > 0:
+            planet.economy_agent.building_slot_amount -= 1
+            if planet.economy_agent.building_slot_upgrades > 0:
+                planet.economy_agent.building_slot_upgrades -= 1
 
         # finally calculate new productions
-        planet.calculate_production()
+        planet.economy_agent.calculate_production()
         economy_handler.calculate_global_production(player)

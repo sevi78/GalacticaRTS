@@ -17,36 +17,16 @@ class PanZoomShipStateEngine:
         self.image_drawer = PanZoomShipStateEngineDraw(self.parent, self)
         self.state = "sleeping"
 
-    def __del__(self) -> None:
-        """ seems to be unused, state and rank image are getting deleted somehow :)"""
-        if hasattr(self, "image_drawer"):
-            return
-            self.image_drawer.state_image.kill()
-            self.image_drawer.rank_image.kill()
-
-    def set_state(self) -> None:
-
-        if self.parent.move_stop > 0:
-            self.state = "move_stop"
-
-        if self.parent.moving:
-            self.state = "moving"
-
-        if self.parent.following_path:
-            self.state = "following_path"
-
-        if self.parent.orbiting:
-            self.state = "orbiting"
-        else:
-            if hasattr(self.parent, "autopilot"):
-                if self.parent.autopilot:
-                    self.state = "autopilot"
-            else:
-                self.state = "sleeping"
-
+    def set_state(self, state) -> None:
+        self.state = state
+        self.parent.state = self.state
         self.image_drawer.set_state_image()
 
+    def listen(self, events):
+        pass
+
     def update(self) -> None:
+
         if config.cross_view_start < pan_zoom_handler.zoom:
             self.image_drawer.show()
             self.image_drawer.draw_rank_image()
@@ -64,13 +44,23 @@ class PanZoomShipStateEngineDraw:
 
         # set up images
         x, y = self.parent.get_screen_position()
+        self.state_image_names = {
+            "move_stop": "noenergy_25x25.png",
+            "following_path": "follow_path_icon.png",
+            "moving": "moving.png",
+            "sleeping": "sleep.png",
+            "orbiting": "orbit_icon.png",
+            "autopilot": "autopilot.png",
+            "attacking": "war_icon.png"
+            }
         self.state_images = {
             "move_stop": ImageSprite(self.parent.win, x, y, STATE_IMAGE_SIZE, STATE_IMAGE_SIZE, get_image("noenergy_25x25.png"), parent=self.parent),
             "following_path": ImageSprite(self.parent.win, x, y, STATE_IMAGE_SIZE, STATE_IMAGE_SIZE, get_image("follow_path_icon.png"), parent=self.parent),
             "moving": ImageSprite(self.parent.win, x, y, STATE_IMAGE_SIZE - 5, STATE_IMAGE_SIZE - 5, get_image("moving.png"), parent=self.parent),
             "sleeping": ImageSprite(self.parent.win, x, y, STATE_IMAGE_SIZE, STATE_IMAGE_SIZE, get_image("sleep.png"), parent=self.parent),
             "orbiting": ImageSprite(self.parent.win, x, y, STATE_IMAGE_SIZE, STATE_IMAGE_SIZE, get_image("orbit_icon.png"), parent=self.parent),
-            "autopilot": ImageSprite(self.parent.win, x, y, STATE_IMAGE_SIZE, STATE_IMAGE_SIZE, get_image("autopilot.png"), parent=self.parent)
+            "autopilot": ImageSprite(self.parent.win, x, y, STATE_IMAGE_SIZE, STATE_IMAGE_SIZE, get_image("autopilot.png"), parent=self.parent),
+            "attacking": ImageSprite(self.parent.win, x, y, STATE_IMAGE_SIZE, STATE_IMAGE_SIZE, get_image("war_icon.png"), parent=self.parent),
             }
 
         # very bloody hack to ensure the rank image is not drawn at initial position, no idea why this its there

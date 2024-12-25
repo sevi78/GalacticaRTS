@@ -1,5 +1,3 @@
-import time
-
 import pygame
 
 from source.configuration.game_config import config
@@ -7,7 +5,8 @@ from source.editors.editor_base.editor_base import EditorBase
 from source.editors.editor_base.editor_config import TOP_SPACING
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.handlers.diplomacy_handler import diplomacy_handler
-from source.multimedia_library.images import get_image, outline_image
+from source.handlers.time_handler import time_handler
+from source.multimedia_library.images import get_image, outline_image, scale_image_cached
 
 BUTTON_SIZE = 25
 IMAGE_SIZE = 45
@@ -17,7 +16,7 @@ class DiplomacyEdit(EditorBase):
     def __init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs):
         EditorBase.__init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs)
         # vars
-        # self.opening_time = time.time()
+        # self.opening_time = time_handler.time
         self.text = ""
         self.enemy_image = None
 
@@ -28,7 +27,7 @@ class DiplomacyEdit(EditorBase):
         self.create_buttons()
 
         # hide initially
-        self.opening_time = time.time()
+        self.opening_time = time_handler.time
         self.hide()
 
     def create_buttons(self) -> None:
@@ -39,9 +38,9 @@ class DiplomacyEdit(EditorBase):
                 height=BUTTON_SIZE,
                 is_sub_widget=False,
                 parent=self,
-                image=pygame.transform.scale(
+                image=scale_image_cached(
                         get_image("peace_icon.png"), (BUTTON_SIZE, BUTTON_SIZE)),
-                image_raw=pygame.transform.scale(
+                image_raw=scale_image_cached(
                         get_image("peace_icon.png"), (BUTTON_SIZE, BUTTON_SIZE)),
                 tooltip="lets be friends!",
                 frame_color=self.frame_color,
@@ -62,8 +61,8 @@ class DiplomacyEdit(EditorBase):
                 height=BUTTON_SIZE,
                 is_sub_widget=False,
                 parent=self,
-                image=pygame.transform.scale(get_image("war_icon.png"), (BUTTON_SIZE, BUTTON_SIZE)),
-                image_raw=pygame.transform.scale(get_image("war_icon.png"), (BUTTON_SIZE, BUTTON_SIZE)),
+                image=scale_image_cached(get_image("war_icon.png"), (BUTTON_SIZE, BUTTON_SIZE)),
+                image_raw=scale_image_cached(get_image("war_icon.png"), (BUTTON_SIZE, BUTTON_SIZE)),
                 tooltip="f@ck iu!!!",
                 frame_color=self.frame_color,
                 moveable=False,
@@ -84,7 +83,7 @@ class DiplomacyEdit(EditorBase):
         """
         sets the image and outlines it based on war or peace
         """
-        self.enemy_image = pygame.transform.scale(get_image(
+        self.enemy_image = scale_image_cached(get_image(
                 config.app.players[diplomacy_handler.enemy_index].image_name), (IMAGE_SIZE, IMAGE_SIZE))
 
         if diplomacy_handler.is_in_peace(diplomacy_handler.player_index, diplomacy_handler.enemy_index):
@@ -96,10 +95,13 @@ class DiplomacyEdit(EditorBase):
         if enemy_index == -1:
             return
 
+        if enemy_index == player_index:
+            return
+
         diplomacy_handler.set_enemy_and_player(enemy_index, player_index)
         # self.set_visible()
         self.show()
-        self.opening_time = time.time()
+        self.opening_time = time_handler.time
 
     def listen(self, events):
         if not self._hidden and not self._disabled:
@@ -108,7 +110,7 @@ class DiplomacyEdit(EditorBase):
 
             if not self.rect.collidepoint(pygame.mouse.get_pos()):
                 if pygame.mouse.get_pressed()[0]:
-                    if self.opening_time < time.time() - 0.3:
+                    if self.opening_time < time_handler.time - 0.3:
                         self.hide()
 
     def draw_enemy_image(self):

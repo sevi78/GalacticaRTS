@@ -1,18 +1,18 @@
 import random
 
+from source.configuration.game_config import config
 from source.interaction.interaction_handler import InteractionHandler
 from source.multimedia_library.sounds import sounds
-from source.configuration.game_config import config
 
 
 class PanZoomShipInteraction(InteractionHandler):
-    def __init__(self):
+    def __init__(self, kwargs):
         InteractionHandler.__init__(self)
         # functionality
         # self.orbiting = False
         self._selected = False
         self.target = None
-        self.autopilot = False
+        self.autopilot = kwargs.get("autopilot", False)
 
     # @property
     # def autopilot(self):
@@ -29,7 +29,10 @@ class PanZoomShipInteraction(InteractionHandler):
 
     @selected.setter
     def selected(self, value):
-        self._selected = value
+        # print (f"owner: {self.owner}, config.player: {config.player}, config.app.game_client.id: {config.app.game_client.id}")
+        # make shure only onw ships can be selected
+        if self.owner == config.app.game_client.id:
+            self._selected = value
 
     @property
     def orbit_object(self):
@@ -42,7 +45,7 @@ class PanZoomShipInteraction(InteractionHandler):
         if value:
             self.target = None
             self.orbiting = True
-            self.orbit_direction = random.choice([-1, 1])
+            self.orbit_direction = 1  # random.choice([-1, 1])
             self.orbit_object_id = value.id
             self.orbit_object_name = value.name
         else:
@@ -64,6 +67,8 @@ class PanZoomShipInteraction(InteractionHandler):
             self.target_reached = False
 
     def select(self, value):
+        if not self.owner == config.app.game_client.id:
+            return
         self.selected = value
         if value:
             sounds.play_sound("click", channel=7)

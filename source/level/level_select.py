@@ -7,7 +7,7 @@ from source.gui.event_text import event_text
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.handlers import file_handler
 from source.handlers.file_handler import load_file
-from source.multimedia_library.images import get_image
+from source.multimedia_library.images import get_image, scale_image_cached
 from source.text.info_panel_text_generator import info_panel_text_generator
 
 
@@ -53,7 +53,7 @@ class LevelSelect(EditorBase):
 
                     if not success:
                         size = (i.image.get_rect().width, i.image.get_rect().height)
-                        i.image.blit(pygame.transform.scale(get_image("mission_512x512.png"), size), i.image.get_rect())
+                        i.image.blit(scale_image_cached(get_image("mission_512x512.png"), size), i.image.get_rect())
 
                         # set tooltip
                         i.tooltip = "You must first successfully colonize the previous solar systems!"
@@ -88,7 +88,7 @@ class LevelSelect(EditorBase):
                         height=item_height,
                         is_sub_widget=False,
                         parent=self,
-                        image=pygame.transform.scale(get_image(f"{i.split('.json')[0]}.png"), (
+                        image=scale_image_cached(get_image(f"{i.split('.json')[0]}.png"), (
                             item_height, item_height)),
                         tooltip=tooltip,
                         frame_color=self.frame_color,
@@ -109,27 +109,35 @@ class LevelSelect(EditorBase):
         # set max_height of editor
         self.max_height = (rows * item_height) + self.text_spacing * 3 + TOP_SPACING
 
-    def select_level(self, i: str):
+    def select_level(self, previous_level_number_str: str):
+        # send to server
+        if hasattr(config.app, "game_client"):
+            # if config.app.game_client.is_host:
+            if config.app.game_client.connected:
+                config.app.game_client.send_message({"f": "select_level", "level": previous_level_number_str})
+            else:
+                self.handle_select_level(previous_level_number_str)
+
+    def handle_select_level(self, previous_level_number_str):
         # convert level string to int and reduce -1 to make sure the previous level gets checked for success
-        previous_level_number = int(i)
+        previous_level_number = int(previous_level_number_str)
         if previous_level_number != 0:
             previous_level_number -= 1
-
         # check for success of previous level
         if self.parent.level_handler.level_successes[str(previous_level_number)]:
             # if success, load level
-            self.parent.level_handler.load_level(f"level_{i}.json", "levels")
+            self.parent.level_handler.load_level(f"level_{previous_level_number_str}.json", "levels")
+
             self.hide()
             config.tooltip_text = ""
         else:
             # complain
-            event_text.text = "You must first successfully colonize the previous solar systems!"
-
+            event_text.set_text("You must first successfully colonize the previous solar systems!", sender=config.app.game_client.id)
         # reset tooltip
         config.tooltip_text = ""
-
         # set config level
-        config.level = int(i)
+        config.level = int(previous_level_number_str)
+        # config.app.client_edit.set_level(config.level)
 
     def listen(self, events):
         if not self._hidden and not self._disabled:

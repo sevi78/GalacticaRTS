@@ -1,3 +1,5 @@
+import pygame
+
 from source.configuration.game_config import config
 
 BORDER = -10
@@ -62,7 +64,7 @@ class LevelOfDetail:
         self.right_limit = self.width
         self.top_limit = 0
         self.bottom_limit = self.height
-        self.debug = False
+        self.debug = False # be careful!!! you wont see some UI buttons if debug mode is enabled, because of the border
         self.set_limits()
 
     @property
@@ -100,7 +102,17 @@ class LevelOfDetail:
         self.set_width(screen_size[0])
         self.set_height(screen_size[1])
 
+    def draw_debug_rect(self):
+        if not self.debug:
+            return
+
+        border_rect = pygame.Rect(self.left_limit, self.top_limit,
+                self.right_limit - self.left_limit,
+                self.bottom_limit - self.top_limit)
+        pygame.draw.rect(self.win, (255, 0, 0), border_rect, 2)  # Red rectangle, 2 pixels wide
+
     def inside_screen(self, pos: tuple) -> bool:
+
         if pos[0] < self.left_limit:
             return False
         elif pos[0] > self.right_limit:
@@ -111,6 +123,8 @@ class LevelOfDetail:
             return False
         else:
             return True
+
+
 
 
 level_of_detail = LevelOfDetail()

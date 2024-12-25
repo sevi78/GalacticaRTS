@@ -14,7 +14,7 @@
             "image_name_small": "sonnecorona_110x110.png",
             "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
             "name": "Ursara",
-            "orbit_angle": 336.0416422144108,
+            "orbit_angle": 340.243367576433,
             "orbit_distance": 0,
             "orbit_object_id": 0,
             "orbit_speed": 0.0006139283112201432,
@@ -34,7 +34,7 @@
             "world_width": 106,
             "world_x": 3624.9997549592044,
             "world_y": 8688.220864421204,
-            "owner": 1
+            "owner": -1
         },
         "1": {
             "alien_attitude": 27,
@@ -50,7 +50,7 @@
             "image_name_small": "sonnecomic_110x110.png",
             "info_text": "unknown sun:\n\nresources: ???\nenergy: ???\n",
             "name": "Astroisle",
-            "orbit_angle": 148.1424212253058,
+            "orbit_angle": 149.9947326362999,
             "orbit_distance": 0,
             "orbit_object_id": 1,
             "orbit_speed": 0.000270647488458891,
@@ -70,7 +70,7 @@
             "world_width": 104,
             "world_x": 7327.947903409809,
             "world_y": 6276.0391737796745,
-            "owner": 2
+            "owner": -1
         },
         "10": {
             "alien_attitude": 51,
@@ -79,14 +79,14 @@
             "building_slot_amount": 1,
             "buildings": [],
             "buildings_max": 16,
-            "explored": false,
+            "explored": true,
             "gif": "moon1.gif",
             "id": 10,
             "image_name_big": "moon.gif",
             "image_name_small": "moon.gif",
-            "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
+            "info_text": "Welcome to Ursara II - A!\n\nThis planet belongs to the mighty zork, ruler of the zonkoids.You can build up to 16 buildings on this planet.\nThere are no special buildings available on this planet.\nPossible resources on this planet include:\n\n- water\n- energy\n- food\n- minerals\n- technology\n- population\n\nThe planet orbits around its sun at a distance of 147.8k km with a speed of 2.8km/s.\n",
             "name": "Ursara II - A",
-            "orbit_angle": 277.78874408392966,
+            "orbit_angle": 297.06279442455553,
             "orbit_distance": 0,
             "orbit_object_id": 3,
             "orbit_speed": 0.002816196718382763,
@@ -104,9 +104,9 @@
             "type": "moon",
             "world_height": 30,
             "world_width": 30,
-            "world_x": 3202.522561376407,
-            "world_y": 8587.304251388516,
-            "owner": 4
+            "world_x": 3226.1453370118174,
+            "world_y": 8580.31619790716,
+            "owner": 0
         },
         "11": {
             "alien_attitude": 27,
@@ -115,14 +115,14 @@
             "building_slot_amount": 3,
             "buildings": [],
             "buildings_max": 20,
-            "explored": false,
+            "explored": true,
             "gif": "moon.gif",
             "id": 11,
             "image_name_big": "moon.gif",
             "image_name_small": "moon.gif",
-            "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
+            "info_text": "Welcome to Ursara IV - A!\n\nThis planet belongs to the mighty bolk, ruler of the hungoldonts.You can build up to 20 buildings on this planet.\nThere are no special buildings available on this planet.\nPossible resources on this planet include:\n\n- energy\n- technology\n- minerals\n- water\n- population\n\nThe planet orbits around its sun at a distance of 1.8M km with a speed of 3.8km/s.\n",
             "name": "Ursara IV - A",
-            "orbit_angle": 108.72213092664633,
+            "orbit_angle": 135.00747335302594,
             "orbit_distance": 0,
             "orbit_object_id": 5,
             "orbit_speed": 0.0038406403311495993,
@@ -139,9 +139,9 @@
             "type": "moon",
             "world_height": 41,
             "world_width": 41,
-            "world_x": 1355.9835498209163,
-            "world_y": 6251.039997929242,
-            "owner": -1
+            "world_x": 576.6997675292876,
+            "world_y": 6738.499224390993,
+            "owner": 2
         },
         "12": {
             "alien_attitude": 87,
@@ -155,9 +155,9 @@
             "id": 12,
             "image_name_big": "moon.gif",
             "image_name_small": "moon.gif",
-            "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
+            "info_text": "Welcome to Ursara I - A!\n\nThis planet belongs to the mighty zork, ruler of the zonkoids.You can build up to 18 buildings on this planet.\nThere are no special buildings available on this planet.\nPossible resources on this planet include:\n\n- population\n- minerals\n- food\n- energy\n\nThe planet orbits around its sun at a distance of 642.5k km with a speed of 1.8km/s.\n",
             "name": "Ursara I - A",
-            "orbit_angle": 243.20203055411426,
+            "orbit_angle": 255.22424738361136,
             "orbit_distance": 0,
             "orbit_object_id": 2,
             "orbit_speed": 0.0017566067839682098,
@@ -173,8 +173,8 @@
             "type": "moon",
             "world_height": 39,
             "world_width": 39,
-            "world_x": 1684.501490639068,
-            "world_y": 8250.583674594965,
+            "world_x": 1800.5183659134602,
+            "world_y": 8294.970662743659,
             "owner": -1
         },
         "13": {
@@ -189,9 +189,9 @@
             "id": 13,
             "image_name_big": "moon1.gif",
             "image_name_small": "moon1.gif",
-            "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
+            "info_text": "Welcome to Ursara I - B!\n\nThis planet belongs to the mighty baal, ruler of the b'aalidians.You can build up to 14 buildings on this planet.\nThere are no special buildings available on this planet.\nPossible resources on this planet include:\n\n- water\n- energy\n- food\n- minerals\n- technology\n- population\n\nThe planet orbits around its sun at a distance of 1.1M km with a speed of 4.7km/s.\n",
             "name": "Ursara I - B",
-            "orbit_angle": 51.67369557003678,
+            "orbit_angle": 83.74337162784578,
             "orbit_distance": 0,
             "orbit_object_id": 2,
             "orbit_speed": 0.004685808892139791,
@@ -208,8 +208,8 @@
             "type": "moon",
             "world_height": 39,
             "world_width": 39,
-            "world_x": 2655.2803358545657,
-            "world_y": 6810.060897065597,
+            "world_x": 2080.0083389943347,
+            "world_y": 6576.831414830318,
             "owner": -1
         },
         "2": {
@@ -219,14 +219,14 @@
             "building_slot_amount": 5,
             "buildings": [],
             "buildings_max": 9,
-            "explored": false,
+            "explored": true,
             "gif": "moon.gif",
             "id": 2,
             "image_name_big": "ur-anus_60x60.png",
             "image_name_small": "zork_150x150.png",
-            "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
+            "info_text": "Welcome to Ursara I!\n\nThis planet belongs to the mighty baal, ruler of the b'aalidians.You can build up to 9 buildings on this planet.\nThere are no special buildings available on this planet.\nPossible resources on this planet include:\n\n- water\n- energy\n- food\n- minerals\n- technology\n- population\n\nThe planet orbits around its sun at a distance of 1.9M km with a speed of 0.2km/s.\n",
             "name": "Ursara I",
-            "orbit_angle": 148.0284514859804,
+            "orbit_angle": 149.45928708246404,
             "orbit_distance": 0,
             "orbit_object_id": 0,
             "orbit_speed": 0.00020906423093163245,
@@ -242,9 +242,9 @@
             "type": "planet",
             "world_height": 65,
             "world_width": 65,
-            "world_x": 1981.5471460057154,
-            "world_y": 7662.412091554033,
-            "owner": -1
+            "world_x": 1956.4449343006463,
+            "world_y": 7703.76927758497,
+            "owner": 3
         },
         "3": {
             "alien_attitude": 97,
@@ -258,9 +258,9 @@
             "id": 3,
             "image_name_big": "XKGPRZ 7931_40x40.png",
             "image_name_small": "Kepler-22b_50x50.png",
-            "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
+            "info_text": "Welcome to Ursara II!\n\nThis planet belongs to the mighty bolk, ruler of the hungoldonts.You can build up to 10 buildings on this planet.\nThere are no special buildings available on this planet.\nPossible resources on this planet include:\n\n- water\n- minerals\n- food\n- technology\n- energy\n\nThe planet orbits around its sun at a distance of 519.4k km with a speed of 0.6km/s.\n",
             "name": "Ursara II",
-            "orbit_angle": 149.03628039068943,
+            "orbit_angle": 153.1722416748976,
             "orbit_distance": 0,
             "orbit_object_id": 0,
             "orbit_speed": 0.0006043192992709891,
@@ -277,9 +277,9 @@
             "type": "planet",
             "world_height": 73,
             "world_width": 73,
-            "world_x": 3179.603047308177,
-            "world_y": 8420.98323018339,
-            "owner": 4
+            "world_x": 3161.4888841548645,
+            "world_y": 8453.802748684426,
+            "owner": -1
         },
         "4": {
             "alien_attitude": 80,
@@ -288,14 +288,14 @@
             "building_slot_amount": 5,
             "buildings": [],
             "buildings_max": 16,
-            "explored": false,
+            "explored": true,
             "gif": "moon.gif",
             "id": 4,
             "image_name_big": "XKGPRZ 7931_40x40.png",
             "image_name_small": "XKGPRZ 7931_50x50.png",
-            "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
+            "info_text": "Welcome to Ursara III!\n\nThis planet belongs to the mighty Bauz, ruler of the barabarians.You can build up to 16 buildings on this planet.\nThere are no special buildings available on this planet.\nPossible resources on this planet include:\n\n- water\n- energy\n- food\n- minerals\n- technology\n- population\n\nThe planet orbits around its sun at a distance of 2.9M km with a speed of 0.5km/s.\n",
             "name": "Ursara III",
-            "orbit_angle": 16.698873327808734,
+            "orbit_angle": 20.3536188452989,
             "orbit_distance": 0,
             "orbit_object_id": 0,
             "orbit_speed": 0.0005340072351679347,
@@ -313,9 +313,9 @@
             "type": "planet",
             "world_height": 69,
             "world_width": 69,
-            "world_x": 6412.09438159574,
-            "world_y": 7852.112142555972,
-            "owner": -1
+            "world_x": 6353.129209995556,
+            "world_y": 7676.151731817799,
+            "owner": 1
         },
         "5": {
             "alien_attitude": 95,
@@ -324,14 +324,14 @@
             "building_slot_amount": 3,
             "buildings": [],
             "buildings_max": 5,
-            "explored": false,
+            "explored": true,
             "gif": "moon1.gif",
             "id": 5,
             "image_name_big": "XKGPRZ 7931_150x150.png",
             "image_name_small": "Zeta Bentauri_60x60.png",
-            "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
+            "info_text": "Welcome to Ursara IV!\n\nThis planet belongs to the mighty baal, ruler of the b'aalidians.You can build up to 5 buildings on this planet.\nThere are no special buildings available on this planet.\nPossible resources on this planet include:\n\n- water\n- energy\n- food\n- minerals\n- technology\n- population\n\nThe planet orbits around its sun at a distance of 1.9M km with a speed of 0.7km/s.\n",
             "name": "Ursara IV",
-            "orbit_angle": 154.3550055750026,
+            "orbit_angle": 158.95538140729687,
             "orbit_distance": 0,
             "orbit_object_id": 0,
             "orbit_speed": 0.000672176480462653,
@@ -349,8 +349,8 @@
             "type": "planet",
             "world_height": 73,
             "world_width": 73,
-            "world_x": 1900.5875474346053,
-            "world_y": 7860.355298226264,
+            "world_x": 1839.7436551400867,
+            "world_y": 8001.329668372083,
             "owner": 3
         },
         "6": {
@@ -365,9 +365,9 @@
             "id": 6,
             "image_name_big": "moon.gif",
             "image_name_small": "moon.gif",
-            "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
+            "info_text": "Welcome to Ursara II - B!\n\nThis planet belongs to the mighty Bauz, ruler of the barabarians.You can build up to 14 buildings on this planet.\nThere are no special buildings available on this planet.\nPossible resources on this planet include:\n\n- water\n- energy\n- food\n- minerals\n- technology\n- population\n\nThe planet orbits around its sun at a distance of 511.1k km with a speed of 4.2km/s.\n",
             "name": "Ursara II - B",
-            "orbit_angle": 319.4687762901083,
+            "orbit_angle": 348.1355143571953,
             "orbit_distance": 0,
             "orbit_object_id": 3,
             "orbit_speed": 0.004188594106818257,
@@ -382,8 +382,8 @@
             "type": "moon",
             "world_height": 43,
             "world_width": 43,
-            "world_x": 3568.3252451896296,
-            "world_y": 8753.349883836714,
+            "world_x": 3663.7138369709696,
+            "world_y": 8559.313063779426,
             "owner": -1
         },
         "7": {
@@ -393,14 +393,14 @@
             "building_slot_amount": 4,
             "buildings": [],
             "buildings_max": 18,
-            "explored": false,
+            "explored": true,
             "gif": "moon.gif",
             "id": 7,
             "image_name_big": "moon.gif",
             "image_name_small": "moon1.gif",
-            "info_text": "unknown moon:\n\nresources: ???\nenergy: ???\n",
+            "info_text": "Welcome to Ursara III - A!\n\nThis planet belongs to the mighty Bauz, ruler of the barabarians.You can build up to 18 buildings on this planet.\nThere are no special buildings available on this planet.\nPossible resources on this planet include:\n\n- water\n- energy\n- food\n- minerals\n- technology\n- population\n\nThe planet orbits around its sun at a distance of 580.7k km with a speed of 4.5km/s.\n",
             "name": "Ursara III - A",
-            "orbit_angle": 282.6540561738029,
+            "orbit_angle": 313.1312325532803,
             "orbit_distance": 0,
             "orbit_object_id": 4,
             "orbit_speed": 0.004453123375138014,
@@ -418,9 +418,9 @@
             "type": "moon",
             "world_height": 44,
             "world_width": 44,
-            "world_x": 6508.9622845776985,
-            "world_y": 8283.561779453834,
-            "owner": -1
+            "world_x": 6779.509369798598,
+            "world_y": 8131.293953212193,
+            "owner": 1
         },
         "8": {
             "alien_attitude": 56,
@@ -434,9 +434,9 @@
             "id": 8,
             "image_name_big": "moon.gif",
             "image_name_small": "moon.gif",
-            "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
+            "info_text": "Welcome to Ursara I - C!\n\nThis planet belongs to the mighty zork, ruler of the zonkoids.You can build up to 13 buildings on this planet.\nThere are no special buildings available on this planet.\nPossible resources on this planet include:\n\n- population\n- food\n- water\n- technology\n- minerals\n\nThe planet orbits around its sun at a distance of 696.7k km with a speed of 1.8km/s.\n",
             "name": "Ursara I - C",
-            "orbit_angle": 252.14638339510702,
+            "orbit_angle": 264.4748425738525,
             "orbit_distance": 0,
             "orbit_object_id": 2,
             "orbit_speed": 0.0018013528899375254,
@@ -453,8 +453,8 @@
             "type": "moon",
             "world_height": 43,
             "world_width": 43,
-            "world_x": 1763.0887264037863,
-            "world_y": 8340.64915712128,
+            "world_x": 1892.2211516470425,
+            "world_y": 8367.703012221555,
             "owner": -1
         },
         "9": {
@@ -464,14 +464,14 @@
             "building_slot_amount": 3,
             "buildings": [],
             "buildings_max": 19,
-            "explored": false,
+            "explored": true,
             "gif": "moon.gif",
             "id": 9,
             "image_name_big": "moon.gif",
             "image_name_small": "moon.gif",
-            "info_text": "unknown planet:\n\nresources: ???\nenergy: ???\n",
+            "info_text": "Welcome to Ursara IV - B!\n\nThis planet belongs to the mighty bolk, ruler of the hungoldonts.You can build up to 19 buildings on this planet.\nThere are no special buildings available on this planet.\nPossible resources on this planet include:\n\n- water\n- energy\n- food\n- minerals\n- technology\n- population\n\nThe planet orbits around its sun at a distance of 1.2M km with a speed of 4.5km/s.\n",
             "name": "Ursara IV - B",
-            "orbit_angle": 107.08218276038247,
+            "orbit_angle": 137.89206443185665,
             "orbit_distance": 0,
             "orbit_object_id": 5,
             "orbit_speed": 0.00450173607122724,
@@ -489,13 +489,13 @@
             "type": "moon",
             "world_height": 41,
             "world_width": 41,
-            "world_x": 1568.651424584607,
-            "world_y": 6780.184986001232,
-            "owner": 3
+            "world_x": 937.9459836100006,
+            "world_y": 7186.266041360028,
+            "owner": 2
         }
     },
     "globals": {
-        "cargoloader": 1,
+        "cargoloader": 0,
         "central_compression": 1,
         "collectable_item_amount": 41,
         "goal": {
@@ -507,13 +507,14 @@
         "level_success": true,
         "moons": 8,
         "planets": 4,
-        "spacehunter": 1,
+        "spacehunter": 0,
         "spaceship": 1,
         "suns": 2,
         "universe_density": 60,
         "width": 13000,
         "population_density": 80,
-        "planet_orbit_speed": 20
+        "planet_orbit_speed": 20,
+        "players": 4
     },
     "player": {
         "population": 0,
@@ -532,55 +533,20 @@
         ]
     },
     "ships": {
-        "0": {
-            "attack_distance_raw": 200,
-            "crew": 7,
-            "crew_max": 12,
-            "desired_orbit_radius_raw": 100,
-            "energy": 9306,
-            "energy_max": 10000,
-            "energy_reload_rate": 0.1,
-            "energy_use": 1,
-            "fog_of_war_radius": 100,
-            "fog_of_war_radius_max": 300,
-            "food": 0,
-            "food_max": 500,
-            "min_dist_to_other_ships": 80,
-            "min_dist_to_other_ships_max": 200,
-            "minerals": 0,
-            "minerals_max": 300,
-            "name": "spaceship",
-            "orbit_object_id": -1,
-            "orbit_object_name": "",
-            "orbit_radius": 130,
-            "orbit_radius_max": 300,
-            "orbit_speed": 0.5,
-            "orbit_speed_max": 0.6,
-            "reload_max_distance_raw": 300,
-            "specials": [],
-            "speed": 1.5,
-            "speed_max": 2.5,
-            "technology": 0,
-            "technology_max": 500,
-            "upgrade_factor": 1.5,
-            "upgrade_factor_max": 3.0,
-            "water": 0,
-            "water_max": 400,
-            "weapons": {},
-            "world_x": 7449.169810371923,
-            "world_y": 6704.293072957797,
-            "owner": 0
-        },
         "1": {
-            "attack_distance_raw": 200,
+            "name": "spaceship",
+            "world_x": 3225.0451158060773,
+            "world_y": 8580.862393489282,
+            "owner": 0,
+            "attack_distance_raw": 300,
             "crew": 7,
             "crew_max": 12,
             "desired_orbit_radius_raw": 100,
             "energy": 10000.0,
             "energy_max": 10000,
-            "energy_reload_rate": 0.1,
-            "energy_use": 1,
+            "energy_use": 0.1,
             "energy_use_max": 10,
+            "energy_reload_rate": 0.1,
             "fog_of_war_radius": 100,
             "fog_of_war_radius_max": 300,
             "food": 0,
@@ -589,15 +555,13 @@
             "min_dist_to_other_ships_max": 200,
             "minerals": 0,
             "minerals_max": 300,
-            "name": "spaceship",
             "orbit_object_id": -1,
             "orbit_object_name": "",
             "orbit_radius": 130,
-            "orbit_radius_max": 300,
+            "orbit_radius_max": 200,
             "orbit_speed": 0.5,
             "orbit_speed_max": 0.6,
             "reload_max_distance_raw": 300,
-            "specials": [],
             "speed": 1.5,
             "speed_max": 2.5,
             "technology": 0,
@@ -606,204 +570,419 @@
             "upgrade_factor_max": 3.0,
             "water": 0,
             "water_max": 400,
-            "weapons": {},
-            "world_x": 7477.284271247417,
-            "world_y": 6732.284271247417,
-            "owner": 0,
-            "autopilot": false
-        },
-        "2": {
-            "attack_distance_raw": 200,
-            "crew": 7,
-            "crew_max": 12,
-            "desired_orbit_radius_raw": 100,
-            "energy": 10000.0,
-            "energy_max": 10000,
-            "energy_reload_rate": 0.1,
-            "energy_use": 1,
-            "energy_use_max": 10,
-            "fog_of_war_radius": 100,
-            "fog_of_war_radius_max": 300,
-            "food": 100,
-            "food_max": 200,
-            "min_dist_to_other_ships": 80,
-            "min_dist_to_other_ships_max": 200,
-            "minerals": 100,
-            "minerals_max": 200,
-            "name": "spaceship",
-            "orbit_object_id": -1,
-            "orbit_object_name": "",
-            "orbit_radius": 160,
-            "orbit_radius_max": 300,
-            "orbit_speed": 0.5,
-            "orbit_speed_max": 0.6,
-            "reload_max_distance_raw": 300,
-            "specials": [],
-            "speed": 1.5,
-            "speed_max": 5.0,
-            "technology": 100,
-            "technology_max": 200,
-            "upgrade_factor": 1.5,
-            "upgrade_factor_max": 3.0,
-            "water": 100,
-            "water_max": 200,
-            "weapons": {},
-            "world_x": 7420.715728752583,
-            "world_y": 6675.715728752583,
-            "owner": 0,
-            "autopilot": false
-        },
-        "3": {
-            "attack_distance_raw": 200,
-            "crew": 7,
-            "crew_max": 12,
-            "desired_orbit_radius_raw": 100,
-            "energy": 10000.0,
-            "energy_max": 10000,
-            "energy_reload_rate": 0.1,
-            "energy_use": 1,
-            "energy_use_max": 10,
-            "fog_of_war_radius": 100,
-            "fog_of_war_radius_max": 300,
-            "food": 100,
-            "food_max": 200,
-            "min_dist_to_other_ships": 80,
-            "min_dist_to_other_ships_max": 200,
-            "minerals": 100,
-            "minerals_max": 200,
-            "name": "spacehunter",
-            "orbit_radius": 190,
-            "orbit_radius_max": 300,
-            "orbit_speed": 0.5,
-            "orbit_speed_max": 0.6,
-            "reload_max_distance_raw": 300,
-            "specials": [],
-            "speed": 1.5,
-            "technology": 100,
-            "technology_max": 200,
-            "upgrade_factor": 1.5,
-            "upgrade_factor_max": 3.0,
-            "water": 100,
-            "water_max": 200,
+            "autopilot": false,
             "weapons": {
                 "laser": {
-                    "build_population_minimum": 0,
-                    "building_production_time": 5,
-                    "building_production_time_scale": 5,
-                    "level": 0,
                     "name": "laser",
-                    "population_buildings_value": 0,
-                    "power": 3,
-                    "price_energy": 2500,
-                    "price_food": 2500,
-                    "price_minerals": 2500,
-                    "price_population": 0,
-                    "price_technology": 2500,
-                    "price_water": 2500,
+                    "category": "weapons",
+                    "level": 0,
                     "production_energy": 0,
                     "production_food": 0,
                     "production_minerals": 0,
-                    "production_population": 0,
-                    "production_technology": 0,
                     "production_water": 0,
-                    "range": 100,
-                    "shoot_interval": 1.0,
+                    "production_technology": 0,
+                    "production_population": 0,
+                    "price_energy": 2500,
+                    "price_food": 2500,
+                    "price_minerals": 2500,
+                    "price_water": 2500,
+                    "price_technology": 2500,
+                    "price_population": 0,
+                    "build_population_minimum": 0,
+                    "building_production_time_scale": 5,
+                    "building_production_time": 5,
+                    "population_buildings_value": 0,
                     "technology_upgrade": {},
+                    "range": 100,
+                    "power": 3,
+                    "shoot_interval": 1.0,
                     "upgrade cost": {
                         "level_0": {
                             "price_energy": 1500,
                             "price_food": 1000,
                             "price_minerals": 1500,
-                            "price_population": 0,
+                            "price_water": 250,
                             "price_technology": 500,
-                            "price_water": 250
+                            "price_population": 0
                         },
                         "level_1": {
                             "price_energy": 2500,
                             "price_food": 2000,
                             "price_minerals": 2500,
-                            "price_population": 0,
+                            "price_water": 250,
                             "price_technology": 500,
-                            "price_water": 250
+                            "price_population": 0
                         },
                         "level_2": {
                             "price_energy": 2500,
                             "price_food": 2000,
                             "price_minerals": 2500,
-                            "price_population": 0,
+                            "price_water": 250,
                             "price_technology": 500,
-                            "price_water": 250
+                            "price_population": 0
                         }
                     },
                     "upgrade values": {
                         "level_0": {
                             "level": 0,
-                            "power": 1.0,
                             "range": 1.0,
+                            "power": 1.0,
                             "shoot_interval": 1.0
                         },
                         "level_1": {
                             "level": 1,
-                            "power": 1.5,
                             "range": 1.5,
+                            "power": 1.5,
                             "shoot_interval": 1.5
                         },
                         "level_2": {
                             "level": 2,
-                            "power": 2.0,
                             "range": 2.0,
+                            "power": 2.0,
                             "shoot_interval": 2.0
                         }
                     }
                 }
             },
-            "world_x": 6860,
-            "world_y": 5656,
-            "owner": 0,
-            "orbit_object_id": -1,
-            "orbit_object_name": "",
-            "speed_max": 2.5,
-            "autopilot": false
+            "specials": []
         },
-        "4": {
-            "name": "cargoloader",
-            "world_x": 7388,
-            "world_y": 4498,
-            "owner": 0,
-            "attack_distance_raw": 200,
+        "2": {
+            "name": "spaceship",
+            "world_x": 953.6511331101101,
+            "world_y": 7087.506999854051,
+            "owner": 2,
+            "attack_distance_raw": 300,
             "crew": 7,
             "crew_max": 12,
             "desired_orbit_radius_raw": 100,
-            "energy": 10000.0,
+            "energy": 9952.180757739077,
             "energy_max": 10000,
-            "energy_use": 1,
+            "energy_use": 0.1,
             "energy_use_max": 10,
             "energy_reload_rate": 0.1,
             "fog_of_war_radius": 100,
             "fog_of_war_radius_max": 300,
-            "food": 100,
-            "food_max": 200,
+            "food": 0,
+            "food_max": 500,
             "min_dist_to_other_ships": 80,
             "min_dist_to_other_ships_max": 200,
-            "minerals": 100,
-            "minerals_max": 200,
-            "orbit_object_id": -1,
-            "orbit_object_name": "",
-            "orbit_radius": 220,
-            "orbit_radius_max": 300,
+            "minerals": 0,
+            "minerals_max": 300,
+            "orbit_object_id": 9,
+            "orbit_object_name": "Ursara IV - B",
+            "orbit_radius": 160,
+            "orbit_radius_max": 200,
             "orbit_speed": 0.5,
             "orbit_speed_max": 0.6,
             "reload_max_distance_raw": 300,
             "speed": 1.5,
             "speed_max": 2.5,
-            "technology": 100,
-            "technology_max": 200,
+            "technology": 0,
+            "technology_max": 500,
             "upgrade_factor": 1.5,
             "upgrade_factor_max": 3.0,
-            "water": 100,
-            "water_max": 200,
-            "autopilot": false,
-            "weapons": {},
+            "water": 0,
+            "water_max": 400,
+            "autopilot": true,
+            "weapons": {
+                "laser": {
+                    "name": "laser",
+                    "category": "weapons",
+                    "level": 0,
+                    "production_energy": 0,
+                    "production_food": 0,
+                    "production_minerals": 0,
+                    "production_water": 0,
+                    "production_technology": 0,
+                    "production_population": 0,
+                    "price_energy": 2500,
+                    "price_food": 2500,
+                    "price_minerals": 2500,
+                    "price_water": 2500,
+                    "price_technology": 2500,
+                    "price_population": 0,
+                    "build_population_minimum": 0,
+                    "building_production_time_scale": 5,
+                    "building_production_time": 5,
+                    "population_buildings_value": 0,
+                    "technology_upgrade": {},
+                    "range": 100,
+                    "power": 3,
+                    "shoot_interval": 1.0,
+                    "upgrade cost": {
+                        "level_0": {
+                            "price_energy": 1500,
+                            "price_food": 1000,
+                            "price_minerals": 1500,
+                            "price_water": 250,
+                            "price_technology": 500,
+                            "price_population": 0
+                        },
+                        "level_1": {
+                            "price_energy": 2500,
+                            "price_food": 2000,
+                            "price_minerals": 2500,
+                            "price_water": 250,
+                            "price_technology": 500,
+                            "price_population": 0
+                        },
+                        "level_2": {
+                            "price_energy": 2500,
+                            "price_food": 2000,
+                            "price_minerals": 2500,
+                            "price_water": 250,
+                            "price_technology": 500,
+                            "price_population": 0
+                        }
+                    },
+                    "upgrade values": {
+                        "level_0": {
+                            "level": 0,
+                            "range": 1.0,
+                            "power": 1.0,
+                            "shoot_interval": 1.0
+                        },
+                        "level_1": {
+                            "level": 1,
+                            "range": 1.5,
+                            "power": 1.5,
+                            "shoot_interval": 1.5
+                        },
+                        "level_2": {
+                            "level": 2,
+                            "range": 2.0,
+                            "power": 2.0,
+                            "shoot_interval": 2.0
+                        }
+                    }
+                }
+            },
+            "specials": []
+        },
+        "3": {
+            "name": "spaceship",
+            "world_x": 1760.23473924184,
+            "world_y": 7940.680412047825,
+            "owner": 3,
+            "attack_distance_raw": 300,
+            "crew": 7,
+            "crew_max": 12,
+            "desired_orbit_radius_raw": 100,
+            "energy": 9978.735614730362,
+            "energy_max": 10000,
+            "energy_use": 0.1,
+            "energy_use_max": 10,
+            "energy_reload_rate": 0.1,
+            "fog_of_war_radius": 100,
+            "fog_of_war_radius_max": 300,
+            "food": 0,
+            "food_max": 500,
+            "min_dist_to_other_ships": 80,
+            "min_dist_to_other_ships_max": 200,
+            "minerals": 0,
+            "minerals_max": 300,
+            "orbit_object_id": 5,
+            "orbit_object_name": "Ursara IV",
+            "orbit_radius": 190,
+            "orbit_radius_max": 200,
+            "orbit_speed": 0.5,
+            "orbit_speed_max": 0.6,
+            "reload_max_distance_raw": 300,
+            "speed": 1.5,
+            "speed_max": 2.5,
+            "technology": 0,
+            "technology_max": 500,
+            "upgrade_factor": 1.5,
+            "upgrade_factor_max": 3.0,
+            "water": 0,
+            "water_max": 400,
+            "autopilot": true,
+            "weapons": {
+                "laser": {
+                    "name": "laser",
+                    "category": "weapons",
+                    "level": 0,
+                    "production_energy": 0,
+                    "production_food": 0,
+                    "production_minerals": 0,
+                    "production_water": 0,
+                    "production_technology": 0,
+                    "production_population": 0,
+                    "price_energy": 2500,
+                    "price_food": 2500,
+                    "price_minerals": 2500,
+                    "price_water": 2500,
+                    "price_technology": 2500,
+                    "price_population": 0,
+                    "build_population_minimum": 0,
+                    "building_production_time_scale": 5,
+                    "building_production_time": 5,
+                    "population_buildings_value": 0,
+                    "technology_upgrade": {},
+                    "range": 100,
+                    "power": 3,
+                    "shoot_interval": 1.0,
+                    "upgrade cost": {
+                        "level_0": {
+                            "price_energy": 1500,
+                            "price_food": 1000,
+                            "price_minerals": 1500,
+                            "price_water": 250,
+                            "price_technology": 500,
+                            "price_population": 0
+                        },
+                        "level_1": {
+                            "price_energy": 2500,
+                            "price_food": 2000,
+                            "price_minerals": 2500,
+                            "price_water": 250,
+                            "price_technology": 500,
+                            "price_population": 0
+                        },
+                        "level_2": {
+                            "price_energy": 2500,
+                            "price_food": 2000,
+                            "price_minerals": 2500,
+                            "price_water": 250,
+                            "price_technology": 500,
+                            "price_population": 0
+                        }
+                    },
+                    "upgrade values": {
+                        "level_0": {
+                            "level": 0,
+                            "range": 1.0,
+                            "power": 1.0,
+                            "shoot_interval": 1.0
+                        },
+                        "level_1": {
+                            "level": 1,
+                            "range": 1.5,
+                            "power": 1.5,
+                            "shoot_interval": 1.5
+                        },
+                        "level_2": {
+                            "level": 2,
+                            "range": 2.0,
+                            "power": 2.0,
+                            "shoot_interval": 2.0
+                        }
+                    }
+                }
+            },
+            "specials": []
+        },
+        "4": {
+            "name": "spaceship",
+            "world_x": 6326.5360112197595,
+            "world_y": 7772.550911165296,
+            "owner": 1,
+            "attack_distance_raw": 300,
+            "crew": 7,
+            "crew_max": 12,
+            "desired_orbit_radius_raw": 100,
+            "energy": 9945.87826283579,
+            "energy_max": 10000,
+            "energy_use": 0.1,
+            "energy_use_max": 10,
+            "energy_reload_rate": 0.1,
+            "fog_of_war_radius": 100,
+            "fog_of_war_radius_max": 300,
+            "food": 0,
+            "food_max": 500,
+            "min_dist_to_other_ships": 80,
+            "min_dist_to_other_ships_max": 200,
+            "minerals": 0,
+            "minerals_max": 300,
+            "orbit_object_id": 4,
+            "orbit_object_name": "Ursara III",
+            "orbit_radius": 220,
+            "orbit_radius_max": 200,
+            "orbit_speed": 0.5,
+            "orbit_speed_max": 0.6,
+            "reload_max_distance_raw": 300,
+            "speed": 1.5,
+            "speed_max": 2.5,
+            "technology": 0,
+            "technology_max": 500,
+            "upgrade_factor": 1.5,
+            "upgrade_factor_max": 3.0,
+            "water": 0,
+            "water_max": 400,
+            "autopilot": true,
+            "weapons": {
+                "laser": {
+                    "name": "laser",
+                    "category": "weapons",
+                    "level": 0,
+                    "production_energy": 0,
+                    "production_food": 0,
+                    "production_minerals": 0,
+                    "production_water": 0,
+                    "production_technology": 0,
+                    "production_population": 0,
+                    "price_energy": 2500,
+                    "price_food": 2500,
+                    "price_minerals": 2500,
+                    "price_water": 2500,
+                    "price_technology": 2500,
+                    "price_population": 0,
+                    "build_population_minimum": 0,
+                    "building_production_time_scale": 5,
+                    "building_production_time": 5,
+                    "population_buildings_value": 0,
+                    "technology_upgrade": {},
+                    "range": 100,
+                    "power": 3,
+                    "shoot_interval": 1.0,
+                    "upgrade cost": {
+                        "level_0": {
+                            "price_energy": 1500,
+                            "price_food": 1000,
+                            "price_minerals": 1500,
+                            "price_water": 250,
+                            "price_technology": 500,
+                            "price_population": 0
+                        },
+                        "level_1": {
+                            "price_energy": 2500,
+                            "price_food": 2000,
+                            "price_minerals": 2500,
+                            "price_water": 250,
+                            "price_technology": 500,
+                            "price_population": 0
+                        },
+                        "level_2": {
+                            "price_energy": 2500,
+                            "price_food": 2000,
+                            "price_minerals": 2500,
+                            "price_water": 250,
+                            "price_technology": 500,
+                            "price_population": 0
+                        }
+                    },
+                    "upgrade values": {
+                        "level_0": {
+                            "level": 0,
+                            "range": 1.0,
+                            "power": 1.0,
+                            "shoot_interval": 1.0
+                        },
+                        "level_1": {
+                            "level": 1,
+                            "range": 1.5,
+                            "power": 1.5,
+                            "shoot_interval": 1.5
+                        },
+                        "level_2": {
+                            "level": 2,
+                            "range": 2.0,
+                            "power": 2.0,
+                            "shoot_interval": 2.0
+                        }
+                    }
+                }
+            },
             "specials": []
         }
     },
@@ -826,12 +1005,12 @@
         },
         "1": {
             "stock": {
-                "energy": -528,
-                "food": 5910,
-                "minerals": 2343,
-                "water": -89,
-                "technology": 1004,
-                "population": 1439
+                "energy": 1000,
+                "food": 1100,
+                "minerals": 1100,
+                "water": 1100,
+                "technology": 1100,
+                "population": 0
             },
             "population": 0,
             "enemies": [
@@ -840,11 +1019,11 @@
         },
         "2": {
             "stock": {
-                "energy": -3490,
-                "food": 743,
-                "minerals": 3326,
-                "water": -3655,
-                "technology": 2275,
+                "energy": 1000,
+                "food": 1100,
+                "minerals": 1100,
+                "water": 1100,
+                "technology": 1100,
                 "population": 0
             },
             "population": 0,
@@ -854,29 +1033,749 @@
         },
         "3": {
             "stock": {
-                "energy": 5867,
-                "food": 6072,
-                "minerals": 907,
-                "water": -1236,
-                "technology": 1175,
-                "population": 3841
-            },
-            "population": 0,
-            "enemies": [
-                0
-            ]
-        },
-        "4": {
-            "stock": {
-                "energy": 3497,
-                "food": 280,
-                "minerals": 1682,
-                "water": -52,
-                "technology": 1272,
-                "population": 1920
+                "energy": 1000,
+                "food": 1100,
+                "minerals": 1100,
+                "water": 1100,
+                "technology": 1100,
+                "population": 0
             },
             "population": 0,
             "enemies": []
+        },
+        "4": {
+            "stock": {
+                "energy": 1000,
+                "food": 1000,
+                "minerals": 1000,
+                "water": 1000,
+                "technology": 1000,
+                "population": 0
+            },
+            "population": 0,
+            "enemies": []
+        }
+    },
+    "collectable_items": {
+        "1": {
+            "id": 1,
+            "image_name": "meteor1_50x50.png",
+            "specials": [
+                "buildings_max + 1"
+            ],
+            "world_height": 50,
+            "world_width": 50,
+            "world_x": 8721.787048682232,
+            "world_y": 5780.493705287707,
+            "resources": {
+                "water": 0,
+                "energy": 4,
+                "food": 0,
+                "minerals": 9,
+                "technology": 0
+            }
+        },
+        "2": {
+            "id": 2,
+            "image_name": "meteor_60x83.png",
+            "specials": [
+                "technology * 1.5"
+            ],
+            "world_height": 41.5,
+            "world_width": 30.0,
+            "world_x": 6936.269367452143,
+            "world_y": 3990.532305606066,
+            "resources": {
+                "water": 645,
+                "energy": 0,
+                "food": 0,
+                "minerals": 0,
+                "technology": 279
+            }
+        },
+        "3": {
+            "id": 3,
+            "image_name": "meteor1_50x50.png",
+            "specials": [
+                "minerals * 1.5"
+            ],
+            "world_height": 50,
+            "world_width": 50,
+            "world_x": 2212.3817976122746,
+            "world_y": 9583.253432079444,
+            "resources": {
+                "water": 179,
+                "energy": 93,
+                "food": 0,
+                "minerals": 47,
+                "technology": 0
+            }
+        },
+        "4": {
+            "id": 4,
+            "image_name": "meteor_50x50.png",
+            "specials": [
+                "minerals * 1.5"
+            ],
+            "world_height": 50,
+            "world_width": 50,
+            "world_x": 4570.738754411657,
+            "world_y": 8051.776313985112,
+            "resources": {
+                "water": 448,
+                "energy": 0,
+                "food": 159,
+                "minerals": 0,
+                "technology": 0
+            }
+        },
+        "5": {
+            "id": 5,
+            "image_name": "artefact1_60x31.png",
+            "specials": [
+                "minerals * 1.5"
+            ],
+            "world_height": 31,
+            "world_width": 60,
+            "world_x": 7044.923531651929,
+            "world_y": 2037.669874210962,
+            "resources": {
+                "water": 0,
+                "energy": 0,
+                "food": 0,
+                "minerals": 0,
+                "technology": 576
+            }
+        },
+        "6": {
+            "id": 6,
+            "image_name": "meteor1_50x50.png",
+            "specials": [
+                "water * 1.5"
+            ],
+            "world_height": 50,
+            "world_width": 50,
+            "world_x": 1797.4421921460898,
+            "world_y": 7172.961894227356,
+            "resources": {
+                "water": 281,
+                "energy": 0,
+                "food": 0,
+                "minerals": 0,
+                "technology": 0
+            }
+        },
+        "7": {
+            "id": 7,
+            "image_name": "artefact1_60x31.png",
+            "specials": [
+                "food * 1.5"
+            ],
+            "world_height": 31,
+            "world_width": 60,
+            "world_x": 3769.8359420558454,
+            "world_y": 6229.572795333394,
+            "resources": {
+                "water": 0,
+                "energy": 127,
+                "food": 0,
+                "minerals": 0,
+                "technology": 257
+            }
+        },
+        "8": {
+            "id": 8,
+            "image_name": "meteor_60x83.png",
+            "specials": [
+                "energy * 1.5"
+            ],
+            "world_height": 41.5,
+            "world_width": 30.0,
+            "world_x": 9235.744137775575,
+            "world_y": 11897.074866869229,
+            "resources": {
+                "water": 18,
+                "energy": 153,
+                "food": 0,
+                "minerals": 0,
+                "technology": 169
+            }
+        },
+        "9": {
+            "id": 9,
+            "image_name": "artefact1_60x31.png",
+            "specials": [
+                "food * 1.5"
+            ],
+            "world_height": 31,
+            "world_width": 60,
+            "world_x": 8953.929488430791,
+            "world_y": 8915.735310331875,
+            "resources": {
+                "water": 796,
+                "energy": 0,
+                "food": 0,
+                "minerals": 0,
+                "technology": 0
+            }
+        },
+        "10": {
+            "id": 10,
+            "image_name": "artefact1_60x31.png",
+            "specials": [
+                "buildings_max + 1"
+            ],
+            "world_height": 31,
+            "world_width": 60,
+            "world_x": 9101.072811155194,
+            "world_y": 11077.39163135858,
+            "resources": {
+                "water": 0,
+                "energy": 0,
+                "food": 0,
+                "minerals": 397,
+                "technology": 458
+            }
+        },
+        "11": {
+            "id": 11,
+            "image_name": "artefact1_60x31.png",
+            "specials": [
+                "buildings_max + 1"
+            ],
+            "world_height": 31,
+            "world_width": 60,
+            "world_x": 11175.451148923508,
+            "world_y": 7933.226112125935,
+            "resources": {
+                "water": 723,
+                "energy": 277,
+                "food": 0,
+                "minerals": 0,
+                "technology": 0
+            }
+        },
+        "12": {
+            "id": 12,
+            "image_name": "meteor_50x50.png",
+            "specials": [
+                "buildings_max + 1"
+            ],
+            "world_height": 50,
+            "world_width": 50,
+            "world_x": 1757.7135663850686,
+            "world_y": 9744.97894508317,
+            "resources": {
+                "water": 286,
+                "energy": 0,
+                "food": 122,
+                "minerals": 0,
+                "technology": 0
+            }
+        },
+        "13": {
+            "id": 13,
+            "image_name": "meteor_60x83.png",
+            "specials": [
+                "buildings_max + 1"
+            ],
+            "world_height": 41.5,
+            "world_width": 30.0,
+            "world_x": 7087.835693290012,
+            "world_y": 8083.329525876905,
+            "resources": {
+                "water": 342,
+                "energy": 557,
+                "food": 0,
+                "minerals": 101,
+                "technology": 0
+            }
+        },
+        "14": {
+            "id": 14,
+            "image_name": "meteor1_50x50.png",
+            "specials": [
+                "water * 1.5"
+            ],
+            "world_height": 50,
+            "world_width": 50,
+            "world_x": 8988.937425041411,
+            "world_y": 11450.608989833558,
+            "resources": {
+                "water": 0,
+                "energy": 0,
+                "food": 12,
+                "minerals": 2,
+                "technology": 0
+            }
+        },
+        "15": {
+            "id": 15,
+            "image_name": "artefact1_60x31.png",
+            "specials": [
+                "buildings_max + 1"
+            ],
+            "world_height": 31,
+            "world_width": 60,
+            "world_x": 1381.5645402724786,
+            "world_y": 3974.062255366119,
+            "resources": {
+                "water": 23,
+                "energy": 39,
+                "food": 0,
+                "minerals": 0,
+                "technology": 0
+            }
+        },
+        "16": {
+            "id": 16,
+            "image_name": "artefact1_60x31.png",
+            "specials": [
+                "buildings_max + 1"
+            ],
+            "world_height": 31,
+            "world_width": 60,
+            "world_x": 2567.2373188324955,
+            "world_y": 7657.372228581269,
+            "resources": {
+                "water": 18,
+                "energy": 0,
+                "food": 17,
+                "minerals": 0,
+                "technology": 100
+            }
+        },
+        "17": {
+            "id": 17,
+            "image_name": "meteor_50x50.png",
+            "specials": [
+                "energy * 1.5"
+            ],
+            "world_height": 50,
+            "world_width": 50,
+            "world_x": 781.4439853343565,
+            "world_y": 7036.627738894184,
+            "resources": {
+                "water": 271,
+                "energy": 0,
+                "food": 0,
+                "minerals": 0,
+                "technology": 0
+            }
+        },
+        "18": {
+            "id": 18,
+            "image_name": "meteor1_50x50.png",
+            "specials": [
+                "food * 1.5"
+            ],
+            "world_height": 50,
+            "world_width": 50,
+            "world_x": 6789.135048013367,
+            "world_y": 6161.837455550315,
+            "resources": {
+                "water": 554,
+                "energy": 0,
+                "food": 398,
+                "minerals": 0,
+                "technology": 0
+            }
+        },
+        "19": {
+            "id": 19,
+            "image_name": "meteor1_50x50.png",
+            "specials": [
+                "water * 1.5"
+            ],
+            "world_height": 50,
+            "world_width": 50,
+            "world_x": 6711.726410880902,
+            "world_y": 7774.780502128817,
+            "resources": {
+                "water": 375,
+                "energy": 0,
+                "food": 425,
+                "minerals": 0,
+                "technology": 200
+            }
+        },
+        "20": {
+            "id": 20,
+            "image_name": "meteor1_50x50.png",
+            "specials": [
+                "buildings_max + 1"
+            ],
+            "world_height": 50,
+            "world_width": 50,
+            "world_x": 6933.431064505572,
+            "world_y": 5700.713021742522,
+            "resources": {
+                "water": 0,
+                "energy": 0,
+                "food": 0,
+                "minerals": 789,
+                "technology": 0
+            }
+        },
+        "21": {
+            "id": 21,
+            "image_name": "sphere.gif",
+            "specials": [
+                "water * 1.5"
+            ],
+            "world_height": 60,
+            "world_width": 60,
+            "world_x": 8626.598268206992,
+            "world_y": 8652.033541654673,
+            "resources": {
+                "water": 0,
+                "energy": 858,
+                "food": 0,
+                "minerals": 0,
+                "technology": 0
+            }
+        },
+        "22": {
+            "id": 22,
+            "image_name": "sphere.gif",
+            "specials": [
+                "food * 1.5"
+            ],
+            "world_height": 60,
+            "world_width": 60,
+            "world_x": 1127.1642162881144,
+            "world_y": 7788.04557733998,
+            "resources": {
+                "water": 484,
+                "energy": 0,
+                "food": 0,
+                "minerals": 0,
+                "technology": 516
+            }
+        },
+        "23": {
+            "id": 23,
+            "image_name": "sphere.gif",
+            "specials": [
+                "water * 1.5"
+            ],
+            "world_height": 60,
+            "world_width": 60,
+            "world_x": 10690.217181393105,
+            "world_y": 10072.741392214677,
+            "resources": {
+                "water": 527,
+                "energy": 146,
+                "food": 180,
+                "minerals": 0,
+                "technology": 147
+            }
+        },
+        "24": {
+            "id": 24,
+            "image_name": "sphere.gif",
+            "specials": [
+                "minerals * 1.5"
+            ],
+            "world_height": 60,
+            "world_width": 60,
+            "world_x": 5632.538492804096,
+            "world_y": 6717.013409351091,
+            "resources": {
+                "water": 0,
+                "energy": 0,
+                "food": 18,
+                "minerals": 126,
+                "technology": 0
+            }
+        },
+        "25": {
+            "id": 25,
+            "image_name": "sphere.gif",
+            "specials": [
+                "technology * 1.5"
+            ],
+            "world_height": 60,
+            "world_width": 60,
+            "world_x": 1603.3314350272303,
+            "world_y": 6296.972919315127,
+            "resources": {
+                "water": 0,
+                "energy": 671,
+                "food": 0,
+                "minerals": 0,
+                "technology": 329
+            }
+        },
+        "26": {
+            "id": 26,
+            "image_name": "sphere.gif",
+            "specials": [
+                "food * 1.5"
+            ],
+            "world_height": 60,
+            "world_width": 60,
+            "world_x": 6500.859844796763,
+            "world_y": 11812.776101595166,
+            "resources": {
+                "water": 0,
+                "energy": 77,
+                "food": 200,
+                "minerals": 0,
+                "technology": 267
+            }
+        },
+        "27": {
+            "id": 27,
+            "image_name": "sphere.gif",
+            "specials": [
+                "energy * 1.5"
+            ],
+            "world_height": 60,
+            "world_width": 60,
+            "world_x": 9773.97090736267,
+            "world_y": 11841.164125986956,
+            "resources": {
+                "water": 53,
+                "energy": 3,
+                "food": 0,
+                "minerals": 0,
+                "technology": 0
+            }
+        },
+        "28": {
+            "id": 28,
+            "image_name": "sphere.gif",
+            "specials": [
+                "food * 1.5"
+            ],
+            "world_height": 60,
+            "world_width": 60,
+            "world_x": 2914.9490769477356,
+            "world_y": 4596.291584184664,
+            "resources": {
+                "water": 509,
+                "energy": 0,
+                "food": 0,
+                "minerals": 491,
+                "technology": 0
+            }
+        },
+        "29": {
+            "id": 29,
+            "image_name": "sphere.gif",
+            "specials": [
+                "technology * 1.5"
+            ],
+            "world_height": 60,
+            "world_width": 60,
+            "world_x": 7964.412442709029,
+            "world_y": 1428.6205151980485,
+            "resources": {
+                "water": 379,
+                "energy": 377,
+                "food": 0,
+                "minerals": 0,
+                "technology": 0
+            }
+        },
+        "30": {
+            "id": 30,
+            "image_name": "sphere.gif",
+            "specials": [
+                "minerals * 1.5"
+            ],
+            "world_height": 60,
+            "world_width": 60,
+            "world_x": 4641.3653629801165,
+            "world_y": 3818.109675449284,
+            "resources": {
+                "water": 0,
+                "energy": 0,
+                "food": 0,
+                "minerals": 521,
+                "technology": 0
+            }
+        },
+        "31": {
+            "id": 31,
+            "image_name": "sphere.gif",
+            "specials": [
+                "energy * 1.5"
+            ],
+            "world_height": 60,
+            "world_width": 60,
+            "world_x": 6296.994827884598,
+            "world_y": 7978.0405977973915,
+            "resources": {
+                "water": 50,
+                "energy": 0,
+                "food": 54,
+                "minerals": 0,
+                "technology": 0
+            }
+        },
+        "32": {
+            "id": 32,
+            "image_name": "sphere.gif",
+            "specials": [
+                "energy * 1.5"
+            ],
+            "world_height": 60,
+            "world_width": 60,
+            "world_x": 7319.14521609106,
+            "world_y": 6934.836760891104,
+            "resources": {
+                "water": 0,
+                "energy": 0,
+                "food": 0,
+                "minerals": 0,
+                "technology": 602
+            }
+        },
+        "33": {
+            "id": 33,
+            "image_name": "sphere.gif",
+            "specials": [
+                "minerals * 1.5"
+            ],
+            "world_height": 60,
+            "world_width": 60,
+            "world_x": 6740.7021906217,
+            "world_y": 2428.8080382252892,
+            "resources": {
+                "water": 130,
+                "energy": 0,
+                "food": 554,
+                "minerals": 316,
+                "technology": 0
+            }
+        },
+        "34": {
+            "id": 34,
+            "image_name": "sphere.gif",
+            "specials": [
+                "technology * 1.5"
+            ],
+            "world_height": 60,
+            "world_width": 60,
+            "world_x": 5933.819328432417,
+            "world_y": 8993.676223800117,
+            "resources": {
+                "water": 0,
+                "energy": 0,
+                "food": 587,
+                "minerals": 0,
+                "technology": 0
+            }
+        },
+        "35": {
+            "id": 35,
+            "image_name": "sphere.gif",
+            "specials": [
+                "energy * 1.5"
+            ],
+            "world_height": 60,
+            "world_width": 60,
+            "world_x": 9292.2384023864,
+            "world_y": 6187.338664536557,
+            "resources": {
+                "water": 0,
+                "energy": 227,
+                "food": 0,
+                "minerals": 553,
+                "technology": 0
+            }
+        },
+        "36": {
+            "id": 36,
+            "image_name": "sphere.gif",
+            "specials": [
+                "buildings_max + 1"
+            ],
+            "world_height": 60,
+            "world_width": 60,
+            "world_x": 5107.342345513611,
+            "world_y": 4003.4736584931497,
+            "resources": {
+                "water": 0,
+                "energy": 269,
+                "food": 0,
+                "minerals": 0,
+                "technology": 590
+            }
+        },
+        "37": {
+            "id": 37,
+            "image_name": "sphere.gif",
+            "specials": [
+                "buildings_max + 1"
+            ],
+            "world_height": 60,
+            "world_width": 60,
+            "world_x": 7286.583793028443,
+            "world_y": 5825.903302060446,
+            "resources": {
+                "water": 0,
+                "energy": 0,
+                "food": 462,
+                "minerals": 0,
+                "technology": 309
+            }
+        },
+        "38": {
+            "id": 38,
+            "image_name": "sphere.gif",
+            "specials": [
+                "technology * 1.5"
+            ],
+            "world_height": 60,
+            "world_width": 60,
+            "world_x": 6815.225437278883,
+            "world_y": 7662.104669236067,
+            "resources": {
+                "water": 0,
+                "energy": 0,
+                "food": 9,
+                "minerals": 21,
+                "technology": 0
+            }
+        },
+        "39": {
+            "id": 39,
+            "image_name": "sphere.gif",
+            "specials": [
+                "energy * 1.5"
+            ],
+            "world_height": 60,
+            "world_width": 60,
+            "world_x": 7839.313321811111,
+            "world_y": 4655.905424334543,
+            "resources": {
+                "water": 194,
+                "energy": 0,
+                "food": 0,
+                "minerals": 793,
+                "technology": 0
+            }
+        },
+        "40": {
+            "id": 40,
+            "image_name": "sphere.gif",
+            "specials": [
+                "food * 1.5"
+            ],
+            "world_height": 60,
+            "world_width": 60,
+            "world_x": 5440.86920559681,
+            "world_y": 1273.249805294955,
+            "resources": {
+                "water": 385,
+                "energy": 0,
+                "food": 0,
+                "minerals": 615,
+                "technology": 0
+            }
         }
     }
 }

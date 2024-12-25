@@ -1,17 +1,17 @@
 import math
 import os
-import time
+from source.handlers.time_handler import time_handler
 
 import pygame
 from PIL import Image
 from pygame import Vector2
 
 from source.handlers.file_handler import gifs_path
+from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
+from source.handlers.position_handler import rot_center
 from source.multimedia_library.images import get_gif_frames, get_gif_fps, get_gif_duration
 from source.multimedia_library.sounds import sounds
-from source.handlers.position_handler import rot_center
-from source.handlers.pan_zoom_handler import pan_zoom_handler
 
 
 class GifHandler(pygame.sprite.Sprite):
@@ -30,7 +30,7 @@ class GifHandler(pygame.sprite.Sprite):
         self.relative_gif_size = kwargs.get("relative_gif_size", None)
 
         self.frames = get_gif_frames(self.gif)
-        self.gif_start = time.time()
+        self.gif_start = time_handler.time
         self.gif_fps = get_gif_fps(self.gif)
         self.gif_animation_time = kwargs.get("gif_animation_time", get_gif_duration(self.gif) / 1000)
         self.index = 1
@@ -87,7 +87,7 @@ class GifHandler(pygame.sprite.Sprite):
         return frames
 
     def update(self):
-        if time.time() > self.gif_start + self.gif_animation_time:
+        if time_handler.time > self.gif_start + self.gif_animation_time:
             if self.index == 1:
                 if self.sound:
                     sounds.play_sound(getattr(sounds, self.sound))

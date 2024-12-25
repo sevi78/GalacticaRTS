@@ -84,15 +84,21 @@ class PanZoomPlanetParams:
         return
 
     def get_explored(self, owner):
-
         """
         called only once when the planet gets explored
         shows buttons ect
         """
+
+        if config.app.game_client.connected:
+            config.app.game_client.send_message({"f": "get_explored", "sprite_group": "planets", "planet_id": self.id, "owner": owner})
+        else:
+            self.handle_get_explored(owner)
+
+    def handle_get_explored(self, owner):
         # set owner
         if self.owner != owner:
             if self.owner != -1:
-                event_text.set_text(f"Bad Luck! the planet {self.name} belongs to an alien species !", obj=self)
+                event_text.set_text(f"Bad Luck! the planet {self.name} belongs to an alien species !", obj=self, sender=owner)
                 return
 
         self.owner = owner
@@ -116,5 +122,5 @@ class PanZoomPlanetParams:
         self.string = self.name
 
         # set event text
-        event_text.set_text(f"Gratulation! you have reached a the Planet {self.name} !", obj=self)
+        event_text.set_text(f"Gratulation! you have reached a the Planet {self.name} !", obj=self, sender=owner)
         self.parent.update_building_button_widgets()

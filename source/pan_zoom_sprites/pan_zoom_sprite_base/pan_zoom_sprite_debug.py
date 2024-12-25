@@ -17,8 +17,14 @@ class GameObjectDebug:
 
         # center
         pygame.draw.circle(config.win, pygame.color.THECOLORS["white"], self.rect.center, 5, 1)
+
         # rect
         pygame.draw.rect(config.win, color, self.rect, 1)
+
+        # collid rect
+        if hasattr(self, "collide_rect"):
+            pygame.draw.rect(config.win, pygame.color.THECOLORS["orange"], self.collide_rect, 1)
+
 
         # attack_distance
         if hasattr(self, "attack_distance"):
@@ -55,5 +61,5 @@ class GameObjectDebug:
         font = pygame.font.SysFont(config.font_name, 18)
         if self.type:
             text = self.type
-            drawText(config.app.win, text, color, (
+            drawText(self.win, text, color, (
                 self.rect.x, self.rect.y, 400, 30), font, "left")

@@ -4,7 +4,7 @@ from source.configuration.game_config import config
 from source.draw.rectangle import draw_transparent_rounded_rect
 from source.gui.container.container_config import FONT_SIZE, WIDGET_SIZE, TEXT_SPACING
 from source.handlers.color_handler import colors
-from source.multimedia_library.images import get_image
+from source.multimedia_library.images import get_image, scale_image_cached
 from source.text.text_formatter import format_number
 from source.text.text_wrap import TextWrap
 
@@ -100,7 +100,7 @@ class ContainerWidgetItem(TextWrap):
         self.world_x = x
         self.world_y = y
         self.image_raw = image
-        self.image = pygame.transform.scale(image, (width, height))
+        self.image = scale_image_cached(image, (width, height))
         self.rect = self.image.get_rect(topleft=(x, y))
 
         self.index = index
@@ -110,6 +110,7 @@ class ContainerWidgetItem(TextWrap):
         self.obj = kwargs.get("obj", None)
         self.parent = kwargs.get("parent", None)
         self.container_name = kwargs.get("container_name", None)
+        self.container = kwargs.get("container", None)
         self.item_buttons = kwargs.get("item_buttons", None)
         self.widgets = kwargs.get("item_buttons", None)
 
@@ -129,8 +130,8 @@ class ContainerWidgetItem(TextWrap):
     def create_buttons(self):
         """
         "agree": {
-            "image": pygame.transform.scale(get_image("thumps_up.png"), (button_size, button_size)),
-            "function": lambda: test()
+            "image": scale_image_cached(get_image("thumps_up.png"), (button_size, button_size)),
+            "f": lambda: test()
             },
         """
         if not self.item_buttons:
@@ -198,14 +199,15 @@ class ContainerWidgetItem(TextWrap):
 
         # if an object to display
         if self.obj:
+            _class = self.obj.__class__.__name__
             # planets
-            if self.obj.__class__.__name__ == "PanZoomPlanet":
+            if _class == "PanZoomPlanet":
                 # text
                 if self.obj.owner == -1:
                     self.text = "unknown planet"
                 else:
                     self.text = (f"{self.obj.name} belongs to {config.app.players[self.obj.owner].name}, population:"
-                                 f" {format_number(self.obj.population, 1)}/{format_number(self.obj.population_limit, 1)}, buildings: {len(self.obj.buildings)}")
+                                 f" {format_number(self.obj.economy_agent.population, 1)}/{format_number(self.obj.economy_agent.population_limit, 1)}, buildings: {len(self.obj.economy_agent.buildings)}")
 
                 # state image
                 if self.obj.owner != -1:
@@ -213,26 +215,50 @@ class ContainerWidgetItem(TextWrap):
                 else:
                     image_name = "question_mark.png"
 
-                self.state_image = pygame.transform.scale(get_image(image_name), (
+                self.state_image = scale_image_cached(get_image(image_name), (
                     WIDGET_SIZE, WIDGET_SIZE))
                 self.state_image_rect = self.state_image.get_rect()
 
 
             # ships
-            elif self.obj.__class__.__name__ in ships:
+            elif _class in ships:
                 # text
                 self.text += f"{self.obj.name}, owner: {config.app.players[self.obj.owner].name}, energy: {format_number(self.obj.energy, 1)}"
 
                 # state image
-                self.state_image = pygame.transform.scale(get_image(
+                self.state_image = scale_image_cached(get_image(
                         self.obj.state_engine.image_drawer.state_image_names[self.obj.state_engine.state]), (
                     WIDGET_SIZE / 3, WIDGET_SIZE / 3))
                 self.state_image_rect = self.state_image.get_rect()
 
-            elif self.obj.__class__.__name__ == "Trade":
+            elif _class == "Trade":
                 # text
-                self.text += f"{self.obj.__str__()}"
+                self.text += f"{self.obj.__str__(config.app.players[self.obj.owner_index].name)}"
 
+            elif _class == "Game":
+                """
+                    self.id = str(uuid.uuid4())
+                    self.host_id = host_id
+                    self.level_id = level_id
+                    self.max_players = max_players
+                    self.players = {host_id: {"ready": False}}
+                    self.state = "lobby"  # "lobby", "starting", "running"
+                    self.start_time = None
+
+                """
+                self.text, players = self.obj.get_container_widget_string()
+
+                # state image
+                try:
+                    if self.obj.players[str(config.app.game_client.id)]["ready"]:
+                        image_name = "thumps_upred_flipped.png"
+                    else:
+                        image_name = "thumps_up.png"
+
+                    button = [_ for _ in self.widgets if _.name == "join_game"][0]
+                    button.init_image(image_name)
+                except KeyError:
+                    print ("set_text_and_state_image.key error: this is because level handler has player set to a lower value than the number of players in the game. this is a bug and will be fixed soon")
 
         # if no object to display (like files or anything else, not implemented yet)
         else:

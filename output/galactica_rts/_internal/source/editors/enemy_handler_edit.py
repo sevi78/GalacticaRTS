@@ -1,10 +1,10 @@
+from source.gui.interfaces.interface import Interface
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
-from source.interfaces.interface import Interface
 
 
 class EnemyHandlerEdit(Interface):
-    def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
-        Interface.__init__(self, win, x, y, width, height, isSubWidget=False, **kwargs)
+    def __init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs):
+        Interface.__init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs)
         self.create_save_button(lambda: self.parent.save_objects("enemy_handler_config.json", [
             self.obj]), "save enemy handler")
         self.create_close_button()

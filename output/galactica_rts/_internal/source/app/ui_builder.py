@@ -1,21 +1,17 @@
 import pygame
 
 from source.app.scene_builder import SceneBuilder
+from source.auto_economy.auto_economy_calculator_edit import AutoEconomyCalculatorEdit
 from source.configuration.game_config import config
-from source.editors.add_deal_edit import AddDealEdit
 from source.editors.building_edit import BuildingEdit
-from source.editors.deal_manager import DealManager
 from source.editors.debug_edit import DebugEdit
 from source.editors.diplomacy_edit import DiplomacyEdit
 from source.editors.enemy_handler_edit import EnemyHandlerEdit
 from source.editors.planet_edit import PlanetEdit
 from source.editors.save_game_edit import SaveGameEdit
-from source.editors.settings_edit import SettingsEdit
 from source.editors.ship_edit import ShipEdit
-from source.editors.trade_edit import TradeEdit
 from source.editors.weapon_select import WeaponSelect
 from source.game_play.enemy_handler import enemy_handler
-from source.game_play.player import Player
 from source.gui.panels.advanced_settings_panel import AdvancedSettingsPanel
 from source.gui.panels.building_panel_components.building_panel import BuildingPanel
 from source.gui.panels.building_panel_components.game_time_widget import GameTime
@@ -28,7 +24,12 @@ from source.gui.tool_tip import ToolTip
 from source.gui.widgets.background_image import BackgroundGradient
 from source.handlers.debug_handler import debugger
 from source.handlers.file_handler import load_file
-from source.handlers.player_handler import player_handler
+from source.network.client.client import Client
+
+from source.player.player import Player
+from source.player.player_edit import PlayerEdit
+from source.player.player_handler import player_handler
+from source.trading.add_deal_edit import AddDealEdit
 
 EDITOR_HEIGHT = 600
 
@@ -47,11 +48,12 @@ class UIBuilder(SceneBuilder):
 
     def __init__(self, width, height):
         SceneBuilder.__init__(self, width, height)
+
         self.win = config.win
 
         # panels
-        self.building_panel = None
         self.view_panel = None
+        self.building_panel = None
         self.game_time = None
         self.advanced_settings_panel = None
         self.resource_panel = None
@@ -73,7 +75,6 @@ class UIBuilder(SceneBuilder):
         self.building_edit = None
         self.save_game_edit = None
         self.weapon_select = None
-        self.deal_manager = None
         self.diplomacy_edit = None
         self.player_edit = None
 
@@ -92,6 +93,10 @@ class UIBuilder(SceneBuilder):
         # players
         self.player = None  # this is the human player, default index 0
         self.players = {}
+
+        # initialize game_client
+        network_config = load_file("network_config.json", "config")
+        self.game_client = Client(network_config["server"], network_config["port"])
 
         # building_panel
         self.create_building_panel()
@@ -112,7 +117,7 @@ class UIBuilder(SceneBuilder):
                 y=self.settings_panel.surface_rect.bottom,
                 width=240,
                 height=300,
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self.resource_panel,
                 layer=9)
 
@@ -123,7 +128,7 @@ class UIBuilder(SceneBuilder):
                 0,
                 1920,
                 1080,
-                isSubWidget=False,
+                is_sub_widget=False,
                 layer=8,
                 draw_gradient=BACKGROUND_GRADIENT_DRAW,
                 fade_range=BACKGROUND_GRADIENT_FADE_RANGE)
@@ -143,18 +148,6 @@ class UIBuilder(SceneBuilder):
                 60,
                 False,
                 obj=None,
-                layer=10,
-                parent=self,
-                ignore_other_editors=True,
-                save=False)
-
-        self.deal_manager = DealManager(
-                self.win,
-                240,
-                30,
-                460,
-                60,
-                False,
                 layer=10,
                 parent=self,
                 ignore_other_editors=True,
@@ -219,14 +212,14 @@ class UIBuilder(SceneBuilder):
                 pygame.display.get_surface().get_rect().y + spacing_y,
                 width, height, parent=self, obj=debugger, layer=9)
 
-        self.trade_edit = TradeEdit(pygame.display.get_surface(),
-                pygame.display.get_surface().get_rect().centerx - width / 2,
-                pygame.display.get_surface().get_rect().y + spacing_y,
-                width,
-                height,
-                parent=self,
-                obj=None,
-                layer=9)  # , game_paused=True)
+        # self.trade_edit = TradeEdit(pygame.display.get_surface(),
+        #         pygame.display.get_surface().get_rect().centerx - width / 2,
+        #         pygame.display.get_surface().get_rect().y + spacing_y,
+        #         width,
+        #         height,
+        #         parent=self,
+        #         obj=None,
+        #         layer=9)  # , game_paused=True)
 
         self.add_deal_edit = AddDealEdit(
                 pygame.display.get_surface(),
@@ -238,17 +231,17 @@ class UIBuilder(SceneBuilder):
                 obj=None,
                 layer=9)  # , game_paused=True)
 
-        # self.economy_overview = EconomyOverview(
-        #     pygame.display.get_surface(),
-        #     0,
-        #     0,
-        #     1920,
-        #     800,
-        #     parent=self,
-        #     obj=None,
-        #     layer=10)  # , game_paused=True)
+        # self.settings_edit = SettingsEdit(
+        #         pygame.display.get_surface(),
+        #         pygame.display.get_surface().get_rect().centerx - width / 2,
+        #         pygame.display.get_surface().get_rect().y + spacing_y,
+        #         int(width / 1.5),
+        #         height,
+        #         parent=self,
+        #         obj=None,
+        #         layer=9)  # , game_paused=True)
 
-        self.settings_edit = SettingsEdit(
+        self.auto_economy_calculator_edit = AutoEconomyCalculatorEdit(
                 pygame.display.get_surface(),
                 pygame.display.get_surface().get_rect().centerx - width / 2,
                 pygame.display.get_surface().get_rect().y + spacing_y,
@@ -258,8 +251,8 @@ class UIBuilder(SceneBuilder):
                 obj=None,
                 layer=9)  # , game_paused=True)
 
-    def create_players(self, data):
-        # for some stupid reason, i ant move this to player_handler: RuntimeError: dictionary changed size during iteration
+    def create_players(self, data=dict) -> None:
+        # for some stupid reason, i cant move this to player_handler: RuntimeError: dictionary changed size during iteration
         for key, value in data.items():
             player_id = data[key]["player"]
             self.players[player_id] = Player(
@@ -288,8 +281,8 @@ class UIBuilder(SceneBuilder):
                     enemies=data[key]["enemies"]
                     )
 
-            # set active (human) player
-            self.player = self.players[0]
+        # set active (human) player
+        self.player = self.players[0]
 
     def create_event_panel(self):
         w, h = 900, 600
@@ -316,7 +309,7 @@ class UIBuilder(SceneBuilder):
                 height=100,
                 color=pygame.colordict.THECOLORS["black"],
                 text_color=self.frame_color,  # pygame.colordict.THECOLORS["darkslategray1"],
-                isSubWidget=False,
+                is_sub_widget=False,
                 parent=self,
                 layer=10)
 
@@ -330,7 +323,7 @@ class UIBuilder(SceneBuilder):
                 y=spacing,
                 width=size_x - spacing,
                 height=size_y,
-                isSubWidget=False,
+                is_sub_widget=False,
                 size_x=size_x,
                 size_y=size_y,
                 spacing=spacing,
@@ -342,7 +335,7 @@ class UIBuilder(SceneBuilder):
                 y=spacing,
                 width=size_x - spacing,
                 height=size_y,
-                isSubWidget=True,
+                is_sub_widget=True,
                 size_x=size_x,
                 size_y=size_y,
                 spacing=spacing,
@@ -359,7 +352,7 @@ class UIBuilder(SceneBuilder):
                 y=spacing * 2,
                 width=size_x - spacing,
                 height=size_y,
-                isSubWidget=False,
+                is_sub_widget=False,
                 size_x=size_x,
                 size_y=size_y,
                 spacing=spacing,
@@ -373,7 +366,7 @@ class UIBuilder(SceneBuilder):
                 y=self.settings_panel.surface_frame.bottom,
                 width=size_x - spacing,
                 height=size_y,
-                isSubWidget=False,
+                is_sub_widget=False,
                 size_x=size_x,
                 size_y=size_y,
                 spacing=spacing,
@@ -383,18 +376,18 @@ class UIBuilder(SceneBuilder):
                 anchor_right=self.building_panel.get_screen_x())
 
         self.view_panel = ViewPanel(self.win,
-                x=self.settings_panel.surface_frame.right,
+                x=self.settings_panel.surface_frame.left,
                 y=self.settings_panel.surface_frame.bottom,
                 width=size_x - spacing,
                 height=size_y,
-                isSubWidget=False,
+                is_sub_widget=False,
                 size_x=size_x,
                 size_y=size_y,
                 spacing=spacing,
                 parent=self,
                 layer=9,
                 icon_size=icon_size,
-                anchor_right=self.building_panel.get_screen_x())
+                anchor_right=self.settings_panel.get_screen_x())
 
     def create_resource_panel(self):
         icon_size = 25
@@ -410,7 +403,7 @@ class UIBuilder(SceneBuilder):
                 y=pos_y,
                 width=size_x,
                 height=size_y,
-                isSubWidget=False,
+                is_sub_widget=False,
                 size_x=size_x,
                 size_y=size_y,
                 spacing=spacing,
@@ -419,3 +412,17 @@ class UIBuilder(SceneBuilder):
                 icon_size=icon_size,
                 anchor_right=self.advanced_settings_panel.get_screen_x(),
                 app=self)
+
+    def create_player_edit(self, num_players: int):
+        width, height = 1200, 1200
+
+        # make shure its deleted before creating a new one
+        if hasattr(self, 'player_edit') and self.player_edit is not None:
+            self.player_edit.__del__()
+            del self.player_edit
+
+        # create a new one
+        self.player_edit = PlayerEdit(pygame.display.get_surface(),
+                int(pygame.display.get_surface().get_width() / 2 - width / 2),
+                pygame.display.get_surface().get_rect().y,
+                width, height, parent=self, obj=None, layer=9, ignore_other_editors=True, drag_enabled=False, save=False, num_players=num_players)

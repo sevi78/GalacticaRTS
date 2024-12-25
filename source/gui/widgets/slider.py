@@ -55,6 +55,7 @@ class Slider(WidgetBase):
         self.border_color = kwargs.get('border_color', (0, 0, 0))
 
         self.value = self.round(kwargs.get('initial', (self.max + self.min) / 2))
+        self.function = kwargs.get('function', None)
 
         self.curved = kwargs.get('curved', True)
 
@@ -72,6 +73,9 @@ class Slider(WidgetBase):
             self.handle_radius = kwargs.get('handle_radius', int(self.screen_height / 1.3))
 
     def listen(self, events):
+        # if not config.app.game_client.is_host:
+        #     return
+
         if not self._hidden and not self._disabled:
             mouse_state = mouse_handler.get_mouse_state()
             x, y = mouse_handler.get_mouse_pos()
@@ -93,6 +97,9 @@ class Slider(WidgetBase):
                     self.value = self.round((x - self.screen_x) / self.screen_width * self.max + self.min)
                     self.value = max(min(self.value, self.max), self.min)
 
+                if self.function:
+                    self.function(self.value)
+
                 if hasattr(self.parent, "set_obj_values"):
                     self.parent.set_obj_values()
 
@@ -110,6 +117,8 @@ class Slider(WidgetBase):
 
     def set_value(self, value):
         self.value = value
+        if self.function:
+            self.function(self.value)
 
     def draw(self):
         if not self._hidden and not self._disabled:

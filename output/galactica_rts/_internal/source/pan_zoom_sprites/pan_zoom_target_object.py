@@ -1,8 +1,7 @@
+from source.configuration.game_config import config
 from source.draw.arrow import ArrowCrossAnimatedArray
-
 from source.handlers.color_handler import colors
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_gif import PanZoomSprite
-from source.configuration.game_config import config
 
 
 class PanZoomTargetObject(PanZoomSprite):
@@ -10,18 +9,20 @@ class PanZoomTargetObject(PanZoomSprite):
 
     def __init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs):
         PanZoomSprite.__init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs)
+
         self.world_width = width
         self.world_height = height
         self.name = "target_object"
         self.property = "target_object"
         self.type = "target object"
         self.parent = kwargs.get("parent")
+        self.id = self.parent.id
 
         self.target_cross = ArrowCrossAnimatedArray(
                 self.win,
                 colors.frame_color,
                 (400, 300),
-                60,
+                40,
                 0,
                 8,
                 1,
@@ -36,6 +37,7 @@ class PanZoomTargetObject(PanZoomSprite):
         self.hide()
 
         # only draw if the target is set
+        # if self.parent.target and self.parent.selected:
         if self.parent.target:
             self.target_cross.set_center_distance(self.parent.target.rect.width)
             self.target_cross.update(self.parent.target.rect.center)
