@@ -1,6 +1,6 @@
 from source.gui.interfaces.interface import Interface
 
-
+"""TODO: unused, delete?"""
 class EventPanelEdit(Interface):
     def __init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs):
         Interface.__init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs)

@@ -336,6 +336,7 @@ class BuildingFactory(BuildingFactoryJsonDictReader):
         else:
             text = self.handle_build(data)
             event_text.set_text(text, sender=receiver.owner, sound={"name": "bleep", "channel": 7})
+            return text
 
     def handle_build(self, data: dict):
         building = data["building"]

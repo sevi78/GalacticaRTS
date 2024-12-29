@@ -377,6 +377,7 @@ def rotate_image_to(obj, position: tuple, rotate_correction_angle: int):
     obj.prev_angle = angle
     new_image = rotate_image_cached(obj.image, angle)
     obj.image = new_image
+    obj.image_rotated = new_image
 
     # Reset the rect
     obj.rect = obj.image.get_rect(center=old_rect.center)

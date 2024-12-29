@@ -37,6 +37,11 @@ class PanZoomShipStateEngine:
         pass
 
     def update(self) -> None:
+        if not config.show_ship_state:
+            self.image_drawer.hide()
+            return
+
+
         if config.cross_view_start < pan_zoom_handler.zoom:
             self.image_drawer.show()
             self.image_drawer.update_rank_image()
@@ -44,6 +49,9 @@ class PanZoomShipStateEngine:
         else:
             self.image_drawer.hide()
             draw_dashed_cross_in_circle(self.parent.win, self.parent.frame_color, self.parent.get_screen_position(), config.ui_cross_size, config.ui_cross_thickness, config.ui_cross_dash_length / 2)
+
+
+
 
 
 # disabled_functions = ["set_state_image", "update_rank_image", "update_state_image"]
@@ -58,6 +66,8 @@ class PanZoomShipStateEngineDraw:
 
         # set up images
         x, y = self.parent.get_screen_position()
+
+        # this is still needed for the containers, ugly ---
         self.state_image_names = {
             "move_stop": "noenergy_25x25.png",
             "following_path": "follow_path_icon.png",
@@ -65,7 +75,8 @@ class PanZoomShipStateEngineDraw:
             "sleeping": "sleep.png",
             "orbiting": "orbit_icon.png",
             "autopilot": "autopilot.png",
-            "attacking": "war_icon.png"
+            "attacking": "war_icon.png",
+            "waiting for order": "question_mark.png"
             }
 
         self.state_images = {
@@ -76,6 +87,7 @@ class PanZoomShipStateEngineDraw:
             "orbiting": pygame.transform.scale(get_image("orbit_icon.png"), (STATE_IMAGE_SIZE, STATE_IMAGE_SIZE)),
             "autopilot": pygame.transform.scale(get_image("autopilot.png"), (STATE_IMAGE_SIZE, STATE_IMAGE_SIZE)),
             "attacking": pygame.transform.scale(get_image("war_icon.png"), (STATE_IMAGE_SIZE, STATE_IMAGE_SIZE)),
+            "waiting for order": pygame.transform.scale(get_image("question_mark.png"), (STATE_IMAGE_SIZE, STATE_IMAGE_SIZE))
             }
 
         self.rank_image = ImageSprite(self.parent.win, -200, -200, 25, 25, get_image("warning_icon.png"), parent=self.parent)

@@ -14,7 +14,7 @@ from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.handlers.time_handler import time_handler
 from source.handlers.weapon_handler import WeaponHandler
 from source.handlers.widget_handler import WidgetHandler
-from source.multimedia_library.images import rotate_image_to
+from source.multimedia_library.images import rotate_image_to, scale_image_cached, rotate_image_cached
 from source.multimedia_library.sounds import sounds
 from source.pan_zoom_sprites.pan_zoom_ship_classes.pan_zoom_ship_draw import PanZoomShipDraw
 from source.pan_zoom_sprites.pan_zoom_ship_classes.pan_zoom_ship_interaction import PanZoomShipInteraction
@@ -192,6 +192,22 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         self.state_engine.end_object()
         self.state_engine = None
         self.kill()
+
+    # def update_rect(self):
+    #     if not self.image_raw:
+    #         return
+    #     if hasattr(self, "angle"):
+    #         self.image = rotate_image_cached( scale_image_cached(self.image_raw, (self.screen_width * self.shrink, self.screen_height * self.shrink)), self.angle  +self.rotate_correction_angle)
+    #     else:
+    #         self.image = scale_image_cached(self.image_raw, (self.screen_width * self.shrink, self.screen_height * self.shrink))
+    #
+    #
+    #     self.rect = self.image.get_rect()
+    #
+    #     self.align_image_rect()
+
+    # def update_rect(self):
+    #     pass
 
     def setup(self):
         data = self.data
@@ -399,7 +415,10 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         # handle progressbar visibility
         # maybe we don't need inside screen here, because it is checked in WidgetHandler and pan_zoom_sprite_handler
         if level_of_detail.inside_screen(self.rect.center):
-            self.progress_bar.show()
+            if config.show_ship_state:
+                self.progress_bar.show()
+            else:
+                self.progress_bar.hide()
             # prevent_object_overlap(sprite_groups.ships, self.min_dist_to_other_ships)
         else:
             self.progress_bar.hide()
@@ -407,6 +426,7 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         """ TODO:check out logic here """
         # draw selection and connections
         if self.selected:
+            self.state_engine.set_state("waiting for order")
             if self == config.app.ship:
                 self.draw_selection()
                 # if self.orbit_object:
@@ -467,12 +487,9 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         # self.rot_rect.draw(self.win)
         # self.weapon_handler.weapon_rack.draw(self.win)
 
-        if self.owner == 0:
-            pass
+        # if self.owner == 0:
+        #     self.win.blit(self.image, (500,500))
 
-
-
-
-            # print (self is config.app.ship)
+        # print (self is config.app.ship)
     def draw(self):  # unused
         print("drawing ---")

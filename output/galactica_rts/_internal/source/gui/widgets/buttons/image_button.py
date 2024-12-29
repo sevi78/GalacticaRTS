@@ -5,7 +5,7 @@ from source.factories.building_factory import building_factory
 from source.gui.lod import level_of_detail
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.handlers.mouse_handler import mouse_handler, MouseState
-from source.multimedia_library.images import overblit_button_image
+from source.multimedia_library.images import overblit_button_image, scale_image_cached, rounded_surface
 
 
 class Delegate:
@@ -33,19 +33,88 @@ class Delegate:
 
 
 class ImageButton(WidgetBase):
-    """ A customisable button for Pygame
+    """
+    A customizable button widget with image and text support for Pygame.
 
-        :param win: Surface on which to draw
-        :type win: pygame.Surface
-        :param x: X-coordinate of top left
-        :type x: int
-        :param y: Y-coordinate of top left
-        :type y: int
-        :param width: Width of button
-        :type width: int
-        :param height: Height of button
-        :type height: int
-        :param kwargs: Optional parameters:
+    This class extends WidgetBase to create an interactive button that can display
+    both an image and text. It supports various interactions such as clicking,
+    hovering, and dragging.
+
+    Attributes:
+        win (pygame.Surface): Surface on which to draw the button.
+        x (int): X-coordinate of the top-left corner.
+        y (int): Y-coordinate of the top-left corner.
+        width (int): Width of the button.
+        height (int): Height of the button.
+        is_sub_widget (bool): Indicates if this is a sub-widget of another widget.
+
+    Optional Keyword Arguments:
+        function (callable): Function to call when button is clicked.
+
+        on_hover_function (callable): Function to call when button is hovered over.
+
+        layer (int): Drawing layer of the button (default: 3).
+
+        parent (object): Parent object of this button.
+
+        name (str): Name identifier for the button.
+
+        info_text (str): Information text to display when hovered.
+
+        on_click (callable): Function to call on mouse click.
+
+        on_release (callable): Function to call on mouse release.
+
+        on_click_params (tuple): Parameters for the on_click function.
+
+        on_release_params (tuple): Parameters for the on_release function.
+
+        moveable (bool): Whether the button can be moved.
+
+        property (any): Custom property for the button.
+
+        delegate (object): Delegate object for additional functionality.
+
+        text_color (tuple): RGB color of the text (default: (255, 255, 25)).
+
+        font_size (int): Size of the font (default: 20).
+
+        text (str): Text to display on the button.
+        font (pygame.font.Font): Font to use for the text.
+
+        text_h_align (str): Horizontal alignment of text ('left', 'centre', 'right').
+
+        text_v_align (str): Vertical alignment of text ('top', 'centre', 'bottom').
+
+        margin (int): Margin around the text (default: 20).
+
+        transparent (bool): Whether the button background is transparent.
+
+        image (pygame.Surface): Image to display on the button.
+
+        image_h_align (str): Horizontal alignment of image.
+
+        image_v_align (str): Vertical alignment of image.
+
+        tooltip (str): Tooltip text to display on hover.
+
+        infopanel (str): Information panel text.
+
+
+    Methods:
+        listen(events): Handle input events for the button.
+        draw(): Display the button on the surface.
+        set_on_click(on_click, params): Set the on-click function and parameters.
+        set_on_release(on_release, params): Set the on-release function and parameters.
+        set_inactive_color(color): Set the color when the button is inactive.
+        set_pressed_color(color): Set the color when the button is pressed.
+        set_hover_color(color): Set the color when the button is hovered over.
+        get(attr): Get the value of an attribute.
+        set(attr, value): Set the value of an attribute.
+
+    Note:
+        This class assumes the existence of various game components and global
+        configurations, such as config.app, mouse_handler, and building_factory.
         """
 
     def __init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs):
@@ -88,7 +157,11 @@ class ImageButton(WidgetBase):
         self.image_h_align = kwargs.get('image_h_align', 'centre')
         self.image_v_align = kwargs.get('image_v_align', 'centre')
 
+
+
         if self.image:
+            if self.corner_radius > 0:
+                self.image = rounded_surface(self.image, self.corner_radius)
             self.rect = self.image.get_rect()
             self.align_image_rect()
 
@@ -97,6 +170,7 @@ class ImageButton(WidgetBase):
 
         # info_panel
         self.infopanel = kwargs.get("infopanel", "")
+        self.info_panel_font_size = kwargs.get("info_panel_font_size", 18)
 
     def listen(self, events):
         """ Wait for inputs
@@ -135,11 +209,11 @@ class ImageButton(WidgetBase):
                     pass
 
                 elif mouse_state == MouseState.HOVER or mouse_state == MouseState.LEFT_DRAG:
-                    self.win.blit(pygame.transform.scale(self.image_outline, self.rect.size), self.rect)
+                    self.win.blit(scale_image_cached(self.image_outline, self.rect.size), self.rect)
                     # set info_panel
                     if self.info_text:
                         if self.info_text != "":
-                            config.app.info_panel.set_text(self.info_text)
+                            config.app.info_panel.set_text(self.info_text, font_size=self.info_panel_font_size)
                             config.app.info_panel.set_planet_image(self.image_raw, align="topright", alpha=self.info_panel_alpha)
 
                     # set tooltip

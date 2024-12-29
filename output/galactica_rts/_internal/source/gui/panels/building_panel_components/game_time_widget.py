@@ -9,7 +9,7 @@ from source.gui.widgets.slider import Slider
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.handlers.color_handler import colors
 from source.handlers.time_handler import time_handler
-from source.multimedia_library.images import get_image
+from source.multimedia_library.images import get_image, scale_image_cached
 
 FONT_SIZE = 18
 
@@ -64,7 +64,7 @@ class GameTime(WidgetBase):
                 width=self.image_size[0],
                 height=self.image_size[1],
                 is_sub_widget=False,
-                image=pygame.transform.scale(
+                image=scale_image_cached(
                         get_image("arrow-left.png"), (self.arrow_size, self.arrow_size)),
                 tooltip="decrease time",
                 frame_color=self.frame_color,
@@ -80,7 +80,7 @@ class GameTime(WidgetBase):
                 width=self.image_size[0],
                 height=self.image_size[1],
                 is_sub_widget=False,
-                image=pygame.transform.scale(
+                image=scale_image_cached(
                         get_image("arrow-right.png"), (self.arrow_size, self.arrow_size)),
                 tooltip="increase time",
                 frame_color=self.frame_color,
@@ -158,9 +158,9 @@ class GameTime(WidgetBase):
 
         now = datetime.fromtimestamp(self.world_year)
         new_datetime = f"{now.year + 70000}-{now.strftime(str(now.month))}-{now.strftime(str(now.day))}-{now.hour}"
-        self.year_text = self.font.render(f"year:{new_datetime}", True, self.frame_color)
-        self.win.blit(self.year_text, (self.surface_rect.x + self.spacing_x + self.spacing_x, self.clock_icon.screen_y +
-                                       self.clock_icon.get_screen_height() - self.year_text.get_height() + 6))
+        year_text = self.font.render(f"year:{new_datetime}", True, self.frame_color)
+        self.win.blit(year_text, (self.surface_rect.x + self.spacing_x + self.spacing_x, self.clock_icon.screen_y +
+                                       self.clock_icon.get_screen_height() - year_text.get_height() + 6))
 
     def draw(self):
         """

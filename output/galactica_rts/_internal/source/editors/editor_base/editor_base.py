@@ -9,7 +9,7 @@ from source.gui.widgets.buttons.image_button import ImageButton
 from source.gui.widgets.selector import Selector
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.handlers.color_handler import colors
-from source.multimedia_library.images import get_image
+from source.multimedia_library.images import get_image, scale_image_cached
 
 
 class EditorBase(WidgetBase):
@@ -236,7 +236,7 @@ class EditorBase(WidgetBase):
                 height=button_size,
                 is_sub_widget=False,
                 parent=self,
-                image=pygame.transform.scale(
+                image=scale_image_cached(
                         get_image("save_icon.png"), (button_size, button_size)),
                 tooltip=tooltip,
                 frame_color=self.frame_color,
@@ -262,7 +262,7 @@ class EditorBase(WidgetBase):
                 height=button_size,
                 is_sub_widget=False,
                 parent=self,
-                image=pygame.transform.scale(
+                image=scale_image_cached(
                         get_image("load_icon.png"), (button_size, button_size)),
                 tooltip=tooltip,
                 frame_color=self.frame_color,
@@ -290,7 +290,7 @@ class EditorBase(WidgetBase):
                 height=button_size,
                 is_sub_widget=False,
                 parent=self,
-                image=pygame.transform.scale(
+                image=scale_image_cached(
                         get_image("close_icon.png"), (button_size / 2, button_size / 2)),
                 tooltip="close editor",
                 frame_color=self.frame_color,
@@ -448,7 +448,7 @@ class EditorBase(WidgetBase):
         alpha = kwargs.get("alpha", config.ui_panel_alpha)
 
         # scale frame
-        self.frame = pygame.transform.scale(self.frame, (self.get_screen_width(), self.max_height))
+        self.frame = scale_image_cached(self.frame, (self.get_screen_width(), self.max_height))
 
         # set rect
         self.rect = pygame.Rect((

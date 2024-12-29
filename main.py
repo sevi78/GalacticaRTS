@@ -261,7 +261,7 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
             # update sprites
             # dont mess up the order! for some reason it must be drawn first then update
             sprite_groups.update(events=events)
-            prevent_object_overlap(sprite_groups.ships, 80)
+
             sprite_groups.listen(events)
             # interaction_handler2.handle_mouse()
 
@@ -288,6 +288,8 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
             # pprint(f"find_unused_images_gifs: {find_unused_images_gifs(os.path.join(pictures_path), os.path.join(pictures_path + 'gifs'), images, gifs)}")
             # print(f"get_image.cache_info(): {get_image.cache_info()}")
             # print(f"sounds.get_sound.cache_info(): {sounds.get_sound.cache_info()}")
+
+            prevent_object_overlap(sprite_groups.ships, 80)
 
 
 def init():

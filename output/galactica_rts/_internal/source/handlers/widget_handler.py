@@ -5,7 +5,8 @@ from source.configuration.game_config import config
 from source.gui.event_text import event_text
 
 DEFAULT_LAYER = 9
-
+# background = pygame.Surface(config.win.get_size())
+# background.set_alpha(25)
 
 class WidgetHandler:
     layers = {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: [], 7: [], 8: [], 9: [], 10: []}
@@ -21,10 +22,16 @@ class WidgetHandler:
         for key, widgetlist in WidgetHandler.layers.items():
             # if not WidgetHandler.layer_switch[str(layer)]:
             #     return
+
+            # if layer == 4:
+            #     config.win.blit(background, (0, 0))
+
             if key == layer:
                 for widget in widgetlist:
                     # need to find the correct coordinates, otherwise not all widgets get drawn, specially celestial obj
                     # if level_of_detail.inside_screen((widget.screen_x, widget.screen_y), border=0):
+
+
                     widget.draw()
 
                     if widget.is_sub_widget:
@@ -66,6 +73,8 @@ class WidgetHandler:
         if config.text_input_active:
             return
 
+        if not events:
+            return
         for event in events:
             if event.type == pygame.KEYDOWN:
                 # 1-0
@@ -76,11 +85,11 @@ class WidgetHandler:
                     # set value
                     if WidgetHandler.layer_switch[key] == 0:
                         WidgetHandler.layer_switch[key] = 1
-                        event_text.text = f"changing visibility of WidgetHandler.layer {key}: {WidgetHandler.layer_switch[key]}"
+                        event_text.set_text(f"changing visibility of WidgetHandler.layer {key}: {WidgetHandler.layer_switch[key]}")
                         return
                     if WidgetHandler.layer_switch[key] == 1:
                         WidgetHandler.layer_switch[key] = 0
-                        event_text.text = f"changing visibility of WidgetHandler.layer {key}: {WidgetHandler.layer_switch[key]}"
+                        event_text.set_text(f"changing visibility of WidgetHandler.layer {key}: {WidgetHandler.layer_switch[key]}")
                         return
                 if event.key == pygame.K_z:
                     WidgetHandler.draw_layers = not WidgetHandler.draw_layers

@@ -81,7 +81,6 @@ class PanZoomShipInteraction(InteractionHandler):
         if config.app.ship == self:
             config.app.ship = None
 
-
     def listen(self):
         if not self.owner == config.app.game_client.id:
             return
@@ -117,7 +116,10 @@ class PanZoomShipInteraction(InteractionHandler):
 
                 elif mouse_state == MouseState.HOVER or mouse_state == MouseState.LEFT_DRAG:
                     self.submit_tooltip()
-                    self.win.blit(scale_image_cached(self.image_outline, self.rect.size), self.rect)
+
+                    # dirty hack because the outline image is not rotated
+                    if self.state_engine.state == "sleeping":
+                        self.win.blit(scale_image_cached(self.image_outline, self.rect.size), self.rect)
                     self.weapon_handler.draw_attack_distance()
 
                     # set cursor

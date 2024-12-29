@@ -494,8 +494,11 @@ class MapPanel:
         width = config.width / self.factor / pan_zoom_handler.zoom
         height = config.height / self.factor / pan_zoom_handler.zoom
 
-        draw_dashed_rounded_rectangle(self.background_surface,
-                pygame.color.THECOLORS["gray31"], pygame.Rect(x, y, width, height), 1, 15, 10)
+        # draw_dashed_rounded_rectangle(self.background_surface,
+        #         pygame.color.THECOLORS["gray31"], pygame.Rect(x, y, width, height), 1, 15 * pan_zoom_handler.zoom, 10)
+
+        pygame.draw.rect(self.background_surface,
+                pygame.color.THECOLORS["gray31"], pygame.Rect(x, y, width, height), 1, 3)
 
     def reposition(self) -> None:
         self.world_y = self.win.get_size()[1] - self.world_height
@@ -556,20 +559,13 @@ class MapPanel:
 
     def draw_frame(self):
         color = (0, 0, 0)
-        # color = generate_random_color(5, 15, 2)
-
-        # self.radar_scan_fx.update(screen=self.win)
         self.radar_scan_fx.update()
 
         surf_ = draw_transparent_rounded_rect(self.win, color, self.frame_rect,
                 config.ui_rounded_corner_radius_small, config.ui_panel_alpha)
 
-        # self.win.blit(surf_, self.frame_rect)
-
         pygame.draw.rect(self.win, self.frame_color, self.frame_rect,
                 config.ui_rounded_corner_small_thickness, config.ui_rounded_corner_radius_small)
-
-        # self.radar_scan_fx.update(screen=self.win)
 
     def draw(self) -> None:
         self.set_visible()
@@ -600,15 +596,12 @@ class MapPanel:
 
         # draw the frame
         self.draw_frame()
-        # self.radar_scan_fx.update(screen=self.background_surface)
 
         # draw the objects
         self.draw_objects(sprite_groups.planets.sprites(), self.background_surface)
         self.draw_objects(sprite_groups.ships.sprites(), self.background_surface)
         self.draw_objects(sprite_groups.collectable_items.sprites(), self.background_surface)
         self.draw_objects(sprite_groups.ufos.sprites(), self.background_surface)
-
-        # self.radar_scan_fx.update(screen=self.win)
 
         # draw camera focus
         self.draw_camera_focus()
@@ -625,5 +618,3 @@ class MapPanel:
 
         pygame.draw.rect(self.win, self.frame_color, self.checkbox_frame, config.ui_rounded_corner_small_thickness,
                 config.ui_rounded_corner_radius_small)
-
-        # self.radar_scan_fx.update(screen=self.win)

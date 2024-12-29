@@ -34,6 +34,7 @@ class PanZoomShipDraw:
                 progress=lambda: 1 / self.energy_max * self.energy,
                 curved=True,
                 completed_color=self.frame_color,
+                gradient_color=True,
                 layer=self.layer,
                 parent=self
                 )
@@ -125,5 +126,5 @@ class PanZoomShipDraw:
                 end_pos=target.rect.center,
                 width=1,
                 dash_length=30,
-                arrow_size=(0, 6),
+                arrow_size=(0, 4),
                 )

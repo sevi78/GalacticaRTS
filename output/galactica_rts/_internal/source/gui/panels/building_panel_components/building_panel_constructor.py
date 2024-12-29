@@ -2,7 +2,7 @@ import pygame
 
 from source.configuration.game_config import config
 from source.gui.widgets.buttons.button import Button
-from source.multimedia_library.images import get_image
+from source.multimedia_library.images import get_image, scale_image_cached
 
 
 class BuildingPanelConstructor:
@@ -18,7 +18,7 @@ class BuildingPanelConstructor:
                 width=self.image_size[0],
                 height=self.image_size[1],
                 is_sub_widget=False,
-                image=pygame.transform.scale(
+                image=scale_image_cached(
                         get_image("arrow-left.png"), (self.arrow_size, self.arrow_size)),
                 tooltip="",
                 frame_color=self.frame_color,
@@ -32,7 +32,7 @@ class BuildingPanelConstructor:
                 width=self.image_size[0],
                 height=self.image_size[1],
                 is_sub_widget=False,
-                image=pygame.transform.scale(
+                image=scale_image_cached(
                         get_image("arrow-right.png"), (self.arrow_size, self.arrow_size)),
                 tooltip="",
                 frame_color=self.frame_color,

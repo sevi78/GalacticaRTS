@@ -1,7 +1,8 @@
-import random
-
 from source.configuration.game_config import config
+from source.handlers.mouse_handler import MouseState, mouse_handler
+
 from source.interaction.interaction_handler import InteractionHandler
+from source.multimedia_library.images import scale_image_cached
 from source.multimedia_library.sounds import sounds
 
 
@@ -30,7 +31,7 @@ class PanZoomShipInteraction(InteractionHandler):
     @selected.setter
     def selected(self, value):
         # print (f"owner: {self.owner}, config.player: {config.player}, config.app.game_client.id: {config.app.game_client.id}")
-        # make shure only onw ships can be selected
+        # make sure only own ships can be selected
         if self.owner == config.app.game_client.id:
             self._selected = value
 
@@ -69,7 +70,63 @@ class PanZoomShipInteraction(InteractionHandler):
     def select(self, value):
         if not self.owner == config.app.game_client.id:
             return
+
         self.selected = value
+
         if value:
             sounds.play_sound("click", channel=7)
             config.app.ship = self
+
+    def deselect(self):
+        if config.app.ship == self:
+            config.app.ship = None
+
+
+    def listen(self):
+        if not self.owner == config.app.game_client.id:
+            return
+        # if not config.player == config.app.player.owner:
+        #     return
+
+        config.app.tooltip_instance.reset_tooltip(self)
+        if not config.app.weapon_select._hidden:
+            return
+
+        if not self._hidden and not self._disabled:
+            mouse_state = mouse_handler.get_mouse_state()
+            x, y = mouse_handler.get_mouse_pos()
+
+            if self.collide_rect.collidepoint(x, y):
+                if mouse_handler.double_clicks == 1:
+                    self.open_weapon_select()
+
+                if mouse_state == MouseState.RIGHT_CLICK:
+                    if config.app.ship == self:
+                        self.select(True)
+
+                if mouse_state == MouseState.LEFT_RELEASE and self.clicked:
+                    self.clicked = False
+
+                elif mouse_state == MouseState.LEFT_CLICK:
+                    self.clicked = True
+                    self.select(True)
+                    config.app.ship = self
+
+                elif mouse_state == MouseState.LEFT_DRAG and self.clicked:
+                    pass
+
+                elif mouse_state == MouseState.HOVER or mouse_state == MouseState.LEFT_DRAG:
+                    self.submit_tooltip()
+                    self.win.blit(scale_image_cached(self.image_outline, self.rect.size), self.rect)
+                    self.weapon_handler.draw_attack_distance()
+
+                    # set cursor
+                    config.app.cursor.set_cursor("ship")
+            else:
+                # not mouse over object
+                self.clicked = False
+                if mouse_state == MouseState.LEFT_CLICK:
+                    self.reset_target()
+
+                if mouse_state == MouseState.RIGHT_CLICK:
+                    self.activate_traveling()

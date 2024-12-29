@@ -1,8 +1,8 @@
 import math
-from source.handlers.time_handler import time_handler
 
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
+from source.handlers.time_handler import time_handler
 
 
 class Spacestation:

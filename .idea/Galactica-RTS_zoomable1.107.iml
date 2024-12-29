@@ -6,11 +6,11 @@
       <excludeFolder url="file://$MODULE_DIR$/unused" />
       <excludeFolder url="file://$MODULE_DIR$/unused/economy_new" />
       <excludeFolder url="file://$MODULE_DIR$/unused/economy_new_bk" />
-      <excludeFolder url="file://$MODULE_DIR$/output_old_before_mp" />
       <excludeFolder url="file://$MODULE_DIR$/unused2" />
       <excludeFolder url="file://$MODULE_DIR$/unused2/pan_zoom_celestial_objects" />
       <excludeFolder url="file://$MODULE_DIR$/source/test" />
       <excludeFolder url="file://$MODULE_DIR$/source/pan_zoom_sprites/pan_zoom_ship_test2" />
+      <excludeFolder url="file://$USER_HOME$/Desktop/output_old_before_mp" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

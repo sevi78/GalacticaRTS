@@ -3,6 +3,7 @@ import pygame
 from source.configuration.game_config import config
 from source.gui.panels.toggle_switch import ToggleSwitch
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
+from source.multimedia_library.images import scale_image_cached, rounded_surface
 from source.text.info_panel_text_generator import info_panel_text_generator
 from source.text.text_wrap import TextWrap
 
@@ -110,11 +111,18 @@ class InfoPanel(WidgetBase, TextWrap):
             self.set_planet_image(self.planet_image, size=self.planet_image.get_size(), align="topright")
         self.reposition()
 
-    def set_text(self, text):
+    def set_text(self, text, **kwargs):
         """
         this is called from outside:
         :param text:
         """
+        font_size = kwargs.get("font_size", 18)
+
+        # only make a new font on changes !
+        if not self.font_size == font_size:
+            self.font_size = font_size
+            self.font = pygame.font.SysFont(config.font_name, self.font_size)
+
         self.text = ""
         self.text = text
 
@@ -122,13 +130,56 @@ class InfoPanel(WidgetBase, TextWrap):
         self.color = color
         self.bg_color = bg_color
 
+    # def set_planet_image(self, planet_image, **kwargs):
+    #     if self.planet_image == planet_image:
+    #         return
+    #     # self.set_size_from_text()
+    #     size = kwargs.get("size", None)
+    #     align = kwargs.get("align", "topright")
+    #     alpha = kwargs.get("alpha", 128)
+    #
+    #     if size:
+    #         # Calculate the aspect ratio of the original image
+    #         aspect_ratio = planet_image.get_width() / planet_image.get_height()
+    #
+    #         # Adjust the size to match the aspect ratio and self.planet_image_size
+    #         if self.planet_image_size[0] > self.planet_image_size[1]:
+    #             self.planet_image_size[1] = self.planet_image_size[0]
+    #         else:
+    #             self.planet_image_size[0] = self.planet_image_size[1]
+    #
+    #         # Recalculate the size to maintain the aspect ratio and fit within the limits
+    #         max_width = min(size[0], self.planet_image_size[0])
+    #         max_height = min(size[1], self.planet_image_size[1])
+    #
+    #         if (max_width / aspect_ratio) > max_height:
+    #             self.planet_image = scale_image_cached(planet_image, (int(max_height * aspect_ratio), max_height))
+    #         else:
+    #             self.planet_image = scale_image_cached(planet_image, (max_width, int(max_width / aspect_ratio)))
+    #     else:
+    #         self.planet_image = scale_image_cached(planet_image, tuple(self.planet_image_size))
+    #
+    #     self.planet_rect = self.planet_image.get_rect()
+    #
+    #     if align == "topright":
+    #         self.planet_rect.right = self.rect_filled.get_rect().right + self.get_screen_x() - 10
+    #         self.planet_rect.top = self.rect_filled.get_rect().top + self.get_screen_y() + 10
+    #
+    #     elif align == "center":
+    #         self.planet_rect.left = self.world_x + self.surface_rect.width / 2
+    #         self.planet_rect.centery = self.world_y + self.surface_rect.height / 2
+    #
+    #     if alpha:
+    #         self.planet_image.set_alpha(alpha)
+
     def set_planet_image(self, planet_image, **kwargs):
         if self.planet_image == planet_image:
             return
-        # self.set_size_from_text()
+
         size = kwargs.get("size", None)
         align = kwargs.get("align", "topright")
         alpha = kwargs.get("alpha", 128)
+        corner_radius = config.ui_rounded_corner_radius_small  # New parameter for corner radius
 
         if size:
             # Calculate the aspect ratio of the original image
@@ -145,11 +196,17 @@ class InfoPanel(WidgetBase, TextWrap):
             max_height = min(size[1], self.planet_image_size[1])
 
             if (max_width / aspect_ratio) > max_height:
-                self.planet_image = pygame.transform.scale(planet_image, (int(max_height * aspect_ratio), max_height))
+                scaled_image = scale_image_cached(planet_image, (int(max_height * aspect_ratio), max_height))
             else:
-                self.planet_image = pygame.transform.scale(planet_image, (max_width, int(max_width / aspect_ratio)))
+                scaled_image = scale_image_cached(planet_image, (max_width, int(max_width / aspect_ratio)))
         else:
-            self.planet_image = pygame.transform.scale(planet_image, self.planet_image_size)
+            scaled_image = scale_image_cached(planet_image, tuple(self.planet_image_size))
+
+        # Create a rounded version of the scaled image if corner_radius is greater than 0
+        if corner_radius > 0:
+            self.planet_image = rounded_surface(scaled_image, corner_radius)
+        else:
+            self.planet_image = scaled_image
 
         self.planet_rect = self.planet_image.get_rect()
 

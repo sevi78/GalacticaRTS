@@ -63,6 +63,7 @@ class TimeHandler:  # original
 
         # update clients
         if self.server_update_time_reached():
+
             config.app.game_client.message_handler.update_clients()
 
     def listen(self, events):

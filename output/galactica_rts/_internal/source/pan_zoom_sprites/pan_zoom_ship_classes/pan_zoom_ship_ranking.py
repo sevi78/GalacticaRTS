@@ -1,7 +1,14 @@
+from source.debug.function_disabler import auto_disable, disabler
 from source.game_play.ranking import Ranking
 from source.gui.event_text import event_text
 from source.multimedia_library.sounds import sounds
 
+
+# disabled_functions = ["set_experience", "set_rank"]
+# for i in disabled_functions:
+#     disabler.disable(i)
+#
+# @auto_disable
 
 class PanZoomShipRanking:
     """
@@ -15,7 +22,7 @@ class PanZoomShipRanking:
     - set_experience: updates the experience value and calls set_rank to update the rank accordingly.
     - set_rank: calculates the rank based on the experience value and updates it. It also displays a message and plays
       a sound if the rank has increased or decreased.
-    - draw_rank_image: draws the rank image on the screen.
+    - update_rank_image: draws the rank image on the screen.
 
     Fields:
     - property: a string indicating the type of property being ranked (in this case, "ship").
@@ -70,8 +77,8 @@ class PanZoomShipRanking:
 
         # generate feedback for player, set event_text and play sound
         if curr_key > prev_key:
-            event_text.set_text("Congratulations !!! Rank increased from {} to {} !!!".format(prev_rank, self.rank), obj=self)
+            event_text.set_text("Congratulations !!! Rank increased from {} to {} !!!".format(prev_rank, self.rank), obj=self,sender=self.owner)
             sounds.play_sound(sounds.rank_up)
         elif curr_key < prev_key:
-            event_text.set_text("Shame on you !!! Rank decreased from {} to {} !!!".format(prev_rank, self.rank), obj=self)
+            event_text.set_text("Shame on you !!! Rank decreased from {} to {} !!!".format(prev_rank, self.rank), obj=self, sender=self.owner)
             sounds.play_sound(sounds.rank_down)

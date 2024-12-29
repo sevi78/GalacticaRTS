@@ -10,7 +10,8 @@ from source.handlers.color_handler import colors
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.handlers.widget_handler import WidgetHandler
-from source.multimedia_library.images import get_image, overblit_button_image
+from source.multimedia_library.images import get_image, overblit_button_image, scale_image_cached
+from source.multimedia_library.radar_scan_fx import RadarScanFX
 
 PLANET_IMAGE_SIZE = 125
 MIN_OBJECT_SIZE = 2
@@ -69,8 +70,8 @@ class MapPanel:
     world_width: int: The width of the map panel in world coordinates.
     world_height: int: The height of the map panel in world coordinates.
     app: config.app: The global app object.
-    scale: int: The scale factor for zooming in/out on the map.
-    scale_factor: int: The factor by which to scale the map when zooming.
+    scale_direction: int: The scale_direction factor for zooming in/out on the map.
+    scale_factor: int: The factor by which to scale_direction the map when zooming.
     name: str: The name of the map panel.
     frame_color: colors.frame_color: The color of the frame around the map panel.
     factor: float: The factor used to convert between world coordinates and screen coordinates.
@@ -105,7 +106,7 @@ class MapPanel:
 
         # vars
         self.app = config.app
-        self.scale = 1
+        self.scale_direction = 1
         self.scale_factor = SCALE_FACTOR
         self.name = "map panel"
         self.frame_color = colors.frame_color
@@ -118,7 +119,7 @@ class MapPanel:
         self.background_surface_rect = None
         self.frame_rect = pygame.Rect(self.world_x, self.world_y, self.world_width, self.world_height)
         self.images = {}
-        self.warning_image = pygame.transform.scale(get_image("warning.png"), (WARNING_ICON_SIZE, WARNING_ICON_SIZE))
+        self.warning_image = scale_image_cached(get_image("warning.png"), (WARNING_ICON_SIZE, WARNING_ICON_SIZE))
 
         # interaction stuff
         self.ctrl_pressed = False
@@ -154,6 +155,8 @@ class MapPanel:
         self.create_checkboxes()
         self._on_hover = False
 
+        self.radar_scan_fx = RadarScanFX(self.win, self.world_x, self.world_y, self.world_width, self.world_height, config.ui_rounded_corner_radius_small)
+
         # register
         # needed for WidgetHandler
         self.layer = 9
@@ -177,6 +180,7 @@ class MapPanel:
     def create_checkboxes(self) -> None:
         y = self.world_y
         x = self.world_x
+        layer = 10
 
         self.checkbox_ships = ImageButton(win=self.win,
                 x=self.world_x + x,
@@ -185,12 +189,12 @@ class MapPanel:
                 height=BUTTON_SIZE,
                 is_sub_widget=False,
                 parent=self,
-                image=pygame.transform.scale(
+                image=scale_image_cached(
                         get_image("ships_25x25.png"), (BUTTON_SIZE, BUTTON_SIZE)),
                 tooltip="",  # "show ships",
                 frame_color=self.frame_color,
                 moveable=False,
-                include_text=True, layer=10,
+                include_text=True, layer=layer,
                 on_click=lambda: self.show_objects("ships"),
                 name="ships")
 
@@ -204,12 +208,12 @@ class MapPanel:
                 height=BUTTON_SIZE,
                 is_sub_widget=False,
                 parent=self,
-                image=pygame.transform.scale(
+                image=scale_image_cached(
                         get_image("Zeta Bentauri_60x60.png"), (BUTTON_SIZE, BUTTON_SIZE)),
                 tooltip="",  # "show planets",
                 frame_color=self.frame_color,
                 moveable=False,
-                include_text=True, layer=10,
+                include_text=True, layer=layer,
                 on_click=lambda: self.show_objects("planets"),
                 name="planets")
 
@@ -223,12 +227,12 @@ class MapPanel:
                 height=BUTTON_SIZE,
                 is_sub_widget=False,
                 parent=self,
-                image=pygame.transform.scale(
+                image=scale_image_cached(
                         get_image("orbit_icon.png"), (BUTTON_SIZE, BUTTON_SIZE)),
                 tooltip="",  # "show planets",
                 frame_color=self.frame_color,
                 moveable=False,
-                include_text=True, layer=10,
+                include_text=True, layer=layer,
                 on_click=lambda: self.show_objects("orbits"),
                 name="orbits")
 
@@ -242,12 +246,12 @@ class MapPanel:
                 height=BUTTON_SIZE,
                 is_sub_widget=False,
                 parent=self,
-                image=pygame.transform.scale(
+                image=scale_image_cached(
                         get_image("artefact1_60x31.png"), (BUTTON_SIZE, BUTTON_SIZE)),
                 tooltip="",  # "show collectable items",
                 frame_color=self.frame_color,
                 moveable=False,
-                include_text=True, layer=10,
+                include_text=True, layer=layer,
                 on_click=lambda: self.show_objects("items"),
                 name="items")
 
@@ -261,12 +265,12 @@ class MapPanel:
                 height=BUTTON_SIZE,
                 is_sub_widget=False,
                 parent=self,
-                image=pygame.transform.scale(
+                image=scale_image_cached(
                         get_image("ufo_74x30.png"), (BUTTON_SIZE, BUTTON_SIZE)),
                 tooltip="",  # "show collectable items",
                 frame_color=self.frame_color,
                 moveable=False,
-                include_text=True, layer=10,
+                include_text=True, layer=layer,
                 on_click=lambda: self.show_objects("ufos"),
                 name="ufos")
 
@@ -280,12 +284,12 @@ class MapPanel:
                 height=BUTTON_SIZE,
                 is_sub_widget=False,
                 parent=self,
-                image=pygame.transform.scale(
+                image=scale_image_cached(
                         get_image("camera_icon.png"), (BUTTON_SIZE, BUTTON_SIZE)),
                 tooltip="",  # "show collectable items",
                 frame_color=self.frame_color,
                 moveable=False,
-                include_text=True, layer=10,
+                include_text=True, layer=layer,
                 on_click=lambda: self.show_objects("camera"),
                 name="camera")
 
@@ -299,12 +303,12 @@ class MapPanel:
                 height=BUTTON_SIZE,
                 is_sub_widget=False,
                 parent=self,
-                image=pygame.transform.scale(
+                image=scale_image_cached(
                         get_image("warning.png"), (BUTTON_SIZE, BUTTON_SIZE)),
                 tooltip="",  # "show collectable items",
                 frame_color=self.frame_color,
                 moveable=False,
-                include_text=True, layer=10,
+                include_text=True, layer=layer,
                 on_click=lambda: self.show_objects("warnings"),
                 name="warnings")
 
@@ -318,12 +322,12 @@ class MapPanel:
                 height=BUTTON_SIZE,
                 is_sub_widget=False,
                 parent=self,
-                image=pygame.transform.scale(
+                image=scale_image_cached(
                         get_image("paint.png"), (BUTTON_SIZE, BUTTON_SIZE)),
                 tooltip="",  # "show collectable items",
                 frame_color=self.frame_color,
                 moveable=False,
-                include_text=True, layer=10,
+                include_text=True, layer=layer,
                 on_click=lambda: self.show_objects("images"),
                 name="images")
 
@@ -337,12 +341,12 @@ class MapPanel:
                 height=BUTTON_SIZE,
                 is_sub_widget=False,
                 parent=self,
-                image=pygame.transform.scale(
+                image=scale_image_cached(
                         get_image("alpha.png"), (BUTTON_SIZE, BUTTON_SIZE)),
                 tooltip="",  # "show collectable items",
                 frame_color=self.frame_color,
                 moveable=False,
-                include_text=True, layer=10,
+                include_text=True, layer=layer,
                 on_click=lambda: self.show_objects("alpha"),
                 name="alpha")
 
@@ -357,23 +361,23 @@ class MapPanel:
         setattr(self, "show_" + object_category, not getattr(self, "show_" + object_category))
 
     def scale_map(self, event) -> None:
-        # get scale direction
-        self.scale = event.y
+        """Scale mini-map based on mouse wheel input."""
+        self.scale_direction = event.y
 
-        # recalculate scale, set world_position
-        self.world_width += self.scale * self.scale_factor
-        self.world_height += self.scale * self.scale_factor
+        # Recalculate world dimensions based on scale direction and factor
+        self.world_width += self.scale_direction * self.scale_factor
+        self.world_height += self.scale_direction * self.scale_factor
 
-        # limit size
-        if self.world_width < MIN_MAP_SIZE:
-            self.world_width = MIN_MAP_SIZE
-        if self.world_height < MIN_MAP_SIZE:
-            self.world_height = MIN_MAP_SIZE
+        # Limit size using clamp logic
+        self.world_width = max(MIN_MAP_SIZE, min(self.world_width, MAX_MAP_SIZE))
+        self.world_height = max(MIN_MAP_SIZE, min(self.world_height, MAX_MAP_SIZE))
 
-        if self.world_width > MAX_MAP_SIZE:
-            self.world_width = MAX_MAP_SIZE
-        if self.world_height > MAX_MAP_SIZE:
-            self.world_height = MAX_MAP_SIZE
+        # Update RadarScanFX dimensions directly based on world dimensions,
+        # keeping its bottom-left corner fixed at its original position.
+
+        new_x_position = self.radar_scan_fx.x  # Keep original x position unchanged
+        new_y_position = self.radar_scan_fx.y - (self.world_height - self.radar_scan_fx.height)  # Adjust upward
+        self.radar_scan_fx.scale(new_x_position, new_y_position, self.world_width, self.world_height)
 
     def update_camera_position(self) -> None:
         # get the mouse position
@@ -458,7 +462,7 @@ class MapPanel:
         offset_y = kwargs.get("offset_y", 0)
 
         image_copy = copy.copy(image)
-        new_image = pygame.transform.scale(image_copy, size)
+        new_image = scale_image_cached(image_copy, size)
         image_rect = new_image.get_rect()
         pos = pos[0] + offset_x, pos[1] + offset_y
         image_rect.center = pos
@@ -525,7 +529,7 @@ class MapPanel:
             # on hover
             if self.frame_rect.collidepoint(pygame.mouse.get_pos()):
                 self.on_hover = True
-                # scale map
+                # scale_direction map
                 if event.type == pygame.MOUSEWHEEL and self.ctrl_pressed:
                     self.scale_map(event)
 
@@ -551,10 +555,21 @@ class MapPanel:
             self.update_camera_position()
 
     def draw_frame(self):
-        draw_transparent_rounded_rect(self.win, (0, 0, 0), self.frame_rect,
+        color = (0, 0, 0)
+        # color = generate_random_color(5, 15, 2)
+
+        # self.radar_scan_fx.update(screen=self.win)
+        self.radar_scan_fx.update()
+
+        surf_ = draw_transparent_rounded_rect(self.win, color, self.frame_rect,
                 config.ui_rounded_corner_radius_small, config.ui_panel_alpha)
+
+        # self.win.blit(surf_, self.frame_rect)
+
         pygame.draw.rect(self.win, self.frame_color, self.frame_rect,
                 config.ui_rounded_corner_small_thickness, config.ui_rounded_corner_radius_small)
+
+        # self.radar_scan_fx.update(screen=self.win)
 
     def draw(self) -> None:
         self.set_visible()
@@ -585,12 +600,15 @@ class MapPanel:
 
         # draw the frame
         self.draw_frame()
+        # self.radar_scan_fx.update(screen=self.background_surface)
 
         # draw the objects
         self.draw_objects(sprite_groups.planets.sprites(), self.background_surface)
         self.draw_objects(sprite_groups.ships.sprites(), self.background_surface)
         self.draw_objects(sprite_groups.collectable_items.sprites(), self.background_surface)
         self.draw_objects(sprite_groups.ufos.sprites(), self.background_surface)
+
+        # self.radar_scan_fx.update(screen=self.win)
 
         # draw camera focus
         self.draw_camera_focus()
@@ -607,3 +625,5 @@ class MapPanel:
 
         pygame.draw.rect(self.win, self.frame_color, self.checkbox_frame, config.ui_rounded_corner_small_thickness,
                 config.ui_rounded_corner_radius_small)
+
+        # self.radar_scan_fx.update(screen=self.win)

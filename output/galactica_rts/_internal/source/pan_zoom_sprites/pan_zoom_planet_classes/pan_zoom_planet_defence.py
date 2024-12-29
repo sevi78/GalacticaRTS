@@ -1,12 +1,10 @@
 import math
 import random
-from source.handlers.time_handler import time_handler
 
 import pygame
 
 from source.configuration.game_config import config
-from source.draw.circles import draw_electromagnetic_impulse, draw_dashed_circle
-from source.draw.scope import scope
+from source.draw.circles import draw_electromagnetic_impulse
 from source.draw.zigzag_line import draw_zigzag_line
 from source.factories.building_factory import building_factory
 from source.gui.widgets.moving_image import MovingImage
@@ -14,6 +12,7 @@ from source.gui.widgets.progress_bar import ProgressBar
 from source.handlers.color_handler import colors
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
+from source.handlers.time_handler import time_handler
 from source.handlers.weapon_handler import attack, launch_missile
 from source.multimedia_library.images import get_image
 from source.multimedia_library.sounds import sounds
@@ -112,13 +111,16 @@ class PanZoomPlanetDefence:
                 1,
                 velocity,
                 f"-{power}", pygame.color.THECOLORS["red"],
-                "georgiaproblack", 1, defender, target=None)
+                "georgiaproblack", 1, defender.rect, target=None)
 
     def activate_energy_blast(self):
-        if not scope.draw_scope(self.parent.rect.center, self.attack_distance / pan_zoom_handler.zoom, {}):
-            return
-
-        draw_dashed_circle(self.parent.win, colors.ui_darker, self.parent.rect.center, self.attack_distance, 10, 1)
+        # if not scope.draw_scope(
+        #         start_pos=self.parent.rect.center,
+        #         range_=self.attack_distance / pan_zoom_handler.zoom,
+        #         info={}):
+        #     return
+        #
+        # draw_dashed_circle(self.parent.win, colors.ui_darker, self.parent.rect.center, self.attack_distance, 10, 1)
         if pygame.mouse.get_pressed()[2]:
             hit_obj = sprite_groups.get_hit_object()
             if hit_obj:
@@ -139,7 +141,7 @@ class PanZoomPlanetDefence:
 
     def update(self):
         defence_units = self.get_defence_units()
-        self.attack_distance = self.attack_distance_raw * self.parent.get_zoom()
+        self.attack_distance = self.attack_distance_raw * pan_zoom_handler.get_zoom()
 
         # handle self.emp_progress_display
         if "electro magnetic impulse" in defence_units and config.show_overview_buttons:

@@ -6,7 +6,7 @@ from source.factories.building_factory import building_factory
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.handlers.color_handler import colors
-from source.multimedia_library.images import get_image
+from source.multimedia_library.images import get_image, scale_image_cached
 from source.text.info_panel_text_generator import info_panel_text_generator
 
 # Constants
@@ -53,7 +53,7 @@ class PlanetaryDefenceWidget(WidgetBase):
                 height=self.icon_size,
                 is_sub_widget=False,
                 parent=self,
-                image=pygame.transform.scale(get_image("cannon.png"), (BUTTON_SIZE, BUTTON_SIZE)),
+                image=scale_image_cached(get_image("cannon.png"), (BUTTON_SIZE, BUTTON_SIZE)),
                 tooltip="build cannon",
                 info_text=info_panel_text_generator.create_info_panel_planetary_defence_text("cannon"),
                 frame_color=self.frame_color,
@@ -68,7 +68,7 @@ class PlanetaryDefenceWidget(WidgetBase):
                 height=self.icon_size,
                 is_sub_widget=False,
                 parent=self,
-                image=pygame.transform.scale(get_image("missile.png"), (BUTTON_SIZE, BUTTON_SIZE)),
+                image=scale_image_cached(get_image("missile.png"), (BUTTON_SIZE, BUTTON_SIZE)),
                 tooltip="build missile launcher",
                 info_text=info_panel_text_generator.create_info_panel_planetary_defence_text("missile"),
                 frame_color=self.frame_color,
@@ -83,7 +83,7 @@ class PlanetaryDefenceWidget(WidgetBase):
                 height=self.icon_size,
                 is_sub_widget=False,
                 parent=self,
-                image=pygame.transform.scale(get_image("energy blast.png"), (BUTTON_SIZE, BUTTON_SIZE)),
+                image=scale_image_cached(get_image("energy blast.png"), (BUTTON_SIZE, BUTTON_SIZE)),
                 tooltip="build energy blaster",
                 info_text=info_panel_text_generator.create_info_panel_planetary_defence_text("energy blast"),
                 frame_color=self.frame_color,
@@ -98,7 +98,7 @@ class PlanetaryDefenceWidget(WidgetBase):
                 height=self.icon_size,
                 is_sub_widget=False,
                 parent=self,
-                image=pygame.transform.scale(get_image("electro magnetic impulse.png"), (BUTTON_SIZE, BUTTON_SIZE)),
+                image=scale_image_cached(get_image("electro magnetic impulse.png"), (BUTTON_SIZE, BUTTON_SIZE)),
                 tooltip="build electro magnetic impulse(E.M.P.)",
                 info_text=info_panel_text_generator.create_info_panel_planetary_defence_text("electro magnetic impulse"),
                 frame_color=self.frame_color,

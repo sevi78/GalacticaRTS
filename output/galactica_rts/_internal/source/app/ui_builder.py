@@ -4,6 +4,7 @@ from source.app.scene_builder import SceneBuilder
 from source.auto_economy.auto_economy_calculator_edit import AutoEconomyCalculatorEdit
 from source.configuration.game_config import config
 from source.editors.building_edit import BuildingEdit
+from source.editors.client_edit import network_config
 from source.editors.debug_edit import DebugEdit
 from source.editors.diplomacy_edit import DiplomacyEdit
 from source.editors.enemy_handler_edit import EnemyHandlerEdit
@@ -25,7 +26,7 @@ from source.gui.widgets.background_image import BackgroundGradient
 from source.handlers.debug_handler import debugger
 from source.handlers.file_handler import load_file
 from source.network.client.client import Client
-
+# from source.network.client.web_socket_client import WebSocketClient
 from source.player.player import Player
 from source.player.player_edit import PlayerEdit
 from source.player.player_handler import player_handler
@@ -95,8 +96,9 @@ class UIBuilder(SceneBuilder):
         self.players = {}
 
         # initialize game_client
-        network_config = load_file("network_config.json", "config")
-        self.game_client = Client(network_config["server"], network_config["port"])
+        # network_config = load_file("network_config.json", "config")
+        self.game_client = Client(network_config["host"], network_config["port"])
+        # self.game_client = WebSocketClient()
 
         # building_panel
         self.create_building_panel()
@@ -196,15 +198,15 @@ class UIBuilder(SceneBuilder):
                 parent=self,
                 obj=enemy_handler)
 
-        self.ship_edit = ShipEdit(
-                pygame.display.get_surface(),
-                pygame.display.get_surface().get_rect().centerx - width / 2,
-                pygame.display.get_surface().get_rect().y + spacing_y,
-                width,
-                height,
-                parent=self,
-                obj=self.ship,
-                layer=9)
+        # self.ship_edit = ShipEdit(
+        #         pygame.display.get_surface(),
+        #         pygame.display.get_surface().get_rect().centerx - width / 2,
+        #         pygame.display.get_surface().get_rect().y + spacing_y,
+        #         width,
+        #         height,
+        #         parent=self,
+        #         obj=self.ship,
+        #         layer=9)
 
         self.debug_edit = DebugEdit(
                 pygame.display.get_surface(),

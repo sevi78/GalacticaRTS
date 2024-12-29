@@ -10,19 +10,8 @@ pictures_path = os.path.split(dirpath)[0].split("source")[0] + "assets" + os.sep
 gifs_path = os.path.split(dirpath)[0].split("source")[0] + "assets" + os.sep + "gifs" + os.sep
 soundpath = os.path.split(dirpath)[0].split("source")[0] + "assets" + os.sep + "sounds" + os.sep
 
-"""TODO: 
-fix write_file/load_file for make more consitency:
-write_file(folder, filename, data)
-load_file(folder, filename)
-"""
 
 
-def update_dict__(data, default_dict):
-    for key, value in default_dict.items():
-        if key not in data:
-            data[key] = value
-        elif isinstance(value, dict):
-            update_dict(data[key], value)
 
 
 def update_dict(data, default_dict):
@@ -62,42 +51,6 @@ def update_json_files(default_dict):
         with open(filename, 'w') as file:
             json.dump(data, file, indent=4)
 
-
-# def compare_json_files(folder, default_file):
-#     for file_name in os.listdir(folder):
-#         if file_name.endswith('.json'):
-#             with open(os.path.join(folder, file_name)) as json_file:
-#                 data = json.load(json_file)
-#                 print(f"Comparing file: {file_name}")
-#                 compare_json(default_file, data, file_name)
-#
-# def compare_json(default, data, file_name):
-#     # Check for keys in data that are not in default
-#     for key in data:
-#         if key not in default:
-#             print(f"Key '{key}' with value '{data[key]}' is not in default_file in {file_name}")
-#
-#     # Check for keys in default that are not in data
-#     for key in default:
-#         if key not in data:
-#             print(f"Key '{key}' is missing in {file_name}")
-# def compare_json_files(folder, default_file):
-#     for file_name in os.listdir(folder):
-#         if file_name.endswith('.json'):
-#             with open(os.path.join(folder, file_name)) as json_file:
-#                 data = json.load(json_file)
-#                 print(f"Comparing file: {file_name}")
-#                 compare_json(default_file, data, file_name)
-#
-# def compare_json(default, data, file_name, path=""):
-#     for key in default:
-#         if key not in data:
-#             print(f"Key '{key}' is missing in {file_name} at path {path}")
-#         else:
-#             if isinstance(default[key], dict) and isinstance(data[key], dict):
-#                 compare_json(default[key], data[key], file_name, path + f"['{key}']")
-#             elif default[key] != data[key]:
-#                 print(f"Value of key '{key}' is changed from '{default[key]}' to '{data[key]}' in {file_name} at path {path}")
 
 def compare_json_files(folder, default_file):
     for file_name in os.listdir(folder):
@@ -196,9 +149,70 @@ def abs_players_path():
     return os.path.join(abs_database_path(), "players")
 
 
+# def write_file(filename, folder, data):
+#     with open(os.path.join(abs_database_path() + folder + os.sep + filename), 'w') as file:
+#         json.dump(data, file, indent=4, sort_keys=False)
+
+import os
+import json
+import shutil
+from datetime import datetime
+
+def create_backup(file_path, backup_folder):
+    """Create a backup of the file if it exists.
+        called by write_file
+    """
+    if os.path.exists(file_path):
+        # Ensure backup folder exists
+        os.makedirs(backup_folder, exist_ok=True)
+
+        # Create backup filename with timestamp
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        filename = os.path.basename(file_path)
+        backup_filename = f"{os.path.splitext(filename)[0]}_{timestamp}{os.path.splitext(filename)[1]}"
+        backup_path = os.path.join(backup_folder, backup_filename)
+
+        try:
+            shutil.copy2(file_path, backup_path)
+            print(f"Backup created: {backup_path}")
+            return backup_path
+        except Exception as e:
+            print(f"Failed to create backup: {e}")
+    return None
+
+def get_latest_backup(backup_folder, original_filename):
+    """Get the path of the latest backup file.
+        called by write_file"""
+    base_name = os.path.splitext(original_filename)[0]
+    backups = [f for f in os.listdir(backup_folder) if f.startswith(base_name) and f.endswith(os.path.splitext(original_filename)[1])]
+    if backups:
+        return os.path.join(backup_folder, max(backups))
+    return None
+
 def write_file(filename, folder, data):
-    with open(os.path.join(abs_database_path() + folder + os.sep + filename), 'w') as file:
-        json.dump(data, file, indent=4, sort_keys=False)
+    """Write data to a file, creating a backup if the file exists."""
+    file_path = os.path.join(abs_database_path(), folder, filename)
+    backup_folder = os.path.join(abs_database_path(), 'backups', folder)
+
+    # Create backup
+    create_backup(file_path, backup_folder)
+
+    # Write the new data
+    try:
+        with open(file_path, 'w') as file:
+            json.dump(data, file, indent=4, sort_keys=False)
+        print(f"File successfully written: {file_path}")
+    except Exception as e:
+        print(f"Failed to write file: {e}")
+        # If writing fails, try to restore from the latest backup
+        latest_backup = get_latest_backup(backup_folder, filename)
+        if latest_backup:
+            try:
+                shutil.copy2(latest_backup, file_path)
+                print(f"Restored from backup: {latest_backup}")
+            except Exception as e:
+                print(f"Failed to restore from backup: {e}")
+
 
 
 def load_file(filename, folder):

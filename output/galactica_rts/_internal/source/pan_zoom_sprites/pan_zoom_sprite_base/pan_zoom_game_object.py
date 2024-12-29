@@ -4,10 +4,10 @@ import math
 from pygame import Vector2
 
 from source.configuration.game_config import config
+from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.time_handler import time_handler
-from source.multimedia_library.images import outline_image
-from source.handlers.position_handler import rot_center
 from source.interaction.interaction_handler import InteractionHandler
+from source.multimedia_library.images import outline_image, rotate_image_to
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_gif import PanZoomSprite
 
 GAME_OBJECT_SPEED = 2.0
@@ -37,6 +37,8 @@ class PanZoomGameObject(PanZoomSprite, InteractionHandler):
         self.target = None
         self.rotate_to_target = kwargs.get("rotate_to_target", True)
         self.rotate_correction_angle = 0
+
+        self.angle = 0
         self.prev_angle = None
         self.move_to_target = kwargs.get("move_to_target", False)
         self.target_position = Vector2(0, 0)
@@ -105,41 +107,10 @@ class PanZoomGameObject(PanZoomSprite, InteractionHandler):
                     self.target.world_x - self.target.world_width / 2,
                     self.target.world_y - self.target.world_height / 2))
 
-    def rotate_image_to_target(self, **kwargs):
-        """
-        # 0 - image is looking to the right
-        # 90 - image is looking up
-        # 180 - image is looking to the left
-        # 270 - image is looking down
-        """
-
-        target = kwargs.get("target", self.target)
-        rotate_correction_angle = kwargs.get("rotate_correction_angle", self.rotate_correction_angle)
-
-        if target:
-            rel_x, rel_y = target.rect.centerx - self.rect.x, target.rect.centery - self.rect.y
-            angle = (180 / math.pi) * -math.atan2(rel_y, rel_x) - rotate_correction_angle
-        else:
-            if self.prev_angle:
-                angle = self.prev_angle + 1
-            else:
-                angle = self.initial_rotation
-
-        # Smoothing algorithm
-        if self.prev_angle:
-            diff = angle - self.prev_angle
-            if abs(diff) > self.rotation_smoothing:
-                angle = self.prev_angle + 5 * (diff / abs(diff))
-
-        self.prev_angle = angle
-        new_image, new_rect = rot_center(self.image, angle, self.rect.x, self.rect.y, align="shipalign")
-        self.image = new_image
-        self.rect = new_rect
-
     def move_towards_target(self):
         self.moving = True
         direction = self.target_position - Vector2(self.world_x, self.world_y)
-        distance = direction.length() * self.get_zoom()
+        distance = direction.length() * pan_zoom_handler.get_zoom()
         if distance < self.attack_distance:
             self.target_reached = True
             return
@@ -149,12 +120,42 @@ class PanZoomGameObject(PanZoomSprite, InteractionHandler):
             # print("move_towards_target error! direction vector length is zero.")
             return
         displacement = direction * self.speed * time_handler.game_speed
-        time_steps = int(distance / self.speed) / self.get_zoom()
+        time_steps = distance / self.speed / pan_zoom_handler.get_zoom()
         if time_steps != 0:
             self.world_x += displacement.x / time_steps
             self.world_y += displacement.y / time_steps
         # else:
         #     print("move_towards_target error! time_steps is zero.")
+
+    def move_towards_target_with_gravity(self):
+        self.moving = True
+        direction = self.target_position - Vector2(self.world_x, self.world_y)
+        distance = direction.length() * pan_zoom_handler.get_zoom()
+
+        if distance < self.attack_distance:
+            self.target_reached = True
+            return
+
+        # Calculate initial velocity components
+        initial_velocity = self.speed
+        angle_rad = math.radians(self.initial_rotation-self.rotate_correction_angle)
+        vx = initial_velocity * math.cos(angle_rad)
+        vy = +initial_velocity * math.sin(angle_rad)  # Negative because y increases downward
+
+        # Simulate gravity (adjust this value to change the curve)
+        gravity = 9.8 * 0.1  # Reduced gravity for game purposes
+
+        # Calculate new position
+        time_step = time_handler.game_speed
+        self.world_x += vx * time_step
+        self.world_y += vy * time_step + 0.5 * gravity * time_step ** 2  # Add gravity (positive y is downward)
+
+        # Update velocity for next frame
+        vy += gravity * time_step
+
+        # Update missile rotation to face direction of travel
+        new_angle = math.degrees(math.atan2(vy, vx))  # Remove negative sign from vy
+        self.angle = (new_angle + 360) % 360  # Normalize angle to 0-360 range
 
     def explode(self, **kwargs):
         # self.explode_calls += 1
@@ -187,11 +188,14 @@ class PanZoomGameObject(PanZoomSprite, InteractionHandler):
 
         if self.target:
             if self.rotate_to_target:
-                self.rotate_image_to_target()
+                self.angle = rotate_image_to(self, self.target.rect.center, self.rotate_correction_angle)
 
             if self.move_to_target:
                 self.moving = True
                 self.set_target_position()
+                # if self.initial_rotation != 0:
+                #     self.move_towards_target_with_gravity()
+                # else:
                 self.move_towards_target()
 
         if self.target_reached:

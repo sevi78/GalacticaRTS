@@ -55,7 +55,7 @@ class SceneBuilder(EconomyParams, GameObjectStorage):
         return self._ship
 
     @ship.setter
-    def ship(self, value):
+    def ship(self, value):  # orig
         self._ship = value
         if value:
             if hasattr(self, "ship_edit"):

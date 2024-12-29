@@ -1,7 +1,7 @@
-import os
-import time
+import math
 from functools import lru_cache
 
+import numpy as np
 import pygame
 from PIL.Image import Image
 
@@ -68,6 +68,7 @@ def load_folders(folder):
     - The function assumes that all PNG images have a ".png" file extension."""
     subfolders = [str(f.path).split(os.sep)[-1] for f in os.scandir(folder) if f.is_dir()]
     dict_ = {folder: {}}
+    accepted_image_types = ['.png', ".svg"]
 
     for sub in subfolders:
         path = os.path.join(folder, sub)
@@ -76,7 +77,7 @@ def load_folders(folder):
         dict_[folder][sub] = {}
         for image in os.listdir(path):
             filename, file_extension = os.path.splitext(image)
-            if file_extension == ".png":
+            if file_extension in accepted_image_types:
                 img = load_image(folder, image, sub)
                 img.convert_alpha()
                 dict_[folder][sub][image] = img
@@ -143,7 +144,8 @@ def load_gif_fps(gif_file):
 
 
 @lru_cache(maxsize=None)
-def get_image(image_name):
+def get_image(image_name) -> pygame.surface.Surface:  # old, not performant at all!!
+    start_time = time.perf_counter()
     # Initialize `no_icon` image
     no_icon_path = os.path.join(pictures_path, "icons", "no_icon.png")
     no_icon = images.get(pictures_path, {}).get("icons", {}).get("no_icon.png")
@@ -169,7 +171,47 @@ def get_image(image_name):
             return img
 
     # If no image is found, return `no_icon`
+    end_time = time.perf_counter()
+    print(f"No icon loaded in {(end_time - start_time) * 1000:.4f} ms")
     return no_icon
+
+
+import os
+import pygame
+import time
+
+# Use a flat dictionary for faster lookups
+image_cache = {}
+
+
+def get_image__(image_name) -> pygame.surface.Surface:
+    start_time = time.perf_counter()
+
+    # Check if the image is already in the cache
+    if image_name in image_cache:
+        end_time = time.perf_counter()
+        # print(f"Image {image_name} loaded from cache in {(end_time - start_time) * 1000:.4f} ms")
+        return image_cache[image_name]
+
+    # Search for the image in pictures_path
+    for root, _, files in os.walk(pictures_path):
+        if image_name in files:
+            img_path = os.path.join(root, image_name)
+            img = pygame.image.load(img_path).convert_alpha()
+            image_cache[image_name] = img
+            end_time = time.perf_counter()
+            # print(f"Image {image_name} loaded from disk in {(end_time - start_time) * 1000:.4f} ms")
+            return img
+
+    # If no image is found, load and return no_icon
+    no_icon_path = os.path.join(pictures_path, "icons", "no_icon.png")
+    if "no_icon.png" not in image_cache:
+        no_icon = pygame.image.load(no_icon_path).convert_alpha()
+        image_cache["no_icon.png"] = no_icon
+
+    end_time = time.perf_counter()
+    # print(f"No icon replaced: {image_name} because not found, loaded in {(end_time - start_time) * 1000:.4f} ms")
+    return image_cache["no_icon.png"]
 
 
 @lru_cache(maxsize=None)
@@ -203,12 +245,12 @@ def get_gif_frames(gif_name):
     for frame in range(gif.n_frames):
         if not frame == 0:
             gif.seek(frame)
-            frame_surface_raw = pygame.image.fromstring(gif.tobytes(), gif.size, gif.mode).convert_alpha()
+            frame_surface_raw = pygame.image.frombytes(gif.tobytes(), gif.size, gif.mode).convert_alpha()
 
             # Rescale the images if necessary
             if rescale:
                 new_size = (int(gif.size[0] * ratio), int(gif.size[1] * ratio))
-                frame_surface = pygame.transform.scale(frame_surface_raw, new_size)
+                frame_surface = scale_image_cached(frame_surface_raw, new_size)
             else:
                 frame_surface = frame_surface_raw
 
@@ -228,20 +270,21 @@ def get_image_names_from_folder(folder, **kwargs):
     return image_names
 
 
-@lru_cache(maxsize=None)
-def resize_image(image, new_size):
-    # Calculate the aspect ratio of the original image
-    aspect_ratio = image.get_width() / image.get_height()
-
-    # Adjust the width and height to fit within the new size while maintaining the aspect ratio
-    if new_size[0] / aspect_ratio < new_size[1]:
-        new_height = int(new_size[0] / aspect_ratio)
-        new_image = pygame.transform.scale(image, (new_size[0], new_height))
-    else:
-        new_width = int(new_size[1] * aspect_ratio)
-        new_image = pygame.transform.scale(image, (new_width, new_size[1]))
-
-    return new_image
+#
+# @lru_cache(maxsize=None)
+# def resize_image(image, new_size):
+#     # Calculate the aspect ratio of the original image
+#     aspect_ratio = image.get_width() / image.get_height()
+#
+#     # Adjust the width and height to fit within the new size while maintaining the aspect ratio
+#     if new_size[0] / aspect_ratio < new_size[1]:
+#         new_height = int(new_size[0] / aspect_ratio)
+#         new_image = scale_image_cached(image, (new_size[0], new_height))
+#     else:
+#         new_width = int(new_size[1] * aspect_ratio)
+#         new_image = scale_image_cached(image, (new_width, new_size[1]))
+#
+#     return new_image
 
 
 @lru_cache(maxsize=None)
@@ -263,6 +306,112 @@ def find_unused_images_gifs(image_dir, gif_dir, images_dict, gifs_dict):
             unused_files.append(os.path.join(gif_dir, file))
 
     return unused_files
+
+
+# @lru_cache(maxsize=None)  # Adjust maxsize based on your needs
+# def scale_image_cached(surface, width, height):
+#     # Print cache info each time the function is called
+#     cache_stats = scale_image_cached.cache_info()
+#     print(f"Cache Info - Hits: {cache_stats.hits}, Misses: {cache_stats.misses}, "
+#           f"Current Size: {cache_stats.currsize}, Max Size: {cache_stats.maxsize}")
+#     return pygame.transform.scale(surface, (width, height))
+
+@lru_cache(maxsize=1000)  # Adjust maxsize based on your needs
+def scale_image_cached(surface, size):
+    # Print cache info each time the function is called
+    cache_stats = scale_image_cached.cache_info()
+    # print(f"Cache Info - Hits: {cache_stats.hits}, Misses: {cache_stats.misses}, "
+    #       f"Current Size: {cache_stats.currsize}, Max Size: {cache_stats.maxsize}")
+
+    return pygame.transform.scale(surface, size)
+
+
+@lru_cache(maxsize=1000)  # Adjust maxsize based on your needs
+def rotate_image_cached(surface, rotation_angle):
+    return pygame.transform.rotate(surface, rotation_angle)
+
+
+def rotate_image_to(obj, position: tuple, rotate_correction_angle: int):
+    """
+    Rotate the image to face a given position.
+
+    # 0 - image is looking to the right
+    # 90 - image is looking up
+    # 180 - image is looking to the left
+    # 270 - image is looking down
+    :param obj: The image object to rotate.
+    :param position: A tuple (x, y) representing the target position.
+    :param rotate_correction_angle: Angle correction for rotation.
+    """
+    old_rect = obj.rect
+
+    # Unpack the target position
+    target_x, target_y = position
+
+    # Calculate relative position
+    rel_x = target_x - obj.rect.centerx
+    rel_y = target_y - obj.rect.centery
+
+    # Calculate target angle
+    target_angle = (180 / math.pi) * -math.atan2(rel_y, rel_x) - rotate_correction_angle
+
+    # Normalize target_angle to [0, 360)
+    target_angle = target_angle % 360
+
+    # Smoothing algorithm
+    if obj.prev_angle is not None:
+        # Calculate the shortest rotation
+        diff = (target_angle - obj.prev_angle + 180) % 360 - 180
+
+        if abs(diff) > obj.rotation_smoothing:
+            angle = (obj.prev_angle + obj.rotation_smoothing * (diff / abs(diff))) % 360
+        else:
+            angle = target_angle
+    else:
+        angle = target_angle
+
+    # if angle == obj.prev_angle:
+    #     # print ("same angle")
+    #     return angle
+
+    obj.prev_angle = angle
+    new_image = rotate_image_cached(obj.image, angle)
+    obj.image = new_image
+
+    # Reset the rect
+    obj.rect = obj.image.get_rect(center=old_rect.center)
+
+    return angle
+
+
+def rounded_surface(surface: pygame.Surface, corner_radius: int) -> pygame.Surface:
+    """
+    Create a rounded version of the given surface.
+
+    Args:
+    surface (pygame.Surface): The original surface to round.
+    corner_radius (int): The radius of the rounded corners.
+
+    Returns:
+    pygame.Surface: A new surface with rounded corners.
+    """
+    # Create a new surface with per-pixel alpha
+    size = surface.get_size()
+    rounded = pygame.Surface(size, pygame.SRCALPHA)
+
+    # Create a rounded corner mask
+    mask = pygame.Surface(size, pygame.SRCALPHA)
+    mask.fill((255, 255, 255, 0))
+    pygame.draw.rect(mask, (255, 255, 255, 255), mask.get_rect(), border_radius=corner_radius)
+
+    # Apply the mask to the original surface
+    rounded.blit(surface, (0, 0))
+    mask_alpha = pygame.surfarray.array_alpha(mask)
+    surface_alpha = pygame.surfarray.pixels_alpha(rounded)
+    surface_alpha[:] = np.minimum(surface_alpha, mask_alpha)
+    del surface_alpha  # Release the surface lock
+
+    return rounded
 
 
 def change_non_transparent_pixels(image: pygame.surface, new_color) -> pygame.surface:
@@ -307,6 +456,15 @@ def blur_image(surf: pygame.surface, radius):  # unused
     return blurred_image.convert_alpha()
 
 
+
+def underblit_image(
+        image: pygame.surface, sub_image: pygame.surface, offset_x: int, offset_y: int
+        ) -> pygame.surface.Surface:
+    surf = pygame.surface.Surface(image.get_size(), pygame.SRCALPHA)
+    surf.blit(sub_image, (offset_x, offset_y))
+    surf.blit(image, (0, 0))
+    return surf
+
 def overblit_button_image(button, image_name: str, value: bool, **kwargs) -> None:
     """
     Overblits an image on top of a button's image.
@@ -315,6 +473,18 @@ def overblit_button_image(button, image_name: str, value: bool, **kwargs) -> Non
     :param image_name: The name of the image to overblit.
     :param value: The value of the button.
     :param kwargs: Additional keyword arguments for customizing the overblit.
+
+    kwargs:
+
+    size (tuple): The size of the overblit image. Default is (button.image.get_rect().width, button.image.get_rect().height).
+
+    offset_x (int): The x-offset of the overblit image. Default is 0.
+
+    offset_y (int): The y-offset of the overblit image. Default is 0.
+
+    outline (bool): Whether to apply an outline to the overblit image. Default is False.
+
+    color (tuple): The color of the outline. Default is (100, 100, 100).
     """
     if not button:
         return
@@ -328,9 +498,9 @@ def overblit_button_image(button, image_name: str, value: bool, **kwargs) -> Non
     if not value:
         # Scale and blit the image
         if outline:
-            image = outline_image(pygame.transform.scale(get_image(image_name), size), color, 127, 0)
+            image = outline_image(scale_image_cached(get_image(image_name), size), color, 127, 0)
         else:
-            image = pygame.transform.scale(get_image(image_name), size)
+            image = scale_image_cached(get_image(image_name), size)
 
         button.image.blit(image, (offset_x, offset_y))
     else:

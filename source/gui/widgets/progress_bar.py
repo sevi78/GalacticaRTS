@@ -95,8 +95,10 @@ class ProgressBar(WidgetBase):
         #         self.percent = 1
 
         if self.gradient_color:
-            self.completed_color = calculate_gradient_color((200, 0, 0),
-                    pygame.color.THECOLORS["darkgreen"], self.percent, ignore_colors=["b"])
+            start_color = pygame.color.THECOLORS["tomato"]  # (0, 200, 0)
+            end_color = pygame.color.THECOLORS["chartreuse4"]#(200, 0, 0)
+
+            self.completed_color = calculate_gradient_color(start_color,end_color, self.percent, 0.6,ignore_colors="b")
 
         if self.parent:
             if self.parent._disabled:
@@ -134,3 +136,54 @@ class ProgressBar(WidgetBase):
                 drawText(self.win, self.string, self.frame_color, (
                     self.screen_x - 40, self.screen_y - self.font.get_height() / 6, 200,
                     self.font.get_height()), self.font, align="left")
+
+
+def main():
+    # Initialize Pygame
+    pygame.init()
+
+    # Set up display
+    width, height = 800, 600
+    win = pygame.display.set_mode((width, height))
+    pygame.display.set_caption("Progress Bar Test")
+
+    # Clock for controlling frame rate
+    clock = pygame.time.Clock()
+
+    # Initial progress value
+    progress_value = 0.0
+
+    # Create a ProgressBar instance
+    progress_bar = ProgressBar(win, x=100, y=250, width=600, height=50,
+                               progress=lambda: progress_value)
+
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
+        # Handle key presses to update progress
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_UP]:
+            progress_value = min(progress_value + 0.01, 1.0)  # Increase progress
+        if keys[pygame.K_DOWN]:
+            progress_value = max(progress_value - 0.01, 0.0)   # Decrease progress
+
+        # Clear the screen
+        win.fill((255, 255, 255))
+
+        # Draw the progress bar
+        progress_bar.draw()
+
+        # Display current percentage as text
+        drawText(win, f'Progress: {progress_value * 100:.0f}%', (0, 0, 0), (10, 10, 200, 50), pygame.font.SysFont('Arial', 24))
+
+        # Update display and tick the clock
+        pygame.display.flip()
+        clock.tick(60)
+
+    pygame.quit()
+
+if __name__ == "__main__":
+    main()

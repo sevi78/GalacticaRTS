@@ -294,7 +294,12 @@ class PanZoomPlanet(PanZoomSprite, VisibilityHandler, PanZoomPlanetOverviewButto
             orbit_with_constant_distance(self, self.orbit_object, self.orbit_speed, 1)
 
         # not needed in update, draw called from sprite_handler
+
         if not level_of_detail.inside_screen(self.rect.center):
+            # dirty hack to make the overview buttons disappear if self is outside screen
+            for i in self.overview_buttons:
+                i._hidden = True
+
             return
 
         self.draw()
@@ -306,3 +311,5 @@ class PanZoomPlanet(PanZoomSprite, VisibilityHandler, PanZoomPlanetOverviewButto
         self.draw_player_colors()
         if self.show_text:
             self.draw_text()
+
+

@@ -1,6 +1,6 @@
 import pygame
 
-from source.multimedia_library.images import get_image
+from source.multimedia_library.images import get_image, scale_image_cached
 
 
 class Ranking:
@@ -25,7 +25,7 @@ class Ranking:
 
     def resize_rank_images(self):
         for key, image in self.rank_images.items():
-            self.rank_images[key] = pygame.transform.scale(image, (image.get_width() / 2.5, image.get_height() / 2.5))
+            self.rank_images[key] = scale_image_cached(image, (image.get_width() / 2.5, image.get_height() / 2.5))
 
     def set_rank_from_population(self, obj, population_list):
         # get a list of all possible population ranges: [0, 1000, 2500, 5000, 10000]

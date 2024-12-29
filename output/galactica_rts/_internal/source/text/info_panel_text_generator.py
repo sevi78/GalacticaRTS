@@ -84,7 +84,7 @@ class InfoPanelTextGenerator:
 
     def create_info_panel_planet_text(self, planet):
         if not planet.owner in config.app.players.keys():
-            print(f"create_info_panel_planet_text.error: planet {planet.name} owner: {planet.owner} not in config.app.players.keys()!!")
+            # print(f"create_info_panel_planet_text.error: planet {planet.name} owner: {planet.owner} not in config.app.players.keys()!!")
             return
 
         text = f"Welcome to {planet.name}!\n\n"
@@ -144,7 +144,7 @@ class InfoPanelTextGenerator:
         if ship.__class__.__name__ == "PanZoomRescueDrone":
             return self.create_info_panel_rescue_drone_text(ship)
 
-        text = f"{ship.name}:\n\n"
+        text = f"{ship.name}({ship.id}):\n\n"
         text += f"owner: {config.app.players[ship.owner].name}\n"
         text += f"experience: {int(ship.experience)}\n"
         text += f"rank: {ship.rank}\n"
@@ -173,6 +173,7 @@ class InfoPanelTextGenerator:
             text += f"id: {ship.id}\n"
             text += f"name: {ship.name}\n"
             text += f"selected: {str(ship.selected)}\n"
+            text += f"is app.ship: {ship == config.app.ship}\n"
             if ship.energy_reloader:
                 text += f"reloader: {str(ship.energy_reloader.name)}\n"
             else:
@@ -194,6 +195,7 @@ class InfoPanelTextGenerator:
                 text += "orbit_object: None\n"
                 text += f"orbit_object_id: {ship.orbit_object_id}\n"
                 text += f"orbit_object_name: {ship.orbit_object_name}\n"
+
             if ship.orbit_angle:
                 text += f"orbit_angle: {ship.orbit_angle}\n"
             else:
@@ -308,6 +310,7 @@ class InfoPanelTextGenerator:
         infotext = f"level {level}:\n\n\n\n\n\n"
         infotext += f"{goal}"
         infotext += "stats:"
+        infotext += f"\n\nplayers: {data.get('globals').get('players')}\n"
         res_string = ""
         for i in resources:
             res_string += f"{i}\n"

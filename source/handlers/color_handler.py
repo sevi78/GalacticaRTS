@@ -160,27 +160,68 @@ def gradient_color(colors_, progress):
         )
 
 
-def calculate_gradient_color(start_color, end_color, percent, **kwargs):
-    """Calculate the color gradient based on the start and end colors and the current progress percentage"""
+# def calculate_gradient_color(start_color, end_color, percent, **kwargs):
+#     """Calculate the color gradient based on the start and end colors and the current progress percentage"""
+#     ignore_colors = kwargs.get("ignore_colors", [])
+#
+#     # Calculate the gradient color
+#     r = int(start_color[0] + (end_color[0] - start_color[0]) * percent) if not str(
+#             start_color[0]) in ignore_colors else 0
+#     g = int(start_color[1] + (end_color[1] - start_color[1]) * percent) if not str(
+#             start_color[1]) in ignore_colors else 0
+#     b = int(start_color[2] + (end_color[2] - start_color[2]) * percent) if not str(
+#             start_color[2]) in ignore_colors else 0
+#
+#     # Ensure the maximum RGB value matches the maximum value in the end color
+#     max_rgb = max(r, g, b)
+#     max_end_color = max(end_color)
+#     if max_rgb != max_end_color:
+#         # Calculate the factor to adjust the components proportionally
+#         factor = max_end_color / max_rgb
+#         r = int(r * factor)
+#         g = int(g * factor)
+#         b = int(b * factor)
+#
+#     return r, g, b
+
+def calculate_gradient_color(start_color, end_color, percent, brightness=1.0, **kwargs):
+    """Calculate the color gradient based on the start and end colors and the current progress percentage.
+
+    Args:
+        start_color (tuple): The starting RGB color as a tuple (R, G, B).
+        end_color (tuple): The ending RGB color as a tuple (R, G, B).
+        percent (float): A value between 0 and 1 indicating the progress.
+        brightness (float): A factor to adjust the brightness (1.0 = original brightness, <1.0 = darker, >1.0 = brighter).
+        **kwargs: Additional keyword arguments.
+
+    Returns:
+        tuple: The resulting RGB color as a tuple (R, G, B).
+    """
     ignore_colors = kwargs.get("ignore_colors", [])
 
     # Calculate the gradient color
-    r = int(start_color[0] + (end_color[0] - start_color[0]) * percent) if not str(
-            start_color[0]) in ignore_colors else 0
-    g = int(start_color[1] + (end_color[1] - start_color[1]) * percent) if not str(
-            start_color[1]) in ignore_colors else 0
-    b = int(start_color[2] + (end_color[2] - start_color[2]) * percent) if not str(
-            start_color[2]) in ignore_colors else 0
+    r = int(start_color[0] + (end_color[0] - start_color[0]) * percent) if str(
+            start_color[0]) not in ignore_colors else 0
+    g = int(start_color[1] + (end_color[1] - start_color[1]) * percent) if str(
+            start_color[1]) not in ignore_colors else 0
+    b = int(start_color[2] + (end_color[2] - start_color[2]) * percent) if str(
+            start_color[2]) not in ignore_colors else 0
 
     # Ensure the maximum RGB value matches the maximum value in the end color
     max_rgb = max(r, g, b)
     max_end_color = max(end_color)
+
     if max_rgb != max_end_color:
         # Calculate the factor to adjust the components proportionally
         factor = max_end_color / max_rgb
         r = int(r * factor)
         g = int(g * factor)
         b = int(b * factor)
+
+    # Adjust brightness
+    r = int(max(0, min(255, r * brightness)))
+    g = int(max(0, min(255, g * brightness)))
+    b = int(max(0, min(255, b * brightness)))
 
     return r, g, b
 

@@ -1,5 +1,4 @@
 import random
-from source.handlers.time_handler import time_handler
 
 import pygame
 
@@ -12,9 +11,11 @@ from source.handlers.file_handler import load_file
 from source.handlers.garbage_handler import garbage_handler
 from source.handlers.mouse_handler import mouse_handler, MouseState
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
+from source.handlers.time_handler import time_handler
 from source.handlers.weapon_handler import WeaponHandler
 from source.handlers.widget_handler import WidgetHandler
 from source.multimedia_library.gif_handler import GifHandler
+from source.multimedia_library.images import scale_image_cached
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_game_object import PanZoomGameObject
 from source.text.info_panel_text_generator import info_panel_text_generator
 
@@ -62,6 +63,7 @@ class PanZoomUfo(PanZoomGameObject):  # , InteractionHandler):
         self.population_max = 200
         self.technology = kwargs.get("technology", 100)
         self.technology_max = 200
+        self.type = "ufo"
 
         self.resources = {
             "minerals": self.minerals,
@@ -177,7 +179,7 @@ class PanZoomUfo(PanZoomGameObject):  # , InteractionHandler):
             if self.rect.collidepoint(x, y):
                 if mouse_state == MouseState.HOVER or mouse_state == MouseState.LEFT_DRAG:
                     # self.win.blit(self.image_outline, self.rect)
-                    self.win.blit(pygame.transform.scale(self.image_outline, self.rect.size), self.rect)
+                    self.win.blit(scale_image_cached(self.image_outline, self.rect.size), self.rect)
                     # set tooltip
                     if self.tooltip:
                         if self.tooltip != "":

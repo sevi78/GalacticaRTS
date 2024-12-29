@@ -34,8 +34,12 @@ class PanZoomFlickeringStar(PanZoomSpriteBase):
         self.colors = [(random.randint(0, config.star_brightness), random.randint(0, config.star_brightness),
                         random.randint(0, config.star_brightness)) for _ in range(10)]
 
+
+
         # Initialize the color index
         self.color_index = 0
+
+        # self.image = pygame.surface.Surface((1,1))
 
     def draw(self) -> None:
         """
@@ -88,6 +92,8 @@ class PanZoomPulsatingStar(PanZoomSpriteBase):
         self.pulsating_star_color = (
             random.randint(0, config.star_brightness), random.randint(0, config.star_brightness),
             random.randint(0, config.star_brightness))
+
+        # self.image = pygame.surface.Surface((1, 1))
 
     def draw(self) -> None:
         """

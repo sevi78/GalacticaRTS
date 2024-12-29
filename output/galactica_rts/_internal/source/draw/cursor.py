@@ -1,8 +1,9 @@
 import pygame.mouse
 
 from source.configuration.game_config import config
+from source.handlers.color_handler import colors
 from source.handlers.widget_handler import WidgetHandler
-from source.multimedia_library.images import get_image, change_non_transparent_pixels
+from source.multimedia_library.images import get_image, change_non_transparent_pixels, scale_image_cached
 
 CURSOR_SIZE = 50
 
@@ -12,35 +13,35 @@ class Cursor:
         self.win = config.app.win
         self.cursor_size = (config.ui_cursor_size, config.ui_cursor_size)
         self.cursor = "idle"
-        self.color = pygame.color.THECOLORS.get("white")  # colors.frame_color
+        self.color = colors.frame_color#pygame.color.THECOLORS.get("white")  # colors.frame_color
         self.layer = 10
         self.is_sub_widget = False
         self.name = "cursor"
 
         self.cursors = {
-            "idle": pygame.transform.scale(get_image(f"crosshair003.png"), self.cursor_size),
-            "click": pygame.transform.scale(get_image(f"crosshair002.png"), self.cursor_size),
-            "drag": pygame.transform.scale(get_image(f"crosshair185.png"), self.cursor_size),
-            "box_select": pygame.transform.scale(get_image(f"crosshair030.png"), self.cursor_size),
-            "navigate": pygame.transform.scale(get_image(f"crosshair186.png"), self.cursor_size),
-            "zoom_out": pygame.transform.scale(get_image(f"crosshair139.png"), self.cursor_size),
-            "zoom_in": pygame.transform.scale(get_image(f"crosshair146.png"), self.cursor_size),
-            "watch": pygame.transform.scale(get_image(f"crosshair140.png"), self.cursor_size),
-            "ship": pygame.transform.scale(get_image(f"crosshair138.png"), self.cursor_size),
-            "toggle_up": pygame.transform.scale(get_image(f"crosshair022.png"), self.cursor_size),
-            "toggle_down": pygame.transform.flip(pygame.transform.scale(get_image(f"crosshair022.png"), self.cursor_size), False, True),
-            "scroll": pygame.transform.scale(get_image(f"crosshair017.png"), self.cursor_size),
-            "scroll_up": pygame.transform.scale(get_image(f"crosshair023.png"), self.cursor_size),
-            "scroll_down": pygame.transform.flip(pygame.transform.scale(get_image(f"crosshair023.png"), self.cursor_size), False, True),
-            "left_arrow": pygame.transform.rotate(pygame.transform.scale(get_image(f"crosshair022.png"), self.cursor_size), 90),
-            "right_arrow": pygame.transform.rotate(pygame.transform.flip(pygame.transform.scale(get_image(f"crosshair022.png"), self.cursor_size), False, True), 90),
-            "left_arrow_repeated": pygame.transform.rotate(pygame.transform.scale(get_image(f"crosshair023.png"), self.cursor_size), 90),
-            "right_arrow_repeated": pygame.transform.rotate(pygame.transform.flip(pygame.transform.scale(get_image(f"crosshair023.png"), self.cursor_size), False, True), 90),
-            "close": pygame.transform.scale(get_image(f"crosshair005.png"), self.cursor_size),
-            "resize_0": pygame.transform.rotate(pygame.transform.scale(get_image(f"crosshair015.png"), self.cursor_size), 0),
-            "resize_45": pygame.transform.rotate(pygame.transform.scale(get_image(f"crosshair015.png"), self.cursor_size), 45),
-            "resize_90": pygame.transform.rotate(pygame.transform.scale(get_image(f"crosshair015.png"), self.cursor_size), 90),
-            "resize_135": pygame.transform.rotate(pygame.transform.scale(get_image(f"crosshair015.png"), self.cursor_size), 135),
+            "idle": scale_image_cached(get_image(f"crosshair003.png"), self.cursor_size),
+            "click": scale_image_cached(get_image(f"crosshair002.png"), self.cursor_size),
+            "drag": scale_image_cached(get_image(f"crosshair185.png"), self.cursor_size),
+            "box_select": scale_image_cached(get_image(f"crosshair030.png"), self.cursor_size),
+            "navigate": scale_image_cached(get_image(f"crosshair186.png"), self.cursor_size),
+            "zoom_out": scale_image_cached(get_image(f"crosshair139.png"), self.cursor_size),
+            "zoom_in": scale_image_cached(get_image(f"crosshair146.png"), self.cursor_size),
+            "watch": scale_image_cached(get_image(f"crosshair140.png"), self.cursor_size),
+            "ship": scale_image_cached(get_image(f"crosshair138.png"), self.cursor_size),
+            "toggle_up": scale_image_cached(get_image(f"crosshair022.png"), self.cursor_size),
+            "toggle_down": pygame.transform.flip(scale_image_cached(get_image(f"crosshair022.png"), self.cursor_size), False, True),
+            "scroll": scale_image_cached(get_image(f"crosshair017.png"), self.cursor_size),
+            "scroll_up": scale_image_cached(get_image(f"crosshair023.png"), self.cursor_size),
+            "scroll_down": pygame.transform.flip(scale_image_cached(get_image(f"crosshair023.png"), self.cursor_size), False, True),
+            "left_arrow": pygame.transform.rotate(scale_image_cached(get_image(f"crosshair022.png"), self.cursor_size), 90),
+            "right_arrow": pygame.transform.rotate(pygame.transform.flip(scale_image_cached(get_image(f"crosshair022.png"), self.cursor_size), False, True), 90),
+            "left_arrow_repeated": pygame.transform.rotate(scale_image_cached(get_image(f"crosshair023.png"), self.cursor_size), 90),
+            "right_arrow_repeated": pygame.transform.rotate(pygame.transform.flip(scale_image_cached(get_image(f"crosshair023.png"), self.cursor_size), False, True), 90),
+            "close": scale_image_cached(get_image(f"crosshair005.png"), self.cursor_size),
+            "resize_0": pygame.transform.rotate(scale_image_cached(get_image(f"crosshair015.png"), self.cursor_size), 0),
+            "resize_45": pygame.transform.rotate(scale_image_cached(get_image(f"crosshair015.png"), self.cursor_size), 45),
+            "resize_90": pygame.transform.rotate(scale_image_cached(get_image(f"crosshair015.png"), self.cursor_size), 90),
+            "resize_135": pygame.transform.rotate(scale_image_cached(get_image(f"crosshair015.png"), self.cursor_size), 135),
             }
 
         self.resize_cursor_orientations = {

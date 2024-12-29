@@ -215,7 +215,7 @@ class Button(WidgetBase, Moveable):
                         if self.info_text:
                             if self.info_text != "":
                                 config.app.info_panel.set_text(self.info_text)
-                                config.app.info_panel.set_planet_image(self.image, size=(
+                                config.app.info_panel.set_planet_image(self.image_raw, size=(
                                     85, 85), align="topright")
 
                         # set cursor
@@ -236,6 +236,7 @@ class Button(WidgetBase, Moveable):
         self.update_position()
         if not level_of_detail.inside_screen(self.get_position()):
             return
+
         if not self._hidden and not self._disabled:
             if not self.transparent:
                 pygame.draw.rect(

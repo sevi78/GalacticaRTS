@@ -7,7 +7,7 @@ from source.gui.widgets.buttons.image_button import ImageButton
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.handlers.color_handler import colors
 from source.handlers.widget_handler import WidgetHandler
-from source.multimedia_library.images import get_image
+from source.multimedia_library.images import get_image, scale_image_cached
 from source.text.info_panel_text_generator import info_panel_text_generator
 from source.text.tooltip_gen import tooltip_generator
 
@@ -141,7 +141,7 @@ class BuildingButtonWidget(WidgetBase):
                 height=height,
                 is_sub_widget=False,
                 parent=self,
-                image=pygame.transform.scale(get_image(image), (ICON_SIZE, ICON_SIZE)),
+                image=scale_image_cached(get_image(image), (ICON_SIZE, ICON_SIZE)),
                 image_raw=get_image(image),
                 tooltip=tooltip,
                 frame_color=self.frame_color,
@@ -174,7 +174,7 @@ class BuildingButtonWidget(WidgetBase):
                     height=ICON_SIZE,
                     is_sub_widget=False,
                     parent=self,
-                    image=pygame.transform.scale(get_image(resource + '_25x25.png'),
+                    image=scale_image_cached(get_image(resource + '_25x25.png'),
                             (ICON_SIZE, ICON_SIZE)),
                     tooltip=resource,
                     frame_color=self.frame_color,

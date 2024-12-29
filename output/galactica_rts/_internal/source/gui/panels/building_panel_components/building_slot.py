@@ -152,7 +152,7 @@ class BuildingSlot:
 
         # max upgrades reached, exit function
         else:
-            event_text.text = f"maximum {planet.economy_agent.building_slot_upgrades} building slots reached!"
+            event_text.set_text(f"maximum {planet.economy_agent.building_slot_upgrades} building slots reached!", sender=player.owner)
             return
 
         # if do_upgrade, set values
@@ -161,7 +161,7 @@ class BuildingSlot:
 
         # if enough technology
         if player.stock["technology"] - price > 0:
-            event_text.text = f"Upgraded from {planet.economy_agent.building_slot_amount} building slots to {planet.economy_agent.building_slot_amount + 1}!"
+            event_text.set_text(f"Upgraded from {planet.economy_agent.building_slot_amount} building slots to {planet.economy_agent.building_slot_amount + 1}!", sender=player.owner)
             # if not max reached
             if planet.economy_agent.building_slot_upgrades < len(planet.economy_agent.building_slot_upgrade_prices.items()):
                 planet.economy_agent.building_slot_amount += 1
@@ -169,7 +169,7 @@ class BuildingSlot:
                 # TODO: possble error here, shouldnt it be player.stock["technology] -= price ????
                 player.stock["technology"] -= price
         else:
-            event_text.text = f"not enough technology to upgrade building slot ! you have {player.stock['technology']}, but you will need {price}"
+            event_text.set_text(f"not enough technology to upgrade building slot ! you have {player.stock['technology']}, but you will need {price}", sender=player.owner)
 
         # finally calculate new productions
         planet.economy_agent.calculate_production()
@@ -194,21 +194,21 @@ class BuildingSlot:
 
         # min upgrades reached, exit function
         else:
-            event_text.text = f"minimum {0} building slots reached!"
+            event_text.set_text(f"minimum {0} building slots reached!", sender=player.owner)
             return
 
         # if do_upgrade, set values
         if not do_downgrade:
             return
 
-        event_text.text = f"Downgraded from {planet.building_slot_amount} building slots to {planet.building_slot_amount - 1}!"
+        event_text.set_text(f"Downgraded from {planet.economy_agent.building_slot_amount} building slots to {planet.economy_agent.building_slot_amount - 1}!",sender=player.owner)
 
         # if not min reached
-        if planet.building_slot_amount > 0:
-            planet.building_slot_amount -= 1
-            if planet.building_slot_upgrades > 0:
-                planet.building_slot_upgrades -= 1
+        if planet.economy_agent.building_slot_amount > 0:
+            planet.economy_agent.building_slot_amount -= 1
+            if planet.economy_agent.building_slot_upgrades > 0:
+                planet.economy_agent.building_slot_upgrades -= 1
 
         # finally calculate new productions
-        planet.calculate_production()
+        planet.economy_agent.calculate_production()
         economy_handler.calculate_global_production(player)

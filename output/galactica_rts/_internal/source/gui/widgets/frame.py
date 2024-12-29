@@ -3,6 +3,7 @@ import pygame
 from source.configuration.game_config import config
 from source.draw.rectangle import draw_transparent_rounded_rect
 from source.handlers.color_handler import colors
+from source.multimedia_library.images import scale_image_cached
 
 
 class Frame:
@@ -40,7 +41,7 @@ class Frame:
         self.update_size((width, height))
 
     def draw(self):
-        self.surface = pygame.transform.scale(self.surface, (self.world_width, self.world_height))
+        self.surface = scale_image_cached(self.surface, (self.world_width, self.world_height))
         rect = (self.world_x, self.world_y, self.surface.get_rect().width, self.surface.get_rect().height)
         draw_transparent_rounded_rect(
                 self.win,

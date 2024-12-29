@@ -2,7 +2,7 @@ import pygame
 
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.handlers.color_handler import colors
-from source.multimedia_library.images import get_image
+from source.multimedia_library.images import get_image, scale_image_cached
 
 
 class ToggleSwitch:
@@ -16,7 +16,7 @@ class ToggleSwitch:
         self.reposition()
 
     def create_icons(self):
-        image = pygame.transform.scale(
+        image = scale_image_cached(
                 get_image("arrow-right.png"), (self.toggle_size, self.toggle_size))
 
         self.toggle_panel_icon = ImageButton(win=self.parent.win,
@@ -36,12 +36,12 @@ class ToggleSwitch:
     def toggle_panel(self):
         if not self.parent._hidden:
             self.parent.hide()
-            image = pygame.transform.scale(get_image("arrow-left.png"), (self.toggle_size, self.toggle_size))
+            image = scale_image_cached(get_image("arrow-left.png"), (self.toggle_size, self.toggle_size))
             self.toggle_panel_icon.image = pygame.transform.rotate(image, 90)
             self.toggle_panel_icon.tooltip = f"open {self.parent.name}"
 
         else:
-            image = pygame.transform.scale(
+            image = scale_image_cached(
                     get_image("arrow-right.png"), (self.toggle_size, self.toggle_size))
             self.toggle_panel_icon.image = pygame.transform.rotate(image, 90)
             self.toggle_panel_icon.tooltip = f"close {self.parent.name}"

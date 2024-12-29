@@ -12,8 +12,6 @@ from source.handlers.file_handler import pictures_path, gifs_path
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups, PanZoomLayeredUpdates
 from source.handlers.widget_handler import WidgetHandler
-from source.universe.celestial_objects.celestial_object import CelestialObject
-from source.universe.celestial_objects.celestial_object_static import CelestialObjectStatic
 
 FONT_SIZE = 16
 
@@ -110,8 +108,17 @@ class DebugEdit(EditorBase):
                 color=self.frame_color, image_name="layer_icon.png",
                 key="layer", tooltip="layers", on_click=lambda: print("layer: "), layer=9, parent=self)
         x += BUTTON_SIZE * 1.5
+
         self.checkboxes.append(layer_checkbox)
         self.widgets.append(layer_checkbox)
+
+        lod_checkbox = Checkbox(
+                self.win, self.world_x - self.spacing_x + x + BUTTON_SIZE * 3, y, 30, 30, is_sub_widget=False,
+                color=self.frame_color, image_name="lod_icon.svg",
+                key="lod", tooltip="lod", on_click=lambda: print("layer: "), layer=9, parent=self)
+        x += BUTTON_SIZE * 1.5
+        self.checkboxes.append(lod_checkbox)
+        self.widgets.append(lod_checkbox)
 
         for i in self.checkboxes:
             i.checked = False
@@ -167,6 +174,9 @@ class DebugEdit(EditorBase):
                 config.debug = i.checked
                 level_of_detail.debug = i.checked
 
+            if i.key == "lod":
+                level_of_detail.debug = i.checked
+
             if i.key.startswith("layers"):
                 # i.kex = layers:0  ect...
                 # layer_switch = {"0": 0, "1": 0, "2": 0, "3": 0, "4": 0, "5": 0, "6": 0, "7": 0, "8": 0, "9": 0, "10": 0}
@@ -186,10 +196,13 @@ class DebugEdit(EditorBase):
         y += self.text_spacing
         self.draw_text(self.world_x + self.text_spacing, y, 200, FONT_SIZE,
                 f"pan_zoom.world_offset_y: {pan_zoom_handler.world_offset_y}")
+        y += self.text_spacing
+        self.draw_text(self.world_x + self.text_spacing, y, 200, FONT_SIZE,
+                f"pan_zoom.zoom_min: {pan_zoom_handler.zoom_min}")
         y += self.text_spacing * 2
 
         if self.layer_debug:
-            celestials = [i for i in all_widgets if issubclass(i.__class__, (CelestialObject, CelestialObjectStatic))]
+            celestials = sprite_groups.universe.sprites()
 
             self.draw_text(self.world_x + self.text_spacing, y, 200, FONT_SIZE, f"celestials: {len(celestials)}")
             y += self.text_spacing
@@ -199,7 +212,7 @@ class DebugEdit(EditorBase):
 
             for key, value in universe_factory.celestial_objects.items():
                 self.draw_text(self.world_x + self.text_spacing, y, 200, FONT_SIZE,
-                        f"{key}: {len(value)} / visibles: {len([i for i in value if i._hidden == False])}")
+                        f"{key}: {len(value)} / visibles: {len([i for i in value if i.inside_screen])}")
                 y += self.text_spacing
 
             y += self.text_spacing

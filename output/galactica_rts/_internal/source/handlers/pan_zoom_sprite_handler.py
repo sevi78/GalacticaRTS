@@ -1,13 +1,23 @@
 import pygame
-from pygame.sprite import LayeredUpdates
+from pygame.sprite import LayeredUpdates, LayeredDirty, Group
 
 from source.configuration.game_config import config
 from source.gui.container.container_widget import ContainerWidgetItem, WIDGET_SIZE
 from source.gui.lod import level_of_detail
 from source.handlers import widget_handler
+# from source.handlers.position_handler import prevent_object_overlap
 from source.handlers.widget_handler import WidgetHandler
 from source.multimedia_library.images import get_image, get_gif_frames
+from source.pan_zoom_sprites.pan_zoom_ship_test2.pan_zoom_layered_update_test2 import ShipLayeredUpdates2
 
+"""
+TODO: clean up the mess here !!! 
+
+we might not use so many different Updaes classes.
+
+- check wich of them need visible , _hidden ect ... 
+
+"""
 
 class PanZoomLayeredUpdates(LayeredUpdates):
     def __init__(self, *sprites, **kwargs):
@@ -49,6 +59,37 @@ class PanZoomLayeredUpdates(LayeredUpdates):
         return dirty
 
 
+class UniverseLayeredUpdates(pygame.sprite.LayeredUpdates):
+    def draw(self, surface):
+        sprites = self.sprites()
+        surface_blit = surface.blit
+        for spr in sprites:
+            if spr.inside_screen:
+                if spr.image:
+                    self.spritedict[spr] = surface_blit(spr.image, spr.rect)
+                else:
+                    spr.draw()
+            if spr.debug:
+                spr.debug_object()
+        self.lostsprites = []
+
+class ReloaderLayeredUpdates(pygame.sprite.LayeredUpdates):
+
+    """
+    this class handles the updates and drawing of all sprites, only if they are visible
+    """
+    def __init__(self):
+        super().__init__()
+
+    def draw(self, *args, **kwargs):
+        sprites = self.sprites()
+        for spr in sprites:
+            if spr.visible:
+                spr.draw()
+
+
+
+
 class SpriteGroups:  # original
     def __init__(self):
         self.planets = PanZoomLayeredUpdates(default_layer=0)
@@ -56,13 +97,19 @@ class SpriteGroups:  # original
         self.collectable_items = PanZoomLayeredUpdates(default_layer=2)
         self.ufos = PanZoomLayeredUpdates(default_layer=0)
         self.ships = PanZoomLayeredUpdates(default_layer=4)
-        self.missiles = PanZoomLayeredUpdates(default_layer=5)
+        self.ships2 = ShipLayeredUpdates2()
+        self.missiles =LayeredUpdates(default_layer=5)
         self.explosions = PanZoomLayeredUpdates(default_layer=6)
         self.target_objects = PanZoomLayeredUpdates(default_layer=7)
         self.moving_images = PanZoomLayeredUpdates(default_layer=8)
-        self.state_images = PanZoomLayeredUpdates(default_layer=8)
+        self.state_images = PanZoomLayeredUpdates(default_layer=4)
+        self.universe = UniverseLayeredUpdates(defaults_layer=0)
+        self.energy_reloader = ReloaderLayeredUpdates()
+        # self.energy_reloader = LayeredUpdates(default_layer=0)
+        # self.energy_reloader = Group(default_layer=0)
 
-    def get_hit_object(self, **kwargs: {list}) -> object or None:
+
+    def get_hit_object__(self, **kwargs: {list}) -> object or None:# very slow
         """ returns an object that is at mouse position
 
             optional(kwargs):
@@ -86,6 +133,22 @@ class SpriteGroups:  # original
                 for obj in getattr(self, list_name):
                     if obj.collide_rect.collidepoint(pygame.mouse.get_pos()):
                         return obj
+
+        return None
+
+    def get_hit_object(self, **kwargs):
+        filter_ = kwargs.get("filter", [])
+        lists = kwargs.get("lists", ["planets", "ships", "ufos", "collectable_items", "celestial_objects"])
+        lists = [l for l in lists if l not in filter_]
+
+        mouse_pos = pygame.mouse.get_pos()
+
+        for list_name in lists:
+            if hasattr(self, list_name):
+                sprite_list = getattr(self, list_name)
+                collided = sprite_list.get_sprites_at(mouse_pos)
+                if collided:
+                    return collided[0]
 
         return None
 
@@ -118,6 +181,7 @@ class SpriteGroups:  # original
     def convert_sprite_groups_to_container_widget_items_list(
             self, sprite_group_name, sort_by=None, reverse=True, **kwargs
             ) -> list:
+
         # If a sort_by attribute is provided, sort the sprite_group by that attribute
         sprite_group = getattr(sprite_groups, sprite_group_name)
 
@@ -135,6 +199,9 @@ class SpriteGroups:  # original
         if sort_by is not None:
             # Convert sprite_group to a list for sorting
             sprite_list = sprite_group.sprites()
+            # handle the case if the sprite_group is empty
+            if not sprite_list:
+                return []
 
             if hasattr(sprite_list[0].economy_agent, sort_by):
                 sorted_sprites = sorted(sprite_list, key=lambda x: getattr(x.economy_agent, sort_by), reverse=reverse)
@@ -174,14 +241,18 @@ class SpriteGroups:  # original
         self.collectable_items.update(*args)
         self.ufos.update(*args)
         self.ships.update(*args)
+        self.ships2.update(*args)
         self.missiles.update(*args)
         self.explosions.update(*args)
         self.target_objects.update(*args)
-        self.moving_images.update()
+        self.universe.update(*args)
+        self.energy_reloader.update()
+
 
     def draw(self, surface, **kwargs):
         events = kwargs.get("events")
         widget_handler.update(events)
+        self.universe.draw(surface)
 
         if WidgetHandler.layer_switch["0"]:
             self.planets.draw(surface)
@@ -199,11 +270,14 @@ class SpriteGroups:  # original
 
         if WidgetHandler.layer_switch["3"]:
             WidgetHandler.draw_layer(events, 3)
+            self.energy_reloader.draw(surface)
             self.ships.draw(surface)
+            self.ships2.draw(surface)
 
         if WidgetHandler.layer_switch["4"]:
             WidgetHandler.draw_layer(events, 4)
             self.missiles.draw(surface)
+            self.state_images.draw(surface)
 
         if WidgetHandler.layer_switch["5"]:
             WidgetHandler.draw_layer(events, 5)
@@ -225,6 +299,10 @@ class SpriteGroups:  # original
 
         if WidgetHandler.layer_switch["10"]:
             WidgetHandler.draw_layer(events, 10)
+
+        self.moving_images.update()
+
+
 
 
 sprite_groups = SpriteGroups()

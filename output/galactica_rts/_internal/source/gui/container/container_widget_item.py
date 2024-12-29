@@ -4,7 +4,7 @@ from source.configuration.game_config import config
 from source.draw.rectangle import draw_transparent_rounded_rect
 from source.gui.container.container_config import FONT_SIZE, WIDGET_SIZE, TEXT_SPACING
 from source.handlers.color_handler import colors
-from source.multimedia_library.images import get_image
+from source.multimedia_library.images import get_image, scale_image_cached
 from source.text.text_formatter import format_number
 from source.text.text_wrap import TextWrap
 
@@ -100,7 +100,7 @@ class ContainerWidgetItem(TextWrap):
         self.world_x = x
         self.world_y = y
         self.image_raw = image
-        self.image = pygame.transform.scale(image, (width, height))
+        self.image = scale_image_cached(image, (width, height))
         self.rect = self.image.get_rect(topleft=(x, y))
 
         self.index = index
@@ -130,7 +130,7 @@ class ContainerWidgetItem(TextWrap):
     def create_buttons(self):
         """
         "agree": {
-            "image": pygame.transform.scale(get_image("thumps_up.png"), (button_size, button_size)),
+            "image": scale_image_cached(get_image("thumps_up.png"), (button_size, button_size)),
             "f": lambda: test()
             },
         """
@@ -215,7 +215,7 @@ class ContainerWidgetItem(TextWrap):
                 else:
                     image_name = "question_mark.png"
 
-                self.state_image = pygame.transform.scale(get_image(image_name), (
+                self.state_image = scale_image_cached(get_image(image_name), (
                     WIDGET_SIZE, WIDGET_SIZE))
                 self.state_image_rect = self.state_image.get_rect()
 
@@ -226,7 +226,7 @@ class ContainerWidgetItem(TextWrap):
                 self.text += f"{self.obj.name}, owner: {config.app.players[self.obj.owner].name}, energy: {format_number(self.obj.energy, 1)}"
 
                 # state image
-                self.state_image = pygame.transform.scale(get_image(
+                self.state_image = scale_image_cached(get_image(
                         self.obj.state_engine.image_drawer.state_image_names[self.obj.state_engine.state]), (
                     WIDGET_SIZE / 3, WIDGET_SIZE / 3))
                 self.state_image_rect = self.state_image.get_rect()

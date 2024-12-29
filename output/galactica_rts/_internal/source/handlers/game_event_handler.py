@@ -1,5 +1,3 @@
-import time
-
 from source.game_play.game_events import GameEvent
 from source.handlers.file_handler import load_file
 from source.handlers.time_handler import time_handler

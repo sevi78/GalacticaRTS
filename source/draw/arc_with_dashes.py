@@ -8,6 +8,8 @@ import psutil
 import pygame
 from pygame import Rect
 
+DEBUG = False
+DEBUG_BORDER = 0 if not DEBUG else 50
 
 @lru_cache(maxsize=10000)
 def calculate_arc_dash_points(rect, start_angle, stop_angle, radius, dash_length, clip_rect):
@@ -45,7 +47,7 @@ def calculate_arc_dash_points(rect, start_angle, stop_angle, radius, dash_length
 
 def draw_arc_with_dashes(surf, color, rect, start_angle, stop_angle, radius, dash_length=10, width=1):
     clip_rect_ = surf.get_clip()
-    border = 50
+    border = DEBUG_BORDER
     clip_rect = Rect(clip_rect_[0] + border, clip_rect_[1] + border, clip_rect_[2]-border *2, clip_rect_[3]-border *2)
     points = calculate_arc_dash_points(tuple(rect), start_angle, stop_angle, radius, dash_length,
             (clip_rect.left, clip_rect.top, clip_rect.right, clip_rect.bottom))

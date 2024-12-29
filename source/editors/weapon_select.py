@@ -209,9 +209,15 @@ class WeaponSelect(EditorBase):
         self.update_obj()
 
     def upgrade(self):
-        if self.current_weapon["level"] < self.max_weapons_upgrade_level:
+        # already in building cue
+        in_progress = len([_ for _ in config.app.building_widget_list if _.receiver == self.obj and _.name == self.current_weapon["name"]])
+        # print ("in_progress:", in_progress)
+
+        # we need to add in progress to the upgrade level to make shure we don't exceed the max level
+        if self.current_weapon["level"] < self.max_weapons_upgrade_level - in_progress:
             prices = building_factory.get_prices_from_weapons_dict(
                     self.current_weapon["name"], self.current_weapon["level"])
+
             building_factory.build(self.current_weapon["name"], self.obj, prices=prices)
             self.update_obj()
         else:

@@ -198,15 +198,15 @@ class UIBuilder(SceneBuilder):
                 parent=self,
                 obj=enemy_handler)
 
-        # self.ship_edit = ShipEdit(
-        #         pygame.display.get_surface(),
-        #         pygame.display.get_surface().get_rect().centerx - width / 2,
-        #         pygame.display.get_surface().get_rect().y + spacing_y,
-        #         width,
-        #         height,
-        #         parent=self,
-        #         obj=self.ship,
-        #         layer=9)
+        self.ship_edit = ShipEdit(
+                pygame.display.get_surface(),
+                pygame.display.get_surface().get_rect().centerx - width / 2,
+                pygame.display.get_surface().get_rect().y + spacing_y,
+                width,
+                height,
+                parent=self,
+                obj=self.ship,
+                layer=9)
 
         self.debug_edit = DebugEdit(
                 pygame.display.get_surface(),

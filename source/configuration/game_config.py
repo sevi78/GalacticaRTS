@@ -89,6 +89,7 @@ class GameConfig:
         self.show_orbit = True
         self.show_grid = False
         self.show_map_panel = True
+        self.show_ship_state = True
         self.text_input_active = False
         self.copy_object = None
         self.hover_object = None

@@ -52,6 +52,24 @@ class ViewPanel(WidgetBase):
         self.hide()
 
     def create_icons(self):
+        self.show_ship_state_icon = ImageButton(win=self.win,
+                x=self.get_screen_x() - 50,
+                y=self.surface_rect.y + self.spacing,
+                width=self.icon_size,
+                height=self.icon_size,
+                is_sub_widget=False,
+                parent=self,
+                image=scale_image_cached(
+                        get_image("state_icon.png"), (25, 25)),
+                tooltip="show ship states",
+                frame_color=self.frame_color,
+                moveable=False,
+                include_text=True, layer=self.layer,
+                on_click=lambda: config.set_global_variable("show_ship_state", True, button=self.show_ship_state_icon))
+
+        self.widgets.append(self.show_ship_state_icon)
+        self.max_width += self.icon_size + self.spacing
+
         self.view_explored_planets_icon = ImageButton(win=self.win,
                 x=self.get_screen_x() - 50,
                 y=self.surface_rect.y + self.spacing,

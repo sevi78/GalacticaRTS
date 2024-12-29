@@ -65,7 +65,8 @@ class UniverseLayeredUpdates(pygame.sprite.LayeredUpdates):
         surface_blit = surface.blit
         for spr in sprites:
             if spr.inside_screen:
-                if spr.image:
+                if hasattr(spr, "image"):
+                # if spr.image:
                     self.spritedict[spr] = surface_blit(spr.image, spr.rect)
                 else:
                     spr.draw()

@@ -1,5 +1,6 @@
 from source.configuration.game_config import config
 from source.draw.arrow import ArrowCrossAnimatedArray
+from source.gui.lod import level_of_detail
 from source.handlers.color_handler import colors
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_gif import PanZoomSprite
 
@@ -20,7 +21,7 @@ class PanZoomTargetObject(PanZoomSprite):
 
         self.target_cross = ArrowCrossAnimatedArray(
                 self.win,
-                colors.frame_color,
+                colors.ui_darker,
                 (400, 300),
                 40,
                 0,
@@ -36,12 +37,18 @@ class PanZoomTargetObject(PanZoomSprite):
         # make shure the gif is hidden
         self.hide()
 
+        # only draw if the player is the client
+        if not config.app.game_client.id == self.parent.owner:
+            return
+
         # only draw if the target is set
         # if self.parent.target and self.parent.selected:
         if self.parent.target:
-            self.target_cross.set_center_distance(self.parent.target.rect.width)
-            self.target_cross.update(self.parent.target.rect.center)
-            self.target_cross.draw()
+            if level_of_detail.inside_screen(self.parent.target.rect.center):
+
+                self.target_cross.set_center_distance(self.parent.target.rect.width)
+                self.target_cross.update(self.parent.target.rect.center)
+                self.target_cross.draw()
 
         if config.game_paused:
             return

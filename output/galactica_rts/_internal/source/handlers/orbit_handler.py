@@ -5,14 +5,19 @@ import pygame
 from source.configuration.game_config import config
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.handlers.time_handler import time_handler
+from source.multimedia_library.images import rotate_image_to
 
+POINTING_WEAPONS = ["laser", "phaser"]
 
-def get_orbit_pos(self):
+def get_orbit_pos(self):#????
     if self.orbit_object.property == "ufo":
         pos = self.orbit_object.rect.center
     else:
         pos = self.orbit_object.rect.center
     return pos
+
+def get_orbit_pos_(self):
+    return self.orbit_object.rect.center
 
 
 def set_orbit_object_id(self, orbit_object_id):
@@ -25,7 +30,7 @@ def set_orbit_object_id(self, orbit_object_id):
         print("set_orbit_object_id error: self.id == orbit_object_id!")
 
 
-def set_orbit_object(self):
+def set_orbit_object(self):# original
     """ sets the orbit object based on the orbit id
     """
     ignore = ["Sun", "Sun1"]
@@ -36,6 +41,19 @@ def set_orbit_object(self):
     else:
         self.orbit_object_id = self.id
         self.orbit_object = self
+
+
+def set_orbit_object_(self):
+    """ sets the orbit object based on the orbit id
+    """
+
+    orbit_objects = [i for i in sprite_groups.planets if i.id == self.orbit_object_id]
+    if len(orbit_objects) > 0:
+        self.orbit_object = orbit_objects[0]
+    # else:
+    #     self.orbit_object_id = self.id
+    #     self.orbit_object = self
+
 
 
 def orbit_with_constant_distance(
@@ -120,6 +138,14 @@ def orbit_ship(obj, orbit_obj, orbit_speed, direction):
         if config.app.game_client.is_host:
             obj.world_x = orbit_obj.world_x + pos.x
             obj.world_y = orbit_obj.world_y + pos.y
+
+    # rotate the image
+    if obj.weapon_handler.current_weapon["name"] in  POINTING_WEAPONS:
+        rotation_correction_angle = 90
+    else:
+        rotation_correction_angle = 180
+
+    obj.angle = rotate_image_to(obj, orbit_obj.rect.center, rotation_correction_angle)
 
 
 def gradually_move_towards(obj, current_pos, target_pos):  # unused

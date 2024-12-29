@@ -2,6 +2,7 @@ import pygame
 
 from source.configuration.game_config import config
 from source.handlers.color_handler import colors
+from source.multimedia_library.sounds import sounds
 from source.text.text_wrap import TextWrap
 
 pygame.font.init()
@@ -9,6 +10,11 @@ pygame.font.init()
 EVENT_TEXT_FADE = True
 TEXT_DISPLAY_UPDATE = 15000
 TEXT_LINES = 4
+
+
+
+
+
 
 
 class EventText(TextWrap):
@@ -23,7 +29,7 @@ class EventText(TextWrap):
     event_text = EventText(win)
 
     # Set the text to be displayed
-    event_text.text = "This is an example event text."
+    event_text.set_text( "This is an example event text."
 
     # Update the event text on the pygame window
     event_text.update()
@@ -86,7 +92,7 @@ class EventText(TextWrap):
         return self._text
 
     @text.setter
-    def text(self, value, **kwargs):
+    def text(self, value):
         if self._text == value:
             return
 
@@ -111,9 +117,38 @@ class EventText(TextWrap):
         # set alpha value
         self.alpha = 255
 
-    def set_text(self, text, **kwargs):
-        self.text = text
-        self.obj = kwargs.get("obj", None)
+        # set tooltip
+        # if hasattr(config.app, "tooltip_instance"):
+            # config.app.tooltip_instance.set_text(self.event_display_text)
+        # config.tooltip_text = self.event_display_text
+            # config.app.tooltip_instance.set_text()
+
+
+    def set_text(self, text, **kwargs) -> None:
+        """
+        sets the text and handles sound and obj navigation for the event text
+
+        kwargs:
+            sender: int: the sender_id of the text, = owner
+            obj: any: the object to navigate to
+            sound: dict: the sound to play
+        """
+        sender = kwargs.get("sender", None)
+        obj_ = kwargs.get("obj", None)
+        sound_ = kwargs.get("sound", None)
+
+        if sender:
+            assert isinstance(sender, int), AssertionError (f"sender must be an int: not: {type(sender)}")
+            if config.app.game_client.id == sender:
+                self.text = text
+                self.obj = obj_
+                if sound_:
+                    sounds.play_sound(sound_["name"], channel=sound_["channel"])
+        else:
+            self.text = text
+            self.obj = obj_
+            if sound_:
+                sounds.play_sound(sound_["name"],channel= sound_["channel"])
 
     def update(self):
         # if config.edit_mode:
@@ -145,6 +180,23 @@ class EventText(TextWrap):
                 alpha=self.alpha,
                 alarm_links=alarm_links,
                 )
+
+        # x= config.app.building_panel.building_button_widget.resource_buttons[0].world_x
+        # y = config.app.building_panel.building_button_widget.resource_buttons[0].world_y
+        #
+        # self.wrap_text(
+        #         win=self.win,
+        #         text=self.event_display_text,
+        #         pos=(x,y),
+        #         size=(
+        #             config.app.ui_helper.world_width - config.app.building_panel.world_width,
+        #             config.ui_event_text_size),
+        #         font=self.event_text_font,
+        #         color=colors.ui_dark,
+        #         fade_out=EVENT_TEXT_FADE,
+        #         alpha=self.alpha,
+        #         alarm_links=alarm_links,
+        #         )
 
 
 event_text = EventText(config.win)

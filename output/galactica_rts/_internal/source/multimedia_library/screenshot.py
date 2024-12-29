@@ -2,6 +2,8 @@ import os
 
 import pygame
 
+from source.multimedia_library.images import scale_image_cached
+
 
 def capture_screenshot(screen: pygame.Surface, filename: str, area: tuple, target_size: tuple, **kwargs):
     """
@@ -26,19 +28,19 @@ def capture_screenshot(screen: pygame.Surface, filename: str, area: tuple, targe
             os.makedirs(directory)
 
         # Resize the subsurface to the target size
-        resized_subsurface = pygame.transform.scale(subsurface, target_size)
+        resized_subsurface = scale_image_cached(subsurface, target_size)
 
         # Save the resized subsurface to an image file
         pygame.image.save(resized_subsurface, os.path.join(directory, filename))
     except ValueError as e:
         print("ValueError: subsurface rectangle outside surface area: ", e)
         if event_text:
-            event_text.text = f"error, cannot make screenshot: {e}"
+            event_text.set_text(f"error, cannot make screenshot: {e}")
     except Exception as e:
         print("An error occurred: ", e)
         if event_text:
-            event_text.text = f"error, cannot make screenshot: {e}"
+            event_text.set_text(f"error, cannot make screenshot: {e}")
 
     if event_text:
         print(f"screenshot created: {filename}")
-        event_text.text = f"screenshot created: {filename}"
+        event_text.set_text(f"screenshot created: {filename}")

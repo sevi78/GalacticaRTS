@@ -6,7 +6,7 @@ import pygame
 from source.editors.editor_base.editor_base import EditorBase
 from source.editors.editor_base.editor_config import TOP_SPACING
 from source.handlers.file_handler import load_file
-from source.multimedia_library.images import get_image
+from source.multimedia_library.images import get_image, scale_image_cached
 
 BUTTON_SIZE = 30
 
@@ -71,7 +71,7 @@ class EconomyOverview(EditorBase):
     #         height=BUTTON_SIZE,
     #         is_sub_widget=False,
     #         parent=self,
-    #         image=pygame.transform.scale(
+    #         image=scale_image_cached(
     #             get_image(f"{building_name}_25x25.png"), (BUTTON_SIZE, BUTTON_SIZE)),
     #         tooltip="",  # "show ships",
     #         frame_color=self.frame_color,
@@ -89,7 +89,7 @@ class EconomyOverview(EditorBase):
         offset_y = kwargs.get("offset_y", 0)
 
         image_copy = copy.copy(image)
-        new_image = pygame.transform.scale(image_copy, size)
+        new_image = scale_image_cached(image_copy, size)
         image_rect = new_image.get_rect()
         pos = pos[0] + offset_x, pos[1] + offset_y
         image_rect.center = pos

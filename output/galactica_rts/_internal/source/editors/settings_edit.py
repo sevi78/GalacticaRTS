@@ -14,7 +14,6 @@ from source.handlers.time_handler import time_handler
 from source.handlers.ui_handler import ui_handler
 from source.handlers.widget_handler import WidgetHandler
 
-
 ARROW_SIZE = 15
 FONT_SIZE = int(ARROW_SIZE * .8)
 

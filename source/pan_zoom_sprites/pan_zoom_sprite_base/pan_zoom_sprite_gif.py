@@ -10,7 +10,7 @@ from source.handlers.pan_zoom_handler import PanZoomHandler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.handlers.time_handler import time_handler
 from source.multimedia_library.images import get_image, get_gif_frames, get_gif, get_gif_fps, get_gif_duration, \
-    outline_image, scale_image_cached
+    outline_image, scale_image_cached, rotate_image_cached
 from source.multimedia_library.sounds import sounds
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_debug import GameObjectDebug
 
@@ -150,6 +150,7 @@ class PanZoomSprite(pygame.sprite.Sprite, VisibilityHandler, GameObjectDebug):  
             self.image_raw.set_alpha(self.image_alpha)
             self.image.set_alpha(self.image_alpha)
 
+        # self.image_rotated = copy.copy(self.image)
         self.image_outline = outline_image(copy.copy(self.image), self.frame_color, self.outline_threshold, self.outline_thickness)
         self.average_color = get_average_color(self.image_raw)
 
@@ -237,8 +238,7 @@ class PanZoomSprite(pygame.sprite.Sprite, VisibilityHandler, GameObjectDebug):  
         if not self.image_raw:
             return
 
-        self.image = scale_image_cached(self.image_raw, (
-        self.screen_width * self.shrink, self.screen_height * self.shrink))
+        self.image = scale_image_cached(self.image_raw, (self.screen_width * self.shrink, self.screen_height * self.shrink))
 
         self.rect = self.image.get_rect()
 

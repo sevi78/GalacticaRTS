@@ -31,28 +31,13 @@ Fields:
         else:
             self.handle_pause_game()
 
-    def handle_pause_game_(self):  # original
-        # toggle game_paused
-        config.game_paused = not config.game_paused
 
-        # handle game speed
-        print("handle_pause_game.pause_game:", config.game_paused)
-        if time_handler.game_speed > 0:
-            self.game_speed = time_handler.game_speed
-            time_handler.game_speed = 0
-            self.event_text = "Game Paused!"
-            print(f"handle_pause_game.Game Paused! {time_handler.game_speed}")
-
-        else:
-            time_handler.game_speed = self.game_speed
-            self.event_text = "Game Continued!"
-            print(f"handle_pause_game.Game Continued! {time_handler.game_speed}")
 
     def handle_pause_game(self):
         # toggle game_paused
         config.game_paused = not config.game_paused
 
-        print("handle_pause_game.pause_game:", config.game_paused)
+        # print("handle_pause_game.pause_game:", config.game_paused)
         if config.game_paused:
             time_handler.stored_game_speed = time_handler.game_speed
             time_handler.game_speed = 0
@@ -68,15 +53,20 @@ Fields:
         :param events:
         quit the game with quit icon or esc
         """
+
         for event in events:
             if event.type == pygame.QUIT:
                 # self.network_client.disconnect()
+                self.game_client.disconnect_from_server()
                 pygame.quit()
                 quit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
+                    self.game_client.disconnect_from_server()
                     # self.network_client.disconnect()
                     sys.exit()
+
+
 
     def set_screen_size(self, size, events):
         for event in events:

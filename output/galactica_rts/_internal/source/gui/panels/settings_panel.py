@@ -7,7 +7,7 @@ from source.gui.widgets.buttons.image_button import ImageButton, Delegate
 from source.gui.widgets.widget_base_components.widget_base import WidgetBase
 from source.handlers.color_handler import colors
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
-from source.multimedia_library.images import get_image, overblit_button_image
+from source.multimedia_library.images import get_image, overblit_button_image, scale_image_cached
 from source.text.info_panel_text_generator import info_panel_text_generator
 
 
@@ -67,7 +67,7 @@ class SettingsPanel(WidgetBase):
         #     height=self.icon_size,
         #     is_sub_widget=False,
         #     parent=self,
-        #     image=pygame.transform.scale(
+        #     image=scale_image_cached(
         #         get_image("economy_icon.png"), (25, 25)),
         #     tooltip="navigate to this ship",
         #     frame_color=self.frame_color,
@@ -85,7 +85,7 @@ class SettingsPanel(WidgetBase):
                 height=self.icon_size,
                 is_sub_widget=False,
                 parent=self,
-                image=pygame.transform.scale(get_image("chat_icon.png"), (25, 25)),
+                image=scale_image_cached(get_image("chat_icon.png"), (25, 25)),
                 tooltip="chat",
                 frame_color=self.frame_color,
                 moveable=False,
@@ -105,7 +105,7 @@ class SettingsPanel(WidgetBase):
                 height=self.icon_size,
                 is_sub_widget=False,
                 parent=self,
-                image=pygame.transform.scale(get_image("server_icon.png"), (25, 25)),
+                image=scale_image_cached(get_image("server_icon.png"), (25, 25)),
                 tooltip="server settings",
                 frame_color=self.frame_color,
                 moveable=False,
@@ -125,7 +125,7 @@ class SettingsPanel(WidgetBase):
                 height=self.icon_size,
                 is_sub_widget=False,
                 parent=self,
-                image=pygame.transform.scale(get_image("view_icon.png"), (25, 25)),
+                image=scale_image_cached(get_image("view_icon.png"), (25, 25)),
                 image_raw=get_image("view_icon.png"),
                 tooltip="view",
                 frame_color=self.frame_color,
@@ -151,7 +151,7 @@ class SettingsPanel(WidgetBase):
                 height=self.icon_size,
                 is_sub_widget=False,
                 parent=self,
-                image=pygame.transform.scale(get_image("multiplayer.png"), (25, 25)),
+                image=scale_image_cached(get_image("multiplayer.png"), (25, 25)),
                 image_raw=get_image("multiplayer.png"),
                 tooltip="players",
                 frame_color=self.frame_color,
@@ -177,7 +177,7 @@ class SettingsPanel(WidgetBase):
                 height=self.icon_size,
                 is_sub_widget=False,
                 parent=self,
-                image=pygame.transform.scale(get_image("mission_512x512.png"), (25, 25)),
+                image=scale_image_cached(get_image("mission_512x512.png"), (25, 25)),
                 image_raw=get_image("mission_512x512.png"),
                 tooltip="this is your mission",
                 frame_color=self.frame_color,
@@ -202,7 +202,7 @@ class SettingsPanel(WidgetBase):
                 height=self.icon_size,
                 is_sub_widget=False,
                 parent=self,
-                image=pygame.transform.scale(get_image("save_icon_bk.png"), (25, 25)),
+                image=scale_image_cached(get_image("save_icon_bk.png"), (25, 25)),
                 image_raw=get_image("save_icon_bk.png"),
                 tooltip="save game",
                 frame_color=self.frame_color,
@@ -227,7 +227,7 @@ class SettingsPanel(WidgetBase):
                 height=self.icon_size,
                 is_sub_widget=False,
                 parent=self,
-                image=pygame.transform.scale(get_image("deal_icon.png"), (25, 25)),
+                image=scale_image_cached(get_image("deal_icon.png"), (25, 25)),
                 image_raw=get_image("deal_icon.png"),
                 tooltip="open deal manager",
                 frame_color=self.frame_color,
@@ -252,7 +252,7 @@ class SettingsPanel(WidgetBase):
                 height=self.icon_size,
                 is_sub_widget=False,
                 parent=self,
-                image=pygame.transform.scale(get_image("add_deal_icon.png"), (25, 25)),
+                image=scale_image_cached(get_image("add_deal_icon.png"), (25, 25)),
                 image_raw=get_image("deal_icon.png"),
                 tooltip="add deal",
                 frame_color=self.frame_color,
@@ -277,7 +277,7 @@ class SettingsPanel(WidgetBase):
                 height=self.icon_size,
                 is_sub_widget=False,
                 parent=self,
-                image=pygame.transform.scale(
+                image=scale_image_cached(
                         get_image("ship_container_icon.png"), (25, 25)),
                 tooltip="ship select",
                 frame_color=self.frame_color,
@@ -294,7 +294,7 @@ class SettingsPanel(WidgetBase):
                 height=self.icon_size,
                 is_sub_widget=False,
                 parent=self,
-                image=pygame.transform.scale(
+                image=scale_image_cached(
                         get_image("planet_container_icon.png"), (25, 25)),
                 tooltip="planet select",
                 frame_color=self.frame_color,
@@ -313,7 +313,7 @@ class SettingsPanel(WidgetBase):
                 height=self.icon_size,
                 is_sub_widget=False,
                 parent=self,
-                image=pygame.transform.scale(
+                image=scale_image_cached(
                         get_image("spacehunter.png"), (25, 25)),
                 tooltip="navigate to this ship",
                 frame_color=self.frame_color,
@@ -330,7 +330,7 @@ class SettingsPanel(WidgetBase):
                 height=self.icon_size,
                 is_sub_widget=False,
                 parent=self,
-                image=pygame.transform.scale(get_image("info_30x30.png"), (25, 25)),
+                image=scale_image_cached(get_image("info_30x30.png"), (25, 25)),
                 tooltip="information about game controls",
                 frame_color=self.frame_color,
                 moveable=False,
@@ -346,7 +346,7 @@ class SettingsPanel(WidgetBase):
         #     height=self.icon_size,
         #     is_sub_widget=False,
         #     parent=self,
-        #     image=pygame.transform.scale(
+        #     image=scale_image_cached(
         #         get_image("Zeta Bentauri_60x60.png"), (25, 25)),
         #     tooltip="open planet editor",
         #     frame_color=self.frame_color,
@@ -363,7 +363,7 @@ class SettingsPanel(WidgetBase):
                 height=self.icon_size,
                 is_sub_widget=False,
                 parent=self,
-                image=pygame.transform.scale(
+                image=scale_image_cached(
                         get_image("autopilot.png"), (25, 25)),
                 tooltip="enable autopilot",
                 frame_color=self.frame_color,
@@ -382,7 +382,7 @@ class SettingsPanel(WidgetBase):
                 height=self.icon_size,
                 is_sub_widget=False,
                 parent=self,
-                image=pygame.transform.scale(get_image("settings_40x40.png"), (25, 25)),
+                image=scale_image_cached(get_image("settings_40x40.png"), (25, 25)),
                 tooltip="open advanced settings panel",
                 frame_color=self.frame_color,
                 moveable=False,

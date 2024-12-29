@@ -3,7 +3,7 @@
     "draw_universe": true,
     "enable_cross": false,
     "enable_blurr": true,
-    "blurr_radius": 20,
+    "blurr_radius": 30,
     "blurr_alpha": 20,
     "show_universe": true,
     "star_brightness": 100,

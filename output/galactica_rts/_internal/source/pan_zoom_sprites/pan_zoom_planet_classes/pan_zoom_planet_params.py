@@ -98,7 +98,7 @@ class PanZoomPlanetParams:
         # set owner
         if self.owner != owner:
             if self.owner != -1:
-                event_text.set_text(f"Bad Luck! the planet {self.name} belongs to an alien species !", obj=self)
+                event_text.set_text(f"Bad Luck! the planet {self.name} belongs to an alien species !", obj=self, sender=owner)
                 return
 
         self.owner = owner
@@ -122,5 +122,5 @@ class PanZoomPlanetParams:
         self.string = self.name
 
         # set event text
-        event_text.set_text(f"Gratulation! you have reached a the Planet {self.name} !", obj=self)
+        event_text.set_text(f"Gratulation! you have reached a the Planet {self.name} !", obj=self, sender=owner)
         self.parent.update_building_button_widgets()

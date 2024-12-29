@@ -1,5 +1,8 @@
 import pygame
 
+from source.handlers.pan_zoom_handler import pan_zoom_handler
+from source.multimedia_library.images import scale_image_cached
+
 MIN_IMAGE_ZOOM_SIZE = 1
 MAX_IMAGE_ZOOM_SIZE = 1000
 
@@ -23,18 +26,18 @@ class PanZoomPlanetPositionHandler:
 
     def set_objects_screen_size(self):
         # get new_size size
-        new_size = (self.size_x * self.get_zoom(), self.size_y * self.get_zoom())
+        new_size = (self.size_x * pan_zoom_handler.get_zoom(), self.size_y * pan_zoom_handler.get_zoom())
         if new_size[0] < MIN_IMAGE_ZOOM_SIZE or new_size[1] < MIN_IMAGE_ZOOM_SIZE:
             new_size = (MIN_IMAGE_ZOOM_SIZE, MIN_IMAGE_ZOOM_SIZE)
         if new_size[0] > MAX_IMAGE_ZOOM_SIZE or new_size[1] > MAX_IMAGE_ZOOM_SIZE:
             new_size = (MAX_IMAGE_ZOOM_SIZE, MAX_IMAGE_ZOOM_SIZE)
 
         # set new image size
-        self.image = pygame.transform.scale(self.image_raw, new_size)
+        self.image = scale_image_cached(self.image_raw, new_size)
 
         # set new size
-        self.set_screen_width(new_size[0] * self.get_zoom())
-        self.set_screen_height(new_size[1] * self.get_zoom())
+        self.set_screen_width(new_size[0] * pan_zoom_handler.get_zoom())
+        self.set_screen_height(new_size[1] * pan_zoom_handler.get_zoom())
 
     def set_position(self, pos):
         self.screen_x = pos[0]

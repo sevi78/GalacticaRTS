@@ -2,6 +2,7 @@ from source.handlers.widget_handler import WidgetHandler
 
 
 class VisibilityHandler:
+    __slots__ = ["_is_sub_widget", "_hidden", "_disabled", "layer", "widgets"]
     def __init__(self, is_sub_widget=False, **kwargs):
         self._is_sub_widget = is_sub_widget
         self._hidden = False
@@ -40,19 +41,19 @@ class VisibilityHandler:
     def is_sub_widget(self):
         return self._is_sub_widget
 
-    def set_is_sub_widget(self, is_sub_widget):
-        self._is_sub_widget = is_sub_widget
-        if is_sub_widget:
-            WidgetHandler.remove_widget(self)
-        else:
-            WidgetHandler.add_widget(self)
+    # def set_is_sub_widget(self, is_sub_widget):
+    #     self._is_sub_widget = is_sub_widget
+    #     if is_sub_widget:
+    #         WidgetHandler.remove_widget(self)
+    #     else:
+    #         WidgetHandler.add_widget(self)
 
     def is_visible(self):
         return not self._hidden
 
-    def set_children_visible(self, value):
-        for i in self.children:
-            if i._hidden:
-                i.show()
-            else:
-                i.hide()
+    # def set_children_visible(self, value):
+    #     for i in self.children:
+    #         if i._hidden:
+    #             i.show()
+    #         else:
+    #             i.hide()

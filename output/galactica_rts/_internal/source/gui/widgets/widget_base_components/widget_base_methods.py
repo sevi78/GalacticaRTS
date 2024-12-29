@@ -10,6 +10,39 @@ from source.handlers.widget_handler import WidgetHandler
 
 class WidgetBaseMethods(ABC):
     def __init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs):
+        """
+            Initialize a new widget instance.
+
+            This constructor sets up the basic properties of a widget, including its position,
+            size, and various optional attributes.
+
+            Args:
+                win (pygame.Surface): The surface on which the widget will be drawn.
+                x (int): The x-coordinate of the widget's top-left corner.
+                y (int): The y-coordinate of the widget's top-left corner.
+                width (int): The width of the widget.
+                height (int): The height of the widget.
+                is_sub_widget (bool, optional): Indicates if this widget is a sub-widget of another. Defaults to False.
+
+            Keyword Args:
+                name (str, optional): The name of the widget. Defaults to the class name.
+                property (any, optional): A custom property for the widget. Defaults to None.
+                debug (bool, optional): Enable debug mode for the widget. Defaults to False.
+                parent (object, optional): The parent object of this widget. Defaults to None.
+                key (any, optional): A key identifier for the widget. Defaults to None.
+                id (any, optional): An ID for the widget. Defaults to None.
+                info_text (str, optional): Information text associated with the widget. Defaults to an empty string.
+                info_panel_alpha (int, optional): Alpha value for the info panel. Defaults to 255.
+
+            Attributes:
+                zoomable (bool): Indicates if the widget can be zoomed. Set to False.
+                children (list): A list to store child widgets.
+                widgets (list): A list to store associated widgets.
+                frame_color (tuple): The color of the widget's frame. Set to colors.frame_color.
+
+            Note:
+                This method assumes the existence of a 'colors' module or object with a 'frame_color' attribute.
+            """
         self.name = kwargs.get("name", self.__class__.__name__)
         self.win = win
         self.zoomable = False
