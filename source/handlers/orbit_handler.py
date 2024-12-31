@@ -100,7 +100,7 @@ def orbit_ship(obj, orbit_obj, orbit_speed, direction):
     if not orbit_obj:
         return
 
-    if not obj.state_engine.state == "orbiting":
+    if not obj.state_engine.state == "attacking":
         obj.state_engine.set_state("orbiting")
 
     obj.orbiting = True
@@ -145,7 +145,8 @@ def orbit_ship(obj, orbit_obj, orbit_speed, direction):
     else:
         rotation_correction_angle = 180
 
-    obj.angle = rotate_image_to(obj, orbit_obj.rect.center, rotation_correction_angle)
+    if not obj.state_engine.state == "attacking":
+        obj.angle = rotate_image_to(obj, orbit_obj.rect.center, rotation_correction_angle)
 
 
 def gradually_move_towards(obj, current_pos, target_pos):  # unused

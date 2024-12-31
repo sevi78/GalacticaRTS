@@ -452,8 +452,8 @@
                 "water",
                 "food"
             ],
-            "image_name_small": "moon.gif",
-            "image_name_big": "moon1.gif",
+            "image_name_small": "Io.gif",
+            "image_name_big": "Io.gif",
             "orbit_speed": 0.0023785478202939126,
             "orbit_object_id": 1,
             "orbit_distance": 0,
@@ -520,8 +520,8 @@
                 "water",
                 "energy"
             ],
-            "image_name_small": "moon_alien.gif",
-            "image_name_big": "moon.gif",
+            "image_name_small": "venus_slow.gif",
+            "image_name_big": "venus_slow.gif",
             "orbit_speed": 0.004281768970193319,
             "orbit_object_id": 1,
             "orbit_distance": 0,

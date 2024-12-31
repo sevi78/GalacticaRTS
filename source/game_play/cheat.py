@@ -89,6 +89,11 @@ class Cheat:
         for i in sprite_groups.planets:
             i.economy_agent.buildings.append("missile")
 
+    def spawn_ufo(self):
+        if not self.selected_planet:
+            return
+        ufo = enemy_handler.enemy_handler.spawn_ufo(self.selected_planet)
+
     def cheat_ufo(self):
         if not self.selected_planet:
             return
@@ -106,6 +111,18 @@ class Cheat:
         self.cheat_population(10000.0)
         # self.explore_all()
         # self.cheat_level_success()
+
+    def test_attacking(self):
+        if config.app.ship:
+            config.app.ship.energy = 10
+        for i in sprite_groups.planets:
+            i.economy_agent.buildings.append("electro magnetic impulse")
+            i.economy_agent.buildings.append("solar panel")
+        self.cheat_population(100000.0)
+        self.spawn_ufo()
+        self.cheat_resources(100000.0)
+        config.app.map_panel.set_visible()
+
 
     def cheat(self, events):
         # ignore all inputs while any text input is active
@@ -130,6 +147,6 @@ class Cheat:
                     #
                     # # self.cheat_population()
                     # # self.explore_all()
-                    self.cheat_all()
-
+                    # self.cheat_all()
+                    self.test_attacking()
                     # print (building_factory.get_a_list_of_building_names_with_build_population_minimum_bigger_than(1000))

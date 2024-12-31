@@ -69,7 +69,7 @@ class BoxSelection:
 
     def _handle_key_down(self, event: pygame.event.Event) -> None:
         """Handle key down events, currently only for capturing screenshots."""
-        if event.key == pygame.K_p:
+        if event.key == pygame.K_p and pygame.key.get_mods() & pygame.KMOD_CTRL:
             self._capture_screenshot()
 
     def _get_clicked_object(self, pos: Tuple[int, int]) -> Optional[pygame.sprite.Sprite]:
@@ -133,6 +133,9 @@ class BoxSelection:
 
     def _capture_screenshot(self) -> None:
         """Capture a screenshot of the current selection area."""
+        if not self.start_pos or not self.end_pos:
+            return
+
         rect_pos = (min(self.start_pos[0], self.end_pos[0]), min(self.start_pos[1], self.end_pos[1]))
         rect_size = (abs(self.end_pos[0] - self.start_pos[0]), abs(self.end_pos[1] - self.start_pos[1]))
         capture_screenshot(self.window, "tmp.png", (rect_pos, rect_size), rect_size)

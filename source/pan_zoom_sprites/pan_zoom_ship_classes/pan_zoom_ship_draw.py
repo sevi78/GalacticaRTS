@@ -1,8 +1,9 @@
+import math
+
 import pygame
 from pygame import Vector2
 
 from source.configuration.game_config import config
-from source.debug.function_disabler import disabler, auto_disable
 # from source.debug.function_disabler import disabler, auto_disable
 from source.draw.arrow import draw_arrows_on_line_from_start_to_end
 from source.factories.universe_factory import universe_factory
@@ -45,11 +46,11 @@ class PanZoomShipDraw:
                 win=self.win,  # type: ignore
                 world_x=x,
                 world_y=y,
-                world_width=114,
-                world_height=64,
+                world_width=477,
+                world_height=240,
                 layer=self.layer,  # type: ignore
                 group=sprite_groups.energy_reloader,
-                gif_name="electro_discharge_croped.gif",
+                gif_name="electro_discharge_big_transparent_crop.gif",
                 gif_index=0,
                 gif_animation_time=None,
                 loop_gif=True,
@@ -68,6 +69,12 @@ class PanZoomShipDraw:
         self.rot_rect.add_point(Vector2(self.rot_rect.midtop.x, self.rot_rect.midtop.y - 200), "aim_point")
 
     def update_electro_discharge(self):
+        # Update electro discharge visibility: if no energy_reloader set invisible
+        if not self.energy_reloader:
+            self.electro_discharge.visible = False
+            return
+
+        # Update rot_rect to get the positions for electro discharge
         self.rot_rect.update(
                 x=self.rect.centerx,
                 y=self.rect.centery,
@@ -78,22 +85,35 @@ class PanZoomShipDraw:
                 scale=pan_zoom_handler.zoom
                 )
 
+        # self.rot_rect.draw(self.win)
+
         # check intersection
         cpt = self.energy_reloader.rect.center  # centerpoint
         radius = self.energy_reloader.rect.width / 2
         intersection = interectLineCircle(self.rect.center, self.rot_rect.aim_point, cpt, radius)
         # draw_intersection(self.win, cpt, intersection, self.rect.center, self.rot_rect.aim_point, radius)
 
-        # Update electro discharge visibility
-        if (self.target_reached and len(intersection) == 2):
+        # Update electro discharge visibility: if target reached and intersection is valid
+        if self.target_reached and len(intersection) == 2:
             self.electro_discharge.visible = True
 
-            # Update electro discharge position and rotation
-            x, y = pan_zoom_handler.screen_2_world(self.rot_rect.midtop[0], self.rot_rect.midtop[1])
-            self.electro_discharge.set_rotation_angle(self.angle + 90)
-            self.electro_discharge.set_position(x, y)
+            # Calculate the midpoint between aim_point and energy_reloader center
+            aim_point = self.rot_rect.midtop
+            reloader_center = self.energy_reloader.rect.center
+            midpoint_x = (aim_point[0] + reloader_center[0]) / 2
+            midpoint_y = (aim_point[1] + reloader_center[1]) / 2
 
+            # Convert midpoint to world coordinates
+            world_x, world_y = pan_zoom_handler.screen_2_world(midpoint_x, midpoint_y)
+
+            # Update electro discharge position, rotation, and size
+            self.electro_discharge.set_position(world_x, world_y)
+            self.electro_discharge.set_rotation_angle(self.angle + 90)
+
+            self.electro_discharge.world_width = math.dist(aim_point, reloader_center) / pan_zoom_handler.zoom
+            self.electro_discharge.world_height = self.electro_discharge.world_width * self.electro_discharge.image_aspect_ratio
         else:
+            # Set electro discharge visibility to False in any other case
             self.electro_discharge.visible = False
 
     def draw_selection(self):

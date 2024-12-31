@@ -167,6 +167,47 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
             market.update()
             score_plotter_handler.update()
 
+    def handle_keyboard_input(self, events):
+        for event in events:
+            # ignore all inputs while any text input is active
+            if config.text_input_active:
+                return
+
+            if event.type == pygame.KEYDOWN:
+                # game pause
+                if event.key == pygame.K_SPACE:
+                    self.pause_game()
+
+                # switch screen tiling, for debug only
+                if event.key == pygame.K_TAB:
+                    screen_handler.set_screen_tiled(1920, 1080, 2, self.game_client.id, not screen_handler.alignment)
+                    print("pressed: ", event.key)
+
+                # toggle map panel
+                if event.key == pygame.K_m:
+                    config.show_map_panel = not config.show_map_panel
+
+                # toggle ship container
+                if event.key == pygame.K_s:
+                    config.app.ship_container.set_visible()
+
+                # toggle planet container
+                if event.key == pygame.K_p:
+                    config.app.planet_container.set_visible()
+
+                # toggle info panel
+                if event.key == pygame.K_i:
+                    config.app.info_panel._hidden = not config.app.info_panel._hidden
+
+                # toggle building panel
+                if event.key == pygame.K_b:
+                    config.app.building_panel.toggle_switch.toggle_panel()
+
+
+
+
+
+
     def update(self, events):
         """
         updates all game Elements except pygame_widgets and calls functions that need events
@@ -187,17 +228,7 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
         # update economy
         self.update_economy()
 
-        for event in events:
-            # ignore all inputs while any text input is active
-            if config.text_input_active:
-                return
-            # game pause
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE:
-                    self.pause_game()
-                if event.key == pygame.K_TAB:
-                    screen_handler.set_screen_tiled(1920, 1080, 2, self.game_client.id, not screen_handler.alignment)
-                    print("pressed: ", event.key)
+        self.handle_keyboard_input(events)
 
         # set fps
         # pygame.display.set_caption(f"GalacticaRTS: FPS: {time_handler.fps}, client_id: {self.game_client.id}, host:{self.game_client.host}" )

@@ -1,5 +1,6 @@
 import pygame
-from pygame.sprite import LayeredUpdates, LayeredDirty, Group
+from pygame.sprite import LayeredUpdates
+from source.pan_zoom_sprites.pan_zoom_ship_test2.pan_zoom_layered_update_test2 import ShipLayeredUpdates2
 
 from source.configuration.game_config import config
 from source.gui.container.container_widget import ContainerWidgetItem, WIDGET_SIZE
@@ -8,7 +9,6 @@ from source.handlers import widget_handler
 # from source.handlers.position_handler import prevent_object_overlap
 from source.handlers.widget_handler import WidgetHandler
 from source.multimedia_library.images import get_image, get_gif_frames
-from source.pan_zoom_sprites.pan_zoom_ship_test2.pan_zoom_layered_update_test2 import ShipLayeredUpdates2
 
 """
 TODO: clean up the mess here !!! 
@@ -18,6 +18,7 @@ we might not use so many different Updaes classes.
 - check wich of them need visible , _hidden ect ... 
 
 """
+
 
 class PanZoomLayeredUpdates(LayeredUpdates):
     def __init__(self, *sprites, **kwargs):
@@ -59,6 +60,59 @@ class PanZoomLayeredUpdates(LayeredUpdates):
         return dirty
 
 
+class PanZoomShipUpdates(LayeredUpdates):
+    def __init__(self, *sprites, **kwargs):
+        LayeredUpdates.__init__(self, *sprites, **kwargs)
+
+    def draw(self, surface, bgsurf=None, special_flags=0):
+        spritedict = self.spritedict
+
+        dirty = self.lostsprites
+        self.lostsprites = []
+        dirty_append = dirty.append
+        init_rect = self._init_rect
+
+        for spr in self.sprites():
+            if spr._hidden:
+                if spritedict[spr] is not init_rect:
+                    dirty_append(spritedict[spr])
+                    spritedict[spr] = init_rect
+                continue
+
+            rec = spritedict[spr]
+            if not level_of_detail.inside_screen(spr.rect.center):
+                if rec is not init_rect:
+                    dirty_append(rec)
+                spritedict[spr] = init_rect
+                continue
+
+            newrect = surface.blit(spr.image, spr.rect, None, special_flags)
+            if rec is init_rect:
+                dirty_append(newrect)
+            else:
+                if newrect.colliderect(rec):
+                    dirty_append(newrect.union(rec))
+                else:
+                    dirty_append(newrect)
+                    dirty_append(rec)
+            spritedict[spr] = newrect
+
+        return dirty
+
+    def update(self, *args, **kwargs):
+        """call the update method of every member sprite
+
+        Group.update(*args, **kwargs): return None
+
+        Calls the update method of every member sprite. All arguments that
+        were passed to this method are passed to the Sprite update function.
+
+        """
+        for sprite in self.sprites():
+            if sprite.alive():
+                sprite.update(*args, **kwargs)
+
+
 class UniverseLayeredUpdates(pygame.sprite.LayeredUpdates):
     def draw(self, surface):
         sprites = self.sprites()
@@ -66,7 +120,7 @@ class UniverseLayeredUpdates(pygame.sprite.LayeredUpdates):
         for spr in sprites:
             if spr.inside_screen:
                 if hasattr(spr, "image"):
-                # if spr.image:
+                    # if spr.image:
                     self.spritedict[spr] = surface_blit(spr.image, spr.rect)
                 else:
                     spr.draw()
@@ -74,11 +128,12 @@ class UniverseLayeredUpdates(pygame.sprite.LayeredUpdates):
                 spr.debug_object()
         self.lostsprites = []
 
-class ReloaderLayeredUpdates(pygame.sprite.LayeredUpdates):
 
+class ReloaderLayeredUpdates(pygame.sprite.LayeredUpdates):
     """
     this class handles the updates and drawing of all sprites, only if they are visible
     """
+
     def __init__(self):
         super().__init__()
 
@@ -89,17 +144,15 @@ class ReloaderLayeredUpdates(pygame.sprite.LayeredUpdates):
                 spr.draw()
 
 
-
-
 class SpriteGroups:  # original
     def __init__(self):
         self.planets = PanZoomLayeredUpdates(default_layer=0)
         self.gif_handlers = PanZoomLayeredUpdates(default_layer=1)
         self.collectable_items = PanZoomLayeredUpdates(default_layer=2)
         self.ufos = PanZoomLayeredUpdates(default_layer=0)
-        self.ships = PanZoomLayeredUpdates(default_layer=4)
+        self.ships = PanZoomShipUpdates(default_layer=4)
         self.ships2 = ShipLayeredUpdates2()
-        self.missiles =LayeredUpdates(default_layer=5)
+        self.missiles = LayeredUpdates(default_layer=5)
         self.explosions = PanZoomLayeredUpdates(default_layer=6)
         self.target_objects = PanZoomLayeredUpdates(default_layer=7)
         self.moving_images = PanZoomLayeredUpdates(default_layer=8)
@@ -109,8 +162,7 @@ class SpriteGroups:  # original
         # self.energy_reloader = LayeredUpdates(default_layer=0)
         # self.energy_reloader = Group(default_layer=0)
 
-
-    def get_hit_object__(self, **kwargs: {list}) -> object or None:# very slow
+    def get_hit_object__(self, **kwargs: {list}) -> object or None:  # very slow
         """ returns an object that is at mouse position
 
             optional(kwargs):
@@ -249,7 +301,6 @@ class SpriteGroups:  # original
         self.universe.update(*args)
         self.energy_reloader.update()
 
-
     def draw(self, surface, **kwargs):
         events = kwargs.get("events")
         widget_handler.update(events)
@@ -302,8 +353,6 @@ class SpriteGroups:  # original
             WidgetHandler.draw_layer(events, 10)
 
         self.moving_images.update()
-
-
 
 
 sprite_groups = SpriteGroups()

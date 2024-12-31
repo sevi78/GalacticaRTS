@@ -152,6 +152,9 @@ class PanZoomShipMoving:
 
         elif self.target.property == "ship":
             if distance < self.desired_orbit_radius:
+                if not diplomacy_handler.is_in_peace(self.target.owner, self.owner):
+                    self.reach_enemy()
+                    return
                 self.target_reached = True
                 self.moving = False
                 self.orbit_object = self.target

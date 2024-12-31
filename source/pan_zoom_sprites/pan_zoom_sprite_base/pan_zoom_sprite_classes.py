@@ -305,6 +305,8 @@ class PanZoomImage(PanZoomSpriteBase):
         else:
             self.image = scaled_image
 
+
+        # set the rect, align the image
         """
         top, left, bottom, right
         topleft, bottomleft, topright, bottomright
@@ -376,6 +378,7 @@ class PanZoomGif(PanZoomImage):  # working
 
         # image init
         self.image_raw = self.gif_frames[1]  # ?? self.gif_frames[gif_index]
+        self.image_aspect_ratio = self.image_raw.get_height() / self.image_raw.get_width()
         self.image = copy.copy(self.image_raw)
         self.image_alpha = image_alpha
         self.rotation_angle = rotation_angle
@@ -406,6 +409,7 @@ class PanZoomGif(PanZoomImage):  # working
         # update gif index and image
         current_time = time.time()
         if current_time > self.gif_start + self.gif_animation_time:
+            # update gif index, set to zero after end of loop reached
             self.gif_index = (self.gif_index + 1) % len(self.gif_frames)
             self.image_raw = self.gif_frames[self.gif_index]
             self.gif_start = current_time
@@ -415,6 +419,10 @@ class PanZoomGif(PanZoomImage):  # working
                 if self.kill_after_gif_loop:
                     self.kill()
                 return
+
+
+
+
 
     def draw(self):
         if self.visible:

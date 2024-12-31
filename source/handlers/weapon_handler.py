@@ -12,7 +12,7 @@ from source.gui.widgets.moving_image import MovingImage
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.handlers.time_handler import time_handler
-from source.multimedia_library.images import get_image
+from source.multimedia_library.images import get_image, rotate_image_to
 from source.multimedia_library.sounds import sounds
 from source.pan_zoom_sprites.pan_zoom_missile import PanZoomMissile, MISSILE_POWER, Missile
 from source.pan_zoom_sprites.rack import Rack
@@ -302,6 +302,7 @@ class WeaponHandler:
             x += random.randint(-rx, rx)
             y += random.randint(-ry, ry)
             power = self.get_current_value("power")
+            defender.energy -= power
 
             # if defender.property in ["ship", "ufo"]:
             if defender.energy >= 0:
@@ -356,7 +357,7 @@ class WeaponHandler:
     def attack(self, defender):
         # if not level_of_detail.inside_screen(self.parent.get_screen_position()):
         #     return
-
+        self.parent.state_engine.set_state("attacking")
         # activate weapons
         power = None
         if self.current_weapon["name"] in self.weapons.keys():
@@ -367,6 +368,8 @@ class WeaponHandler:
             getattr(self, self.current_weapon["name"])(defender, power, shoot_interval)
 
         if defender.property in ["ship", "ufo"]:
+            # self.parent.orbit_object = None
+            # rotate_image_to(self.parent, defender.rect.center, self.parent.rotate_correction_angle)
             # make enemy attack you
             if defender.energy <= defender.energy_max / 2:
                 defender.target = self.parent

@@ -1,9 +1,11 @@
 import pygame
+from pygame_widgets.util import drawText
 
 from source.configuration.game_config import config
 from source.debug.function_disabler import disabler, auto_disable
 from source.draw.cross import draw_dashed_cross_in_circle
 from source.gui.widgets.image_widget import ImageSprite
+from source.handlers.color_handler import colors
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.multimedia_library.images import get_image
 
@@ -19,10 +21,24 @@ DASH_LENGHT = 6
 #
 # @auto_disable
 
+"""
+possible variables setting the states: 
+
+moving
+exploded
+target
+target_reached
+orbit_object
+autopilot
+energy_reloader
+
+"""
 class PanZoomShipStateEngine:
     def __init__(self, parent: object) -> None:
         self.parent = parent
         self.image_drawer = PanZoomShipStateEngineDraw(self.parent, self)
+
+        self.state_variables = ["moving", "exploded", "target", "target_reached", "orbit_object", "autopilot", "energy_reloader", "reloading"]
         self.state = "sleeping"
 
     def end_object(self):
@@ -30,11 +46,22 @@ class PanZoomShipStateEngine:
 
     def set_state(self, state) -> None:
         self.state = state
-        self.parent.state = self.state
+        # self.parent.state = self.state
         self.image_drawer.set_state_image()
 
     def listen(self, events):
         pass
+
+    def handle_state(self):
+        return
+        # if not self.parent.owner == 0:
+        #     return
+        # text = ("__________________________________________________________")
+        # for state in self.state_variables:
+        #     text += (f"self.parent.{state} = {getattr(self.parent, state)}\n")
+        #
+        # drawText(self.parent.win, text, colors.frame_color, (
+        #     1300, 400, 400, 30), pygame.sysfont.SysFont("monospace", 10), "left")
 
     def update(self) -> None:
         if not config.show_ship_state:
@@ -49,6 +76,7 @@ class PanZoomShipStateEngine:
         else:
             self.image_drawer.hide()
             draw_dashed_cross_in_circle(self.parent.win, self.parent.frame_color, self.parent.get_screen_position(), config.ui_cross_size, config.ui_cross_thickness, config.ui_cross_dash_length / 2)
+
 
 
 
@@ -76,7 +104,8 @@ class PanZoomShipStateEngineDraw:
             "orbiting": "orbit_icon.png",
             "autopilot": "autopilot.png",
             "attacking": "war_icon.png",
-            "waiting for order": "question_mark.png"
+            "waiting for order": "question_mark.png",
+            "reloading": "reload_energy.png"
             }
 
         self.state_images = {
@@ -87,7 +116,8 @@ class PanZoomShipStateEngineDraw:
             "orbiting": pygame.transform.scale(get_image("orbit_icon.png"), (STATE_IMAGE_SIZE, STATE_IMAGE_SIZE)),
             "autopilot": pygame.transform.scale(get_image("autopilot.png"), (STATE_IMAGE_SIZE, STATE_IMAGE_SIZE)),
             "attacking": pygame.transform.scale(get_image("war_icon.png"), (STATE_IMAGE_SIZE, STATE_IMAGE_SIZE)),
-            "waiting for order": pygame.transform.scale(get_image("question_mark.png"), (STATE_IMAGE_SIZE, STATE_IMAGE_SIZE))
+            "waiting for order": pygame.transform.scale(get_image("question_mark.png"), (STATE_IMAGE_SIZE, STATE_IMAGE_SIZE)),
+            "reloading": pygame.transform.scale(get_image("reload_energy.png"), (STATE_IMAGE_SIZE, STATE_IMAGE_SIZE))
             }
 
         self.rank_image = ImageSprite(self.parent.win, -200, -200, 25, 25, get_image("warning_icon.png"), parent=self.parent)

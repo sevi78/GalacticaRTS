@@ -2,7 +2,6 @@ import pygame
 from pygame import Vector2
 
 from source.configuration.game_config import config
-from source.debug.function_disabler import disabler, auto_disable
 from source.economy.EconomyAgent import EconomyAgent
 from source.gui.interfaces.interface import InterfaceData
 from source.gui.lod import level_of_detail
@@ -14,7 +13,7 @@ from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.handlers.time_handler import time_handler
 from source.handlers.weapon_handler import WeaponHandler
 from source.handlers.widget_handler import WidgetHandler
-from source.multimedia_library.images import rotate_image_to, scale_image_cached, rotate_image_cached
+from source.multimedia_library.images import rotate_image_to
 from source.multimedia_library.sounds import sounds
 from source.pan_zoom_sprites.pan_zoom_ship_classes.pan_zoom_ship_draw import PanZoomShipDraw
 from source.pan_zoom_sprites.pan_zoom_ship_classes.pan_zoom_ship_interaction import PanZoomShipInteraction
@@ -192,6 +191,9 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         self.state_engine.end_object()
         self.state_engine = None
         self.kill()
+
+    def end_object(self):
+        self.__delete__(self)
 
     # def update_rect(self):
     #     if not self.image_raw:
@@ -375,6 +377,8 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
 
         self.reach_target(distance / pan_zoom_handler.get_zoom())
 
+
+
     def update(self):
         # if not config.app.game_client.is_host:
         #     return
@@ -383,7 +387,7 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         # self.pathfinding_manager.update()
 
         # update state engine
-
+        self.state_engine.handle_state()
         self.state_engine.update()
 
         # update game object
@@ -449,10 +453,14 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         if self.energy_reloader:
             self.reload_ship()
 
+        # update electro discharge, that thing that shows the electricity for reloading the ship
+        self.update_electro_discharge()
+
+        # move ship
         self.handle_move_stop()
 
         # reach target
-        if self.target_reached:
+        if self.target_reached and not self.selected:
             self.state_engine.set_state("sleeping")
 
         # attack enemies
@@ -481,9 +489,6 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         # make shure this is the last task, otherwise it wouldn't work(probably)
         self.previous_position = (self.world_x, self.world_y)
 
-
-
-
         # self.rot_rect.draw(self.win)
         # self.weapon_handler.weapon_rack.draw(self.win)
 
@@ -491,5 +496,6 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         #     self.win.blit(self.image, (500,500))
 
         # print (self is config.app.ship)
+
     def draw(self):  # unused
         print("drawing ---")
