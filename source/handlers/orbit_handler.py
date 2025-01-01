@@ -100,8 +100,12 @@ def orbit_ship(obj, orbit_obj, orbit_speed, direction):
     if not orbit_obj:
         return
 
-    if not obj.state_engine.state == "attacking":
-        obj.state_engine.set_state("orbiting")
+    ignore_states = ["attacking"]
+    if not obj.state_engine.state in ignore_states:
+        if not obj.reloading:
+            obj.state_engine.set_state("orbiting")
+        else:
+            obj.state_engine.set_state("reloading")
 
     obj.orbiting = True
 

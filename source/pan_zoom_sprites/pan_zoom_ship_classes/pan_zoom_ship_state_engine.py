@@ -53,13 +53,13 @@ class PanZoomShipStateEngine:
         pass
 
     def handle_state(self):
-        return
-        # if not self.parent.owner == 0:
-        #     return
-        # text = ("__________________________________________________________")
-        # for state in self.state_variables:
-        #     text += (f"self.parent.{state} = {getattr(self.parent, state)}\n")
-        #
+
+        text = ("__________________________________________________________")
+        for state in self.state_variables:
+            text += (f"self.parent.{state} = {getattr(self.parent, state)}\n")
+
+        return text
+
         # drawText(self.parent.win, text, colors.frame_color, (
         #     1300, 400, 400, 30), pygame.sysfont.SysFont("monospace", 10), "left")
 

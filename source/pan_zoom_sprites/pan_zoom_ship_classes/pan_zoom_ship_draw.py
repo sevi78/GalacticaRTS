@@ -94,7 +94,7 @@ class PanZoomShipDraw:
         # draw_intersection(self.win, cpt, intersection, self.rect.center, self.rot_rect.aim_point, radius)
 
         # Update electro discharge visibility: if target reached and intersection is valid
-        if self.target_reached and len(intersection) == 2:
+        if self.target_reached and len(intersection) == 2 and self.reloading:
             self.electro_discharge.visible = True
 
             # Calculate the midpoint between aim_point and energy_reloader center

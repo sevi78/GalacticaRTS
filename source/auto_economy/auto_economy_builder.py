@@ -184,7 +184,7 @@ class AutoEconomyBuilder:
     #             config.app.weapon_select.select_weapon(weapon)
     #             config.app.weapon_select.upgrade()
 
-    def build_ship_weapons(self):
+    def build_ship_weapons_(self):
         ships = self.player.get_all_ships()
         weaponised_ships = [i for i in ships if i.name in ["spaceship", "spacehunter", "cargoloader"]]
         weapons = building_factory.get_building_names("weapons")
@@ -215,6 +215,40 @@ class AutoEconomyBuilder:
                             ship.weapon_handler.current_weapon["name"], ship.weapon_handler.current_weapon["level"])
                     building_factory.build(ship.weapon_handler.current_weapon["name"], ship, prices=prices)
                     # print(f"build_ship_weapons:upgrade {weapon} on ship: {ship.id}")
+
+
+    def build_ship_weapons__(self):
+        ships = self.player.get_all_ships()
+        weaponised_ships = [i for i in ships if i.name in ["spaceship", "spacehunter", "cargoloader"]]
+        weapons = building_factory.get_building_names("weapons")
+        if weaponised_ships:
+            ship = random.choice(weaponised_ships)
+            weapon = random.choice(weapons)
+
+    def build_ship_weapons(self):
+        ships = self.player.get_all_ships()
+        weaponised_ships = [i for i in ships if i.name in ["spaceship", "spacehunter", "cargoloader"]]
+        weapons = building_factory.get_building_names("weapons")
+
+        if weaponised_ships:
+            ship = random.choice(weaponised_ships)
+            weapon = random.choice(weapons)
+
+            ship.weapon_handler.update_weapon_state(weapon)
+            if not ship.weapon_handler.weapons:
+                # Build the first weapon
+                ship.weapon_handler.upgrade_weapon()
+                print(f"build_ship_weapons: buy {weapon} on ship: {ship.id}")
+            else:
+                # Upgrade existing weapon
+                if ship.weapon_handler.upgrade_weapon():
+                    print(f"build_ship_weapons: upgrade {ship.weapon_handler.current_weapon['name']} on ship: {ship.id}")
+
+
+
+
+
+
 
     def build_particle_accelerator__(self):
         """ builds a particle accelerator if:

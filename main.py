@@ -204,6 +204,14 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
                     config.app.building_panel.toggle_switch.toggle_panel()
 
 
+                # test weapon build for ships
+                if event.key == pygame.K_w:
+                    for i in sprite_groups.ships.sprites():
+                        if i.owner == 1:
+                            player = config.app.players[i.owner]
+                            player.auto_economy_handler.build_ship_weapons()
+
+
 
 
 

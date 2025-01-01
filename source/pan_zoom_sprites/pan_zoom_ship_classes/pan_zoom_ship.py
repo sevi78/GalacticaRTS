@@ -1,11 +1,13 @@
 import pygame
 from pygame import Vector2
+from pygame_widgets.util import drawText
 
 from source.configuration.game_config import config
 from source.economy.EconomyAgent import EconomyAgent
 from source.gui.interfaces.interface import InterfaceData
 from source.gui.lod import level_of_detail
 from source.handlers.autopilot_handler import AutopilotHandler
+from source.handlers.color_handler import colors
 from source.handlers.file_handler import load_file
 from source.handlers.orbit_handler import orbit_ship
 from source.handlers.pan_zoom_handler import pan_zoom_handler
@@ -492,10 +494,17 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
         # self.rot_rect.draw(self.win)
         # self.weapon_handler.weapon_rack.draw(self.win)
 
-        # if self.owner == 0:
-        #     self.win.blit(self.image, (500,500))
+        if not self.owner == 0:
+            return
 
-        # print (self is config.app.ship)
+
+        state_variables = self.state_engine.state_variables
+        x,y = 260, 80
+        for t in state_variables:
+            drawText(self.parent.win, f"{t}: {getattr(self, t)}", colors.frame_color, (
+                x,y, 400, 30), pygame.sysfont.SysFont(config.font_name, 16), "left")
+
+            y += 18
 
     def draw(self):  # unused
         print("drawing ---")

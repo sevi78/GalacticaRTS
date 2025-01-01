@@ -6,13 +6,15 @@ from source.test.beam_test import draw_segmented_beam
 
 from source.configuration.game_config import config
 from source.draw.circles import draw_transparent_circle
+from source.factories.building_factory import building_factory
 from source.factories.universe_factory import universe_factory
 from source.factories.weapon_factory import weapon_factory
+from source.gui.event_text import event_text
 from source.gui.widgets.moving_image import MovingImage
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.handlers.time_handler import time_handler
-from source.multimedia_library.images import get_image, rotate_image_to
+from source.multimedia_library.images import get_image
 from source.multimedia_library.sounds import sounds
 from source.pan_zoom_sprites.pan_zoom_missile import PanZoomMissile, MISSILE_POWER, Missile
 from source.pan_zoom_sprites.rack import Rack
@@ -32,60 +34,6 @@ class WeaponRack(Rack):
         self.level = level
         self.points_raw = self.points_by_level[level]
         self.points = self.points_by_level[level]
-
-
-def calculate_weapon_positions_(spaceship_size, rocket_size, levels):
-    offset_x = (spaceship_size[0] - rocket_size[0] * 2) / 6
-    offset_y = 16
-
-    positions = {}
-    for level in levels:
-        if level == 0:
-            positions[level] = [(offset_x + rocket_size[0] / 2, offset_y)]
-        elif level == 1:
-            positions[level] = [
-                (offset_x + rocket_size[0] / 2, offset_y),
-                (spaceship_size[0] - offset_x - rocket_size[0] / 2, offset_y)
-                ]
-        elif level == 2:
-            outside_offset = 3
-            outer_y_offset = 5
-            inner_y_offset = outer_y_offset - 5
-            positions[level] = [
-                (offset_x + outside_offset + rocket_size[0] / 2, offset_y - outer_y_offset),
-                (spaceship_size[0] - offset_x - rocket_size[0] / 2 - outside_offset, offset_y - outer_y_offset),
-                (offset_x - outside_offset + rocket_size[0] / 2, offset_y - inner_y_offset),
-                (spaceship_size[0] - offset_x - rocket_size[0] / 2 + outside_offset, offset_y - inner_y_offset)
-                ]
-
-    return positions
-
-
-# def calculate_weapon_positions(spaceship_size, rocket_size, levels, resize_factor=1):
-#     offset_x = (spaceship_size[0] - rocket_size[0] * 2) / 6
-#     offset_y = 16
-#
-#     positions = {}
-#     for level in levels:
-#         if level == 0:
-#             positions[level] = [(offset_x + rocket_size[0] / 2, offset_y)]
-#         elif level == 1:
-#             positions[level] = [
-#                 (offset_x + rocket_size[0] / 2, offset_y),
-#                 (spaceship_size[0] - offset_x - rocket_size[0] / 2, offset_y)
-#                 ]
-#         elif level == 2:
-#             outside_offset = 3
-#             outer_y_offset = 5
-#             inner_y_offset = outer_y_offset - 5
-#             positions[level] = [
-#                 (offset_x + outside_offset + rocket_size[0] / 2, offset_y - outer_y_offset),
-#                 (spaceship_size[0] - offset_x - rocket_size[0] / 2 - outside_offset, offset_y - outer_y_offset),
-#                 (offset_x - outside_offset + rocket_size[0] / 2, offset_y - inner_y_offset),
-#                 (spaceship_size[0] - offset_x - rocket_size[0] / 2 + outside_offset, offset_y - inner_y_offset)
-#                 ]
-#
-#     return positions
 
 
 def calculate_weapon_positions(spaceship_size, rocket_size, levels, resize_factor):
@@ -132,7 +80,7 @@ def create_weapon_rack(spaceship_size, weapon_size, levels, resize_factor):
     return rack
 
 
-class WeaponHandler:
+class WeaponHandler:  # upgrade weapon fixed
     """
     This class handles the weapons:
         - laser
@@ -217,7 +165,60 @@ class WeaponHandler:
             self.parent.desired_orbit_radius_raw = self.get_current_value("range") - 10
             self.parent.attack_distance_raw = self.get_current_value("range")
 
-    def update_gun_positions(self):
+    def update_weapon_state(self, selected_weapon) -> str:
+        """ sets the state of the weapon handler:
+        - returns the state of the weapon (upgrade or buy)
+        - sets the current weapon
+        - if not weapon in self.weapons, copies the weapon from self.all_weapons into self.weapons
+        """
+
+        self.current_weapon_select = selected_weapon
+
+        if self.current_weapon_select in self.weapons.keys():
+            self.current_weapon = copy.deepcopy(self.weapons[self.current_weapon_select])
+            return "upgrade"
+        else:
+            self.current_weapon = copy.deepcopy(self.all_weapons[self.current_weapon_select])
+            return "buy"
+
+    def can_upgrade_weapon(self) -> bool:  # working , but not possible to upgrade 3 times at once
+        """
+        checks if the current weapon can be upgraded:
+        - checks if the max level is reached
+        - checks if there are upgrades in progress
+        """
+        max_level = self.max_weapons_upgrade_level
+        current_level = self.current_weapon["level"]
+        weapon_name = self.current_weapon["name"]
+
+        # Count upgrades in progress
+        in_progress = len([w for w in config.app.building_widget_list
+                           if w.receiver == self.parent and w.name == weapon_name])
+
+        # Check if upgrade is possible
+        return current_level + in_progress < max_level
+
+    def upgrade_weapon(self) -> bool:  # working , but not possible to upgrade 3 times at oncewwww
+        """
+        upgrades the current weapon
+        - checks if the current weapon can be upgraded
+        - builds the weapon
+        - returns True if the upgrade was successful
+        - returns False if the upgrade was not successful
+        - sets the event text
+        """
+        if self.can_upgrade_weapon():
+            weapon_name = self.current_weapon["name"]
+            prices = building_factory.get_prices_from_weapons_dict(weapon_name, self.current_weapon["level"])
+            building_factory.build(weapon_name, self.parent, prices=prices)
+
+            return True
+        else:
+            event_text.set_text(f"Maximum upgrade level of {self.max_weapons_upgrade_level} reached!",
+                    sender=config.app.game_client.id)
+            return False
+
+    def update_gun_positions(self) -> None:
         self.weapon_rack.update(
                 x=self.parent.rect.centerx,
                 y=self.parent.rect.centery,
@@ -230,11 +231,11 @@ class WeaponHandler:
 
         # self.weapon_rack.draw(self.parent.win)
 
-    def setup_interval_timers(self):
+    def setup_interval_timers(self) -> None:
         for i in self.all_weapons.keys():
             setattr(self, f"{i}_last_shoot", time_handler.time)
 
-    def laser(self, defender, power, shoot_interval):
+    def laser(self, defender, power, shoot_interval) -> None:
         """
         Shoots a laser
         :param defender: defender object
@@ -260,7 +261,7 @@ class WeaponHandler:
                 self.draw_moving_image(defender, power)
                 sounds.play_sound(sounds.laser)
 
-    def phaser(self, defender, power, shoot_interval):
+    def phaser(self, defender, power, shoot_interval) -> None:
         actual_time = time_handler.time
         if actual_time - self.phaser_last_shoot > 1 / shoot_interval:
             self.phaser_last_shoot = actual_time
@@ -292,7 +293,7 @@ class WeaponHandler:
             sounds.play_sound(sounds.electricity2)
             defender.energy -= power
 
-    def rocket(self, defender, power, shoot_interval):
+    def rocket(self, defender, power, shoot_interval) -> None:
         actual_time = time_handler.time
         if actual_time - self.phaser_last_shoot > 1 / shoot_interval:
             self.phaser_last_shoot = actual_time
@@ -301,7 +302,7 @@ class WeaponHandler:
             ry = int(self.parent.rect.height / 4)
             x += random.randint(-rx, rx)
             y += random.randint(-ry, ry)
-            power = self.get_current_value("power")
+            # power = self.get_current_value("power")
             defender.energy -= power
 
             # if defender.property in ["ship", "ufo"]:
@@ -330,7 +331,7 @@ class WeaponHandler:
                         friction=random.uniform(0.95, 0.99),
                         explosion_relative_gif_size=random.uniform(1.0, 1.5), )
 
-    def draw_moving_image(self, defender, power):
+    def draw_moving_image(self, defender, power) -> None:
         MovingImage(
                 self.parent.win,
                 defender.rect.top,
@@ -343,18 +344,30 @@ class WeaponHandler:
                 f"-{power}", pygame.color.THECOLORS["red"],
                 "georgiaproblack", 1, defender.rect, target=None)
 
-    def get_current_value(self, var):
+    def get_current_value__(self, var: str) -> float:
         level = self.current_weapon.get("level")
         upgrade_value = self.current_weapon["upgrade values"][f"level_{level}"][var]
         weapon_value = self.current_weapon.get(var)
         value = weapon_value * upgrade_value
         return value
 
-    def draw_attack_distance(self):
+    def get_current_value(self, var: str) -> float:
+        level = self.current_weapon.get("level", 0)  # Default to 0 if level is not set
+        if level == -1:
+            level = 0  # Treat -1 (not owned) as level 0 for upgrade values
+
+        upgrade_value = self.current_weapon["upgrade values"][
+            f"level_{level}"].get(var, 1)  # Default to 1 if var not found
+        weapon_value = self.current_weapon.get(var, 0)  # Default to 0 if var not found
+
+        value = weapon_value * upgrade_value
+        return value
+
+    def draw_attack_distance(self) -> None:
         # draw_transparent_circle(self.parent.win, self.parent.frame_color, self.parent.rect.center, self.get_current_value("range") * pan_zoom_handler.zoom, 20)
         draw_transparent_circle(self.parent.win, self.parent.player_color, self.parent.rect.center, self.get_current_value("range") * pan_zoom_handler.zoom, 20)
 
-    def attack(self, defender):
+    def attack(self, defender) -> None:
         # if not level_of_detail.inside_screen(self.parent.get_screen_position()):
         #     return
         self.parent.state_engine.set_state("attacking")
@@ -385,7 +398,7 @@ class WeaponHandler:
 
 
 # why is this outside the class??
-def attack_planet(attacker, defender, power):
+def attack_planet(attacker, defender, power) -> None:
     if defender.economy_agent.population > 0:
         defender.economy_agent.population -= power / 100
     else:
@@ -397,7 +410,7 @@ def attack_planet(attacker, defender, power):
         attacker.orbit_object = defender
 
 
-def attack(attacker, defender):
+def attack(attacker, defender) -> None:
     """
     used by planet defence
     """
@@ -432,7 +445,7 @@ def attack(attacker, defender):
         defender.target = attacker
 
 
-def launch_missile(attacker, defender):
+def launch_missile(attacker, defender) -> None:
     app = config.app
     screen = app.win
     x, y = pan_zoom_handler.screen_2_world(attacker.rect.centerx, attacker.rect.centery)
