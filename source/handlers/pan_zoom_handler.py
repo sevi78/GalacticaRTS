@@ -231,7 +231,7 @@ class PanZoomHandler:
         self.mouseworld_x_after = None
         self.scale_up = 1.2
         self.scale_down = 0.8
-        self.zoom_max = 2.0
+        self.zoom_max = 1.4
         self.zoom_min = 0.01
         self._zoom = 1
         self.update_screen = True

@@ -3,7 +3,7 @@ import os
 import pygame
 
 from source.handlers.pan_zoom_handler import pan_zoom_handler
-from source.handlers.weapon_handler import create_weapon_rack
+from source.weapons.weapon_rack import create_weapon_rack
 from source.multimedia_library.images import get_image, rotate_image_cached, underblit_image
 
 
@@ -17,7 +17,7 @@ def generate_weaponized_spacehip_image(ship_name, spaceship_size, weapon_name, w
 
     if save:
         filename = f"{ship_name}_{weapon_name}_{level}.png"
-        path = r'C:\Users\sever\Documents\Galactica-RTS_zoomable1.107\assets\pictures\ships'
+        path = r'/assets/pictures/ships'
         save_file = os.path.join(path, filename)
         pygame.image.save(spaceship_image, save_file)
     return rack, spaceship_image

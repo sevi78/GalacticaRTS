@@ -13,7 +13,7 @@ from source.handlers.orbit_handler import orbit_ship
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.handlers.time_handler import time_handler
-from source.handlers.weapon_handler import WeaponHandler
+from source.weapons.weapon_handler import WeaponHandler
 from source.handlers.widget_handler import WidgetHandler
 from source.multimedia_library.images import rotate_image_to
 from source.multimedia_library.sounds import sounds
@@ -498,13 +498,13 @@ class PanZoomShip(PanZoomGameObject, PanZoomShipParams, PanZoomShipMoving, PanZo
             return
 
 
-        state_variables = self.state_engine.state_variables
-        x,y = 260, 80
-        for t in state_variables:
-            drawText(self.parent.win, f"{t}: {getattr(self, t)}", colors.frame_color, (
-                x,y, 400, 30), pygame.sysfont.SysFont(config.font_name, 16), "left")
-
-            y += 18
+        # state_variables = self.state_engine.state_variables
+        # x,y = 260, 80
+        # for t in state_variables:
+        #     drawText(self.parent.win, f"{t}: {getattr(self, t)}", colors.frame_color, (
+        #         x,y, 400, 30), pygame.sysfont.SysFont(config.font_name, 16), "left")
+        #
+        #     y += 18
 
     def draw(self):  # unused
         print("drawing ---")

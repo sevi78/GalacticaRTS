@@ -6,7 +6,7 @@ from source.configuration.game_config import config
 from source.editors.editor_base.editor_base import EditorBase
 from source.editors.editor_base.editor_config import TOP_SPACING
 from source.factories.building_factory import building_factory
-from source.factories.weapon_factory import weapon_factory
+from source.weapons.weapon_factory import weapon_factory
 from source.gui.event_text import event_text
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.gui.widgets.checkbox import Checkbox

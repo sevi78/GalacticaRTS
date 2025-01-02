@@ -3,15 +3,16 @@ import copy
 import pygame
 
 from source.configuration.game_config import config
-from source.draw.rectangle import draw_transparent_rounded_rect, draw_dashed_rounded_rectangle
+from source.draw.rectangle import draw_transparent_rounded_rect
 from source.game_play.navigation import navigate_to_position
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.handlers.color_handler import colors
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
+from source.handlers.time_handler import time_handler
 from source.handlers.widget_handler import WidgetHandler
 from source.multimedia_library.images import get_image, overblit_button_image, scale_image_cached
-from source.multimedia_library.radar_scan_fx import RadarScanFX
+from source.multimedia_library.radar_scan_fx import RadarScanFX, GLOW_CYCLE_TIME
 
 PLANET_IMAGE_SIZE = 125
 MIN_OBJECT_SIZE = 2
@@ -22,6 +23,36 @@ WARNING_ICON_SIZE = 32
 SCALE_FACTOR = 100
 MIN_CAMERA_FOCUS_DASHED_DRAW = 300
 MIN_CAMERA_FOCUS_DRAW = 100
+
+
+class MapSprite:
+    """
+    Summary:
+    The MapSprite class represents a sprite that is used to display objects on the map panel. It stores the original
+    sprite's id, position, size, property, average color, and orbit object id.
+    """
+
+    def __init__(self, sprite) -> None:
+        self.id = id(sprite)  # Store the original sprite's id
+        self.world_x = sprite.world_x
+        self.world_y = sprite.world_y
+        self.world_width = sprite.world_width
+        self.world_height = sprite.world_height
+        self.property = getattr(sprite, 'property', None)
+        self.average_color = getattr(sprite, 'average_color', None)
+        self.explored = getattr(sprite, 'explored', False)
+        self.under_attack = getattr(sprite, 'under_attack', False)
+        self.orbit_object_id = id(getattr(sprite, 'orbit_object', None))  # Store the id of the orbit object
+        self.orbit_radius = getattr(sprite, 'orbit_radius', None)
+        self.image_raw = getattr(sprite, 'image_raw', None)
+
+    @classmethod
+    def from_sprite(cls, sprite) -> 'MapSprite':
+        """
+        Summary:
+        Creates a MapSprite object from a sprite object.
+        """
+        return cls(sprite)
 
 
 class MapPanel:
@@ -105,6 +136,9 @@ class MapPanel:
         self.world_height = height
 
         # vars
+        self.layer = 8
+        self.update_interval = GLOW_CYCLE_TIME  # = 5:   used for updating the objects every 5 seconds
+        self.start_time = 0
         self.app = config.app
         self.scale_direction = 1
         self.scale_factor = SCALE_FACTOR
@@ -113,6 +147,13 @@ class MapPanel:
         self.factor = self.app.level_handler.data["globals"]["width"] / self.world_width
         self.relative_mouse_x = 0
         self.relative_mouse_y = 0
+
+        # sprites
+        self.planet_sprites = []
+        self.ship_sprites = []
+        self.collectable_items_sprites = []
+        self.ufo_sprites = []
+        self.get_sprites()
 
         # surfaces, rect
         self.background_surface = pygame.Surface((self.world_width, self.world_height))
@@ -159,17 +200,17 @@ class MapPanel:
 
         # register
         # needed for WidgetHandler
-        self.layer = 9
+
         self._hidden = False
         self.is_sub_widget = True
         WidgetHandler.add_widget(self)
 
     @property
-    def on_hover(self):
+    def on_hover(self) -> bool:
         return self._on_hover
 
     @on_hover.setter
-    def on_hover(self, value):
+    def on_hover(self, value) -> None:
         self._on_hover = value
         if value:
             config.hover_object = self
@@ -180,7 +221,7 @@ class MapPanel:
     def create_checkboxes(self) -> None:
         y = self.world_y
         x = self.world_x
-        layer = 10
+        layer = self.layer + 1
 
         self.checkbox_ships = ImageButton(win=self.win,
                 x=self.world_x + x,
@@ -189,12 +230,12 @@ class MapPanel:
                 height=BUTTON_SIZE,
                 is_sub_widget=False,
                 parent=self,
-                image=scale_image_cached(
-                        get_image("ships_25x25.png"), (BUTTON_SIZE, BUTTON_SIZE)),
+                image=scale_image_cached(get_image("ships_25x25.png"), (BUTTON_SIZE, BUTTON_SIZE)),
                 tooltip="",  # "show ships",
                 frame_color=self.frame_color,
                 moveable=False,
-                include_text=True, layer=layer,
+                include_text=True,
+                layer=layer,
                 on_click=lambda: self.show_objects("ships"),
                 name="ships")
 
@@ -208,12 +249,12 @@ class MapPanel:
                 height=BUTTON_SIZE,
                 is_sub_widget=False,
                 parent=self,
-                image=scale_image_cached(
-                        get_image("Zeta Bentauri_60x60.png"), (BUTTON_SIZE, BUTTON_SIZE)),
+                image=scale_image_cached(get_image("Zeta Bentauri_60x60.png"), (BUTTON_SIZE, BUTTON_SIZE)),
                 tooltip="",  # "show planets",
                 frame_color=self.frame_color,
                 moveable=False,
-                include_text=True, layer=layer,
+                include_text=True,
+                layer=layer,
                 on_click=lambda: self.show_objects("planets"),
                 name="planets")
 
@@ -227,12 +268,12 @@ class MapPanel:
                 height=BUTTON_SIZE,
                 is_sub_widget=False,
                 parent=self,
-                image=scale_image_cached(
-                        get_image("orbit_icon.png"), (BUTTON_SIZE, BUTTON_SIZE)),
+                image=scale_image_cached(get_image("orbit_icon.png"), (BUTTON_SIZE, BUTTON_SIZE)),
                 tooltip="",  # "show planets",
                 frame_color=self.frame_color,
                 moveable=False,
-                include_text=True, layer=layer,
+                include_text=True,
+                layer=layer,
                 on_click=lambda: self.show_objects("orbits"),
                 name="orbits")
 
@@ -246,12 +287,12 @@ class MapPanel:
                 height=BUTTON_SIZE,
                 is_sub_widget=False,
                 parent=self,
-                image=scale_image_cached(
-                        get_image("artefact1_60x31.png"), (BUTTON_SIZE, BUTTON_SIZE)),
+                image=scale_image_cached(get_image("artefact1_60x31.png"), (BUTTON_SIZE, BUTTON_SIZE)),
                 tooltip="",  # "show collectable items",
                 frame_color=self.frame_color,
                 moveable=False,
-                include_text=True, layer=layer,
+                include_text=True,
+                layer=layer,
                 on_click=lambda: self.show_objects("items"),
                 name="items")
 
@@ -265,12 +306,12 @@ class MapPanel:
                 height=BUTTON_SIZE,
                 is_sub_widget=False,
                 parent=self,
-                image=scale_image_cached(
-                        get_image("ufo_74x30.png"), (BUTTON_SIZE, BUTTON_SIZE)),
+                image=scale_image_cached(get_image("ufo_74x30.png"), (BUTTON_SIZE, BUTTON_SIZE)),
                 tooltip="",  # "show collectable items",
                 frame_color=self.frame_color,
                 moveable=False,
-                include_text=True, layer=layer,
+                include_text=True,
+                layer=layer,
                 on_click=lambda: self.show_objects("ufos"),
                 name="ufos")
 
@@ -284,12 +325,12 @@ class MapPanel:
                 height=BUTTON_SIZE,
                 is_sub_widget=False,
                 parent=self,
-                image=scale_image_cached(
-                        get_image("camera_icon.png"), (BUTTON_SIZE, BUTTON_SIZE)),
+                image=scale_image_cached(get_image("camera_icon.png"), (BUTTON_SIZE, BUTTON_SIZE)),
                 tooltip="",  # "show collectable items",
                 frame_color=self.frame_color,
                 moveable=False,
-                include_text=True, layer=layer,
+                include_text=True,
+                layer=layer,
                 on_click=lambda: self.show_objects("camera"),
                 name="camera")
 
@@ -303,12 +344,12 @@ class MapPanel:
                 height=BUTTON_SIZE,
                 is_sub_widget=False,
                 parent=self,
-                image=scale_image_cached(
-                        get_image("warning.png"), (BUTTON_SIZE, BUTTON_SIZE)),
+                image=scale_image_cached(get_image("warning.png"), (BUTTON_SIZE, BUTTON_SIZE)),
                 tooltip="",  # "show collectable items",
                 frame_color=self.frame_color,
                 moveable=False,
-                include_text=True, layer=layer,
+                include_text=True,
+                layer=layer,
                 on_click=lambda: self.show_objects("warnings"),
                 name="warnings")
 
@@ -322,12 +363,12 @@ class MapPanel:
                 height=BUTTON_SIZE,
                 is_sub_widget=False,
                 parent=self,
-                image=scale_image_cached(
-                        get_image("paint.png"), (BUTTON_SIZE, BUTTON_SIZE)),
+                image=scale_image_cached(get_image("paint.png"), (BUTTON_SIZE, BUTTON_SIZE)),
                 tooltip="",  # "show collectable items",
                 frame_color=self.frame_color,
                 moveable=False,
-                include_text=True, layer=layer,
+                include_text=True,
+                layer=layer,
                 on_click=lambda: self.show_objects("images"),
                 name="images")
 
@@ -341,12 +382,12 @@ class MapPanel:
                 height=BUTTON_SIZE,
                 is_sub_widget=False,
                 parent=self,
-                image=scale_image_cached(
-                        get_image("alpha.png"), (BUTTON_SIZE, BUTTON_SIZE)),
+                image=scale_image_cached(get_image("alpha.png"), (BUTTON_SIZE, BUTTON_SIZE)),
                 tooltip="",  # "show collectable items",
                 frame_color=self.frame_color,
                 moveable=False,
-                include_text=True, layer=layer,
+                include_text=True,
+                layer=layer,
                 on_click=lambda: self.show_objects("alpha"),
                 name="alpha")
 
@@ -354,10 +395,23 @@ class MapPanel:
         self.checkboxes.append(self.checkbox_alpha)
 
     def update_checkboxes(self) -> None:
+        """
+        Updates the checkboxes: overlay the uncheck.png image on top of the check.png if the checkbox is checked
+        """
         for checkbox in self.checkboxes:
             overblit_button_image(checkbox, "uncheck.png", getattr(self, "show_" + checkbox.name))
 
+    def set_visible(self) -> None:
+        """
+        set the visibility of the map panel and the checkboxes
+        """
+
+        self.visible = config.show_map_panel
+        for i in self.checkboxes:
+            i._hidden = not self.visible
+
     def show_objects(self, object_category) -> None:
+        """ Toggles the visibility of objects in the specified category. """
         setattr(self, "show_" + object_category, not getattr(self, "show_" + object_category))
 
     def scale_map(self, event) -> None:
@@ -374,12 +428,14 @@ class MapPanel:
 
         # Update RadarScanFX dimensions directly based on world dimensions,
         # keeping its bottom-left corner fixed at its original position.
-
         new_x_position = self.radar_scan_fx.x  # Keep original x position unchanged
         new_y_position = self.radar_scan_fx.y - (self.world_height - self.radar_scan_fx.height)  # Adjust upward
         self.radar_scan_fx.scale(new_x_position, new_y_position, self.world_width, self.world_height)
 
     def update_camera_position(self) -> None:
+        """
+        Update the camera position based on the mouse position.
+        """
         # get the mouse position
         mx, my = pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1]
 
@@ -393,114 +449,21 @@ class MapPanel:
         # navigate to position
         navigate_to_position(x, y)
 
-    def draw_objects(self, sprites: list, surface: pygame.surface.Surface) -> None:
-        # update factor 
-        self.factor = self.app.level_handler.data["globals"]["width"] / self.world_width
-
-        # get all objects to display
-        for sprite in sprites:
-            if hasattr(sprite, "property"):
-                # get average color of object
-                color = sprite.average_color
-                pos = ((sprite.world_x / self.factor), (sprite.world_y / self.factor))
-                size = (
-                    sprite.world_width / self.factor if sprite.world_width / self.factor > MIN_OBJECT_SIZE else MIN_OBJECT_SIZE,
-                    sprite.world_height / self.factor if sprite.world_height / self.factor > MIN_OBJECT_SIZE else MIN_OBJECT_SIZE)
-
-                # planets, sun, moons
-                if sprite.property == "planet" and self.show_planets:
-                    radius = sprite.world_width / self.factor if sprite.world_width / self.factor > MIN_OBJECT_SIZE else MIN_OBJECT_SIZE
-
-                    if sprite.explored and config.view_explored_planets:
-                        color = pygame.color.THECOLORS.get("green")
-
-                    self.draw_object(pos, radius, color, sprite, surface)
-                    self.draw_image(pos, size, sprite.image_raw)
-
-                    # draw orbits
-                    if self.show_orbits:
-                        orbit_objects = [_ for _ in sprite_groups.planets.sprites() if _.orbit_object == sprite]
-                        color = colors.ui_darker
-                        for i in orbit_objects:
-                            radius = i.orbit_radius / self.factor
-                            self.draw_object(pos, radius, color, sprite, surface, width=1, draw_anyway=True)
-
-                    if self.show_warnings:
-                        if sprite.under_attack:
-                            self.draw_image(pos, (
-                                WARNING_ICON_SIZE,
-                                WARNING_ICON_SIZE), self.warning_image, offset_y=-15, draw_anyway=True)
-
-                # ships
-                if sprite.property == "ship" and self.show_ships:
-                    radius = sprite.world_width / self.factor if sprite.world_width / self.factor > MIN_OBJECT_SIZE else MIN_OBJECT_SIZE
-                    self.draw_object(pos, radius, color, sprite, surface)
-                    self.draw_image(pos, size, sprite.image_raw)
-
-                    # display selection
-                    if sprite == self.app.ship:
-                        self.draw_object(pos, radius, colors.select_color, sprite, surface, draw_anyway=True)
-
-                # ufos
-                if sprite.property == "ufo" and self.show_ufos:
-                    radius = sprite.world_width / self.factor / 2 if sprite.world_width / self.factor > MIN_OBJECT_SIZE else MIN_OBJECT_SIZE
-                    self.draw_object(pos, radius, color, sprite, surface)
-                    self.draw_image(pos, size, sprite.image_raw)
-
-                # collectable items
-                if sprite.property == "item" and self.show_items:
-                    radius = 1
-                    self.draw_object(pos, radius, color, sprite, surface)
-                    self.draw_image(pos, size, sprite.image_raw)
-
-    def draw_image(self, pos, size, image, **kwargs):
-        draw_anyway = kwargs.get("draw_anyway", False)
-        if not self.show_images and not draw_anyway:
-            return
-
-        offset_x = kwargs.get("offset_x", 0)
-        offset_y = kwargs.get("offset_y", 0)
-
-        image_copy = copy.copy(image)
-        new_image = scale_image_cached(image_copy, size)
-        image_rect = new_image.get_rect()
-        pos = pos[0] + offset_x, pos[1] + offset_y
-        image_rect.center = pos
-        self.background_surface.blit(new_image, image_rect)
-
-    def draw_object(self, pos, radius, color, sprite, surface, **kwargs):
-        draw_anyway = kwargs.get("draw_anyway", False)
-        if self.show_images and not draw_anyway:
-            return
-
-        width = kwargs.get("width", 0)
-        # draw object
-        pos = ((sprite.world_x / self.factor), (sprite.world_y / self.factor))
-        pygame.draw.circle(
-                surface=surface,
-                color=color,
-                center=pos,
-                radius=radius,
-                width=width)
-
-    def draw_camera_focus(self) -> None:
-        if not self.show_camera:
-            return
-
-        # calculate the position
-        x, y = (pan_zoom_handler.world_offset_x / self.factor), (pan_zoom_handler.world_offset_y / self.factor)
-
-        # Calculate the width and height of the rectangle
-        width = config.width / self.factor / pan_zoom_handler.zoom
-        height = config.height / self.factor / pan_zoom_handler.zoom
-
-        # draw_dashed_rounded_rectangle(self.background_surface,
-        #         pygame.color.THECOLORS["gray31"], pygame.Rect(x, y, width, height), 1, 15 * pan_zoom_handler.zoom, 10)
-
-        pygame.draw.rect(self.background_surface,
-                pygame.color.THECOLORS["gray31"], pygame.Rect(x, y, width, height), 1, 3)
+    def get_sprites(self) -> None:
+        """
+        Get the sprites from the sprite groups and convert them to MapSprite objects.
+        This is necessary because the original sprite objects are not serializable.
+        """
+        self.planet_sprites = [MapSprite.from_sprite(sprite) for sprite in sprite_groups.planets.sprites()]
+        self.ship_sprites = [MapSprite.from_sprite(sprite) for sprite in sprite_groups.ships.sprites()]
+        self.collectable_items_sprites = [MapSprite.from_sprite(sprite) for sprite in
+                                          sprite_groups.collectable_items.sprites()]
+        self.ufo_sprites = [MapSprite.from_sprite(sprite) for sprite in sprite_groups.ufos.sprites()]
 
     def reposition(self) -> None:
+        """
+        reposition the checkboxes
+        """
         self.world_y = self.win.get_size()[1] - self.world_height
         buffer_x = 1
         buffer_y = 3
@@ -511,12 +474,10 @@ class MapPanel:
         self.checkbox_frame = pygame.Rect(self.world_x, self.world_y - BUTTON_SIZE - buffer_y * 2, MIN_MAP_SIZE, BUTTON_SIZE + (
                 buffer_y * 2))
 
-    def set_visible(self) -> None:
-        self.visible = config.show_map_panel
-        for i in self.checkboxes:
-            i._hidden = not self.visible
-
     def listen(self, events) -> None:
+        """
+        listen for events to handle the interaction
+        """
         if not self.visible:
             return
 
@@ -557,7 +518,10 @@ class MapPanel:
         if self.left_mouse_button_pressed or self.middle_button_pressed:
             self.update_camera_position()
 
-    def draw_frame(self):
+    def draw_frame(self) -> None:
+        """
+        draws the frame
+        """
         color = (0, 0, 0)
         self.radar_scan_fx.update()
 
@@ -567,7 +531,136 @@ class MapPanel:
         pygame.draw.rect(self.win, self.frame_color, self.frame_rect,
                 config.ui_rounded_corner_small_thickness, config.ui_rounded_corner_radius_small)
 
+    def draw_objects(self, sprites: list, surface: pygame.surface.Surface) -> None:
+        """
+        Draw the objects based on the provided list of sprites on the map.
+
+        """
+        # update factor
+        self.factor = self.app.level_handler.data["globals"]["width"] / self.world_width
+
+        # get all objects to display
+        for sprite in sprites:
+            if hasattr(sprite, "property"):
+                # get average color of object
+                color = sprite.average_color
+                pos = ((sprite.world_x / self.factor), (sprite.world_y / self.factor))
+                size = (
+                    sprite.world_width / self.factor if sprite.world_width / self.factor > MIN_OBJECT_SIZE else MIN_OBJECT_SIZE,
+                    sprite.world_height / self.factor if sprite.world_height / self.factor > MIN_OBJECT_SIZE else MIN_OBJECT_SIZE)
+
+                # planets, sun, moons
+                if sprite.property == "planet" and self.show_planets:
+                    radius = sprite.world_width / self.factor if sprite.world_width / self.factor > MIN_OBJECT_SIZE else MIN_OBJECT_SIZE
+
+                    if sprite.explored and config.view_explored_planets:
+                        color = pygame.color.THECOLORS.get("green")
+
+                    self.draw_object(pos, radius, color, sprite, surface)
+                    self.draw_image(pos, size, sprite.image_raw)
+
+                    # # draw orbits
+                    # if self.show_orbits:
+                    #     orbit_objects = [_ for _ in self.planet_sprites if _.orbit_object == sprite]
+                    #     color = colors.ui_darker
+                    #     for i in orbit_objects:
+                    #         radius = i.orbit_radius / self.factor
+                    #         self.draw_object(pos, radius, color, sprite, surface, width=1, draw_anyway=True)
+
+                    # draw orbits
+                    if self.show_orbits:
+                        orbit_objects = [_ for _ in self.planet_sprites if _.orbit_object_id == sprite.id]
+                        color = colors.ui_darker
+                        for i in orbit_objects:
+                            radius = i.orbit_radius / self.factor
+                            self.draw_object(pos, radius, color, sprite, surface, width=1, draw_anyway=True)
+
+                    if self.show_warnings:
+                        if sprite.under_attack:
+                            self.draw_image(pos, (
+                                WARNING_ICON_SIZE,
+                                WARNING_ICON_SIZE), self.warning_image, offset_y=-15, draw_anyway=True)
+
+                # ships
+                if sprite.property == "ship" and self.show_ships:
+                    radius = sprite.world_width / self.factor if sprite.world_width / self.factor > MIN_OBJECT_SIZE else MIN_OBJECT_SIZE
+                    self.draw_object(pos, radius, color, sprite, surface)
+                    self.draw_image(pos, size, sprite.image_raw)
+
+                    # display selection
+                    if sprite == self.app.ship:
+                        self.draw_object(pos, radius, colors.select_color, sprite, surface, draw_anyway=True)
+
+                # ufos
+                if sprite.property == "ufo" and self.show_ufos:
+                    radius = sprite.world_width / self.factor / 2 if sprite.world_width / self.factor > MIN_OBJECT_SIZE else MIN_OBJECT_SIZE
+                    self.draw_object(pos, radius, color, sprite, surface)
+                    self.draw_image(pos, size, sprite.image_raw)
+
+                # collectable items
+                if sprite.property == "item" and self.show_items:
+                    radius = 1
+                    self.draw_object(pos, radius, color, sprite, surface)
+                    self.draw_image(pos, size, sprite.image_raw)
+
+    def draw_image(self, pos, size, image, **kwargs) -> None:
+        """
+        draws the image on the map, used by draw_objects
+        """
+        draw_anyway = kwargs.get("draw_anyway", False)
+        if not self.show_images and not draw_anyway:
+            return
+
+        offset_x = kwargs.get("offset_x", 0)
+        offset_y = kwargs.get("offset_y", 0)
+
+        image_copy = copy.copy(image)
+        new_image = scale_image_cached(image_copy, size)
+        image_rect = new_image.get_rect()
+        pos = pos[0] + offset_x, pos[1] + offset_y
+        image_rect.center = pos
+        self.background_surface.blit(new_image, image_rect)
+
+    def draw_object(self, pos, radius, color, sprite, surface, **kwargs) -> None:
+        """
+        draws the object on the map as a circle if not show_images is enabled
+        """
+        draw_anyway = kwargs.get("draw_anyway", False)
+        if self.show_images and not draw_anyway:
+            return
+
+        width = kwargs.get("width", 0)
+        # draw object
+        pos = ((sprite.world_x / self.factor), (sprite.world_y / self.factor))
+        pygame.draw.circle(
+                surface=surface,
+                color=color,
+                center=pos,
+                radius=radius,
+                width=width)
+
+    def draw_camera_focus(self) -> None:
+        """
+        draw the camera focus if show_camera is enabled
+        """
+        if not self.show_camera:
+            return
+
+        # calculate the position
+        x, y = (pan_zoom_handler.world_offset_x / self.factor), (pan_zoom_handler.world_offset_y / self.factor)
+
+        # Calculate the width and height of the rectangle
+        width = config.width / self.factor / pan_zoom_handler.zoom
+        height = config.height / self.factor / pan_zoom_handler.zoom
+
+        pygame.draw.rect(self.background_surface,
+                pygame.color.THECOLORS["gray31"], pygame.Rect(x, y, width, height), 1, 3)
+
     def draw(self) -> None:
+        """
+        draw the panel, frame ect
+        """
+
         self.set_visible()
         if not self.visible:
             return
@@ -576,7 +669,6 @@ class MapPanel:
         self.update_checkboxes()
 
         # generate rect
-        self.frame_rect = pygame.Rect(self.world_x, self.world_y, self.world_width, self.world_height)
         self.background_surface_rect = pygame.Rect(
                 self.world_x + config.ui_rounded_corner_radius_small,
                 self.world_y + config.ui_rounded_corner_radius_small,
@@ -595,13 +687,19 @@ class MapPanel:
                 self.world_height - (config.ui_rounded_corner_radius_small * 2)))
 
         # draw the frame
+        self.frame_rect = pygame.Rect(self.world_x, self.world_y, self.world_width, self.world_height)
         self.draw_frame()
 
+        # get the sprites every x seconds
+        if self.start_time + self.update_interval < time_handler.time:
+            self.start_time = time_handler.time
+            self.get_sprites()
+
         # draw the objects
-        self.draw_objects(sprite_groups.planets.sprites(), self.background_surface)
-        self.draw_objects(sprite_groups.ships.sprites(), self.background_surface)
-        self.draw_objects(sprite_groups.collectable_items.sprites(), self.background_surface)
-        self.draw_objects(sprite_groups.ufos.sprites(), self.background_surface)
+        self.draw_objects(self.planet_sprites, self.background_surface)
+        self.draw_objects(self.ship_sprites, self.background_surface)
+        self.draw_objects(self.collectable_items_sprites, self.background_surface)
+        self.draw_objects(self.ufo_sprites, self.background_surface)
 
         # draw camera focus
         self.draw_camera_focus()

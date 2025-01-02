@@ -98,7 +98,7 @@ class MovingImage(pygame.sprite.Sprite):
             fontname: str,
             loops: int,
             parent: pygame.rect.Rect = None,
-            target: tuple[int,int] or None = None,
+            target: tuple[int, int] or None = None,
             ):
         pygame.sprite.Sprite.__init__(self)
         self.text_wrap = TextWrap()
@@ -113,7 +113,7 @@ class MovingImage(pygame.sprite.Sprite):
         self.image = scale_image_cached(self.image_raw, (width, height))
         self.lifetime = lifetime
         self.velocity = velocity
-        self.rect = self.image.get_rect(topleft=(x, y))
+
         self.text = text
         self.text_color = text_color
         self.font_size = SPECIAL_FONT_SIZE
@@ -124,11 +124,12 @@ class MovingImage(pygame.sprite.Sprite):
         self.runs = 0
         self.parent = parent
         self.target = target
+        self.rect = self.image.get_rect(topleft=self.parent.topleft if parent else (x, y))
         self._hidden = False
         sprite_groups.moving_images.add(self)
 
         assert isinstance(self.parent, (
-        pygame.rect.Rect, type(None))), "parent must be a pygame.rect.Rect object or None"
+            pygame.rect.Rect, type(None))), "parent must be a pygame.rect.Rect object or None"
         assert isinstance(self.target, (tuple, type(None))), "target must be a tuple of (x, y) coordinates or None"
 
     def reset(self):
@@ -140,17 +141,11 @@ class MovingImage(pygame.sprite.Sprite):
         self.alpha = 255
 
     def update(self):
-        # if hasattr(self.parent, "rect"):
-        #     self.start_x = self.parent.rect.right
-        #     self.start_y = self.parent.rect.top
-        # else:
-
-        # self.start_x = self.start_pos[0]
-        # self.start_y = self.parent[1]
-
         if self.parent:
             self.start_x = self.parent.right
             self.start_y = self.parent.top
+
+        # self.rect = self.image.get_rect(topleft=(self.start_x, self.start_y))
 
         # Calculate elapsed time
         elapsed_time = time_handler.time - self.start_time
@@ -200,12 +195,9 @@ class MovingImage(pygame.sprite.Sprite):
                 self.kill()
                 del self
                 return
-        self.draw(self.win)
 
-    def draw(self, surface):
-        surface.blit(self.image, self.rect)
         self.text_wrap.wrap_text(self.win, self.text, (int(self.rect.right - 10), int(self.rect.top - 40)), (
-        250, 20), self.font,
+            250, 20), self.font,
                 self.text_color, fade_out=True, alpha=self.alpha)
 
 

@@ -8,7 +8,6 @@ from source.configuration.game_config import config
 from source.draw.circles import draw_transparent_circle
 from source.factories.building_factory import building_factory
 from source.factories.universe_factory import universe_factory
-from source.factories.weapon_factory import weapon_factory
 from source.gui.event_text import event_text
 from source.gui.widgets.moving_image import MovingImage
 from source.handlers.pan_zoom_handler import pan_zoom_handler
@@ -16,68 +15,9 @@ from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.handlers.time_handler import time_handler
 from source.multimedia_library.images import get_image
 from source.multimedia_library.sounds import sounds
-from source.pan_zoom_sprites.pan_zoom_missile import PanZoomMissile, MISSILE_POWER, Missile
-from source.pan_zoom_sprites.rack import Rack
-
-CANNON_GUNPOWER = 3
-
-
-class WeaponRack(Rack):
-    def __init__(self, width, height, pivot: tuple, points_by_level: dict):
-        self.level = 0
-
-        self.points_by_level = points_by_level
-        self.levels = list(points_by_level.keys())
-        super().__init__(width, height, pivot, self.points_by_level[self.level])
-
-    def set_level(self, level):
-        self.level = level
-        self.points_raw = self.points_by_level[level]
-        self.points = self.points_by_level[level]
-
-
-def calculate_weapon_positions(spaceship_size, rocket_size, levels, resize_factor):
-    # Apply resize_factor to spaceship and rocket sizes
-    adjusted_spaceship_size = (spaceship_size[0] * resize_factor, spaceship_size[1] * resize_factor)
-    adjusted_rocket_size = (rocket_size[0] * resize_factor, rocket_size[1] * resize_factor)
-
-    offset_x = (adjusted_spaceship_size[0] - adjusted_rocket_size[0] * 2) / 6
-    offset_y = 16 * resize_factor
-
-    positions = {}
-    for level in levels:
-        if level == 0:
-            positions[level] = [(offset_x + adjusted_rocket_size[0] / 2, offset_y)]
-        elif level == 1:
-            positions[level] = [
-                (offset_x + adjusted_rocket_size[0] / 2, offset_y),
-                (adjusted_spaceship_size[0] - offset_x - adjusted_rocket_size[0] / 2, offset_y)
-                ]
-        elif level == 2:
-            outside_offset = 3 * resize_factor
-            outer_y_offset = 5 * resize_factor
-            inner_y_offset = outer_y_offset - 5 * resize_factor
-            positions[level] = [
-                (offset_x + outside_offset + adjusted_rocket_size[0] / 2, offset_y - outer_y_offset),
-                (adjusted_spaceship_size[0] - offset_x - adjusted_rocket_size[0] / 2 - outside_offset,
-                 offset_y - outer_y_offset),
-                (offset_x - outside_offset + adjusted_rocket_size[0] / 2, offset_y - inner_y_offset),
-                (adjusted_spaceship_size[0] - offset_x - adjusted_rocket_size[0] / 2 + outside_offset,
-                 offset_y - inner_y_offset)
-                ]
-
-    return positions
-
-
-def create_weapon_rack(spaceship_size, weapon_size, levels, resize_factor):
-    positions = calculate_weapon_positions(spaceship_size, weapon_size, [0, 1, 2], resize_factor)
-    rack = WeaponRack(
-            width=spaceship_size[0],
-            height=spaceship_size[1],
-            pivot=(spaceship_size[0] / 2, spaceship_size[1] / 2),
-            points_by_level=positions
-            )
-    return rack
+from source.pan_zoom_sprites.pan_zoom_missile import Missile
+from source.weapons.weapon_factory import weapon_factory
+from source.weapons.weapon_rack import WeaponRack, calculate_weapon_positions
 
 
 class WeaponHandler:  # upgrade weapon fixed
@@ -120,7 +60,7 @@ class WeaponHandler:  # upgrade weapon fixed
         # get the original rocket size
         self.weapon_size = (17, 42)
 
-        # calculate the resize factr
+        # calculate the resize factor
         self.resize_factor = 1 / self.parent.image_raw.get_rect().width * self.parent.world_width
 
         # calculate all positions
@@ -303,7 +243,7 @@ class WeaponHandler:  # upgrade weapon fixed
             x += random.randint(-rx, rx)
             y += random.randint(-ry, ry)
             # power = self.get_current_value("power")
-            defender.energy -= power
+            # defender.energy -= power
 
             # if defender.property in ["ship", "ufo"]:
             if defender.energy >= 0:
@@ -344,22 +284,10 @@ class WeaponHandler:  # upgrade weapon fixed
                 f"-{power}", pygame.color.THECOLORS["red"],
                 "georgiaproblack", 1, defender.rect, target=None)
 
-    def get_current_value__(self, var: str) -> float:
+    def get_current_value(self, var: str) -> float:
         level = self.current_weapon.get("level")
         upgrade_value = self.current_weapon["upgrade values"][f"level_{level}"][var]
         weapon_value = self.current_weapon.get(var)
-        value = weapon_value * upgrade_value
-        return value
-
-    def get_current_value(self, var: str) -> float:
-        level = self.current_weapon.get("level", 0)  # Default to 0 if level is not set
-        if level == -1:
-            level = 0  # Treat -1 (not owned) as level 0 for upgrade values
-
-        upgrade_value = self.current_weapon["upgrade values"][
-            f"level_{level}"].get(var, 1)  # Default to 1 if var not found
-        weapon_value = self.current_weapon.get(var, 0)  # Default to 0 if var not found
-
         value = weapon_value * upgrade_value
         return value
 
@@ -394,81 +322,15 @@ class WeaponHandler:  # upgrade weapon fixed
                 self.parent.enemy = None
 
         if defender.property == "planet" and power:
-            attack_planet(self.parent, defender, power)
+            self.attack_planet(self.parent, defender, power)
 
+    def attack_planet(self, attacker, defender, power) -> None:
+        if defender.economy_agent.population > 0:
+            defender.economy_agent.population -= power / 100
+        else:
+            defender.owner = attacker.owner
+            defender.get_explored(attacker.owner)
+            defender.set_display_color()
+            attacker.enemy = None
 
-# why is this outside the class??
-def attack_planet(attacker, defender, power) -> None:
-    if defender.economy_agent.population > 0:
-        defender.economy_agent.population -= power / 100
-    else:
-        defender.owner = attacker.owner
-        defender.get_explored(attacker.owner)
-        defender.set_display_color()
-        attacker.enemy = None
-
-        attacker.orbit_object = defender
-
-
-def attack(attacker, defender) -> None:
-    """
-    used by planet defence
-    """
-
-    # this might be deleted: should not attacker attack defender even if not on screen ???
-    # if not level_of_detail.inside_screen(attacker.get_screen_position()):
-    #     return
-
-    # if attacker is planet
-    if attacker.property == "planet":
-        gun_power = len([i for i in attacker.economy_agent.buildings if i == "cannon"]) * CANNON_GUNPOWER
-    else:
-        gun_power = attacker.gun_power
-
-    r0 = random.randint(-4, 5)
-    r = random.randint(-3, 4)
-    r_m = random.randint(0, 20)
-
-    startpos = (attacker.rect.center[0], attacker.rect.center[1])
-    endpos = (defender.rect.center[0] + r0, defender.rect.center[1] + r0)
-
-    # shoot laser
-    if r == 2 and defender.energy > 0:
-        pygame.draw.line(surface=attacker.win, start_pos=startpos, end_pos=endpos,
-                color=pygame.color.THECOLORS["white"], width=2)
-
-        # make damage to target
-        defender.energy -= gun_power
-        sounds.play_sound(sounds.laser)
-
-    if defender.energy <= defender.energy_max / 2:
-        defender.target = attacker
-
-
-def launch_missile(attacker, defender) -> None:
-    app = config.app
-    screen = app.win
-    x, y = pan_zoom_handler.screen_2_world(attacker.rect.centerx, attacker.rect.centery)
-    # rx = int(attacker.rect.width / 4)
-    # ry = int(attacker.rect.height / 4)
-    # x += random.randint(-rx, rx)
-    # y += random.randint(-ry, ry)
-
-    if defender.energy - MISSILE_POWER >= 0:
-        missile = PanZoomMissile(
-                screen,
-                x,
-                y,
-                42,
-                17,
-                pan_zoom_handler,
-                "missile_42x17.gif",
-                group="missiles",
-                loop_gif=True,
-                move_to_target=True,
-                align_image="topleft",
-                explosion_relative_gif_size=1.0,
-                layer=9,
-                debug=False,
-                target=defender,
-                appear_at_start=True, zoomable=True)
+            attacker.orbit_object = defender

@@ -11,7 +11,7 @@ from source.gui.widgets.progress_bar import ProgressBar
 from source.handlers.color_handler import colors
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
-from source.math.line_intersect import interectLineCircle
+from source.math.line_intersect import interectLineCircle, draw_intersection
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_classes import PanZoomGif
 from source.pan_zoom_sprites.rot_rect import RotRect
 
@@ -66,7 +66,7 @@ class PanZoomShipDraw:
 
         # rot_rect used for several positions like lefttop, aim point ect
         self.rot_rect = RotRect(self.rect_raw)
-        self.rot_rect.add_point(Vector2(self.rot_rect.midtop.x, self.rot_rect.midtop.y - 200), "aim_point")
+        self.rot_rect.add_point(Vector2(self.rot_rect.midtop.x, self.rot_rect.midtop.y - 600), "aim_point")
 
     def update_electro_discharge(self):
         # Update electro discharge visibility: if no energy_reloader set invisible
@@ -75,13 +75,18 @@ class PanZoomShipDraw:
             return
 
         # Update rot_rect to get the positions for electro discharge
+        if self.weapon_handler.current_weapon_select == "rocket":
+            angle = self.angle +90
+        else:
+            angle = self.angle
+
         self.rot_rect.update(
                 x=self.rect.centerx,
                 y=self.rect.centery,
                 width=self.world_width * pan_zoom_handler.zoom,
                 height=self.world_height * pan_zoom_handler.zoom,
                 pivot=Vector2(self.rect.center),
-                angle=self.angle,
+                angle=angle,
                 scale=pan_zoom_handler.zoom
                 )
 
@@ -108,7 +113,7 @@ class PanZoomShipDraw:
 
             # Update electro discharge position, rotation, and size
             self.electro_discharge.set_position(world_x, world_y)
-            self.electro_discharge.set_rotation_angle(self.angle + 90)
+            self.electro_discharge.set_rotation_angle(self.rot_rect.angle + 90)
 
             self.electro_discharge.world_width = math.dist(aim_point, reloader_center) / pan_zoom_handler.zoom
             self.electro_discharge.world_height = self.electro_discharge.world_width * self.electro_discharge.image_aspect_ratio

@@ -12,12 +12,12 @@ from source.handlers.garbage_handler import garbage_handler
 from source.handlers.mouse_handler import mouse_handler, MouseState
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.handlers.time_handler import time_handler
-from source.handlers.weapon_handler import WeaponHandler
 from source.handlers.widget_handler import WidgetHandler
 from source.multimedia_library.gif_handler import GifHandler
 from source.multimedia_library.images import scale_image_cached
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_game_object import PanZoomGameObject
 from source.text.info_panel_text_generator import info_panel_text_generator
+from source.weapons.weapon_handler import WeaponHandler
 
 # lifetime in seconds
 LIFETIME = 60
@@ -49,6 +49,8 @@ class PanZoomUfo(PanZoomGameObject):  # , InteractionHandler):
         self.move_to_target = True
         self.rotate_to_target = False
         self.speed = pan_zoom_ufo_config["speed"]
+        self.speed_raw = pan_zoom_ufo_config["speed"]
+        self.speed_if_emp_attacked = self.speed / 3
         self.orbit_speed = pan_zoom_ufo_config["orbit_speed"]
         self.exploded = False
         self.energy = pan_zoom_ufo_config["energy"]
@@ -64,6 +66,7 @@ class PanZoomUfo(PanZoomGameObject):  # , InteractionHandler):
         self.technology = kwargs.get("technology", 100)
         self.technology_max = 200
         self.type = "ufo"
+        self.owner = -1
 
         self.resources = {
             "minerals": self.minerals,
@@ -212,6 +215,7 @@ class PanZoomUfo(PanZoomGameObject):  # , InteractionHandler):
     def update(self):
         # print (f"ufo.update: explode_calls {self.explode_calls}")
         if not config.game_paused:
+            self.speed = self.speed_raw if not self.emp_attacked else self.speed_if_emp_attacked
             self.update_pan_zoom_game_object()
             self.set_attack_distance()
             self.set_random_target()

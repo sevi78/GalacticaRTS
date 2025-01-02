@@ -39,7 +39,7 @@ gifs = {}
 gif_frames = {}
 gif_fps = {}
 gif_durations = {}
-MAX_GIF_SIZE = 150
+MAX_GIF_SIZE = 1000
 LOAD_AT_GAME_START = False
 
 

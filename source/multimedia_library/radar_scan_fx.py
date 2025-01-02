@@ -17,6 +17,8 @@ WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 GREEN = (0, 255, 0)
 
+GLOW_CYCLE_TIME = 5
+
 
 class RadarScanFX:
     def __init__(self, surface: pygame.Surface, x: int, y: int, width: int, height: int, corner_radius: int = 0):
@@ -76,7 +78,7 @@ class RadarScanFX:
         # Calculate glow position (5 second cycle)
         current_time = time.time()
         elapsed_time = current_time - self.glow_start_time
-        self.glow_position = (elapsed_time % 5) / 5 * self.width
+        self.glow_position = (elapsed_time % GLOW_CYCLE_TIME) / GLOW_CYCLE_TIME * self.width
 
         # Create and draw the radar glow effect
         glow_surface = pygame.Surface((self.glow_width, self.height), pygame.SRCALPHA)

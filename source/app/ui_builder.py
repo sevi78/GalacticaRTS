@@ -11,7 +11,7 @@ from source.editors.enemy_handler_edit import EnemyHandlerEdit
 from source.editors.planet_edit import PlanetEdit
 from source.editors.save_game_edit import SaveGameEdit
 from source.editors.ship_edit import ShipEdit
-from source.editors.weapon_select import WeaponSelect
+from source.weapons.weapon_select import WeaponSelect
 from source.game_play.enemy_handler import enemy_handler
 from source.gui.panels.advanced_settings_panel import AdvancedSettingsPanel
 from source.gui.panels.building_panel_components.building_panel import BuildingPanel

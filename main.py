@@ -279,7 +279,7 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
 
             # set fps
             # time_handler.set_fps(int(config.fps))
-            time_handler.set_fps(800)
+            time_handler.set_fps(60)
             time_handler.update_time()
             time_handler.listen(events)
 
@@ -298,7 +298,7 @@ class App(AppHelper, UIBuilder, GameLogic, Cheat):
                     pan_zoom_handler.listen(events)
 
             # update sprites
-            # dont mess up the order! for some reason it must be drawn first then update
+            # dont mess up the order!
             sprite_groups.update(events=events)
 
             sprite_groups.listen(events)

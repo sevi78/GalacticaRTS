@@ -3,10 +3,11 @@ import random
 
 import pygame
 
-import source.handlers.weapon_handler
+import source.pan_zoom_sprites.pan_zoom_planet_classes.pan_zoom_planet_defence
+import source.weapons.weapon_handler
 from source.configuration.game_config import config
 from source.factories.planet_factory import planet_factory
-from source.factories.weapon_factory import weapon_factory
+from source.weapons.weapon_factory import weapon_factory
 from source.game_play import enemy_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 
@@ -98,7 +99,7 @@ class Cheat:
         if not self.selected_planet:
             return
         ufo = enemy_handler.enemy_handler.spawn_ufo(self.selected_planet)
-        source.handlers.weapon_handler.launch_missile(self.selected_planet, ufo)
+        source.pan_zoom_sprites.pan_zoom_planet_classes.pan_zoom_planet_defence.launch_missile(self.selected_planet, ufo)
 
     def cheat_level_success(self):
         for key, value in self.level_handler.level_successes.items():
@@ -118,6 +119,8 @@ class Cheat:
         for i in sprite_groups.planets:
             i.economy_agent.buildings.append("electro magnetic impulse")
             i.economy_agent.buildings.append("solar panel")
+            i.economy_agent.buildings.append("particle accelerator")
+            i.economy_agent.buildings.append("energy blast")
         self.cheat_population(100000.0)
         self.spawn_ufo()
         self.cheat_resources(100000.0)

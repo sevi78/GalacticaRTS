@@ -42,6 +42,8 @@ class Cursor:
             "resize_45": pygame.transform.rotate(scale_image_cached(get_image(f"crosshair015.png"), self.cursor_size), 45),
             "resize_90": pygame.transform.rotate(scale_image_cached(get_image(f"crosshair015.png"), self.cursor_size), 90),
             "resize_135": pygame.transform.rotate(scale_image_cached(get_image(f"crosshair015.png"), self.cursor_size), 135),
+            "aim": scale_image_cached(get_image(f"crosshair068.png"), self.cursor_size),
+            "shoot": scale_image_cached(get_image(f"crosshair078.png"), self.cursor_size)
             }
 
         self.resize_cursor_orientations = {

@@ -19,40 +19,40 @@ MISSILE_POWER = 50
 MISSILE_RANGE = 3000
 
 
-class PanZoomMissile(PanZoomGameObject):
-    def __init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs):
-        PanZoomGameObject.__init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs)
-        self.explode_if_target_reached = True
-        self.target = kwargs.get("target")
-        self.speed = MISSILE_SPEED
-        self.missile_power = kwargs.get("missile_power", MISSILE_POWER)
-        self.rotate_correction_angle = kwargs.get("rotate_correction_angle", 0)
-
-        print (self.initial_rotation)
-
-    def damage(self):
-        if not self.target:
-            return
-        if self.target.property in ["ship", "ufo"]:
-            self.target.energy -= self.missile_power
-            self.target.weapon_handler.draw_moving_image(self.target, self.missile_power)
-        if self.target.property == "planet":
-            print("attacking planet")
-
-            MovingImage(
-                    config.app.win,
-                    self.target.rect.top,
-                    self.target.rect.right,
-                    18,
-                    18,
-                    get_image("energy_25x25.png"),
-                    1,
-                    (random.randint(-2, 2), random.randint(-2, 2)),
-                    f"-{self.missile_power}", pygame.color.THECOLORS["red"],
-                    "georgiaproblack", 1, self.target.rect, target=None)
-
-        # if self.target.energy <= 0:
-        #     self.explode()
+# class PanZoomMissile(PanZoomGameObject): # dont use this !!
+#     def __init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs):
+#         PanZoomGameObject.__init__(self, win, x, y, width, height, pan_zoom, image_name, **kwargs)
+#         self.explode_if_target_reached = True
+#         self.target = kwargs.get("target")
+#         self.speed = MISSILE_SPEED
+#         self.missile_power = kwargs.get("missile_power", MISSILE_POWER)
+#         self.rotate_correction_angle = kwargs.get("rotate_correction_angle", 0)
+#
+#         print(self.initial_rotation)
+#
+#     def damage(self):
+#         if not self.target:
+#             return
+#         if self.target.property in ["ship", "ufo"]:
+#             self.target.energy -= self.missile_power
+#             self.target.weapon_handler.draw_moving_image(self.target, self.missile_power)
+#         if self.target.property == "planet":
+#             print("attacking planet")
+#
+#             MovingImage(
+#                     config.app.win,
+#                     self.target.rect.top,
+#                     self.target.rect.right,
+#                     18,
+#                     18,
+#                     get_image("energy_25x25.png"),
+#                     1,
+#                     (random.randint(-2, 2), random.randint(-2, 2)),
+#                     f"-{self.missile_power}", pygame.color.THECOLORS["red"],
+#                     "georgiaproblack", 1, self.target.rect, target=None)
+#
+#         # if self.target.energy <= 0:
+#         #     self.explode()
 
 
 class Missile(PanZoomMovingRotatingGif):
@@ -109,20 +109,35 @@ class Missile(PanZoomMovingRotatingGif):
                     relative_gif_size=self.explosion_relative_gif_size,
                     layer=10, sound=sound, group="explosions", name="explosion")
 
+            moving_image = MovingImage(
+                    self.win,
+                    self.target.rect.top,
+                    self.target.rect.right,
+                    18,
+                    18,
+                    get_image("energy_25x25.png"),
+                    1,
+                    (random.randint(-1, 1), 2),
+                    f"-{self.missile_power}", pygame.color.THECOLORS["red"],
+                    "georgiaproblack", 1, self.target.rect, target=None)
+
             self.exploded = True
 
         if hasattr(self, "__delete__"):
             self.__delete__(self)
+
         self.kill()
+
+    def damage(self):
+        self.target.energy -= self.missile_power
 
     def reach_target(self):
         self.target_reached = math.dist(self.rect.center, self.target.rect.center) < 10
 
         if self.target_reached:
             if self.explode_if_target_reached:
-                self.explode()
-            if hasattr(self, "damage"):
                 self.damage()
+                self.explode()
 
     def update(self):
         x, y = self.curve_move.get_curve_position(self, self.target)

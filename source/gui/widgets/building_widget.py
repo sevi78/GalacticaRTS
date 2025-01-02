@@ -5,7 +5,7 @@ import pygame
 
 
 from source.configuration.game_config import config
-from source.factories.weapon_factory import weapon_factory
+from source.weapons.weapon_factory import weapon_factory
 from source.gui.widgets.buttons.button import Button
 # from source.gui.widgets.buttons.image_button import ImageButton
 from source.gui.widgets.progress_bar import ProgressBar

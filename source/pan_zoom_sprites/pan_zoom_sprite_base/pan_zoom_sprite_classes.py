@@ -285,12 +285,14 @@ class PanZoomImage(PanZoomSpriteBase):
         """
         Applies scaling and rotation transformations to the sprite's image.
         This method updates the sprite's image based on its current zoom level and rotation angle.
+
+        TODO: implement that the image is only scaled if the size has changed
         """
         # Scale and rotate the image accordingly
         scaled_image = scale_image_cached(self.image_raw, (screen_width, screen_height))
 
         # set the scaled rect
-        self.scaled_rect = scaled_image.get_rect(**{self.align_image: pan_zoom_handler.world_2_screen(self.world_x, self.world_y)})
+        # self.scaled_rect = scaled_image.get_rect(**{self.align_image: pan_zoom_handler.world_2_screen(self.world_x, self.world_y)})
 
         # Rotate the scaled image to get the final image for rendering
         if self.rotation_angle_changed() or self.ignore_rotation_angle_changed:
