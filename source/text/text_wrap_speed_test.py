@@ -20,10 +20,11 @@
 
 
 
-import pygame
-from typing import List, Tuple, Dict, Optional
-from dataclasses import dataclass, field
 import time
+from dataclasses import dataclass, field
+from typing import List, Tuple
+
+import pygame
 
 from source.multimedia_library.images import scale_image_cached
 
@@ -367,8 +368,7 @@ class TextWrapOptimizedII:
 
 
 import pygame
-from typing import List, Tuple, Dict, Optional
-from array import array
+from typing import List, Tuple, Dict
 
 
 class TextWrapOptimizedIII:

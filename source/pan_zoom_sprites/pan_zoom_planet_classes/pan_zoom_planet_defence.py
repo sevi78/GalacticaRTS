@@ -13,6 +13,7 @@ from source.handlers.color_handler import colors
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.handlers.time_handler import time_handler
+from source.handlers.widget_handler import WidgetHandler
 from source.multimedia_library.images import get_image
 from source.multimedia_library.sounds import sounds
 from source.pan_zoom_sprites.pan_zoom_missile import MISSILE_POWER, Missile
@@ -45,9 +46,11 @@ class PanZoomPlanetDefence:  # new
                                                for y in
                                                range(-MOVING_IMAGE_RANDOM_VELOCITY_RANGE, MOVING_IMAGE_RANDOM_VELOCITY_RANGE)]
 
-    def __delete____(self, instance):  # unused ?
+    def __delete__(self, instance):  # unused ?
         print("PanZoomPlanetDefence.__delete__: ")
         self.parent = None
+        self.emp.__delete__(self.emp)
+        self.emp = None
         del self
 
     def get_defence_units(self):
@@ -276,6 +279,18 @@ class EMP:
                 )
         self.emp_progress_display.hide()
         self.emp_gif.visible = False
+
+    def __delete__(self, instance):
+        self.parent = None
+        self.weapon_handler = None
+        WidgetHandler.remove_widget(self.emp_progress_display)
+        self.emp_progress_display = None
+
+        sprite_groups.energy_reloader.remove(self.emp_gif)
+        self.emp_gif.kill()
+
+
+        del self
 
     def activate_electro_magnetic_impulse(self, pulse_time):  # gif_index issues
         if time_handler.time - pulse_time < self.emp_pulse_time:

@@ -3,9 +3,7 @@ import copy
 
 import pygame
 
-
 from source.configuration.game_config import config
-from source.weapons.weapon_factory import weapon_factory
 from source.gui.widgets.buttons.button import Button
 # from source.gui.widgets.buttons.image_button import ImageButton
 from source.gui.widgets.progress_bar import ProgressBar
@@ -17,6 +15,7 @@ from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.time_handler import time_handler
 from source.multimedia_library.images import get_image, overblit_button_image, scale_image_cached, rounded_surface
 from source.multimedia_library.sounds import sounds
+from source.weapons.weapon_factory import weapon_factory
 
 PROGRESSBAR_UPDATE_RATE_IN_SECONDS = 0.1
 FONT_SIZE = 10

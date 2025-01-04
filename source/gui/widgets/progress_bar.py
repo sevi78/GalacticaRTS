@@ -68,6 +68,10 @@ class ProgressBar(WidgetBase):
         self.gradient_color = kwargs.get("gradient_color", True)
         self.disable()
 
+    def __delete__(self):
+        self.parent = None
+        super().__delete__()
+
     def set_progressbar_position(self):
         """
          # set progress bar position based on the images ccordinates

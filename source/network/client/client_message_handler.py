@@ -1,5 +1,3 @@
-import time
-
 from source.configuration.game_config import config
 from source.factories.building_factory import building_factory
 from source.gui.event_text import event_text

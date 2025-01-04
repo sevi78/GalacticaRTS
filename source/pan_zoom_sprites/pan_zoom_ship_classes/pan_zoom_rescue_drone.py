@@ -1,8 +1,6 @@
 from source.configuration.game_config import config
-from source.draw.scope import scope
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.pan_zoom_sprites.pan_zoom_ship_classes.pan_zoom_ship import PanZoomShip
-from source.text.text_formatter import format_number
 
 
 class PanZoomRescueDrone(PanZoomShip):

@@ -1,11 +1,8 @@
 import pygame
-from pygame_widgets.util import drawText
 
 from source.configuration.game_config import config
-from source.debug.function_disabler import disabler, auto_disable
 from source.draw.cross import draw_dashed_cross_in_circle
 from source.gui.widgets.image_widget import ImageSprite
-from source.handlers.color_handler import colors
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.multimedia_library.images import get_image
 

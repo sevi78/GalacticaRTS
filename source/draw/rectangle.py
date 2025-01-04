@@ -1,5 +1,4 @@
 import pygame.draw
-from pygame import Rect
 
 from source.draw.arc_with_dashes import draw_arc_with_dashes
 from source.draw.dashed_line import draw_dashed_line

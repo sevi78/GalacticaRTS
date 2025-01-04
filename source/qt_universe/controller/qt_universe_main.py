@@ -1,33 +1,50 @@
 import pygame
-from pygame import Rect
 
-from source.handlers.pan_zoom_handler import pan_zoom_handler
-from source.pan_zoom_quadtree.model.quad_tree import QuadTree
-from source.pan_zoom_quadtree.view.draw import draw_quadtree, draw_quadtree_boundary
-from source.qt_universe.controller.interaction_handler import InteractionHandler
-from source.qt_universe.model.qt_config import *
-from source.qt_universe.model.qt_game_object_factory import add_random_game_objects
-from source.qt_universe.model.time_handler import time_handler
-from source.qt_universe.view.draw import draw_points_inside_screen_rect_with_lod
+from source.qt_universe.controller.qt_interaction_handler import InteractionHandler
+from source.qt_universe.controller.qt_pan_zoom_handler import pan_zoom_handler
+from source.qt_universe.model.config.qt_config import *
+from source.qt_universe.model.qt_game_object_manager import GameObjectManager
+from source.qt_universe.model.qt_time_handler import time_handler
+from source.qt_universe.model.qt_universe_factory import UniverseFactory
+from source.qt_universe.view.qt_draw import draw_quadtree_boundary, \
+    draw_quadtree, draw_objects
 
 font = pygame.font.SysFont(None, 12)
+
+FPS = 30000
+
+"""
+TODO: 
+clean unused stuff. 
+update: when , why and what to update ... 
+
+make cmments !!
+
+rename funcitons like draw_points_inside_screen_rect_with_lod
+
+"""
 
 
 class Game:
     def __init__(self) -> None:
         pygame.init()
         self._clock = pygame.time.Clock()
-        self._fps = 3000
+        self._fps = FPS
         self._rect = Rect(0, 0, 1900, 1080)
         self._running = True
         self._screen = pygame.display.set_mode([self._rect.w, self._rect.h], pygame.RESIZABLE)
-        self._qt_rect = Rect(0, 0, QT_WIDTH, QT_HEIGHT)
-        self._qtree = QuadTree(self._qt_rect, QT_CAPACITY)
-        self.interaction_handler = InteractionHandler(self._qtree, self._qt_rect)
+        self.universe_surface = pygame.Surface(self._screen.get_size())
+        self._screen_search_area = self.get_screen_search_area()
 
         pan_zoom_handler.zoom_min = 0.0002
         pan_zoom_handler.zoom_max = 2.0
-        add_random_game_objects(self._qtree, POINTS_AMOUNT)
+        pan_zoom_handler.center_pan_zoom_handler(QT_RECT)
+        # add_random_game_objects(game_object_manager._qtree, POINTS_AMOUNT)
+
+        self.game_object_manager = GameObjectManager(QT_RECT, self)
+        self.interaction_handler = InteractionHandler(self.game_object_manager._qtree, self._rect)
+        self.universe_factory = UniverseFactory(self._screen, QT_RECT, self.game_object_manager)
+        self.universe_factory.create_universe(QT_RECT, collectable_items_amount=0)
 
     def event_loop(self):
         events = pygame.event.get()
@@ -47,52 +64,44 @@ class Game:
     def get_screen_search_area(self):
         border = 50
         screen_search_area = Rect(border, border, self._screen.get_width() - (border * 2), self._screen.get_height() - (
-                    border * 2))
+                border * 2))
         return screen_search_area
 
     def draw(self) -> None:
-        draw_points_inside_screen_rect_with_lod(self._screen, self._qtree, self.get_screen_search_area())
+        # Clear the screen
+        self._screen.fill((0, 0, 0))
 
+        # Clear the universe surface
+        self.universe_surface.fill((0, 0, 0))
+
+        # Draw the points onto the universe surface
+        draw_objects(self.universe_surface, self.game_object_manager._qtree, self._screen_search_area)
+
+        # Draw the universe surface onto the main screen
+        self._screen.blit(self.universe_surface, (0, 0))
+
+        # Draw the qtree on the universe surface
+        draw_quadtree_boundary(self.game_object_manager._qtree, self._screen, pan_zoom_handler)
         if self.interaction_handler.show_qtree:
-            draw_quadtree(self._qtree, self._screen, pan_zoom_handler)
+            draw_quadtree(self.game_object_manager._qtree, self._screen, pan_zoom_handler)
 
-        draw_quadtree_boundary(self._qtree, self._screen, pan_zoom_handler)
+        # Draw debug text directly on the screen (assuming it's UI)
         self.draw_debug_text()
 
-    def update(self) -> None:
-        # Update positions
-        points = self._qtree.query(self._qt_rect)
-        for point in points:
-            point.update()
-            # if point.type == "planet":
-            #     if point.orbit_object:
-            #         pygame.draw.line(self._screen,(255, 255, 255), point.rect.center, point.orbit_object.rect.center, 1)
-            #     point.x += 10
-            #     point.y += 10
-            #     # self.wraparound(point)
-
-        # Rebuild the quadtree with updated positions, because clear doesn't work properly
-        self._qtree = QuadTree(self._qt_rect, QT_CAPACITY)
-
-        for point in points:
-            self._qtree.insert(point)
-
-        self.interaction_handler._qtree = self._qtree
-
-    def wraparound(self, point):
-        point.x = point.x % self._qt_rect.width
-        point.y = point.y % self._qt_rect.height
+        # Finally, update the screen
+        # pygame.display.flip()
+        pygame.display.update()
 
     def loop(self) -> None:
         while self._running:
             self.event_loop()
-            self._screen.fill((0, 0, 0))
+            self.game_object_manager.update()
+            self.interaction_handler._qtree = self.game_object_manager._qtree
             self.draw()
-            self.update()
             self._clock.tick(self._fps)
-            pygame.display.update()
         pygame.quit()
 
 
-Game().loop()
+game = Game()
+game.loop()
 pygame.quit()

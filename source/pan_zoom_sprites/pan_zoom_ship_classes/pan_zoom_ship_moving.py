@@ -1,10 +1,8 @@
 import math
 
-import pygame
 from pygame import Vector2
 
 from source.configuration.game_config import config
-from source.debug.function_disabler import disabler, auto_disable
 from source.handlers.diplomacy_handler import diplomacy_handler
 from source.handlers.orbit_handler import set_orbit_object_id, orbit_ship
 from source.handlers.pan_zoom_handler import pan_zoom_handler
@@ -130,7 +128,9 @@ class PanZoomShipMoving:
             return
 
         self.set_experience(1000)
-        self.parent.info_panel.set_planet_image(self.target.image_raw)
+        if self.owner == config.app.game_client.id:
+            self.parent.info_panel.set_planet_image(self.target.image_raw)
+
         self.target.get_explored(self.owner)
 
     def reach_target(self, distance):

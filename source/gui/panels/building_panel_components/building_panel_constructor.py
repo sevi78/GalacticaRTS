@@ -1,5 +1,3 @@
-import pygame
-
 from source.configuration.game_config import config
 from source.gui.widgets.buttons.button import Button
 from source.multimedia_library.images import get_image, scale_image_cached

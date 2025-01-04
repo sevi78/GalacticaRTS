@@ -4,7 +4,6 @@ from typing import List, Set, Tuple, Optional
 import pygame
 
 from source.configuration.game_config import config
-from source.debug.function_disabler import disabler, auto_disable
 from source.draw.scope import scope
 from source.handlers.color_handler import colors
 from source.handlers.pan_zoom_handler import pan_zoom_handler

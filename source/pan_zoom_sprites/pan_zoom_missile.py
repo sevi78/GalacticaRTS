@@ -4,13 +4,11 @@ import random
 import pygame
 from pygame import Vector2, Rect
 
-from source.configuration.game_config import config
 from source.gui.widgets.moving_image import MovingImage
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import UniverseLayeredUpdates
 from source.math.math_handler import degrees_to_vector2
 from source.multimedia_library.images import get_image
-from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_game_object import PanZoomGameObject
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_classes import CurveMove, PanZoomMovingRotatingGif
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_gif import PanZoomSprite
 

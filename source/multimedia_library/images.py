@@ -319,7 +319,7 @@ def find_unused_images_gifs(image_dir, gif_dir, images_dict, gifs_dict):
 @lru_cache(maxsize=1000)  # Adjust maxsize based on your needs
 def scale_image_cached(surface, size):
     # Print cache info each time the function is called
-    cache_stats = scale_image_cached.cache_info()
+    # cache_stats = scale_image_cached.cache_info()
     # print(f"Cache Info - Hits: {cache_stats.hits}, Misses: {cache_stats.misses}, "
     #       f"Current Size: {cache_stats.currsize}, Max Size: {cache_stats.maxsize}")
 

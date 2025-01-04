@@ -1,5 +1,3 @@
-import random
-
 import pygame
 
 from source.configuration.game_config import config

@@ -1,5 +1,3 @@
-import pygame
-
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.multimedia_library.images import scale_image_cached
 
@@ -33,7 +31,7 @@ class PanZoomPlanetPositionHandler:
             new_size = (MAX_IMAGE_ZOOM_SIZE, MAX_IMAGE_ZOOM_SIZE)
 
         # set new image size
-        self.image = scale_image_cached(self.image_raw, new_size)
+        # self.image = scale_image_cached(self.image_raw, new_size)
 
         # set new size
         self.set_screen_width(new_size[0] * pan_zoom_handler.get_zoom())

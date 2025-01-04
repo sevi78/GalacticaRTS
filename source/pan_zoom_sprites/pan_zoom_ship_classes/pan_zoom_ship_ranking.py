@@ -1,4 +1,3 @@
-from source.debug.function_disabler import auto_disable, disabler
 from source.game_play.ranking import Ranking
 from source.gui.event_text import event_text
 from source.multimedia_library.sounds import sounds

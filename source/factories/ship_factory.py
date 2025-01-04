@@ -1,11 +1,12 @@
+from source.pan_zoom_sprites.pan_zoom_ship_test2.interaction_handler import interaction_handler2
+from source.pan_zoom_sprites.pan_zoom_ship_test2.pan_zoom_ship_test2 import PanZoomShip2
+
 from source.configuration.game_config import config
 from source.handlers import file_handler
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.pan_zoom_sprites.pan_zoom_ship_classes.pan_zoom_rescue_drone import PanZoomRescueDrone
 from source.pan_zoom_sprites.pan_zoom_ship_classes.pan_zoom_ship import PanZoomShip
-from source.pan_zoom_sprites.pan_zoom_ship_test2.interaction_handler import interaction_handler2
-from source.pan_zoom_sprites.pan_zoom_ship_test2.pan_zoom_ship_test2 import PanZoomShip2
 
 
 class ShipFactory:

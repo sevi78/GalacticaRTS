@@ -342,11 +342,13 @@ class PanZoomHandler:
 
 
 def zoom_changed_callback(zoom) -> None:
+    print ("Zoom changed to: ", zoom)
     if hasattr(config.app, "zoom_scale"):
         config.app.zoom_scale.set_zoom(zoom)
 
 
 def cursor_change_callback(cursor_name: str) -> None:
+    print ("Cursor changed to: ", cursor_name)
     if hasattr(config.app, "set_cursor"):
         config.app.cursor.set_cursor(cursor_name)
 

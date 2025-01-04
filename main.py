@@ -39,7 +39,6 @@ from source.level.level_edit import LevelEdit
 from source.level.level_handler import LevelHandler
 from source.level.level_select import LevelSelect
 from source.multimedia_library.images import get_image
-from source.pan_zoom_sprites.pan_zoom_ship_test2.interaction_handler import interaction_handler2
 from source.trading.market import market
 
 ECONOMY_UPDATE_INTERVAL = 2.0

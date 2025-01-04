@@ -1,5 +1,3 @@
-import pygame
-
 # from source.auto_economy.auto_economy_edit import AutoEconomyEdit
 from source.auto_economy.planet_buildings_overview import PlanetBuildingsOverview
 from source.configuration.game_config import config

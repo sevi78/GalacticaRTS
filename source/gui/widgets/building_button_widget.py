@@ -233,6 +233,8 @@ class BuildingButtonWidget(WidgetBase):
     def show(self):
         """shows self and its widgets
         """
+        if not self.app.selected_planet:
+            return
 
         if hasattr(self.parent, "explored"):
             if not self.parent.explored:

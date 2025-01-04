@@ -1,6 +1,5 @@
 import math
 
-import pygame
 from pygame import Vector2
 
 from source.configuration.game_config import config

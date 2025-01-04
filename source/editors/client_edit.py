@@ -1,7 +1,5 @@
 import json
 
-import pygame
-
 from source.configuration.game_config import config
 from source.editors.editor_base.editor_base import EditorBase
 from source.editors.editor_base.editor_config import TOP_SPACING

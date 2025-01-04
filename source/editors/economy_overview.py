@@ -1,8 +1,6 @@
 import copy
 from collections import OrderedDict
 
-import pygame
-
 from source.editors.editor_base.editor_base import EditorBase
 from source.editors.editor_base.editor_config import TOP_SPACING
 from source.handlers.file_handler import load_file

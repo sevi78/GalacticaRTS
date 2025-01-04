@@ -1,6 +1,5 @@
 import datetime
 import glob
-import json
 import os
 
 import send2trash

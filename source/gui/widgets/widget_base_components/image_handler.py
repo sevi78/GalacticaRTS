@@ -1,6 +1,8 @@
 import copy
 
 from source.multimedia_library.images import outline_image, scale_image_cached, rounded_surface
+
+
 #
 #
 # class ImageHandler:

@@ -11,7 +11,6 @@ from source.multimedia_library.sounds import sounds
 from source.text.text_wrap import TextWrap
 
 
-
 # class EventPanel(TextWrap, EditorBase):
 #     def __init__(self, win, x, y, width, height, interface_variables, **kwargs):
 #         TextWrap.__init__(self)

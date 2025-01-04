@@ -1,7 +1,8 @@
 import os
-import pygame
-from PIL import Image
+
 import psutil  # For memory usage
+import pygame
+
 from source.handlers.file_handler import pictures_path
 
 

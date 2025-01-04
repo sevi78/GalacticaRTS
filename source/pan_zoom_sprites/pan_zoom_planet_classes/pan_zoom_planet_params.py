@@ -113,7 +113,11 @@ class PanZoomPlanetParams:
 
         sounds.play_sound(sounds.happy, channel=4)
 
-        self.parent.set_selected_planet(self)
+        if owner == config.app.game_client.id:
+            self.parent.set_selected_planet(self)
+            # set event text
+            event_text.set_text(f"Gratulation! you have reached a the Planet {self.name} !", obj=self, sender=owner)
+
         if not self in self.parent.explored_planets:
             self.parent.add_explored_planet(self)
 
@@ -121,6 +125,5 @@ class PanZoomPlanetParams:
         self.show_overview_button()
         self.string = self.name
 
-        # set event text
-        event_text.set_text(f"Gratulation! you have reached a the Planet {self.name} !", obj=self, sender=owner)
+
         self.parent.update_building_button_widgets()

@@ -1,6 +1,3 @@
-import pygame
-
-
 def limit_number(n: int, min_value: int, max_value: int) -> int:
     return max(min_value, min(n, max_value))
 
@@ -14,7 +11,10 @@ def get_sum_up_to_n(dict_, n):
     return sum_
 
 import math
+
 import pygame
+
+
 def degrees_to_vector2(rotation_angle: float, movement_speed: float) -> pygame.math.Vector2:
     angle_radians = math.radians(rotation_angle)
     x_component = -math.sin(angle_radians) * movement_speed

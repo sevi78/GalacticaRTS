@@ -10,7 +10,6 @@ from source.factories.building_factory import building_factory
 from source.factories.planet_factory import planet_factory
 from source.factories.ship_factory import ship_factory
 from source.factories.universe_factory import universe_factory
-from source.weapons.weapon_factory import weapon_factory
 from source.game_play.navigation import navigate_to_position
 from source.gui.event_text import event_text
 # from source.handlers.building_widget_handler import building_widget_handler
@@ -22,6 +21,7 @@ from source.multimedia_library.images import get_image_names_from_folder
 from source.multimedia_library.screenshot import capture_screenshot
 from source.player.player_handler import player_handler
 from source.text.info_panel_text_generator import info_panel_text_generator
+from source.weapons.weapon_factory import weapon_factory
 
 
 class LevelHandler:

@@ -304,7 +304,8 @@ class SpriteGroups:  # original
     def draw(self, surface, **kwargs):
         events = kwargs.get("events")
         widget_handler.update(events)
-        self.universe.draw(surface)
+        if config.show_universe:
+            self.universe.draw(surface)
 
         if WidgetHandler.layer_switch["0"]:
             self.planets.draw(surface)

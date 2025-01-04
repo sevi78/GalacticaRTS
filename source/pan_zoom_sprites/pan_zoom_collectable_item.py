@@ -1,5 +1,3 @@
-import pygame
-
 from source.configuration.game_config import config
 from source.gui.lod import level_of_detail
 from source.handlers.mouse_handler import mouse_handler, MouseState

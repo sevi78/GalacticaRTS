@@ -1,6 +1,3 @@
-from source.handlers.widget_handler import WidgetHandler
-
-
 class VisibilityHandler:
     __slots__ = ["_is_sub_widget", "_hidden", "_disabled", "layer", "widgets"]
     def __init__(self, is_sub_widget=False, **kwargs):

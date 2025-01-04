@@ -11,7 +11,7 @@ from source.gui.widgets.progress_bar import ProgressBar
 from source.handlers.color_handler import colors
 from source.handlers.pan_zoom_handler import pan_zoom_handler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
-from source.math.line_intersect import interectLineCircle, draw_intersection
+from source.math.line_intersect import interectLineCircle
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_classes import PanZoomGif
 from source.pan_zoom_sprites.rot_rect import RotRect
 

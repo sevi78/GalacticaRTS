@@ -140,8 +140,9 @@ class PanZoomPlanet(PanZoomSprite, VisibilityHandler, PanZoomPlanetOverviewButto
     def __delete__(self):
         if hasattr(self, "planet_defence"):
             garbage_handler.delete_all_references(self, self.planet_defence)
-            WidgetHandler.remove_widget(self.planet_defence.emp_progress_display)
-            self.planet_defence.emp_progress_display = None
+            self.planet_defence.emp.__delete__(self.planet_defence.emp)
+            WidgetHandler.remove_widget(self.planet_defence.emp)
+            self.planet_defence.emp = None
             del self.planet_defence
 
         for i in self.overview_buttons:

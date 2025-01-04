@@ -1,12 +1,10 @@
 import pygame
 from pygame import MOUSEBUTTONDOWN, Rect
 
-from source.handlers.pan_zoom_handler import pan_zoom_handler
-from source.pan_zoom_quadtree.model.quad_tree import QuadTree
-
-from source.qt_universe.model.qt_config import *
-from source.qt_universe.model.qt_game_object_factory import add_random_game_objects, add_random_game_object
-from source.qt_universe.model.time_handler import time_handler
+from source.qt_universe.controller.qt_pan_zoom_handler import pan_zoom_handler
+# from source.qt_universe.model.qt_game_object_factory import  add_random_game_object
+from source.qt_universe.model.qt_time_handler import time_handler
+from source.qt_universe.view import qt_draw
 
 
 class InteractionHandler:
@@ -36,19 +34,23 @@ class InteractionHandler:
 
     def handle_key_event(self, event):
         print (event.key)
-        if event.key == pygame.K_r:
-            self._qtree = QuadTree(self._qt_rect, QT_CAPACITY)
-            add_random_game_objects(self._qtree, POINTS_AMOUNT)
-        elif event.key == pygame.K_c:
-            self._qtree = QuadTree(self._qt_rect, QT_CAPACITY)
-            self._qtree.clear()
-        elif event.key == pygame.K_q:
+        # if event.key == pygame.K_r:
+        #     self._qtree = QuadTree(self._qt_rect, QT_CAPACITY)
+        #     add_random_game_objects(self._qtree, POINTS_AMOUNT)
+        # elif event.key == pygame.K_c:
+        #     self._qtree = QuadTree(self._qt_rect, QT_CAPACITY)
+        #     self._qtree.clear()
+        if event.key == pygame.K_q:
             self.show_qtree = not self.show_qtree
 
         elif event.key ==1073741911: # plus
             time_handler.set_game_speed(time_handler.game_speed + 1)
         elif event.key == 1073741910:#pygame.K_MINUS:
             time_handler.set_game_speed(time_handler.game_speed - 1)
+
+        elif event.key == pygame.K_d:
+            qt_draw.DEBUG = not qt_draw.DEBUG
+
 
     def select_object__(self, select):
         mX, mY = pygame.mouse.get_pos()
@@ -68,7 +70,7 @@ class InteractionHandler:
                 obj.selected = False
             print("Deselected all objects")
 
-    def select_object(self, select):
+    def select_object(self, select: bool):
         mX, mY = pygame.mouse.get_pos()
         world_x, world_y = pan_zoom_handler.screen_2_world(mX, mY)
 
@@ -79,6 +81,7 @@ class InteractionHandler:
         object_selected = False  # Track if any object is selected
 
         for obj in visible_objects:
+
             # Convert object's position to screen coordinates
             screen_x, screen_y = pan_zoom_handler.world_2_screen(obj.x, obj.y)
 
@@ -136,3 +139,5 @@ class InteractionHandler:
                 obj.width * pan_zoom_handler.get_zoom(),
                 obj.height * pan_zoom_handler.get_zoom()
                 )
+
+

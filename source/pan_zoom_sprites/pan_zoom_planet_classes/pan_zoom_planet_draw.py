@@ -1,7 +1,6 @@
 import pygame
 from pygame_widgets.util import drawText
 
-
 from source.configuration.game_config import config
 from source.draw.circles import draw_transparent_circle, draw_transparent_circle_blurred
 from source.draw.cross import draw_dashed_cross_in_circle

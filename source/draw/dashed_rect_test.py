@@ -1,5 +1,6 @@
-from PIL import Image, ImageDraw
 import math
+
+from PIL import Image, ImageDraw
 
 
 class DashedImageDraw(ImageDraw.ImageDraw):

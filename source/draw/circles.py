@@ -2,7 +2,6 @@
 # from pil.Image import Image
 from PIL import Image, ImageFilter
 
-
 from source.draw.arc_with_dashes import draw_arc_with_dashes
 from source.handlers.color_handler import gradient_color
 from source.handlers.pan_zoom_handler import pan_zoom_handler

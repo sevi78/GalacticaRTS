@@ -12,6 +12,7 @@ from source.text.info_panel_text_generator import info_panel_text_generator
 class ViewPanel(WidgetBase):
     def __init__(self, win, x, y, width, height, is_sub_widget=False, **kwargs):
         super().__init__(win, x, y, width, height, is_sub_widget, **kwargs)
+
         self.name = "view panel"
         self.anchor_right = kwargs.get("anchor_right")
         self.bg_color = pygame.colordict.THECOLORS["black"]
@@ -36,6 +37,8 @@ class ViewPanel(WidgetBase):
         self.max_height = self.get_screen_y() + self.surface_rect.height
 
         # icons
+        self.show_ship_state_icon = None
+        self.show_universe_icon = None
         self.buttons_icon = None
         self.map_icon = None
         self.show_event_text_icon = None
@@ -52,6 +55,23 @@ class ViewPanel(WidgetBase):
         self.hide()
 
     def create_icons(self):
+        self.show_universe_icon = ImageButton(win=self.win,
+                x=self.get_screen_x() - 50,
+                y=self.surface_rect.y + self.spacing,
+                width=self.icon_size,
+                height=self.icon_size,
+                is_sub_widget=False,
+                parent=self,
+                image=scale_image_cached(get_image("level_10.png"), (25, 25)),
+                tooltip="show universe",
+                frame_color=self.frame_color,
+                moveable=False,
+                include_text=True, layer=self.layer,
+                on_click=lambda: config.set_global_variable("show_universe", True, button=self.show_universe_icon))
+
+        self.widgets.append(self.show_universe_icon)
+        self.max_width += self.icon_size + self.spacing
+
         self.show_ship_state_icon = ImageButton(win=self.win,
                 x=self.get_screen_x() - 50,
                 y=self.surface_rect.y + self.spacing,
@@ -59,8 +79,7 @@ class ViewPanel(WidgetBase):
                 height=self.icon_size,
                 is_sub_widget=False,
                 parent=self,
-                image=scale_image_cached(
-                        get_image("state_icon.png"), (25, 25)),
+                image=scale_image_cached(get_image("state_icon.png"), (25, 25)),
                 tooltip="show ship states",
                 frame_color=self.frame_color,
                 moveable=False,
@@ -77,8 +96,7 @@ class ViewPanel(WidgetBase):
                 height=self.icon_size,
                 is_sub_widget=False,
                 parent=self,
-                image=scale_image_cached(
-                        get_image("view_explored_planets_icon.png"), (25, 25)),
+                image=scale_image_cached(get_image("view_explored_planets_icon.png"), (25, 25)),
                 tooltip="show explored planets",
                 frame_color=self.frame_color,
                 moveable=False,
@@ -95,8 +113,7 @@ class ViewPanel(WidgetBase):
                 height=self.icon_size,
                 is_sub_widget=False,
                 parent=self,
-                image=scale_image_cached(
-                        get_image("cross.png"), (25, 25)),
+                image=scale_image_cached(get_image("cross.png"), (25, 25)),
                 tooltip="show cross",
                 frame_color=self.frame_color,
                 moveable=False,
@@ -112,8 +129,7 @@ class ViewPanel(WidgetBase):
                 height=self.icon_size,
                 is_sub_widget=False,
                 parent=self,
-                image=scale_image_cached(
-                        get_image("orbit_icon.png"), (25, 25)),
+                image=scale_image_cached(get_image("orbit_icon.png"), (25, 25)),
                 tooltip="show orbit",
                 frame_color=self.frame_color,
                 moveable=False,
@@ -129,8 +145,7 @@ class ViewPanel(WidgetBase):
                 height=self.icon_size,
                 is_sub_widget=False,
                 parent=self,
-                image=scale_image_cached(
-                        get_image("planet_text_icon.png"), (25, 25)),
+                image=scale_image_cached(get_image("planet_text_icon.png"), (25, 25)),
                 tooltip="show planet names",
                 frame_color=self.frame_color,
                 moveable=False,
@@ -146,8 +161,7 @@ class ViewPanel(WidgetBase):
                 height=self.icon_size,
                 is_sub_widget=False,
                 parent=self,
-                image=scale_image_cached(
-                        get_image("text_icon.png"), (25, 25)),
+                image=scale_image_cached(get_image("text_icon.png"), (25, 25)),
                 tooltip="show tooltips",
                 frame_color=self.frame_color,
                 moveable=False,
@@ -164,8 +178,7 @@ class ViewPanel(WidgetBase):
                 height=self.icon_size,
                 is_sub_widget=False,
                 parent=self,
-                image=scale_image_cached(
-                        get_image("text_icon.png"), (25, 25)),
+                image=scale_image_cached(get_image("text_icon.png"), (25, 25)),
                 tooltip="show event text",
                 frame_color=self.frame_color,
                 moveable=False,
@@ -182,8 +195,7 @@ class ViewPanel(WidgetBase):
                 height=self.icon_size,
                 is_sub_widget=False,
                 parent=self,
-                image=scale_image_cached(
-                        get_image("map_icon.png"), (25, 25)),
+                image=scale_image_cached(get_image("map_icon.png"), (25, 25)),
                 tooltip="show map",
                 frame_color=self.frame_color,
                 moveable=False,
@@ -199,8 +211,7 @@ class ViewPanel(WidgetBase):
                 height=self.icon_size,
                 is_sub_widget=False,
                 parent=self,
-                image=scale_image_cached(
-                        get_image("smile.png"), (25, 25)),
+                image=scale_image_cached(get_image("smile.png"), (25, 25)),
                 tooltip="show planet overview",
                 frame_color=self.frame_color,
                 moveable=False,
@@ -216,8 +227,7 @@ class ViewPanel(WidgetBase):
                 height=self.icon_size,
                 is_sub_widget=False,
                 parent=self,
-                image=scale_image_cached(
-                        get_image("color_icon.png"), (25, 25)),
+                image=scale_image_cached(get_image("color_icon.png"), (25, 25)),
                 tooltip="show player colors",
                 frame_color=self.frame_color,
                 moveable=False,

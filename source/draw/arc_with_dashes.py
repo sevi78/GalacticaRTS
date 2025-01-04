@@ -1,14 +1,13 @@
 import math
-import time
-
 import os
+import time
 from functools import lru_cache
 
 import psutil
 import pygame
 from pygame import Rect
 
-DEBUG = False
+DEBUG = True
 DEBUG_BORDER = 0 if not DEBUG else 50
 
 @lru_cache(maxsize=10000)

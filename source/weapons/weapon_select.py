@@ -6,11 +6,11 @@ from source.configuration.game_config import config
 from source.editors.editor_base.editor_base import EditorBase
 from source.editors.editor_base.editor_config import TOP_SPACING
 from source.factories.building_factory import building_factory
-from source.weapons.weapon_factory import weapon_factory
 from source.gui.event_text import event_text
 from source.gui.widgets.buttons.image_button import ImageButton
 from source.gui.widgets.checkbox import Checkbox
 from source.multimedia_library.images import get_image, scale_image_cached
+from source.weapons.weapon_factory import weapon_factory
 
 OBJECT_FONT_SIZE = 40
 BUTTON_SIZE = 60

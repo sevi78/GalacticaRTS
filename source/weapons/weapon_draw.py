@@ -3,8 +3,8 @@ import os
 import pygame
 
 from source.handlers.pan_zoom_handler import pan_zoom_handler
-from source.weapons.weapon_rack import create_weapon_rack
 from source.multimedia_library.images import get_image, rotate_image_cached, underblit_image
+from source.weapons.weapon_rack import create_weapon_rack
 
 
 def generate_weaponized_spacehip_image(ship_name, spaceship_size, weapon_name, weapon_size, level, save=False):

@@ -11,7 +11,6 @@ from source.editors.enemy_handler_edit import EnemyHandlerEdit
 from source.editors.planet_edit import PlanetEdit
 from source.editors.save_game_edit import SaveGameEdit
 from source.editors.ship_edit import ShipEdit
-from source.weapons.weapon_select import WeaponSelect
 from source.game_play.enemy_handler import enemy_handler
 from source.gui.panels.advanced_settings_panel import AdvancedSettingsPanel
 from source.gui.panels.building_panel_components.building_panel import BuildingPanel
@@ -31,6 +30,7 @@ from source.player.player import Player
 from source.player.player_edit import PlayerEdit
 from source.player.player_handler import player_handler
 from source.trading.add_deal_edit import AddDealEdit
+from source.weapons.weapon_select import WeaponSelect
 
 EDITOR_HEIGHT = 600
 

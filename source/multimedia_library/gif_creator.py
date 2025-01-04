@@ -106,9 +106,10 @@
 #
 # if __name__ == "__main__":
 #     main()
-import pygame
-import imageio
 import os
+
+import imageio
+import pygame
 
 
 def create_360_degree_rotating_gif_from_image(image_path: str, steps: int):

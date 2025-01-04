@@ -10,7 +10,7 @@ from source.handlers.pan_zoom_handler import PanZoomHandler
 from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.handlers.time_handler import time_handler
 from source.multimedia_library.images import get_image, get_gif_frames, get_gif, get_gif_fps, get_gif_duration, \
-    outline_image, scale_image_cached, rotate_image_cached
+    outline_image, scale_image_cached
 from source.multimedia_library.sounds import sounds
 from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_debug import GameObjectDebug
 
@@ -237,6 +237,9 @@ class PanZoomSprite(pygame.sprite.Sprite, VisibilityHandler, GameObjectDebug):  
     def update_rect(self):
         if not self.image_raw:
             return
+
+        if self._hidden:
+            print (f"update_rect while hidden:{self}")
 
         self.image = scale_image_cached(self.image_raw, (self.screen_width * self.shrink, self.screen_height * self.shrink))
 

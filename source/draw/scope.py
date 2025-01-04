@@ -3,7 +3,6 @@ import math
 import pygame
 
 from source.configuration.game_config import config
-from source.debug.function_disabler import disabler, auto_disable
 from source.draw.circles import draw_dashed_circle
 from source.draw.dashed_line import draw_dashed_line
 from source.handlers.color_handler import colors

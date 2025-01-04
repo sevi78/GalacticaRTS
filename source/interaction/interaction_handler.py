@@ -2,6 +2,7 @@ import pygame
 
 from source.configuration.game_config import config
 
+
 #
 # class ResizeHandler:
 #     def __init__(self):
