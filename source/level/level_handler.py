@@ -79,7 +79,7 @@ class LevelHandler:
 
                 self.data["globals"]["collectable_item_amount"], collectable_items=collectable_items)
 
-    def generate_level_dict_from_scene(self, **kwargs):
+    def generate_level_dict_from_scene(self, **kwargs)->dict:
         # start_time = time.time()  # Start timing
         ignore_buildings = kwargs.get("ignore_buildings", False)
         ignore_population = kwargs.get("ignore_population", False)

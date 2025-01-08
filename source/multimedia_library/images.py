@@ -228,7 +228,7 @@ def get_gif_fps(gif_name):
 
 
 @lru_cache(maxsize=None)
-def get_gif_frames(gif_name):
+def get_gif_frames(gif_name)-> list:
     """ Load explosion GIF and extract frames"""
     frames = []
 

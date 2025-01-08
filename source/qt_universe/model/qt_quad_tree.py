@@ -1,6 +1,6 @@
 from pygame import Rect
 
-from source.qt_universe.model.config.qt_config import QT_CAPACITY
+from source.qt_universe.model.qt_model_config.qt_config import QT_CAPACITY
 
 
 class QuadTree:  # original

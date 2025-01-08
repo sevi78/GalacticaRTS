@@ -3,9 +3,6 @@ from pygame import Rect
 
 from source.configuration.game_config import config
 from source.game_play.navigation import navigate_to_position
-from source.qt_universe.controller.callbacks import zoom_changed_callback, cursor_change_callback
-# from source.qt_universe.model.config.qt_config import QT_RECT
-# from source.qt_universe.model.qt_game_object_manager import GameObjectManager
 
 
 class PanZoomHandler:
@@ -104,11 +101,8 @@ class PanZoomHandler:
                 if event.button == 2 and self.panning:
                     self.panning = False
 
-
         if self.panning:
             self.pan(mouse_x, mouse_y)
-
-
 
     def _zoom_in_out(self, event):
         if event.button == 4 and self.zoom:
@@ -136,7 +130,7 @@ class PanZoomHandler:
     def get_mouse_position(self):
         return pg.mouse.get_pos()
 
-    def center_pan_zoom_handler(self, rect_: Rect)-> None:
+    def center_pan_zoom_handler(self, rect_: Rect) -> None:
         """
         centers the pan zoom handler to the center of the level
         """
@@ -147,10 +141,25 @@ class PanZoomHandler:
         pan_zoom_handler.set_zoom(pan_zoom_handler.zoom_min)
 
         # navigate zo center of the level
-        navigate_to_position(rect_.width , rect_.height)
+        navigate_to_position(rect_.width, rect_.height)
 
 
+def zoom_changed_callback(zoom) -> None:
+    # print("Zoom changed to: ", zoom)
+    pass
+    # if hasattr(config.app, "zoom_scale"):
+    #     config.app.zoom_scale.set_zoom(zoom)
 
+    # game_object_manager.update()
+
+
+def cursor_change_callback(cursor_name: str) -> None:
+    # print("Cursor changed to: ", cursor_name)
+    pass
+    # if hasattr(config.app, "set_cursor"):
+    #     config.app.cursor.set_cursor(cursor_name)
+
+    # game_object_manager.update()
 
 
 pan_zoom_handler = PanZoomHandler(config.win, config.width, config.height, zoom_changed_callback, cursor_change_callback)

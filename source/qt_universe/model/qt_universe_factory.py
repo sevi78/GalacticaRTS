@@ -1,43 +1,18 @@
 import math
-import random
 
-from pygame import Vector2, Rect
 
-from database.config.universe_config import *
-from source.configuration.game_config import config
-from source.gui.lod import level_of_detail
 from source.handlers.color_handler import get_average_color
-
-from source.handlers.pan_zoom_sprite_handler import sprite_groups
 from source.handlers.position_handler import get_random_pos
-from source.multimedia_library.images import get_image, get_gif_frames
-from source.pan_zoom_sprites.pan_zoom_collectable_item import PanZoomCollectableItem
-from source.pan_zoom_sprites.pan_zoom_sprite_base.pan_zoom_sprite_classes import PanZoomImage, \
-    PanZoomMovingRotatingImage, PanZoomMovingRotatingGif, PanZoomGif
-from source.pan_zoom_sprites.pan_zoom_stars.pan_zoom_stars import PanZoomFlickeringStar, PanZoomPulsatingStar
+from source.multimedia_library.images import get_image, get_gif_frames, get_image_names_from_folder
 from source.qt_universe.controller.qt_pan_zoom_handler import pan_zoom_handler
-from source.qt_universe.model.config.qt_config import POINTS_AMOUNT
-from source.qt_universe.view.game_objects.qt_stars import QTFlickeringStar, QTImage, QTPulsatingStar, QTGif, \
-    QTMovingImage, QTMovingGif
-
-from source.qt_universe.view.game_objects.qt_game_object import GameObject
+from source.qt_universe.model.qt_model_config.qt_config import POINTS_AMOUNT
+from source.qt_universe.model.qt_model_config.qt_universe_config import *
+from source.qt_universe.model.qt_object_factory import *
 from source.text.info_panel_text_generator import info_panel_text_generator
 
-level_of_detail.debug = False
-all_sprites = sprite_groups.universe
 
-"""
-TODO:
-make shure to delete all unneccessary dependencies for the objects created !!!!
-"""
-class UniverseFactory:
-    def __init__(self, win: pygame.Surface, world_rect: Rect, game_object_manager) -> None:
-        self.game_object_manager = game_object_manager
-        self.central_compression = 1
-        self.win = win
-        self.amount = POINTS_AMOUNT
-        self.world_rect = world_rect
-
+class ImageProvider:
+    def __init__(self):
         # images
         self.star_images: dict[int, str] = {
             0: "star_30x30.png",
@@ -110,31 +85,47 @@ class UniverseFactory:
             2: "spiral_galaxy.gif",
             }
 
-        self.artefact_images = ["artefact1_60x31.png",
-                                "meteor_50x50.png",
-                                "meteor_60x83.png",
-                                "meteor1_50x50.png"
-                                ]
-        self.artefact_sizes = {
-            "artefact1_60x31.png": (60, 31),
-            "meteor_50x50.png": (50, 50),
-            "meteor_60x83.png": (int(60) * .5, int(83) * .5),
-            "meteor1_50x50.png": (50, 50)
+        self.collectable_item_images = {
+            0:"artefact1_60x31.png",
+            1:"meteor_50x50.png",
+            2:"meteor_60x83.png",
+            3:"meteor1_50x50.png"}
+
+        self.collectable_item_gifs = {
+            0:"sphere.gif"
             }
 
-        # drawing lists
-        self.star = []
-        self.pulsating_star = []
-        self.flickering_star = []
-        self.asteroid = []
-        self.nebulae = []
-        self.galaxy = []
-        self.comet = []
-        self.artefact = []
-        self.universe = []
+        # self.artefact_sizes = {
+        #     "artefact1_60x31.png": (60, 31),
+        #     "meteor_50x50.png": (50, 50),
+        #     "meteor_60x83.png": (int(60) * .5, int(83) * .5),
+        #     "meteor1_50x50.png": (50, 50),
+        #     "sphere.gif": (100, 100)
+        #     }
 
-        # create universe
-        self.celestial_objects = {}
+        self.planet_images: dict[int, str] = {
+            0: "GIN V.S.X.O._150x150.png",
+            1: "Helios 12_150x150.png",
+            2: "Kepler-22b_150x150.png",
+            3: "P0101_150x150.png",
+            4: "ur-anus_150x150.png",
+            }
+
+        self.planet_gifs: dict[int, str] = {
+            0: "Io.gif",
+            1: "moon.gif",
+            2: "moon1.gif",
+            3: "moon_alien.gif",
+            4: "venus_slow.gif",
+            }
+
+        self.sun_images = {get_image_names_from_folder("suns").index(i): i for i in get_image_names_from_folder("suns")}
+        self.sun_gifs = {get_image_names_from_folder("gifs").index(i): i for i in get_image_names_from_folder("gifs") if
+                         i.startswith("sun")}
+
+        self.gif_frames = {v: get_gif_frames(v) for d in
+                           (self.asteroid_gifs, self.comet_gifs, self.galaxy_gifs, self.planet_gifs, self.sun_gifs,self.collectable_item_gifs ) for
+                           v in d.values()}
 
     def select_random_image(self, image_dict: dict[int, str], index: int) -> str:
         """
@@ -156,7 +147,17 @@ class UniverseFactory:
             # If not, select a random image from the dictionary
             return random.choice(list(image_dict.values()))
 
-    def create_artefacts(self, amount, **kwargs):  # orig
+
+class UniverseFactory(ImageProvider):
+    def __init__(self, win: pygame.Surface, world_rect: Rect, game_object_manager) -> None:
+        super().__init__()
+        self.game_object_manager = game_object_manager
+        self.central_compression = 1
+        self.win = win
+        self.amount = POINTS_AMOUNT
+        self.world_rect = world_rect
+
+    def create_artefacts_(self, amount, **kwargs):  # orig
         collectable_items = kwargs.get("collectable_items", None)
 
         def select_resources():
@@ -263,218 +264,330 @@ class UniverseFactory:
                         outline_thickness=1,
                         outline_threshold=0)
 
+    def create_collectable_items(self):
+        # artefacts images
+        for i in range(max(1, int(self.amount / COLLECTABLE_ITEM_DIVIDE_FACTOR))):
+            image_name = self.select_random_image(self.collectable_item_images, i)
+            image = get_image(image_name)
+            image_alpha = None
+            color = get_average_color(image, consider_alpha=True)
+            width = image.get_rect().width * 3
+            height = image.get_rect().height * 3
+            x, y = get_random_pos(self.world_rect, self.central_compression)
+            rotation_angle = random.randint(0, 360)
+            dx, dy = random.randint(-360, 360), random.randint(-360, 360)
+            movement_speed = random.uniform(ASTEROID_MIN_SPEED, ASTEROID_MAX_SPEED)
+            rotation_speed = random.uniform(-ASTEROID_MAX_ROTATION, ASTEROID_MAX_ROTATION)
+            layer = COLLECTABLE_ITEM_LAYER
+            id_ = len(self.game_object_manager.all_objects)
+            direction = Vector2(dx, dy)
+            wrap_around = True
+            type_ = "collectable_item_image"
+
+            new_object = create_qt_moving_image(
+                    x=x,
+                    y=y,
+                    width=width,
+                    height=height,
+                    layer=layer,
+                    id_=id_,
+                    image_name=image_name,
+                    image_alpha=image_alpha,
+                    color=color,
+                    type_=type_,
+                    rotation_angle=rotation_angle,
+                    rotation_speed=rotation_speed,
+                    movement_speed=movement_speed,
+                    direction=direction,
+                    wrap_around=wrap_around
+                    )
+
+            self.game_object_manager.add_object(new_object)
+
+        # artefacts gifs
+        for i in range(max(1, int(self.amount / COLLECTABLE_ITEM_DIVIDE_FACTOR/2))):
+            # image_name = random.choice(self.asteroid_gifs)
+            image_name = self.select_random_image(self.collectable_item_gifs, i)
+            image = get_image(image_name)
+            image_alpha = None
+            color = get_average_color(image, consider_alpha=True)
+            width = image.get_rect().width
+            height = image.get_rect().height
+            x, y = get_random_pos(self.world_rect, self.central_compression)
+            gif_frames = self.gif_frames[image_name]
+            max_gif_frame = len(gif_frames) - 1
+            gif_index = random.randint(0, max_gif_frame)
+            gif_animation_time = None
+            loop_gif = True
+            kill_after_gif_loop = False
+            rotation_angle = random.randint(0, 360)
+            rotation_speed = 0
+            dx, dy = random.randint(-360, 360), random.randint(-360, 360)
+            movement_speed = random.uniform(ASTEROID_MIN_SPEED, ASTEROID_MAX_SPEED)
+            direction = Vector2(dx, dy)
+
+            type_ = "collectable_item_gif"
+            layer = COLLECTABLE_ITEM_LAYER
+            id_ = len(self.game_object_manager.all_objects)
+            wrap_around = True
+
+            new_object = create_qt_moving_gif(
+                    x=x,
+                    y=y,
+                    width=width,
+                    height=height,
+                    layer=layer,
+                    id_=id_,
+                    gif_name=image_name,
+                    gif_index=gif_index,
+                    gif_animation_time=gif_animation_time,
+                    loop_gif=loop_gif,
+                    kill_after_gif_loop=kill_after_gif_loop,
+                    image_alpha=image_alpha,
+                    color=color,
+                    type_=type_,
+                    rotation_angle=rotation_angle,
+                    rotation_speed=rotation_speed,
+                    movement_speed=movement_speed,
+                    direction=direction,
+                    wrap_around=wrap_around
+                    )
+            self.game_object_manager.add_object(new_object)
+
     def create_stars(self) -> None:
+        start_time = time.time()
         # star images
         for i in range(max(1, int(self.amount / STAR_DIVIDE_FACTOR))):
             x, y = get_random_pos(self.world_rect, self.central_compression)
             image_name = self.select_random_image(self.star_images, i)
             image = get_image(image_name)
+            image_alpha = None
             color = get_average_color(image, consider_alpha=True)
-            w, h = 30, 30
-            r = random.randint(0, 360)
+            width, height = 30, 30
+            rotation_angle = random.randint(0, 360)
+            id_ = len(self.game_object_manager.all_objects)
+            layer = STAR_LAYER
+            type_ = "star_image"
 
-            new_object =QTImage(
+            new_object = create_qt_image(
                     x=x,
                     y=y,
-                    width=w,
-                    height=h,
-                    layer=STAR_LAYER,
+                    width=width,
+                    height=height,
+                    layer=layer,
+                    id_=id_,
                     image_name=image_name,
-                    image_alpha=None,
+                    image_alpha=image_alpha,
                     color=color,
-                    type_="star_image",
-                    rotation_angle=r
+                    type_=type_,
+                    rotation_angle=rotation_angle
                     )
 
-            self.star.append(new_object)
             self.game_object_manager.add_object(new_object)
 
         # flickering stars
         for i in range(max(1, int(self.amount / FLICKERING_STAR_DIVIDE_FACTOR))):
             x, y = get_random_pos(self.world_rect, self.central_compression)
-            w = random.randint(1, 10)
-
+            width = random.randint(1, 10)
+            height = width
             colors = [(random.randint(0, config.star_brightness), random.randint(0, config.star_brightness),
                        random.randint(0, config.star_brightness)) for _ in range(10)]
 
-            new_object = QTFlickeringStar(
+            rotation_angle = random.randint(0, 360)
+            id_ = len(self.game_object_manager.all_objects)
+            layer = STAR_LAYER
+            type_ = "flickering_star"
+
+            new_object = create_qt_flickering_star(
                     x=x,
                     y=y,
-                    width=w,
-                    height=w,
-                    layer=STAR_LAYER,
+                    width=width,
+                    height=height,
+                    layer=layer,
+                    id_=id_,
                     colors=colors,
-                    type_="flickering_star"
+                    type_=type_
                     )
 
-            self.star.append(new_object)
             self.game_object_manager.add_object(new_object)
 
         # puslating stars
         for i in range(max(1, int(self.amount / PULSATING_STAR_DIVIDE_FACTOR))):
             x, y = get_random_pos(self.world_rect, self.central_compression)
-            w = 1
+            width = 1
+            height = width
+            layer = STAR_LAYER
+            id_ = len(self.game_object_manager.all_objects)
+            type_ = "pulsating_star"
 
-            new_object = QTPulsatingStar(
+            new_object = create_qt_pulsating_star(
                     x=x,
                     y=y,
-                    width=w,
-                    height=w,
-                    layer=STAR_LAYER,
-                    type_="pulsating_star"
+                    width=width,
+                    height=height,
+                    layer=layer,
+                    id_=id_,
+                    type_=type_
                     )
 
-            self.star.append(new_object)
             self.game_object_manager.add_object(new_object)
 
+        end_time = time.time()
+        duration = end_time - start_time
+        print(f"create_stars took{duration:.6f} seconds")
+
     def create_galaxys(self) -> None:
+        start_time = time.time()
+
         for i in range(max(1, int(self.amount / GALAXY_DIVIDE_FACTOR))):
             # image_name = random.choice(self.galaxy_images)
             image_name = self.select_random_image(self.galaxy_images, i)
             image = get_image(image_name)
+            image_alpha = GALAXY_IMAGE_ALPHA
             color = get_average_color(image, consider_alpha=True)
-            w = image.get_rect().width
-            h = image.get_rect().height
+            width = image.get_rect().width
+            height = image.get_rect().height
             x, y = get_random_pos(self.world_rect, self.central_compression)
-            r = random.randint(0, 360)
+            rotation_angle = random.randint(0, 360)
+            id_ = len(self.game_object_manager.all_objects)
+            type_ = "qt_image"
+            layer = GALAXY_LAYER
 
-            new_object = QTImage(
+            new_object = create_qt_image(
                     x=x,
                     y=y,
-                    width=w,
-                    height=h,
-                    layer=GALAXY_LAYER,
+                    width=width,
+                    height=height,
+                    layer=layer,
+                    id_=id_,
                     image_name=image_name,
-                    image_alpha=GALAXY_IMAGE_ALPHA,
+                    image_alpha=image_alpha,
                     color=color,
-                    type_="star_image",
-                    rotation_angle=r
+                    type_=type_,
+                    rotation_angle=rotation_angle
                     )
 
-            self.galaxy.append(new_object)
             self.game_object_manager.add_object(new_object)
 
         # galaxy gifs
         for i in range(max(1, int(self.amount / GALAXY_GIF_DIVIDE_FACTOR))):
             image_name = self.select_random_image(self.galaxy_gifs, i)
             image = get_image(image_name)
+            image_alpha = GALAXY_IMAGE_ALPHA
             color = get_average_color(image, consider_alpha=True)
-            w = image.get_rect().width
-            h = image.get_rect().height
+            width = image.get_rect().width
+            height = image.get_rect().height
             x, y = get_random_pos(self.world_rect, self.central_compression)
-            r = random.randint(0, 360)
-            gif_frames = get_gif_frames(image_name)
+            rotation_angle = random.randint(0, 360)
+            gif_frames = self.gif_frames[image_name]
             max_gif_frame = len(gif_frames) - 1
+            id_ = len(self.game_object_manager.all_objects)
+            layer = GALAXY_LAYER
+            gif_index = random.randint(0, max_gif_frame)
+            gif_animation_time = None
+            loop_gif = True
+            kill_after_gif_loop = False
+            type_ = "qt_gif"
 
-            new_object = QTGif(
+            new_object = create_qt_gif(
                     x=x,
                     y=y,
-                    width=w,
-                    height=h,
-                    layer=GALAXY_LAYER,
+                    width=width,
+                    height=height,
+                    layer=layer,
+                    id_=id_,
                     gif_name=image_name,
-                    gif_index=random.randint(0, max_gif_frame),
-                    gif_animation_time=None,
-                    loop_gif=True,
-                    kill_after_gif_loop=False,
-                    image_alpha=GALAXY_IMAGE_ALPHA,
+                    gif_index=gif_index,
+                    gif_animation_time=gif_animation_time,
+                    loop_gif=loop_gif,
+                    kill_after_gif_loop=kill_after_gif_loop,
+                    image_alpha=image_alpha,
                     color=color,
-                    type_="qt_gif",
-                    rotation_angle=r
+                    type_=type_,
+                    rotation_angle=rotation_angle
                     )
 
-            self.galaxy.append(new_object)
             self.game_object_manager.add_object(new_object)
 
+        end_time = time.time()
+        duration = end_time - start_time
+        print(f"create_galaxys took{duration:.6f} seconds")
+
     def create_nebulaes(self) -> None:
+        start_time = time.time()
         for i in range(max(1, int(self.amount / NEBULAE_DIVIDE_FACTOR))):
             # image_name = random.choice(self.nebulae_images)
             image_name = self.select_random_image(self.nebulae_images, i)
             image = get_image(image_name)
+            image_alpha = NEBULAE_IMAGE_ALPHA
             color = get_average_color(image, consider_alpha=True)
-            w = image.get_rect().width
-            h = image.get_rect().height
+            width = image.get_rect().width
+            height = image.get_rect().height
             x, y = get_random_pos(self.world_rect, self.central_compression)
-            r = random.randint(0, 360)
+            rotation_angle = random.randint(0, 360)
+            id_ = len(self.game_object_manager.all_objects)
+            layer = NEBULAE_LAYER
+            type_ = "qt_image"
 
-            # self.nebulae.append(PanZoomImage(
-            #         win=self.win,
-            #         world_x=x,
-            #         world_y=y,
-            #         world_width=w,
-            #         world_height=h,
-            #         layer=NEBULAE_LAYER,
-            #         group=all_sprites,
-            #         image_name=image_name,
-            #         image_alpha=NEBULAE_IMAGE_ALPHA,
-            #         rotation_angle=r,
-            #         initial_rotation=True
-            #         ))
-
-            new_object = QTImage(
+            new_object = create_qt_image(
                     x=x,
                     y=y,
-                    width=w,
-                    height=h,
+                    width=width,
+                    height=height,
+                    layer=layer,
+                    id_=id_,
                     image_name=image_name,
-                    image_alpha=NEBULAE_IMAGE_ALPHA,
+                    image_alpha=image_alpha,
                     color=color,
-                    type_="star_image",
-                    rotation_angle=r,
-                    layer=NEBULAE_LAYER)
+                    type_="qt_image",
+                    rotation_angle=rotation_angle
+                    )
 
-            self.nebulae.append(new_object)
             self.game_object_manager.add_object(new_object)
 
+        end_time = time.time()
+        duration = end_time - start_time
+        print(f"create_nebulaes took{duration:.6f} seconds")
+
     def create_asteroids(self) -> None:
+        start_time = time.time()
         # asteroid images
         for i in range(max(1, int(self.amount / ASTEROID_DIVIDE_FACTOR))):
             image_name = self.select_random_image(self.asteroid_images, i)
             image = get_image(image_name)
+            image_alpha = None
             color = get_average_color(image, consider_alpha=True)
-            w = image.get_rect().width * 3
-            h = image.get_rect().height * 3
+            width = image.get_rect().width * 3
+            height = image.get_rect().height * 3
             x, y = get_random_pos(self.world_rect, self.central_compression)
-            r = random.randint(0, 360)
+            rotation_angle = random.randint(0, 360)
             dx, dy = random.randint(-360, 360), random.randint(-360, 360)
             movement_speed = random.uniform(ASTEROID_MIN_SPEED, ASTEROID_MAX_SPEED)
             rotation_speed = random.uniform(-ASTEROID_MAX_ROTATION, ASTEROID_MAX_ROTATION)
+            layer = ASTEROID_LAYER
+            id_ = len(self.game_object_manager.all_objects)
+            direction = Vector2(dx, dy)
+            wrap_around = True
+            type_ = "asteroid_image"
 
-            # self.asteroid.append(PanZoomMovingRotatingImage(
-            #         win=self.win,
-            #         world_x=x,
-            #         world_y=y,
-            #         world_width=w,
-            #         world_height=h,
-            #         layer=ASTEROID_LAYER,
-            #         group=all_sprites,
-            #         image_name=image_name,
-            #         image_alpha=None,
-            #         rotation_angle=r,
-            #         rotation_speed=rotation_speed,
-            #         movement_speed=movement_speed,
-            #         direction=Vector2(dx, dy),
-            #         world_rect=self.world_rect
-            #         ))
-
-            new_object = QTMovingImage(
+            new_object = create_qt_moving_image(
                     x=x,
                     y=y,
-                    width=w,
-                    height=h,
-                    layer=ASTEROID_LAYER,
+                    width=width,
+                    height=height,
+                    layer=layer,
+                    id_=id_,
                     image_name=image_name,
-                    image_alpha=None,
+                    image_alpha=image_alpha,
                     color=color,
-                    type_="asteroid_image",
-                    rotation_angle=r,
+                    type_=type_,
+                    rotation_angle=rotation_angle,
                     rotation_speed=rotation_speed,
                     movement_speed=movement_speed,
-                    direction=Vector2(dx, dy),
-                    wrap_around=True
+                    direction=direction,
+                    wrap_around=wrap_around
                     )
 
-            self.asteroid.append(new_object)
             self.game_object_manager.add_object(new_object)
 
         # asteroid gifs
@@ -482,225 +595,553 @@ class UniverseFactory:
             # image_name = random.choice(self.asteroid_gifs)
             image_name = self.select_random_image(self.asteroid_gifs, i)
             image = get_image(image_name)
+            image_alpha = None
             color = get_average_color(image, consider_alpha=True)
-            w = image.get_rect().width
-            h = image.get_rect().height
+            width = image.get_rect().width
+            height = image.get_rect().height
             x, y = get_random_pos(self.world_rect, self.central_compression)
-            gif_frames = get_gif_frames(image_name)
+            gif_frames = self.gif_frames[image_name]
             max_gif_frame = len(gif_frames) - 1
-            r = random.randint(0, 360)
+            gif_index = random.randint(0, max_gif_frame)
+            gif_animation_time = None
+            loop_gif = True
+            kill_after_gif_loop = False
+            rotation_angle = random.randint(0, 360)
+            rotation_speed = 0
             dx, dy = random.randint(-360, 360), random.randint(-360, 360)
             movement_speed = random.uniform(ASTEROID_MIN_SPEED, ASTEROID_MAX_SPEED)
-            # rotation_speed = random.uniform(-ASTEROID_MAX_ROTATION, ASTEROID_MAX_ROTATION)
+            direction = Vector2(dx, dy)
 
-            # self.asteroid.append(PanZoomMovingRotatingGif(
-            #         win=self.win,
-            #         world_x=x,
-            #         world_y=y,
-            #         world_width=w,
-            #         world_height=h,
-            #         layer=ASTEROID_LAYER,
-            #         group=all_sprites,
-            #         gif_name=image_name,
-            #         gif_index=random.randint(0, max_gif_frame),
-            #         gif_animation_time=None,
-            #         loop_gif=True,
-            #         kill_after_gif_loop=False,
-            #         image_alpha=None,
-            #         rotation_angle=r,
-            #         movement_speed=movement_speed,
-            #         direction=Vector2(dx, dy),
-            #         world_rect=self.world_rect
-            #         ))
+            type_ = "asteroid_gif"
+            layer = ASTEROID_LAYER
+            id_ = len(self.game_object_manager.all_objects)
+            wrap_around = True
 
-            new_object = QTMovingGif(
+            new_object = create_qt_moving_gif(
                     x=x,
                     y=y,
-                    width=w,
-                    height=h,
-                    layer=ASTEROID_LAYER,
+                    width=width,
+                    height=height,
+                    layer=layer,
+                    id_=id_,
                     gif_name=image_name,
-                    gif_index=random.randint(0, max_gif_frame),
-                    gif_animation_time=None,
-                    loop_gif=True,
-                    kill_after_gif_loop=False,
-                    image_alpha=None,
+                    gif_index=gif_index,
+                    gif_animation_time=gif_animation_time,
+                    loop_gif=loop_gif,
+                    kill_after_gif_loop=kill_after_gif_loop,
+                    image_alpha=image_alpha,
                     color=color,
-                    type_="qt_gif",
-                    rotation_angle=r,
-                    rotation_speed=0,
+                    type_=type_,
+                    rotation_angle=rotation_angle,
+                    rotation_speed=rotation_speed,
                     movement_speed=movement_speed,
-                    direction=Vector2(dx, dy),
-                    wrap_around=True
+                    direction=direction,
+                    wrap_around=wrap_around
                     )
 
-            self.asteroid.append(new_object)
             self.game_object_manager.add_object(new_object)
 
+        end_time = time.time()
+        duration = end_time - start_time
+        print(f"create_asteroids took{duration:.6f} seconds")
+
     def create_comets(self) -> None:
+        start_time = time.time()
         # comet images
         for i in range(max(1, int(self.amount / COMET_DIVIDE_FACTOR))):
             image_name = self.select_random_image(self.comet_images, i)
             image = get_image(image_name)
+            image_alpha = None
             color = get_average_color(image, consider_alpha=True)
-            w = image.get_rect().width
-            h = image.get_rect().height
+            width = image.get_rect().width
+            height = image.get_rect().height
             x, y = get_random_pos(self.world_rect, self.central_compression)
             movement_speed = random.uniform(0.05, 0.5)
+            layer = COMET_LAYER
+            id_ = len(self.game_object_manager.all_objects)
+            type_ = "comet_image"
+            rotation_angle = 0
+            rotation_speed = 0
+            direction = Vector2(self.comet_directions[image_name])
+            wrap_around = True
 
-            # self.comet.append(PanZoomMovingRotatingImage(
-            #         win=self.win,
-            #         world_x=x,
-            #         world_y=y,
-            #         world_width=w,
-            #         world_height=h,
-            #         layer=COMET_LAYER,
-            #         group=all_sprites,
-            #         image_name=image_name,
-            #         image_alpha=None,
-            #         rotation_angle=0,
-            #         rotation_speed=0,
-            #         movement_speed=movement_speed,
-            #         direction=Vector2(self.comet_directions[image_name]),
-            #         world_rect=self.world_rect
-            #         ))
-
-            new_object = QTMovingImage(
+            new_object = create_qt_moving_image(
                     x=x,
                     y=y,
-                    width=w,
-                    height=h,
-                    layer=COMET_LAYER,
+                    width=width,
+                    height=height,
+                    layer=layer,
+                    id_=id_,
                     image_name=image_name,
-                    image_alpha=None,
+                    image_alpha=image_alpha,
                     color=color,
-                    type_="comet_image",
-                    rotation_angle=0,
-                    rotation_speed=0,
+                    type_=type_,
+                    rotation_angle=rotation_angle,
+                    rotation_speed=rotation_speed,
                     movement_speed=movement_speed,
-                    direction=Vector2(self.comet_directions[image_name]),
-                    wrap_around=True
+                    direction=direction,
+                    wrap_around=wrap_around
                     )
 
-            self.comet.append(new_object)
             self.game_object_manager.add_object(new_object)
-
-
 
         # comet gifs
         for i in range(max(1, int(self.amount / COMET_DIVIDE_FACTOR))):
             # image_name = random.choice(self.comet_gifs)
             image_name = self.select_random_image(self.comet_gifs, i)
             image = get_image(image_name)
+            image_alpha = None
             color = get_average_color(image, consider_alpha=True)
-            w = image.get_rect().width
-            h = image.get_rect().height
+            width = image.get_rect().width
+            height = image.get_rect().height
             x, y = get_random_pos(self.world_rect, self.central_compression)
-            gif_frames = get_gif_frames(image_name)
+            gif_frames = self.gif_frames[image_name]
+
             max_gif_frame = len(gif_frames) - 1
+            gif_index = random.randint(0, max_gif_frame)
+            gif_animation_time = None
+            loop_gif = True
+            kill_after_gif_loop = False
 
-            # self.comet.append(PanZoomMovingRotatingGif(
-            #         win=self.win,
-            #         world_x=x,
-            #         world_y=y,
-            #         world_width=w,
-            #         world_height=h,
-            #         layer=COMET_LAYER,
-            #         group=all_sprites,
-            #         gif_name=image_name,
-            #         gif_index=random.randint(0, max_gif_frame),
-            #         gif_animation_time=None,
-            #         loop_gif=True,
-            #         kill_after_gif_loop=False,
-            #         image_alpha=None,
-            #         rotation_angle=0,
-            #         movement_speed=random.uniform(0.01, 0.5),
-            #         direction=Vector2(self.comet_directions[image_name]),
-            #         world_rect=self.world_rect)
-            #         )
+            layer = COMET_LAYER
+            id_ = len(self.game_object_manager.all_objects)
+            type_ = "comet_gif"
+            rotation_angle = 0
+            rotation_speed = 0
+            movement_speed = random.uniform(0.01, 0.5)
+            direction = Vector2(self.comet_directions[image_name])
+            wrap_around = True
 
-            new_object = QTMovingGif(
+            new_object = create_qt_moving_gif(
                     x=x,
                     y=y,
-                    width=w,
-                    height=h,
-                    layer=COMET_LAYER,
+                    width=width,
+                    height=height,
+                    layer=layer,
+                    id_=id_,
                     gif_name=image_name,
-                    gif_index=random.randint(0, max_gif_frame),
-                    gif_animation_time=None,
-                    loop_gif=True,
-                    kill_after_gif_loop=False,
-                    image_alpha=None,
+                    gif_index=gif_index,
+                    gif_animation_time=gif_animation_time,
+                    loop_gif=loop_gif,
+                    kill_after_gif_loop=kill_after_gif_loop,
+                    image_alpha=image_alpha,
                     color=color,
-                    type_="comet_gif",
-                    rotation_angle=0,
-                    rotation_speed=0,
-                    movement_speed=random.uniform(0.01, 0.5),
-                    direction=Vector2(self.comet_directions[image_name]),
-                    wrap_around=True
+                    type_=type_,
+                    rotation_angle=rotation_angle,
+                    rotation_speed=rotation_speed,
+                    movement_speed=movement_speed,
+                    direction=direction,
+                    wrap_around=wrap_around
                     )
 
-            self.comet.append(new_object)
             self.game_object_manager.add_object(new_object)
 
+        end_time = time.time()
+        duration = end_time - start_time
+        print(f"create_comets took{duration:.6f} seconds")
+
+    def create_planets(self):
+        def create_sun_gifs(all_planets, orbit_radius_max, orbit_radius_min, orbit_speed_max, orbit_speed_min):
+            for i in range(max(1, int(self.amount / (SUN_DIVIDE_FACTOR)))):
+                # image_name = random.choice(self.comet_gifs)
+                image_name = self.select_random_image(self.sun_gifs, i)
+                image = get_image(image_name)
+                image_alpha = None
+                color = get_average_color(image, consider_alpha=True)
+                width = image.get_rect().width
+                height = image.get_rect().height
+                x, y = get_random_pos(self.world_rect, self.central_compression)
+                gif_frames = self.gif_frames[image_name]
+                max_gif_frame = len(gif_frames) - 1
+                gif_index = random.randint(0, max_gif_frame)
+                rotation_angle = 0
+                rotation_speed = 0
+
+                orbit_speed = random.uniform(orbit_speed_min, orbit_speed_max)
+                orbit_radius = random.randint(orbit_radius_min, orbit_radius_max)
+                id_ = len(self.game_object_manager.all_objects)
+                layer = SUN_LAYER
+                type_ = "sun"
+
+                gif_animation_time = None
+                loop_gif = True
+                kill_after_gif_loop = False
+                wrap_around = True
+                movement_speed = random.uniform(0.01, 0.5)
+                direction = Vector2((0, 0))
+                orbit_direction = 0
+                new_object = create_qt_moving_gif(
+                        x=x,
+                        y=y,
+                        width=width,
+                        height=height,
+                        layer=layer,
+                        id_=id_,
+                        gif_name=image_name,
+                        gif_index=gif_index,
+                        gif_animation_time=gif_animation_time,
+                        loop_gif=loop_gif,
+                        kill_after_gif_loop=kill_after_gif_loop,
+                        image_alpha=image_alpha,
+                        color=color,
+                        type_=type_,
+                        rotation_angle=rotation_angle,
+                        rotation_speed=rotation_speed,
+                        movement_speed=movement_speed,
+                        direction=direction,
+                        wrap_around=wrap_around,
+                        orbit_angle=rotation_angle,
+                        orbit_speed=orbit_speed,
+                        orbit_radius=orbit_radius,
+                        orbit_direction=orbit_direction
+                        )
+
+                self.game_object_manager.add_object(new_object)
+                all_planets.append(new_object)
+
+        def create_sun_images(all_planets, orbit_radius_max, orbit_radius_min, orbit_speed_max, orbit_speed_min):
+            for i in range(max(1, int(self.amount / (SUN_DIVIDE_FACTOR)))):
+                image_name = self.select_random_image(self.sun_images, i)
+                image = get_image(image_name)
+                image_alpha = None
+                color = get_average_color(image, consider_alpha=True)
+                width = image.get_rect().width
+                height = image.get_rect().height
+                x, y = get_random_pos(self.world_rect, self.central_compression)
+                movement_speed = random.uniform(0.05, 0.5)
+                rotation_angle = 0
+                rotation_speed = 0
+
+                orbit_speed = random.uniform(orbit_speed_min, orbit_speed_max)
+                orbit_radius = random.randint(orbit_radius_min, orbit_radius_max)
+                orbit_angle = 0
+
+                id_ = len(self.game_object_manager.all_objects)
+                layer = SUN_LAYER
+                type_ = "sun"
+
+                gif_animation_time = None
+                loop_gif = True
+                kill_after_gif_loop = False
+                wrap_around = True
+
+                direction = Vector2((0, 0))
+                orbit_direction = 0
+                wrap_around = True
+
+                new_object = create_qt_moving_image(
+                        x=x,
+                        y=y,
+                        width=width,
+                        height=height,
+                        layer=layer,
+                        id_=id_,
+                        image_name=image_name,
+                        image_alpha=image_alpha,
+                        color=color,
+                        type_=type_,
+                        rotation_angle=rotation_angle,
+                        rotation_speed=rotation_speed,
+                        movement_speed=movement_speed,
+                        direction=direction,
+                        wrap_around=wrap_around,
+                        orbit_angle=orbit_angle,
+                        orbit_speed=orbit_speed,
+                        orbit_radius=orbit_radius,
+                        orbit_direction=orbit_direction)
+
+                self.game_object_manager.add_object(new_object)
+                all_planets.append(new_object)
+
+        def create_planet_gifs(all_planets, orbit_radius_max, orbit_radius_min, orbit_speed_max, orbit_speed_min):
+            for i in range(max(1, int(self.amount / PlANET_DIVIDE_FACTOR / 2))):
+                # image_name = random.choice(self.comet_gifs)
+                image_name = self.select_random_image(self.planet_gifs, i)
+                image = get_image(image_name)
+                image_alpha = None
+                color = get_average_color(image, consider_alpha=True)
+                width = image.get_rect().width / 2
+                height = image.get_rect().height / 2
+                x, y = get_random_pos(self.world_rect, self.central_compression)
+                gif_frames = self.gif_frames[image_name]
+                max_gif_frame = len(gif_frames) - 1
+                gif_index = random.randint(0, max_gif_frame)
+                orbit_angle = random.randint(0, 360)
+                # if image_name.startswith("moon"):
+
+                orbit_speed = random.uniform(orbit_speed_min, orbit_speed_max)
+                orbit_radius = random.randint(orbit_radius_min, orbit_radius_max)
+                orbit_direction = random.choice([-1, 1])
+
+                type_ = "moon" if image_name.startswith("moon") else "planet"
+                layer = PLANET_LAYER
+
+                id_ = len(self.game_object_manager.all_objects)
+
+                gif_animation_time = None
+                loop_gif = True
+                kill_after_gif_loop = False
+                wrap_around = False
+                movement_speed = random.uniform(0.01, 0.5)
+                direction = Vector2((0, 0))
+                rotation_angle = 0
+                rotations_speed = 0
+
+                if type_ == "moon":
+                    orbit_radius = random.randint(int(orbit_radius_min / 3), int(orbit_radius_max / 3))
+                    width, height = int(width / 3), int(height / 3)
+
+                else:
+                    orbit_speed = random.uniform(orbit_speed_min / 2, orbit_speed_max / 2)
+
+                new_object = create_qt_moving_gif(
+                        x=x,
+                        y=y,
+                        width=width,
+                        height=height,
+                        layer=layer,
+                        id_=id_,
+                        gif_name=image_name,
+                        gif_index=gif_index,
+                        gif_animation_time=gif_animation_time,
+                        loop_gif=loop_gif,
+                        kill_after_gif_loop=kill_after_gif_loop,
+                        image_alpha=image_alpha,
+                        color=color,
+                        type_=type_,
+                        rotation_angle=rotation_angle,
+                        rotation_speed=rotations_speed,
+                        movement_speed=movement_speed,
+                        direction=direction,
+                        wrap_around=wrap_around,
+                        orbit_angle=orbit_angle,
+                        orbit_speed=orbit_speed,
+                        orbit_radius=orbit_radius,
+                        orbit_direction=orbit_direction)
+
+                self.game_object_manager.add_object(new_object)
+                all_planets.append(new_object)
+
+        def create_planet_images(
+                all_planets, orbit_radius_max, orbit_radius_min, orbit_speed_max, orbit_speed_min
+                ):
+            for i in range(max(1, int(self.amount / PlANET_DIVIDE_FACTOR))):
+                image_name = self.select_random_image(self.planet_images, i)
+                image = get_image(image_name)
+                color = get_average_color(image, consider_alpha=True)
+                width = image.get_rect().width
+                height = image.get_rect().height
+                x, y = get_random_pos(self.world_rect, self.central_compression)
+                movement_speed = random.uniform(0.05, 0.5)
+                orbit_angle = random.randint(0, 360)
+                orbit_speed = random.uniform(orbit_speed_min, orbit_speed_max)
+                orbit_radius = random.randint(orbit_radius_min, orbit_radius_max)
+                orbit_direction = random.choice([-1, 1])
+                layer = PLANET_LAYER
+                id_ = len(self.game_object_manager.all_objects)
+                image_alpha = None
+                type_ = "planet"
+                rotation_angle = 0
+                rotation_speed = 0
+                direction = Vector2((0, 0))
+                wrap_around = False
+
+                new_object = create_qt_moving_image(
+                        x=x,
+                        y=y,
+                        width=width,
+                        height=height,
+                        layer=layer,
+                        id_=id_,
+                        image_name=image_name,
+                        image_alpha=image_alpha,
+                        color=color,
+                        type_=type_,
+                        rotation_angle=rotation_angle,
+                        rotation_speed=rotation_speed,
+                        movement_speed=movement_speed,
+                        direction=direction,
+                        wrap_around=wrap_around,
+                        orbit_angle=orbit_angle,
+                        orbit_speed=orbit_speed,
+                        orbit_radius=orbit_radius,
+                        orbit_direction=orbit_direction
+                        )
+
+                self.game_object_manager.add_object(new_object)
+                all_planets.append(new_object)
+
+        start_time = time.time()
+        all_planets = []
+        orbit_speed_min = 0.001
+        orbit_speed_max = 0.005
+        orbit_radius_min = 1000
+        orbit_radius_max = 3000
+
+        # planet images
+        create_planet_images(all_planets, orbit_radius_max, orbit_radius_min, orbit_speed_max, orbit_speed_min)
+
+        # # planet gifs
+        create_planet_gifs(all_planets, orbit_radius_max, orbit_radius_min, orbit_speed_max, orbit_speed_min)
+        #
+        # # sun images
+        create_sun_images(all_planets, orbit_radius_max, orbit_radius_min, orbit_speed_max, orbit_speed_min)
+        #
+        # # sun gifs
+        create_sun_gifs(all_planets, orbit_radius_max, orbit_radius_min, orbit_speed_max, orbit_speed_min)
+
+        self.game_object_manager.rebuild_qtree()
+        self.game_object_manager.set_orbit_object()
+
+        end_time = time.time()
+        duration = end_time - start_time
+        print(f"create_planets took{duration:.6f} seconds")
+
+    def delete_universe(self) -> None:
+        self.game_object_manager.all_objects = []
+        self.game_object_manager.dynamic_objects = []
+        self.game_object_manager._qtree.clear()
+
+    def create_universe_from_data(self, data: dict) -> None:
+        for key, obj in data.items():
+            class_name = obj["class_name"]
+            match class_name:
+                case "QTFlickeringStar":
+                    self.game_object_manager.add_object(QTFlickeringStar(x=obj["x"],
+                            y=obj["y"],
+                            width=obj["width"],
+                            height=obj["height"],
+                            layer=obj["layer"],
+                            id_=obj["id"],
+                            colors=obj["colors"],
+                            type_=obj["type"],
+                            ))
+
+                case "QTPulsatingStar":
+                    self.game_object_manager.add_object(QTPulsatingStar(x=obj["x"],
+                            y=obj["y"],
+                            width=obj["width"],
+                            height=obj["height"],
+                            layer=obj["layer"],
+                            id_=obj["id"],
+                            type_=obj["type"],
+                            ))
+
+                case "QTImage":
+                    self.game_object_manager.add_object(QTImage(x=obj["x"],
+                            y=obj["y"],
+                            width=obj["width"],
+                            height=obj["height"],
+                            layer=obj["layer"],
+                            id_=obj["id"],
+                            type_=obj["type"],
+                            image_name=obj["image_name"],
+                            image_alpha=obj["image_alpha"],
+                            color=obj["color"],
+                            rotation_angle=obj["rotation_angle"]
+                            ))
+
+                case "QTGif":
+                    self.game_object_manager.add_object(QTGif(x=obj["x"],
+                            y=obj["y"],
+                            width=obj["width"],
+                            height=obj["height"],
+                            layer=obj["layer"],
+                            id_=obj["id"],
+                            gif_name=obj["gif_name"],
+                            gif_index=obj["gif_index"],
+                            gif_animation_time=obj["gif_animation_time"],
+                            loop_gif=obj["loop_gif"],
+                            kill_after_gif_loop=obj["kill_after_gif_loop"],
+                            image_alpha=obj["image_alpha"],
+                            color=obj["color"],
+                            type_=obj["type"],
+                            rotation_angle=obj["rotation_angle"]
+                            ))
+
+                case "QTMovingImage":
+                    self.game_object_manager.add_object(QTMovingImage(x=obj["x"],
+                            y=obj["y"],
+                            width=obj["width"],
+                            height=obj["height"],
+                            layer=obj["layer"],
+                            id_=obj["id"],
+                            image_name=obj["image_name"],
+                            image_alpha=obj["image_alpha"],
+                            color=obj["color"],
+                            type_=obj["type"],
+                            rotation_angle=obj["rotation_angle"],
+                            rotation_speed=obj["rotation_speed"],
+                            movement_speed=obj["movement_speed"],
+                            direction=Vector2(obj["direction"]["x"], obj["direction"]["y"]),
+                            wrap_around=obj["wrap_around"],
+                            orbit_angle=obj["orbit_angle"],
+                            orbit_speed=obj["orbit_speed"],
+                            orbit_radius=obj["orbit_radius"],
+                            orbit_direction=obj["orbit_direction"]
+                            ))
+
+                case "QTMovingGif":
+                    self.game_object_manager.add_object(QTMovingGif(x=obj["x"],
+                            y=obj["y"],
+                            width=obj["width"],
+                            height=obj["height"],
+                            layer=obj["layer"],
+                            id_=obj["id"],
+                            gif_name=obj["gif_name"],
+                            gif_index=obj["gif_index"],
+                            gif_animation_time=obj["gif_animation_time"],
+                            loop_gif=obj["loop_gif"],
+                            kill_after_gif_loop=obj["kill_after_gif_loop"],
+                            image_alpha=obj["image_alpha"],
+                            color=obj["color"],
+                            type_=obj["type"],
+                            rotation_angle=obj["rotation_angle"],
+
+                            rotation_speed=obj["rotation_speed"],
+                            movement_speed=obj["movement_speed"],
+                            direction=Vector2(obj["direction"]["x"], obj["direction"]["y"]),
+                            wrap_around=obj["wrap_around"],
+                            orbit_angle=obj["orbit_angle"],
+                            orbit_speed=obj["orbit_speed"],
+                            orbit_radius=obj["orbit_radius"],
+                            orbit_direction=obj["orbit_direction"]
+                            ))
+
+        self.game_object_manager.set_orbit_object_by_id()
+
+        self.game_object_manager.set_orbit_object()
+
     def create_universe(self, world_rect: Rect = WORLD_RECT, collectable_items_amount=0, **kwargs) -> None:
-        collectable_items = kwargs.get("collectable_items", None)
+        start_time = time.time()
+        # collectable_items = kwargs.get("collectable_items", None)
         self.world_rect = world_rect
         self.create_stars()
         self.create_galaxys()
         self.create_nebulaes()
         self.create_comets()
         self.create_asteroids()
+        self.create_planets()
+        self.create_collectable_items()
+
+
+        # # update them for proper initialization
+        pan_zoom_handler.set_zoom(pan_zoom_handler.get_zoom() + 0.0001)
+        # for obj in self.game_object_manager.all_objects:
+        #     self.game_object_manager.update_objects_position(obj)
+        #     self.game_object_manager.update_objects_size(obj)
+        #     # self.game_object_manager.update_objects_rect(obj)
+
+        end_time = time.time()
+
+        duration = end_time - start_time
+        print(f"Universe created in {duration:.6f} seconds")
+
         # self.create_artefacts(collectable_items_amount, collectable_items=collectable_items)
 
-        self.universe = self.star + self.pulsating_star + self.galaxy + self.nebulae + self.comet + self.asteroid + self.artefact
 
-        self.celestial_objects = {
-            "star": self.star,
-            "pulsating_star": self.pulsating_star,
-            "galaxy": self.galaxy,
-            "nebulae": self.nebulae,
-            "comet": self.comet,
-            "asteroid": self.asteroid,
-            "collectable_item": self.artefact
-            }
 
-        # # Print out the counts of objects and keys in the corresponding dictionaries
-        # for name, obj_list in self.celestial_objects.items():
-        #     print(f"{name.capitalize()} count: {len(obj_list)}")  # Length of the list
-        #     if name == "star":
-        #         print(f"Star images created: {len(self.star)} of {len(self.star_images)}")  # Length of the dict keys
-        #     elif name == "pulsating_star":
-        #         print(f"Pulsating star images created: {len(self.pulsating_star)} of {len(self.star_images)}")
-        #     elif name == "galaxy":
-        #         print(f"Galaxy images created: {len(self.galaxy)} of {len(self.galaxy_images)}")
-        #     elif name == "nebulae":
-        #         print(f"Nebulae images created: {len(self.nebulae)} of {len(self.nebulae_images)}")
-        #     elif name == "comet":
-        #         print(f"Comet images created: {len(self.comet)} of {len(self.comet_images)}")
-        #     elif name == "asteroid":
-        #         print(f"Asteroid images created: {len(self.asteroid)} of {len(self.asteroid_images)}")
-        #         print(f"Asteroid GIFs created: {len([gif for gif in self.asteroid if gif.image_name in self.asteroid_gifs.values()])} of {len(self.asteroid_gifs)}")
-        #     elif name == "collectable_item":
-        #         print(f"Collectable items created: {len(self.artefact)} of {len(self.artefact_images)}")
 
-        print (f"Total celestial objects: {len(self.universe)}")
-
-    def delete_universe(self) -> None:
-        for sprite in self.universe:
-            sprite.kill()
-        self.universe.clear()
-        all_sprites.empty()
-
-        # all_widgets = WidgetHandler.get_all_widgets()
-        # celestials = [i for i in all_widgets if issubclass(i.__class__, (CelestialObject, CelestialObjectStatic))]
-        # for i in celestials:
-        #     WidgetHandler.remove_widget(i)
-
-    #
-    def delete_artefacts(self) -> None:
-        for i in sprite_groups.collectable_items.sprites():
-            i.end_object()
 
 
 def main():
@@ -739,5 +1180,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-

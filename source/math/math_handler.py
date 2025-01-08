@@ -34,3 +34,21 @@ def get_rotate_correction_angle(image_points_to:str)-> int:
     """
     rotation_correction_angles = {"right": 0, "up": -90, "left": -180, "down": -270}
     return rotation_correction_angles[image_points_to]
+
+
+def ndigits(v: float, digit=4) -> int:
+    """return a number of digits for a float:
+
+    set digit to lowest number of digits, for example 0.0001 would be 4
+    """
+
+    n = 0
+
+    if v < 1.0:
+        n = max(0, math.ceil(-math.log10(abs(v))))
+        n -= digit
+    if v >= 1.0:
+        n = max(0, math.ceil(math.log10(abs(v))))
+        n += digit - 1
+
+    return abs(n)
