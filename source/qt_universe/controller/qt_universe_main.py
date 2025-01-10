@@ -31,7 +31,8 @@ class Game:
 
     def setup_pan_zoom_handler(self) -> None:
         pan_zoom_handler.zoom_min = 1000 / QT_WIDTH  # Example zoom factor calculation
-        pan_zoom_handler.set_zoom(pan_zoom_handler.zoom_min)
+        # pan_zoom_handler.set_zoom(pan_zoom_handler.zoom_min)
+        pan_zoom_handler.set_zoom_at_position(pan_zoom_handler.zoom_min, (self.qt_renderer.screen.get_width() // 2, self.qt_renderer.screen.get_height() // 2))
         pan_zoom_handler.world_offset_x = 1000
 
     def event_loop(self):
@@ -56,7 +57,7 @@ class Game:
 
     def loop(self) -> None:
         while self._running:
-            self.event_loop()
+            # self.event_loop()
             self.game_object_manager.update()
             self.interaction_handler._qtree = self.game_object_manager._qtree
 
@@ -64,6 +65,9 @@ class Game:
             self.qt_renderer.draw()
 
             self._clock.tick(self._fps)
+            self.event_loop()
+
+            pygame.display.flip()
 
         pygame.quit()
 

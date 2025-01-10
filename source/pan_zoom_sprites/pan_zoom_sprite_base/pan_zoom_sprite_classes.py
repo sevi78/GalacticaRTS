@@ -678,6 +678,7 @@ def main():
     # Set up the display dimensions and create a window
     WIDTH, HEIGHT = 1820, 1080
     screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
+    print ("pan_zoom_spritte_clsses: main()", screen)
     pygame.display.set_caption("PanZoomSprite Demo")
 
     # Create sprite group for managing all sprites together

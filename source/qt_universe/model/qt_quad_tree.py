@@ -1,5 +1,7 @@
+import pygame
 from pygame import Rect
 
+from source.qt_universe.controller.qt_pan_zoom_handler import pan_zoom_handler
 from source.qt_universe.model.qt_model_config.qt_config import QT_CAPACITY
 
 
@@ -149,237 +151,70 @@ class QuadTree:  # original
             self.divided = False
 
 
-class QuadTree_:  # optimizied by perplexity, is slower
-    __slots__ = ('boundary', 'children', 'capacity', 'divided', 'points', 'point_count')
-
-    def __init__(self, boundary: Rect, capacity: int = QT_CAPACITY) -> None:
-        self.boundary = boundary
-        self.children = [None, None, None, None]  # NW, NE, SW, SE
-        self.capacity = capacity
-        self.divided = False
-        self.points = set()
-        self.point_count = 0
-
-    def count(self):
-        return self.point_count
-
-    def insert(self, point):
-        if not self.boundary.collidepoint(point.x, point.y):
-            return False
-
-        if len(self.points) < self.capacity:
-            self.points.add(point)
-            self.point_count += 1
-            return True
-        else:
-            if not self.divided:
-                self.subdivide()
-
-            for i in range(4):
-                if self.get_child(i).insert(point):
-                    self.point_count += 1
-                    return True
-
-        return False
-
-    def remove(self, point):
-        if not self.boundary.collidepoint(point.x, point.y):
-            return False
-
-        if point in self.points:
-            self.points.remove(point)
-            self.point_count -= 1
-            self.check_collapse()
-            return True
-
-        if self.divided:
-            for i in range(4):
-                if self.children[i] and self.children[i].remove(point):
-                    self.point_count -= 1
-                    self.check_collapse()
-                    return True
-
-        return False
-
-    def clear(self):
-        self.points.clear()
-        self.point_count = 0
-        if self.divided:
-            for child in self.children:
-                if child:
-                    child.clear()
-            self.children = [None, None, None, None]
-            self.divided = False
-
-    def query(self, area: Rect, found=None):
-        if found is None:
-            found = []
-        if not self.boundary.colliderect(area):
-            return found
-
-        for p in self.points:
-            if area.collidepoint(p.x, p.y):
-                found.append(p)
-
-        if self.divided:
-            for child in self.children:
-                if child:
-                    child.query(area, found)
-
-        return found
-
-    def subdivide(self):
-        x, y = self.boundary.x, self.boundary.y
-        w, h = self.boundary.width / 2, self.boundary.height / 2
-
-        self.children[0] = QuadTree(Rect(x, y, w, h), self.capacity)  # NW
-        self.children[1] = QuadTree(Rect(x + w, y, w, h), self.capacity)  # NE
-        self.children[2] = QuadTree(Rect(x, y + h, w, h), self.capacity)  # SW
-        self.children[3] = QuadTree(Rect(x + w, y + h, w, h), self.capacity)  # SE
-
-        self.divided = True
-
-    def get_child(self, index):
-        if not self.children[index]:
-            x, y = self.boundary.x, self.boundary.y
-            w, h = self.boundary.width / 2, self.boundary.height / 2
-            if index == 0:  # NW
-                new_boundary = Rect(x, y, w, h)
-            elif index == 1:  # NE
-                new_boundary = Rect(x + w, y, w, h)
-            elif index == 2:  # SW
-                new_boundary = Rect(x, y + h, w, h)
-            else:  # SE
-                new_boundary = Rect(x + w, y + h, w, h)
-            self.children[index] = QuadTree(new_boundary, self.capacity)
-        return self.children[index]
-
-    def check_collapse(self):
-        if self.divided and self.point_count <= self.capacity:
-            self.collapse()
-
-    def collapse(self):
-        if self.divided:
-            for child in self.children:
-                if child:
-                    self.points.update(child.points)
-            self.children = [None, None, None, None]
-            self.divided = False
+def get_world_search_area() -> Rect:
+    screen_rect = pygame.display.get_surface().get_rect()
+    screen_search_area = screen_rect.inflate(-200, -200)  # Inflate by 200 pixels on each side
+    world_x1, world_y1 = pan_zoom_handler.screen_2_world(screen_search_area.left, screen_search_area.top)
+    world_x2, world_y2 = pan_zoom_handler.screen_2_world(screen_search_area.right, screen_search_area.bottom)
+    return pygame.Rect(world_x1, world_y1, world_x2 - world_x1, world_y2 - world_y1)
 
 
-class QuadTree__:  # about the same speed, i dont thrust the ai
-    def __init__(self, boundary: Rect, capacity: int = QT_CAPACITY) -> None:
-        self.boundary = boundary
-        self.southEast = None
-        self.southWest = None
-        self.northEast = None
-        self.northWest = None
-        self.capacity = capacity
-        self.divided = False
-        self.points = []
-        self.point_count = len(self.points)
+def get_search_area(rect: Rect) -> Rect:
+    world_x1, world_y1 = pan_zoom_handler.screen_2_world(rect.left, rect.top)
+    world_x2, world_y2 = pan_zoom_handler.screen_2_world(rect.right, rect.bottom)
+    return pygame.Rect(world_x1, world_y1, world_x2 - world_x1, world_y2 - world_y1)
 
-    def count(self):
-        return self.point_count
 
-    def insert(self, point):
-        if not self.boundary.collidepoint(point.x, point.y):
-            return False
+def get_nearest_object(
+        q_tree: QuadTree, screen_x: int or float, screen_y: int or float, type_: str or list[str],
+        distance: int or float
+        ):
+    """
+    Returns the nearest object of a certain type in a certain distance from the given coordinates,
+    or None if no object is found
 
-        if len(self.points) < self.capacity:
-            self.points.append(point)
-            self.point_count += 1
-            return True
-        else:
-            if not self.divided:
-                self.subdivide()
+    Use screen coordinates like mouse.get_pos() or obj.rect!
 
-            if self.northEast.insert(point):
-                self.point_count += 1
-                return True
-            elif self.northWest.insert(point):
-                self.point_count += 1
-                return True
-            elif self.southEast.insert(point):
-                self.point_count += 1
-                return True
-            elif self.southWest.insert(point):
-                self.point_count += 1
-                return True
+    :param q_tree: The quad tree
+    :param screen_x: The x coordinate
+    :param screen_y: The y coordinate
+    :param type_: The type of the object: either a string or a list of strings
+    :param distance: The distance
+    """
 
-        return False
+    # Define the search area rectangle
+    search_area_rect = Rect(screen_x - distance / 2, screen_y - distance / 2, distance, distance)
 
-    def remove(self, point):
-        if not self.boundary.collidepoint(point.x, point.y):
-            return False
+    # Convert the search area rectangle to world coordinates
+    world_search_area = get_search_area(search_area_rect)
 
-        for i, p in enumerate(self.points):
-            if p is point:
-                self.points.pop(i)
-                self.point_count -= 1
-                self.check_collapse()
-                return True
+    # Query the quad tree for objects within the search area
+    visible_objects = q_tree.query(world_search_area)
 
-        if self.divided:
-            removed = (self.northWest.remove(point) or
-                       self.northEast.remove(point) or
-                       self.southWest.remove(point) or
-                       self.southEast.remove(point))
-            if removed:
-                self.point_count -= 1
-                self.check_collapse()
-            return removed
+    # Check if type_ is a string or a list of strings
+    if isinstance(type_, str):
+        # Filter the objects by type
+        typed_visible_objects = [obj for obj in visible_objects if obj.type == type_]
 
-        return False
+        # Find the nearest object
+        if not typed_visible_objects:
+            return None
+        nearest_object = min(typed_visible_objects, key=lambda obj: (obj.x - screen_x) ** 2 + (obj.y - screen_y) ** 2)
 
-    def clear(self):
-        self.points.clear()
-        self.point_count = 0
-        if self.divided:
-            self.northEast.clear()
-            self.northWest.clear()
-            self.southEast.clear()
-            self.southWest.clear()
-            self.divided = False
+        return nearest_object
+    elif isinstance(type_, list):
+        # Iterate over the types in the list
+        for obj_type in type_:
+            # Filter the objects by type
+            typed_visible_objects = [obj for obj in visible_objects if obj.type == obj_type]
 
-    def query(self, area: Rect, found=None):
-        if found is None:
-            found = []
-        if not self.boundary.colliderect(area):
-            return found
+            # Find the nearest object
+            if typed_visible_objects:
+                nearest_object = min(typed_visible_objects, key=lambda obj: (obj.x - screen_x) ** 2 + (
+                        obj.y - screen_y) ** 2)
+                return nearest_object
 
-        for p in self.points:
-            if area.collidepoint(p.x, p.y):
-                found.append(p)
-
-        if self.divided:
-            self.northWest.query(area, found)
-            self.northEast.query(area, found)
-            self.southWest.query(area, found)
-            self.southEast.query(area, found)
-
-        return found
-
-    def subdivide(self):
-        x, y = self.boundary.x, self.boundary.y
-        w, h = self.boundary.width / 2, self.boundary.height / 2
-
-        self.northWest = QuadTree(Rect(x, y, w, h), self.capacity)
-        self.northEast = QuadTree(Rect(x + w, y, w, h), self.capacity)
-        self.southWest = QuadTree(Rect(x, y + h, w, h), self.capacity)
-        self.southEast = QuadTree(Rect(x + w, y + h, w, h), self.capacity)
-
-        self.divided = True
-
-    def check_collapse(self):
-        if self.divided and self.point_count <= self.capacity:
-            self.collapse()
-
-    def collapse(self):
-        if self.divided:
-            self.points.extend(self.northWest.points)
-            self.points.extend(self.northEast.points)
-            self.points.extend(self.southWest.points)
-            self.points.extend(self.southEast.points)
-            self.northWest = self.northEast = self.southWest = self.southEast = None
-            self.divided = False
+        # If no objects are found for any type, return None
+        return None
+    else:
+        raise ValueError("type_ must be a string or a list of strings")

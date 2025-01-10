@@ -6,11 +6,10 @@ from pygame import Rect
 
 from source.qt_universe.controller.qt_pan_zoom_handler import pan_zoom_handler
 from source.qt_universe.model.qt_model_config.qt_config import QT_CAPACITY, QT_WIDTH
-from source.qt_universe.model.qt_quad_tree import QuadTree
+from source.qt_universe.model.qt_quad_tree import QuadTree, get_world_search_area
 from source.qt_universe.model.qt_save_load import QTSaveLoad
 from source.qt_universe.model.qt_time_handler import time_handler
 from source.qt_universe.view.game_objects.qt_game_objects import QTMovingImage, QTMovingGif
-from source.qt_universe.view.qt_draw import get_world_search_area
 
 
 class GameObjectManager:
@@ -93,20 +92,20 @@ class GameObjectManager:
                 if obj.target:
                     obj.target = [_ for _ in self.all_objects if _.id == obj.target][0]
 
-    def find_nearest(self, objects, target_x, target_y):
-        if not objects:
-            return None
-
-        nearest = objects[0]
-        min_distance = math.inf
-
-        for obj in objects:
-            distance = math.sqrt((obj.x - target_x) ** 2 + (obj.y - target_y) ** 2)
-            if distance < min_distance:
-                min_distance = distance
-                nearest = obj
-
-        return nearest
+    # def find_nearest(self, objects, target_x, target_y):
+    #     if not objects:
+    #         return None
+    #
+    #     nearest = objects[0]
+    #     min_distance = math.inf
+    #
+    #     for obj in objects:
+    #         distance = math.sqrt((obj.x - target_x) ** 2 + (obj.y - target_y) ** 2)
+    #         if distance < min_distance:
+    #             min_distance = distance
+    #             nearest = obj
+    #
+    #     return nearest
 
     def wraparound(self, point):
         point.x %= self._qt_rect.width
@@ -170,11 +169,6 @@ class GameObjectManager:
             if getattr(obj, 'wrap_around', False):  # Check if wrap_around is set to True
                 self.wraparound(obj)
 
-    def update_objects_rect__(self, obj):
-        screen_x, screen_y = pan_zoom_handler.world_2_screen(obj.x, obj.y)
-        obj.rect.x = screen_x - obj.width/2 * pan_zoom_handler.get_zoom()
-        obj.rect.y = screen_y - obj.height/2 * pan_zoom_handler.get_zoom()
-
     def update_objects_rect(self, obj):
         # Get the screen coordinates based on the object's world position
         screen_x, screen_y = pan_zoom_handler.world_2_screen(obj.x, obj.y)
@@ -210,7 +204,18 @@ class GameObjectManager:
         for i in self.all_objects:
             i.selected = True if i.type.startswith(object_type) else False
 
+    def update_objects(self):
+        world_search_area = get_world_search_area()
+        visible_objects = self._qtree.query(world_search_area)
 
+        for obj in visible_objects:
+            if not obj.visible:
+                continue
+            self.update_objects_position(obj)
+            self.update_objects_size(obj)
+            self.update_objects_rect(obj)
+
+        self.rebuild_qtree()
 
     def update(self):
         # Always update dynamic objects

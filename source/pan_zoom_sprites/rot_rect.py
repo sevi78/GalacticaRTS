@@ -102,6 +102,7 @@ class RotRect(Rack):
 def main():
     pygame.init()
     screen = pygame.display.set_mode((1920, 1080))
+    print ("rot_rect.py, main()", screen)
     clock = pygame.time.Clock()
 
     # sprt_grp = LayeredDirty()

@@ -18,15 +18,15 @@ class BoxSelection:
     It supports both single and multi-selection modes.
     """
 
-    def __init__(self, window: pygame.Surface, selectable_objects: List[object]):
+    def __init__(self, display: pygame.Surface, selectable_objects: List[object]):
         """
         Initialize the BoxSelection object.
 
         Args:
-            window (pygame.Surface): The pygame window surface to draw on.
+            display (pygame.Surface): The pygame window surface to draw on.
             selectable_objects (List[object]): A list of objects that can be selected.
         """
-        self.window: pygame.Surface = window
+        self.display: pygame.Surface = display
         self.selectable_objects: List[object] = selectable_objects
         self.start_pos: Optional[Tuple[int, int]] = None
         self.end_pos: Optional[Tuple[int, int]] = None
@@ -172,7 +172,7 @@ class BoxSelection:
         Draw the selection rectangle on the window if a selection is in progress.
         """
         if self.selecting:
-            pygame.draw.rect(self.window, (0, 0, 255), self.get_selection_rect(), 1)
+            pygame.draw.rect(self.display, (0, 0, 255), self.get_selection_rect(), 1)
 
 
 def main():

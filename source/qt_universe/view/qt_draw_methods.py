@@ -7,31 +7,12 @@ from pygame import Surface, Rect, draw, gfxdraw
 from source.configuration.game_config import config
 from source.handlers.color_handler import colors
 from source.multimedia_library.images import get_image, scale_image_cached, rotate_image_cached, get_gif_frames
-# from source.pygame_shaders import pygame_shaders
-
 from source.qt_universe.controller.qt_pan_zoom_handler import pan_zoom_handler
 from source.qt_universe.view.game_objects.qt_game_objects import QTImage, QTMovingImage
+from source.qt_universe.view.qt_view_config import qt_draw_config
 from source.qt_universe.view.qt_view_config.qt_draw_config import DARK_BLUE
+from source.qt_universe.view.shader_handler import shader_handler
 
-#
-# # define the target surface, the surface where the shader will be drawn onto
-# target_surface = pygame.Surface((1920,1080))
-# target_surface.fill((0, 0, 0))
-#
-# # define the shader
-# ring_shader = pygame_shaders.Shader("vertex.txt", "ring_atmosphere.glsl", target_surface)  # <- give it to our shader
-# ring_shader.send("iResolution", target_surface.get_size())
-#
-# def draw_shader(screen, image_rect):
-#     # render the shader
-#     ring_shader.send("iPos", image_rect.center)
-#     ring_shader.send("iRadius", image_rect.width)
-#     ring_shader.send("iColor", (0.3, 0.1, 0.2, 0.0))
-#     ring_shader.send("iBlur", 80)
-#     rendered_shader = ring_shader.render()
-#
-#     # then render the shader onto the display
-#     screen.blit(rendered_shader, (0, 0), special_flags=pygame.BLEND_MAX)
 
 def draw_quadtree(quadtree, surface: Surface, pan_zoom_handler) -> None:
     screen_rect = Rect(0, 0, surface.get_width(), surface.get_height())
@@ -124,52 +105,12 @@ def draw_pulsating_star(screen, point) -> None:
             (c, c, c))
 
 
-def draw_qt_image_(screen, point: QTImage or QTMovingImage) -> None:
-    """
-    draws a qt image of type:
-    - QTImage
-    - QTMovingImage
-    - GameObject
-
-    """
-
-    # Determine size for scaling
-    min_size = 3
-    if point.rect.width < min_size or point.rect.height < min_size:
-        size = (min_size, min_size)
-    else:
-        size = point.rect.size
-
-    # Get the image
-    image = get_image(point.image_name)
-
-    # set alpha
-    if point.image_alpha:
-        image.set_alpha(point.image_alpha)
-
-    scaled_image = scale_image_cached(image, size)
-
-    if point.rotation_angle == -1:
-        # If no rotation, blit using original rect
-        screen.blit(scaled_image, point.rect)
-        return
-
-    # Rotate the scaled image
-    rotated_image = rotate_image_cached(scaled_image, point.rotation_angle)
-
-    # Create a new rect for the rotated image
-    rotated_rect = rotated_image.get_rect(**{point.align_image: pan_zoom_handler.world_2_screen(point.x, point.y)})
-
-    # Blit the rotated image using its new rect
-    screen.blit(rotated_image, rotated_rect)
-
 def draw_qt_image(screen, point: QTImage or QTMovingImage) -> None:
     """
     draws a qt image of type:
     - QTImage
     - QTMovingImage
     - GameObject
-
     """
 
     # Determine size for scaling
@@ -178,6 +119,10 @@ def draw_qt_image(screen, point: QTImage or QTMovingImage) -> None:
         size = (min_size, min_size)
     else:
         size = point.rect.size
+
+    if not qt_draw_config.DRAW_IMAGES:
+        draw.circle(screen, point.color, (point.rect.centerx, point.rect.centery), size[0] / 2)
+        return
 
     # Get the image
     image = get_image(point.image_name)
@@ -191,8 +136,8 @@ def draw_qt_image(screen, point: QTImage or QTMovingImage) -> None:
     if point.rotation_angle == -1:
         # If no rotation, blit using original rect
         screen.blit(scaled_image, point.rect)
-        # draw_shader(screen, point.rect)
-
+        if qt_draw_config.DRAW_SHADER:
+            shader_handler.draw_shader(screen, point, point.rect)
 
     # Rotate the scaled image
     rotated_image = rotate_image_cached(scaled_image, point.rotation_angle)
@@ -202,20 +147,22 @@ def draw_qt_image(screen, point: QTImage or QTMovingImage) -> None:
 
     # Blit the rotated image using its new rect
     screen.blit(rotated_image, rotated_rect)
-    # draw_shader(screen, rotated_rect)
 
-
-
+    if qt_draw_config.DRAW_SHADER:
+        shader_handler.draw_shader(screen, point, rotated_rect)
 
 
 def draw_qt_gif(screen, point) -> None:
-    # if point.lod == 0 and not point.type == "sun":
-    #     return
+    # Determine size for scaling
+    min_size = 3
+    if point.rect.width < min_size or point.rect.height < min_size:
+        size = (min_size, min_size)
+    else:
+        size = point.rect.size
 
-    # min_size = 3
-    # if point.rect.width < min_size or point.rect.height < min_size:
-    #     draw.circle(screen, point.color, point.rect.center, int(point.rect.height / 2))
-    #     return
+    if not qt_draw_config.DRAW_IMAGES:
+        draw.circle(screen, point.color, (point.rect.centerx, point.rect.centery), size[0] / 2)
+        return
 
     # get the gif frames
     gif_frames = get_gif_frames(point.gif_name)
@@ -229,13 +176,6 @@ def draw_qt_gif(screen, point) -> None:
     # set alpha
     if point.image_alpha:
         image.set_alpha(point.image_alpha)
-
-    # Determine size for scaling
-    min_size = 3
-    if point.rect.width < min_size or point.rect.height < min_size:
-        size = (min_size, min_size)
-    else:
-        size = point.rect.size
 
     scaled_image = scale_image_cached(image, size)
 

@@ -244,6 +244,7 @@ def draw_transparent_circle_blurred(
 def main():
     pygame.init()
     win = pygame.display.set_mode((900, 600))
+    print ("circles.py. main: win = ", win)
 
     run = True
     while run:

@@ -1,9 +1,8 @@
 import math
 
-
+from source.handlers.color_handler import get_average_color
 from source.handlers.position_handler import get_random_pos
-from source.multimedia_library.image_attributes import average_colors_alpha_dict, image_sizes_dict, max_gif_frames_dict
-from source.multimedia_library.images import get_gif_frames, get_image_names_from_folder
+from source.multimedia_library.images import get_image, get_gif_frames, get_image_names_from_folder
 from source.qt_universe.controller.qt_pan_zoom_handler import pan_zoom_handler
 from source.qt_universe.model.qt_model_config.qt_config import POINTS_AMOUNT, QT_RECT
 from source.qt_universe.model.qt_model_config.qt_universe_config import *
@@ -131,11 +130,11 @@ class ImageProvider:
         self.sun_gifs = {get_image_names_from_folder("gifs").index(i): i for i in get_image_names_from_folder("gifs") if
                          i.startswith("sun")}
 
-        # self.gif_frames = {v: get_gif_frames(v) for d in
-        #                    (self.asteroid_gifs, self.comet_gifs, self.galaxy_gifs, self.planet_gifs, self.sun_gifs,
-        #                     self.atmosphere_gifs,
-        #                     self.collectable_item_gifs) for
-        #                    v in d.values()}
+        self.gif_frames = {v: get_gif_frames(v) for d in
+                           (self.asteroid_gifs, self.comet_gifs, self.galaxy_gifs, self.planet_gifs, self.sun_gifs,
+                            self.atmosphere_gifs,
+                            self.collectable_item_gifs) for
+                           v in d.values()}
 
     def select_random_image(self, image_dict: dict[int, str], index: int) -> str:
         """
@@ -171,10 +170,12 @@ class UniverseFactory(ImageProvider):
         # artefacts images
         for i in range(max(1, int(self.amount / COLLECTABLE_ITEM_DIVIDE_FACTOR))):
             image_name = self.select_random_image(self.collectable_item_images, i)
+
+            image = get_image(image_name)
             image_alpha = None
-            color = average_colors_alpha_dict[image_name]
-            width = image_sizes_dict[image_name][0] * 3
-            height = image_sizes_dict[image_name][1] * 3
+            color = get_average_color(image, consider_alpha=True)
+            width = image.get_rect().width * 3
+            height = image.get_rect().height * 3
             x, y = get_random_pos(self.world_rect, self.central_compression)
             rotation_angle = random.randint(0, 360)
             dx, dy = random.randint(-360, 360), random.randint(-360, 360)
@@ -210,13 +211,14 @@ class UniverseFactory(ImageProvider):
         for i in range(max(1, int(self.amount / COLLECTABLE_ITEM_DIVIDE_FACTOR / 2))):
             # image_name = random.choice(self.asteroid_gifs)
             image_name = self.select_random_image(self.collectable_item_gifs, i)
-            
+            image = get_image(image_name)
             image_alpha = None
-            color = average_colors_alpha_dict[image_name]
-            width = image_sizes_dict[image_name][0]
-            height = image_sizes_dict[image_name][1]
+            color = get_average_color(image, consider_alpha=True)
+            width = image.get_rect().width
+            height = image.get_rect().height
             x, y = get_random_pos(self.world_rect, self.central_compression)
-            max_gif_frame = max_gif_frames_dict[image_name]
+            gif_frames = self.gif_frames[image_name]
+            max_gif_frame = len(gif_frames) - 1
             gif_index = random.randint(0, max_gif_frame)
             gif_animation_time = None
             loop_gif = True
@@ -261,9 +263,9 @@ class UniverseFactory(ImageProvider):
         for i in range(max(1, int(self.amount / STAR_DIVIDE_FACTOR))):
             x, y = get_random_pos(self.world_rect, self.central_compression)
             image_name = self.select_random_image(self.star_images, i)
-            
+            image = get_image(image_name)
             image_alpha = None
-            color = average_colors_alpha_dict[image_name]
+            color = get_average_color(image, consider_alpha=True)
             width, height = 30, 30
             rotation_angle = random.randint(0, 360)
             id_ = len(self.game_object_manager.all_objects)
@@ -343,11 +345,11 @@ class UniverseFactory(ImageProvider):
         for i in range(max(1, int(self.amount / GALAXY_DIVIDE_FACTOR))):
             # image_name = random.choice(self.galaxy_images)
             image_name = self.select_random_image(self.galaxy_images, i)
-            
+            image = get_image(image_name)
             image_alpha = GALAXY_IMAGE_ALPHA
-            color = average_colors_alpha_dict[image_name]
-            width = image_sizes_dict[image_name][0]
-            height = image_sizes_dict[image_name][1]
+            color = get_average_color(image, consider_alpha=True)
+            width = image.get_rect().width
+            height = image.get_rect().height
             x, y = get_random_pos(self.world_rect, self.central_compression)
             rotation_angle = random.randint(0, 360)
             id_ = len(self.game_object_manager.all_objects)
@@ -373,15 +375,15 @@ class UniverseFactory(ImageProvider):
         # galaxy gifs
         for i in range(max(1, int(self.amount / GALAXY_GIF_DIVIDE_FACTOR))):
             image_name = self.select_random_image(self.galaxy_gifs, i)
-            
+            image = get_image(image_name)
             image_alpha = GALAXY_IMAGE_ALPHA
-            color = average_colors_alpha_dict[image_name]
-            width = image_sizes_dict[image_name][0]
-            height = image_sizes_dict[image_name][1]
+            color = get_average_color(image, consider_alpha=True)
+            width = image.get_rect().width
+            height = image.get_rect().height
             x, y = get_random_pos(self.world_rect, self.central_compression)
             rotation_angle = random.randint(0, 360)
-            
-            max_gif_frame = max_gif_frames_dict[image_name]
+            gif_frames = self.gif_frames[image_name]
+            max_gif_frame = len(gif_frames) - 1
             id_ = len(self.game_object_manager.all_objects)
             layer = GALAXY_LAYER
             gif_index = random.randint(0, max_gif_frame)
@@ -419,11 +421,11 @@ class UniverseFactory(ImageProvider):
         for i in range(max(1, int(self.amount / NEBULAE_DIVIDE_FACTOR))):
             # image_name = random.choice(self.nebulae_images)
             image_name = self.select_random_image(self.nebulae_images, i)
-            
+            image = get_image(image_name)
             image_alpha = NEBULAE_IMAGE_ALPHA
-            color = average_colors_alpha_dict[image_name]
-            width = image_sizes_dict[image_name][0]
-            height = image_sizes_dict[image_name][1]
+            color = get_average_color(image, consider_alpha=True)
+            width = image.get_rect().width
+            height = image.get_rect().height
             x, y = get_random_pos(self.world_rect, self.central_compression)
             rotation_angle = random.randint(0, 360)
             id_ = len(self.game_object_manager.all_objects)
@@ -455,11 +457,11 @@ class UniverseFactory(ImageProvider):
         # asteroid images
         for i in range(max(1, int(self.amount / ASTEROID_DIVIDE_FACTOR))):
             image_name = self.select_random_image(self.asteroid_images, i)
-            
+            image = get_image(image_name)
             image_alpha = None
-            color = average_colors_alpha_dict[image_name]
-            width = image_sizes_dict[image_name][0] * 3
-            height = image_sizes_dict[image_name][1] * 3
+            color = get_average_color(image, consider_alpha=True)
+            width = image.get_rect().width * 3
+            height = image.get_rect().height * 3
             x, y = get_random_pos(self.world_rect, self.central_compression)
             rotation_angle = random.randint(0, 360)
             dx, dy = random.randint(-360, 360), random.randint(-360, 360)
@@ -495,14 +497,14 @@ class UniverseFactory(ImageProvider):
         for i in range(max(1, int(self.amount / ASTEROID_GIF_DIVIDE_FACTOR))):
             # image_name = random.choice(self.asteroid_gifs)
             image_name = self.select_random_image(self.asteroid_gifs, i)
-            
+            image = get_image(image_name)
             image_alpha = None
-            color = average_colors_alpha_dict[image_name]
-            width = image_sizes_dict[image_name][0]
-            height = image_sizes_dict[image_name][1]
+            color = get_average_color(image, consider_alpha=True)
+            width = image.get_rect().width
+            height = image.get_rect().height
             x, y = get_random_pos(self.world_rect, self.central_compression)
-            
-            max_gif_frame = max_gif_frames_dict[image_name]
+            gif_frames = self.gif_frames[image_name]
+            max_gif_frame = len(gif_frames) - 1
             gif_index = random.randint(0, max_gif_frame)
             gif_animation_time = None
             loop_gif = True
@@ -551,11 +553,11 @@ class UniverseFactory(ImageProvider):
         # comet images
         for i in range(max(1, int(self.amount / COMET_DIVIDE_FACTOR))):
             image_name = self.select_random_image(self.comet_images, i)
-            
+            image = get_image(image_name)
             image_alpha = None
-            color = average_colors_alpha_dict[image_name]
-            width = image_sizes_dict[image_name][0]
-            height = image_sizes_dict[image_name][1]
+            color = get_average_color(image, consider_alpha=True)
+            width = image.get_rect().width
+            height = image.get_rect().height
             x, y = get_random_pos(self.world_rect, self.central_compression)
             movement_speed = random.uniform(0.05, 0.5)
             layer = COMET_LAYER
@@ -590,15 +592,15 @@ class UniverseFactory(ImageProvider):
         for i in range(max(1, int(self.amount / COMET_DIVIDE_FACTOR))):
             # image_name = random.choice(self.comet_gifs)
             image_name = self.select_random_image(self.comet_gifs, i)
-            
+            image = get_image(image_name)
             image_alpha = None
-            color = average_colors_alpha_dict[image_name]
-            width = image_sizes_dict[image_name][0]
-            height = image_sizes_dict[image_name][1]
+            color = get_average_color(image, consider_alpha=True)
+            width = image.get_rect().width
+            height = image.get_rect().height
             x, y = get_random_pos(self.world_rect, self.central_compression)
-            
+            gif_frames = self.gif_frames[image_name]
 
-            max_gif_frame = max_gif_frames_dict[image_name]
+            max_gif_frame = len(gif_frames) - 1
             gif_index = random.randint(0, max_gif_frame)
             gif_animation_time = None
             loop_gif = True
@@ -646,14 +648,14 @@ class UniverseFactory(ImageProvider):
             for i in range(max(1, int(self.amount / (SUN_DIVIDE_FACTOR)))):
                 # image_name = random.choice(self.comet_gifs)
                 image_name = self.select_random_image(self.sun_gifs, i)
-                
+                image = get_image(image_name)
                 image_alpha = None
-                color = average_colors_alpha_dict[image_name]
-                width = image_sizes_dict[image_name][0]
-                height = image_sizes_dict[image_name][1]
+                color = get_average_color(image, consider_alpha=True)
+                width = image.get_rect().width
+                height = image.get_rect().height
                 x, y = get_random_pos(self.world_rect, self.central_compression)
-                
-                max_gif_frame = max_gif_frames_dict[image_name]
+                gif_frames = self.gif_frames[image_name]
+                max_gif_frame = len(gif_frames) - 1
                 gif_index = random.randint(0, max_gif_frame)
                 rotation_angle = 0
                 rotation_speed = 0
@@ -703,11 +705,11 @@ class UniverseFactory(ImageProvider):
         def create_sun_images(all_planets, orbit_radius_max, orbit_radius_min, orbit_speed_max, orbit_speed_min):
             for i in range(max(1, int(self.amount / (SUN_DIVIDE_FACTOR)))):
                 image_name = self.select_random_image(self.sun_images, i)
-                
+                image = get_image(image_name)
                 image_alpha = None
-                color = average_colors_alpha_dict[image_name]
-                width = image_sizes_dict[image_name][0]
-                height = image_sizes_dict[image_name][1]
+                color = get_average_color(image, consider_alpha=True)
+                width = image.get_rect().width
+                height = image.get_rect().height
                 x, y = get_random_pos(self.world_rect, self.central_compression)
                 movement_speed = random.uniform(0.05, 0.5)
                 rotation_angle = 0
@@ -758,14 +760,14 @@ class UniverseFactory(ImageProvider):
             for i in range(max(1, int(self.amount / PlANET_DIVIDE_FACTOR / 2))):
                 # image_name = random.choice(self.comet_gifs)
                 image_name = self.select_random_image(self.planet_gifs, i)
-                
+                image = get_image(image_name)
                 image_alpha = None
-                color = average_colors_alpha_dict[image_name]
-                width = image_sizes_dict[image_name][0] / 2
-                height = image_sizes_dict[image_name][1] / 2
+                color = get_average_color(image, consider_alpha=True)
+                width = image.get_rect().width / 2
+                height = image.get_rect().height / 2
                 x, y = get_random_pos(self.world_rect, self.central_compression)
-                
-                max_gif_frame = max_gif_frames_dict[image_name]
+                gif_frames = self.gif_frames[image_name]
+                max_gif_frame = len(gif_frames) - 1
                 gif_index = random.randint(0, max_gif_frame)
                 orbit_angle = random.randint(0, 360)
                 # if image_name.startswith("moon"):
@@ -828,10 +830,10 @@ class UniverseFactory(ImageProvider):
                 ):
             for i in range(max(1, int(self.amount / PlANET_DIVIDE_FACTOR))):
                 image_name = self.select_random_image(self.planet_images, i)
-                
-                color = average_colors_alpha_dict[image_name]
-                width = image_sizes_dict[image_name][0]
-                height = image_sizes_dict[image_name][1]
+                image = get_image(image_name)
+                color = get_average_color(image, consider_alpha=True)
+                width = image.get_rect().width
+                height = image.get_rect().height
                 x, y = get_random_pos(self.world_rect, self.central_compression)
                 movement_speed = random.uniform(0.05, 0.5)
                 orbit_angle = random.randint(0, 360)
@@ -875,7 +877,8 @@ class UniverseFactory(ImageProvider):
                 # create atmosphere
                 id_ = len(self.game_object_manager.all_objects)
                 gif_name = self.select_random_image(self.atmosphere_gifs, i)
-                max_gif_frame = max_gif_frames_dict[gif_name]
+                gif_frames = self.gif_frames[gif_name]
+                max_gif_frame = len(gif_frames) - 1
                 gif_index = random.randint(0, max_gif_frame)
                 gif_animation_time = None
                 loop_gif = True
@@ -1062,15 +1065,7 @@ class UniverseFactory(ImageProvider):
         self.create_collectable_items()
 
         # # update them for proper initialization, dirty hack ;)
-        panzoom = pan_zoom_handler
-        # pan_zoom_handler.set_zoom_at_position(pan_zoom_handler.get_zoom() + 0.0001,QT_RECT.center )
-        panzoom.zoom = pan_zoom_handler.get_zoom() + 0.0001
-
-
-        screen_x, screen_y = panzoom.world_2_screen(QT_RECT.centerx, QT_RECT.centery)
-        # panzoom.world_offset_x, panzoom.world_offset_y = panzoom.screen_2_world(screen_x - panzoom.screen_width / 2, screen_y - panzoom.screen_height / 2)
-        panzoom.set_world_offset(panzoom.screen_2_world(screen_x - panzoom.screen_width / 2, screen_y - panzoom.screen_height / 2))
-
+        pan_zoom_handler.set_zoom(pan_zoom_handler.get_zoom() + 0.0001)
 
         # measure the time
         end_time = time.time()

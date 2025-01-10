@@ -1,5 +1,13 @@
 import pygame
 
+DRAW_SHADER = False
+DRAW_ORBIT = True
+DEBUG = False
+DRAW_IMAGES = False
+
+# Define font
+font = pygame.font.SysFont(None, 14)
+
 
 # Define RGB colors
 MINT_TURQUOISE = (54, 110, 138)  # Mint Turquoise
@@ -17,6 +25,3 @@ DARK_SEA_GREEN = pygame.color.THECOLORS["darkseagreen"]
 
 
 
-DRAW_ORBIT = True
-DEBUG = False
-font = pygame.font.SysFont(None, 14)

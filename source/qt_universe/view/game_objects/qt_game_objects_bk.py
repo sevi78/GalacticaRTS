@@ -5,7 +5,6 @@ from typing import Any, List, Tuple, Optional
 from pygame import Vector2, Rect
 
 from source.configuration.game_config import config
-from source.multimedia_library.image_attributes import gif_durations_dict
 from source.multimedia_library.images import get_gif_duration
 
 
@@ -96,7 +95,7 @@ class QTGif(Point):
 
         # if gif_animation_time is not set, use the duration of the first frame
         self.gif_animation_time = gif_animation_time
-        self.gif_animation_time = gif_durations_dict[self.gif_name] / 1000 if not self.gif_animation_time else self.gif_animation_time
+        self.gif_animation_time = get_gif_duration(self.gif_name) / 1000 if not self.gif_animation_time else self.gif_animation_time
         self.loop_gif = loop_gif
         self.kill_after_gif_loop = kill_after_gif_loop
         self.image_alpha = image_alpha

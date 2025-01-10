@@ -1,5 +1,8 @@
 import math
+import os
+import time
 from functools import lru_cache
+from pprint import pprint
 
 import numpy as np
 import pygame
@@ -7,12 +10,15 @@ from PIL.Image import Image
 
 # remove this if posible, so far still neded to initialize pygame before loading images
 pygame.init()
-pygame.display.set_mode((1920, 1080), pygame.RESIZABLE, pygame.DOUBLEBUF)
+# screen = pygame.display.set_mode((1920, 1080), pygame.RESIZABLE, pygame.DOUBLEBUF)
+screen = pygame.display.set_mode((1920, 1080), pygame.OPENGL | pygame.DOUBLEBUF | pygame.RESIZABLE, display=0)
+print("images: main()", screen)
 
 from PIL import Image, ImageFilter
 from source.handlers.file_handler import pictures_path
 
 images = {}
+
 all_image_names = []
 
 filter_icons = {
@@ -176,9 +182,8 @@ def get_image(image_name) -> pygame.surface.Surface:  # old, not performant at a
     return no_icon
 
 
-import os
-import pygame
-import time
+
+
 
 # Use a flat dictionary for faster lookups
 image_cache = {}
@@ -228,7 +233,7 @@ def get_gif_fps(gif_name):
 
 
 @lru_cache(maxsize=None)
-def get_gif_frames(gif_name)-> list:
+def get_gif_frames(gif_name) -> list:
     """ Load explosion GIF and extract frames"""
     frames = []
 
@@ -457,7 +462,6 @@ def blur_image(surf: pygame.surface, radius):  # unused
     return blurred_image.convert_alpha()
 
 
-
 def underblit_image(
         image: pygame.surface, sub_image: pygame.surface, offset_x: int, offset_y: int
         ) -> pygame.surface.Surface:
@@ -465,6 +469,7 @@ def underblit_image(
     surf.blit(sub_image, (offset_x, offset_y))
     surf.blit(image, (0, 0))
     return surf
+
 
 def overblit_button_image(button, image_name: str, value: bool, **kwargs) -> None:
     """
@@ -544,6 +549,7 @@ def get_outline(image, color=(0, 0, 0), threshold=127, thickness=0) -> pygame.su
     return outline_image_
 
 
+
 if LOAD_AT_GAME_START:
     start = time.time()
     images = load_folders(os.path.join(pictures_path))
@@ -553,3 +559,4 @@ if LOAD_AT_GAME_START:
 
 if __name__ == "__main__":
     pass
+

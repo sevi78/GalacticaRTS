@@ -1,7 +1,6 @@
-from pygame import Rect, draw
+from pygame import draw
 
-
-from source.qt_universe.controller.qt_pan_zoom_handler import pan_zoom_handler
+from source.qt_universe.model.qt_quad_tree import get_world_search_area
 from source.qt_universe.view.game_objects.qt_game_objects import QTImage, QTFlickeringStar, QTPulsatingStar, QTGif, \
     QTMovingImage
 from source.qt_universe.view.qt_debugger import debug_object
@@ -10,21 +9,12 @@ from source.qt_universe.view.qt_draw_methods import draw_qt_image, draw_flickeri
 from source.qt_universe.view.qt_view_config.qt_draw_config import *
 
 
-
-def get_world_search_area() -> Rect:
-    screen_rect = pygame.display.get_surface().get_rect()
-    screen_search_area = screen_rect.inflate(-200, -200)  # Inflate by 200 pixels on each side
-    world_x1, world_y1 = pan_zoom_handler.screen_2_world(screen_search_area.left, screen_search_area.top)
-    world_x2, world_y2 = pan_zoom_handler.screen_2_world(screen_search_area.right, screen_search_area.bottom)
-    return pygame.Rect(world_x1, world_y1, world_x2 - world_x1, world_y2 - world_y1)
-
-
 def draw_objects(screen, qtree, screen_search_area) -> None:
     """
     draw objects from the quadtree in the visible area
     """
     # draw the screen search area
-    draw.rect(screen, (0, 50, 1), screen_search_area, 1)
+    # draw.rect(screen, (0, 50, 1), screen_search_area, 10)
 
     # Convert screen coordinates to world coordinates
     world_search_area = get_world_search_area()
@@ -39,14 +29,16 @@ def draw_objects(screen, qtree, screen_search_area) -> None:
             if hasattr(point, 'orbit_object'):
                 draw_orbit_circle(screen, point)
 
-        if isinstance(point, QTImage) or isinstance(point, QTMovingImage):
-            draw_qt_image(screen, point)
 
-        elif isinstance(point, QTFlickeringStar):
+
+        if isinstance(point, QTFlickeringStar):
             draw_flickering_star(screen, point)
 
         elif isinstance(point, QTPulsatingStar):
             draw_pulsating_star(screen, point)
+
+        elif isinstance(point, QTImage) or isinstance(point, QTMovingImage):
+            draw_qt_image(screen, point)
 
         elif isinstance(point, QTGif):
             draw_qt_gif(screen, point)
